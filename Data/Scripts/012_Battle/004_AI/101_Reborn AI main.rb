@@ -1,40 +1,24 @@
 class PokeBattle_Battle
-  attr_accessor :scores
-  attr_accessor :targets
-  attr_accessor :myChoices
-
-################################################################################
-# Choose an action.
-################################################################################
-  def pbDefaultChooseEnemyCommand(index)
-    if !pbCanShowFightMenu?(index)
-      return if pbEnemyShouldUseItem?(index)
-      #return if pbEnemyShouldWithdraw?(index) Old Switching Method
-      return if pbShouldSwitch?(index)
-      pbAutoChooseMove(index)
-      return
-    else
-      pbBuildMoveScores(index) #grab the array of scores/targets before doing anything else
-      #print 1
-      return if pbShouldSwitch?(index)
-      #print 2
-      #return if pbEnemyShouldWithdraw?(index) Old Switching Method
-      return if pbEnemyShouldUseItem?(index)
-      #print 3
-      #return if pbAutoFightMenu(index)
-      #print 4
-      pbRegisterUltraBurst(index) if pbEnemyShouldUltraBurst?(index)
-      pbRegisterMegaEvolution(index) if pbEnemyShouldMegaEvolve?(index)
-      #print 5
-      if pbEnemyShouldZMove?(index)
-        return pbChooseEnemyZMove(index)
+  # Legacy method that should stop being used.
+  def pbGetOwner(battlerIndex)
+    if opposes?(battlerIndex)
+      if @opponent.is_a?(Array)
+        return (battlerIndex==1) ? @opponent[0] : @opponent[1]
+      else
+        return @opponent
       end
-      #print 6
-      pbChooseMoves(index)
-      #print 7
+    else
+      if @player.is_a?(Array)
+        return (battlerIndex==0) ? @player[0] : @player[1]
+      else
+        return @player
+      end
     end
   end
 
+  ##############################################################################
+  # Choose an action.
+  ##############################################################################
   def pbChooseEnemyZMove(index)  #Put specific cases for trainers using status Z-Moves
     chosenmove=false
     chosenindex=-1
@@ -112,41 +96,4 @@ class PokeBattle_Battle
     end
   end
 
-  ################################################################################
-  # Decide whether the opponent should Mega Evolve their Pokémon.
-  ################################################################################
-  def pbEnemyShouldMegaEvolve?(index)
-    # Simple "always should if possible"
-    return pbCanMegaEvolve?(index)
-  end
-
-
-  ################################################################################
-  # Decide whether the opponent should Ultra Burst their Pokémon.
-  ################################################################################
-  def pbEnemyShouldUltraBurst?(index)
-    # Simple "always should if possible"
-    return pbCanUltraBurst?(index)
-  end
-
-################################################################################
-# Other functions.
-################################################################################
-  def pbStdDev(scores)
-    n=0
-    sum=0
-    scores.each{|s| sum+=s; n+=1 }
-    return 0 if n==0
-    mean=sum.to_f/n.to_f
-    varianceTimesN=0
-    for i in 0...scores.length
-      if scores[i]>0
-        deviation=scores[i].to_f-mean
-        varianceTimesN+=deviation*deviation
-      end
-    end
-    # Using population standard deviation
-    # [(n-1) makes it a sample std dev, would be 0 with only 1 sample]
-    return Math.sqrt(varianceTimesN/n)
-  end
 end

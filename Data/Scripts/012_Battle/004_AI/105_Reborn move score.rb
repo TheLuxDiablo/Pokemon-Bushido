@@ -221,15 +221,15 @@ class PokeBattle_Battle
         if opponent.pbCanSleep?(false) && opponent.effects[PBEffects::Yawn]==0
           miniscore=100
           miniscore*=1.3
-          if attacker.pbHasMove?((PBMoves::DREAMEATER)) || attacker.pbHasMove?((PBMoves::NIGHTMARE)) ||
+          if attacker.pbHasMove?(:DREAMEATER) || attacker.pbHasMove?(:NIGHTMARE) ||
             (!attacker.abilitynulled && attacker.ability == PBAbilities::BADDREAMS)
             miniscore*=1.5
           end
           miniscore*=1.3 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
-          if attacker.pbHasMove?((PBMoves::LEECHSEED))
+          if attacker.pbHasMove?(:LEECHSEED)
             miniscore*=1.3
           end
-          if attacker.pbHasMove?((PBMoves::SUBSTITUTE))
+          if attacker.pbHasMove?(:SUBSTITUTE)
             miniscore*=1.3
           end
           if opponent.hp==opponent.totalhp
@@ -352,8 +352,8 @@ class PokeBattle_Battle
       when 0x04 # Yawn
         if opponent.effects[PBEffects::Yawn]<=0 && opponent.pbCanSleep?(false)
           score*=1.2
-          if attacker.pbHasMove?((PBMoves::DREAMEATER)) ||
-            attacker.pbHasMove?((PBMoves::NIGHTMARE)) ||
+          if attacker.pbHasMove?(:DREAMEATER) ||
+            attacker.pbHasMove?(:NIGHTMARE) ||
             (!attacker.abilitynulled && attacker.ability == PBAbilities::BADDREAMS)
             score*=1.4
           end
@@ -423,8 +423,8 @@ class PokeBattle_Battle
           if initialscores.length>0
             miniscore*=1.2 if hasbadmoves(initialscores,scoreindex,30)
           end
-          if attacker.pbHasMove?((PBMoves::VENOSHOCK)) ||
-            attacker.pbHasMove?((PBMoves::VENOMDRENCH)) ||
+          if attacker.pbHasMove?(:VENOSHOCK) ||
+            attacker.pbHasMove?(:VENOMDRENCH) ||
             (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
             miniscore*=1.6
           end
@@ -564,8 +564,8 @@ class PokeBattle_Battle
           if initialscores.length>0
             miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,30)
           end
-          if attacker.pbHasMove?((PBMoves::VENOSHOCK)) ||
-            attacker.pbHasMove?((PBMoves::VENOMDRENCH)) ||
+          if attacker.pbHasMove?(:VENOSHOCK) ||
+            attacker.pbHasMove?(:VENOMDRENCH) ||
             (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
             miniscore*=1.6
           end
@@ -1436,7 +1436,7 @@ class PokeBattle_Battle
           if (!opponent.abilitynulled && opponent.ability == PBAbilities::TANGLEDFEET)
             miniscore*=0.7
           end
-          if attacker.pbHasMove?((PBMoves::SUBSTITUTE))
+          if attacker.pbHasMove?(:SUBSTITUTE)
             miniscore*=1.2
             if attacker.effects[PBEffects::Substitute]>0
               miniscore*=1.3
@@ -1520,7 +1520,7 @@ class PokeBattle_Battle
           if (!opponent.abilitynulled && opponent.ability == PBAbilities::TANGLEDFEET)
             miniscore*=0.7
           end
-          if attacker.pbHasMove?((PBMoves::SUBSTITUTE))
+          if attacker.pbHasMove?(:SUBSTITUTE)
             miniscore*=1.2
             if attacker.effects[PBEffects::Substitute]>0
               miniscore*=1.3
@@ -1624,7 +1624,7 @@ class PokeBattle_Battle
           if (oppitemworks && opponent.item == PBItems::DESTINYKNOT)
             score*=0.1
           end
-          if attacker.pbHasMove?((PBMoves::SUBSTITUTE))
+          if attacker.pbHasMove?(:SUBSTITUTE)
             score*=1.2
             if attacker.effects[PBEffects::Substitute]>0
               score*=1.3
@@ -1774,7 +1774,7 @@ class PokeBattle_Battle
             end
             score*=0.7 if checkAImoves([PBMoves::HEX],aimem)
           end
-          if attacker.pbHasMove?((PBMoves::HEX))
+          if attacker.pbHasMove?(:HEX)
             score*=1.3
           end
         else
@@ -1906,10 +1906,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if move.basedamage>0
@@ -1982,10 +1982,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if move.basedamage>0
@@ -2018,7 +2018,7 @@ class PokeBattle_Battle
           end
         end
         score*=miniscore
-        if attacker.pbHasMove?((PBMoves::ROLLOUT)) && attacker.effects[PBEffects::DefenseCurl]==false
+        if attacker.pbHasMove?(:ROLLOUT) && attacker.effects[PBEffects::DefenseCurl]==false
           score*=1.3
         end
         if (opponent.level-5)>attacker.level
@@ -2242,10 +2242,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if move.basedamage>0
@@ -2313,10 +2313,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) || checkAIaccuracy(aimem)
@@ -2434,9 +2434,9 @@ class PokeBattle_Battle
              opponent.ability == PBAbilities::SHELLARMOR || opponent.ability == PBAbilities::BATTLEARMOR)
             score*=0.2
           end
-          if attacker.pbHasMove?((PBMoves::LASERFOCUS)) ||
-             attacker.pbHasMove?((PBMoves::FROSTBREATH)) ||
-             attacker.pbHasMove?((PBMoves::STORMTHROW))
+          if attacker.pbHasMove?(:LASERFOCUS) ||
+             attacker.pbHasMove?(:FROSTBREATH) ||
+             attacker.pbHasMove?(:STORMTHROW)
             score*=0.5
           end
           for j in attacker.moves
@@ -2541,10 +2541,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if !attacker.pbTooHigh?(PBStats::DEFENSE)
@@ -2656,10 +2656,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.2
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.2
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if !attacker.pbTooHigh?(PBStats::DEFENSE)
@@ -3106,10 +3106,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.7
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if !attacker.pbTooHigh?(PBStats::SPDEF) || !attacker.pbTooHigh?(PBStats::DEFENSE)
@@ -3229,10 +3229,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if !attacker.pbTooHigh?(PBStats::SPDEF)
@@ -3373,10 +3373,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if !attacker.pbTooHigh?(PBStats::SPDEF)
@@ -3597,10 +3597,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if skill>=PBTrainerAI.bestSkill
@@ -3814,7 +3814,7 @@ class PokeBattle_Battle
         end
         miniscore*=1.5 if checkAImoves([PBMoves::LOWKICK,PBMoves::GRASSKNOT],aimem)
         miniscore*=0.5 if checkAImoves([PBMoves::HEATCRASH,PBMoves::HEAVYSLAM],aimem)
-        if attacker.pbHasMove?((PBMoves::HEATCRASH)) || attacker.pbHasMove?((PBMoves::HEAVYSLAM))
+        if attacker.pbHasMove?(:HEATCRASH) || attacker.pbHasMove?(:HEAVYSLAM)
           miniscore*=0.8
         end
         miniscore/=100.0
@@ -3939,10 +3939,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         miniscore/=100.0
@@ -3986,10 +3986,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) || checkAIaccuracy(aimem)
@@ -4207,10 +4207,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) || checkAIaccuracy(aimem)
@@ -4281,10 +4281,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         miniscore/=100.0
@@ -4828,7 +4828,7 @@ class PokeBattle_Battle
             if (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY)
               miniscore*=1.5
             end
-            if attacker.pbHasMove?((PBMoves::SUBSTITUTE))
+            if attacker.pbHasMove?(:SUBSTITUTE)
               miniscore*=1.2
               if attacker.effects[PBEffects::Substitute]>0
                 miniscore*=1.3
@@ -4899,13 +4899,13 @@ class PokeBattle_Battle
             if (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY)
               miniscore*=1.5
             end
-            if attacker.pbHasMove?((PBMoves::SUBSTITUTE))
+            if attacker.pbHasMove?(:SUBSTITUTE)
               miniscore*=1.2
               if attacker.effects[PBEffects::Substitute]>0
                 miniscore*=1.3
               end
             end
-            if attacker.pbHasMove?((PBMoves::FOULPLAY))
+            if attacker.pbHasMove?(:FOULPLAY)
               miniscore*=1.5
             end
             miniscore/=100.0
@@ -4946,7 +4946,7 @@ class PokeBattle_Battle
           else
             score*=0.7
           end
-          if opp1.pbHasMove?((PBMoves::FOULPLAY)) || opp2.pbHasMove?((PBMoves::FOULPLAY))
+          if opp1.pbHasMove?(:FOULPLAY) || opp2.pbHasMove?(:FOULPLAY)
             score*=0.3
           end
         end
@@ -6251,7 +6251,7 @@ class PokeBattle_Battle
           score*=0.7
         end
         if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-          if attacker.pbHasMove?((PBMoves::TOXIC))
+          if attacker.pbHasMove?(:TOXIC)
             if attacker.pbHasType?(:STEEL) || attacker.pbHasType?(:POISON)
               score*=1.5
             end
@@ -6309,7 +6309,10 @@ class PokeBattle_Battle
           score*=0
         end
       when 0x63 # Simple Beam
-        if !(opponent.ability == PBAbilities::SIMPLE) && !(PBStuff::FIXEDABILITIES).include?(opponent.ability)
+        score = 0 if opponent.unstoppableAbility? ||
+                     isConst?(opponent.ability, PBAbilities, :TRUANT) ||
+                     isConst?(opponent.ability, PBAbilities, :SIMPLE)
+        if score > 0
           miniscore = getAbilityDisruptScore(move,attacker,opponent,skill)
           if opponent == attacker.pbPartner
             if miniscore < 2
@@ -6326,13 +6329,13 @@ class PokeBattle_Battle
               score*=0.5
             end
           end
-        else
-          score*=0
         end
       when 0x64 # Worry Seed
-        if !(opponent.ability == PBAbilities::INSOMNIA) &&
-           opponent.effects[PBEffects::Substitute]<=0 &&
-           !(PBStuff::FIXEDABILITIES).include?(opponent.ability)
+        score = 0 if opponent.unstoppableAbility? ||
+                     isConst?(opponent.ability, PBAbilities, :TRUANT) ||
+                     isConst?(opponent.ability, PBAbilities, :INSOMNIA)
+        score = 0 if opponent.effects[PBEffects::Substitute] > 0
+        if score > 0
           miniscore = getAbilityDisruptScore(move,attacker,opponent,skill)
           score*=miniscore
           if checkAImoves([PBMoves::SNORE,PBMoves::SLEEPTALK],aimem)
@@ -6341,34 +6344,39 @@ class PokeBattle_Battle
           if checkAImoves([PBMoves::REST],aimem)
             score*=2
           end
-          if attacker.pbHasMove?((PBMoves::SPORE)) ||
-             attacker.pbHasMove?((PBMoves::SLEEPPOWDER)) ||
-             attacker.pbHasMove?((PBMoves::HYPNOSIS)) ||
-             attacker.pbHasMove?((PBMoves::SING)) ||
-             attacker.pbHasMove?((PBMoves::GRASSWHISTLE)) ||
-             attacker.pbHasMove?((PBMoves::DREAMEATER)) ||
-             attacker.pbHasMove?((PBMoves::NIGHTMARE)) ||
+          if attacker.pbHasMove?(:SPORE) ||
+             attacker.pbHasMove?(:SLEEPPOWDER) ||
+             attacker.pbHasMove?(:HYPNOSIS) ||
+             attacker.pbHasMove?(:SING) ||
+             attacker.pbHasMove?(:GRASSWHISTLE) ||
+             attacker.pbHasMove?(:DREAMEATER) ||
+             attacker.pbHasMove?(:NIGHTMARE) ||
              (!attacker.abilitynulled && attacker.ability == PBAbilities::BADDREAMS)
             score*=0.3
           end
-        else
-          score*=0
         end
       when 0x65 # Role Play
-        score = 0 if (PBStuff::ABILITYBLACKLIST).include?(opponent.ability)
-        score = 0 if (PBStuff::FIXEDABILITIES).include?(attacker.ability)
-        if !(opponent.ability ==0 || attacker.ability==opponent.ability || attacker.ability == PBAbilities::DISGUISE) && score != 0
+        score = 0 if opponent.ungainableAbility? ||
+                     isConst?(opponent.ability, PBAbilities, :POWEROFALCHEMY) ||
+                     isConst?(opponent.ability, PBAbilities, :RECEIVER) ||
+                     isConst?(opponent.ability, PBAbilities, :TRACE) ||
+                     isConst?(opponent.ability, PBAbilities, :WONDERGUARD)
+        score = 0 if attacker.unstoppableAbility?
+        score = 0 if opponent.ability == 0 || attacker.ability == opponent.ability
+        if score != 0
           miniscore = getAbilityDisruptScore(move,opponent,attacker,skill)
           minimini = getAbilityDisruptScore(move,attacker,opponent,skill)
           score *= (1 + (minimini-miniscore))
-        else
-          score=0
         end
       when 0x66 # Entrainment
-        score = 0 if (PBStuff::FIXEDABILITIES).include?(opponent.ability)
-        score = 0 if opponent.ability == PBAbilities::TRUANT
-        score = 0 if (PBStuff::ABILITYBLACKLIST).include?(attacker.ability) && attacker.ability != PBAbilities::WONDERGUARD
-        if !(opponent.ability ==0 || attacker.ability==opponent.ability) && score != 0
+        score = 0 if attacker.ungainableAbility? ||
+                     isConst?(attacker.ability, PBAbilities, :POWEROFALCHEMY) ||
+                     isConst?(attacker.ability, PBAbilities, :RECEIVER) ||
+                     isConst?(attacker.ability, PBAbilities, :TRACE)
+        score = 0 if opponent.unstoppableAbility? ||
+                     isConst?(opponent.ability, PBAbilities, :TRUANT)
+        score = 0 if attacker.ability == 0 || attacker.ability == opponent.ability
+        if score > 0
           miniscore = getAbilityDisruptScore(move,opponent,attacker,skill)
           minimini = getAbilityDisruptScore(move,attacker,opponent,skill)
           if opponent != attacker.pbPartner
@@ -6390,14 +6398,14 @@ class PokeBattle_Battle
               score +=50
             end
           end
-        else
-          score=0
         end
       when 0x67 # Skill Swap
-        score = 0 if (PBStuff::FIXEDABILITIES).include?(attacker.ability) && attacker.ability != PBAbilities::ZENMODE
-        score = 0 if (PBStuff::FIXEDABILITIES).include?(opponent.ability) && opponent.ability != PBAbilities::ZENMODE
-        score = 0 if opponent.ability == PBAbilities::ILLUSION || attacker.ability == PBAbilities::ILLUSION
-        if !(opponent.ability ==0 || attacker.ability==opponent.ability) && score !=0
+        score = 0 if attacker.unstoppableAbility? || opponent.unstoppableAbility?
+        score = 0 if attacker.ungainableAbility? || isConst?(attacker.ability, PBAbilities, :WONDERGUARD)
+        score = 0 if opponent.ungainableAbility? || isConst?(opponent.ability, PBAbilities, :WONDERGUARD)
+        score = 0 if attacker.ability == 0 || opponent.ability == 0 ||
+                     (attacker.ability == opponent.ability && !NEWEST_BATTLE_MECHANICS)
+        if score > 0
           miniscore = getAbilityDisruptScore(move,opponent,attacker,skill)
           minimini = getAbilityDisruptScore(move,attacker,opponent,skill)
           if opponent == attacker.pbPartner
@@ -6414,15 +6422,14 @@ class PokeBattle_Battle
           if (opponent.ability == PBAbilities::TRUANT) && opponent==attacker.pbPartner
             score*=2
           end
-        else
-          score=0
         end
       when 0x68 # Gastro Acid
-        miniscore = getAbilityDisruptScore(move,attacker,opponent,skill)
-        score*=miniscore
-        if opponent.effects[PBEffects::GastroAcid]  || opponent.effects[PBEffects::Substitute]>0 ||
-          (PBStuff::FIXEDABILITIES).include?(opponent.ability)
-          score = 0
+        score = 0 if opponent.effects[PBEffects::GastroAcid] ||
+                     opponent.effects[PBEffects::Substitute] > 0
+        score = 0 if opponent.unstoppableAbility?
+        if score > 0
+          miniscore = getAbilityDisruptScore(move,attacker,opponent,skill)
+          score*=miniscore
         end
       when 0x69 # Transform
         if !(attacker.effects[PBEffects::Transform] ||
@@ -6836,12 +6843,12 @@ class PokeBattle_Battle
           score*=0.8
           if (!attacker.abilitynulled &&
              attacker.ability == PBAbilities::BADDREAMS) ||
-             attacker.pbHasMove?((PBMoves::DREAMEATER)) ||
-             attacker.pbHasMove?((PBMoves::NIGHTMARE))
+             attacker.pbHasMove?(:DREAMEATER) ||
+             attacker.pbHasMove?(:NIGHTMARE)
             score*=0.3
           end
-          if opponent.pbHasMove?((PBMoves::SNORE)) ||
-            opponent.pbHasMove?((PBMoves::SLEEPTALK))
+          if opponent.pbHasMove?(:SNORE) ||
+            opponent.pbHasMove?(:SLEEPTALK)
             score*=1.3
           end
         end
@@ -6871,7 +6878,7 @@ class PokeBattle_Battle
           score*=1.5
         end
       when 0x83 # Round
-        if @doublebattle && attacker.pbPartner.pbHasMove?((PBMoves::ROUND))
+        if @doublebattle && attacker.pbPartner.pbHasMove?(:ROUND)
           score*=1.5
         end
       when 0x84 # Payback
@@ -7522,19 +7529,19 @@ class PokeBattle_Battle
         if opponent.effects[PBEffects::LockOn]>0 ||  opponent.effects[PBEffects::Substitute]>0
           score*=0
         else
-          if attacker.pbHasMove?((PBMoves::INFERNO)) ||
-             attacker.pbHasMove?((PBMoves::ZAPCANNON)) ||
-             attacker.pbHasMove?((PBMoves::DYNAMICPUNCH))
+          if attacker.pbHasMove?(:INFERNO) ||
+             attacker.pbHasMove?(:ZAPCANNON) ||
+             attacker.pbHasMove?(:DYNAMICPUNCH)
             if !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD) &&
                !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD)
               score*=3
             end
           end
-          if attacker.pbHasMove?((PBMoves::GUILLOTINE)) ||
-             attacker.pbHasMove?((PBMoves::SHEERCOLD)) ||
-             attacker.pbHasMove?((PBMoves::GUILLOTINE)) ||
-             attacker.pbHasMove?((PBMoves::FISSURE)) ||
-             attacker.pbHasMove?((PBMoves::HORNDRILL))
+          if attacker.pbHasMove?(:GUILLOTINE) ||
+             attacker.pbHasMove?(:SHEERCOLD) ||
+             attacker.pbHasMove?(:GUILLOTINE) ||
+             attacker.pbHasMove?(:FISSURE) ||
+             attacker.pbHasMove?(:HORNDRILL)
             score*=10
           end
           ministat=0
@@ -7977,7 +7984,7 @@ class PokeBattle_Battle
           if attacker.statusCount<=1
             score*=0
           else
-            if attacker.pbHasMove?((PBMoves::SNORE))
+            if attacker.pbHasMove?(:SNORE)
               count=-1
               for k in attacker.moves
                 count+=1
@@ -8081,7 +8088,7 @@ class PokeBattle_Battle
                 score*=1.5
               end
             end
-            if attacker.pbHasMove?((PBMoves::PROTECT))
+            if attacker.pbHasMove?(:PROTECT)
               score*=1.5
             end
             if (attitemworks && attacker.item == PBItems::LEFTOVERS)
@@ -8299,8 +8306,8 @@ class PokeBattle_Battle
           if initialscores.length>0
             miniscore*=1.2 if hasbadmoves(initialscores,scoreindex,30)
           end
-          if attacker.pbHasMove?((PBMoves::VENOSHOCK)) ||
-            attacker.pbHasMove?((PBMoves::VENOMDRENCH)) ||
+          if attacker.pbHasMove?(:VENOSHOCK) ||
+            attacker.pbHasMove?(:VENOMDRENCH) ||
             (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
             miniscore*=1.6
           end
@@ -8996,10 +9003,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         miniscore-=100
@@ -9673,7 +9680,7 @@ class PokeBattle_Battle
         if opponent.status==PBStatuses::SLEEP
           score*=0.7
         end
-        if opponent.pbHasMove?((PBMoves::REST))
+        if opponent.pbHasMove?(:REST)
           score*=1.8
         end
         if opponent.pbNonActivePokemonCount==0 ||
@@ -10416,10 +10423,10 @@ class PokeBattle_Battle
              (!opponent.abilitynulled && opponent.ability == PBAbilities::BADDREAMS)
             score*=0.7
           end
-          if attacker.pbHasMove?((PBMoves::SLEEPTALK))
+          if attacker.pbHasMove?(:SLEEPTALK)
             score*=1.3
           end
-          if attacker.pbHasMove?((PBMoves::SNORE))
+          if attacker.pbHasMove?(:SNORE)
             score*=1.2
           end
           if !attacker.abilitynulled && (attacker.ability == PBAbilities::SHEDSKIN ||
@@ -10910,13 +10917,13 @@ class PokeBattle_Battle
         if livecount1==1 || (livecount1==2 && @doublebattle)
           score*=4
         else
-          if attacker.pbHasMove?((PBMoves::UTURN)) || attacker.pbHasMove?((PBMoves::VOLTSWITCH))
+          if attacker.pbHasMove?(:UTURN) || attacker.pbHasMove?(:VOLTSWITCH)
             score*=1.5
           end
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG) || opponent.effects[PBEffects::MeanLook]>0
             score*=3
           end
-          if attacker.pbHasMove?((PBMoves::PROTECT))
+          if attacker.pbHasMove?(:PROTECT)
             score*=1.2
           end
           count = -1
@@ -11059,12 +11066,12 @@ class PokeBattle_Battle
             attacker.effects[PBEffects::LeechSeed]>=0 || attacker.effects[PBEffects::Curse]
             score*=0
           end
-          if attacker.pbHasMove?((PBMoves::PAINSPLIT)) ||
-             attacker.pbHasMove?((PBMoves::FLAIL)) ||
-             attacker.pbHasMove?((PBMoves::REVERSAL))
+          if attacker.pbHasMove?(:PAINSPLIT) ||
+             attacker.pbHasMove?(:FLAIL) ||
+             attacker.pbHasMove?(:REVERSAL)
             score*=2
           end
-          if attacker.pbHasMove?((PBMoves::ENDEAVOR))
+          if attacker.pbHasMove?(:ENDEAVOR)
             score*=3
           end
           if opponent.status==PBStatuses::POISON || opponent.status==PBStatuses::BURN ||
@@ -11386,7 +11393,7 @@ class PokeBattle_Battle
           if (!opponent.abilitynulled && opponent.ability == PBAbilities::RUNAWAY)
             score*=0.1
           end
-          if attacker.pbHasMove?((PBMoves::PERISHSONG))
+          if attacker.pbHasMove?(:PERISHSONG)
             score*=1.5
           end
           if opponent.effects[PBEffects::PerishSong]>0
@@ -11415,6 +11422,39 @@ class PokeBattle_Battle
           end
         else
           score*=0
+        end
+      when 0x0EF # Thousand Waves
+        if !(opponent.effects[PBEffects::MeanLook]>=0 || opponent.effects[PBEffects::Ingrain] || opponent.pbHasType?(:GHOST)) && opponent.effects[PBEffects::Substitute]<=0
+          score*=0.1 if checkAImoves(PBStuff::PIVOTMOVE,aimem)
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::RUNAWAY)
+            score*=0.1
+          end
+          if attacker.pbHasMove?(:PERISHSONG)
+            score*=1.5
+          end
+          if opponent.effects[PBEffects::PerishSong]>0
+            score*=4
+          end
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::ARENATRAP) || (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG)
+            score*=0
+          end
+          if opponent.effects[PBEffects::Attract]>=0
+            score*=1.3
+          end
+          if opponent.effects[PBEffects::LeechSeed]>=0
+            score*=1.3
+          end
+          if opponent.effects[PBEffects::Curse]
+            score*=1.5
+          end
+          miniscore*=0.7 if attacker.moves.any? {|moveloop| (PBStuff::SWITCHOUTMOVE).include?(moveloop)}
+          ministat=(-5)*statchangecounter(opponent,1,7)
+          ministat+=100
+          ministat/=100.0
+          score*=ministat
+          if opponent.effects[PBEffects::Confusion]>0
+            score*=1.1
+          end
         end
       when 0xF0 # Knock Off
         if !hasgreatmoves(initialscores,scoreindex,skill) && opponent.effects[PBEffects::Substitute]<=0
@@ -11701,7 +11741,7 @@ class PokeBattle_Battle
                       checkAImoves([PBMoves::KNOCKOFF,PBMoves::THIEF,PBMoves::COVET],aimem)
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::UNBURDEN) ||
              (!attacker.abilitynulled && attacker.ability == PBAbilities::HARVEST) ||
-             attacker.pbHasMove?((PBMoves::ACROBATICS))
+             attacker.pbHasMove?(:ACROBATICS)
             score*=0
           end
         else
@@ -12063,15 +12103,15 @@ class PokeBattle_Battle
         if (attitemworks && attacker.item == PBItems::HEATROCK)
           score*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::WEATHERBALL)) || (!attacker.abilitynulled && attacker.ability == PBAbilities::FORECAST)
+        if attacker.pbHasMove?(:WEATHERBALL) || (!attacker.abilitynulled && attacker.ability == PBAbilities::FORECAST)
           score*=2
         end
         if pbWeather!=0 && pbWeather!=PBWeather::SUNNYDAY
           score*=1.5
         end
-        if attacker.pbHasMove?((PBMoves::MOONLIGHT)) || attacker.pbHasMove?((PBMoves::SYNTHESIS)) ||
-           attacker.pbHasMove?((PBMoves::MORNINGSUN)) || attacker.pbHasMove?((PBMoves::GROWTH)) ||
-           attacker.pbHasMove?((PBMoves::SOLARBEAM)) || attacker.pbHasMove?((PBMoves::SOLARBLADE))
+        if attacker.pbHasMove?(:MOONLIGHT) || attacker.pbHasMove?(:SYNTHESIS) ||
+           attacker.pbHasMove?(:MORNINGSUN) || attacker.pbHasMove?(:GROWTH) ||
+           attacker.pbHasMove?(:SOLARBEAM) || attacker.pbHasMove?(:SOLARBLADE)
           score*=1.5
         end
         if attacker.pbHasType?(:FIRE)
@@ -12103,7 +12143,7 @@ class PokeBattle_Battle
         if watervar
           score*=0.5
         end
-        if attacker.pbHasMove?((PBMoves::THUNDER)) || attacker.pbHasMove?((PBMoves::HURRICANE))
+        if attacker.pbHasMove?(:THUNDER) || attacker.pbHasMove?(:HURRICANE)
           score*=0.7
         end
         if (!attacker.abilitynulled && attacker.ability == PBAbilities::DRYSKIN)
@@ -12163,13 +12203,13 @@ class PokeBattle_Battle
         if (attitemworks && attacker.item == PBItems::DAMPROCK)
           score*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::WEATHERBALL)) || (!attacker.abilitynulled && attacker.ability == PBAbilities::FORECAST)
+        if attacker.pbHasMove?(:WEATHERBALL) || (!attacker.abilitynulled && attacker.ability == PBAbilities::FORECAST)
           score*=2
         end
         if pbWeather!=0 && pbWeather!=PBWeather::RAINDANCE
           score*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::THUNDER)) || attacker.pbHasMove?((PBMoves::HURRICANE))
+        if attacker.pbHasMove?(:THUNDER) || attacker.pbHasMove?(:HURRICANE)
           score*=1.5
         end
         if attacker.pbHasType?(:WATER)
@@ -12206,7 +12246,9 @@ class PokeBattle_Battle
         if firevar
           score*=0.5
         end
-        if attacker.pbHasMove?((PBMoves::MOONLIGHT)) || attacker.pbHasMove?((PBMoves::SYNTHESIS)) || attacker.pbHasMove?((PBMoves::MORNINGSUN)) || attacker.pbHasMove?((PBMoves::GROWTH)) || attacker.pbHasMove?((PBMoves::SOLARBEAM)) || attacker.pbHasMove?((PBMoves::SOLARBLADE))
+        if attacker.pbHasMove?(:MOONLIGHT) || attacker.pbHasMove?(:SYNTHESIS) ||
+           attacker.pbHasMove?(:MORNINGSUN) || attacker.pbHasMove?(:GROWTH) ||
+           attacker.pbHasMove?(:SOLARBEAM) || attacker.pbHasMove?(:SOLARBLADE)
           score*=0.5
         end
         if (!attacker.abilitynulled && attacker.ability == PBAbilities::HYDRATION)
@@ -12278,7 +12320,7 @@ class PokeBattle_Battle
         if (attitemworks && attacker.item == PBItems::SMOOTHROCK)
           score*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::WEATHERBALL)) || (!attacker.abilitynulled && attacker.ability == PBAbilities::FORECAST)
+        if attacker.pbHasMove?(:WEATHERBALL) || (!attacker.abilitynulled && attacker.ability == PBAbilities::FORECAST)
           score*=2
         end
         if pbWeather!=0 && pbWeather!=PBWeather::SANDSTORM
@@ -12306,10 +12348,12 @@ class PokeBattle_Battle
         if (!attacker.abilitynulled && attacker.ability == PBAbilities::SANDVEIL)
           score*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::MOONLIGHT)) || attacker.pbHasMove?((PBMoves::SYNTHESIS)) || attacker.pbHasMove?((PBMoves::MORNINGSUN)) || attacker.pbHasMove?((PBMoves::GROWTH)) || attacker.pbHasMove?((PBMoves::SOLARBEAM)) || attacker.pbHasMove?((PBMoves::SOLARBLADE))
+        if attacker.pbHasMove?(:MOONLIGHT) || attacker.pbHasMove?(:SYNTHESIS) ||
+           attacker.pbHasMove?(:MORNINGSUN) || attacker.pbHasMove?(:GROWTH) ||
+           attacker.pbHasMove?(:SOLARBEAM) || attacker.pbHasMove?(:SOLARBLADE)
           score*=0.5
         end
-        if attacker.pbHasMove?((PBMoves::SHOREUP))
+        if attacker.pbHasMove?(:SHOREUP)
           score*=1.5
         end
         if (!attacker.abilitynulled && attacker.ability == PBAbilities::SANDFORCE)
@@ -12370,7 +12414,7 @@ class PokeBattle_Battle
         if (attitemworks && attacker.item == PBItems::ICYROCK)
           score*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::WEATHERBALL)) || (!attacker.abilitynulled && attacker.ability == PBAbilities::FORECAST)
+        if attacker.pbHasMove?(:WEATHERBALL) || (!attacker.abilitynulled && attacker.ability == PBAbilities::FORECAST)
           score*=2
         end
         if pbWeather!=0 && pbWeather!=PBWeather::HAIL
@@ -12396,15 +12440,15 @@ class PokeBattle_Battle
            (!attacker.abilitynulled && attacker.ability == PBAbilities::ICEBODY)
           score*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::MOONLIGHT)) || attacker.pbHasMove?((PBMoves::SYNTHESIS)) ||
-           attacker.pbHasMove?((PBMoves::MORNINGSUN)) || attacker.pbHasMove?((PBMoves::GROWTH)) ||
-           attacker.pbHasMove?((PBMoves::SOLARBEAM)) || attacker.pbHasMove?((PBMoves::SOLARBLADE))
+        if attacker.pbHasMove?(:MOONLIGHT) || attacker.pbHasMove?(:SYNTHESIS) ||
+           attacker.pbHasMove?(:MORNINGSUN) || attacker.pbHasMove?(:GROWTH) ||
+           attacker.pbHasMove?(:SOLARBEAM) || attacker.pbHasMove?(:SOLARBLADE)
           score*=0.5
         end
-        if attacker.pbHasMove?((PBMoves::AURORAVEIL))
+        if attacker.pbHasMove?(:AURORAVEIL)
           score*=2
         end
-        if attacker.pbHasMove?((PBMoves::BLIZZARD))
+        if attacker.pbHasMove?(:BLIZZARD)
           score*=1.3
         end
         if skill>=PBTrainerAI.bestSkill
@@ -12859,10 +12903,10 @@ class PokeBattle_Battle
                 break
               end
             end
-            if opponent.pbHasMove?((PBMoves::SPORE)) || opponent.pbHasMove?((PBMoves::SLEEPPOWDER))
+            if opponent.pbHasMove?(:SPORE) || opponent.pbHasMove?(:SLEEPPOWDER)
               score*=1.2
             end
-            if attacker.pbHasMove?((PBMoves::FOCUSPUNCH))
+            if attacker.pbHasMove?(:FOCUSPUNCH)
               score*=1.5
             end
             if opponent.status==PBStatuses::SLEEP
@@ -12871,9 +12915,9 @@ class PokeBattle_Battle
             if (!opponent.abilitynulled && opponent.ability == PBAbilities::INFILTRATOR)
               score*=0.3
             end
-            if opponent.pbHasMove?((PBMoves::UPROAR)) || opponent.pbHasMove?((PBMoves::HYPERVOICE)) ||
-               opponent.pbHasMove?((PBMoves::ECHOEDVOICE)) || opponent.pbHasMove?((PBMoves::SNARL)) ||
-               opponent.pbHasMove?((PBMoves::BUGBUZZ)) || opponent.pbHasMove?((PBMoves::BOOMBURST))
+            if opponent.pbHasMove?(:UPROAR) || opponent.pbHasMove?(:HYPERVOICE) ||
+               opponent.pbHasMove?(:ECHOEDVOICE) || opponent.pbHasMove?(:SNARL) ||
+               opponent.pbHasMove?(:BUGBUZZ) || opponent.pbHasMove?(:BOOMBURST)
               score*=0.3
             end
             score*=2 if checkAIdamage(aimem,attacker,opponent,skill)*4<attacker.totalhp && (aimem.length > 0)
@@ -12886,7 +12930,7 @@ class PokeBattle_Battle
             if opponent.effects[PBEffects::Attract]>=0
               score*=1.3
             end
-            if attacker.pbHasMove?((PBMoves::BATONPASS))
+            if attacker.pbHasMove?(:BATONPASS)
               score*=1.2
             end
             if (!attacker.abilitynulled && attacker.ability == PBAbilities::SPEEDBOOST)
@@ -13074,10 +13118,10 @@ class PokeBattle_Battle
           if healmove
             miniscore*=1.2
           end
-          if attacker.pbHasMove?((PBMoves::LEECHSEED))
+          if attacker.pbHasMove?(:LEECHSEED)
             miniscore*=1.3
           end
-          if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+          if attacker.pbHasMove?(:PAINSPLIT)
             miniscore*=1.2
           end
           if !attacker.pbTooHigh?(PBStats::DEFENSE)
@@ -13207,9 +13251,9 @@ class PokeBattle_Battle
             score*=1.1
           end
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::MOODY) ||
-             attacker.pbHasMove?((PBMoves::QUIVERDANCE)) ||
-             attacker.pbHasMove?((PBMoves::NASTYPLOT)) ||
-             attacker.pbHasMove?((PBMoves::TAILGLOW))
+             attacker.pbHasMove?(:QUIVERDANCE) ||
+             attacker.pbHasMove?(:NASTYPLOT) ||
+             attacker.pbHasMove?(:TAILGLOW)
             score*=1.2
           end
         end
@@ -13300,13 +13344,13 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.7
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
-        if attacker.pbHasMove?((PBMoves::SPITUP)) || attacker.pbHasMove?((PBMoves::SWALLOW))
+        if attacker.pbHasMove?(:SPITUP) || attacker.pbHasMove?(:SWALLOW)
           miniscore*=1.6
         end
         if attacker.effects[PBEffects::Stockpile]<3
@@ -13355,7 +13399,7 @@ class PokeBattle_Battle
           else
             score*=0.8
           end
-          if attacker.pbHasMove?((PBMoves::SWALLOW))
+          if attacker.pbHasMove?(:SWALLOW)
             if attacker.hp/(attacker.totalhp.to_f) < 0.66
               score*=0.8
               if attacker.hp/(attacker.totalhp.to_f) < 0.4
@@ -13542,7 +13586,7 @@ class PokeBattle_Battle
               break
             end
           end
-          if attacker.pbHasMove?((PBMoves::ZAPCANNON)) || attacker.pbHasMove?((PBMoves::INFERNO))
+          if attacker.pbHasMove?(:ZAPCANNON) || attacker.pbHasMove?(:INFERNO)
             score*=3
           end
           if maxid==(PBMoves::SKYDROP) || maxid==(PBMoves::BOUNCE) || maxid==(PBMoves::FLY) ||
@@ -13639,7 +13683,7 @@ class PokeBattle_Battle
               break
             end
           end
-          if attacker.pbHasMove?((PBMoves::ZAPCANNON)) || attacker.pbHasMove?((PBMoves::INFERNO))
+          if attacker.pbHasMove?(:ZAPCANNON) || attacker.pbHasMove?(:INFERNO)
             score*=2
           end
           if $fefieldeffect==37
@@ -13686,7 +13730,7 @@ class PokeBattle_Battle
            (oppitemworks && opponent.item == PBItems::IRONBALL)) && opponent.effects[PBEffects::Substitute]<=0
           miniscore=100
           if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-            if opponent.pbHasMove?((PBMoves::BOUNCE)) || opponent.pbHasMove?((PBMoves::FLY)) || opponent.pbHasMove?((PBMoves::SKYDROP))
+            if opponent.pbHasMove?(:BOUNCE) || opponent.pbHasMove?(:FLY) || opponent.pbHasMove?(:SKYDROP)
               miniscore*=1.3
             else
               opponent.effects[PBEffects::TwoTurnAttack]!=0
@@ -13938,7 +13982,1079 @@ class PokeBattle_Battle
         else
           score*=0
         end
-      when 0x133 # Kings Shield
+      when 0x133 # Hold Hands
+      when 0x134 # Celebrate
+      when 0x137 # Magnetic Flux
+        if !((!attacker.abilitynulled && attacker.ability == PBAbilities::PLUS) ||
+           (!attacker.abilitynulled && attacker.ability == PBAbilities::MINUS) ||
+           (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::PLUS) || (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::MINUS))
+          score*=0
+        else
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::PLUS) || (!attacker.abilitynulled && attacker.ability == PBAbilities::MINUS)
+            miniscore = setupminiscore(attacker,opponent,skill,move,false,10,true,initialscores,scoreindex)
+            score*=miniscore
+            miniscore=100
+            if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+              miniscore*=1.5
+            end
+            if (attitemworks && attacker.item == PBItems::LEFTOVERS) || ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
+              miniscore*=1.2
+            end
+            healmove=false
+            for j in attacker.moves
+              if j.isHealingMove?
+                healmove=true
+              end
+            end
+            if healmove
+              miniscore*=1.7
+            end
+            if attacker.pbHasMove?(:LEECHSEED)
+              miniscore*=1.3
+            end
+            if attacker.pbHasMove?(:PAINSPLIT)
+              miniscore*=1.2
+            end
+            if attacker.stages[PBStats::SPDEF]!=6 && attacker.stages[PBStats::DEFENSE]!=6
+              score*=miniscore
+            end
+          elsif @doublebattle && attacker.pbPartner.stages[PBStats::SPDEF]!=6 && attacker.pbPartner.stages[PBStats::DEFENSE]!=6
+            score*=0.7
+            if initialscores.length>0
+              score*=1.3 if hasbadmoves(initialscores,scoreindex,20)
+            end
+            if attacker.pbPartner.hp >= attacker.pbPartner.totalhp*0.75
+              score*=1.1
+            end
+            if attacker.pbPartner.effects[PBEffects::Yawn]>0 ||
+               attacker.pbPartner.effects[PBEffects::LeechSeed]>=0 ||
+               attacker.pbPartner.effects[PBEffects::Attract]>=0 ||
+               attacker.pbPartner.status!=0
+              score*=0.3
+            end
+            if movecheck
+              score*=0.3
+            end
+            if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE)
+              score*=0.5
+            end
+            if attacker.pbPartner.hasWorkingItem(:LEFTOVERS) || (attacker.pbPartner.hasWorkingItem(:BLACKSLUDGE) && attacker.pbPartner.pbHasType?(:POISON))
+              score*=1.2
+            end
+          else
+            score*=0
+          end
+        end
+      when 0x138 # Aromatic Mist
+        newopp = attacker.pbOppositeOpposing
+        movecheck = false
+        if skill>=PBTrainerAI.bestSkill
+          if @aiMoveMemory[2][newopp.pokemonIndex].length>0
+            for j in @aiMoveMemory[2][newopp.pokemonIndex]
+              movecheck=true if (PBStuff::PHASEMOVE).include?(j.id)
+            end
+          end
+        elsif skill>=PBTrainerAI.mediumSkill
+          movecheck=checkAImoves(PBStuff::PHASEMOVE,aimem)
+        end
+        if @doublebattle && opponent==attacker.pbPartner && opponent.stages[PBStats::SPDEF]!=6
+          if newopp.spatk > newopp.attack
+            score*=2
+          else
+            score*=0.5
+          end
+          if initialscores.length>0
+            score*=1.3 if hasbadmoves(initialscores,scoreindex,20)
+          end
+          if opponent.hp*(1.0/opponent.totalhp)>0.75
+            score*=1.1
+          end
+          if opponent.effects[PBEffects::Yawn]>0 ||
+             opponent.effects[PBEffects::LeechSeed]>=0 ||
+             opponent..effects[PBEffects::Attract]>=0 ||
+             opponent.status!=0
+            score*=0.3
+          end
+          if movecheck
+            score*=0.2
+          end
+          if !opponent.abilitynulled && opponent.ability == PBAbilities::SIMPLE
+            score*=2
+          end
+          if !newopp.abilitynulled && newopp.ability == PBAbilities::UNAWARE
+            score*=0.5
+          end
+          if (oppitemworks && opponent.item == PBItems::LEFTOVERS) ||
+             ((oppitemworks && opponent.item == PBItems::BLACKSLUDGE) && opponent.pbHasType?(:POISON))
+            score*=1.2
+          end
+          if !opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY
+            score*=0
+          end
+          if $fefieldeffect==3
+            score*=2
+          end
+        else
+          score*=0
+        end
+      when 0x13A # Noble Roar
+        if (!opponent.pbCanReduceStatStage?(PBStats::ATTACK) &&
+           !opponent.pbCanReduceStatStage?(PBStats::SPATK)) ||
+           (opponent.stages[PBStats::ATTACK]==-6 && opponent.stages[PBStats::SPATK]==-6) ||
+           (opponent.stages[PBStats::ATTACK]>0 && opponent.stages[PBStats::SPATK]>0)
+          score*=0
+        else
+          miniscore=100
+          ministat= 5*statchangecounter(opponent,1,7,-1)
+          ministat+=100
+          ministat/=100.0
+          miniscore*=ministat
+              if $fefieldeffect==31 || $fefieldeffect==32
+            miniscore*=2
+          end
+          miniscore*= unsetupminiscore(attacker,opponent,skill,move,roles,1,false)
+          miniscore/=100.0
+          score*=miniscore
+        end
+      when 0x13B # Hyperspace Fury
+        startscore = score
+        if attacker.species==720 && attacker.form==1 # Hoopa-U
+          if checkAImoves(PBStuff::PROTECTMOVE,aimem)
+            score*=1.1
+            ratesharers=[
+              391,   # Protect
+              121,   # Detect
+              122,   # Quick Guard
+              515,   # Wide Guard
+              361,   # Endure
+              584,   # King's Shield
+              603,    # Spiky Shield
+              641    # Baneful Bunker
+            ]
+            if !ratesharers.include?(opponent.lastMoveUsed)
+              score*=1.2
+            end
+          end
+          if !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD)
+            if attacker.stages[PBStats::ACCURACY]<0
+              miniscore = (-5)*attacker.stages[PBStats::ACCURACY]
+              miniscore+=100
+              miniscore/=100.0
+              score*=miniscore
+            end
+            if opponent.stages[PBStats::EVASION]>0
+              miniscore = (5)*opponent.stages[PBStats::EVASION]
+              miniscore+=100
+              miniscore/=100.0
+              score*=miniscore
+            end
+            if (oppitemworks && opponent.item == PBItems::LAXINCENSE) || (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER)
+              score*=1.2
+            end
+            if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
+               ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+              score*=1.3
+            end
+            if opponent.vanished && (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+              score*=3
+            end
+          end
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
+            score*=1.7
+          else
+            if startscore<100
+              score*=0.8
+              if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+                score*=1.2
+              else
+                score*=0.8
+              end
+              score*=0.7 if checkAIhealing(aimem)
+              if initialscores.length>0
+                score*=0.5 if hasgreatmoves(initialscores,scoreindex,skill)
+              end
+              miniscore=100
+              if opponent.pbNonActivePokemonCount!=0
+                miniscore*=opponent.pbNonActivePokemonCount
+                miniscore/=1000.0
+                miniscore= 1-miniscore
+                score*=miniscore
+              end
+              if opponent.pbNonActivePokemonCount!=0 && attacker.pbNonActivePokemonCount==0
+                score*=0.7
+              end
+            end
+          end
+        else
+          score*=0
+        end
+      when 0x13D # Eerie Impulse
+        if (pbRoughStat(opponent,PBStats::SPATK,skill)<pbRoughStat(opponent,PBStats::ATTACK,skill)) || opponent.stages[PBStats::SPATK]>1 || !opponent.pbCanReduceStatStage?(PBStats::SPATK)
+          if move.basedamage==0
+            score=0
+          end
+        else
+          miniscore=100
+          if opponent.stages[PBStats::SPATK]<0
+            minimini = 5*opponent.stages[PBStats::SPATK]
+            minimini+=100
+            minimini/=100.0
+            miniscore*=minimini
+          end
+          miniscore*= unsetupminiscore(attacker,opponent,skill,move,roles,1,false)
+          miniscore/=100.0
+          score*=miniscore
+        end
+      when 0x13E # Rototiller
+        opp1 = attacker.pbOppositeOpposing
+        opp2 = opp1.pbPartner
+        if @doublebattle && opponent.pbHasType?(:GRASS) && opponent==attacker.pbPartner &&
+           opponent.stages[PBStats::SPATK]!=6 && opponent.stages[PBStats::ATTACK]!=6
+          if initialscores.length>0
+            score*=1.3 if hasbadmoves(initialscores,scoreindex,20)
+          end
+          if (opponent.hp.to_f)/opponent.totalhp>0.75
+            score*=1.1
+          end
+          if opponent.effects[PBEffects::LeechSeed]>=0 || opponent.effects[PBEffects::Attract]>=0 || opponent.status!=0 || opponent.effects[PBEffects::Yawn]>0
+            score*=0.3
+          end
+          if movecheck
+            score*=0.2
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::SIMPLE)
+            score*=2
+          end
+          if (!opp1.abilitynulled && opp1.ability == PBAbilities::UNAWARE)
+            score*=0.5
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY)
+            score*=0
+          end
+          if $fefieldeffect==33 && $fecounter!=4
+            score+=30
+          end
+          if $fefieldeffect==33
+            score+=20
+            miniscore=100
+            if attacker.effects[PBEffects::Substitute]>0 || attacker.effects[PBEffects::Disguise]
+              miniscore*=1.3
+            end
+            if initialscores.length>0
+              miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,20)
+            end
+            if (opponent.hp.to_f)/opponent.totalhp>0.75
+              miniscore*=1.1
+            end
+            if opp1.effects[PBEffects::HyperBeam]>0
+              miniscore*=1.2
+            end
+            if opp1.effects[PBEffects::Yawn]>0
+              miniscore*=1.3
+            end
+            miniscore*=1.1 if checkAIdamage(aimem,attacker,opponent,skill) < opponent.hp*0.25 && (aimem.length > 0)
+            if opponent.turncount<2
+              miniscore*=1.1
+            end
+            if opp1.status!=0
+              miniscore*=1.1
+            end
+            if opp1.status==PBStatuses::SLEEP || opp1.status==PBStatuses::FROZEN
+              miniscore*=1.3
+            end
+            if opp1.effects[PBEffects::Encore]>0
+              if opp1.moves[(opp1.effects[PBEffects::EncoreIndex])].basedamage==0
+                miniscore*=1.5
+              end
+            end
+            if opponent.effects[PBEffects::Confusion]>0
+              miniscore*=0.2
+            end
+            if opponent.effects[PBEffects::LeechSeed]>=0 || attacker.effects[PBEffects::Attract]>=0
+              miniscore*=0.6
+            end
+            miniscore*=0.5 if checkAImoves(PBStuff::SWITCHOUTMOVE,aimem)
+            if (!opponent.abilitynulled && opponent.ability == PBAbilities::SIMPLE)
+              miniscore*=2
+            end
+            if (!opp1.abilitynulled && opp1.ability == PBAbilities::UNAWARE)
+              miniscore*=0.5
+            end
+            if @doublebattle
+              miniscore*=0.3
+            end
+            ministat=0
+            ministat+=opponent.stages[PBStats::SPEED] if opponent.stages[PBStats::SPEED]<0
+            ministat*=5
+            ministat+=100
+            ministat/=100.0
+            miniscore*=ministat
+            ministat=0
+            ministat+=opponent.stages[PBStats::ATTACK]
+            ministat+=opponent.stages[PBStats::SPEED]
+            ministat+=opponent.stages[PBStats::SPATK]
+            if ministat > 0
+              ministat*=(-5)
+              ministat+=100
+              ministat/=100.0
+              miniscore*=ministat
+            end
+            miniscore/=100.0
+            score*=miniscore
+            miniscore=100
+            miniscore*=1.3 if checkAIhealing(aimem)
+            if attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill) && @trickroom==0
+              miniscore*=1.5
+            end
+            if roles.include?(PBMonRoles::SWEEPER)
+              miniscore*=1.3
+            end
+            if attacker.status==PBStatuses::PARALYSIS
+              miniscore*=0.5
+            end
+            miniscore*=0.3 if checkAImoves([PBMoves::FOULPLAY],aimem)
+            if attacker.hp==attacker.totalhp && (attitemworks && attacker.item == PBItems::FOCUSSASH)
+              miniscore*=1.4
+            end
+            miniscore*=0.4 if checkAIpriority(aimem)
+            if attacker.stages[PBStats::SPATK]!=6 && attacker.stages[PBStats::ATTACK]!=6
+              score*=miniscore
+            end
+          end
+        else
+          score*=0
+        end
+      when 0x13F # Flower Shield
+        opp1 = attacker.pbOppositeOpposing
+        opp2 = opp1.pbPartner
+        if @doublebattle && opponent.pbHasType?(:GRASS) && opponent==attacker.pbPartner && opponent.stages[PBStats::DEFENSE]!=6
+          if $fefieldeffect!=33 || $fecounter==0
+            if opp1.attack>opp1.spatk
+              score*=2
+            else
+              score*=0.5
+            end
+            if opp2.attack>opp2.spatk
+              score*=2
+            else
+              score*=0.5
+            end
+          else
+            score*=2
+          end
+          if initialscores.length>0
+            score*=1.3 if hasbadmoves(initialscores,scoreindex,20)
+          end
+          if (opponent.hp.to_f)/opponent.totalhp>0.75
+            score*=1.1
+          end
+          if opponent.effects[PBEffects::LeechSeed]>=0 || opponent.effects[PBEffects::Attract]>=0 || opponent.status!=0 || opponent.effects[PBEffects::Yawn]>0
+            score*=0.3
+          end
+          if movecheck
+            score*=0.2
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::SIMPLE)
+            score*=2
+          end
+          if (!opp1.abilitynulled && opp1.ability == PBAbilities::UNAWARE)
+            score*=0.5
+          end
+          if $fefieldeffect==33 && $fecounter!=4
+            score+=30
+          end
+          if ($fefieldeffect==33 && $fecounter>0) || $fefieldeffect==31
+            score+=20
+            miniscore=100
+            if attacker.effects[PBEffects::Substitute]>0 || attacker.effects[PBEffects::Disguise]
+              miniscore*=1.3
+            end
+            if initialscores.length>0
+              miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,20)
+            end
+            if (opponent.hp.to_f)/opponent.totalhp>0.75
+              miniscore*=1.1
+            end
+            if opp1.effects[PBEffects::HyperBeam]>0
+              miniscore*=1.2
+            end
+            if opp1.effects[PBEffects::Yawn]>0
+              miniscore*=1.3
+            end
+            miniscore*=1.1 if checkAIdamage(aimem,attacker,opponent,skill) < opponent.hp*0.3 && (aimem.length > 0)
+            if opponent.turncount<2
+              miniscore*=1.1
+            end
+            if opp1.status!=0
+              miniscore*=1.1
+            end
+            if opp1.status==PBStatuses::SLEEP || opp1.status==PBStatuses::FROZEN
+              miniscore*=1.3
+            end
+            if opp1.effects[PBEffects::Encore]>0
+              if opp1.moves[(opp1.effects[PBEffects::EncoreIndex])].basedamage==0
+                miniscore*=1.5
+              end
+            end
+            if opponent.effects[PBEffects::Confusion]>0
+              miniscore*=0.5
+            end
+            if opponent.effects[PBEffects::LeechSeed]>=0 || attacker.effects[PBEffects::Attract]>=0
+              miniscore*=0.3
+            end
+            if opponent.effects[PBEffects::Toxic]>0
+              miniscore*=0.2
+            end
+            miniscore*=0.2 if checkAImoves(PBStuff::SWITCHOUTMOVE,aimem)
+            if (!opponent.abilitynulled && opponent.ability == PBAbilities::SIMPLE)
+              miniscore*=2
+            end
+            if (!opp1.abilitynulled && opp1.ability == PBAbilities::UNAWARE)
+              miniscore*=0.5
+            end
+            if @doublebattle
+              miniscore*=0.3
+            end
+            miniscore*=0.3 if checkAIdamage(aimem,attacker,opponent,skill)<opponent.hp*0.12 && (aimem.length > 0)
+            miniscore/=100.0
+            score*=miniscore
+            miniscore=100
+            if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+              miniscore*=1.5
+            end
+            if (attitemworks && attacker.item == PBItems::LEFTOVERS) || ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
+              miniscore*=1.2
+            end
+            healmove=false
+            for j in attacker.moves
+              if j.isHealingMove?
+                healmove=true
+              end
+            end
+            if healmove
+              miniscore*=1.7
+            end
+            if attacker.pbHasMove?(:LEECHSEED)
+              miniscore*=1.3
+            end
+            if attacker.pbHasMove?(:PAINSPLIT)
+              miniscore*=1.2
+            end
+            if attacker.stages[PBStats::SPDEF]!=6 && attacker.stages[PBStats::DEFENSE]!=6
+              score*=miniscore
+            end
+            if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
+              score=0
+            end
+          end
+        else
+          score*=0
+        end
+      when 0x140 # Venom Drench
+        if opponent.status==PBStatuses::POISON || $fefieldeffect==10 || $fefieldeffect==11 || $fefieldeffect==19 || $fefieldeffect==26
+          if (!opponent.pbCanReduceStatStage?(PBStats::ATTACK) &&
+             !opponent.pbCanReduceStatStage?(PBStats::SPATK)) ||
+             (opponent.stages[PBStats::ATTACK]==-6 && opponent.stages[PBStats::SPATK]==-6) ||
+             (opponent.stages[PBStats::ATTACK]>0 && opponent.stages[PBStats::SPATK]>0)
+            score*=0.5
+          else
+            miniscore=100
+            if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+              miniscore*=1.4
+            end
+            sweepvar = false
+            for i in pbParty(attacker.index)
+              next if i.nil?
+              temprole = pbGetMonRole(i,opponent,skill,count,pbParty(attacker.index))
+              if temprole.include?(PBMonRoles::SWEEPER)
+                sweepvar = true
+              end
+            end
+            if sweepvar
+              miniscore*=1.1
+            end
+            if (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG) ||
+               (!attacker.abilitynulled && attacker.ability == PBAbilities::ARENATRAP) ||
+               opponent.effects[PBEffects::MeanLook]>=0 ||  opponent.pbNonActivePokemonCount==0
+              miniscore*=1.5
+            end
+            ministat= 5*statchangecounter(opponent,1,7,-1)
+            ministat+=100
+            ministat/=100.0
+            miniscore*=ministat
+            if attacker.pbHasMove?(:FOULPLAY)
+              miniscore*=0.5
+            end
+            miniscore/=100.0
+            score*=miniscore
+          end
+          if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ||
+            opponent.stages[PBStats::SPEED]>0 || !opponent.pbCanReduceStatStage?(PBStats::SPEED)
+            score*=0.5
+          else
+            miniscore=100
+            if (!opponent.abilitynulled && opponent.ability == PBAbilities::SPEEDBOOST)
+              miniscore*=0.9
+            end
+            if attacker.pbHasMove?(:ELECTROBALL)
+              miniscore*=1.5
+            end
+            if attacker.pbHasMove?(:GYROBALL)
+              miniscore*=0.5
+            end
+            if (oppitemworks && opponent.item == PBItems::LAGGINGTAIL) || (oppitemworks && opponent.item == PBItems::IRONBALL)
+              miniscore*=0.8
+            end
+            miniscore*=0.1 if checkAImoves([PBMoves::TRICKROOM],aimem) || @trickroom!=0
+            miniscore*=1.3 if checkAImoves([PBMoves::ELECTROBALL],aimem)
+            miniscore*=0.5 if checkAImoves([PBMoves::GYROBALL],aimem)
+            miniscore/=100.0
+            score*=miniscore
+            if attacker.pbNonActivePokemonCount==0
+              score*=0.5
+            end
+            if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE) ||
+               (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY) ||
+               (!opponent.abilitynulled && opponent.ability == PBAbilities::DEFIANT)
+              score*=0
+            end
+          end
+        else
+          score*=0
+        end
+      when 0x141 # Topsy-Turvy
+        ministat= 10* statchangecounter(opponent,1,7)
+        ministat+=100
+        if ministat<0
+          ministat=0
+        end
+        ministat/=100.0
+        if opponent == attacker.pbPartner
+          ministat = 2-ministat
+        end
+        score*=ministat
+        if $fefieldeffect!=22 && $fefieldeffect!=35 && $fefieldeffect!=36
+          effcheck = PBTypes.getCombinedEffectiveness(opponent.type1,attacker.type1,attacker.type2)
+          if effcheck>4
+            score*=2
+          else
+            if effcheck!=0 && effcheck<4
+              score*=0.5
+            end
+            if effcheck==0
+              score*=0.1
+            end
+          end
+          effcheck = PBTypes.getCombinedEffectiveness(opponent.type2,attacker.type1,attacker.type2)
+          if effcheck>4
+            score*=2
+          else
+            if effcheck!=0 && effcheck<4
+              score*=0.5
+            end
+            if effcheck==0
+              score*=0.1
+            end
+          end
+          effcheck = PBTypes.getCombinedEffectiveness(attacker.type1,opponent.type1,opponent.type2)
+          if effcheck>4
+            score*=0.5
+          else
+            if effcheck!=0 && effcheck<4
+              score*=2
+            end
+            if effcheck==0
+              score*=3
+            end
+          end
+          effcheck = PBTypes.getCombinedEffectiveness(attacker.type2,opponent.type1,opponent.type2)
+          if effcheck>4
+            score*=0.5
+          else
+            if effcheck!=0 && effcheck<4
+              score*=2
+            end
+            if effcheck==0
+              score*=3
+            end
+          end
+        end
+      when 0x142 # Trick or Treat
+        ghostvar = false
+        if aimem.length > 0
+          for j in aimem
+            ghostvar = true if (j.type == PBTypes::GHOST)
+          end
+        end
+        effmove = false
+        for m in attacker.moves
+          if (m.type == PBTypes::DARK) || (m.type == PBTypes::GHOST)
+            effmove = true
+            break
+          end
+        end
+        if effmove
+          score*=1.5
+        else
+          score*=0.7
+        end
+        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+          if attacker.pbHasMove?(:TOXIC) && (opponent.pbHasType?(:STEEL) || opponent.pbHasType?(:POISON))
+            score*=1.5
+          end
+        end
+        if ghostvar
+          score*=0.5
+        else
+          score*=1.1
+        end
+        if (opponent.ability == PBAbilities::MULTITYPE) || (opponent.ability == PBAbilities::RKSSYSTEM) ||
+           (opponent.type1==(PBTypes::GHOST) && opponent.type2==(PBTypes::GHOST)) ||
+           (!opponent.abilitynulled && opponent.ability == PBAbilities::PROTEAN) ||
+           (!opponent.abilitynulled && opponent.ability == PBAbilities::COLORCHANGE)
+          score*=0
+        end
+      when 0x143 # Forest's Curse
+        grassvar = false
+        if aimem.length > 0
+          for j in aimem
+            grassvar = true if (j.type == PBTypes::GRASS)
+          end
+        end
+        effmove = false
+        for m in attacker.moves
+          if (m.type == PBTypes::FIRE) || (m.type == PBTypes::ICE) || (m.type == PBTypes::BUG) || (m.type == PBTypes::FLYING) || (m.type == PBTypes::POISON)
+            effmove = true
+            break
+          end
+        end
+        if effmove
+          score*=1.5
+        else
+          score*=0.7
+        end
+        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+          if attacker.pbHasMove?(:TOXIC) && (opponent.pbHasType?(:STEEL) || opponent.pbHasType?(:POISON))
+            score*=1.5
+          end
+        end
+        if grassvar
+          score*=0.5
+        else
+          score*=1.1
+        end
+        if (opponent.ability == PBAbilities::MULTITYPE) || (opponent.ability == PBAbilities::RKSSYSTEM) ||
+           (opponent.type1==(PBTypes::GRASS) && opponent.type2==(PBTypes::GRASS)) ||
+           (!opponent.abilitynulled && opponent.ability == PBAbilities::PROTEAN) ||
+           (!opponent.abilitynulled && opponent.ability == PBAbilities::COLORCHANGE)
+          score*=0
+        end
+        if $fefieldeffect == 15 || $fefieldeffect == 31
+          if !opponent.effects[PBEffects::Curse]
+            score+=25
+            ministat= 5*statchangecounter(opponent,1,7)
+            ministat+=100
+            ministat/=100.0
+            score*=ministat
+            if opponent.pbNonActivePokemonCount==0 || (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG) || opponent.effects[PBEffects::MeanLook]>0
+              score*=1.3
+            else
+              score*=0.8
+            end
+            if @doublebattle
+              score*=0.5
+            end
+            if initialscores.length>0
+              score*=1.3 if hasbadmoves(initialscores,scoreindex,25)
+            end
+          end
+        end
+      when 0x144 # Flying Press
+        if opponent.effects[PBEffects::Minimize]
+          score*=2
+        end
+        if @field.effects[PBEffects::Gravity]>0
+          score*=0
+        end
+      when 0x145 # Electrify
+        startscore = score
+        if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::VOLTABSORB)
+            if attacker.hp<attacker.totalhp*0.8
+              score*=1.5
+            else
+              score*=0.1
+            end
+          end
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::LIGHTNINGROD)
+            if attacker.spatk > attacker.attack && attacker.stages[PBStats::SPATK]!=6
+              score*=1.5
+            else
+              score*=0.1
+            end
+          end
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::MOTORDRIVE)
+            if attacker.stages[PBStats::SPEED]!=6
+              score*=1.2
+            else
+              score*=0.1
+            end
+          end
+          if attacker.pbHasType?(:GROUND)
+            score*=1.3
+          end
+          if score==startscore
+            score*=0.1
+          end
+          score*=0.5 if checkAIpriority(aimem)
+        else
+          score*=0
+        end
+      when 0x146 # Ion Deluge
+        maxnormal = checkAIbest(aimem,1,[PBTypes::NORMAL],false,attacker,opponent,skill)
+        if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+          score*=0.9
+        elsif (!attacker.abilitynulled && attacker.ability == PBAbilities::MOTORDRIVE)
+          if maxnormal
+            score*=1.5
+          end
+        end
+        if (!attacker.abilitynulled && attacker.ability == PBAbilities::LIGHTNINGROD) || (!attacker.abilitynulled && attacker.ability == PBAbilities::VOLTABSORB)
+          if ((attacker.hp.to_f)/attacker.totalhp)<0.6
+            if maxnormal
+              score*=1.5
+            end
+          end
+        end
+        if attacker.pbHasType?(:GROUND)
+          score*=1.1
+        end
+        if @doublebattle
+          if (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::MOTORDRIVE) ||
+             (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::LIGHTNINGROD) ||
+             (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::VOLTABSORB)
+            score*=1.2
+          end
+          if attacker.pbPartner.pbHasType?(:GROUND)
+            score*=1.1
+          end
+        end
+        if !maxnormal
+          score*=0.5
+        end
+        if $fefieldeffect != 35 && $fefieldeffect != 1 && $fefieldeffect != 22
+          miniscore = getFieldDisruptScore(attacker,opponent,skill)
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::SURGESURFER)
+            miniscore*=1.5
+          end
+          if attacker.pbHasType?(:ELECTRIC)
+            miniscore*=1.5
+          end
+          elecvar=false
+          for mon in pbParty(attacker.index)
+            next if mon.nil?
+            if mon.hasType?(:ELECTRIC)
+              elecvar=true
+            end
+          end
+          if elecvar
+            miniscore*=1.5
+          end
+          if opponent.pbHasType?(:ELECTRIC)
+            miniscore*=0.5
+          end
+          for m in attacker.moves
+            if m.function==0x03
+              miniscore*=0.5
+              break
+            end
+          end
+          if sleepcheck
+            miniscore*=2
+          end
+          if (attitemworks && attacker.item == PBItems::AMPLIFIELDROCK)
+            miniscore*=2
+          end
+          score*=miniscore
+        end
+      when 0x146 # Plasma Fists
+        maxdam = 0
+        maxtype = -1
+        if aimem.length > 0
+          for j in aimem
+            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)
+            if tempdam>maxdam
+              maxdam=tempdam
+              maxtype = j.type
+            end
+          end
+        end
+        if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+          miniscore=100
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::VOLTABSORB)
+            if attacker.hp<attacker.totalhp*0.8
+              miniscore*=1.5
+            end
+          end
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::LIGHTNINGROD)
+            if attacker.spatk > attacker.attack && attacker.stages[PBStats::SPATK]!=6
+              miniscore*=1.5
+            end
+          end
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::MOTORDRIVE)
+            if attacker.stages[PBStats::SPEED]!=6
+              miniscore*=1.2
+            end
+          end
+          if attacker.pbHasType?(:GROUND)
+            miniscore*=1.3
+          end
+          miniscore*=0.5 if checkAIpriority(aimem)
+          if maxtype == (PBTypes::NORMAL)
+            miniscore*=2
+          end
+          score*=miniscore
+        end
+      when 0x147 # Hyperspace Hole
+        if checkAImoves(PBStuff::PROTECTMOVE,aimem)
+          score*=1.1
+          ratesharers=[
+            391,   # Protect
+            121,   # Detect
+            122,   # Quick Guard
+            515,   # Wide Guard
+            361,   # Endure
+            584,   # King's Shield
+            603,    # Spiky Shield
+            641    # Baneful Bunker
+          ]
+          if !ratesharers.include?(opponent.lastMoveUsed)
+            score*=1.2
+          end
+        end
+        if !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD)
+          if attacker.stages[PBStats::ACCURACY]<0
+            miniscore = (-5)*attacker.stages[PBStats::ACCURACY]
+            miniscore+=100
+            miniscore/=100.0
+            score*=miniscore
+          end
+          if opponent.stages[PBStats::EVASION]>0
+            miniscore = (5)*opponent.stages[PBStats::EVASION]
+            miniscore+=100
+            miniscore/=100.0
+            score*=miniscore
+          end
+          if (oppitemworks && opponent.item == PBItems::LAXINCENSE) || (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER)
+            score*=1.2
+          end
+          if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
+             ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+            score*=1.3
+          end
+          if opponent.vanished && ((attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0))
+            score*=3
+          end
+        end
+      when 0x148 # Powder
+        firecheck = false
+        movecount = 0
+        if aimem.length > 0
+          for j in aimem
+            movecount+=1
+            if j.type == (PBTypes::FIRE)
+              firecheck = true
+            end
+          end
+        end
+        if !(opponent.pbHasType?(:GRASS) || (!opponent.abilitynulled && opponent.ability == PBAbilities::OVERCOAT) || (oppitemworks && opponent.item == PBItems::SAFETYGOGGLES))
+          if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+            score*=1.2
+          end
+          if checkAIbest(aimem,1,[PBTypes::FIRE],false,attacker,opponent,skill)
+            score*=3
+          else
+            if opponent.pbHasType?(:FIRE)
+              score*=2
+            else
+              score*=0.2
+            end
+          end
+          effcheck = PBTypes.getCombinedEffectiveness((PBTypes::FIRE),attacker.type1,attacker.type2)
+          if effcheck>4
+            score*=2
+            if effcheck>8
+              score*=2
+            end
+          end
+          if attacker.lastMoveUsed==600
+            score*=0.6
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::MAGICGUARD)
+            score*=0.5
+          end
+          if !firecheck && movecount==4
+            score*=0
+          end
+        else
+          score*=0
+        end
+      when 0x149 # Mat Block
+        if attacker.turncount==0
+          if @doublebattle
+            score*=1.3
+            if ((attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) && ((attacker.pbSpeed>pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))
+              score*=1.2
+            else
+              score*=0.7
+              if ((attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) && ((attacker.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))
+                score*=0
+              end
+            end
+            score*=0.3 if checkAImoves(PBStuff::SETUPMOVE,aimem) && checkAIhealing(aimem)
+            if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
+               ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON)) ||
+               attacker.effects[PBEffects::Ingrain] || attacker.effects[PBEffects::AquaRing] || $fefieldeffect==2
+              score*=1.2
+            end
+            if opponent.status==PBStatuses::POISON || opponent.status==PBStatuses::BURN
+              score*=1.2
+              if opponent.effects[PBEffects::Toxic]>0
+                score*=1.3
+              end
+            end
+            if attacker.status==PBStatuses::POISON || attacker.status==PBStatuses::BURN
+              score*=0.7
+              if attacker.effects[PBEffects::Toxic]>0
+                score*=0.3
+              end
+            end
+            if opponent.effects[PBEffects::LeechSeed]>=0
+              score*=1.3
+            end
+            if opponent.effects[PBEffects::PerishSong]!=0
+              score*=2
+            end
+            if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
+              score*=0.3
+            end
+            if opponent.vanished
+              score*=2
+              if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+                score*=1.5
+              end
+            end
+            score*=0.1 if checkAImoves(PBStuff::PROTECTMOVE,aimem)
+            if attacker.effects[PBEffects::Wish]>0
+              score*=1.3
+            end
+          end
+        else
+          score*=0
+        end
+      when 0x14A # Crafty Shield
+        if attacker.lastMoveUsed==565
+          score*=0.5
+        else
+          nodam = true
+          for m in opponent.moves
+            if m.basedamage>0
+              nodam=false
+              break
+            end
+          end
+          if nodam
+            score+=10
+          end
+          if attacker.hp==attacker.totalhp
+            score*=1.5
+          end
+        end
+        if $fefieldeffect==31
+          score+=25
+          miniscore=100
+          if attacker.effects[PBEffects::Substitute]>0 || attacker.effects[PBEffects::Disguise]
+            miniscore*=1.3
+          end
+          if initialscores.length>0
+            miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,20)
+          end
+          if (attacker.hp.to_f)/attacker.totalhp>0.75
+            miniscore*=1.1
+          end
+          if opponent.effects[PBEffects::HyperBeam]>0
+            miniscore*=1.2
+          end
+          if opponent.effects[PBEffects::Yawn]>0
+            miniscore*=1.3
+          end
+          miniscore*=1.1 if checkAIdamage(aimem,attacker,opponent,skill) < attacker.hp*0.3 && (aimem.length > 0)
+          if attacker.turncount<2
+            miniscore*=1.1
+          end
+          if opponent.status!=0
+            miniscore*=1.1
+          end
+          if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
+            miniscore*=1.3
+          end
+          if opponent.effects[PBEffects::Encore]>0
+            if opponent.moves[(opponent.effects[PBEffects::EncoreIndex])].basedamage==0
+              miniscore*=1.5
+            end
+          end
+          if attacker.effects[PBEffects::Confusion]>0
+            miniscore*=0.5
+          end
+          if attacker.effects[PBEffects::LeechSeed]>=0 || attacker.effects[PBEffects::Attract]>=0
+            miniscore*=0.3
+          end
+          if attacker.effects[PBEffects::Toxic]>0
+            miniscore*=0.2
+          end
+          miniscore*=0.2 if checkAImoves(PBStuff::SWITCHOUTMOVE,aimem)
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::SIMPLE)
+            miniscore*=2
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE)
+            miniscore*=0.5
+          end
+          if @doublebattle
+            miniscore*=0.3
+          end
+          miniscore*=0.3 if checkAIdamage(aimem,attacker,opponent,skill)<attacker.hp*0.12 && (aimem.length > 0)
+          miniscore/=100.0
+          score*=miniscore
+          miniscore=100
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+            miniscore*=1.5
+          end
+          if (attitemworks && attacker.item == PBItems::LEFTOVERS) || ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
+            miniscore*=1.2
+          end
+          healmove=false
+          for j in attacker.moves
+            if j.isHealingMove?
+              healmove=true
+            end
+          end
+          if healmove
+            miniscore*=1.7
+          end
+          if attacker.pbHasMove?(:LEECHSEED)
+            miniscore*=1.3
+          end
+          if attacker.pbHasMove?(:PAINSPLIT)
+            miniscore*=1.2
+          end
+          if attacker.stages[PBStats::SPDEF]!=6 && attacker.stages[PBStats::DEFENSE]!=6
+            score*=miniscore
+          end
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
+            score=0
+          end
+        end
+      when 0x14B # Kings Shield
         if opponent.turncount==0
           score*=1.5
         end
@@ -14021,6 +15137,85 @@ class PokeBattle_Battle
           end
         end
         ratesharers=[
+          391,   # Protect
+          121,   # Detect
+          122,   # Quick Guard
+          515,   # Wide Guard
+          361,   # Endure
+          584,   # King's Shield
+          603,    # Spiky Shield
+          641    # Baneful Bunker
+        ]
+        if ratesharers.include?(attacker.lastMoveUsed)
+          score/=(attacker.effects[PBEffects::ProtectRate]*2.0)
+        end
+      when 0x14C # Spiky Shield
+        if opponent.turncount==0
+          score*=1.5
+        end
+        score*=0.3 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
+        if (!attacker.abilitynulled && attacker.ability == PBAbilities::SPEEDBOOST) && attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill) && @trickroom==0
+          score*=4
+          #experimental -- cancels out drop if killing moves
+          if initialscores.length>0
+            score*=6 if hasgreatmoves(initialscores,scoreindex,skill)
+          end
+          #end experimental
+        end
+        if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
+           ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON)) ||
+           attacker.effects[PBEffects::Ingrain] || attacker.effects[PBEffects::AquaRing] || $fefieldeffect==2
+          score*=1.2
+        end
+        if opponent.status==PBStatuses::POISON || opponent.status==PBStatuses::BURN
+          score*=1.2
+          if opponent.effects[PBEffects::Toxic]>0
+            score*=1.3
+          end
+        end
+        if attacker.status==PBStatuses::POISON || attacker.status==PBStatuses::BURN
+          score*=0.7
+          if attacker.effects[PBEffects::Toxic]>0
+            score*=0.3
+          end
+        end
+        if opponent.effects[PBEffects::LeechSeed]>=0
+          score*=1.3
+        end
+        if opponent.effects[PBEffects::PerishSong]!=0
+          score*=2
+        end
+        if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
+          score*=0.3
+        end
+        if opponent.vanished
+          score*=2
+          if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+            score*=1.5
+          end
+        end
+        score*=0.1 if checkAImoves(PBStuff::PROTECTIGNORINGMOVE,aimem)
+        if attacker.effects[PBEffects::Wish]>0
+          if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
+            score*=3
+          else
+            score*=1.4
+          end
+        end
+        if aimem.length > 0
+          contactcheck=false
+          maxdam=0
+          for j in aimem
+            contactcheck=j.isContactMove?
+          end
+          if contactcheck
+            score*=1.3
+          end
+        end
+        if attacker.status==0
+          score*=0.7 if checkAImoves([PBMoves::WILLOWISP,PBMoves::THUNDERWAVE,PBMoves::TOXIC],aimem)
+        end
+        ratesharers=[
         391,   # Protect
         121,   # Detect
         122,   # Quick Guard
@@ -14033,334 +15228,7 @@ class PokeBattle_Battle
         if ratesharers.include?(attacker.lastMoveUsed)
           score/=(attacker.effects[PBEffects::ProtectRate]*2.0)
         end
-      when 0x134 # Electric Terrain
-        sleepvar=false
-        if aimem.length > 0
-          for j in aimem
-            sleepvar = true if j.function==0x03
-          end
-        end
-        if @field.effects[PBEffects::Terrain]==0 && $fefieldeffect!=1 &&
-          $fefieldeffect!=22 && $fefieldeffect!=35
-          miniscore = getFieldDisruptScore(attacker,opponent,skill)
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::SURGESURFER)
-            miniscore*=1.5
-          end
-          if attacker.pbHasType?(:ELECTRIC)
-            miniscore*=1.5
-          end
-          elecvar=false
-          for mon in pbParty(attacker.index)
-            next if mon.nil?
-            if mon.hasType?(:ELECTRIC)
-              elecvar=true
-            end
-          end
-          if elecvar
-            miniscore*=2
-          end
-          if opponent.pbHasType?(:ELECTRIC)
-            miniscore*=0.5
-          end
-          for m in attacker.moves
-            if m.function==0x03
-              miniscore*=0.5
-              break
-            end
-          end
-          if sleepvar
-            miniscore*=2
-          end
-          if (attitemworks && attacker.item == PBItems::AMPLIFIELDROCK)
-            miniscore*=2
-          end
-          score*=miniscore
-        else
-          score*=0
-        end
-      when 0x135 # Grassy Terrain
-        firevar=false
-        grassvar=false
-        for mon in pbParty(attacker.index)
-          next if mon.nil?
-          if mon.hasType?(:FIRE)
-            firevar=true
-          end
-          if mon.hasType?(:GRASS)
-            grassvar=true
-          end
-        end
-        if @field.effects[PBEffects::Terrain]==0 && $fefieldeffect!=2 &&
-          $fefieldeffect!=22 && $fefieldeffect!=35
-          miniscore = getFieldDisruptScore(attacker,opponent,skill)
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-            miniscore*=1.5
-          end
-          if attacker.pbHasType?(:FIRE)
-            miniscore*=2
-          end
-          if firevar
-            miniscore*=2
-          end
-          if opponent.pbHasType?(:FIRE)
-            miniscore*=0.5
-            if pbWeather!=PBWeather::RAINDANCE
-              miniscore*=0.5
-            end
-            if attacker.pbHasType?(:GRASS)
-              miniscore*=0.5
-            end
-          else
-            if attacker.pbHasType?(:GRASS)
-              miniscore*=2
-            end
-          end
-          if grassvar
-            miniscore*=2
-          end
-          miniscore*=0.5 if checkAIhealing(aimem)
-          miniscore*=0.5 if checkAImoves([PBMoves::SLUDGEWAVE],aimem)
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::GRASSPELT)
-            miniscore*=1.5
-          end
-          if (attitemworks && attacker.item == PBItems::AMPLIFIELDROCK)
-            miniscore*=2
-          end
-          score*=miniscore
-        else
-          score*=0
-        end
-      when 0x136 # Misty Terrain
-        fairyvar=false
-        dragonvar=false
-        for mon in pbParty(attacker.index)
-          next if mon.nil?
-          if mon.hasType?(:FAIRY)
-            fairyvar=true
-          end
-          if mon.hasType?(:DRAGON)
-            dragonvar=true
-          end
-        end
-        if @field.effects[PBEffects::Terrain]==0 && $fefieldeffect!=3 &&
-          $fefieldeffect!=22 && $fefieldeffect!=35
-          miniscore = getFieldDisruptScore(attacker,opponent,skill)
-          if fairyvar
-            miniscore*=2
-          end
-          if !attacker.pbHasType?(:FAIRY) && opponent.pbHasType?(:DRAGON)
-            miniscore*=2
-          end
-          if attacker.pbHasType?(:DRAGON)
-            miniscore*=0.5
-          end
-          if opponent.pbHasType?(:FAIRY)
-            miniscore*=0.5
-          end
-          if attacker.pbHasType?(:FAIRY) && opponent.spatk>opponent.attack
-            miniscore*=2
-          end
-          if (attitemworks && attacker.item == PBItems::AMPLIFIELDROCK)
-            miniscore*=2
-          end
-          score*=miniscore
-        else
-          score*=0
-        end
-      when 0x137 # Flying Press
-        if opponent.effects[PBEffects::Minimize]
-          score*=2
-        end
-        if @field.effects[PBEffects::Gravity]>0
-          score*=0
-        end
-      when 0x138 # Noble Roar
-        if (!opponent.pbCanReduceStatStage?(PBStats::ATTACK) &&
-           !opponent.pbCanReduceStatStage?(PBStats::SPATK)) ||
-           (opponent.stages[PBStats::ATTACK]==-6 && opponent.stages[PBStats::SPATK]==-6) ||
-           (opponent.stages[PBStats::ATTACK]>0 && opponent.stages[PBStats::SPATK]>0)
-          score*=0
-        else
-          miniscore=100
-          ministat= 5*statchangecounter(opponent,1,7,-1)
-          ministat+=100
-          ministat/=100.0
-          miniscore*=ministat
-          if $fefieldeffect==31 || $fefieldeffect==32
-            miniscore*=2
-          end
-          miniscore*= unsetupminiscore(attacker,opponent,skill,move,roles,1,false)
-          miniscore/=100.0
-          score*=miniscore
-        end
-      when 0x139 # Draining Kiss
-        minimini = score*0.01
-        miniscore = (opponent.hp*minimini)*(3.0/4.0)
-        if miniscore > (attacker.totalhp-attacker.hp)
-          miniscore = (attacker.totalhp-attacker.hp)
-        end
-        if attacker.totalhp>0
-          miniscore/=(attacker.totalhp).to_f
-        end
-        if (attitemworks && attacker.item == PBItems::BIGROOT)
-          miniscore*=1.3
-        end
-        miniscore+=1
-        if (!opponent.abilitynulled && opponent.ability == PBAbilities::LIQUIDOOZE)
-          miniscore = (2-miniscore)
-        end
-        if (attacker.hp!=attacker.totalhp || ((attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0))) && opponent.effects[PBEffects::Substitute]==0
-          score*=miniscore
-        end
-        if $fefieldeffect==31 && move.id==(PBMoves::DRAININGKISS)
-          if opponent.status==PBStatuses::SLEEP
-            score*=0.2
-          end
-        end
-      when 0x13A # Aromatic Mist
-        newopp = attacker.pbOppositeOpposing
-        movecheck = false
-        if skill>=PBTrainerAI.bestSkill
-          if @aiMoveMemory[2][newopp.pokemonIndex].length>0
-            for j in @aiMoveMemory[2][newopp.pokemonIndex]
-              movecheck=true if (PBStuff::PHASEMOVE).include?(j.id)
-            end
-          end
-        elsif skill>=PBTrainerAI.mediumSkill
-          movecheck=checkAImoves(PBStuff::PHASEMOVE,aimem)
-        end
-        if @doublebattle && opponent==attacker.pbPartner && opponent.stages[PBStats::SPDEF]!=6
-          if newopp.spatk > newopp.attack
-            score*=2
-          else
-            score*=0.5
-          end
-          if initialscores.length>0
-            score*=1.3 if hasbadmoves(initialscores,scoreindex,20)
-          end
-          if opponent.hp*(1.0/opponent.totalhp)>0.75
-            score*=1.1
-          end
-          if opponent.effects[PBEffects::Yawn]>0 || opponent.effects[PBEffects::LeechSeed]>=0 || opponent..effects[PBEffects::Attract]>=0 || opponent.status!=0
-            score*=0.3
-          end
-          if movecheck
-            score*=0.2
-          end
-          if !opponent.abilitynulled && opponent.ability == PBAbilities::SIMPLE
-            score*=2
-          end
-          if !newopp.abilitynulled && newopp.ability == PBAbilities::UNAWARE
-            score*=0.5
-          end
-          if (oppitemworks && opponent.item == PBItems::LEFTOVERS) || ((oppitemworks && opponent.item == PBItems::BLACKSLUDGE) && opponent.pbHasType?(:POISON))
-            score*=1.2
-          end
-          if !opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY
-            score*=0
-          end
-          if $fefieldeffect==3
-            score*=2
-          end
-        else
-          score*=0
-        end
-      when 0x13B # Eerie Impulse
-        if (pbRoughStat(opponent,PBStats::SPATK,skill)<pbRoughStat(opponent,PBStats::ATTACK,skill)) || opponent.stages[PBStats::SPATK]>1 || !opponent.pbCanReduceStatStage?(PBStats::SPATK)
-          if move.basedamage==0
-            score=0
-          end
-        else
-          miniscore=100
-          if opponent.stages[PBStats::SPATK]<0
-            minimini = 5*opponent.stages[PBStats::SPATK]
-            minimini+=100
-            minimini/=100.0
-            miniscore*=minimini
-          end
-          miniscore*= unsetupminiscore(attacker,opponent,skill,move,roles,1,false)
-          miniscore/=100.0
-          score*=miniscore
-        end
-      when 0x13C # Belch
-        if attacker.effects[PBEffects::Belch]==false
-          score*=0
-        end
-      when 0x13D # Parting Shot
-        if (!opponent.pbCanReduceStatStage?(PBStats::ATTACK) &&
-           !opponent.pbCanReduceStatStage?(PBStats::SPATK)) ||
-           (opponent.stages[PBStats::ATTACK]==-6 && opponent.stages[PBStats::SPATK]==-6) ||
-           (opponent.stages[PBStats::ATTACK]>0 && opponent.stages[PBStats::SPATK]>0)
-          score*=0
-        else
-          if attacker.pbNonActivePokemonCount==0
-            if attacker.pbOwnSide.effects[PBEffects::StealthRock]
-              score*=0.7
-            end
-            if attacker.pbOwnSide.effects[PBEffects::StickyWeb]
-              score*=0.6
-            end
-            if attacker.pbOwnSide.effects[PBEffects::Spikes]>0
-              score*=0.9**attacker.pbOwnSide.effects[PBEffects::Spikes]
-            end
-            if attacker.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
-              score*=0.9**attacker.pbOwnSide.effects[PBEffects::ToxicSpikes]
-            end
-            if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-              score*=1.1
-            end
-            sweepvar = false
-            for i in pbParty(attacker.index)
-              next if i.nil?
-              temprole = pbGetMonRole(i,opponent,skill,count,pbParty(attacker.index))
-              if temprole.include?(PBMonRoles::SWEEPER)
-                sweepvar = true
-              end
-            end
-            if sweepvar
-              score*=1.5
-            end
-            if roles.include?(PBMonRoles::LEAD)
-              score*=1.1
-            end
-            if roles.include?(PBMonRoles::PIVOT)
-              score*=1.2
-            end
-            ministat= 5*statchangecounter(opponent,1,7,-1)
-            miniscore+=100
-            miniscore/=100.0
-            score*=miniscore
-            miniscore= (-5)*statchangecounter(attacker,1,7,1)
-            miniscore+=100
-            miniscore/=100.0
-            score*=miniscore
-            if attacker.effects[PBEffects::Toxic]>0 || attacker.effects[PBEffects::Attract]>-1 || attacker.effects[PBEffects::Confusion]>0
-              score*=1.3
-            end
-            if attacker.effects[PBEffects::LeechSeed]>-1
-              score*=1.5
-            end
-            miniscore=130
-            if (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG) ||
-               (!attacker.abilitynulled && attacker.ability == PBAbilities::ARENATRAP) ||
-               opponent.effects[PBEffects::MeanLook]>=0 ||  opponent.pbNonActivePokemonCount==0
-              miniscore*=1.4
-            end
-            ministat= 5*statchangecounter(opponent,1,7,-1)
-            ministat+=100
-            ministat/=100.0
-            miniscore*=ministat
-            if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE) ||
-               (!opponent.abilitynulled && opponent.ability == PBAbilities::DEFIANT) ||
-               (!opponent.abilitynulled && opponent.ability == PBAbilities::COMPETITIVE) ||
-               (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY)
-              miniscore*=0.1
-            end
-            miniscore/=100.0
-            score*=miniscore
-          end
-        end
-      when 0x13E # Geomancy
+      when 0x14E # Geomancy
         maxdam = checkAIdamage(aimem,attacker,opponent,skill)
         if !(attitemworks && attacker.item == PBItems::POWERHERB)
           if maxdam>attacker.hp
@@ -14489,10 +15357,10 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::LEECHSEED))
+        if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?((PBMoves::PAINSPLIT))
+        if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
         miniscore/=100.0
@@ -14554,17 +15422,61 @@ class PokeBattle_Battle
         if attacker.pbTooHigh?(PBStats::SPATK) && attacker.pbTooHigh?(PBStats::SPDEF) && attacker.pbTooHigh?(PBStats::SPEED)
           score*=0
         end
-      when 0x13F # Venom Drench
-        if opponent.status==PBStatuses::POISON || $fefieldeffect==10 || $fefieldeffect==11 || $fefieldeffect==19 || $fefieldeffect==26
-          if (!opponent.pbCanReduceStatStage?(PBStats::ATTACK) &&
-             !opponent.pbCanReduceStatStage?(PBStats::SPATK)) ||
-             (opponent.stages[PBStats::ATTACK]==-6 && opponent.stages[PBStats::SPATK]==-6) ||
-             (opponent.stages[PBStats::ATTACK]>0 && opponent.stages[PBStats::SPATK]>0)
-            score*=0.5
-          else
-            miniscore=100
-            if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-              miniscore*=1.4
+      when 0x14F # Draining Kiss
+        minimini = score*0.01
+        miniscore = (opponent.hp*minimini)*(3.0/4.0)
+        if miniscore > (attacker.totalhp-attacker.hp)
+          miniscore = (attacker.totalhp-attacker.hp)
+        end
+        if attacker.totalhp>0
+          miniscore/=(attacker.totalhp).to_f
+        end
+        if (attitemworks && attacker.item == PBItems::BIGROOT)
+          miniscore*=1.3
+        end
+        miniscore+=1
+        if (!opponent.abilitynulled && opponent.ability == PBAbilities::LIQUIDOOZE)
+          miniscore = (2-miniscore)
+        end
+        if (attacker.hp!=attacker.totalhp || ((attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0))) && opponent.effects[PBEffects::Substitute]==0
+          score*=miniscore
+        end
+        if $fefieldeffect==31 && move.id==(PBMoves::DRAININGKISS)
+          if opponent.status==PBStatuses::SLEEP
+            score*=0.2
+          end
+        end
+      when 0x150 # Fell Stinger
+        if attacker.stages[PBStats::ATTACK]!=6
+          if score>=100
+            score*=2
+            if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+              score*=2
+            end
+          end
+        end
+      when 0x151 # Parting Shot
+        if (!opponent.pbCanReduceStatStage?(PBStats::ATTACK) &&
+           !opponent.pbCanReduceStatStage?(PBStats::SPATK)) ||
+           (opponent.stages[PBStats::ATTACK]==-6 && opponent.stages[PBStats::SPATK]==-6) ||
+           (opponent.stages[PBStats::ATTACK]>0 && opponent.stages[PBStats::SPATK]>0)
+          score*=0
+        else
+          if attacker.pbNonActivePokemonCount==0
+            if attacker.pbOwnSide.effects[PBEffects::StealthRock]
+              score*=0.7
+            end
+            if attacker.pbOwnSide.effects[PBEffects::StickyWeb]
+              score*=0.6
+            end
+            if attacker.pbOwnSide.effects[PBEffects::Spikes]>0
+              score*=0.9**attacker.pbOwnSide.effects[PBEffects::Spikes]
+            end
+            if attacker.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+              score*=0.9**attacker.pbOwnSide.effects[PBEffects::ToxicSpikes]
+            end
+            if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+              score*=1.1
             end
             sweepvar = false
             for i in pbParty(attacker.index)
@@ -14575,137 +15487,78 @@ class PokeBattle_Battle
               end
             end
             if sweepvar
-              miniscore*=1.1
+              score*=1.5
             end
+            if roles.include?(PBMonRoles::LEAD)
+              score*=1.1
+            end
+            if roles.include?(PBMonRoles::PIVOT)
+              score*=1.2
+            end
+            ministat= 5*statchangecounter(opponent,1,7,-1)
+            miniscore+=100
+            miniscore/=100.0
+            score*=miniscore
+            miniscore= (-5)*statchangecounter(attacker,1,7,1)
+            miniscore+=100
+            miniscore/=100.0
+            score*=miniscore
+            if attacker.effects[PBEffects::Toxic]>0 || attacker.effects[PBEffects::Attract]>-1 || attacker.effects[PBEffects::Confusion]>0
+              score*=1.3
+            end
+            if attacker.effects[PBEffects::LeechSeed]>-1
+              score*=1.5
+            end
+            miniscore=130
             if (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG) ||
                (!attacker.abilitynulled && attacker.ability == PBAbilities::ARENATRAP) ||
                opponent.effects[PBEffects::MeanLook]>=0 ||  opponent.pbNonActivePokemonCount==0
-              miniscore*=1.5
+              miniscore*=1.4
             end
             ministat= 5*statchangecounter(opponent,1,7,-1)
             ministat+=100
             ministat/=100.0
             miniscore*=ministat
-            if attacker.pbHasMove?((PBMoves::FOULPLAY))
-              miniscore*=0.5
-            end
-            miniscore/=100.0
-            score*=miniscore
-          end
-          if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ||
-            opponent.stages[PBStats::SPEED]>0 || !opponent.pbCanReduceStatStage?(PBStats::SPEED)
-            score*=0.5
-          else
-            miniscore=100
-            if (!opponent.abilitynulled && opponent.ability == PBAbilities::SPEEDBOOST)
-              miniscore*=0.9
-            end
-            if attacker.pbHasMove?((PBMoves::ELECTROBALL))
-              miniscore*=1.5
-            end
-            if attacker.pbHasMove?((PBMoves::GYROBALL))
-              miniscore*=0.5
-            end
-            if (oppitemworks && opponent.item == PBItems::LAGGINGTAIL) || (oppitemworks && opponent.item == PBItems::IRONBALL)
-              miniscore*=0.8
-            end
-            miniscore*=0.1 if checkAImoves([PBMoves::TRICKROOM],aimem) || @trickroom!=0
-            miniscore*=1.3 if checkAImoves([PBMoves::ELECTROBALL],aimem)
-            miniscore*=0.5 if checkAImoves([PBMoves::GYROBALL],aimem)
-            miniscore/=100.0
-            score*=miniscore
-            if attacker.pbNonActivePokemonCount==0
-              score*=0.5
-            end
             if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE) ||
-               (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY) ||
-               (!opponent.abilitynulled && opponent.ability == PBAbilities::DEFIANT)
-              score*=0
+               (!opponent.abilitynulled && opponent.ability == PBAbilities::DEFIANT) ||
+               (!opponent.abilitynulled && opponent.ability == PBAbilities::COMPETITIVE) ||
+               (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY)
+              miniscore*=0.1
             end
+            miniscore/=100.0
+            score*=miniscore
           end
-        else
+        end
+      when 0x152 # Fairy Lock
+        if attacker.effects[PBEffects::PerishSong]==1 || attacker.effects[PBEffects::PerishSong]==2
           score*=0
-        end
-      when 0x140 # Spiky Shield
-        if opponent.turncount==0
-          score*=1.5
-        end
-        score*=0.3 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
-        if (!attacker.abilitynulled && attacker.ability == PBAbilities::SPEEDBOOST) && attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill) && @trickroom==0
-          score*=4
-          #experimental -- cancels out drop if killing moves
-          if initialscores.length>0
-            score*=6 if hasgreatmoves(initialscores,scoreindex,skill)
+        else
+          if opponent.effects[PBEffects::PerishSong]==2
+            score*=10
           end
-          #end experimental
-        end
-        if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
-           ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON)) ||
-           attacker.effects[PBEffects::Ingrain] || attacker.effects[PBEffects::AquaRing] || $fefieldeffect==2
-          score*=1.2
-        end
-        if opponent.status==PBStatuses::POISON || opponent.status==PBStatuses::BURN
-          score*=1.2
-          if opponent.effects[PBEffects::Toxic]>0
+          if opponent.effects[PBEffects::PerishSong]==1
+            score*=20
+          end
+          if attacker.effects[PBEffects::LeechSeed]>=0
+            score*=0.8
+          end
+          if opponent.effects[PBEffects::LeechSeed]>=0
+            score*=1.2
+          end
+          if opponent.effects[PBEffects::Curse]
             score*=1.3
           end
-        end
-        if attacker.status==PBStatuses::POISON || attacker.status==PBStatuses::BURN
-          score*=0.7
-          if attacker.effects[PBEffects::Toxic]>0
-            score*=0.3
+          if attacker.effects[PBEffects::Curse]
+            score*=0.7
+          end
+          if opponent.effects[PBEffects::Confusion]>0
+            score*=1.1
+          end
+          if attacker.effects[PBEffects::Confusion]>0
+            score*=1.1
           end
         end
-        if opponent.effects[PBEffects::LeechSeed]>=0
-          score*=1.3
-        end
-        if opponent.effects[PBEffects::PerishSong]!=0
-          score*=2
-        end
-        if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
-          score*=0.3
-        end
-        if opponent.vanished
-          score*=2
-          if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-            score*=1.5
-          end
-        end
-        score*=0.1 if checkAImoves(PBStuff::PROTECTIGNORINGMOVE,aimem)
-        if attacker.effects[PBEffects::Wish]>0
-          if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
-            score*=3
-          else
-            score*=1.4
-          end
-        end
-        if aimem.length > 0
-          contactcheck=false
-          maxdam=0
-          for j in aimem
-            contactcheck=j.isContactMove?
-          end
-          if contactcheck
-            score*=1.3
-          end
-        end
-        if attacker.status==0
-          score*=0.7 if checkAImoves([PBMoves::WILLOWISP,PBMoves::THUNDERWAVE,PBMoves::TOXIC],aimem)
-        end
-        ratesharers=[
-        391,   # Protect
-        121,   # Detect
-        122,   # Quick Guard
-        515,   # Wide Guard
-        361,   # Endure
-        584,   # King's Shield
-        603,    # Spiky Shield
-        641    # Baneful Bunker
-          ]
-        if ratesharers.include?(attacker.lastMoveUsed)
-          score/=(attacker.effects[PBEffects::ProtectRate]*2.0)
-        end
-      when 0x141 # Sticky Web
+      when 0x153 # Sticky Web
         if !attacker.pbOpposingSide.effects[PBEffects::StickyWeb]
           if roles.include?(PBMonRoles::LEAD)
             score*=1.3
@@ -14775,10 +15628,10 @@ class PokeBattle_Battle
             if (!opponent.abilitynulled && opponent.ability == PBAbilities::SPEEDBOOST)
               miniscore*=0.5
             end
-            if attacker.pbHasMove?((PBMoves::ELECTROBALL))
+            if attacker.pbHasMove?(:ELECTROBALL)
               miniscore*=1.5
             end
-            if attacker.pbHasMove?((PBMoves::GYROBALL))
+            if attacker.pbHasMove?(:GYROBALL)
               miniscore*=0.5
             end
             if (oppitemworks && opponent.item == PBItems::LAGGINGTAIL) || (oppitemworks && opponent.item == PBItems::IRONBALL)
@@ -14791,285 +15644,15 @@ class PokeBattle_Battle
             score*=miniscore
           end
         end
-      when 0x142 # Topsy-Turvy
-        ministat= 10* statchangecounter(opponent,1,7)
-        ministat+=100
-        if ministat<0
-          ministat=0
-        end
-        ministat/=100.0
-        if opponent == attacker.pbPartner
-          ministat = 2-ministat
-        end
-        score*=ministat
-        if $fefieldeffect!=22 && $fefieldeffect!=35 && $fefieldeffect!=36
-          effcheck = PBTypes.getCombinedEffectiveness(opponent.type1,attacker.type1,attacker.type2)
-          if effcheck>4
-            score*=2
-          else
-            if effcheck!=0 && effcheck<4
-              score*=0.5
-            end
-            if effcheck==0
-              score*=0.1
-            end
-          end
-          effcheck = PBTypes.getCombinedEffectiveness(opponent.type2,attacker.type1,attacker.type2)
-          if effcheck>4
-            score*=2
-          else
-            if effcheck!=0 && effcheck<4
-              score*=0.5
-            end
-            if effcheck==0
-              score*=0.1
-            end
-          end
-          effcheck = PBTypes.getCombinedEffectiveness(attacker.type1,opponent.type1,opponent.type2)
-          if effcheck>4
-            score*=0.5
-          else
-            if effcheck!=0 && effcheck<4
-              score*=2
-            end
-            if effcheck==0
-              score*=3
-            end
-          end
-          effcheck = PBTypes.getCombinedEffectiveness(attacker.type2,opponent.type1,opponent.type2)
-          if effcheck>4
-            score*=0.5
-          else
-            if effcheck!=0 && effcheck<4
-              score*=2
-            end
-            if effcheck==0
-              score*=3
-            end
-          end
-        end
-      when 0x143 # Forest's Curse
-        grassvar = false
+      when 0x154 # Electric Terrain
+        sleepvar=false
         if aimem.length > 0
           for j in aimem
-            grassvar = true if (j.type == PBTypes::GRASS)
+            sleepvar = true if j.function==0x03
           end
         end
-        effmove = false
-        for m in attacker.moves
-          if (m.type == PBTypes::FIRE) || (m.type == PBTypes::ICE) || (m.type == PBTypes::BUG) || (m.type == PBTypes::FLYING) || (m.type == PBTypes::POISON)
-            effmove = true
-            break
-          end
-        end
-        if effmove
-          score*=1.5
-        else
-          score*=0.7
-        end
-        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-          if attacker.pbHasMove?((PBMoves::TOXIC)) && (opponent.pbHasType?(:STEEL) || opponent.pbHasType?(:POISON))
-            score*=1.5
-          end
-        end
-        if grassvar
-          score*=0.5
-        else
-          score*=1.1
-        end
-        if (opponent.ability == PBAbilities::MULTITYPE) || (opponent.ability == PBAbilities::RKSSYSTEM) ||
-           (opponent.type1==(PBTypes::GRASS) && opponent.type2==(PBTypes::GRASS)) ||
-           (!opponent.abilitynulled && opponent.ability == PBAbilities::PROTEAN) ||
-           (!opponent.abilitynulled && opponent.ability == PBAbilities::COLORCHANGE)
-          score*=0
-        end
-        if $fefieldeffect == 15 || $fefieldeffect == 31
-          if !opponent.effects[PBEffects::Curse]
-            score+=25
-            ministat= 5*statchangecounter(opponent,1,7)
-            ministat+=100
-            ministat/=100.0
-            score*=ministat
-            if opponent.pbNonActivePokemonCount==0 || (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG) || opponent.effects[PBEffects::MeanLook]>0
-              score*=1.3
-            else
-              score*=0.8
-            end
-            if @doublebattle
-              score*=0.5
-            end
-            if initialscores.length>0
-              score*=1.3 if hasbadmoves(initialscores,scoreindex,25)
-            end
-          end
-        end
-      when 0x144 # Trick or Treat
-        ghostvar = false
-        if aimem.length > 0
-          for j in aimem
-            ghostvar = true if (j.type == PBTypes::GHOST)
-          end
-        end
-        effmove = false
-        for m in attacker.moves
-          if (m.type == PBTypes::DARK) || (m.type == PBTypes::GHOST)
-            effmove = true
-            break
-          end
-        end
-        if effmove
-          score*=1.5
-        else
-          score*=0.7
-        end
-        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-          if attacker.pbHasMove?((PBMoves::TOXIC)) && (opponent.pbHasType?(:STEEL) || opponent.pbHasType?(:POISON))
-            score*=1.5
-          end
-        end
-        if ghostvar
-          score*=0.5
-        else
-          score*=1.1
-        end
-        if (opponent.ability == PBAbilities::MULTITYPE) || (opponent.ability == PBAbilities::RKSSYSTEM) ||
-           (opponent.type1==(PBTypes::GHOST) && opponent.type2==(PBTypes::GHOST)) ||
-           (!opponent.abilitynulled && opponent.ability == PBAbilities::PROTEAN) ||
-           (!opponent.abilitynulled && opponent.ability == PBAbilities::COLORCHANGE)
-          score*=0
-        end
-      when 0x145 # Fairy Lock
-        if attacker.effects[PBEffects::PerishSong]==1 || attacker.effects[PBEffects::PerishSong]==2
-          score*=0
-        else
-          if opponent.effects[PBEffects::PerishSong]==2
-            score*=10
-          end
-          if opponent.effects[PBEffects::PerishSong]==1
-            score*=20
-          end
-          if attacker.effects[PBEffects::LeechSeed]>=0
-            score*=0.8
-          end
-          if opponent.effects[PBEffects::LeechSeed]>=0
-            score*=1.2
-          end
-          if opponent.effects[PBEffects::Curse]
-            score*=1.3
-          end
-          if attacker.effects[PBEffects::Curse]
-            score*=0.7
-          end
-          if opponent.effects[PBEffects::Confusion]>0
-            score*=1.1
-          end
-          if attacker.effects[PBEffects::Confusion]>0
-            score*=1.1
-          end
-        end
-      when 0x146 # Magnetic Flux
-        if !((!attacker.abilitynulled && attacker.ability == PBAbilities::PLUS) ||
-           (!attacker.abilitynulled && attacker.ability == PBAbilities::MINUS) ||
-           (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::PLUS) || (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::MINUS))
-          score*=0
-        else
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::PLUS) || (!attacker.abilitynulled && attacker.ability == PBAbilities::MINUS)
-            miniscore = setupminiscore(attacker,opponent,skill,move,false,10,true,initialscores,scoreindex)
-            score*=miniscore
-            miniscore=100
-            if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-              miniscore*=1.5
-            end
-            if (attitemworks && attacker.item == PBItems::LEFTOVERS) || ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
-              miniscore*=1.2
-            end
-            healmove=false
-            for j in attacker.moves
-              if j.isHealingMove?
-                healmove=true
-              end
-            end
-            if healmove
-              miniscore*=1.7
-            end
-            if attacker.pbHasMove?((PBMoves::LEECHSEED))
-              miniscore*=1.3
-            end
-            if attacker.pbHasMove?((PBMoves::PAINSPLIT))
-              miniscore*=1.2
-            end
-            if attacker.stages[PBStats::SPDEF]!=6 && attacker.stages[PBStats::DEFENSE]!=6
-              score*=miniscore
-            end
-          elsif @doublebattle && attacker.pbPartner.stages[PBStats::SPDEF]!=6 && attacker.pbPartner.stages[PBStats::DEFENSE]!=6
-            score*=0.7
-            if initialscores.length>0
-              score*=1.3 if hasbadmoves(initialscores,scoreindex,20)
-            end
-            if attacker.pbPartner.hp >= attacker.pbPartner.totalhp*0.75
-              score*=1.1
-            end
-            if attacker.pbPartner.effects[PBEffects::Yawn]>0 ||
-               attacker.pbPartner.effects[PBEffects::LeechSeed]>=0 ||
-               attacker.pbPartner.effects[PBEffects::Attract]>=0 ||
-               attacker.pbPartner.status!=0
-              score*=0.3
-            end
-            if movecheck
-              score*=0.3
-            end
-            if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE)
-              score*=0.5
-            end
-            if attacker.pbPartner.hasWorkingItem(:LEFTOVERS) || (attacker.pbPartner.hasWorkingItem(:BLACKSLUDGE) && attacker.pbPartner.pbHasType?(:POISON))
-              score*=1.2
-            end
-          else
-            score*=0
-          end
-        end
-      when 0x147 # Fell Stinger
-        if attacker.stages[PBStats::ATTACK]!=6
-          if score>=100
-            score*=2
-            if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-              score*=2
-            end
-          end
-        end
-      when 0x148 # Ion Deluge
-        maxnormal = checkAIbest(aimem,1,[PBTypes::NORMAL],false,attacker,opponent,skill)
-        if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-          score*=0.9
-        elsif (!attacker.abilitynulled && attacker.ability == PBAbilities::MOTORDRIVE)
-          if maxnormal
-            score*=1.5
-          end
-        end
-        if (!attacker.abilitynulled && attacker.ability == PBAbilities::LIGHTNINGROD) || (!attacker.abilitynulled && attacker.ability == PBAbilities::VOLTABSORB)
-          if ((attacker.hp.to_f)/attacker.totalhp)<0.6
-            if maxnormal
-              score*=1.5
-            end
-          end
-        end
-        if attacker.pbHasType?(:GROUND)
-          score*=1.1
-        end
-        if @doublebattle
-          if (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::MOTORDRIVE) ||
-             (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::LIGHTNINGROD) ||
-             (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::VOLTABSORB)
-            score*=1.2
-          end
-          if attacker.pbPartner.pbHasType?(:GROUND)
-            score*=1.1
-          end
-        end
-        if !maxnormal
-          score*=0.5
-        end
-        if $fefieldeffect != 35 && $fefieldeffect != 1 && $fefieldeffect != 22
+        if @field.effects[PBEffects::Terrain]==0 && $fefieldeffect!=1 &&
+          $fefieldeffect!=22 && $fefieldeffect!=35
           miniscore = getFieldDisruptScore(attacker,opponent,skill)
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::SURGESURFER)
             miniscore*=1.5
@@ -15085,7 +15668,7 @@ class PokeBattle_Battle
             end
           end
           if elecvar
-            miniscore*=1.5
+            miniscore*=2
           end
           if opponent.pbHasType?(:ELECTRIC)
             miniscore*=0.5
@@ -15096,985 +15679,239 @@ class PokeBattle_Battle
               break
             end
           end
-          if sleepcheck
+          if sleepvar
             miniscore*=2
           end
           if (attitemworks && attacker.item == PBItems::AMPLIFIELDROCK)
             miniscore*=2
           end
           score*=miniscore
-        end
-      when 0x149 # Crafty Shield
-        if attacker.lastMoveUsed==565
-          score*=0.5
         else
-          nodam = true
-          for m in opponent.moves
-            if m.basedamage>0
-              nodam=false
-              break
-            end
+          score*=0
+        end
+      when 0x155 # Grassy Terrain
+        firevar=false
+        grassvar=false
+        for mon in pbParty(attacker.index)
+          next if mon.nil?
+          if mon.hasType?(:FIRE)
+            firevar=true
           end
-          if nodam
-            score+=10
-          end
-          if attacker.hp==attacker.totalhp
-            score*=1.5
+          if mon.hasType?(:GRASS)
+            grassvar=true
           end
         end
-        if $fefieldeffect==31
-          score+=25
-          miniscore=100
-          if attacker.effects[PBEffects::Substitute]>0 || attacker.effects[PBEffects::Disguise]
-            miniscore*=1.3
-          end
-          if initialscores.length>0
-            miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,20)
-          end
-          if (attacker.hp.to_f)/attacker.totalhp>0.75
-            miniscore*=1.1
-          end
-          if opponent.effects[PBEffects::HyperBeam]>0
-            miniscore*=1.2
-          end
-          if opponent.effects[PBEffects::Yawn]>0
-            miniscore*=1.3
-          end
-          miniscore*=1.1 if checkAIdamage(aimem,attacker,opponent,skill) < attacker.hp*0.3 && (aimem.length > 0)
-          if attacker.turncount<2
-            miniscore*=1.1
-          end
-          if opponent.status!=0
-            miniscore*=1.1
-          end
-          if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
-            miniscore*=1.3
-          end
-          if opponent.effects[PBEffects::Encore]>0
-            if opponent.moves[(opponent.effects[PBEffects::EncoreIndex])].basedamage==0
-              miniscore*=1.5
-            end
-          end
-          if attacker.effects[PBEffects::Confusion]>0
-            miniscore*=0.5
-          end
-          if attacker.effects[PBEffects::LeechSeed]>=0 || attacker.effects[PBEffects::Attract]>=0
-            miniscore*=0.3
-          end
-          if attacker.effects[PBEffects::Toxic]>0
-            miniscore*=0.2
-          end
-          miniscore*=0.2 if checkAImoves(PBStuff::SWITCHOUTMOVE,aimem)
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::SIMPLE)
-            miniscore*=2
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE)
-            miniscore*=0.5
-          end
-          if @doublebattle
-            miniscore*=0.3
-          end
-          miniscore*=0.3 if checkAIdamage(aimem,attacker,opponent,skill)<attacker.hp*0.12 && (aimem.length > 0)
-          miniscore/=100.0
-          score*=miniscore
-          miniscore=100
+        if @field.effects[PBEffects::Terrain]==0 && $fefieldeffect!=2 &&
+          $fefieldeffect!=22 && $fefieldeffect!=35
+          miniscore = getFieldDisruptScore(attacker,opponent,skill)
           if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
             miniscore*=1.5
           end
-          if (attitemworks && attacker.item == PBItems::LEFTOVERS) || ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
-            miniscore*=1.2
+          if attacker.pbHasType?(:FIRE)
+            miniscore*=2
           end
-          healmove=false
-          for j in attacker.moves
-            if j.isHealingMove?
-              healmove=true
-            end
+          if firevar
+            miniscore*=2
           end
-          if healmove
-            miniscore*=1.7
-          end
-          if attacker.pbHasMove?((PBMoves::LEECHSEED))
-            miniscore*=1.3
-          end
-          if attacker.pbHasMove?((PBMoves::PAINSPLIT))
-            miniscore*=1.2
-          end
-          if attacker.stages[PBStats::SPDEF]!=6 && attacker.stages[PBStats::DEFENSE]!=6
-            score*=miniscore
-          end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
-            score=0
-          end
-        end
-      when 0x14A # Doesn't exist
-      when 0x14B # Doesn't exist
-      when 0x14C # Doesn't exist
-      when 0x14D # Doesn't exist
-      when 0x14E # Doesn't exist
-      when 0x14F # Doesn't exist
-      when 0x150 # Flower Shield
-        opp1 = attacker.pbOppositeOpposing
-        opp2 = opp1.pbPartner
-        if @doublebattle && opponent.pbHasType?(:GRASS) && opponent==attacker.pbPartner && opponent.stages[PBStats::DEFENSE]!=6
-          if $fefieldeffect!=33 || $fecounter==0
-            if opp1.attack>opp1.spatk
-              score*=2
-            else
-              score*=0.5
-            end
-            if opp2.attack>opp2.spatk
-              score*=2
-            else
-              score*=0.5
-            end
-          else
-            score*=2
-          end
-          if initialscores.length>0
-            score*=1.3 if hasbadmoves(initialscores,scoreindex,20)
-          end
-          if (opponent.hp.to_f)/opponent.totalhp>0.75
-            score*=1.1
-          end
-          if opponent.effects[PBEffects::LeechSeed]>=0 || opponent.effects[PBEffects::Attract]>=0 || opponent.status!=0 || opponent.effects[PBEffects::Yawn]>0
-            score*=0.3
-          end
-          if movecheck
-            score*=0.2
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::SIMPLE)
-            score*=2
-          end
-          if (!opp1.abilitynulled && opp1.ability == PBAbilities::UNAWARE)
-            score*=0.5
-          end
-          if $fefieldeffect==33 && $fecounter!=4
-            score+=30
-          end
-          if ($fefieldeffect==33 && $fecounter>0) || $fefieldeffect==31
-            score+=20
-            miniscore=100
-            if attacker.effects[PBEffects::Substitute]>0 || attacker.effects[PBEffects::Disguise]
-              miniscore*=1.3
-            end
-            if initialscores.length>0
-              miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,20)
-            end
-            if (opponent.hp.to_f)/opponent.totalhp>0.75
-              miniscore*=1.1
-            end
-            if opp1.effects[PBEffects::HyperBeam]>0
-              miniscore*=1.2
-            end
-            if opp1.effects[PBEffects::Yawn]>0
-              miniscore*=1.3
-            end
-            miniscore*=1.1 if checkAIdamage(aimem,attacker,opponent,skill) < opponent.hp*0.3 && (aimem.length > 0)
-            if opponent.turncount<2
-              miniscore*=1.1
-            end
-            if opp1.status!=0
-              miniscore*=1.1
-            end
-            if opp1.status==PBStatuses::SLEEP || opp1.status==PBStatuses::FROZEN
-              miniscore*=1.3
-            end
-            if opp1.effects[PBEffects::Encore]>0
-              if opp1.moves[(opp1.effects[PBEffects::EncoreIndex])].basedamage==0
-                miniscore*=1.5
-              end
-            end
-            if opponent.effects[PBEffects::Confusion]>0
+          if opponent.pbHasType?(:FIRE)
+            miniscore*=0.5
+            if pbWeather!=PBWeather::RAINDANCE
               miniscore*=0.5
             end
-            if opponent.effects[PBEffects::LeechSeed]>=0 || attacker.effects[PBEffects::Attract]>=0
-              miniscore*=0.3
+            if attacker.pbHasType?(:GRASS)
+              miniscore*=0.5
             end
-            if opponent.effects[PBEffects::Toxic]>0
-              miniscore*=0.2
-            end
-            miniscore*=0.2 if checkAImoves(PBStuff::SWITCHOUTMOVE,aimem)
-            if (!opponent.abilitynulled && opponent.ability == PBAbilities::SIMPLE)
+          else
+            if attacker.pbHasType?(:GRASS)
               miniscore*=2
             end
-            if (!opp1.abilitynulled && opp1.ability == PBAbilities::UNAWARE)
-              miniscore*=0.5
-            end
-            if @doublebattle
-              miniscore*=0.3
-            end
-            miniscore*=0.3 if checkAIdamage(aimem,attacker,opponent,skill)<opponent.hp*0.12 && (aimem.length > 0)
-            miniscore/=100.0
-            score*=miniscore
-            miniscore=100
-            if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-              miniscore*=1.5
-            end
-            if (attitemworks && attacker.item == PBItems::LEFTOVERS) || ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
-              miniscore*=1.2
-            end
-            healmove=false
-            for j in attacker.moves
-              if j.isHealingMove?
-                healmove=true
-              end
-            end
-            if healmove
-              miniscore*=1.7
-            end
-            if attacker.pbHasMove?((PBMoves::LEECHSEED))
-              miniscore*=1.3
-            end
-            if attacker.pbHasMove?((PBMoves::PAINSPLIT))
-              miniscore*=1.2
-            end
-            if attacker.stages[PBStats::SPDEF]!=6 && attacker.stages[PBStats::DEFENSE]!=6
-              score*=miniscore
-            end
-            if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
-              score=0
-            end
           end
+          if grassvar
+            miniscore*=2
+          end
+          miniscore*=0.5 if checkAIhealing(aimem)
+          miniscore*=0.5 if checkAImoves([PBMoves::SLUDGEWAVE],aimem)
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::GRASSPELT)
+            miniscore*=1.5
+          end
+          if (attitemworks && attacker.item == PBItems::AMPLIFIELDROCK)
+            miniscore*=2
+          end
+          score*=miniscore
         else
           score*=0
         end
-      when 0x151 # Rototiller
-        opp1 = attacker.pbOppositeOpposing
-        opp2 = opp1.pbPartner
-        if @doublebattle && opponent.pbHasType?(:GRASS) && opponent==attacker.pbPartner && opponent.stages[PBStats::SPATK]!=6 && opponent.stages[PBStats::ATTACK]!=6
-          if initialscores.length>0
-            score*=1.3 if hasbadmoves(initialscores,scoreindex,20)
+      when 0x156 # Misty Terrain
+        fairyvar=false
+        dragonvar=false
+        for mon in pbParty(attacker.index)
+          next if mon.nil?
+          if mon.hasType?(:FAIRY)
+            fairyvar=true
           end
-          if (opponent.hp.to_f)/opponent.totalhp>0.75
-            score*=1.1
+          if mon.hasType?(:DRAGON)
+            dragonvar=true
           end
-          if opponent.effects[PBEffects::LeechSeed]>=0 || opponent.effects[PBEffects::Attract]>=0 || opponent.status!=0 || opponent.effects[PBEffects::Yawn]>0
-            score*=0.3
+        end
+        if @field.effects[PBEffects::Terrain]==0 && $fefieldeffect!=3 &&
+          $fefieldeffect!=22 && $fefieldeffect!=35
+          miniscore = getFieldDisruptScore(attacker,opponent,skill)
+          if fairyvar
+            miniscore*=2
           end
-          if movecheck
-            score*=0.2
+          if !attacker.pbHasType?(:FAIRY) && opponent.pbHasType?(:DRAGON)
+            miniscore*=2
           end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::SIMPLE)
-            score*=2
+          if attacker.pbHasType?(:DRAGON)
+            miniscore*=0.5
           end
-          if (!opp1.abilitynulled && opp1.ability == PBAbilities::UNAWARE)
-            score*=0.5
+          if opponent.pbHasType?(:FAIRY)
+            miniscore*=0.5
           end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY)
-            score*=0
+          if attacker.pbHasType?(:FAIRY) && opponent.spatk>opponent.attack
+            miniscore*=2
           end
-          if $fefieldeffect==33 && $fecounter!=4
-            score+=30
+          if (attitemworks && attacker.item == PBItems::AMPLIFIELDROCK)
+            miniscore*=2
           end
-          if $fefieldeffect==33
-            score+=20
-            miniscore=100
-            if attacker.effects[PBEffects::Substitute]>0 || attacker.effects[PBEffects::Disguise]
-              miniscore*=1.3
-            end
-            if initialscores.length>0
-              miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,20)
-            end
-            if (opponent.hp.to_f)/opponent.totalhp>0.75
-              miniscore*=1.1
-            end
-            if opp1.effects[PBEffects::HyperBeam]>0
-              miniscore*=1.2
-            end
-            if opp1.effects[PBEffects::Yawn]>0
-              miniscore*=1.3
-            end
-            miniscore*=1.1 if checkAIdamage(aimem,attacker,opponent,skill) < opponent.hp*0.25 && (aimem.length > 0)
-            if opponent.turncount<2
-              miniscore*=1.1
-            end
-            if opp1.status!=0
-              miniscore*=1.1
-            end
-            if opp1.status==PBStatuses::SLEEP || opp1.status==PBStatuses::FROZEN
-              miniscore*=1.3
-            end
-            if opp1.effects[PBEffects::Encore]>0
-              if opp1.moves[(opp1.effects[PBEffects::EncoreIndex])].basedamage==0
-                miniscore*=1.5
-              end
-            end
-            if opponent.effects[PBEffects::Confusion]>0
-              miniscore*=0.2
-            end
-            if opponent.effects[PBEffects::LeechSeed]>=0 || attacker.effects[PBEffects::Attract]>=0
-              miniscore*=0.6
-            end
-            miniscore*=0.5 if checkAImoves(PBStuff::SWITCHOUTMOVE,aimem)
-            if (!opponent.abilitynulled && opponent.ability == PBAbilities::SIMPLE)
-              miniscore*=2
-            end
-            if (!opp1.abilitynulled && opp1.ability == PBAbilities::UNAWARE)
-              miniscore*=0.5
-            end
-            if @doublebattle
-              miniscore*=0.3
-            end
-            ministat=0
-            ministat+=opponent.stages[PBStats::SPEED] if opponent.stages[PBStats::SPEED]<0
-            ministat*=5
-            ministat+=100
-            ministat/=100.0
-            miniscore*=ministat
-            ministat=0
-            ministat+=opponent.stages[PBStats::ATTACK]
-            ministat+=opponent.stages[PBStats::SPEED]
-            ministat+=opponent.stages[PBStats::SPATK]
-            if ministat > 0
-              ministat*=(-5)
-              ministat+=100
-              ministat/=100.0
-              miniscore*=ministat
-            end
-            miniscore/=100.0
-            score*=miniscore
-            miniscore=100
-            miniscore*=1.3 if checkAIhealing(aimem)
-            if attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill) && @trickroom==0
-              miniscore*=1.5
-            end
-            if roles.include?(PBMonRoles::SWEEPER)
-              miniscore*=1.3
-            end
-            if attacker.status==PBStatuses::PARALYSIS
-              miniscore*=0.5
-            end
-            miniscore*=0.3 if checkAImoves([PBMoves::FOULPLAY],aimem)
-            if attacker.hp==attacker.totalhp && (attitemworks && attacker.item == PBItems::FOCUSSASH)
-              miniscore*=1.4
-            end
-            miniscore*=0.4 if checkAIpriority(aimem)
-            if attacker.stages[PBStats::SPATK]!=6 && attacker.stages[PBStats::ATTACK]!=6
-              score*=miniscore
-            end
-          end
+          score*=miniscore
         else
           score*=0
         end
-      when 0x152 # Powder
-        firecheck = false
-        movecount = 0
-        if aimem.length > 0
-          for j in aimem
-            movecount+=1
-            if j.type == (PBTypes::FIRE)
-              firecheck = true
-            end
-          end
+      when 0x15A # Sparkling Aria
+        if opponent.status==PBStatuses::BURN
+          score*=0.6
         end
-        if !(opponent.pbHasType?(:GRASS) || (!opponent.abilitynulled && opponent.ability == PBAbilities::OVERCOAT) || (oppitemworks && opponent.item == PBItems::SAFETYGOGGLES))
-          if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-            score*=1.2
-          end
-          if checkAIbest(aimem,1,[PBTypes::FIRE],false,attacker,opponent,skill)
-            score*=3
-          else
-            if opponent.pbHasType?(:FIRE)
-              score*=2
-            else
-              score*=0.2
-            end
-          end
-          effcheck = PBTypes.getCombinedEffectiveness((PBTypes::FIRE),attacker.type1,attacker.type2)
-          if effcheck>4
-            score*=2
-            if effcheck>8
-              score*=2
-            end
-          end
-          if attacker.lastMoveUsed==600
-            score*=0.6
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::MAGICGUARD)
-            score*=0.5
-          end
-          if !firecheck && movecount==4
-            score*=0
-          end
-        else
+      when 0x158 # Belch
+        if attacker.effects[PBEffects::Belch]==false
           score*=0
         end
-      when 0x153 # Electrify
-        startscore = score
-        if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::VOLTABSORB)
-            if attacker.hp<attacker.totalhp*0.8
-              score*=1.5
-            else
-              score*=0.1
-            end
-          end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::LIGHTNINGROD)
-            if attacker.spatk > attacker.attack && attacker.stages[PBStats::SPATK]!=6
-              score*=1.5
-            else
-              score*=0.1
-            end
-          end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::MOTORDRIVE)
-            if attacker.stages[PBStats::SPEED]!=6
-              score*=1.2
-            else
-              score*=0.1
-            end
-          end
-          if attacker.pbHasType?(:GROUND)
-            score*=1.3
-          end
-          if score==startscore
-            score*=0.1
-          end
-          score*=0.5 if checkAIpriority(aimem)
-        else
-          score*=0
-        end
-      when 0x154 # Mat Block
-        if attacker.turncount==0
-          if @doublebattle
-            score*=1.3
-            if ((attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) && ((attacker.pbSpeed>pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))
-              score*=1.2
-            else
-              score*=0.7
-              if ((attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) && ((attacker.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))
-                score*=0
-              end
-            end
-            score*=0.3 if checkAImoves(PBStuff::SETUPMOVE,aimem) && checkAIhealing(aimem)
-            if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
-               ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON)) ||
-               attacker.effects[PBEffects::Ingrain] || attacker.effects[PBEffects::AquaRing] || $fefieldeffect==2
-              score*=1.2
-            end
-            if opponent.status==PBStatuses::POISON || opponent.status==PBStatuses::BURN
-              score*=1.2
-              if opponent.effects[PBEffects::Toxic]>0
-                score*=1.3
-              end
-            end
-            if attacker.status==PBStatuses::POISON || attacker.status==PBStatuses::BURN
-              score*=0.7
-              if attacker.effects[PBEffects::Toxic]>0
-                score*=0.3
-              end
-            end
-            if opponent.effects[PBEffects::LeechSeed]>=0
-              score*=1.3
-            end
-            if opponent.effects[PBEffects::PerishSong]!=0
-              score*=2
-            end
-            if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
-              score*=0.3
-            end
-            if opponent.vanished
-              score*=2
-              if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-                score*=1.5
-              end
-            end
-            score*=0.1 if checkAImoves(PBStuff::PROTECTMOVE,aimem)
-            if attacker.effects[PBEffects::Wish]>0
-              score*=1.3
-            end
-          end
-        else
-          score*=0
-        end
-      when 0x155 # Thousand Waves
-        if !(opponent.effects[PBEffects::MeanLook]>=0 || opponent.effects[PBEffects::Ingrain] || opponent.pbHasType?(:GHOST)) && opponent.effects[PBEffects::Substitute]<=0
-          score*=0.1 if checkAImoves(PBStuff::PIVOTMOVE,aimem)
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::RUNAWAY)
-            score*=0.1
-          end
-          if attacker.pbHasMove?((PBMoves::PERISHSONG))
-            score*=1.5
-          end
-          if opponent.effects[PBEffects::PerishSong]>0
-            score*=4
-          end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::ARENATRAP) || (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG)
-            score*=0
-          end
-          if opponent.effects[PBEffects::Attract]>=0
-            score*=1.3
-          end
-          if opponent.effects[PBEffects::LeechSeed]>=0
-            score*=1.3
-          end
-          if opponent.effects[PBEffects::Curse]
-            score*=1.5
-          end
-          miniscore*=0.7 if attacker.moves.any? {|moveloop| (PBStuff::SWITCHOUTMOVE).include?(moveloop)}
-          ministat=(-5)*statchangecounter(opponent,1,7)
-          ministat+=100
-          ministat/=100.0
-          score*=ministat
-          if opponent.effects[PBEffects::Confusion]>0
-            score*=1.1
-          end
-        end
-      when 0x156 # NOT USED
-      when 0x157 # Hyperspace Hole
-        if checkAImoves(PBStuff::PROTECTMOVE,aimem)
-          score*=1.1
-          ratesharers=[
-          391,   # Protect
-          121,   # Detect
-          122,   # Quick Guard
-          515,   # Wide Guard
-          361,   # Endure
-          584,   # King's Shield
-          603,    # Spiky Shield
-          641    # Baneful Bunker
-            ]
-          if !ratesharers.include?(opponent.lastMoveUsed)
-            score*=1.2
-          end
-        end
-        if !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD)
-          if attacker.stages[PBStats::ACCURACY]<0
-            miniscore = (-5)*attacker.stages[PBStats::ACCURACY]
-            miniscore+=100
-            miniscore/=100.0
-            score*=miniscore
-          end
-          if opponent.stages[PBStats::EVASION]>0
-            miniscore = (5)*opponent.stages[PBStats::EVASION]
-            miniscore+=100
-            miniscore/=100.0
-            score*=miniscore
-          end
-          if (oppitemworks && opponent.item == PBItems::LAXINCENSE) || (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER)
-            score*=1.2
-          end
-          if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
-             ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
-            score*=1.3
-          end
-          if opponent.vanished && ((attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0))
-            score*=3
-          end
-        end
-      when 0x158 # Not Used
-      when 0x159 # Hyperspace Fury
-        startscore = score
-        if attacker.species==720 && attacker.form==1 # Hoopa-U
-          if checkAImoves(PBStuff::PROTECTMOVE,aimem)
-            score*=1.1
-            ratesharers=[
-            391,   # Protect
-            121,   # Detect
-            122,   # Quick Guard
-            515,   # Wide Guard
-            361,   # Endure
-            584,   # King's Shield
-            603,    # Spiky Shield
-            641    # Baneful Bunker
-              ]
-            if !ratesharers.include?(opponent.lastMoveUsed)
-              score*=1.2
-            end
-          end
-          if !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD) && !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD)
-            if attacker.stages[PBStats::ACCURACY]<0
-              miniscore = (-5)*attacker.stages[PBStats::ACCURACY]
-              miniscore+=100
-              miniscore/=100.0
-              score*=miniscore
-            end
-            if opponent.stages[PBStats::EVASION]>0
-              miniscore = (5)*opponent.stages[PBStats::EVASION]
-              miniscore+=100
-              miniscore/=100.0
-              score*=miniscore
-            end
-            if (oppitemworks && opponent.item == PBItems::LAXINCENSE) || (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER)
-              score*=1.2
-            end
-            if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
-               ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
-              score*=1.3
-            end
-            if opponent.vanished && (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-              score*=3
-            end
-          end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
-            score*=1.7
-          else
-            if startscore<100
-              score*=0.8
-              if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-                score*=1.2
-              else
-                score*=0.8
-              end
-              score*=0.7 if checkAIhealing(aimem)
-              if initialscores.length>0
-                score*=0.5 if hasgreatmoves(initialscores,scoreindex,skill)
-              end
-              miniscore=100
-              if opponent.pbNonActivePokemonCount!=0
-                miniscore*=opponent.pbNonActivePokemonCount
-                miniscore/=1000.0
-                miniscore= 1-miniscore
-                score*=miniscore
-              end
-              if opponent.pbNonActivePokemonCount!=0 && attacker.pbNonActivePokemonCount==0
-                score*=0.7
-              end
-            end
-          end
-        else
-          score*=0
-        end
-      when 0x15A # Future Sight Dummy
-      when 0x15B # Aurora Veil
-        if attacker.pbOwnSide.effects[PBEffects::AuroraVeil]<=0
-          if pbWeather==PBWeather::HAIL || (skill>=PBTrainerAI.bestSkill &&
-             ($fefieldeffect==28 || $fefieldeffect==30 || $fefieldeffect==34 || $fefieldeffect==4 || $fefieldeffect==9 || $fefieldeffect==13 || $fefieldeffect==25))
-            score*=1.5
-            if attacker.pbOwnSide.effects[PBEffects::AuroraVeil]>0
-              score*=0.1
-            end
-            if (attitemworks && attacker.item == PBItems::LIGHTCLAY)
-              score*=1.5
-            end
-            if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-              score*=1.1
-              score*=2 if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp && (checkAIdamage(aimem,attacker,opponent,skill)/2.0)<attacker.hp
-            end
-            if attacker.hp==attacker.totalhp && (((attitemworks && attacker.item == PBItems::FOCUSSASH) ||
-               ((!attacker.abilitynulled && attacker.ability == PBAbilities::STURDY) && !attacker.moldbroken)) &&
-               (pbWeather!=PBWeather::HAIL || attacker.pbHasType?(:ICE)) &&
-               (pbWeather!=PBWeather::SANDSTORM || attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:GROUND) || attacker.pbHasType?(:STEEL)))
-              score*=1.3
-            end
-            score*=0.1 if checkAImoves([PBMoves::DEFOG,PBMoves::RAPIDSPIN],aimem)
-            if skill>=PBTrainerAI.bestSkill
-              if $fefieldeffect==30 # Mirror
-                score*=1.5
-              end
-            end
-          else
-            score=0
-          end
-        else
-          score=0
-        end
-      when 0x15C # Baneful Bunker
-        if opponent.turncount==0
-          score*=1.5
-        end
-        score*=0.3 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
-        if (!attacker.abilitynulled && attacker.ability == PBAbilities::SPEEDBOOST) && attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill) && @trickroom==0
-          score*=4
-          #experimental -- cancels out drop if killing moves
-          if initialscores.length>0
-            score*=6 if hasgreatmoves(initialscores,scoreindex,skill)
-          end
-          #end experimental
-        end
-        if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
-           ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON)) ||
-           attacker.effects[PBEffects::Ingrain] || attacker.effects[PBEffects::AquaRing] || $fefieldeffect==2
-          score*=1.2
-        end
-        if opponent.status!=0
-          score*=0.8
-        else
-          if opponent.pbCanPoison?(false)
-            score*=1.3
-            if (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
-              score*=1.3
-            end
-            if (!opponent.abilitynulled && opponent.ability == PBAbilities::POISONHEAL)
-              score*=0.3
-            end
-            if (!opponent.abilitynulled && opponent.ability == PBAbilities::TOXICBOOST)
-              score*=0.7
-            end
-          end
-        end
-        if attacker.status==PBStatuses::POISON || attacker.status==PBStatuses::BURN
-          score*=0.7
-          if attacker.effects[PBEffects::Toxic]>0
-            score*=0.3
-          end
-        end
-        if opponent.effects[PBEffects::LeechSeed]>=0
-          score*=1.3
-        end
-        if opponent.effects[PBEffects::PerishSong]!=0
-          score*=2
-        end
-        if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
-          score*=0.3
-        end
-        if opponent.vanished
-          score*=2
-          if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-            score*=1.5
-          end
-        end
-        score*=0.1 if checkAImoves(PBStuff::PROTECTMOVE,aimem)
-        if attacker.effects[PBEffects::Wish]>0
-          if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
-            score*=3
-          else
-            score*=1.4
-          end
-        end
-        if aimem.length > 0
-          contactcheck=false
-          for j in aimem
-            contactcheck=j.isContactMove?
-          end
-          if contactcheck
-            score*=1.3
-          end
-        end
-        ratesharers=[
-        391,   # Protect
-        121,   # Detect
-        122,   # Quick Guard
-        515,   # Wide Guard
-        361,   # Endure
-        584,   # King's Shield
-        603,    # Spiky Shield
-        641    # Baneful Bunker
-          ]
-        if ratesharers.include?(attacker.lastMoveUsed)
-          score/=(attacker.effects[PBEffects::ProtectRate]*2.0)
-        end
-      when 0x15D # Beak Blast
-        contactcheck = false
-        if aimem.length > 0
-          for j in aimem
-            if j.isContactMove?
-              contactcheck=true
-            end
-          end
-        end
-        if opponent.pbCanBurn?(false)
-          miniscore=120
-          ministat = 5*opponent.stages[PBStats::ATTACK]
+      when 0x159 # Toxic Thread
+        if opponent.pbCanPoison?(false)
+          miniscore=100
+          miniscore*=1.2
+          ministat=0
+          ministat+=opponent.stages[PBStats::DEFENSE]
+          ministat+=opponent.stages[PBStats::SPDEF]
+          ministat+=opponent.stages[PBStats::EVASION]
           if ministat>0
-            ministat+=100
-            ministat/=100.0
-            miniscore*=ministat
+            minimini=5*ministat
+            minimini+=100
+            minimini/=100.0
+            miniscore*=minimini
           end
-          if !opponent.abilitynulled
-            miniscore*=0.3 if opponent.ability == PBAbilities::NATURALCURE
-            miniscore*=0.7 if opponent.ability == PBAbilities::MARVELSCALE
-            miniscore*=0.1 if opponent.ability == PBAbilities::GUTS || opponent.ability == PBAbilities::FLAREBOOST
-            miniscore*=0.7 if opponent.ability == PBAbilities::SHEDSKIN
-            miniscore*=0.5 if opponent.ability == PBAbilities::SYNCHRONIZE && attacker.status==0
-            miniscore*=0.5 if opponent.ability == PBAbilities::MAGICGUARD
-            miniscore*=0.3 if opponent.ability == PBAbilities::QUICKFEET
-            miniscore*=1.1 if opponent.ability == PBAbilities::STURDY
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::NATURALCURE)
+            miniscore*=0.3
           end
-          miniscore*=0.1 if checkAImoves([PBMoves::REST],aimem)
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::MARVELSCALE)
+            miniscore*=0.7
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::TOXICBOOST) || (!opponent.abilitynulled && opponent.ability == PBAbilities::GUTS)
+            miniscore*=0.2
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::POISONHEAL) || (!opponent.abilitynulled && opponent.ability == PBAbilities::MAGICGUARD)
+            miniscore*=0.1
+          end
           miniscore*=0.2 if checkAImoves([PBMoves::FACADE],aimem)
-          if opponent.attack > opponent.spatk
-            miniscore*=1.7
+          miniscore*=0.1 if checkAImoves([PBMoves::REST],aimem)
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+            miniscore*=1.5
+          end
+          if initialscores.length>0
+            miniscore*=1.2 if hasbadmoves(initialscores,scoreindex,30)
+          end
+          if attacker.pbHasMove?(:VENOSHOCK) ||
+            attacker.pbHasMove?(:VENOMDRENCH) ||
+            (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
+            miniscore*=1.6
           end
           if opponent.effects[PBEffects::Yawn]>0
             miniscore*=0.4
           end
-          if startscore==110
-            miniscore*=0.8
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::SHEDSKIN)
+            miniscore*=0.7
           end
-          miniscore-=100
-          minimini = 100
-          if contactcheck
-            minimini*=1.5
-          else
-            if opponent.attack>opponent.spatk
-              minimini*=1.3
-            else
-              minimini*=0.3
-            end
+          miniscore/=100.0
+          score*=miniscore
+        else
+          score*=0.5
+        end
+        if opponent.stages[PBStats::SPEED]>0 || opponent.stages[PBStats::SPEED]==-6
+          score*=0.5
+        else
+          miniscore=100
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+            miniscore*=1.1
           end
-          minimini/=100.0
-          miniscore*=minimini
-          miniscore+=100
+          livecount1=0
+          for i in pbParty(attacker.index)
+            next if i.nil?
+            livecount1+=1 if i.hp!=0
+          end
+          livecount2=0
+          for i in pbParty(opponent.index)
+            next if i.nil?
+            livecount2+=1 if i.hp!=0
+          end
+          if livecount2==1 || (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG) || opponent.effects[PBEffects::MeanLook]>0
+            miniscore*=1.4
+          end
+          if opponent.stages[PBStats::SPEED]<0
+            minimini = 5*opponent.stages[PBStats::SPEED]
+            minimini+=100
+            minimini/=100.0
+            miniscore*=minimini
+          end
+          if livecount1==1
+            miniscore*=0.5
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE) ||
+             (!opponent.abilitynulled && opponent.ability == PBAbilities::COMPETITIVE) ||
+             (!opponent.abilitynulled && opponent.ability == PBAbilities::DEFIANT) ||
+             (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY)
+            miniscore*=0.1
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::SPEEDBOOST)
+            miniscore*=0.5
+          end
+          if attacker.pbHasMove?(:ELECTROBALL)
+            miniscore*=1.5
+          end
+          if attacker.pbHasMove?(:GYROBALL)
+            miniscore*=0.5
+          end
+          miniscore*=0.1 if  @trickroom!=0 || checkAImoves([PBMoves::TRICKROOM],aimem)
+          if (oppitemworks && opponent.item == PBItems::LAGGINGTAIL) || (oppitemworks && opponent.item == PBItems::IRONBALL)
+            miniscore*=0.1
+          end
+          miniscore*=1.3 if checkAImoves([PBMoves::ELECTROBALL],aimem)
+          miniscore*=0.5 if checkAImoves([PBMoves::GYROBALL],aimem)
+          if (attacker.pbSpeed>pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+            score*=0.5
+          end
           miniscore/=100.0
           score*=miniscore
         end
-        if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-          score*=0.7
-        end
-      when 0x15E # Burn Up
-        maxdam=0
-        maxtype = -1
-        healvar=false
-        if aimem.length > 0
-          for j in aimem
-            healvar=true if j.isHealingMove?
-            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)
-            if tempdam>maxdam
-              maxdam=tempdam
-              maxtype = j.type
-            end
-          end
-        end
-        if !attacker.pbHasType?(:FIRE)
-          score*=0
-        else
-          if score<100
-            score*=0.9
-            if healvar
-              score*=0.5
-            end
-          end
-          if initialscores.length>0
-            score*=0.5 if hasgreatmoves(initialscores,scoreindex,skill)
-          end
-          miniscore=100
-          if opponent.pbNonActivePokemonCount!=0
-            miniscore*=opponent.pbNonActivePokemonCount
-            miniscore/=100.0
-            miniscore*=0.05
-            miniscore = 1-miniscore
-            score*=miniscore
-          end
-          if attacker.pbNonActivePokemonCount==0 && opponent.pbNonActivePokemonCount!=0
-            score*=0.7
-          end
-          effcheck = PBTypes.getCombinedEffectiveness(opponent.type1,(PBTypes::FIRE),(PBTypes::FIRE))
-          if effcheck > 4
-            score*=1.5
-          else
-            if effcheck<4
-              score*=0.5
-            end
-          end
-          effcheck = PBTypes.getCombinedEffectiveness(opponent.type2,(PBTypes::FIRE),(PBTypes::FIRE))
-          if effcheck > 4
-            score*=1.5
-          else
-            if effcheck<4
-              score*=0.5
-            end
-          end
-          if maxtype!=-1
-            effcheck = PBTypes.getCombinedEffectiveness(maxtype,(PBTypes::FIRE),(PBTypes::FIRE))
-            if effcheck > 4
-              score*=1.5
-            else
-              if effcheck<4
-                score*=0.5
-              end
-            end
-          end
-        end
-      when 0x15F # Clanging Scales
-        maxdam=0
-        maxphys = false
-        healvar=false
-        privar=false
-        if aimem.length > 0
-          for j in aimem
-            healvar=true if j.isHealingMove?
-            privar=true if j.priority>0
-            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)
-            if tempdam>maxdam
-              maxdam=tempdam
-              maxphys = j.pbIsPhysical?(j.type)
-            end
-          end
-        end
-        if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
+      when 0x15B # Purify
+        if opponent==attacker.pbPartner && opponent.status!=0
           score*=1.5
-        else
-          if score<100
+          if opponent.hp>opponent.totalhp*0.8
             score*=0.8
-            if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-              score*=1.3
-            else
-              score*=1.2 if checkAIpriority(aimem)
-            end
-            score*=0.5 if checkAIhealing(aimem)
-          end
-          if initialscores.length>0
-            score*=0.5 if hasgreatmoves(initialscores,scoreindex,skill)
-          end
-          miniscore=100
-          if opponent.pbNonActivePokemonCount!=0
-            miniscore*=opponent.pbNonActivePokemonCount
-            miniscore/=100.0
-            miniscore*=0.05
-            miniscore = 1-miniscore
-            score*=miniscore
-          end
-          if attacker.pbNonActivePokemonCount==0 && opponent.pbNonActivePokemonCount!=0
-            score*=0.7
-          end
-          if opponent.attack>opponent.spatk
-            score*=0.7
-          end
-          score*=0.7 if checkAIbest(aimem,2,[],false,attacker,opponent,skill)
-        end
-      when 0x160 # Core Enforcer
-        if !((PBStuff::FIXEDABILITIES).include?(opponent.ability))  && !opponent.effects[PBEffects::GastroAcid]
-          miniscore = getAbilityDisruptScore(move,attacker,opponent,skill)
-          if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-            miniscore*=1.3
           else
-            miniscore*=0.5
+            if opponent.hp>opponent.totalhp*0.3
+              score*=2
+            end
           end
-          miniscore*=1.3 if checkAIpriority(aimem)
-          score*=miniscore
-        end
-      when 0x161 # First Impression
-        if attacker.turncount!=0
-          score=0
-        end
-        if score==110
-          score*=1.1
-        end
-      when 0x162 # Floral Healing
-        if !@doublebattle || attacker.pbIsOpposing?(opponent.index)
-          score*=0
+          if opponent.effects[PBEffects::Toxic]>3
+            score*=1.3
+          end
+          if opponent.pbHasMove?(:HEX)
+            score*=1.3
+          end
         else
-          if !attacker.pbIsOpposing?(opponent.index)
-            if opponent.hp*(1.0/opponent.totalhp)<0.7 && opponent.hp*(1.0/opponent.totalhp)>0.3
-              score*=3
-            end
-            if opponent.hp*(1.0/opponent.totalhp)<0.3
-              score*=1.7
-            end
-            if opponent.status==PBStatuses::POISON || opponent.status==PBStatuses::BURN || opponent.effects[PBEffects::LeechSeed]>=0 || opponent.effects[PBEffects::Curse]
-              score*=0.8
-              if opponent.effects[PBEffects::Toxic]>0
-                score*=0.7
-              end
-            end
-            if opponent.hp*(1.0/opponent.totalhp)>0.8
-              if ((attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) && ((attacker.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))
-                score*=0.5
-              else
-                score*=0
-              end
-            end
-          else
-            score*=0
-          end
+          score*=0
         end
-        if $fefieldeffect==2 || $fefieldeffect==31 || ($fefieldeffect==33 && $fecounter>1)
-          score*=1.5
-        end
-        if attacker.status!=PBStatuses::POISON && ($fefieldeffect==10 || $fefieldeffect==11)
-          score*=0.2
-        end
-      when 0x163 # Gear Up
+      when 0x15C # Gear Up
         if !((!attacker.abilitynulled && attacker.ability == PBAbilities::PLUS) || (!attacker.abilitynulled && attacker.ability == PBAbilities::MINUS) ||
            (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::PLUS) || (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::MINUS))
           score*=0
@@ -16158,47 +15995,21 @@ class PokeBattle_Battle
             score*=0
           end
         end
-      when 0x164 # Instruct
-        if !@doublebattle || opponent!=attacker.pbPartner || opponent.lastMoveUsedSketch<=0
-          score=1
-        else
-          score*=3
-          #if @opponent.trainertype==PBTrainers::MIME
-          #  score+=35
-          #end
-          if attacker.pbPartner.hp*2 < attacker.pbPartner.totalhp
-            score*=0.5
-          else
-            if attacker.pbPartner.hp==attacker.pbPartner.totalhp
-              score*=1.2
-            end
-          end
-          if initialscores.length>0
-            badmoves=true
-            for i in 0...initialscores.length
-              next if attacker.moves[i].basedamage<=0
-              next if i==scoreindex
-              if initialscores[i]>20
-                badmoves=false
-              end
-            end
-            score*=1.2 if badmoves
-          end
-          if ((attacker.pbPartner.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) &&
-             ((attacker.pbPartner.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))
-            score*=1.4
-          end
-          ministat = [attacker.pbPartner.attack,attacker.pbPartner.spatk].max
-          minimini = [attacker.attack,attacker.spatk].max
-          ministat-=minimini
-          ministat+=100
-          ministat/=100.0
-          score*=ministat
-          if attacker.pbPartner.hp==0
-            score=1
-          end
+      when 0x15D # Spectral Thief
+        if opponent.effects[PBEffects::Substitute]>0
+          score*=1.2
         end
-      when 0x165 # Laser Focus
+        ministat= 10*statchangecounter(opponent,1,7)
+        if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
+          ministat*=(-1)
+        end
+        if (!attacker.abilitynulled && attacker.ability == PBAbilities::SIMPLE)
+          ministat*=2
+        end
+        ministat+=100
+        ministat/=100.0
+        score*=ministat
+      when 0x15E # Laser Focus
         if !(!opponent.abilitynulled && opponent.ability == PBAbilities::BATTLEARMOR) &&
            !(!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR) &&
            attacker.effects[PBEffects::LaserFocus]==0
@@ -16229,7 +16040,247 @@ class PokeBattle_Battle
         else
           score*=0
         end
-      when 0x166 # Moongeist Beam
+      when 0x15F # Clanging Scales
+        maxdam=0
+        maxphys = false
+        healvar=false
+        privar=false
+        if aimem.length > 0
+          for j in aimem
+            healvar=true if j.isHealingMove?
+            privar=true if j.priority>0
+            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)
+            if tempdam>maxdam
+              maxdam=tempdam
+              maxphys = j.pbIsPhysical?(j.type)
+            end
+          end
+        end
+        if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
+          score*=1.5
+        else
+          if score<100
+            score*=0.8
+            if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+              score*=1.3
+            else
+              score*=1.2 if checkAIpriority(aimem)
+            end
+            score*=0.5 if checkAIhealing(aimem)
+          end
+          if initialscores.length>0
+            score*=0.5 if hasgreatmoves(initialscores,scoreindex,skill)
+          end
+          miniscore=100
+          if opponent.pbNonActivePokemonCount!=0
+            miniscore*=opponent.pbNonActivePokemonCount
+            miniscore/=100.0
+            miniscore*=0.05
+            miniscore = 1-miniscore
+            score*=miniscore
+          end
+          if attacker.pbNonActivePokemonCount==0 && opponent.pbNonActivePokemonCount!=0
+            score*=0.7
+          end
+          if opponent.attack>opponent.spatk
+            score*=0.7
+          end
+          score*=0.7 if checkAIbest(aimem,2,[],false,attacker,opponent,skill)
+        end
+      when 0x160 # Strength Sap
+        if opponent.effects[PBEffects::Substitute]<=0
+          if attacker.effects[PBEffects::HealBlock]>0
+            score*=0
+          else
+            if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
+              score*=3
+              if skill>=PBTrainerAI.bestSkill
+                if checkAIdamage(aimem,attacker,opponent,skill)*1.5 > attacker.hp
+                  score*=1.5
+                end
+                if (attacker.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+                  if checkAIdamage(aimem,attacker,opponent,skill)*2 > attacker.hp
+                    score*=2
+                  else
+                    score*=0.2
+                  end
+                end
+              end
+            end
+          end
+          if opponent.pbHasMove?(:CALMMIND) || opponent.pbHasMove?(:WORKUP) ||
+             opponent.pbHasMove?(:NASTYPLOT) || opponent.pbHasMove?(:TAILGLOW) ||
+             opponent.pbHasMove?(:GROWTH) || opponent.pbHasMove?(:QUIVERDANCE)
+            score*=0.7
+          end
+          if (attacker.hp.to_f)/attacker.totalhp<0.5
+            score*=1.5
+          else
+            score*=0.5
+          end
+          if !(roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL))
+            score*=0.8
+          end
+          if opponent.status==PBStatuses::POISON || opponent.status==PBStatuses::BURN || opponent.effects[PBEffects::LeechSeed]>=0 || opponent.effects[PBEffects::Curse]
+            score*=1.3
+            if opponent.effects[PBEffects::Toxic]>0
+              score*=1.3
+            end
+          end
+          score*=1.2 if checkAImoves(PBStuff::CONTRARYBAITMOVE,aimem)
+          if opponent.vanished || opponent.effects[PBEffects::HyperBeam]>0
+            score*=1.2
+          end
+          ministat = opponent.attack
+          ministat/=(attacker.totalhp).to_f
+          ministat+=0.5
+          score*=ministat
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::LIQUIDOOZE)
+            score*=0.2
+          end
+          if $fefieldeffect==15 || $fefieldeffect==8
+            score*=1.3
+          end
+          if (attitemworks && attacker.item == PBItems::BIGROOT)
+            score*=1.3
+          end
+          miniscore=100
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+            miniscore*=1.3
+          end
+          count=-1
+          party=pbParty(attacker.index)
+          sweepvar=false
+          for i in 0...party.length
+            count+=1
+            next if (count==attacker.pokemonIndex || party[i].nil?)
+            temproles = pbGetMonRole(party[i],opponent,skill,count,party)
+            if temproles.include?(PBMonRoles::SWEEPER)
+              sweepvar=true
+            end
+          end
+          if sweepvar
+            miniscore*=1.1
+          end
+          livecount2=0
+          for i in pbParty(opponent.index)
+            next if i.nil?
+            livecount2+=1 if i.hp!=0
+          end
+          if livecount2==1 || (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG) || opponent.effects[PBEffects::MeanLook]>0
+            miniscore*=1.4
+          end
+          if opponent.status==PBStatuses::POISON
+            miniscore*=1.2
+          end
+          if opponent.stages[PBStats::ATTACK]<0
+            minimini = 5*opponent.stages[PBStats::ATTACK]
+            minimini+=100
+            minimini/=100.0
+            miniscore*=minimini
+          end
+          if attacker.pbHasMove?(:FOULPLAY)
+            miniscore*=0.5
+          end
+          if opponent.status==PBStatuses::BURN
+            miniscore*=0.5
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE) || (!opponent.abilitynulled && opponent.ability == PBAbilities::COMPETITIVE)
+            miniscore*=0.1
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::DEFIANT) || (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY)
+            miniscore*=0.5
+          end
+          miniscore/=100.0
+          if attacker.stages[PBStats::ATTACK]!=6
+            score*=miniscore
+          end
+        else
+          score = 0
+        end
+      when 0x161 # Speed Swap
+        if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+          miniscore= (10)*opponent.stages[PBStats::SPEED]
+          minimini= (-10)*attacker.stages[PBStats::SPEED]
+          if miniscore==0 && minimini==0
+            score*=0
+          else
+            miniscore+=minimini
+            miniscore+=100
+            miniscore/=100.0
+            score*=miniscore
+            if @doublebattle
+              score*=0.8
+            end
+          end
+        else
+          score*=0
+        end
+      when 0x162 # Burn Up
+        maxdam=0
+        maxtype = -1
+        healvar=false
+        if aimem.length > 0
+          for j in aimem
+            healvar=true if j.isHealingMove?
+            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)
+            if tempdam>maxdam
+              maxdam=tempdam
+              maxtype = j.type
+            end
+          end
+        end
+        if !attacker.pbHasType?(:FIRE)
+          score*=0
+        else
+          if score<100
+            score*=0.9
+            if healvar
+              score*=0.5
+            end
+          end
+          if initialscores.length>0
+            score*=0.5 if hasgreatmoves(initialscores,scoreindex,skill)
+          end
+          miniscore=100
+          if opponent.pbNonActivePokemonCount!=0
+            miniscore*=opponent.pbNonActivePokemonCount
+            miniscore/=100.0
+            miniscore*=0.05
+            miniscore = 1-miniscore
+            score*=miniscore
+          end
+          if attacker.pbNonActivePokemonCount==0 && opponent.pbNonActivePokemonCount!=0
+            score*=0.7
+          end
+          effcheck = PBTypes.getCombinedEffectiveness(opponent.type1,(PBTypes::FIRE),(PBTypes::FIRE))
+          if effcheck > 4
+            score*=1.5
+          else
+            if effcheck<4
+              score*=0.5
+            end
+          end
+          effcheck = PBTypes.getCombinedEffectiveness(opponent.type2,(PBTypes::FIRE),(PBTypes::FIRE))
+          if effcheck > 4
+            score*=1.5
+          else
+            if effcheck<4
+              score*=0.5
+            end
+          end
+          if maxtype!=-1
+            effcheck = PBTypes.getCombinedEffectiveness(maxtype,(PBTypes::FIRE),(PBTypes::FIRE))
+            if effcheck > 4
+              score*=1.5
+            else
+              if effcheck<4
+                score*=0.5
+              end
+            end
+          end
+        end
+      when 0x163 # Moongeist Beam
         damcount = 0
         firemove = false
         for m in attacker.moves
@@ -16331,129 +16382,363 @@ class PokeBattle_Battle
             end
           end
         end
-      when 0x167 # Pollen Puff
-        if opponent==attacker.pbPartner
-          score = 15
-          if opponent.hp>opponent.totalhp*0.3 && opponent.hp<opponent.totalhp*0.7
-            score*=3
+      when 0x164 # Photon Geyser
+        damcount = 0
+        firemove = false
+        for m in attacker.moves
+          if m.basedamage>0
+            damcount+=1
+            if m.type==(PBTypes::FIRE)
+              firemove = true
+            end
           end
-          if opponent.hp*(1.0/opponent.totalhp)<0.3
+        end
+        if !opponent.moldbroken
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL)
+            if pbWeather!=PBWeather::SANDSTORM
+              score*=1.1
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::VOLTABSORB) || (!opponent.abilitynulled && opponent.ability == PBAbilities::LIGHTNINGROD)
+            if move.type==(PBTypes::ELECTRIC)
+              if damcount==1
+                score*=3
+              end
+              if PBTypes.getCombinedEffectiveness((PBTypes::ELECTRIC),opponent.type1,opponent.type2)>4
+                score*=2
+              end
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::WATERABSORB) ||
+             (!opponent.abilitynulled && opponent.ability == PBAbilities::STORMDRAIN) ||
+             (!opponent.abilitynulled && opponent.ability == PBAbilities::DRYSKIN)
+            if move.type==(PBTypes::WATER)
+              if damcount==1
+                score*=3
+              end
+              if PBTypes.getCombinedEffectiveness((PBTypes::WATER),opponent.type1,opponent.type2)>4
+                score*=2
+              end
+            end
+            if (!opponent.abilitynulled && opponent.ability == PBAbilities::DRYSKIN) && firemove
+              score*=0.5
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::FLASHFIRE)
+            if move.type==(PBTypes::FIRE)
+              if damcount==1
+                score*=3
+              end
+              if PBTypes.getCombinedEffectiveness((PBTypes::FIRE),opponent.type1,opponent.type2)>4
+                score*=2
+              end
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::LEVITATE)
+            if move.type==(PBTypes::GROUND)
+              if damcount==1
+                score*=3
+              end
+              if PBTypes.getCombinedEffectiveness((PBTypes::GROUND),opponent.type1,opponent.type2)>4
+                score*=2
+              end
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::WONDERGUARD)
+            score*=5
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::SOUNDPROOF)
+            if move.isSoundBased?
+              score*=3
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::THICKFAT)
+            if move.type==(PBTypes::FIRE) || move.type==(PBTypes::ICE)
+              score*=1.5
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::MOLDBREAKER)
+            score*=1.1
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE)
             score*=1.7
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::MULTISCALE)
+            if attacker.hp==attacker.totalhp
+              score*=1.5
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::SAPSIPPER)
+            if move.type==(PBTypes::GRASS)
+              if damcount==1
+                score*=3
+              end
+              if PBTypes.getCombinedEffectiveness((PBTypes::GRASS),opponent.type1,opponent.type2)>4
+                score*=2
+              end
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK)
+            if pbWeather!=PBWeather::HAIL
+              score*=1.1
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::FURCOAT)
+            if attacker.attack>attacker.spatk
+              score*=1.5
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::FLUFFY)
+            score*=1.5
+            if move.type==(PBTypes::FIRE)
+              score*=0.5
+            end
+          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::WATERBUBBLE)
+            score*=1.5
+            if move.type==(PBTypes::FIRE)
+              score*=1.3
+            end
           end
-          if opponent.status==PBStatuses::POISON || opponent.status==PBStatuses::BURN || opponent.effects[PBEffects::LeechSeed]>=0 || opponent.effects[PBEffects::Curse]
-            score*=0.8
-            if opponent.effects[PBEffects::Toxic]>0
+        end
+      when 0x165 # Core Enforcer
+        if !opponent.unstoppableAbility? && !opponent.effects[PBEffects::GastroAcid]
+          miniscore = getAbilityDisruptScore(move,attacker,opponent,skill)
+          if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+            miniscore*=1.3
+          else
+            miniscore*=0.5
+          end
+          miniscore*=1.3 if checkAIpriority(aimem)
+          score*=miniscore
+        end
+      when 0x166 # Stomping Tantrum
+        if $fefieldeffect==5
+          psyvar=false
+          for mon in pbParty(attacker.index)
+            next if mon.nil?
+            if mon.hasType?(:PSYCHIC)
+              psyvar=true
+            end
+          end
+          if !attacker.pbHasType?(:PSYCHIC)
+            score*=1.3
+          end
+          if !psyvar
+            score*=1.8
+          else
+            score*=0.7
+          end
+        end
+      when 0x167 # Aurora Veil
+        if attacker.pbOwnSide.effects[PBEffects::AuroraVeil]<=0
+          if pbWeather==PBWeather::HAIL || (skill>=PBTrainerAI.bestSkill &&
+             ($fefieldeffect==28 || $fefieldeffect==30 || $fefieldeffect==34 || $fefieldeffect==4 || $fefieldeffect==9 || $fefieldeffect==13 || $fefieldeffect==25))
+            score*=1.5
+            if attacker.pbOwnSide.effects[PBEffects::AuroraVeil]>0
+              score*=0.1
+            end
+            if (attitemworks && attacker.item == PBItems::LIGHTCLAY)
+              score*=1.5
+            end
+            if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+              score*=1.1
+              score*=2 if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp && (checkAIdamage(aimem,attacker,opponent,skill)/2.0)<attacker.hp
+            end
+            if attacker.hp==attacker.totalhp && (((attitemworks && attacker.item == PBItems::FOCUSSASH) ||
+               ((!attacker.abilitynulled && attacker.ability == PBAbilities::STURDY) && !attacker.moldbroken)) &&
+               (pbWeather!=PBWeather::HAIL || attacker.pbHasType?(:ICE)) &&
+               (pbWeather!=PBWeather::SANDSTORM || attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:GROUND) || attacker.pbHasType?(:STEEL)))
+              score*=1.3
+            end
+            score*=0.1 if checkAImoves([PBMoves::DEFOG,PBMoves::RAPIDSPIN],aimem)
+            if skill>=PBTrainerAI.bestSkill
+              if $fefieldeffect==30 # Mirror
+                score*=1.5
+              end
+            end
+          else
+            score=0
+          end
+        else
+          score=0
+        end
+      when 0x168 # Baneful Bunker
+        if opponent.turncount==0
+          score*=1.5
+        end
+        score*=0.3 if opponent.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
+        if (!attacker.abilitynulled && attacker.ability == PBAbilities::SPEEDBOOST) && attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill) && @trickroom==0
+          score*=4
+          #experimental -- cancels out drop if killing moves
+          if initialscores.length>0
+            score*=6 if hasgreatmoves(initialscores,scoreindex,skill)
+          end
+          #end experimental
+        end
+        if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
+           ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON)) ||
+           attacker.effects[PBEffects::Ingrain] || attacker.effects[PBEffects::AquaRing] || $fefieldeffect==2
+          score*=1.2
+        end
+        if opponent.status!=0
+          score*=0.8
+        else
+          if opponent.pbCanPoison?(false)
+            score*=1.3
+            if (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
+              score*=1.3
+            end
+            if (!opponent.abilitynulled && opponent.ability == PBAbilities::POISONHEAL)
+              score*=0.3
+            end
+            if (!opponent.abilitynulled && opponent.ability == PBAbilities::TOXICBOOST)
               score*=0.7
             end
           end
-          if opponent.hp*(1.0/opponent.totalhp)>0.8
-            if ((attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) && ((attacker.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))
-              score*=0.5
-            else
-              score*=0
-            end
-          end
-          if attacker.effects[PBEffects::HealBlock]>0 || opponent.effects[PBEffects::HealBlock]>0
-            score*=0
+        end
+        if attacker.status==PBStatuses::POISON || attacker.status==PBStatuses::BURN
+          score*=0.7
+          if attacker.effects[PBEffects::Toxic]>0
+            score*=0.3
           end
         end
-      when 0x168 # Psychic Terrain
-        psyvar=false
-        for mon in pbParty(attacker.index)
-          next if mon.nil?
-          if mon.hasType?(:PSYCHIC)
-            psyvar=true
+        if opponent.effects[PBEffects::LeechSeed]>=0
+          score*=1.3
+        end
+        if opponent.effects[PBEffects::PerishSong]!=0
+          score*=2
+        end
+        if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
+          score*=0.3
+        end
+        if opponent.vanished
+          score*=2
+          if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+            score*=1.5
           end
         end
-        pricheck = false
-        for m in attacker.moves
-          if m.priority>0
-            pricheck=true
-            break
-          end
-        end
-        if @field.effects[PBEffects::Terrain]==0 && $fefieldeffect!=22
-          $fefieldeffect!=35 && $fefieldeffect!=37
-          miniscore = getFieldDisruptScore(attacker,opponent,skill)
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::TELEPATHY)
-            miniscore*=1.5
-          end
-          if attacker.pbHasType?(:PSYCHIC)
-            miniscore*=1.5
-          end
-          if psyvar
-            miniscore*=2
-          end
-          if opponent.pbHasType?(:PSYCHIC)
-            miniscore*=0.5
-          end
-          if pricheck
-            miniscore*=0.7
-          end
-          miniscore*=1.3 if checkAIpriority(aimem)
-          if (attitemworks && attacker.item == PBItems::AMPLIFIELDROCK)
-            miniscore*=2
-          end
-          score*=miniscore
-        else
-          score*=0
-        end
-      when 0x169 # Purify
-        if opponent==attacker.pbPartner && opponent.status!=0
-          score*=1.5
-          if opponent.hp>opponent.totalhp*0.8
-            score*=0.8
+        score*=0.1 if checkAImoves(PBStuff::PROTECTMOVE,aimem)
+        if attacker.effects[PBEffects::Wish]>0
+          if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
+            score*=3
           else
-            if opponent.hp>opponent.totalhp*0.3
-              score*=2
-            end
+            score*=1.4
           end
-          if opponent.effects[PBEffects::Toxic]>3
-            score*=1.3
-          end
-          if opponent.pbHasMove?((PBMoves::HEX))
-            score*=1.3
-          end
-        else
-          score*=0
         end
-      when 0x16A # Revelation Dance
-      when 0x16B # Shell Trap
-        maxdam=0
-        specialvar = false
         if aimem.length > 0
-        for j in aimem
+          contactcheck=false
+          for j in aimem
+            contactcheck=j.isContactMove?
+          end
+          if contactcheck
+            score*=1.3
+          end
+        end
+        ratesharers=[
+          391,   # Protect
+          121,   # Detect
+          122,   # Quick Guard
+          515,   # Wide Guard
+          361,   # Endure
+          584,   # King's Shield
+          603,    # Spiky Shield
+          641    # Baneful Bunker
+        ]
+        if ratesharers.include?(attacker.lastMoveUsed)
+          score/=(attacker.effects[PBEffects::ProtectRate]*2.0)
+        end
+      when 0x169 # Revelation Dance
+      when 0x16A # Spotlight
+        maxdam=0
+        maxtype = -1
+        contactcheck = false
+        if aimem.length > 0
+          for j in aimem
             tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)
             if tempdam>maxdam
               maxdam=tempdam
-              if j.pbIsSpecial?(j.type)
-                specialvar = true
-              else
-                specialvar = false
-              end
+              maxtype = j.type
+              contactcheck = j.isContactMove?
             end
           end
         end
-        if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-          score*=0.5
-        end
-        if attacker.hp==attacker.totalhp && (attitemworks && attacker.item == PBItems::FOCUSSASH)
-          score*=1.2
+        if @doublebattle && opponent==attacker.pbPartner
+          if !opponent.abilitynulled
+            if opponent.ability == PBAbilities::FLASHFIRE
+              score*=3 if checkAIbest(aimem,1,[PBTypes::FIRE],false,attacker,opponent,skill)
+            elsif opponent.ability == PBAbilities::STORMDRAIN || opponent.ability == PBAbilities::DRYSKIN || opponent.ability == PBAbilities::WATERABSORB
+              score*=3 if checkAIbest(aimem,1,[PBTypes::WATER],false,attacker,opponent,skill)
+            elsif opponent.ability == PBAbilities::MOTORDRIVE || opponent.ability == PBAbilities::LIGHTNINGROD || opponent.ability == PBAbilities::VOLTABSORB
+              score*=3 if checkAIbest(aimem,1,[PBTypes::ELECTRIC],false,attacker,opponent,skill)
+            elsif opponent.ability == PBAbilities::SAPSIPPER
+              score*=3 if checkAIbest(aimem,1,[PBTypes::GRASS],false,attacker,opponent,skill)
+            end
+          end
+          if opponent.pbHasMove?(:KINGSSHIELD) || opponent.pbHasMove?(:BANEFULBUNKER) || opponent.pbHasMove?(:SPIKYSHIELD)
+            if checkAIbest(aimem,4,[],false,attacker,opponent,skill)
+              score*=2
+            end
+          end
+          if opponent.pbHasMove?(:COUNTER) || opponent.pbHasMove?(:METALBURST) || opponent.pbHasMove?(:MIRRORCOAT)
+            score*=2
+          end
+          if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+            score*=1.5
+          end
+          if (attacker.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+            score*=1.5
+          end
         else
-          score*=0.8
-          score*=0.8 if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
+          score=1
         end
-        if attacker.lastMoveUsed==671
-          score*=0.7
+      when 0x16B # Instruct
+        if !@doublebattle || opponent!=attacker.pbPartner || opponent.lastMoveUsedSketch<=0
+          score=1
+        else
+          score*=3
+          #if @opponent.trainertype==PBTrainers::MIME
+          #  score+=35
+          #end
+          if attacker.pbPartner.hp*2 < attacker.pbPartner.totalhp
+            score*=0.5
+          else
+            if attacker.pbPartner.hp==attacker.pbPartner.totalhp
+              score*=1.2
+            end
+          end
+          if initialscores.length>0
+            badmoves=true
+            for i in 0...initialscores.length
+              next if attacker.moves[i].basedamage<=0
+              next if i==scoreindex
+              if initialscores[i]>20
+                badmoves=false
+              end
+            end
+            score*=1.2 if badmoves
+          end
+          if ((attacker.pbPartner.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) &&
+             ((attacker.pbPartner.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))
+            score*=1.4
+          end
+          ministat = [attacker.pbPartner.attack,attacker.pbPartner.spatk].max
+          minimini = [attacker.attack,attacker.spatk].max
+          ministat-=minimini
+          ministat+=100
+          ministat/=100.0
+          score*=ministat
+          if attacker.pbPartner.hp==0
+            score=1
+          end
         end
-        score*=0.6 if checkAImoves(PBStuff::SETUPMOVE,aimem)
-        miniscore = attacker.hp*(1.0/attacker.totalhp)
-        score*=miniscore
-        if opponent.spatk > opponent.attack
-          score*=0.3
+      when 0x16C # Throat Chop
+        maxdam=0
+        maxsound = false
+        soundcheck = false
+        if aimem.length > 0
+          for j in aimem
+            soundcheck=true if j.isSoundBased?
+            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)
+            if tempdam>maxdam
+              maxdam=tempdam
+              maxsound = j.isSoundBased?
+            end
+          end
         end
-        score*=0.05 if checkAIbest(aimem,3,[],false,attacker,opponent,skill)
-      when 0x16C # Shore Up
+        if maxsound
+          score*=1.5
+        else
+          if soundcheck
+            score*=1.3
+          end
+        end
+      when 0x16D # Shore Up
         if aimem.length > 0 && skill>=PBTrainerAI.bestSkill
           maxdam = checkAIdamage(aimem,attacker,opponent,skill)
           if maxdam>attacker.hp
@@ -16568,342 +16853,67 @@ class PokeBattle_Battle
         if attacker.effects[PBEffects::Wish]>0
             score=0
         end
-      when 0x16D # Sparkling Aria
-        if opponent.status==PBStatuses::BURN
-          score*=0.6
-        end
-      when 0x16E # Spectral Thief
-        if opponent.effects[PBEffects::Substitute]>0
-          score*=1.2
-        end
-        ministat= 10*statchangecounter(opponent,1,7)
-        if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
-          ministat*=(-1)
-        end
-        if (!attacker.abilitynulled && attacker.ability == PBAbilities::SIMPLE)
-          ministat*=2
-        end
-        ministat+=100
-        ministat/=100.0
-        score*=ministat
-      when 0x16F # Speed Swap
-        if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-          miniscore= (10)*opponent.stages[PBStats::SPEED]
-          minimini= (-10)*attacker.stages[PBStats::SPEED]
-          if miniscore==0 && minimini==0
-            score*=0
-          else
-            miniscore+=minimini
-            miniscore+=100
-            miniscore/=100.0
-            score*=miniscore
-            if @doublebattle
-              score*=0.8
-            end
-          end
-        else
+      when 0x16E # Floral Healing
+        if !@doublebattle || attacker.pbIsOpposing?(opponent.index)
           score*=0
-        end
-      when 0x170 # Spotlight
-        maxdam=0
-        maxtype = -1
-        contactcheck = false
-        if aimem.length > 0
-          for j in aimem
-            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)
-            if tempdam>maxdam
-              maxdam=tempdam
-              maxtype = j.type
-              contactcheck = j.isContactMove?
-            end
-          end
-        end
-        if @doublebattle && opponent==attacker.pbPartner
-          if !opponent.abilitynulled
-            if opponent.ability == PBAbilities::FLASHFIRE
-              score*=3 if checkAIbest(aimem,1,[PBTypes::FIRE],false,attacker,opponent,skill)
-            elsif opponent.ability == PBAbilities::STORMDRAIN || opponent.ability == PBAbilities::DRYSKIN || opponent.ability == PBAbilities::WATERABSORB
-              score*=3 if checkAIbest(aimem,1,[PBTypes::WATER],false,attacker,opponent,skill)
-            elsif opponent.ability == PBAbilities::MOTORDRIVE || opponent.ability == PBAbilities::LIGHTNINGROD || opponent.ability == PBAbilities::VOLTABSORB
-              score*=3 if checkAIbest(aimem,1,[PBTypes::ELECTRIC],false,attacker,opponent,skill)
-            elsif opponent.ability == PBAbilities::SAPSIPPER
-              score*=3 if checkAIbest(aimem,1,[PBTypes::GRASS],false,attacker,opponent,skill)
-            end
-          end
-          if opponent.pbHasMove?((PBMoves::KINGSSHIELD)) || opponent.pbHasMove?((PBMoves::BANEFULBUNKER)) || opponent.pbHasMove?((PBMoves::SPIKYSHIELD))
-            if checkAIbest(aimem,4,[],false,attacker,opponent,skill)
-              score*=2
-            end
-          end
-          if opponent.pbHasMove?((PBMoves::COUNTER)) || opponent.pbHasMove?((PBMoves::METALBURST)) || opponent.pbHasMove?((PBMoves::MIRRORCOAT))
-            score*=2
-          end
-          if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-            score*=1.5
-          end
-          if (attacker.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-            score*=1.5
-          end
         else
-          score=1
-        end
-      when 0x171 # Stomping Tantrum
-        if $fefieldeffect==5
-          psyvar=false
-          for mon in pbParty(attacker.index)
-            next if mon.nil?
-            if mon.hasType?(:PSYCHIC)
-              psyvar=true
-            end
-          end
-          if !attacker.pbHasType?(:PSYCHIC)
-            score*=1.3
-          end
-          if !psyvar
-            score*=1.8
-          else
-            score*=0.7
-          end
-        end
-      when 0x172 # Strength Sap
-        if opponent.effects[PBEffects::Substitute]<=0
-          if attacker.effects[PBEffects::HealBlock]>0
-            score*=0
-          else
-            if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
+          if !attacker.pbIsOpposing?(opponent.index)
+            if opponent.hp*(1.0/opponent.totalhp)<0.7 && opponent.hp*(1.0/opponent.totalhp)>0.3
               score*=3
-              if skill>=PBTrainerAI.bestSkill
-                if checkAIdamage(aimem,attacker,opponent,skill)*1.5 > attacker.hp
-                  score*=1.5
-                end
-                if (attacker.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-                  if checkAIdamage(aimem,attacker,opponent,skill)*2 > attacker.hp
-                    score*=2
-                  else
-                    score*=0.2
-                  end
-                end
+            end
+            if opponent.hp*(1.0/opponent.totalhp)<0.3
+              score*=1.7
+            end
+            if opponent.status==PBStatuses::POISON || opponent.status==PBStatuses::BURN || opponent.effects[PBEffects::LeechSeed]>=0 || opponent.effects[PBEffects::Curse]
+              score*=0.8
+              if opponent.effects[PBEffects::Toxic]>0
+                score*=0.7
               end
             end
-          end
-          if opponent.pbHasMove?((PBMoves::CALMMIND)) || opponent.pbHasMove?((PBMoves::WORKUP)) ||
-             opponent.pbHasMove?((PBMoves::NASTYPLOT)) || opponent.pbHasMove?((PBMoves::TAILGLOW)) ||
-             opponent.pbHasMove?((PBMoves::GROWTH)) || opponent.pbHasMove?((PBMoves::QUIVERDANCE))
-            score*=0.7
-          end
-          if (attacker.hp.to_f)/attacker.totalhp<0.5
-            score*=1.5
+            if opponent.hp*(1.0/opponent.totalhp)>0.8
+              if ((attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) && ((attacker.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))
+                score*=0.5
+              else
+                score*=0
+              end
+            end
           else
-            score*=0.5
+            score*=0
           end
-          if !(roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL))
-            score*=0.8
+        end
+        if $fefieldeffect==2 || $fefieldeffect==31 || ($fefieldeffect==33 && $fecounter>1)
+          score*=1.5
+        end
+        if attacker.status!=PBStatuses::POISON && ($fefieldeffect==10 || $fefieldeffect==11)
+          score*=0.2
+        end
+      when 0x16F # Pollen Puff
+        if opponent==attacker.pbPartner
+          score = 15
+          if opponent.hp>opponent.totalhp*0.3 && opponent.hp<opponent.totalhp*0.7
+            score*=3
+          end
+          if opponent.hp*(1.0/opponent.totalhp)<0.3
+            score*=1.7
           end
           if opponent.status==PBStatuses::POISON || opponent.status==PBStatuses::BURN || opponent.effects[PBEffects::LeechSeed]>=0 || opponent.effects[PBEffects::Curse]
-            score*=1.3
+            score*=0.8
             if opponent.effects[PBEffects::Toxic]>0
-              score*=1.3
+              score*=0.7
             end
           end
-          score*=1.2 if checkAImoves(PBStuff::CONTRARYBAITMOVE,aimem)
-          if opponent.vanished || opponent.effects[PBEffects::HyperBeam]>0
-            score*=1.2
-          end
-          ministat = opponent.attack
-          ministat/=(attacker.totalhp).to_f
-          ministat+=0.5
-          score*=ministat
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::LIQUIDOOZE)
-            score*=0.2
-          end
-          if $fefieldeffect==15 || $fefieldeffect==8
-            score*=1.3
-          end
-          if (attitemworks && attacker.item == PBItems::BIGROOT)
-            score*=1.3
-          end
-          miniscore=100
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-            miniscore*=1.3
-          end
-          count=-1
-          party=pbParty(attacker.index)
-          sweepvar=false
-          for i in 0...party.length
-            count+=1
-            next if (count==attacker.pokemonIndex || party[i].nil?)
-            temproles = pbGetMonRole(party[i],opponent,skill,count,party)
-            if temproles.include?(PBMonRoles::SWEEPER)
-              sweepvar=true
+          if opponent.hp*(1.0/opponent.totalhp)>0.8
+            if ((attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)) && ((attacker.pbSpeed<pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0))
+              score*=0.5
+            else
+              score*=0
             end
           end
-          if sweepvar
-            miniscore*=1.1
-          end
-          livecount2=0
-          for i in pbParty(opponent.index)
-            next if i.nil?
-            livecount2+=1 if i.hp!=0
-          end
-          if livecount2==1 || (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG) || opponent.effects[PBEffects::MeanLook]>0
-            miniscore*=1.4
-          end
-          if opponent.status==PBStatuses::POISON
-            miniscore*=1.2
-          end
-          if opponent.stages[PBStats::ATTACK]<0
-            minimini = 5*opponent.stages[PBStats::ATTACK]
-            minimini+=100
-            minimini/=100.0
-            miniscore*=minimini
-          end
-          if attacker.pbHasMove?((PBMoves::FOULPLAY))
-            miniscore*=0.5
-          end
-          if opponent.status==PBStatuses::BURN
-            miniscore*=0.5
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE) || (!opponent.abilitynulled && opponent.ability == PBAbilities::COMPETITIVE)
-            miniscore*=0.1
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::DEFIANT) || (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY)
-            miniscore*=0.5
-          end
-          miniscore/=100.0
-          if attacker.stages[PBStats::ATTACK]!=6
-            score*=miniscore
-          end
-        else
-          score = 0
-        end
-      when 0x173 # Throat Chop
-        maxdam=0
-        maxsound = false
-        soundcheck = false
-        if aimem.length > 0
-          for j in aimem
-            soundcheck=true if j.isSoundBased?
-            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)
-            if tempdam>maxdam
-              maxdam=tempdam
-              maxsound = j.isSoundBased?
-            end
+          if attacker.effects[PBEffects::HealBlock]>0 || opponent.effects[PBEffects::HealBlock]>0
+            score*=0
           end
         end
-        if maxsound
-          score*=1.5
-        else
-          if soundcheck
-            score*=1.3
-          end
-        end
-      when 0x174 # Toxic Thread
-        if opponent.pbCanPoison?(false)
-          miniscore=100
-          miniscore*=1.2
-          ministat=0
-          ministat+=opponent.stages[PBStats::DEFENSE]
-          ministat+=opponent.stages[PBStats::SPDEF]
-          ministat+=opponent.stages[PBStats::EVASION]
-          if ministat>0
-            minimini=5*ministat
-            minimini+=100
-            minimini/=100.0
-            miniscore*=minimini
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::NATURALCURE)
-            miniscore*=0.3
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::MARVELSCALE)
-            miniscore*=0.7
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::TOXICBOOST) || (!opponent.abilitynulled && opponent.ability == PBAbilities::GUTS)
-            miniscore*=0.2
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::POISONHEAL) || (!opponent.abilitynulled && opponent.ability == PBAbilities::MAGICGUARD)
-            miniscore*=0.1
-          end
-          miniscore*=0.2 if checkAImoves([PBMoves::FACADE],aimem)
-          miniscore*=0.1 if checkAImoves([PBMoves::REST],aimem)
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-            miniscore*=1.5
-          end
-          if initialscores.length>0
-            miniscore*=1.2 if hasbadmoves(initialscores,scoreindex,30)
-          end
-          if attacker.pbHasMove?((PBMoves::VENOSHOCK)) ||
-            attacker.pbHasMove?((PBMoves::VENOMDRENCH)) ||
-            (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
-            miniscore*=1.6
-          end
-          if opponent.effects[PBEffects::Yawn]>0
-            miniscore*=0.4
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::SHEDSKIN)
-            miniscore*=0.7
-          end
-          miniscore/=100.0
-          score*=miniscore
-        else
-          score*=0.5
-        end
-        if opponent.stages[PBStats::SPEED]>0 || opponent.stages[PBStats::SPEED]==-6
-          score*=0.5
-        else
-          miniscore=100
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-            miniscore*=1.1
-          end
-          livecount1=0
-          for i in pbParty(attacker.index)
-            next if i.nil?
-            livecount1+=1 if i.hp!=0
-          end
-          livecount2=0
-          for i in pbParty(opponent.index)
-            next if i.nil?
-            livecount2+=1 if i.hp!=0
-          end
-          if livecount2==1 || (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWTAG) || opponent.effects[PBEffects::MeanLook]>0
-            miniscore*=1.4
-          end
-          if opponent.stages[PBStats::SPEED]<0
-            minimini = 5*opponent.stages[PBStats::SPEED]
-            minimini+=100
-            minimini/=100.0
-            miniscore*=minimini
-          end
-          if livecount1==1
-            miniscore*=0.5
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE) ||
-             (!opponent.abilitynulled && opponent.ability == PBAbilities::COMPETITIVE) ||
-             (!opponent.abilitynulled && opponent.ability == PBAbilities::DEFIANT) ||
-             (!opponent.abilitynulled && opponent.ability == PBAbilities::CONTRARY)
-            miniscore*=0.1
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::SPEEDBOOST)
-            miniscore*=0.5
-          end
-          if attacker.pbHasMove?((PBMoves::ELECTROBALL))
-            miniscore*=1.5
-          end
-          if attacker.pbHasMove?((PBMoves::GYROBALL))
-            miniscore*=0.5
-          end
-          miniscore*=0.1 if  @trickroom!=0 || checkAImoves([PBMoves::TRICKROOM],aimem)
-          if (oppitemworks && opponent.item == PBItems::LAGGINGTAIL) || (oppitemworks && opponent.item == PBItems::IRONBALL)
-            miniscore*=0.1
-          end
-          miniscore*=1.3 if checkAImoves([PBMoves::ELECTROBALL],aimem)
-          miniscore*=0.5 if checkAImoves([PBMoves::GYROBALL],aimem)
-          if (attacker.pbSpeed>pbRoughStat(opponent.pbPartner,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-            score*=0.5
-          end
-          miniscore/=100.0
-          score*=miniscore
-        end
-      when 0x175 # Mind Blown
+      when 0x170 # Mind Blown
         startscore = score
         maxdam = checkAIdamage(aimem,attacker,opponent,skill)
         if (!(!attacker.abilitynulled && attacker.ability == PBAbilities::MAGICGUARD) &&
@@ -17002,149 +17012,143 @@ class PokeBattle_Battle
             end
           end
         end
-      when 0x176 # Photon Geyser
-        damcount = 0
-        firemove = false
-        for m in attacker.moves
-          if m.basedamage>0
-            damcount+=1
-            if m.type==(PBTypes::FIRE)
-              firemove = true
-            end
-          end
-        end
-        if !opponent.moldbroken
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL)
-            if pbWeather!=PBWeather::SANDSTORM
-              score*=1.1
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::VOLTABSORB) || (!opponent.abilitynulled && opponent.ability == PBAbilities::LIGHTNINGROD)
-            if move.type==(PBTypes::ELECTRIC)
-              if damcount==1
-                score*=3
-              end
-              if PBTypes.getCombinedEffectiveness((PBTypes::ELECTRIC),opponent.type1,opponent.type2)>4
-                score*=2
-              end
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::WATERABSORB) ||
-             (!opponent.abilitynulled && opponent.ability == PBAbilities::STORMDRAIN) ||
-             (!opponent.abilitynulled && opponent.ability == PBAbilities::DRYSKIN)
-            if move.type==(PBTypes::WATER)
-              if damcount==1
-                score*=3
-              end
-              if PBTypes.getCombinedEffectiveness((PBTypes::WATER),opponent.type1,opponent.type2)>4
-                score*=2
-              end
-            end
-            if (!opponent.abilitynulled && opponent.ability == PBAbilities::DRYSKIN) && firemove
-              score*=0.5
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::FLASHFIRE)
-            if move.type==(PBTypes::FIRE)
-              if damcount==1
-                score*=3
-              end
-              if PBTypes.getCombinedEffectiveness((PBTypes::FIRE),opponent.type1,opponent.type2)>4
-                score*=2
-              end
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::LEVITATE)
-            if move.type==(PBTypes::GROUND)
-              if damcount==1
-                score*=3
-              end
-              if PBTypes.getCombinedEffectiveness((PBTypes::GROUND),opponent.type1,opponent.type2)>4
-                score*=2
-              end
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::WONDERGUARD)
-            score*=5
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::SOUNDPROOF)
-            if move.isSoundBased?
-              score*=3
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::THICKFAT)
-            if move.type==(PBTypes::FIRE) || move.type==(PBTypes::ICE)
-              score*=1.5
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::MOLDBREAKER)
-            score*=1.1
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE)
-            score*=1.7
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::MULTISCALE)
-            if attacker.hp==attacker.totalhp
-              score*=1.5
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::SAPSIPPER)
-            if move.type==(PBTypes::GRASS)
-              if damcount==1
-                score*=3
-              end
-              if PBTypes.getCombinedEffectiveness((PBTypes::GRASS),opponent.type1,opponent.type2)>4
-                score*=2
-              end
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK)
-            if pbWeather!=PBWeather::HAIL
-              score*=1.1
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::FURCOAT)
-            if attacker.attack>attacker.spatk
-              score*=1.5
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::FLUFFY)
-            score*=1.5
-            if move.type==(PBTypes::FIRE)
-              score*=0.5
-            end
-          elsif (!opponent.abilitynulled && opponent.ability == PBAbilities::WATERBUBBLE)
-            score*=1.5
-            if move.type==(PBTypes::FIRE)
-              score*=1.3
-            end
-          end
-        end
-      when 0x177 # Plasma Fists
-        maxdam = 0
-        maxtype = -1
+      when 0x171 # Shell Trap
+        maxdam=0
+        specialvar = false
         if aimem.length > 0
-          for j in aimem
+        for j in aimem
             tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)
             if tempdam>maxdam
               maxdam=tempdam
-              maxtype = j.type
+              if j.pbIsSpecial?(j.type)
+                specialvar = true
+              else
+                specialvar = false
+              end
             end
           end
         end
+        if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+          score*=0.5
+        end
+        if attacker.hp==attacker.totalhp && (attitemworks && attacker.item == PBItems::FOCUSSASH)
+          score*=1.2
+        else
+          score*=0.8
+          score*=0.8 if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
+        end
+        if attacker.lastMoveUsed==671
+          score*=0.7
+        end
+        score*=0.6 if checkAImoves(PBStuff::SETUPMOVE,aimem)
+        miniscore = attacker.hp*(1.0/attacker.totalhp)
+        score*=miniscore
+        if opponent.spatk > opponent.attack
+          score*=0.3
+        end
+        score*=0.05 if checkAIbest(aimem,3,[],false,attacker,opponent,skill)
+      when 0x172 # Beak Blast
+        contactcheck = false
+        if aimem.length > 0
+          for j in aimem
+            if j.isContactMove?
+              contactcheck=true
+            end
+          end
+        end
+        if opponent.pbCanBurn?(false)
+          miniscore=120
+          ministat = 5*opponent.stages[PBStats::ATTACK]
+          if ministat>0
+            ministat+=100
+            ministat/=100.0
+            miniscore*=ministat
+          end
+          if !opponent.abilitynulled
+            miniscore*=0.3 if opponent.ability == PBAbilities::NATURALCURE
+            miniscore*=0.7 if opponent.ability == PBAbilities::MARVELSCALE
+            miniscore*=0.1 if opponent.ability == PBAbilities::GUTS || opponent.ability == PBAbilities::FLAREBOOST
+            miniscore*=0.7 if opponent.ability == PBAbilities::SHEDSKIN
+            miniscore*=0.5 if opponent.ability == PBAbilities::SYNCHRONIZE && attacker.status==0
+            miniscore*=0.5 if opponent.ability == PBAbilities::MAGICGUARD
+            miniscore*=0.3 if opponent.ability == PBAbilities::QUICKFEET
+            miniscore*=1.1 if opponent.ability == PBAbilities::STURDY
+          end
+          miniscore*=0.1 if checkAImoves([PBMoves::REST],aimem)
+          miniscore*=0.2 if checkAImoves([PBMoves::FACADE],aimem)
+          if opponent.attack > opponent.spatk
+            miniscore*=1.7
+          end
+          if opponent.effects[PBEffects::Yawn]>0
+            miniscore*=0.4
+          end
+          if startscore==110
+            miniscore*=0.8
+          end
+          miniscore-=100
+          minimini = 100
+          if contactcheck
+            minimini*=1.5
+          else
+            if opponent.attack>opponent.spatk
+              minimini*=1.3
+            else
+              minimini*=0.3
+            end
+          end
+          minimini/=100.0
+          miniscore*=minimini
+          miniscore+=100
+          miniscore/=100.0
+          score*=miniscore
+        end
         if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
-          miniscore=100
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::VOLTABSORB)
-            if attacker.hp<attacker.totalhp*0.8
-              miniscore*=1.5
-            end
+          score*=0.7
+        end
+      when 0x173 # Psychic Terrain
+        psyvar=false
+        for mon in pbParty(attacker.index)
+          next if mon.nil?
+          if mon.hasType?(:PSYCHIC)
+            psyvar=true
           end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::LIGHTNINGROD)
-            if attacker.spatk > attacker.attack && attacker.stages[PBStats::SPATK]!=6
-              miniscore*=1.5
-            end
+        end
+        pricheck = false
+        for m in attacker.moves
+          if m.priority>0
+            pricheck=true
+            break
           end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::MOTORDRIVE)
-            if attacker.stages[PBStats::SPEED]!=6
-              miniscore*=1.2
-            end
+        end
+        if @field.effects[PBEffects::Terrain]==0 && $fefieldeffect!=22
+          $fefieldeffect!=35 && $fefieldeffect!=37
+          miniscore = getFieldDisruptScore(attacker,opponent,skill)
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::TELEPATHY)
+            miniscore*=1.5
           end
-          if attacker.pbHasType?(:GROUND)
-            miniscore*=1.3
+          if attacker.pbHasType?(:PSYCHIC)
+            miniscore*=1.5
           end
-          miniscore*=0.5 if checkAIpriority(aimem)
-          if maxtype == (PBTypes::NORMAL)
+          if psyvar
+            miniscore*=2
+          end
+          if opponent.pbHasType?(:PSYCHIC)
+            miniscore*=0.5
+          end
+          if pricheck
+            miniscore*=0.7
+          end
+          miniscore*=1.3 if checkAIpriority(aimem)
+          if (attitemworks && attacker.item == PBItems::AMPLIFIELDROCK)
             miniscore*=2
           end
           score*=miniscore
+        else
+          score*=0
         end
-
+      when 0x174 # First Impression
+        score = 0 if attacker.turncount!=0
+        score *= 1.1 if score==110
       end
     ###### END FUNCTION CODES
     if (!opponent.abilitynulled && opponent.ability == PBAbilities::DANCER)
@@ -17269,8 +17273,8 @@ class PokeBattle_Battle
             end
           end
         elsif opponent.ability == PBAbilities::MUMMY
-          if !attacker.abilitynulled && !((PBStuff::FIXEDABILITIES).include?(attacker.ability)) &&
-             !(attacker.ability == PBAbilities::MUMMY || attacker.ability == PBAbilities::SHIELDDUST)
+          if !attacker.abilitynulled && !attacker.unstoppableAbility? &&
+             attacker.ability != opponent.ability && attacker.ability != PBAbilities::SHIELDDUST
             mummyscore = getAbilityDisruptScore(move,opponent,attacker,skill)
             if mummyscore < 2
               mummyscore = 2 - mummyscore

@@ -269,7 +269,7 @@ class PokeBattle_Battle
         stdev=pbStdDev(@scores)
           preferredMoves=[]
           for i in 0...4
-            if attacker.moves[i].id!=0 && (@scores[i] >= (maxscore* 0.95)) && pbCanChooseMove?(index,i,false)
+            if attacker.moves[i].id!=0 && (@scores[i] >= (maxscore*0.95)) && pbCanChooseMove?(index,i,false)
               preferredMoves.push(i)
               preferredMoves.push(i) if @scores[i]==maxscore # Doubly prefer the best move
             end
