@@ -30,8 +30,6 @@ class PokeBattle_AI
 
   def pbAIRandom(x); return rand(x); end
 
-=begin
-  # Essentials method
   def pbStdDev(choices)
     sum = 0
     n   = 0
@@ -51,8 +49,8 @@ class PokeBattle_AI
     # [(n-1) makes it a sample std dev, would be 0 with only 1 sample]
     return Math.sqrt(varianceTimesN/n)
   end
-=end
 
+=begin
   # Reborn method (the difference is that each element in "choices" is an array
   # in Essentials but just a number in Reborn)
   def pbStdDev(choices)
@@ -74,6 +72,7 @@ class PokeBattle_AI
     # [(n-1) makes it a sample std dev, would be 0 with only 1 sample]
     return Math.sqrt(varianceTimesN/n)
   end
+=end
 
   #=============================================================================
   # Decide whether the opponent should Mega Evolve their Pokémon
@@ -102,8 +101,6 @@ class PokeBattle_AI
   #=============================================================================
   # Choose an action
   #=============================================================================
-=begin
-  # Essentials method
   def pbDefaultChooseEnemyCommand(idxBattler)
     return if pbEnemyShouldUseItem?(idxBattler)
     return if pbEnemyShouldWithdraw?(idxBattler)
@@ -111,8 +108,8 @@ class PokeBattle_AI
     @battle.pbRegisterMegaEvolution(idxBattler) if pbEnemyShouldMegaEvolve?(idxBattler)
     pbChooseMoves(idxBattler)
   end
-=end
 
+=begin
   # Reborn method
   def pbDefaultChooseEnemyCommand(idxBattler)
     if !@battle.pbCanShowFightMenu?(idxBattler)
@@ -135,4 +132,5 @@ class PokeBattle_AI
     end
     pbChooseMoves(idxBattler)
   end
+=end
 end
