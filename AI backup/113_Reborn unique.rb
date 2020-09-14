@@ -139,6 +139,9 @@ class PokeBattle_Battle
     else
       bladecheck = aegi.clone
       bladecheck.form = 1
+      if $fefieldeffect==31 && bladecheck.stages[PBStats::ATTACK]<6
+        bladecheck.stages[PBStats::ATTACK] += 1
+      end
       return bladecheck
     end
   end
@@ -164,7 +167,7 @@ class PokeBattle_Battle
         move.type=PBTypes::WATER if (weather==PBWeather::RAINDANCE && !attacker.hasWorkingItem(:UTILITYUMBRELLA))
         move.type=PBTypes::ROCK if weather==PBWeather::SANDSTORM
         move.type=PBTypes::ICE if weather==PBWeather::HAIL
-        if pbWeather !=0
+        if pbWeather !=0 || $fefieldeffect==9
           move.basedamage*=2 if move.basedamage == 50
         end
 
@@ -175,12 +178,21 @@ class PokeBattle_Battle
 
       when PBMoves::NATUREPOWER
         move=0
-        if $fefieldeffect > 0
-          naturemoves = FieldEffects::NATUREMOVES
-          move= naturemoves[$fefieldeffect]   # Combination of environment and Terrain
-        else
-          move=PBMoves::TRIATTACK
-        end
+        case $fefieldeffect
+          when 33
+            if $fecounter == 4
+              move=PBMoves::PETALBLIZZARD
+            else
+              move=PBMoves::GROWTH
+            end
+          else
+            if $fefieldeffect > 0 && $fefieldeffect <= 37
+              naturemoves = FieldEffects::NATUREMOVES
+              move= naturemoves[$fefieldeffect]
+            else
+              move=PBMoves::TRIATTACK
+            end
+          end
         move = PokeBattle_Move.pbFromPBMove(self,PBMove.new(move),attacker)
       end
     return move
@@ -533,7 +545,7 @@ class PokeBattle_Battle
     aroles = pbGetMonRole(attacker,opponent,skill)
     oroles = pbGetMonRole(opponent,attacker,skill)
     aimem = getAIMemory(skill,opponent.pokemonIndex)
-    if $fefieldeffect==1   # Electric Terrain
+    if $fefieldeffect==1 # Electric Terrain
       PBDebug.log(sprintf("Electric Terrain Disrupt")) if $INTERNAL
       if opponent.pbHasType?(:ELECTRIC) || opponent.pbPartner.pbHasType?(:ELECTRIC)
         fieldscore*=1.5
@@ -558,7 +570,7 @@ class PokeBattle_Battle
         fieldscore*=0.7
       end
     end
-    if $fefieldeffect==2   # Grassy Terrain
+    if $fefieldeffect==2 # Grassy Terrain
       PBDebug.log(sprintf("Grassy Terrain Disrupt")) if $INTERNAL
       if opponent.pbHasType?(:GRASS) || opponent.pbPartner.pbHasType?(:GRASS)
         fieldscore*=1.5
@@ -599,7 +611,7 @@ class PokeBattle_Battle
         fieldscore*=1.2
       end
     end
-    if $fefieldeffect==3   # Misty Terrain
+    if $fefieldeffect==3 # Misty Terrain
       PBDebug.log(sprintf("Misty Terrain Disrupt")) if $INTERNAL
       if attacker.spatk>attacker.attack
         if opponent.pbHasType?(:FAIRY) || opponent.pbPartner.pbHasType?(:FAIRY)
@@ -643,7 +655,1092 @@ class PokeBattle_Battle
         end
       end
     end
-    if $fefieldeffect==37   # Psychic Terrain
+    if $fefieldeffect==4 # Dark Crystal Cavern
+      PBDebug.log(sprintf("Dark Crystal Cavern Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:DARK) || opponent.pbPartner.pbHasType?(:DARK) ||
+         opponent.pbHasType?(:GHOST) || opponent.pbPartner.pbHasType?(:GHOST)
+        fieldscore*=1.3
+      end
+      if attacker.pbHasType?(:DARK) || attacker.pbHasType?(:GHOST)
+        fieldscore*=0.7
+      end
+      partyspook=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:DARK) || k.hasType?(:GHOST)
+          partyspook=true
+        end
+      end
+      if partyspook
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==5 # Chess field
+      PBDebug.log(sprintf("Chess Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:PSYCHIC) || opponent.pbPartner.pbHasType?(:PSYCHIC)
+        fieldscore*=1.3
+      end
+      if attacker.pbHasType?(:PSYCHIC)
+        fieldscore*=0.7
+      end
+      partypsy=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:PSYCHIC)
+          partypsy=true
+        end
+      end
+      if partypsy
+        fieldscore*=0.7
+      end
+      if attacker.speed>opponent.speed
+        fieldscore*=1.3
+      else
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==6 # Big Top field
+      PBDebug.log(sprintf("Big Top Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:FIGHTING) || opponent.pbPartner.pbHasType?(:FIGHTING)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:FIGHTING)
+        fieldscore*=0.5
+      end
+      partyfight=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FIGHTING)
+          partyfight=true
+        end
+      end
+      if partyfight
+        fieldscore*=0.5
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::DANCER)
+        fieldscore*=1.5
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::DANCER)
+        fieldscore*=0.5
+      end
+      if attacker.pbHasMove?((PBMoves::SING)) ||
+          attacker.pbHasMove?((PBMoves::DRAGONDANCE)) ||
+          attacker.pbHasMove?((PBMoves::QUIVERDANCE))
+        fieldscore*=0.5
+      end
+      fieldscore*=1.5 if checkAImoves([PBMoves::SING,PBMoves::DRAGONDANCE,PBMoves::QUIVERDANCE],aimem)
+    end
+    if $fefieldeffect==7 # Burning Field
+      PBDebug.log(sprintf("Burning Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:FIRE) || opponent.pbPartner.pbHasType?(:FIRE)
+        fieldscore*=1.8
+      end
+      if attacker.pbHasType?(:FIRE)
+        fieldscore*=0.3
+      else
+        fieldscore*=1.5
+        if attacker.pbHasType?(:GRASS) || attacker.pbHasType?(:ICE) ||
+           attacker.pbHasType?(:BUG) || attacker.pbHasType?(:STEEL)
+          fieldscore*=1.8
+        end
+      end
+      partyfire=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FIRE)
+          partyfire=true
+        end
+      end
+      if partyfire
+        fieldscore*=0.7
+      end
+      partyflamm=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:GRASS) || k.hasType?(:ICE) || k.hasType?(:BUG) || k.hasType?(:STEEL)
+          partyflamm=true
+        end
+      end
+      if partyflamm
+        fieldscore*=1.5
+      end
+    end
+    if $fefieldeffect==8 # Swamp field
+      PBDebug.log(sprintf("Swamp Field Disrupt")) if $INTERNAL
+      if attacker.pbHasMove?((PBMoves::SLEEPPOWDER))
+        fieldscore*=0.7
+      end
+      fieldscore*=1.3 if checkAImoves([PBMoves::SLEEPPOWDER],aimem)
+    end
+    if $fefieldeffect==9 # Rainbow field
+      PBDebug.log(sprintf("Rainbow Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:NORMAL) || opponent.pbPartner.pbHasType?(:NORMAL)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:NORMAL)
+        fieldscore*=0.5
+      end
+      partynorm=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:NORMAL)
+          partynorm=true
+        end
+      end
+      if partynorm
+        fieldscore*=0.5
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::CLOUDNINE)
+        fieldscore*=1.4
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::CLOUDNINE)
+        fieldscore*=0.6
+      end
+      if attacker.pbHasMove?((PBMoves::SONICBOOM))
+        fieldscore*=0.8
+      end
+      fieldscore*=1.2 if checkAImoves([PBMoves::SONICBOOM],aimem)
+    end
+    if $fefieldeffect==10 # Corrosive field
+      PBDebug.log(sprintf("Corrosive Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:POISON) || opponent.pbPartner.pbHasType?(:POISON)
+        fieldscore*=1.3
+      end
+      if attacker.pbHasType?(:POISON)
+        fieldscore*=0.7
+      end
+      partypoison=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:POISON)
+          partypoison=true
+        end
+      end
+      if partypoison
+        fieldscore*=0.7
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::CORROSION)
+        fieldscore*=1.5
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::CORROSION)
+        fieldscore*=0.5
+      end
+      if attacker.pbHasMove?((PBMoves::SLEEPPOWDER))
+        fieldscore*=0.7
+      end
+      fieldscore*=1.3 if checkAImoves([PBMoves::SLEEPPOWDER],aimem)
+    end
+    if $fefieldeffect==11 # Corromist field
+      PBDebug.log(sprintf("Corrosive Mist Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:POISON) || opponent.pbPartner.pbHasType?(:POISON)
+        fieldscore*=1.3
+      end
+      if attacker.pbHasType?(:POISON)
+        fieldscore*=0.7
+      else
+        if !attacker.pbHasType?(:STEEL)
+          fieldscore*=1.4
+        end
+      end
+      nopartypoison=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if !(k.hasType?(:POISON))
+          nopartypoison=true
+        end
+      end
+      if nopartypoison
+        fieldscore*=1.4
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::CORROSION)
+        fieldscore*=1.5
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::CORROSION)
+        fieldscore*=0.5
+      end
+      if opponent.pbHasType?(:FIRE) || opponent.pbPartner.pbHasType?(:FIRE)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:FIRE)
+        fieldscore*=0.8
+      end
+      partyfire=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FIRE)
+          partyfire=true
+        end
+      end
+      if partyfire
+        fieldscore*=0.8
+      end
+    end
+    if $fefieldeffect==12 # Desert field
+      PBDebug.log(sprintf("Desert Field Disrupt")) if $INTERNAL
+      if attacker.spatk > attacker.attack
+        if opponent.pbHasType?(:GROUND) || opponent.pbPartner.pbHasType?(:GROUND)
+          fieldscore*=1.3
+        end
+      end
+      if opponent.spatk > opponent.attack
+        if attacker.pbHasType?(:GROUND)
+          fieldscore*=0.7
+        end
+      end
+      if attacker.pbHasType?(:ELECTRIC) || attacker.pbHasType?(:WATER)
+        fieldscore*=1.5
+      end
+      if opponent.pbHasType?(:ELECTRIC) || opponent.pbPartner.pbHasType?(:WATER)
+        fieldscore*=0.5
+      end
+      partyground=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:GROUND)
+          partyground=true
+        end
+      end
+      if partyground
+        fieldscore*=0.7
+      end
+      partyweak=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ELECTRIC) || k.hasType?(:WATER)
+          partyweak=true
+        end
+      end
+      if partyweak
+        fieldscore*=1.5
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SANDRUSH) && @weather!=PBWeather::SANDSTORM
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SANDRUSH) && @weather!=PBWeather::SANDSTORM
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==13 # Icy field
+      PBDebug.log(sprintf("Icy Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:ICE) || opponent.pbPartner.pbHasType?(:ICE)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:ICE)
+        fieldscore*=0.5
+      end
+      partyice=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ICE)
+          partyice=true
+        end
+      end
+      if partyice
+        fieldscore*=0.5
+      end
+      if opponent.pbHasType?(:FIRE) || opponent.pbPartner.pbHasType?(:FIRE)
+        fieldscore*=0.5
+      end
+      if attacker.pbHasType?(:FIRE)
+        fieldscore*=1.5
+      end
+      partyfire=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FIRE)
+          partyfire=true
+        end
+      end
+      if partyfire
+        fieldscore*=1.5
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SLUSHRUSH) && @weather!=PBWeather::HAIL
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SLUSHRUSH) && @weather!=PBWeather::HAIL
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==14 # Rocky field
+      PBDebug.log(sprintf("Rocky Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:ROCK) || opponent.pbPartner.pbHasType?(:ROCK)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:ROCK)
+        fieldscore*=0.5
+      end
+      partyrock=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ROCK)
+          partyrock=true
+        end
+      end
+      if partyrock
+        fieldscore*=0.5
+      end
+    end
+    if $fefieldeffect==15 # Forest field
+      PBDebug.log(sprintf("Forest Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:GRASS) || opponent.pbHasType?(:BUG) ||
+         opponent.pbPartner.pbHasType?(:GRASS) || opponent.pbPartner.pbHasType?(:BUG)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:GRASS) || attacker.pbHasType?(:BUG)
+        fieldscore*=0.5
+      end
+      partygrowth=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:GRASS) || k.hasType?(:BUG)
+          partygrowth=true
+        end
+      end
+      if partygrowth
+        fieldscore*=0.5
+      end
+      if opponent.pbHasType?(:FIRE) || opponent.pbPartner.pbHasType?(:FIRE)
+        fieldscore*=1.8
+      end
+      if attacker.pbHasType?(:FIRE)
+        fieldscore*=0.2
+      end
+      partyfire=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FIRE)
+          partyfire=true
+        end
+      end
+      if partyfire
+        fieldscore*=0.2
+      end
+    end
+    if $fefieldeffect==16 # Superheated field
+      PBDebug.log(sprintf("Superheated Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:FIRE) || opponent.pbPartner.pbHasType?(:FIRE)
+        fieldscore*=1.8
+      end
+      if attacker.pbHasType?(:FIRE)
+        fieldscore*=0.2
+      end
+      partyfire=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FIRE)
+          partyfire=true
+        end
+      end
+      if partyfire
+        fieldscore*=0.2
+      end
+      if opponent.pbHasType?(:ICE) || opponent.pbPartner.pbHasType?(:ICE)
+        fieldscore*=0.5
+      end
+      if attacker.pbHasType?(:ICE)
+        fieldscore*=1.5
+      end
+      partyice=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ICE)
+          partyice=true
+        end
+      end
+      if partyice
+        fieldscore*=1.5
+      end
+      if opponent.pbHasType?(:WATER) || opponent.pbPartner.pbHasType?(:WATER)
+        fieldscore*=0.8
+      end
+      if attacker.pbHasType?(:WATER)
+        fieldscore*=1.2
+      end
+      partywater=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:WATER)
+          partywater=true
+        end
+      end
+      if partywater
+        fieldscore*=1.2
+      end
+    end
+    if $fefieldeffect==17 # Factory field
+      PBDebug.log(sprintf("Factory Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:ELECTRIC) || opponent.pbPartner.pbHasType?(:ELECTRIC)
+        fieldscore*=1.2
+      end
+      if attacker.pbHasType?(:ELECTRIC)
+        fieldscore*=0.8
+      end
+      partyelec=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ELECTRIC)
+          partyelec=true
+        end
+      end
+      if partyelec
+        fieldscore*=0.8
+      end
+    end
+    if $fefieldeffect==18 # Short-Circuit field
+      PBDebug.log(sprintf("Short-Circuit Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:ELECTRIC) || opponent.pbPartner.pbHasType?(:ELECTRIC)
+        fieldscore*=1.4
+      end
+      if attacker.pbHasType?(:ELECTRIC)
+        fieldscore*=0.6
+      end
+      partyelec=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ELECTRIC)
+          partyelec=true
+        end
+      end
+      if partyelec
+        fieldscore*=0.6
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SURGESURFER)
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SURGESURFER)
+        fieldscore*=0.7
+      end
+      if opponent.pbHasType?(:DARK) || opponent.pbPartner.pbHasType?(:DARK) ||
+         opponent.pbHasType?(:GHOST) || opponent.pbPartner.pbHasType?(:GHOST)
+        fieldscore*=1.3
+      end
+      if attacker.pbHasType?(:DARK) || attacker.pbHasType?(:GHOST)
+        fieldscore*=0.7
+      end
+      partyspook=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:DARK) || k.hasType?(:GHOST)
+          partyspook=true
+        end
+      end
+      if partyspook
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==19 # Wasteland field
+      PBDebug.log(sprintf("Wasteland Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:POISON) || opponent.pbPartner.pbHasType?(:POISON)
+        fieldscore*=1.3
+      end
+      if attacker.pbHasType?(:POISON)
+        fieldscore*=0.7
+      end
+      partypoison=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:POISON)
+          partypoison=true
+        end
+      end
+      if partypoison
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==20 # Ashen Beach field
+      PBDebug.log(sprintf("Ashen Beach Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:FIGHTING) || opponent.pbPartner.pbHasType?(:FIGHTING) ||
+         opponent.pbHasType?(:PSYCHIC) || opponent.pbPartner.pbHasType?(:PSYCHIC)
+        fieldscore*=1.3
+      end
+      if attacker.pbHasType?(:FIGHTING) || attacker.pbHasType?(:PSYCHIC)
+        fieldscore*=0.7
+      end
+      partyfocus=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FIGHTING) || k.hasType?(:PSYCHIC)
+          partyfocus=true
+        end
+      end
+      if partyfocus
+        fieldscore*=0.7
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SANDRUSH) && @weather!=PBWeather::SANDSTORM
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SANDRUSH) && @weather!=PBWeather::SANDSTORM
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==21 # Water Surface field
+      PBDebug.log(sprintf("Water Surface Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:WATER) || opponent.pbPartner.pbHasType?(:WATER)
+        fieldscore*=1.6
+      end
+      if attacker.pbHasType?(:WATER)
+        fieldscore*=0.4
+      else
+        if !attacker.isAirborne?
+          fieldscore*=1.3
+        end
+      end
+      partywater=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:WATER)
+          partywater=true
+        end
+      end
+      if partywater
+        fieldscore*=0.4
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SWIFTSWIM) && @weather!=PBWeather::RAINDANCE
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SWIFTSWIM) && @weather!=PBWeather::RAINDANCE
+        fieldscore*=0.7
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SURGESURFER)
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SURGESURFER)
+        fieldscore*=0.7
+      end
+      if !attacker.pbHasType?(:POISON) && $fecounter==1
+        fieldscore*=1.3
+      end
+    end
+    if $fefieldeffect==22 # Underwater field
+      PBDebug.log(sprintf("Underwater Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:WATER) || opponent.pbPartner.pbHasType?(:WATER)
+        fieldscore*=2
+      end
+      if attacker.pbHasType?(:WATER)
+        fieldscore*=0.1
+      else
+        fieldscore*=1.5
+        if attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:GROUND)
+          fieldscore*=2
+        end
+      end
+      if attacker.attack > attacker.spatk
+        fieldscore*=1.2
+      end
+      if opponent.attack > opponent.spatk
+        fieldscore*=0.8
+      end
+      partywater=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:WATER)
+          partywater=true
+        end
+      end
+      if partywater
+        fieldscore*=0.1
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SWIFTSWIM)
+        fieldscore*=0.9
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SWIFTSWIM)
+        fieldscore*=1.1
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SURGESURFER)
+        fieldscore*=1.1
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SURGESURFER)
+        fieldscore*=0.9
+      end
+      if !attacker.pbHasType?(:POISON) && $fecounter==1
+        fieldscore*=1.3
+      end
+    end
+    if $fefieldeffect==23 # Cave field
+      PBDebug.log(sprintf("Cave Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:ROCK) || opponent.pbPartner.pbHasType?(:ROCK)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:ROCK)
+        fieldscore*=0.5
+      end
+      partyrock=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ROCK)
+          partyrock=true
+        end
+      end
+      if partyrock
+        fieldscore*=0.5
+      end
+      if opponent.pbHasType?(:GROUND) || opponent.pbPartner.pbHasType?(:GROUND)
+        fieldscore*=1.2
+      end
+      if attacker.pbHasType?(:GROUND)
+        fieldscore*=0.8
+      end
+      partyground=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:GROUND)
+          partyground=true
+        end
+      end
+      if partyground
+        fieldscore*=0.8
+      end
+      if opponent.pbHasType?(:FLYING) || opponent.pbPartner.pbHasType?(:FLYING)
+        fieldscore*=0.7
+      end
+      if attacker.pbHasType?(:FLYING)
+        fieldscore*=1.3
+      end
+      partyflying=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FLYING)
+          partyflying=true
+        end
+      end
+      if partyflying
+        fieldscore*=1.3
+      end
+    end
+    if $fefieldeffect==24 # Glitch field
+      PBDebug.log(sprintf("Glitch Field Disrupt")) if $INTERNAL
+      if attacker.pbHasType?(:DARK) || attacker.pbHasType?(:STEEL) || attacker.pbHasType?(:FAIRY)
+        fieldscore*=1.3
+      end
+      partynew=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:DARK) || k.hasType?(:STEEL) || k.hasType?(:FAIRY)
+          partynew=true
+        end
+      end
+      if partynew
+        fieldscore*=1.3
+      end
+      ratio1 = attacker.spatk/attacker.spdef.to_f
+      ratio2 = attacker.spdef/attacker.spatk.to_f
+      if ratio1 < 1
+        fieldscore*=ratio1
+      elsif ratio2 < 1
+        fieldscore*=ratio2
+      end
+      oratio1 = opponent.spatk/attacker.spdef.to_f
+      oratio2 = opponent.spdef/attacker.spatk.to_f
+      if oratio1 > 1
+        fieldscore*=oratio1
+      elsif oratio2 > 1
+        fieldscore*=oratio2
+      end
+    end
+    if $fefieldeffect==25 # Crystal Cavern field
+      PBDebug.log(sprintf("Crystal Cavern Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:ROCK) || opponent.pbPartner.pbHasType?(:ROCK) ||
+         opponent.pbHasType?(:DRAGON) || opponent.pbPartner.pbHasType?(:DRAGON)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:DRAGON)
+        fieldscore*=0.5
+      end
+      partycryst=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ROCK) || k.hasType?(:DRAGON)
+          partycryst=true
+        end
+      end
+      if partycryst
+        fieldscore*=0.5
+      end
+    end
+    if $fefieldeffect==26 # Murkwater Surface field
+      PBDebug.log(sprintf("Murkwater Surface Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:WATER) || opponent.pbPartner.pbHasType?(:WATER)
+        fieldscore*=1.6
+      end
+      if attacker.pbHasType?(:WATER)
+        fieldscore*=0.4
+      else
+        if !attacker.isAirborne?
+          fieldscore*=1.3
+        end
+      end
+      partywater=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:WATER)
+          partywater=true
+        end
+      end
+      if partywater
+        fieldscore*=0.4
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SWIFTSWIM) && @weather!=PBWeather::RAINDANCE
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SWIFTSWIM) && @weather!=PBWeather::RAINDANCE
+        fieldscore*=0.7
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SURGESURFER)
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SURGESURFER)
+        fieldscore*=0.7
+      end
+      if opponent.pbHasType?(:STEEL) || opponent.pbPartner.pbHasType?(:STEEL) ||
+         opponent.pbHasType?(:POISON) || opponent.pbPartner.pbHasType?(:POISON)
+        fieldscore*=1.3
+      end
+      if attacker.pbHasType?(:POISON)
+        fieldscore*=0.7
+      else
+        if !attacker.pbHasType?(:STEEL)
+          fieldscore*=1.8
+        end
+      end
+      partymurk=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:POISON)
+          partymurk=true
+        end
+      end
+      if partymurk
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==27 # Mountain field
+      PBDebug.log(sprintf("Mountain Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:ROCK) || opponent.pbPartner.pbHasType?(:ROCK) ||
+         opponent.pbHasType?(:FLYING) || opponent.pbPartner.pbHasType?(:FLYING)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:FLYING)
+        fieldscore*=0.5
+      end
+      partymount=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ROCK) || k.hasType?(:FLYING)
+          partymount=true
+        end
+      end
+      if partymount
+        fieldscore*=0.5
+      end
+    end
+    if $fefieldeffect==28 # Snowy Mountain field
+      PBDebug.log(sprintf("Snowy Mountain Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:ROCK) || opponent.pbPartner.pbHasType?(:ROCK) ||
+         opponent.pbHasType?(:FLYING) || opponent.pbPartner.pbHasType?(:FLYING) ||
+         opponent.pbHasType?(:ICE) || opponent.pbPartner.pbHasType?(:ICE)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:FLYING) || attacker.pbHasType?(:ICE)
+        fieldscore*=0.5
+      end
+      partymount=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ROCK) || k.hasType?(:FLYING) || k.hasType?(:ICE)
+          partymount=true
+        end
+      end
+      if partymount
+        fieldscore*=0.5
+      end
+      if opponent.pbHasType?(:FIRE) || opponent.pbPartner.pbHasType?(:FIRE)
+        fieldscore*=0.5
+      end
+      if attacker.pbHasType?(:FIRE)
+        fieldscore*=1.5
+      end
+      partyfire=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FIRE)
+          partyfire=true
+        end
+      end
+      if partyfire
+        fieldscore*=1.5
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::SLUSHRUSH) && @weather!=PBWeather::HAIL
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SLUSHRUSH) && @weather!=PBWeather::HAIL
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==29 # Holy field
+      PBDebug.log(sprintf("Holy Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:NORMAL) || opponent.pbPartner.pbHasType?(:NORMAL) ||
+         opponent.pbHasType?(:FAIRY) || opponent.pbPartner.pbHasType?(:FAIRY)
+        fieldscore*=1.4
+      end
+      if attacker.pbHasType?(:NORMAL) || attacker.pbHasType?(:FAIRY)
+        fieldscore*=0.6
+      end
+      partynorm=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:NORMAL) || k.hasType?(:FAIRY)
+          partynorm=true
+        end
+      end
+      if partynorm
+        fieldscore*=0.6
+      end
+      if opponent.pbHasType?(:DARK) || opponent.pbPartner.pbHasType?(:DARK) ||
+         opponent.pbHasType?(:GHOST) || opponent.pbPartner.pbHasType?(:GHOST)
+        fieldscore*=0.5
+      end
+      if attacker.pbHasType?(:DARK) || attacker.pbHasType?(:GHOST)
+        fieldscore*=1.5
+      end
+      partyspook=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:DARK) || k.hasType?(:GHOST)
+          partyspook=true
+        end
+      end
+      if partyspook
+        fieldscore*=1.5
+      end
+      if opponent.pbHasType?(:DRAGON) || opponent.pbPartner.pbHasType?(:DRAGON) ||
+         opponent.pbHasType?(:PSYCHIC) || opponent.pbPartner.pbHasType?(:PSYCHIC)
+        fieldscore*=1.2
+      end
+      if attacker.pbHasType?(:DRAGON) || attacker.pbHasType?(:PSYCHIC)
+        fieldscore*=0.8
+      end
+      partymyst=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:DRAGON) || k.hasType?(:PSYCHIC)
+          partymyst=true
+        end
+      end
+      if partymyst
+        fieldscore*=0.8
+      end
+    end
+    if $fefieldeffect==30 # Mirror field
+      PBDebug.log(sprintf("Mirror Field Disrupt")) if $INTERNAL
+      if opponent.stages[PBStats::ACCURACY]!=0
+        minimini = opponent.stages[PBStats::ACCURACY]
+        minimini*=10.0
+        minimini+=100
+        minimini/=100
+        fieldscore*=minimini
+      end
+      if opponent.stages[PBStats::EVASION]!=0
+        minimini = opponent.stages[PBStats::EVASION]
+        minimini*=10.0
+        minimini+=100
+        minimini/=100
+        fieldscore*=minimini
+      end
+      if attacker.stages[PBStats::ACCURACY]!=0
+        minimini = attacker.stages[PBStats::ACCURACY]
+        minimini*=(-10.0)
+        minimini+=100
+        minimini/=100
+        fieldscore*=minimini
+      end
+      if attacker.stages[PBStats::EVASION]!=0
+        minimini = attacker.stages[PBStats::EVASION]
+        minimini*=(-10.0)
+        minimini+=100
+        minimini/=100
+        fieldscore*=minimini
+      end
+    end
+    if $fefieldeffect==31 # Fairytale field
+      PBDebug.log(sprintf("Fairytale Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:DRAGON) || opponent.pbPartner.pbHasType?(:DRAGON) ||
+         opponent.pbHasType?(:STEEL) || opponent.pbPartner.pbHasType?(:STEEL) ||
+         opponent.pbHasType?(:FAIRY) || opponent.pbPartner.pbHasType?(:FAIRY)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:DRAGON) || attacker.pbHasType?(:STEEL) || attacker.pbHasType?(:FAIRY)
+        fieldscore*=0.5
+      end
+      partyfair=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:DRAGON) || k.hasType?(:STEEL) || k.hasType?(:FAIRY)
+          partyfair=true
+        end
+      end
+      if partyfair
+        fieldscore*=0.5
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::STANCECHANGE)
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::STANCECHANGE)
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==32 # Dragon's Den field
+      PBDebug.log(sprintf("Dragon's Den Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:DRAGON) || opponent.pbPartner.pbHasType?(:DRAGON)
+        fieldscore*=1.7
+      end
+      if attacker.pbHasType?(:DRAGON)
+        fieldscore*=0.3
+      end
+      partydrago=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:DRAGON)
+          partydrago=true
+        end
+      end
+      if partydrago
+        fieldscore*=0.3
+      end
+      if opponent.pbHasType?(:FIRE) || opponent.pbPartner.pbHasType?(:FIRE)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:FIRE)
+        fieldscore*=0.5
+      end
+      partyfire=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FIRE)
+          partyfire=true
+        end
+      end
+      if partyfire
+        fieldscore*=0.5
+      end
+      if (!opponent.abilitynulled && opponent.ability == PBAbilities::MULTISCALE)
+        fieldscore*=1.3
+      end
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::MULTISCALE)
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==33 # Flower Garden field
+      PBDebug.log(sprintf("Flower Garden Field Disrupt")) if $INTERNAL
+      if $fecounter>2
+        if opponent.pbHasType?(:BUG) || opponent.pbPartner.pbHasType?(:BUG) || opponent.pbHasType?(:GRASS) || opponent.pbPartner.pbHasType?(:GRASS)
+          fieldscore*=(0.5*$fecounter)
+        end
+        if attacker.pbHasType?(:GRASS) || attacker.pbHasType?(:BUG)
+          fieldscore*= (1.0/$fecounter)
+        end
+        partygrass=false
+        for k in pbParty(attacker.index)
+          next if k.nil?
+          if k.hasType?(:BUG) || k.hasType?(:GRASS)
+            partygrass=true
+          end
+        end
+        if partygrass
+          fieldscore*= (1.0/$fecounter)
+        end
+        if opponent.pbHasType?(:FIRE) || opponent.pbPartner.pbHasType?(:FIRE)
+          fieldscore*=(0.4*$fecounter)
+        end
+        if attacker.pbHasType?(:FIRE)
+          fieldscore*= (1.0/$fecounter)
+        end
+        partyfire=false
+        for k in pbParty(attacker.index)
+          next if k.nil?
+          if k.hasType?(:FIRE)
+            partyfire=true
+          end
+        end
+        if partyfire
+          fieldscore*= (1.0/$fecounter)
+        end
+      end
+    end
+    if $fefieldeffect==34 # Starlight Arena field
+      PBDebug.log(sprintf("Starlight Arena Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:PSYCHIC) || opponent.pbPartner.pbHasType?(:PSYCHIC)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:PSYCHIC)
+        fieldscore*=0.5
+      end
+      partypsy=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:PSYCHIC)
+          partypsy=true
+        end
+      end
+      if partypsy
+        fieldscore*=0.5
+      end
+      if opponent.pbHasType?(:FAIRY) || opponent.pbPartner.pbHasType?(:FAIRY) || opponent.pbHasType?(:DARK) || opponent.pbPartner.pbHasType?(:DARK)
+        fieldscore*=1.3
+      end
+      if attacker.pbHasType?(:FAIRY) || attacker.pbHasType?(:DARK)
+        fieldscore*=0.7
+      end
+      partystar=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:FAIRY) || k.hasType?(:DARK)
+          partystar=true
+        end
+      end
+      if partystar
+        fieldscore*=0.7
+      end
+    end
+    if $fefieldeffect==35 # New World field
+      PBDebug.log(sprintf("New World Field Disrupt")) if $INTERNAL
+      fieldscore = 0
+    end
+    if $fefieldeffect==36 # Inverse field
+      PBDebug.log(sprintf("Inverse Field Disrupt")) if $INTERNAL
+      if opponent.pbHasType?(:NORMAL) || opponent.pbPartner.pbHasType?(:NORMAL)
+        fieldscore*=1.7
+      end
+      if attacker.pbHasType?(:NORMAL)
+        fieldscore*=0.3
+      end
+      partynorm=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:NORMAL)
+          partynorm=true
+        end
+      end
+      if partynorm
+        fieldscore*=0.3
+      end
+      if opponent.pbHasType?(:ICE) || opponent.pbPartner.pbHasType?(:ICE)
+        fieldscore*=1.5
+      end
+      if attacker.pbHasType?(:ICE)
+        fieldscore*=0.5
+      end
+      partyice=false
+      for k in pbParty(attacker.index)
+        next if k.nil?
+        if k.hasType?(:ICE)
+          partyice=true
+        end
+      end
+      if partyice
+        fieldscore*=0.5
+      end
+    end
+    if $fefieldeffect==37 # Psychic Terrain
       PBDebug.log(sprintf("Psychic Terrain Disrupt")) if $INTERNAL
       if opponent.pbHasType?(:PSYCHIC) || opponent.pbPartner.pbHasType?(:PSYCHIC)
         fieldscore*=1.7

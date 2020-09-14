@@ -435,7 +435,7 @@ class PokeBattle_Battle
         if !fastermon && opponent.effects[PBEffects::TwoTurnAttack]>0
           score*=0
         end
-        if $fefieldeffect==37   # Psychic Terrain
+        if $fefieldeffect==37
           score*=0
         end
         if !opponent.abilitynulled && (opponent.ability == PBAbilities::DAZZLING || opponent.ability == PBAbilities::QUEENLYMAJESTY)
@@ -463,6 +463,7 @@ class PokeBattle_Battle
     if (!opponent.abilitynulled && opponent.ability == PBAbilities::DANCER)
       if (PBStuff::DANCEMOVE).include?(move.id)
         score*=0.5
+        score*=0.1 if $fefieldeffect==6
       end
     end
     ioncheck = false
@@ -702,7 +703,7 @@ class PokeBattle_Battle
       if move.basedamage==0 && move.function!=0xF2 # Trick
         score*=0.1
       end
-      if (move.type == PBTypes::NORMAL) ||
+      if ((move.type == PBTypes::NORMAL) && $fefieldeffect!=29) ||
          (move.type == PBTypes::GHOST) || (move.type == PBTypes::FIGHTING) ||
          (move.type == PBTypes::DRAGON) || (move.type == PBTypes::PSYCHIC) ||
          (move.type == PBTypes::GROUND) || (move.type == PBTypes::ELECTRIC) ||

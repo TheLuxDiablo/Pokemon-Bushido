@@ -820,21 +820,46 @@ class PokeBattle_Battle
       if currentmon.pbOwnSide.effects[PBEffects::Tailwind]>0
         speed=speed*2
       end
-      if mon.ability == PBAbilities::SWIFTSWIM && pbWeather==PBWeather::RAINDANCE &&
-         mon.item != PBItems::UTILITYUMBRELLA
+      if (mon.ability == PBAbilities::SWIFTSWIM) && pbWeather==PBWeather::RAINDANCE &&
+         !(mon.item == PBItems::UTILITYUMBRELLA)
+        speed=speed*2
+      elsif ($fefieldeffect == 21 || $fefieldeffect == 22 || $fefieldeffect == 26) &&
+         (mon.ability == PBAbilities::SWIFTSWIM)
+        speed=speed*2
+      elsif $fefieldeffect == 21 || $fefieldeffect == 26
+        if (!mon.hasType?(:WATER) && !(mon.ability == PBAbilities::SURGESURFER)) &&
+           !mon.isAirborne?
+          speed=(speed*0.5).floor
+        end
+      elsif $fefieldeffect == 22
+        if (!mon.hasType?(:WATER) && !(mon.ability == PBAbilities::SWIFTSWIM) &&
+           !(mon.ability == PBAbilities::STEELWORKER))
+          speed=(speed*0.25).floor
+        end
+      end
+      if (mon.ability == PBAbilities::SLUSHRUSH) && (pbWeather==PBWeather::HAIL ||
+        $fefieldeffect==13 || $fefieldeffect==28)
         speed=speed*2
       end
-      if mon.ability == PBAbilities::SLUSHRUSH && pbWeather==PBWeather::HAIL
+      if (mon.ability == PBAbilities::SURGESURFER) && (($fefieldeffect == 1) ||
+        ($fefieldeffect==18) || ($fefieldeffect==21) || ($fefieldeffect==22) ||
+        ($fefieldeffect==26))
         speed=speed*2
       end
-      if mon.ability == PBAbilities::SURGESURFER && $fefieldeffect == 1   # Electric Terrain
+      if (mon.ability == PBAbilities::TELEPATHY) && $fefieldeffect==37
         speed=speed*2
       end
-      if mon.ability == PBAbilities::CHLOROPHYLL && pbWeather==PBWeather::SUNNYDAY &&
-         mon.item != PBItems::UTILITYUMBRELLA
+      if $fefieldeffect == 35 && !mon.isAirborne?
+        speed=(speed*0.5).floor
+      end
+      if (mon.ability == PBAbilities::CHLOROPHYLL) &&
+        (pbWeather==PBWeather::SUNNYDAY ||
+        ($fefieldeffect == 33 && $fecounter > 2)) && !(mon.item == PBItems::UTILITYUMBRELLA)
         speed=speed*2
       end
-      if mon.ability == PBAbilities::SANDRUSH && pbWeather==PBWeather::SANDSTORM
+      if (mon.ability == PBAbilities::SANDRUSH) &&
+         (pbWeather==PBWeather::SANDSTORM ||
+         $fefieldeffect == 12 || $fefieldeffect == 20)
         speed=speed*2
       end
       if (mon.ability == PBAbilities::QUICKFEET) && mon.status>0
@@ -865,13 +890,25 @@ class PokeBattle_Battle
         speed=(speed/2).floor
       end
       if currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&
+         ($fefieldeffect != 15) &&
          !(mon.ability == PBAbilities::WHITESMOKE) &&
          !(mon.ability == PBAbilities::CLEARBODY) &&
          !(mon.ability == PBAbilities::CONTRARY)
         speed=(speed*2/3).floor
       elsif currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&
+         ($fefieldeffect == 15) &&
+         !(mon.ability == PBAbilities::WHITESMOKE) &&
+         !(mon.ability == PBAbilities::CLEARBODY) &&
+         !(mon.ability == PBAbilities::CONTRARY)
+        speed=(speed*0.5).floor
+      elsif currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&
+         ($fefieldeffect != 15) &&
          (mon.ability == PBAbilities::CONTRARY)
         speed=(speed*1.5).floor
+      elsif currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &
+         ($fefieldeffect == 15) &&
+         (mon.ability == PBAbilities::CONTRARY)
+        speed=speed*2
       end
       speed = 1 if speed <= 0
       return speed
@@ -1962,46 +1999,242 @@ class PokeBattle_Battle
         #Fields
         if skill>=PBTrainerAI.bestSkill
           case $fefieldeffect
-          when 1   # Electric Terrain
-            monscore+=50 if (i.ability == PBAbilities::SURGESURFER)
-            monscore+=25 if (i.ability == PBAbilities::GALVANIZE)
-            monscore+=25 if i.hasType?(:ELECTRIC)
-          when 2   # Grassy Terrain
-            monscore+=30 if (i.ability == PBAbilities::GRASSPELT)
-            monscore+=25 if i.hasType?(:GRASS) || i.hasType?(:FIRE)
-          when 3   # Misty Terrain
-            monscore+=20 if i.hasType?(:FAIRY)
-            monscore+=20 if (i.ability == PBAbilities::MARVELSCALE)
-            monscore+=20 if (i.ability == PBAbilities::DRYSKIN)
-            monscore+=20 if (i.ability == PBAbilities::WATERCOMPACTION)
-            monscore+=25 if (i.ability == PBAbilities::PIXILATE)
-            monscore+=25 if (i.ability == PBAbilities::SOULHEART)
-            monscore+=20 if i.hasType?(:FIGHTING)
-          when 7   # Sea of Fire?
-            monscore+=25 if i.hasType?(:FIRE)
-            monscore+=15 if (i.ability == PBAbilities::WATERVEIL)
-            monscore+=15 if (i.ability == PBAbilities::WATERBUBBLE)
-            monscore+=30 if (i.ability == PBAbilities::FLASHFIRE)
-            monscore+=30 if (i.ability == PBAbilities::FLAREBOOST)
-            monscore+=30 if (i.ability == PBAbilities::BLAZE)
-            monscore-=30 if (i.ability == PBAbilities::ICEBODY)
-            monscore-=30 if (i.ability == PBAbilities::LEAFGUARD)
-            monscore-=30 if (i.ability == PBAbilities::GRASSPELT)
-            monscore-=30 if (i.ability == PBAbilities::FLUFFY)
-          when 8   # Swamp
-            monscore+=15 if (i.ability == PBAbilities::GOOEY)
-            monscore+=20 if (i.ability == PBAbilities::WATERCOMPACTION)
-          when 9   # Rainbow
-            monscore+=10 if (i.ability == PBAbilities::WONDERSKIN)
-            monscore+=20 if (i.ability == PBAbilities::MARVELSCALE)
-            monscore+=25 if (i.ability == PBAbilities::SOULHEART)
-            monscore+=30 if (i.ability == PBAbilities::CLOUDNINE)
-            monscore+=30 if (i.ability == PBAbilities::PRISMARMOR)
-          when 37   # Psychic Terrain
-            monscore+=25 if i.hasType?(:PSYCHIC)
-            monscore+=20 if (i.ability == PBAbilities::PUREPOWER)
-            monscore+=20 if ((i.ability == PBAbilities::ANTICIPATION) || (nonmegaform.ability == PBAbilities::ANTICIPATION))
-            monscore+=50 if (i.ability == PBAbilities::TELEPATHY)
+            when 1
+              monscore+=50 if (i.ability == PBAbilities::SURGESURFER)
+              monscore+=25 if (i.ability == PBAbilities::GALVANIZE)
+              monscore+=25 if i.hasType?(:ELECTRIC)
+            when 2
+              monscore+=30 if (i.ability == PBAbilities::GRASSPELT)
+              monscore+=25 if i.hasType?(:GRASS) || i.hasType?(:FIRE)
+            when 3
+              monscore+=20 if i.hasType?(:FAIRY)
+              monscore+=20 if (i.ability == PBAbilities::MARVELSCALE)
+              monscore+=20 if (i.ability == PBAbilities::DRYSKIN)
+              monscore+=20 if (i.ability == PBAbilities::WATERCOMPACTION)
+              monscore+=25 if (i.ability == PBAbilities::PIXILATE)
+              monscore+=25 if (i.ability == PBAbilities::SOULHEART)
+            when 4
+              monscore+=30 if (i.ability == PBAbilities::PRISMARMOR)
+              monscore+=30 if (i.ability == PBAbilities::SHADOWSHIELD)
+            when 5
+              monscore+=10 if (i.ability == PBAbilities::ADAPTABILITY)
+              monscore+=10 if (i.ability == PBAbilities::SYNCHRONIZE)
+              monscore+=10 if (i.ability == PBAbilities::ANTICIPATION)
+              monscore+=10 if (i.ability == PBAbilities::TELEPATHY)
+            when 6
+              monscore+=30 if (i.ability == PBAbilities::SHEERFORCE)
+              monscore+=30 if (i.ability == PBAbilities::PUREPOWER)
+              monscore+=30 if (i.ability == PBAbilities::HUGEPOWER)
+              monscore+=30 if (i.ability == PBAbilities::GUTS)
+              monscore+=10 if (i.ability == PBAbilities::DANCER)
+              monscore+=20 if i.hasType?(:FIGHTING)
+            when 7
+              monscore+=25 if i.hasType?(:FIRE)
+              monscore+=15 if (i.ability == PBAbilities::WATERVEIL)
+              monscore+=15 if (i.ability == PBAbilities::WATERBUBBLE)
+              monscore+=30 if (i.ability == PBAbilities::FLASHFIRE)
+              monscore+=30 if (i.ability == PBAbilities::FLAREBOOST)
+              monscore+=30 if (i.ability == PBAbilities::BLAZE)
+              monscore-=30 if (i.ability == PBAbilities::ICEBODY)
+              monscore-=30 if (i.ability == PBAbilities::LEAFGUARD)
+              monscore-=30 if (i.ability == PBAbilities::GRASSPELT)
+              monscore-=30 if (i.ability == PBAbilities::FLUFFY)
+            when 8
+              monscore+=15 if (i.ability == PBAbilities::GOOEY)
+              monscore+=20 if (i.ability == PBAbilities::WATERCOMPACTION)
+            when 9
+              monscore+=10 if (i.ability == PBAbilities::WONDERSKIN)
+              monscore+=20 if (i.ability == PBAbilities::MARVELSCALE)
+              monscore+=25 if (i.ability == PBAbilities::SOULHEART)
+              monscore+=30 if (i.ability == PBAbilities::CLOUDNINE)
+              monscore+=30 if (i.ability == PBAbilities::PRISMARMOR)
+            when 10
+              monscore+=20 if (i.ability == PBAbilities::POISONHEAL)
+              monscore+=25 if (i.ability == PBAbilities::TOXICBOOST)
+              monscore+=30 if (i.ability == PBAbilities::MERCILESS)
+              monscore+=30 if (i.ability == PBAbilities::CORROSION)
+              monscore+=15 if i.hasType?(:POISON)
+            when 11
+              monscore+=10 if (i.ability == PBAbilities::WATERCOMPACTION)
+              monscore+=20 if (i.ability == PBAbilities::POISONHEAL)
+              monscore+=25 if (i.ability == PBAbilities::TOXICBOOST)
+              monscore+=30 if (i.ability == PBAbilities::MERCILESS)
+              monscore+=30 if (i.ability == PBAbilities::CORROSION)
+              monscore+=15 if i.hasType?(:POISON)
+            when 12
+              monscore+=20 if ((i.ability == PBAbilities::SANDSTREAM) || (nonmegaform.ability == PBAbilities::SANDSTREAM))
+              monscore+=25 if (i.ability == PBAbilities::SANDVEIL)
+              monscore+=30 if (i.ability == PBAbilities::SANDFORCE)
+              monscore+=50 if (i.ability == PBAbilities::SANDRUSH)
+              monscore+=20 if i.hasType?(:GROUND)
+              monscore-=25 if i.hasType?(:ELECTRIC)
+            when 13
+              monscore+=25 if i.hasType?(:ICE)
+              monscore+=25 if (i.ability == PBAbilities::ICEBODY)
+              monscore+=25 if (i.ability == PBAbilities::SNOWCLOAK)
+              monscore+=25 if (i.ability == PBAbilities::REFRIGERATE)
+              monscore+=50 if (i.ability == PBAbilities::SLUSHRUSH)
+            when 14
+            when 15
+              monscore+=20 if (i.ability == PBAbilities::SAPSIPPER)
+              monscore+=25 if i.hasType?(:GRASS) || i.hasType?(:BUG)
+              monscore+=30 if (i.ability == PBAbilities::GRASSPELT)
+              monscore+=30 if (i.ability == PBAbilities::OVERGROW)
+              monscore+=30 if (i.ability == PBAbilities::SWARM)
+            when 16
+              monscore+=15 if i.hasType?(:FIRE)
+            when 17
+              monscore+=25 if i.hasType?(:ELECTRIC)
+              monscore+=20 if (i.ability == PBAbilities::MOTORDRIVE)
+              monscore+=20 if (i.ability == PBAbilities::STEELWORKER)
+              monscore+=25 if (i.ability == PBAbilities::DOWNLOAD)
+              monscore+=25 if (i.ability == PBAbilities::TECHNICIAN)
+              monscore+=25 if (i.ability == PBAbilities::GALVANIZE)
+            when 18
+              monscore+=20 if (i.ability == PBAbilities::VOLTABSORB)
+              monscore+=20 if (i.ability == PBAbilities::STATIC)
+              monscore+=25 if (i.ability == PBAbilities::GALVANIZE)
+              monscore+=50 if (i.ability == PBAbilities::SURGESURFER)
+              monscore+=25 if i.hasType?(:ELECTRIC)
+            when 19
+              monscore+=10 if i.hasType?(:POISON)
+              monscore+=10 if (i.ability == PBAbilities::CORROSION)
+              monscore+=20 if (i.ability == PBAbilities::POISONHEAL)
+              monscore+=20 if (i.ability == PBAbilities::EFFECTSPORE)
+              monscore+=20 if (i.ability == PBAbilities::POISONPOINT)
+              monscore+=20 if (i.ability == PBAbilities::STENCH)
+              monscore+=20 if (i.ability == PBAbilities::GOOEY)
+              monscore+=25 if (i.ability == PBAbilities::TOXICBOOST)
+              monscore+=30 if (i.ability == PBAbilities::MERCILESS)
+            when 20
+              monscore+=10 if i.hasType?(:FIGHTING)
+              monscore+=15 if (i.ability == PBAbilities::OWNTEMPO)
+              monscore+=15 if (i.ability == PBAbilities::PUREPOWER)
+              monscore+=15 if (i.ability == PBAbilities::STEADFAST)
+              monscore+=20 if ((i.ability == PBAbilities::SANDSTREAM) || (nonmegaform.ability == PBAbilities::SANDSTREAM))
+              monscore+=20 if (i.ability == PBAbilities::WATERCOMPACTION)
+              monscore+=30 if (i.ability == PBAbilities::SANDFORCE)
+              monscore+=35 if (i.ability == PBAbilities::SANDVEIL)
+              monscore+=50 if (i.ability == PBAbilities::SANDRUSH)
+            when 21
+              monscore+=25 if i.hasType?(:WATER)
+              monscore+=25 if i.hasType?(:ELECTRIC)
+              monscore+=25 if (i.ability == PBAbilities::WATERVEIL)
+              monscore+=25 if (i.ability == PBAbilities::HYDRATION)
+              monscore+=25 if (i.ability == PBAbilities::TORRENT)
+              monscore+=25 if (i.ability == PBAbilities::SCHOOLING)
+              monscore+=25 if (i.ability == PBAbilities::WATERCOMPACTION)
+              monscore+=50 if (i.ability == PBAbilities::SWIFTSWIM)
+              monscore+=50 if (i.ability == PBAbilities::SURGESURFER)
+              mod1=PBTypes.getEffectiveness(PBTypes::WATER,i.type1)
+              mod2=(i.type1==i.type2) ? 2 : PBTypes.getEffectiveness(PBTypes::WATER,i.type2)
+              monscore-=50 if mod1*mod2>4
+            when 22
+              monscore+=25 if i.hasType?(:WATER)
+              monscore+=25 if i.hasType?(:ELECTRIC)
+              monscore+=25 if (i.ability == PBAbilities::WATERVEIL)
+              monscore+=25 if (i.ability == PBAbilities::HYDRATION)
+              monscore+=25 if (i.ability == PBAbilities::TORRENT)
+              monscore+=25 if (i.ability == PBAbilities::SCHOOLING)
+              monscore+=25 if (i.ability == PBAbilities::WATERCOMPACTION)
+              monscore+=50 if (i.ability == PBAbilities::SWIFTSWIM)
+              monscore+=50 if (i.ability == PBAbilities::SURGESURFER)
+              mod1=PBTypes.getEffectiveness(PBTypes::WATER,i.type1)
+              mod2=(i.type1==i.type2) ? 2 : PBTypes.getEffectiveness(PBTypes::WATER,i.type2)
+              monscore-=50 if mod1*mod2>4
+            when 23
+              monscore+=15 if i.hasType?(:GROUND)
+            when 24
+            when 25
+              monscore+=25 if i.hasType?(:DRAGON)
+              monscore+=30 if (i.ability == PBAbilities::PRISMARMOR)
+            when 26
+              monscore+=25 if i.hasType?(:WATER)
+              monscore+=25 if i.hasType?(:POISON)
+              monscore+=25 if i.hasType?(:ELECTRIC)
+              monscore+=25 if (i.ability == PBAbilities::SCHOOLING)
+              monscore+=25 if (i.ability == PBAbilities::WATERCOMPACTION)
+              monscore+=25 if (i.ability == PBAbilities::TOXICBOOST)
+              monscore+=25 if (i.ability == PBAbilities::POISONHEAL)
+              monscore+=25 if (i.ability == PBAbilities::MERCILESS)
+              monscore+=50 if (i.ability == PBAbilities::SWIFTSWIM)
+              monscore+=50 if (i.ability == PBAbilities::SURGESURFER)
+              monscore+=20 if (i.ability == PBAbilities::GOOEY)
+              monscore+=20 if (i.ability == PBAbilities::STENCH)
+            when 27
+              monscore+=25 if i.hasType?(:ROCK)
+              monscore+=25 if i.hasType?(:FLYING)
+              monscore+=20 if ((i.ability == PBAbilities::SNOWWARNING) || (nonmegaform.ability == PBAbilities::SNOWWARNING))
+              monscore+=20 if ((i.ability == PBAbilities::DROUGHT) || (nonmegaform.ability == PBAbilities::DROUGHT))
+              monscore+=25 if (i.ability == PBAbilities::LONGREACH)
+              monscore+=30 if (i.ability == PBAbilities::GALEWINGS) && @weather==PBWeather::STRONGWINDS
+            when 28
+              monscore+=25 if i.hasType?(:ROCK)
+              monscore+=25 if i.hasType?(:FLYING)
+              monscore+=25 if i.hasType?(:ICE)
+              monscore+=20 if ((i.ability == PBAbilities::SNOWWARNING) || (nonmegaform.ability == PBAbilities::DROUGHT))
+              monscore+=20 if ((i.ability == PBAbilities::DROUGHT) || (nonmegaform.ability == PBAbilities::DROUGHT))
+              monscore+=20 if (i.ability == PBAbilities::ICEBODY)
+              monscore+=20 if (i.ability == PBAbilities::SNOWCLOAK)
+              monscore+=25 if (i.ability == PBAbilities::LONGREACH)
+              monscore+=25 if (i.ability == PBAbilities::REFRIGERATE)
+              monscore+=30 if (i.ability == PBAbilities::GALEWINGS) && @weather==PBWeather::STRONGWINDS
+              monscore+=50 if (i.ability == PBAbilities::SLUSHRUSH)
+            when 29
+              monscore+=20 if i.hasType?(:NORMAL)
+              monscore+=20 if (i.ability == PBAbilities::JUSTIFIED)
+            when 30
+              monscore+=25 if (i.ability == PBAbilities::SANDVEIL)
+              monscore+=25 if (i.ability == PBAbilities::SNOWCLOAK)
+              monscore+=25 if (i.ability == PBAbilities::ILLUSION)
+              monscore+=25 if (i.ability == PBAbilities::TANGLEDFEET)
+              monscore+=25 if (i.ability == PBAbilities::MAGICBOUNCE)
+              monscore+=25 if (i.ability == PBAbilities::COLORCHANGE)
+            when 31
+              monscore+=25 if i.hasType?(:FAIRY)
+              monscore+=25 if i.hasType?(:STEEL)
+              monscore+=40 if i.hasType?(:DRAGON)
+              monscore+=25 if (i.ability == PBAbilities::POWEROFALCHEMY)
+              monscore+=25 if ((i.ability == PBAbilities::MAGICGUARD) || (nonmegaform.ability == PBAbilities::MAGICGUARD))
+              monscore+=25 if (i.ability == PBAbilities::MAGICBOUNCE)
+              monscore+=25 if (i.ability == PBAbilities::BATTLEARMOR)
+              monscore+=25 if (i.ability == PBAbilities::SHELLARMOR)
+              monscore+=25 if (i.ability == PBAbilities::MAGICIAN)
+              monscore+=25 if (i.ability == PBAbilities::MARVELSCALE)
+              monscore+=30 if (i.ability == PBAbilities::STANCECHANGE)
+            when 32
+              monscore+=25 if i.hasType?(:FIRE)
+              monscore+=50 if i.hasType?(:DRAGON)
+              monscore+=20 if (i.ability == PBAbilities::MARVELSCALE)
+              monscore+=20 if (i.ability == PBAbilities::MULTISCALE)
+              monscore+=20 if ((i.ability == PBAbilities::MAGMAARMOR) || (nonmegaform.ability == PBAbilities::MAGMAARMOR))
+            when 33
+              monscore+=25 if i.hasType?(:GRASS)
+              monscore+=25 if i.hasType?(:BUG)
+              monscore+=20 if (i.ability == PBAbilities::FLOWERGIFT)
+              monscore+=20 if (i.ability == PBAbilities::FLOWERVEIL)
+              monscore+=20 if ((i.ability == PBAbilities::DROUGHT) || (nonmegaform.ability == PBAbilities::DROUGHT))
+              monscore+=20 if ((i.ability == PBAbilities::DRIZZLE) || (nonmegaform.ability == PBAbilities::DRIZZLE))
+            when 34
+              monscore+=25 if i.hasType?(:PSYCHIC)
+              monscore+=25 if i.hasType?(:FAIRY)
+              monscore+=25 if i.hasType?(:DARK)
+              monscore+=20 if (i.ability == PBAbilities::MARVELSCALE)
+              monscore+=20 if (i.ability == PBAbilities::VICTORYSTAR)
+              monscore+=25 if ((i.ability == PBAbilities::ILLUMINATE) || (nonmegaform.ability == PBAbilities::ILLUMINATE))
+              monscore+=30 if (i.ability == PBAbilities::SHADOWSHIELD)
+            when 35
+              monscore+=25 if i.hasType?(:FLYING)
+              monscore+=25 if i.hasType?(:DARK)
+              monscore+=20 if (i.ability == PBAbilities::VICTORYSTAR)
+              monscore+=25 if (i.ability == PBAbilities::LEVITATE)
+              monscore+=30 if (i.ability == PBAbilities::SHADOWSHIELD)
+            when 36
+            when 37
+              monscore+=25 if i.hasType?(:PSYCHIC)
+              monscore+=20 if (i.ability == PBAbilities::PUREPOWER)
+              monscore+=20 if ((i.ability == PBAbilities::ANTICIPATION) || (nonmegaform.ability == PBAbilities::ANTICIPATION))
+              monscore+=50 if (i.ability == PBAbilities::TELEPATHY)
           end
         end
         PBDebug.log(sprintf("Fields: %d",monscore)) if $INTERNAL
@@ -2052,9 +2285,27 @@ class PokeBattle_Battle
       if side.effects[PBEffects::StealthRock]
         supereff = -1
         atype=PBTypes::ROCK
+        if skill>=PBTrainerAI.bestSkill
+          if $fefieldeffect == 25
+            atype1=PBTypes::WATER
+            atype2=PBTypes::GRASS
+            atype3=PBTypes::FIRE
+            atype4=PBTypes::PSYCHIC
+            eff1=PBTypes.getCombinedEffectiveness(atype1,type1,type2)
+            eff2=PBTypes.getCombinedEffectiveness(atype2,type1,type2)
+            eff3=PBTypes.getCombinedEffectiveness(atype3,type1,type2)
+            eff4=PBTypes.getCombinedEffectiveness(atype4,type1,type2)
+            supereff = [eff1,eff2,eff3,eff4].max
+          end
+        end
         eff=PBTypes.getCombinedEffectiveness(atype,type1,type2)
         eff = supereff if supereff > -1
         if eff>0
+          if skill>=PBTrainerAI.bestSkill
+            if $fefieldeffect == 14 || $fefieldeffect == 23
+              eff = eff*2
+            end
+          end
           percentdamage += 100*(eff/32.0)
         end
       end

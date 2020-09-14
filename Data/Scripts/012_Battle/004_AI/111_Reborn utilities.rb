@@ -21,18 +21,10 @@ class PokeBattle_Battle
     case move.function
       when 0x6A # SonicBoom
         basedamage=20
-        if $fefieldeffect==9
-          basedamage=140
-        end
       when 0x6B # Dragon Rage
         basedamage=40
       when 0x6C # Super Fang
         basedamage=(opponent.hp/2.0).floor
-        if (move.id == PBMoves::NATURESMADNESS) && ($fefieldeffect == 2 || $fefieldeffect == 15 || $fefieldeffect == 35)
-          basedamage=(opponent.hp*0.75).floor
-        elsif (move.id == PBMoves::NATURESMADNESS) && $fefieldeffect == 29
-          basedamage=(opponent.hp*0.66).floor
-        end
       when 0x6D # Night Shade
         basedamage=attacker.level
       when 0x6E # Endeavor
@@ -88,10 +80,6 @@ class PokeBattle_Battle
       when 0x7B # Venoshock
         if opponent.status==PBStatuses::POISON
           basedamage*=2
-        elsif skill>=PBTrainerAI.bestSkill
-          if $fefieldeffect==10 || $fefieldeffect==11 || $fefieldeffect==19 || $fefieldeffect==26 # Corrosive/Corromist/Wasteland/Murkwater
-            basedamage*=2
-          end
         end
       when 0x7C # SmellingSalt
         basedamage*=2 if opponent.status==PBStatuses::PARALYSIS  && opponent.effects[PBEffects::Substitute]<=0
@@ -108,10 +96,9 @@ class PokeBattle_Battle
       when 0x85 # Retaliate
         basedamage*=2 if attacker.pbOwnSide.effects[PBEffects::Retaliate]
       when 0x86 # Acrobatics
-        basedamage*=2 if attacker.item ==0 || attacker.hasWorkingItem(:FLYINGGEM) ||
-         $fefieldeffect == 6
+        basedamage*=2 if attacker.item ==0 || attacker.hasWorkingItem(:FLYINGGEM)
       when 0x87 # Weather Ball
-        basedamage*=2 if (pbWeather!=0 || $fefieldeffect==9)
+        basedamage*=2 if pbWeather!=0
       when 0x89 # Return
         basedamage=[(attacker.happiness*2/5).floor,1].max
       when 0x8A # Frustration
@@ -339,590 +326,6 @@ class PokeBattle_Battle
       if move.function==0x121 # Foul Play
         atk=pbRoughStat(opponent,PBStats::SPATK,skill)
       end
-      if $fefieldeffect == 24
-        stagemul=[2,2,2,2,2,2,2,3,4,5,6,7,8]
-        stagediv=[8,7,6,5,4,3,2,2,2,2,2,2,2]
-        gl1 = pbRoughStat(attacker,PBStats::SPATK,skill)
-        gl2 = pbRoughStat(attacker,PBStats::SPDEF,skill)
-        gl3 = attacker.stages[PBStats::SPDEF]+6
-        gl4 = attacker.stages[PBStats::SPATK]+6
-        if attitemworks
-          gl2 *= 1.5 if attacker.item == PBItems::ASSAULTVEST
-          gl1 *= 1.5 if attacker.item == PBItems::CHOICESPECS
-          gl2 *= 1.5 if attacker.item == PBItems::EVIOLITE && pbGetEvolvedFormData(attacker.species).length>0
-          gl1 *= 2 if attacker.item == PBItems::DEEPSEATOOTH && attacker.species == PBSpecies::CLAMPERL
-          gl1 *= 2 if attacker.item == PBItems::LIGHTBALL && attacker.species == PBSpecies::PIKACHU
-          gl2 *= 2 if attacker.item == PBItems::DEEPSEASCALE && attacker.species == PBSpecies::CLAMPERL
-          gl2 *= 1.5 if attacker.item == PBItems::METALPOWDER && attacker.species == PBSpecies::DITTO
-        end
-        if !attacker.abilitynulled
-          gl1 *= 1.5 if attacker.ability == PBAbilities::FLAREBOOST && attacker.status==PBStatuses::BURN
-          gl1 *= 1.5 if attacker.ability == PBAbilities::MINUS && (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::PLUS)
-          gl1 *= 1.5 if attacker.ability == PBAbilities::PLUS && (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::MINUS)
-          gl1 *= 1.5 if attacker.ability == PBAbilities::SOLARPOWER && pbWeather==PBWeather::SUNNYDAY
-          gl2 *= 1.5 if attacker.ability == PBAbilities::FLOWERGIFT && pbWeather==PBWeather::SUNNYDAY
-        end
-        gl1 *= 1.3 if (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::BATTERY)
-        gl1=(gl1*stagemul[gl4]/stagediv[gl4]).floor
-        gl2=(gl2*stagemul[gl3]/stagediv[gl3]).floor
-        if gl1 < gl2
-          atk=pbRoughStat(attacker,PBStats::SPDEF,skill)
-        end
-      end
-    end
-
-    #Field effect base damage adjustment
-    if skill>=PBTrainerAI.bestSkill
-      case $fefieldeffect
-      when 1 # Electric Field
-        if (move.id == PBMoves::EXPLOSION || move.id == PBMoves::SELFDESTRUCT ||
-          move.id == PBMoves::HURRICANE || move.id == PBMoves::SURF ||
-          move.id == PBMoves::SMACKDOWN || move.id == PBMoves::MUDDYWATER ||
-          move.id == PBMoves::THOUSANDARROWS)
-          basedamage=(basedamage*1.5).round
-        elsif (move.id == PBMoves::MAGNETBOMB || move.id == PBMoves::PLASMAFISTS)
-          basedamage=(basedamage*2).round
-        end
-      when 2 # Grassy Field
-        if (move.id == PBMoves::FAIRYWIND || move.id == PBMoves::SILVERWIND)
-          basedamage=(basedamage*1.5).round
-        elsif (move.id == PBMoves::MUDDYWATER || move.id == PBMoves::SURF || move.id == PBMoves::EARTHQUAKE ||
-          move.id == PBMoves::MAGNITUDE || move.id == PBMoves::BULLDOZE)
-          basedamage=(basedamage*0.5).round
-        end
-      when 3 # Misty Field
-        if (move.id == PBMoves::FAIRYWIND || move.id == PBMoves::MYSTICALFIRE ||
-          move.id == PBMoves::MOONBLAST || move.id == PBMoves::MAGICALLEAF ||
-          move.id == PBMoves::DOOMDUMMY || move.id == PBMoves::ICYWIND ||
-          move.id == PBMoves::MISTBALL || move.id == PBMoves::AURASPHERE ||
-          move.id == PBMoves::STEAMERUPTION || move.id == PBMoves::DAZZLINGGLEAM||
-          move.id == PBMoves::SILVERWIND || move.id == PBMoves::MOONGEISTBEAM)
-          basedamage=(basedamage*1.5).round
-        elsif (move.id == PBMoves::DARKPULSE || move.id == PBMoves::SHADOWBALL ||
-          move.id == PBMoves::NIGHTDAZE)
-          basedamage=(basedamage*0.5).round
-        end
-      when 4 # Dark Crystal Cavern
-        if (move.id == PBMoves::DARKPULSE ||
-          move.id == PBMoves::NIGHTDAZE || move.id == PBMoves::NIGHTSLASH ||
-          move.id == PBMoves::SHADOWBALL || move.id == PBMoves::SHADOWPUNCH ||
-          move.id == PBMoves::SHADOWCLAW || move.id == PBMoves::SHADOWSNEAK ||
-          move.id == PBMoves::SHADOWFORCE || move.id == PBMoves::SHADOWBONE)
-          basedamage=(basedamage*1.5).round
-        elsif (move.id == PBMoves::AURORABEAM || move.id == PBMoves::SIGNALBEAM ||
-          move.id == PBMoves::FLASHCANNON || move.id == PBMoves::LUSTERPURGE ||
-          move.id == PBMoves::DAZZLINGGLEAM || move.id == PBMoves::MIRRORSHOT ||
-          move.id == PBMoves::TECHNOBLAST || move.id == PBMoves::DOOMDUMMY ||
-          move.id == PBMoves::POWERGEM || move.id == PBMoves::MOONGEISTBEAM)
-          basedamage=(basedamage*1.5).round
-        elsif (move.id == PBMoves::PRISMATICLASER)
-          basedamage=(basedamage*2).round
-        end
-      when 5 # Chess Board
-        if (move.id == PBMoves::STRENGTH || move.id == PBMoves::ANCIENTPOWER ||
-          move.id == PBMoves::PSYCHIC)
-          basedamage=(basedamage*1.5).round
-          if (opponent.ability == PBAbilities::ADAPTABILITY) ||
-            (opponent.ability == PBAbilities::ANTICIPATION) ||
-            (opponent.ability == PBAbilities::SYNCHRONIZE) ||
-            (opponent.ability == PBAbilities::TELEPATHY)
-            basedamage=(basedamage*0.5).round
-          end
-          if (opponent.ability == PBAbilities::OBLIVIOUS) ||
-            (opponent.ability == PBAbilities::KLUTZ) ||
-            (opponent.ability == PBAbilities::UNAWARE) ||
-            (opponent.ability == PBAbilities::SIMPLE) ||
-            opponent.effects[PBEffects::Confusion]>0
-            basedamage=(basedamage*2).round
-          end
-        end
-        if (move.id == PBMoves::FEINT || move.id == PBMoves::FEINTATTACK ||
-          move.id == PBMoves::FAKEOUT)
-          basedamage=(basedamage*1.5).round
-        end
-      when 6 # Big Top
-        if (((move.type == PBTypes::FIGHTING) && move.pbIsPhysical?(move.type)) ||
-          move.id == PBMoves::STRENGTH || move.id == PBMoves::WOODHAMMER ||
-          move.id == PBMoves::DUALCHOP || move.id == PBMoves::HEATCRASH ||
-          move.id == PBMoves::SKYDROP || move.id == PBMoves::BULLDOZE ||
-          move.id == PBMoves::ICICLECRASH || move.id == PBMoves::BODYSLAM ||
-          move.id == PBMoves::STOMP || move.id == PBMoves::POUND ||
-          move.id == PBMoves::SLAM || move.id == PBMoves::GIGAIMPACT ||
-          move.id == PBMoves::SMACKDOWN || move.id == PBMoves::IRONTAIL ||
-          move.id == PBMoves::METEORMASH || move.id == PBMoves::DRAGONRUSH ||
-          move.id == PBMoves::CRABHAMMER || move.id == PBMoves::BOUNCE ||
-          move.id == PBMoves::HEAVYSLAM || move.id == PBMoves::MAGNITUDE ||
-          move.id == PBMoves::EARTHQUAKE || move.id == PBMoves::STOMPINGTANTRUM ||
-          move.id == PBMoves::BRUTALSWING || move.id == PBMoves::HIGHHORSEPOWER ||
-          move.id == PBMoves::ICEHAMMER || move.id == PBMoves::DRAGONHAMMER ||
-          move.id == PBMoves::BLAZEKICK)
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::HUGEPOWER) ||
-            (!attacker.abilitynulled && attacker.ability == PBAbilities::GUTS) ||
-            (!attacker.abilitynulled && attacker.ability == PBAbilities::PUREPOWER) ||
-            (!attacker.abilitynulled && attacker.ability == PBAbilities::SHEERFORCE)
-            basedamage=(basedamage*2.2).round
-          else
-            basedamage=(basedamage*1.2).round
-          end
-        end
-        if (move.id == PBMoves::PAYDAY)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::VINEWHIP || move.id == PBMoves::POWERWHIP ||
-          move.id == PBMoves::FIRELASH)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::FIERYDANCE || move.id == PBMoves::PETALDANCE ||
-          move.id == PBMoves::REVELATIONDANCE)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::FLY || move.id == PBMoves::ACROBATICS)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::FIRSTIMPRESSION)
-          basedamage=(basedamage*1.5).round
-        end
-        if move.isSoundBased?
-          basedamage=(basedamage*1.5).round
-        end
-      when 7 # Burning Field
-        if (move.id == PBMoves::SMOG || move.id == PBMoves::CLEARSMOG)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::SMACKDOWN || move.id == PBMoves::THOUSANDARROWS)
-          basedamage=(basedamage*1.5).round
-        end
-      when 8 # Swamp Field
-        if (move.id == PBMoves::MUDBOMB || move.id == PBMoves::MUDSHOT ||
-          move.id == PBMoves::MUDSLAP || move.id == PBMoves::MUDDYWATER ||
-          move.id == PBMoves::SURF || move.id == PBMoves::SLUDGEWAVE ||
-          move.id == PBMoves::GUNKSHOT || move.id == PBMoves::BRINE ||
-          move.id == PBMoves::SMACKDOWN || move.id == PBMoves::THOUSANDARROWS)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::EARTHQUAKE || move.id == PBMoves::MAGNITUDE ||
-         move.id == PBMoves::BULLDOZE)
-          basedamage=(basedamage*0.25).round
-        end
-      when 9 # Rainbow Field
-        if (move.id == PBMoves::SILVERWIND || move.id == PBMoves::MYSTICALFIRE ||
-          move.id == PBMoves::DRAGONPULSE || move.id == PBMoves::TRIATTACK ||
-          move.id == PBMoves::SACREDFIRE || move.id == PBMoves::FIREPLEDGE ||
-          move.id == PBMoves::WATERPLEDGE || move.id == PBMoves::GRASSPLEDGE ||
-          move.id == PBMoves::AURORABEAM || move.id == PBMoves::JUDGMENT ||
-          move.id == PBMoves::RELICSONG || move.id == PBMoves::HIDDENPOWER ||
-          move.id == PBMoves::SECRETPOWER || move.id == PBMoves::WEATHERBALL ||
-          move.id == PBMoves::MISTBALL || move.id == PBMoves::HEARTSTAMP ||
-          move.id == PBMoves::MOONBLAST || move.id == PBMoves::ZENHEADBUTT ||
-          move.id == PBMoves::SPARKLINGARIA || move.id == PBMoves::FLEURCANNON ||
-          move.id == PBMoves::PRISMATICLASER)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::DARKPULSE || move.id == PBMoves::SHADOWBALL ||
-          move.id == PBMoves::NIGHTDAZE)
-          basedamage=(basedamage*0.5).round
-        end
-      when 10 # Corrosive Field
-        if (move.id == PBMoves::SMACKDOWN || move.id == PBMoves::MUDSLAP ||
-          move.id == PBMoves::MUDSHOT || move.id == PBMoves::MUDBOMB ||
-          move.id == PBMoves::MUDDYWATER || move.id == PBMoves::WHIRLPOOL ||
-          move.id == PBMoves::THOUSANDARROWS)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::ACID || move.id == PBMoves::ACIDSPRAY ||
-          move.id == PBMoves::GRASSKNOT)
-          basedamage=(basedamage*2).round
-        end
-      when 11 # Corrosive Mist Field
-        if (move.id == PBMoves::BUBBLEBEAM || move.id == PBMoves::ACIDSPRAY ||
-          move.id == PBMoves::BUBBLE || move.id == PBMoves::SMOG ||
-          move.id == PBMoves::CLEARSMOG || move.id == PBMoves::SPARKLINGARIA)
-          basedamage=(basedamage*1.5).round
-        end
-      when 12 # Desert Field
-        if (move.id == PBMoves::NEEDLEARM || move.id == PBMoves::PINMISSILE ||
-          move.id == PBMoves::DIG || move.id == PBMoves::SANDTOMB ||
-          move.id == PBMoves::HEATWAVE || move.id == PBMoves::THOUSANDWAVES ||
-          move.id == PBMoves::BURNUP)
-          basedamage=(basedamage*1.5).round
-        end
-      when 13 # Icy Field
-        if (move.id == PBMoves::SCALD || move.id == PBMoves::STEAMERUPTION)
-          basedamage=(basedamage*0.5).round
-        end
-      when 14 # Rocky Field
-        if (move.id == PBMoves::ROCKSMASH)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::ROCKCLIMB || move.id == PBMoves::STRENGTH ||
-          move.id == PBMoves::MAGNITUDE || move.id == PBMoves::EARTHQUAKE ||
-          move.id == PBMoves::BULLDOZE || move.id == PBMoves::ACCELEROCK)
-          basedamage=(basedamage*1.5).round
-        end
-      when 15 # Forest Field
-        if (move.id == PBMoves::CUT)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::ATTACKORDER)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::SURF || move.id == PBMoves::MUDDYWATER)
-          basedamage=(basedamage*0.5).round
-        end
-      when 16 # Superheated Field
-        if (move.id == PBMoves::SURF || move.id == PBMoves::MUDDYWATER ||
-          move.id == PBMoves::WATERPLEDGE || move.id == PBMoves::WATERSPOUT ||
-          move.id == PBMoves::SPARKLINGARIA)
-          basedamage=(basedamage*0.625).round
-        end
-        if (move.id == PBMoves::SCALD || move.id == PBMoves::STEAMERUPTION)
-        basedamage=(basedamage*1.667).round
-        end
-      when 17 # Factory Field
-        if (move.id == PBMoves::FLASHCANNON || move.id == PBMoves::GYROBALL ||
-          move.id == PBMoves::MAGNETBOMB || move.id == PBMoves::GEARGRIND)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::STEAMROLLER || move.id == PBMoves::TECHNOBLAST)
-          basedamage=(basedamage*1.5).round
-        end
-      when 18 # Shortcircuit Field
-        if (move.type == PBTypes::ELECTRIC)
-          basedamage=(basedamage*1.2).round
-        end
-        if (move.id == PBMoves::DAZZLINGGLEAM)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::DARKPULSE ||
-          move.id == PBMoves::NIGHTDAZE || move.id == PBMoves::NIGHTSLASH ||
-          move.id == PBMoves::SHADOWBALL || move.id == PBMoves::SHADOWPUNCH ||
-          move.id == PBMoves::SHADOWCLAW || move.id == PBMoves::SHADOWSNEAK ||
-          move.id == PBMoves::SHADOWFORCE || move.id == PBMoves::SHADOWBONE)
-          basedamage=(basedamage*1.3).round
-        end
-        if (move.id == PBMoves::SURF || move.id == PBMoves::MUDDYWATER ||
-          move.id == PBMoves::MAGNETBOMB || move.id == PBMoves::GYROBALL ||
-          move.id == PBMoves::FLASHCANNON || move.id == PBMoves::GEARGRIND)
-          basedamage=(basedamage*1.5).round
-        end
-      when 19 # Wasteland
-        if (move.id == PBMoves::OCTAZOOKA || move.id == PBMoves::SLUDGE ||
-          move.id == PBMoves::GUNKSHOT || move.id == PBMoves::SLUDGEWAVE ||
-          move.id == PBMoves::SLUDGEBOMB)
-          basedamage=(basedamage*1.2).round
-        end
-        if (move.id == PBMoves::SPITUP)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::VINEWHIP || move.id == PBMoves::POWERWHIP)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::MUDSLAP || move.id == PBMoves::MUDBOMB ||
-          move.id == PBMoves::MUDSHOT)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::EARTHQUAKE || move.id == PBMoves::MAGNITUDE ||
-          move.id == PBMoves::BULLDOZE)
-          basedamage=(basedamage*0.25).round
-        end
-      when 20 # Ashen Beach
-        if (move.id == PBMoves::MUDSLAP || move.id == PBMoves::MUDSHOT ||
-          move.id == PBMoves::MUDBOMB  || move.id == PBMoves::SANDTOMB)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::HIDDENPOWER || move.id == PBMoves::STRENGTH)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::LANDSWRATH || move.id == PBMoves::THOUSANDWAVES)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::PSYCHIC)
-          basedamage=(basedamage*1.2).round
-        end
-        if (move.id == PBMoves::STOREDPOWER || move.id == PBMoves::ZENHEADBUTT ||
-          move.id == PBMoves::FOCUSBLAST || move.id == PBMoves::AURASPHERE)
-          basedamage=(basedamage*1.3).round
-        end
-        if (move.id == PBMoves::SURF|| move.id == PBMoves::MUDDYWATER)
-          basedamage=(basedamage*1.5).round
-        end
-      when 21 # Water Surface
-        if (move.id == PBMoves::SURF || move.id == PBMoves::MUDDYWATER ||
-          move.id == PBMoves::WHIRLPOOL || move.id == PBMoves::DIVE)
-          basedamage=(basedamage*1.5).round
-        end
-      when 22 # Underwater
-        if (move.id == PBMoves::WATERPULSE)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::ANCHORSHOT)
-          basedamage=(basedamage*2).round
-        end
-      when 23 # Cave
-        if move.isSoundBased?
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::ROCKTOMB)
-          basedamage=(basedamage*1.5).round
-        end
-      when 25 # Crystal Cavern
-        if (move.id == PBMoves::AURORABEAM || move.id == PBMoves::SIGNALBEAM ||
-          move.id == PBMoves::FLASHCANNON || move.id == PBMoves::LUSTERPURGE ||
-          move.id == PBMoves::DAZZLINGGLEAM || move.id == PBMoves::MIRRORSHOT ||
-          move.id == PBMoves::TECHNOBLAST || move.id == PBMoves::DOOMDUMMY ||
-          move.id == PBMoves::MOONGEISTBEAM || move.id == PBMoves::PHOTONGEYSER)
-          basedamage=(basedamage*1.3).round
-        end
-        if (move.id == PBMoves::POWERGEM || move.id == PBMoves::DIAMONDSTORM ||
-          move.id == PBMoves::ANCIENTPOWER || move.id == PBMoves::JUDGMENT ||
-          move.id == PBMoves::ROCKSMASH || move.id == PBMoves::ROCKTOMB ||
-          move.id == PBMoves::STRENGTH || move.id == PBMoves::ROCKCLIMB ||
-          move.id == PBMoves::MULTIATTACK)
-          basedamage=(basedamage*1.5).round
-        end
-      when 26 # Murkwater Surface
-        if (move.id == PBMoves::MUDBOMB || move.id == PBMoves::MUDSLAP ||
-          move.id == PBMoves::MUDSHOT || move.id == PBMoves::SMACKDOWN ||
-          move.id == PBMoves::ACID || move.id == PBMoves::ACIDSPRAY ||
-          move.id == PBMoves::BRINE || move.id == PBMoves::THOUSANDWAVES)
-          basedamage=(basedamage*1.5).round
-        end
-      when 27 # Mountain
-        if (move.id == PBMoves::VITALTHROW || move.id == PBMoves::CIRCLETHROW ||
-          move.id == PBMoves::STORMTHROW)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::OMINOUSWIND || move.id == PBMoves::ICYWIND ||
-          move.id == PBMoves::SILVERWIND || move.id == PBMoves::TWISTER ||
-          move.id == PBMoves::RAZORWIND || move.id == PBMoves::FAIRYWIND)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::OMINOUSWIND || move.id == PBMoves::ICYWIND ||
-          move.id == PBMoves::SILVERWIND || move.id == PBMoves::TWISTER ||
-          move.id == PBMoves::RAZORWIND || move.id == PBMoves::FAIRYWIND ||
-          move.id == PBMoves::GUST) && pbWeather==PBWeather::STRONGWINDS
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::THUNDER || move.id == PBMoves::ERUPTION||
-          move.id == PBMoves::AVALANCHE)
-          basedamage=(basedamage*1.5).round
-        end
-      when 28 # Snowy Mountain
-        if (move.id == PBMoves::VITALTHROW || move.id == PBMoves::CIRCLETHROW ||
-          move.id == PBMoves::STORMTHROW)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::OMINOUSWIND ||
-          move.id == PBMoves::SILVERWIND || move.id == PBMoves::TWISTER ||
-          move.id == PBMoves::RAZORWIND || move.id == PBMoves::FAIRYWIND)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::ICYWIND)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::OMINOUSWIND || move.id == PBMoves::ICYWIND ||
-          move.id == PBMoves::SILVERWIND || move.id == PBMoves::TWISTER ||
-          move.id == PBMoves::RAZORWIND || move.id == PBMoves::FAIRYWIND ||
-          move.id == PBMoves::GUST) && pbWeather==PBWeather::STRONGWINDS
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::SCALD || move.id == PBMoves::STEAMERUPTION)
-          basedamage=(basedamage*0.5).round
-        end
-        if (move.id == PBMoves::AVALANCHE || move.id == PBMoves::POWDERSNOW)
-          basedamage=(basedamage*1.5).round
-        end
-      when 29 # Holy
-        if (move.id == PBMoves::MYSTICALFIRE || move.id == PBMoves::MAGICALLEAF ||
-          move.id == PBMoves::ANCIENTPOWER)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::JUDGMENT || move.id == PBMoves::SACREDFIRE)
-          basedamage=(basedamage*1.2).round
-        end
-        if (move.id == PBMoves::PSYSTRIKE || move.id == PBMoves::AEROBLAST ||
-          move.id == PBMoves::SACREDFIRE || move.id == PBMoves::ORIGINPULSE ||
-          move.id == PBMoves::DOOMDUMMY || move.id == PBMoves::JUDGMENT ||
-          move.id == PBMoves::MISTBALL || move.id == PBMoves::CRUSHGRIP ||
-          move.id == PBMoves::LUSTERPURGE || move.id == PBMoves::SECRETSWORD ||
-          move.id == PBMoves::PSYCHOBOOST || move.id == PBMoves::RELICSONG ||
-          move.id == PBMoves::SPACIALREND || move.id == PBMoves::HYPERSPACEHOLE ||
-          move.id == PBMoves::ROAROFTIME || move.id == PBMoves::LANDSWRATH ||
-          move.id == PBMoves::PRECIPICEBLADES || move.id == PBMoves::DRAGONASCENT ||
-          move.id == PBMoves::MOONGEISTBEAM || move.id == PBMoves::SUNSTEELSTRIKE ||
-          move.id == PBMoves::PRISMATICLASER || move.id == PBMoves::FLEURCANNON ||
-          move.id == PBMoves::DIAMONDSTORM )
-          basedamage=(basedamage*1.3).round
-        end
-      when 30 # Mirror
-        if (move.id == PBMoves::MIRRORSHOT)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::CHARGEBEAM || move.id == PBMoves::SOLARBEAM ||
-          move.id == PBMoves::PSYBEAM || move.id == PBMoves::TRIATTACK ||
-          move.id == PBMoves::BUBBLEBEAM || move.id == PBMoves::HYPERBEAM ||
-          move.id == PBMoves::ICEBEAM || move.id == PBMoves::ORIGINPULSE ||
-          move.id == PBMoves::MOONGEISTBEAM || move.id == PBMoves::FLEURCANNON) && $fecounter ==1
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::AURORABEAM || move.id == PBMoves::SIGNALBEAM ||
-          move.id == PBMoves::FLASHCANNON || move.id == PBMoves::LUSTERPURGE ||
-          move.id == PBMoves::DAZZLINGGLEAM || move.id == PBMoves::TECHNOBLAST ||
-          move.id == PBMoves::DOOMDUMMY || move.id == PBMoves::PRISMATICLASER ||
-          move.id == PBMoves::PHOTONGEYSER)
-          basedamage=(basedamage*1.5).round
-        end
-        $fecounter = 0
-      when 31 # Fairy Tale
-        if (move.id == PBMoves::DRAININGKISS)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::NIGHTSLASH || move.id == PBMoves::LEAFBLADE || move.id == PBMoves::PSYCHOCUT ||
-          move.id == PBMoves::SMARTSTRIKE || move.id == PBMoves::AIRSLASH || move.id == PBMoves::SOLARBLADE)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::MAGICALLEAF || move.id == PBMoves::MYSTICALFIRE ||
-          move.id == PBMoves::ANCIENTPOWER || move.id == PBMoves::RELICSONG ||
-          move.id == PBMoves::SPARKLINGARIA || move.id == PBMoves::MOONGEISTBEAM ||
-          move.id == PBMoves::FLEURCANNON)
-          basedamage=(basedamage*1.5).round
-        end
-      when 32 # Dragon's Den
-        if (move.id == PBMoves::MEGAKICK)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::SMACKDOWN || move.id == PBMoves::THOUSANDARROWS)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::MAGMASTORM || move.id == PBMoves::LAVAPLUME)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::DRAGONASCENT)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::PAYDAY)
-          basedamage=(basedamage*2).round
-        end
-      when 33 # Flower Garden
-        if (move.id == PBMoves::CUT) && $fecounter > 0
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::PETALBLIZZARD || move.id == PBMoves::PETALDANCE || move.id == PBMoves::FLEURCANNON) && $fecounter == 2
-          basedamage=(basedamage*1.2).round
-        end
-        if (move.id == PBMoves::PETALBLIZZARD || move.id == PBMoves::PETALDANCE || move.id == PBMoves::FLEURCANNON) && $fecounter > 2
-          basedamage=(basedamage*1.5).round
-        end
-      when 34 # Starlight Arena
-        if (move.id == PBMoves::AURORABEAM || move.id == PBMoves::SIGNALBEAM ||
-          move.id == PBMoves::FLASHCANNON || move.id == PBMoves::LUSTERPURGE ||
-          move.id == PBMoves::DAZZLINGGLEAM || move.id == PBMoves::MIRRORSHOT ||
-          move.id == PBMoves::TECHNOBLAST || move.id == PBMoves::SOLARBEAM ||
-          move.id == PBMoves::PHOTONGEYSER)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::MOONBLAST)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::DRACOMETEOR || move.id == PBMoves::METEORMASH ||
-          move.id == PBMoves::COMETPUNCH || move.id == PBMoves::SPACIALREND ||
-          move.id == PBMoves::SWIFT || move.id == PBMoves::HYPERSPACEHOLE ||
-          move.id == PBMoves::HYPERSPACEFURY || move.id == PBMoves::MOONGEISTBEAM ||
-          move.id == PBMoves::SUNSTEELSTRIKE)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::DOOMDUMMY)
-          basedamage=(basedamage*4).round
-        end
-      when 35 # New World
-        if (move.id == PBMoves::AURORABEAM || move.id == PBMoves::SIGNALBEAM ||
-          move.id == PBMoves::FLASHCANNON || move.id == PBMoves::DAZZLINGGLEAM ||
-          move.id == PBMoves::MIRRORSHOT && move.id == PBMoves::PHOTONGEYSER)
-          basedamage=(basedamage*1.5).round
-        end
-         if (move.id == PBMoves::EARTHQUAKE || move.id == PBMoves::MAGNITUDE ||
-         move.id == PBMoves::BULLDOZE)
-          basedamage=(basedamage*0.25).round
-        end
-        if (move.id == PBMoves::EARTHPOWER || move.id == PBMoves::POWERGEM ||
-          move.id == PBMoves::ERUPTION)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::PSYSTRIKE || move.id == PBMoves::AEROBLAST ||
-          move.id == PBMoves::SACREDFIRE || move.id == PBMoves::MISTBALL ||
-          move.id == PBMoves::LUSTERPURGE || move.id == PBMoves::ORIGINPULSE ||
-          move.id == PBMoves::PRECIPICEBLADES || move.id == PBMoves::DRAGONASCENT ||
-          move.id == PBMoves::PSYCHOBOOST || move.id == PBMoves::ROAROFTIME ||
-          move.id == PBMoves::MAGMASTORM || move.id == PBMoves::CRUSHGRIP ||
-          move.id == PBMoves::JUDGMENT || move.id == PBMoves::SEEDFLARE ||
-          move.id == PBMoves::SHADOWFORCE || move.id == PBMoves::SEARINGSHOT ||
-          move.id == PBMoves::VCREATE || move.id == PBMoves::SECRETSWORD ||
-          move.id == PBMoves::SACREDSWORD || move.id == PBMoves::RELICSONG ||
-          move.id == PBMoves::FUSIONBOLT || move.id == PBMoves::FUSIONFLARE ||
-          move.id == PBMoves::ICEBURN || move.id == PBMoves::FREEZESHOCK ||
-          move.id == PBMoves::BOLTSTRIKE || move.id == PBMoves::BLUEFLARE ||
-          move.id == PBMoves::TECHNOBLAST || move.id == PBMoves::OBLIVIONWING ||
-          move.id == PBMoves::LANDSWRATH || move.id == PBMoves::THOUSANDARROWS ||
-          move.id == PBMoves::THOUSANDWAVES || move.id == PBMoves::DIAMONDSTORM ||
-          move.id == PBMoves::STEAMERUPTION || move.id == PBMoves::COREENFORCER ||
-          move.id == PBMoves::FLEURCANNON || move.id == PBMoves::PRISMATICLASER ||
-          move.id == PBMoves::SUNSTEELSTRIKE || move.id == PBMoves::SPECTRALTHIEF ||
-          move.id == PBMoves::MOONGEISTBEAM || move.id == PBMoves::MULTIATTACK ||
-          move.id == PBMoves::MINDBLOWN || move.id == PBMoves::PLASMAFISTS)
-          basedamage=(basedamage*1.5).round
-        end
-        if (move.id == PBMoves::VACUUMWAVE || move.id == PBMoves::DRACOMETEOR ||
-          move.id == PBMoves::METEORMASH || move.id == PBMoves::MOONBLAST ||
-          move.id == PBMoves::COMETPUNCH || move.id == PBMoves::SWIFT ||
-          move.id == PBMoves::HYPERSPACEHOLE || move.id == PBMoves::SPACIALREND ||
-          move.id == PBMoves::HYPERSPACEFURY|| move.id == PBMoves::ANCIENTPOWER ||
-          move.id == PBMoves::FUTUREDUMMY)
-          basedamage=(basedamage*2).round
-        end
-        if (move.id == PBMoves::DOOMDUMMY)
-          basedamage=(basedamage*4).round
-        end
-      when 37 # Psychic Terrain
-          if (move.id == PBMoves::HEX || move.id == PBMoves::MAGICALLEAF ||
-            move.id == PBMoves::MYSTICALFIRE || move.id == PBMoves::MOONBLAST ||
-            move.id == PBMoves::AURASPHERE || move.id == PBMoves::MINDBLOWN)
-            basedamage=(basedamage*1.5).round
-          end
-      end
-    end
-
-    #Glitch field attack power adjustment
-    if skill>=PBTrainerAI.highSkill
-      if $fefieldeffect == 24 && type>=0 && move.pbIsSpecial?(type)
-        if (attitemworks && attacker.item == PBItems::ASSAULTVEST)
-          if gl1 < gl2
-            atk=(atk*1.5).round
-          end
-        end
-        if (attitemworks && attacker.item == PBItems::EVIOLITE) &&
-          pbGetEvolvedFormData(attacker.species).length>0
-          if gl1 < gl2
-            atk=(atk*1.5).round
-          end
-        end
-        if (attitemworks && attacker.item == PBItems::DEEPSEASCALE) &&
-          (attacker.species == PBSpecies::CLAMPERL)
-          if gl1 < gl2
-            atk=(atk*2).round
-          end
-        end
-        if (attitemworks && attacker.item == PBItems::METALPOWDER) &&
-          (attacker.species == PBSpecies::DITTO)
-          if gl1 < gl2
-            atk=(atk*1.5).round
-          end
-        end
-        if (!attacker.abilitynulled && attacker.ability == PBAbilities::FLOWERGIFT) && pbWeather==PBWeather::SUNNYDAY
-          if gl1 < gl2
-            atk=(atk*1.5).round
-          end
-        end
-      end
     end
 
     if skill>=PBTrainerAI.mediumSkill
@@ -930,7 +333,7 @@ class PokeBattle_Battle
       if !attacker.abilitynulled
         #Technician
         if attacker.ability == PBAbilities::TECHNICIAN
-          if (basedamage<=60) || ($fefieldeffect == 17 && basedamage<=80)
+          if (basedamage<=60)
             basedamage=(basedamage*1.5).round
           end
         # Iron Fist
@@ -964,14 +367,12 @@ class PokeBattle_Battle
           end
         # Flare Boost
         elsif attacker.ability == PBAbilities::FLAREBOOST
-          if (attacker.status==PBStatuses::BURN || $fefieldeffect == 7) && move.pbIsSpecial?(type)
+          if attacker.status==PBStatuses::BURN && move.pbIsSpecial?(type)
             basedamage=(basedamage*1.5).round
           end
         # Toxic Boost
         elsif attacker.ability == PBAbilities::TOXICBOOST
-          if (attacker.status==PBStatuses::POISON ||
-          $fefieldeffect == 10 || $fefieldeffect == 11 ||
-          $fefieldeffect == 19 || $fefieldeffect == 26) && move.pbIsPhysical?(type)
+          if attacker.status==PBStatuses::POISON && move.pbIsPhysical?(type)
             basedamage=(basedamage*1.5).round
           end
         # Rivalry
@@ -1019,8 +420,6 @@ class PokeBattle_Battle
             partner=attacker.pbPartner
             if (!partner.abilitynulled && partner.ability == PBAbilities::PLUS) || (!partner.abilitynulled && partner.ability == PBAbilities::MINUS)
               atk=(atk*1.5).round
-            elsif $fefieldeffect == 18 && skill>=PBTrainerAI.bestSkill
-              atk=(atk*1.5).round
             end
           end
         #Defeatist
@@ -1030,17 +429,7 @@ class PokeBattle_Battle
           end
         #Pure/Huge Power
         elsif attacker.ability == PBAbilities::PUREPOWER || attacker.ability == PBAbilities::HUGEPOWER
-          if skill>=PBTrainerAI.bestSkill
-            if attacker.ability == PBAbilities::PUREPOWER && $fefieldeffect==37
-              if move.pbIsSpecial?(type)
-                atk=(atk*2.0).round
-              end
-            else
-              if move.pbIsPhysical?(type)
-                atk=(atk*2.0).round
-              end
-            end
-          elsif move.pbIsPhysical?(type)
+          if move.pbIsPhysical?(type)
             atk=(atk*2.0).round
           end
         #Solar Power
@@ -1067,42 +456,15 @@ class PokeBattle_Battle
           # Galvanize
           elsif attacker.ability == PBAbilities::GALVANIZE
             type=PBTypes::ELECTRIC
-            if skill>=PBTrainerAI.bestSkill
-              if $fefieldeffect == 1 || $fefieldeffect == 17 # Electric or Factory Fields
-                basedamage=(basedamage*1.5).round
-              elsif $fefieldeffect == 18 # Short-Circuit Field
-                basedamage=(basedamage*2).round
-              else
-                basedamage=(basedamage*1.2).round
-              end
-            else
-              basedamage=(basedamage*1.2).round
-            end
+            basedamage=(basedamage*1.2).round
           # Pixilate
           elsif attacker.ability == PBAbilities::PIXILATE
-            if skill>=PBTrainerAI.bestSkill
-              type=PBTypes::FAIRY unless $fefieldeffect == 24
-              if $fefieldeffect == 3 # Misty Field
-                basedamage=(basedamage*1.5).round
-              else
-                basedamage=(basedamage*1.2).round
-              end
-            else
-              type=PBTypes::FAIRY
-              basedamage=(basedamage*1.2).round
-            end
+            type=PBTypes::FAIRY
+            basedamage=(basedamage*1.2).round
           # Refrigerate
           elsif attacker.ability == PBAbilities::REFRIGERATE
             type=PBTypes::ICE
-            if skill>=PBTrainerAI.bestSkill
-              if $fefieldeffect == 13 || $fefieldeffect == 28 # Icy Fields
-                basedamage=(basedamage*1.5).round
-              else
-                basedamage=(basedamage*1.2).round
-              end
-            else
-              basedamage=(basedamage*1.2).round
-            end
+            basedamage=(basedamage*1.2).round
           end
         end
       end
@@ -1340,52 +702,7 @@ class PokeBattle_Battle
 
     # Pinch Abilities
     if !attacker.abilitynulled
-      if skill>=PBTrainerAI.bestSkill
-        if $fefieldeffect == 7 && attacker.ability == PBAbilities::BLAZE && type == PBTypes::FIRE
-          atk=(atk*1.5).round
-        elsif $fefieldeffect == 15 && attacker.ability == PBAbilities::OVERGROW && type == PBTypes::GRASS
-          atk=(atk*1.5).round
-        elsif $fefieldeffect == 15 && attacker.ability == PBAbilities::SWARM && type == PBTypes::BUG
-          atk=(atk*1.5).round
-        elsif ($fefieldeffect == 21 || $fefieldeffect == 22) && attacker.ability == PBAbilities::TORRENT && type == PBTypes::WATER
-          atk=(atk*1.5).round
-        elsif $fefieldeffect == 33 && attacker.ability == PBAbilities::SWARM && type == PBTypes::BUG
-          atk=(atk*1.5).round if $fecounter == 0 || $fecounter == 1
-          atk=(atk*2).round if $fecounter == 2 || $fecounter == 3
-          atk=(atk*3).round if $fecounter == 4
-        elsif $fefieldeffect == 33 && attacker.ability == PBAbilities::OVERGROW && type == PBTypes::GRASS
-          case $fecounter
-          when 1
-            if attacker.hp<=(attacker.totalhp*0.67).floor
-              atk=(atk*1.5).round
-            end
-          when 2
-              atk=(atk*1.5).round
-          when 3
-              atk=(atk*2).round
-          when 4
-              atk=(atk*3).round
-          end
-        else
-          if attacker.ability == PBAbilities::OVERGROW
-            if attacker.hp<=(attacker.totalhp/3.0).floor || type == PBTypes::GRASS
-              atk=(atk*1.5).round
-            end
-          elsif attacker.ability == PBAbilities::BLAZE
-            if attacker.hp<=(attacker.totalhp/3.0).floor || type == PBTypes::FIRE
-              atk=(atk*1.5).round
-            end
-          elsif attacker.ability == PBAbilities::TORRENT
-            if attacker.hp<=(attacker.totalhp/3.0).floor || type == PBTypes::WATER
-              atk=(atk*1.5).round
-            end
-          elsif attacker.ability == PBAbilities::SWARM
-            if attacker.hp<=(attacker.totalhp/3.0).floor || type == PBTypes::BUG
-              atk=(atk*1.5).round
-            end
-          end
-        end
-      elsif skill>=PBTrainerAI.mediumSkill
+      if skill>=PBTrainerAI.mediumSkill
         if attacker.ability == PBAbilities::OVERGROW
           if attacker.hp<=(attacker.totalhp/3.0).floor || type == PBTypes::GRASS
             atk=(atk*1.5).round
@@ -1427,65 +744,12 @@ class PokeBattle_Battle
       end
     end
 
-    #Specific ability field boosts
-    if skill>=PBTrainerAI.bestSkill
-      if $fefieldeffect == 34 || $fefieldeffect == 35
-        if (!attacker.abilitynulled && attacker.ability == PBAbilities::VICTORYSTAR)
-          atk=(atk*1.5).round
-        end
-        partner=attacker.pbPartner
-        if partner && (!partner.abilitynulled && partner.ability == PBAbilities::VICTORYSTAR)
-          atk=(atk*1.5).round
-        end
-      end
-      if (!attacker.abilitynulled && attacker.ability == PBAbilities::QUEENLYMAJESTY) &&
-        ($fefieldeffect==5 || $fefieldeffect==31)
-       atk=(atk*1.5).round
-      end
-      if (!attacker.abilitynulled && attacker.ability == PBAbilities::LONGREACH) &&
-        ($fefieldeffect==27 || $fefieldeffect==28)
-        atk=(atk*1.5).round
-      end
-      if (!attacker.abilitynulled && attacker.ability == PBAbilities::CORROSION) &&
-        ($fefieldeffect==10 || $fefieldeffect==11)
-        atk=(atk*1.5).round
-      end
-    end
-
     # Get base defense stat
     defense=pbRoughStat(opponent,PBStats::DEFENSE,skill)
     applysandstorm=false
     if type>=0 && move.pbIsSpecial?(type)
       if move.function!=0x122 # Psyshock
         defense=pbRoughStat(opponent,PBStats::SPDEF,skill)
-        if $fefieldeffect == 24
-          gl1 = pbRoughStat(opponent,PBStats::SPATK,skill)
-          gl2 = pbRoughStat(opponent,PBStats::SPDEF,skill)
-          gl3 = opponent.stages[PBStats::SPDEF]+6
-          gl4 = opponent.stages[PBStats::SPATK]+6
-          if oppitemworks
-            gl2 *= 1.5 if opponent.item == PBItems::ASSAULTVEST
-            gl1 *= 1.5 if opponent.item == PBItems::CHOICESPECS
-            gl2 *= 1.5 if opponent.item == PBItems::EVIOLITE && pbGetEvolvedFormData(opponent.species).length>0
-            gl1 *= 2 if opponent.item == PBItems::DEEPSEATOOTH && opponent.species == PBSpecies::CLAMPERL
-            gl1 *= 2 if opponent.item == PBItems::LIGHTBALL && opponent.species == PBSpecies::PIKACHU
-            gl2 *= 2 if opponent.item == PBItems::DEEPSEASCALE && opponent.species == PBSpecies::CLAMPERL
-            gl2 *= 1.5 if opponent.item == PBItems::METALPOWDER && opponent.species == PBSpecies::DITTO
-          end
-          if !opponent.abilitynulled
-            gl1 *= 1.5 if opponent.ability == PBAbilities::FLAREBOOST && opponent.status==PBStatuses::BURN
-            gl1 *= 1.5 if opponent.ability == PBAbilities::MINUS && (!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::PLUS)
-            gl1 *= 1.5 if opponent.ability == PBAbilities::PLUS && (!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::MINUS)
-            gl1 *= 1.5 if opponent.ability == PBAbilities::SOLARPOWER && pbWeather==PBWeather::SUNNYDAY
-            gl2 *= 1.5 if opponent.ability == PBAbilities::FLOWERGIFT && pbWeather==PBWeather::SUNNYDAY
-          end
-          gl1 *= 1.3 if (!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::BATTERY)
-          gl1=(gl1*stagemul[gl4]/stagediv[gl4]).floor
-          gl2=(gl2*stagemul[gl3]/stagediv[gl3]).floor
-          if gl1 > gl2
-            defense=pbRoughStat(opponent,PBStats::SPATK,skill)
-          end
-        end
         applysandstorm=true
       end
     end
@@ -1493,27 +757,6 @@ class PokeBattle_Battle
       defense=pbRoughStat(opponent,PBStats::ATTACK,skill)
     end
     defense = 1 if (defense == 0 || !defense)
-
-    #Glitch Item Checks
-    if skill>=PBTrainerAI.highSkill && $fefieldeffect == 24
-      if type>=0 && move.pbIsSpecial?(type) && move.function!=0x122
-        # Glitch Specs
-        if (oppitemworks && opponent.item == PBItems::CHOICESPECS)
-          if gl1 > gl2
-            defense=(defense*1.5).round
-          end
-        # Glitchsea Tooth
-        elsif (oppitemworks && opponent.item == PBItems::DEEPSEATOOTH) && (opponent.species == PBSpecies::CLAMPERL)
-          if gl1 > gl2
-            defense=(defense*2).round
-          end
-        elsif (oppitemworks && opponent.item == PBItems::LIGHTBALL) && (opponent.species == PBSpecies::PIKACHU)
-          if gl1 > gl2
-            defense=(defense*2).round
-          end
-        end
-      end
-    end
 
     if skill>=PBTrainerAI.mediumSkill
       # Sandstorm weather
@@ -1528,14 +771,10 @@ class PokeBattle_Battle
           if move.pbIsPhysical?(type)
             if opponent.status>0
               defense=(defense*1.5).round
-            elsif ($fefieldeffect == 3 || $fefieldeffect == 9 ||
-              $fefieldeffect == 31 || $fefieldeffect == 32 || $fefieldeffect == 34) &&
-              skill>=PBTrainerAI.bestSkill
-              defense=(defense*1.5).round
             end
           end
         elsif opponent.ability == PBAbilities::GRASSPELT
-          if move.pbIsPhysical?(type) && ($fefieldeffect == 2 || $fefieldeffect == 15) # Grassy Field
+          if move.pbIsPhysical?(type) && $fefieldeffect == 2   # Grassy Terrain
             defense=(defense*1.5).round
           end
         elsif opponent.ability == PBAbilities::FLUFFY && !(opponent.moldbroken)
@@ -1551,7 +790,7 @@ class PokeBattle_Battle
           end
         end
       end
-      if (pbWeather==PBWeather::SUNNYDAY || $fefieldeffect == 33) && move.pbIsSpecial?(type)
+      if pbWeather==PBWeather::SUNNYDAY && move.pbIsSpecial?(type)
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::FLOWERGIFT) &&
            (opponent.species == PBSpecies::CHERRIM)
           defense=(defense*1.5).round
@@ -1564,13 +803,7 @@ class PokeBattle_Battle
 
     # Various field boosts
     if skill>=PBTrainerAI.bestSkill
-      if $fefieldeffect == 3 && move.pbIsSpecial?(type) && opponent.pbHasType?(:FAIRY)
-        defense=(defense*1.5).round
-      end
-      if $fefieldeffect == 12 && move.pbIsSpecial?(type) && opponent.pbHasType?(:GROUND)
-        defense=(defense*1.5).round
-      end
-      if $fefieldeffect == 22 && move.pbIsPhysical?(type) && !type == PBTypes::WATER
+      if $fefieldeffect == 3 && move.pbIsSpecial?(type) && opponent.pbHasType?(:FAIRY)   # Misty Terrain
         defense=(defense*1.5).round
       end
     end
@@ -1599,15 +832,9 @@ class PokeBattle_Battle
 
     # Prism Armor & Shadow Shield
     if skill>=PBTrainerAI.bestSkill
-      if ((!attacker.abilitynulled && attacker.ability == PBAbilities::PRISMARMOR) ||
-        (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWSHIELD)) && $fefieldeffect==4
-        defense=(defense*2.0).round
-      end
-      if (!attacker.abilitynulled && attacker.ability == PBAbilities::PRISMARMOR) && ($fefieldeffect==9 || $fefieldeffect==25)
-        defense=(defense*2.0).round
-      end
-      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWSHIELD) && ($fefieldeffect==34 || $fefieldeffect==35)
-        defense=(defense*2.0).round
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::PRISMARMOR) ||
+         (!attacker.abilitynulled && attacker.ability == PBAbilities::SHADOWSHIELD)
+        defense=(defense*1.5).round
       end
     end
 
@@ -1628,444 +855,28 @@ class PokeBattle_Battle
     # Field Boosts
     if skill>=PBTrainerAI.bestSkill
       case $fefieldeffect
-      when 1 # Electric Field
+      when 1   # Electric Terrain
         if type == PBTypes::ELECTRIC
           if isgrounded != 0
             damage=(damage*1.5).floor
           end
         end
-      when 2 # Grassy Field
+      when 2   # Grassy Terrain
         if type == PBTypes::GRASS
           if isgrounded != 0
             damage=(damage*1.5).floor
           end
         end
-        if type == PBTypes::FIRE
-          if isgrounded != 0
-            damage=(damage*1.5).floor
-          end
-        end
-      when 3 # Misty Field
+      when 3   # Misty Terrain
         if type == PBTypes::DRAGON
           damage=(damage*0.5).floor
         end
-      when 4 # Dark Crystal Cavern
-        if type == PBTypes::DARK
-          damage=(damage*1.5).floor
-        end
-      when 7 # Burning Field
-        if type == PBTypes::FIRE
-          if isgrounded != 0
-            damage=(damage*1.5).floor
-          end
-        end
-        if type == PBTypes::GRASS
-          if isgrounded != 0
-            damage=(damage*0.5).floor
-          end
-        end
-        if type == PBTypes::ICE
-          damage=(damage*0.5).floor
-        end
-      when 8 # Swamp Field
-        if type == PBTypes::POISON
-          if isgrounded != 0
-            damage=(damage*1.5).floor
-          end
-        end
-      when 9 # Rainbow Field
-        if type == PBTypes::NORMAL &&
-          !move.pbIsPhysical?(move.pbType(type,attacker,opponent))
-          damage=(damage*1.5).floor
-        end
-      when 11 # Corrosive Field
-        if type == PBTypes::FIRE
-          damage=(damage*1.5).floor
-        end
-      when 12 # DESERT Field
-        if type == PBTypes::WATER
-          if isgrounded != 0
-            damage=(damage*0.5).floor
-          end
-        end
-        if type == PBTypes::ELECTRIC
-          if isgrounded != 0
-            damage=(damage*0.5).floor
-          end
-        end
-      when 13 # Icy Field
-        if type == PBTypes::FIRE
-          damage=(damage*0.5).floor
-        end
-        if type == PBTypes::ICE
-          damage=(damage*1.5).floor
-        end
-      when 14 # Rocky Field
-        if type == PBTypes::ROCK
-          damage=(damage*1.5).floor
-        end
-      when 15 # Forest Field
-        if type == PBTypes::GRASS
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::BUG &&
-          !move.pbIsPhysical?(move.pbType(type,attacker,opponent))
-          damage=(damage*1.5).floor
-        end
-      when 16 # Superheated Field
-        if type == PBTypes::FIRE
-          damage=(damage*1.1).floor
-        end
-        if type == PBTypes::ICE
-          damage=(damage*0.5).floor
-        end
-        if type == PBTypes::WATER
-          damage=(damage*0.9).floor
-        end
-      when 17 # Factory Field
-        if type == PBTypes::ELECTRIC
-          damage=(damage*1.2).floor
-        end
-      when 21 # Water Surface
-        if type == PBTypes::WATER
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::ELECTRIC
-          if isgrounded != 0
-            damage=(damage*1.5).floor
-          end
-        end
-        if type == PBTypes::FIRE
-          if isgrounded != 0
-            damage=(damage*0.5).floor
-          end
-        end
-      when 22 # Underwater
-        if type == PBTypes::WATER
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::ELECTRIC
-          damage=(damage*2).floor
-        end
-      when 23 # Cave
-        if type == PBTypes::FLYING && (move.flags&0x01)==0 #not a contact move
-          damage=(damage*0.5).floor
-        end
-        if type == PBTypes::ROCK
-          damage=(damage*1.5).floor
-        end
-      when 24 # Glitch
-        if type == PBTypes::PSYCHIC
-          damage=(damage*1.2).floor
-        end
-      when 25 # Crystal Cavern
-        if type == PBTypes::ROCK
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::DRAGON
-          damage=(damage*1.5).floor
-        end
-      when 26 # Murkwater Surface
-        if type == PBTypes::WATER || type == PBTypes::POISON
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::ELECTRIC
-          if isgrounded != 0
-            damage=(damage*1.3).floor
-          end
-        end
-      when 27 # Mountain
-        if type == PBTypes::ROCK
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::FLYING
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::FLYING &&
-          !move.pbIsPhysical?(move.pbType(type,attacker,opponent)) &&
-          pbWeather==PBWeather::STRONGWINDS
-          damage=(damage*1.5).floor
-        end
-      when 28 # Snowy Mountain
-        if type == PBTypes::ROCK || type == PBTypes::ICE
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::FLYING
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::FLYING &&
-          !move.pbIsPhysical?(move.pbType(type,attacker,opponent)) &&
-          pbWeather==PBWeather::STRONGWINDS
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::FIRE
-          damage=(damage*0.5).floor
-        end
-      when 29 # Holy Field
-        if (type == PBTypes::GHOST || type == PBTypes::DARK &&
-          !move.pbIsPhysical?(move.pbType(type,attacker,opponent)))
-          damage=(damage*0.5).floor
-        end
-        if (type == PBTypes::FAIRY ||(type == PBTypes::NORMAL) &&
-          !move.pbIsPhysical?(move.pbType(type,attacker,opponent)))
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::PSYCHIC || type == PBTypes::DRAGON
-          damage=(damage*1.2).floor
-        end
-      when 31# Fairy Tale
-        if type == PBTypes::STEEL
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::FAIRY
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::DRAGON
-          damage=(damage*2).floor
-        end
-      when 32 # Dragon's Den
-        if type == PBTypes::FIRE
-          damage=(damage*1.5).floor
-        end
-          if type == PBTypes::ICE || type == PBTypes::WATER
-          damage=(damage*0.5).floor
-        end
-        if type == PBTypes::DRAGON
-          damage=(damage*2).floor
-        end
-      when 33 # Flower Field
-        if type == PBTypes::GRASS
-          case $fecounter
-            when 1
-              damage=(damage*1.2).floor
-            when 2
-              damage=(damage*1.5).floor
-            when 3
-              damage=(damage*2).floor
-            when 4
-              damage=(damage*3).floor
-          end
-        end
-        if $fecounter > 1
-          if type == PBTypes::FIRE
-            damage=(damage*1.5).floor
-          end
-        end
-        if $fecounter > 3
-          if type == PBTypes::BUG
-            damage=(damage*2).floor
-          end
-        elsif $fecounter > 1
-          if type == PBTypes::BUG
-            damage=(damage*1.5).floor
-          end
-        end
-      when 34 # Starlight Arena
-        if type == PBTypes::DARK
-          damage=(damage*1.5).floor
-        end
-          if type == PBTypes::PSYCHIC
-          damage=(damage*1.5).floor
-        end
-        if type == PBTypes::FAIRY
-          damage=(damage*1.3).floor
-        end
-      when 35 # New World
-        if type == PBTypes::DARK
-          damage=(damage*1.5).floor
-        end
-      when 37 # Psychic Terrain
+      when 37   # Psychic Terrain
         if type == PBTypes::PSYCHIC
           if isgrounded != 0
             damage=(damage*1.5).floor
           end
         end
-      end
-    end
-    if skill>=PBTrainerAI.bestSkill
-      # FIELD TRANSFORMATIONS
-      case $fefieldeffect
-        when 2 # Grassy Field
-          if (move.id == PBMoves::HEATWAVE || move.id == PBMoves::ERUPTION ||
-           move.id == PBMoves::SEARINGSHOT || move.id == PBMoves::FLAMEBURST ||
-           move.id == PBMoves::LAVAPLUME || move.id == PBMoves::FIREPLEDGE ||
-           move.id == PBMoves::MINDBLOWN || move.id == PBMoves::INCINERATE) &&
-           field.effects[PBEffects::WaterSport] <= 0 &&
-           pbWeather != PBWeather::RAINDANCE
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::SLUDGEWAVE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 3 # Misty Field
-          if (move.id == PBMoves::WHIRLWIND || move.id == PBMoves::GUST ||
-           move.id == PBMoves::RAZORWIND || move.id == PBMoves::HURRICANE||
-           move.id == PBMoves::DEFOG || move.id == PBMoves::TAILWIND ||
-           move.id == PBMoves::TWISTER)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::CLEARSMOG || move.id == PBMoves::SMOG)
-            damage=(damage*1.5).floor if damage >= 0
-          end
-        when 4 # Dark Crystal Cavern
-          if (move.id == PBMoves::EARTHQUAKE || move.id == PBMoves::BULLDOZE ||
-           move.id == PBMoves::MAGNITUDE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 5 # Chess Field
-          if (move.id == PBMoves::STOMPINGTANTRUM)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 7 # Burning Field
-          if (move.id == PBMoves::SLUDGEWAVE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::WHIRLWIND || move.id == PBMoves::GUST ||
-           move.id == PBMoves::RAZORWIND || move.id == PBMoves::DEFOG ||
-           move.id == PBMoves::TAILWIND || move.id == PBMoves::HURRICANE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::SURF || move.id == PBMoves::MUDDYWATER ||
-           move.id == PBMoves::WATERSPORT || move.id == PBMoves::WATERSPOUT ||
-           move.id == PBMoves::WATERPLEDGE || move.id == PBMoves::SPARKLINGARIA)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::SANDTOMB)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 10 # Corrosive Field
-          if (move.id == PBMoves::SEEDFLARE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 11 # Corrosive Mist Field
-          if (move.id == PBMoves::HEATWAVE || move.id == PBMoves::ERUPTION ||
-           move.id == PBMoves::SEARINGSHOT || move.id == PBMoves::FLAMEBURST ||
-           move.id == PBMoves::LAVAPLUME || move.id == PBMoves::FIREPLEDGE ||
-           move.id == PBMoves::EXPLOSION || move.id == PBMoves::SELFDESTRUCT ||
-           move.id == PBMoves::TWISTER || move.id == PBMoves::MINDBLOWN ||
-           move.id == PBMoves::INCINERATE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::GUST || move.id == PBMoves::HURRICANE ||
-           move.id == PBMoves::RAZORWIND)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 13 # Icy Field
-          if (move.id == PBMoves::HEATWAVE || move.id == PBMoves::ERUPTION ||
-           move.id == PBMoves::SEARINGSHOT || move.id == PBMoves::FLAMEBURST ||
-           move.id == PBMoves::LAVAPLUME || move.id == PBMoves::FIREPLEDGE ||
-           move.id == PBMoves::MINDBLOWN || move.id == PBMoves::INCINERATE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          #if (move.id == PBMoves::EARTHQUAKE || move.id == PBMoves::MAGNITUDE ||
-          # move.id == PBMoves::BULLDOZE)
-          # damage=(damage*1.3).floor if damage >= 0
-          #end
-        when 15 # Forest Field
-          if (move.id == PBMoves::HEATWAVE || move.id == PBMoves::ERUPTION ||
-           move.id == PBMoves::SEARINGSHOT || move.id == PBMoves::FLAMEBURST ||
-           move.id == PBMoves::LAVAPLUME || move.id == PBMoves::FIREPLEDGE ||
-           move.id == PBMoves::MINDBLOWN || move.id == PBMoves::INCINERATE) &&
-           field.effects[PBEffects::WaterSport] <= 0
-           pbWeather != PBWeather::RAINDANCE
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 16 # Superheated Field
-          if (move.id == PBMoves::HEATWAVE || move.id == PBMoves::ERUPTION ||
-           move.id == PBMoves::SEARINGSHOT || move.id == PBMoves::FLAMEBURST ||
-           move.id == PBMoves::SELFDESTRUCT || move.id == PBMoves::EXPLOSION ||
-           move.id == PBMoves::LAVAPLUME || move.id == PBMoves::FIREPLEDGE ||
-           move.id == PBMoves::MINDBLOWN || move.id == PBMoves::INCINERATE) &&
-           pbWeather != PBWeather::RAINDANCE &&
-           field.effects[PBEffects::WaterSport] <= 0
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::BLIZZARD || move.id == PBMoves::GLACIATE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 17 # Factory Field
-          if (move.id == PBMoves::DISCHARGE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::EXPLOSION || move.id == PBMoves::SELFDESTRUCT ||
-           move.id == PBMoves::MAGNITUDE || move.id == PBMoves::EARTHQUAKE ||
-           move.id == PBMoves::BULLDOZE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 18 # Shortcircuit Field
-          if (move.id == PBMoves::DISCHARGE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::PARABOLICCHARGE ||
-           move.id == PBMoves::WILDCHARGE || move.id == PBMoves::CHARGEBEAM)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 21 # Water Surface
-          if (move.id == PBMoves::DIVE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::BLIZZARD || move.id == PBMoves::GLACIATE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::SLUDGEWAVE)
-            damage=(damage*1.5).floor if damage >= 0
-          end
-        when 22 # Underwater
-          if (move.id == PBMoves::DIVE || move.id == PBMoves::SKYDROP ||
-           move.id == PBMoves::FLY || move.id == PBMoves::BOUNCE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-          if (move.id == PBMoves::SLUDGEWAVE)
-            damage=(damage*2).floor if damage >= 0
-          end
-        when 23 # Cave Field
-          if (move.id == PBMoves::POWERGEM || move.id == PBMoves::DIAMONDSTORM)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 25 # Crystal Cavern
-          if (move.id == PBMoves::DARKPULSE || move.id == PBMoves::NIGHTDAZE ||
-           move.id == PBMoves::BULLDOZE|| move.id == PBMoves::EARTHQUAKE ||
-           move.id == PBMoves::MAGNITUDE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 26 # Murkwater Surface
-          if (move.id == PBMoves::BLIZZARD || move.id == PBMoves::GLACIATE ||
-           move.id == PBMoves::WHIRLPOOL)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 27 # Mountain
-          if (move.id == PBMoves::BLIZZARD || move.id == PBMoves::GLACIATE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 28 # Snowy Mountain
-          if (move.id == PBMoves::HEATWAVE || move.id == PBMoves::ERUPTION ||
-           move.id == PBMoves::SEARINGSHOT || move.id == PBMoves::FLAMEBURST ||
-           move.id == PBMoves::LAVAPLUME || move.id == PBMoves::FIREPLEDGE ||
-           move.id == PBMoves::MINDBLOWN || move.id == PBMoves::INCINERATE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 30 # Mirror Arena
-          if (move.id == PBMoves::BOOMBURST || move.id == PBMoves::BULLDOZE ||
-           move.id == PBMoves::HYPERVOICE || move.id == PBMoves::EARTHQUAKE ||
-           move.id == PBMoves::EXPLOSION || move.id == PBMoves::SELFDESTRUCT ||
-           move.id == PBMoves::MAGNITUDE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 32 # Dragon's Den
-          if (move.id == PBMoves::GLACIATE)
-            damage=(damage*1.3).floor if damage >= 0
-          end
-        when 33 # Flower Garden Field
-          if $fecounter > 1
-            if (move.id == PBMoves::HEATWAVE || move.id == PBMoves::ERUPTION ||
-             move.id == PBMoves::SEARINGSHOT || move.id == PBMoves::FLAMEBURST ||
-             move.id == PBMoves::LAVAPLUME || move.id == PBMoves::FIREPLEDGE ||
-             move.id == PBMoves::MINDBLOWN || move.id == PBMoves::INCINERATE) &&
-             field.effects[PBEffects::WaterSport] <= 0 &&
-             pbWeather != PBWeather::RAINDANCE
-              damage=(damage*1.3).floor if damage >= 0
-            end
-          end
       end
     end
     # Weather
@@ -2121,11 +932,7 @@ class PokeBattle_Battle
           damage=(damage*1.5).round
         end
       elsif ((!attacker.abilitynulled && attacker.ability == PBAbilities::STEELWORKER) && type == PBTypes::STEEL)
-        if $fefieldeffect==17 # Factory Field
-          damage=(damage*2).round
-        else
-          damage=(damage*1.5).round
-        end
+        damage=(damage*1.5).round
       end
     end
     # Type effectiveness
@@ -2204,30 +1011,6 @@ class PokeBattle_Battle
       end
     end
 
-    # Flower Veil + Flower Garden Shenanigans
-    if skill>=PBTrainerAI.bestSkill
-      if $fefieldeffect == 33 && $fecounter >1
-        if ((!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::FLOWERVEIL) &&
-         opponent.pbHasType?(:GRASS)) ||
-         (!opponent.abilitynulled && opponent.ability == PBAbilities::FLOWERVEIL)
-          damage=(damage*0.5).round
-        end
-        case $fecounter
-        when 2
-          if opponent.pbHasType?(:GRASS)
-            damage=(damage*0.75).round
-          end
-        when 3
-          if opponent.pbHasType?(:GRASS)
-            damage=(damage*0.67).round
-          end
-        when 4
-          if opponent.pbHasType?(:GRASS)
-            damage=(damage*0.5).round
-          end
-        end
-      end
-    end
     # Final damage-altering items
     if skill>=PBTrainerAI.highSkill
       if (attitemworks && attacker.item == PBItems::METRONOME)
@@ -2315,24 +1098,12 @@ class PokeBattle_Battle
         return 0 if (PBStuff::BULLETMOVE).include?(id)
       elsif opponent.ability == PBAbilities::FLASHFIRE
         return 0 if type == PBTypes::FIRE || move.FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE
-      elsif opponent.ability == PBAbilities::MAGMAARMOR
-        return 0 if (type == PBTypes::FIRE || move.FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE) && $fefieldeffect == 32
       elsif move.basedamage>0 && opponent.ability == PBAbilities::TELEPATHY
         partner=attacker.pbPartner
         if opponent.index == partner.index
           return 0
         end
       end
-    end
-    if $fefieldeffect == 14 && (opponent.effects[PBEffects::Substitute]>0 || opponent.stages[PBStats::EVASION] > 0)
-      return 0 if (PBStuff::BULLETMOVE).include?(id)
-    end
-    if ($fefieldeffect == 21 || $fefieldeffect == 26) &&
-      ((type == PBTypes::GROUND) || move.FieldTypeChange(attacker,opponent,1,true)==PBTypes::GROUND)
-      return 0
-    end
-    if $fefieldeffect == 22 && (type == PBTypes::FIRE || move.FieldTypeChange(attacker,opponent,1,true)==PBTypes::FIRE)
-      return 0
     end
     # UPDATE Implementing Flying Press + Freeze Dry
     faintedcount=0
@@ -2362,57 +1133,14 @@ class PokeBattle_Battle
     typemod=move.pbTypeModifier(type,attacker,opponent,zorovar)
     typemod2= nil
     typemod3= nil
-    if type == PBTypes::WATER &&
-     (opponent.pbHasType?(PBTypes::WATER)) &&
-      $fefieldeffect == 22
-      typemod*= 2
-    end
-    if $fefieldeffect == 24
-      if type == PBTypes::DRAGON
-        typemod = 4
-      end
-      if type == PBTypes::GHOST && (opponent.pbHasType?(PBTypes::PSYCHIC))
-        typemod = 0
-      end
-      if type == PBTypes::BUG && (opponent.pbHasType?(PBTypes::POISON))
-        typemod*= 4
-      end
-      if type == PBTypes::ICE && (opponent.pbHasType?(PBTypes::FIRE))
-        typemod*= 2
-      end
-      if type == PBTypes::POISON && (opponent.pbHasType?(PBTypes::BUG))
-        typemod*= 2
-      end
-    end
-    if $fefieldeffect == 29
-      if type == PBTypes::NORMAL && (opponent.pbHasType?(PBTypes::DARK) ||
-       opponent.pbHasType?(PBTypes::GHOST))
-        typemod*= 2
-      end
-    end
-    if $fefieldeffect == 31
-      if type == PBTypes::STEEL && (opponent.pbHasType?(PBTypes::DRAGON))
-        typemod*= 2
-      end
-    end
     if id == PBMoves::FREEZEDRY && (opponent.pbHasType?(PBTypes::WATER))
       typemod*= 4
-    end
-    if id == PBMoves::CUT && (opponent.pbHasType?(PBTypes::GRASS)) &&
-     $fefieldeffect == 33 && $fecounter > 0
-      typemod*= 2
     end
     if pbWeather==PBWeather::STRONGWINDS &&
      ((opponent.pbHasType?(PBTypes::FLYING)) &&
      !opponent.effects[PBEffects::Roost]) &&
      (type == PBTypes::ELECTRIC || type == PBTypes::ICE ||
      type == PBTypes::ROCK)
-      typemod /= 2
-    end
-    if $fefieldeffect == 32 && # Dragons Den Multiscale
-     (!opponent.abilitynulled && opponent.ability == PBAbilities::MULTISCALE) &&
-     (type == PBTypes::FAIRY || type == PBTypes::ICE ||
-     type == PBTypes::DRAGON) && !(opponent.moldbroken)
       typemod /= 2
     end
     if id == PBMoves::FLYINGPRESS
@@ -2438,19 +1166,11 @@ class PokeBattle_Battle
     end
     return 0 if opponent.pbOwnSide.effects[PBEffects::LuckyChant]>0
     $buffs = 0
-    if $fefieldeffect == 30
-      $buffs = attacker.stages[PBStats::EVASION] if attacker.stages[PBStats::EVASION] > 0
-      $buffs = $buffs.to_i + attacker.stages[PBStats::ACCURACY] if attacker.stages[PBStats::ACCURACY] > 0
-      $buffs = $buffs.to_i - opponent.stages[PBStats::EVASION] if opponent.stages[PBStats::EVASION] < 0
-      $buffs = $buffs.to_i - opponent.stages[PBStats::ACCURACY] if opponent.stages[PBStats::ACCURACY] < 0
-      $buffs = $buffs.to_i
-    end
     if attacker.effects[PBEffects::LaserFocus]>0
       return 3
     end
     return 3 if move.function==0xA0 # Frost Breath
-    return 3 if (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS) && (opponent.status == PBStatuses::POISON ||
-    $fefieldeffect==10 || $fefieldeffect==11 || $fefieldeffect==19 || $fefieldeffect==26)
+    return 3 if (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS) && opponent.status == PBStatuses::POISON
     c=0
     c+=attacker.effects[PBEffects::FocusEnergy]
     c+=1 if move.hasHighCriticalRate?
@@ -2463,10 +1183,6 @@ class PokeBattle_Battle
     end
     c+=1 if attacker.hasWorkingItem(:RAZORCLAW)
     c+=1 if attacker.hasWorkingItem(:SCOPELENS)
-    c+=1 if attacker.speed > opponent.speed && $fefieldeffect == 24
-    if $fefieldeffect == 30
-      c += $buffs if $buffs > 0
-    end
     c=3 if c>3
     return c
   end
@@ -2543,13 +1259,11 @@ class PokeBattle_Battle
       end
       accuracy=100 if opponent.effects[PBEffects::Telekinesis]>0
       case pbWeather
-        when PBWeather::HAIL
-          accuracy=100 if move.function==0x0D # Blizzard
-        when PBWeather::RAINDANCE
-          accuracy=100 if move.function==0x08 || move.function==0x15 # Thunder, Hurricane
+      when PBWeather::HAIL
+        accuracy=100 if move.function==0x0D # Blizzard
+      when PBWeather::RAINDANCE
+        accuracy=100 if move.function==0x08 || move.function==0x15 # Thunder, Hurricane
       end
-          accuracy=100 if (move.function==0x08 || move.function==0x15) && # Thunder, Hurricane
-              ($fefieldeffect == 27 || $fefieldeffect == 28)
       if move.function==0x70 # OHKO moves
         accuracy=move.accuracy+attacker.level-opponent.level
         accuracy=0 if (!opponent.abilitynulled && opponent.ability == PBAbilities::STURDY)

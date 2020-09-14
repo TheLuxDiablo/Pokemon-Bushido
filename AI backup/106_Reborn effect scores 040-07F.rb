@@ -175,6 +175,26 @@ class PokeBattle_Battle
           end
         else
           miniscore=100
+          if skill>=PBTrainerAI.bestSkill
+            if move.id==(PBMoves::LUNGE)
+              if $fefieldeffect==13 # Icy Field
+                miniscore*=1.5
+              end
+            end
+            if move.id==(PBMoves::AURORABEAM)
+              if $fefieldeffect==30 # Mirror Field
+                if (attacker.stages[PBStats::ACCURACY] < 0 || opponent.stages[PBStats::EVASION] > 0 ||
+                   (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) || (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
+                   ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
+                   ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL) ||
+                   opponent.vanished) &&
+                   !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) &&
+                   !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD)
+                  miniscore*=2
+                end
+              end
+            end
+          end
           miniscore *= unsetupminiscore(attacker,opponent,skill,move,roles,1,true)
           miniscore/=100.0
           score*=miniscore
@@ -206,6 +226,167 @@ class PokeBattle_Battle
             minimini+=100
             minimini/=100.0
             miniscore*=minimini
+          end
+          if skill>=PBTrainerAI.bestSkill
+            if move.id==(PBMoves::GLACIATE)
+              if $fefieldeffect==26 # Murkwater Surface
+                poisonvar=false
+                watervar=false
+                icevar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:POISON)
+                    poisonvar=true
+                  end
+                  if mon.hasType?(:WATER)
+                    watervar=true
+                  end
+                  if mon.hasType?(:ICE)
+                    icevar=true
+                  end
+                end
+                if !poisonvar && !watervar
+                  miniscore*=1.3
+                end
+                if icevar
+                  miniscore*=1.5
+                end
+              end
+              if $fefieldeffect==21 # Water Surface
+                watervar=false
+                icevar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:WATER)
+                    watervar=true
+                  end
+                  if mon.hasType?(:ICE)
+                    icevar=true
+                  end
+                end
+                if !watervar
+                  miniscore*=1.3
+                end
+                if icevar
+                  miniscore*=1.5
+                end
+              end
+              if $fefieldeffect==32 # Dragon's Den
+                dragonvar=false
+                rockvar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:DRAGON)
+                    dragonvar=true
+                  end
+                  if mon.hasType?(:ROCK)
+                    rockvar=true
+                  end
+                end
+                if !dragonvar
+                  miniscore*=1.3
+                end
+                if rockvar
+                  miniscore*=1.3
+                end
+              end
+              if $fefieldeffect==16 # Superheated
+                firevar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:FIRE)
+                    firevar=true
+                  end
+                end
+                if !firevar
+                  miniscore*=1.5
+                end
+              end
+            end
+            if move.id==(PBMoves::BULLDOZE)
+              if $fefieldeffect==4 # Dark Crystal Cavern
+                darkvar=false
+                rockvar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:DARK)
+                    darkvar=true
+                  end
+                  if mon.hasType?(:ROCK)
+                    rockvar=true
+                  end
+                end
+                if !darkvar
+                  miniscore*=1.3
+                end
+                if rockvar
+                  miniscore*=1.2
+                end
+              end
+              if $fefieldeffect==25 # Crystal Cavern
+                dragonvar=false
+                rockvar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:DRAGON)
+                    dragonvar=true
+                  end
+                  if mon.hasType?(:ROCK)
+                    rockvar=true
+                  end
+                end
+                if !dragonvar
+                  miniscore*=1.3
+                end
+                if rockvar
+                  miniscore*=1.2
+                end
+              end
+              if $fefieldeffect==13 # Icy Field
+                icevar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:ICE)
+                    icevar=true
+                  end
+                end
+                if !icevar
+                  miniscore*=1.5
+                end
+              end
+              if $fefieldeffect==17 # Factory
+                miniscore*=1.2
+                darkvar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:DARK)
+                    darkvar=true
+                  end
+                end
+                if darkvar
+                  miniscore*=1.3
+                end
+              end
+              if $fefieldeffect==23 # Cave
+                if !(!attacker.abilitynulled && attacker.ability == PBAbilities::ROCKHEAD) &&
+                   !(!attacker.abilitynulled && attacker.ability == PBAbilities::BULLETPROOF)
+                  miniscore*=0.7
+                  if $fecounter >=1
+                    miniscore *= 0.3
+                  end
+                end
+              end
+              if $fefieldeffect==30 # Mirror Arena
+                if opponent.stages[PBStats::EVASION] > 0 ||
+                  (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) || (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
+                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
+                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+                  miniscore*=1.3
+                else
+                  miniscore*=0.5
+                end
+              end
+            end
           end
           greatmoves = hasgreatmoves(initialscores,scoreindex,skill)
           miniscore*=unsetupminiscore(attacker,opponent,skill,move,roles,3,false,greatmoves)
@@ -240,6 +421,21 @@ class PokeBattle_Battle
             minimini/=100.0
             miniscore*=minimini
           end
+          if skill>=PBTrainerAI.bestSkill
+            if move.id==(PBMoves::FLASHCANNON) || move.id==(PBMoves::LUSTERPURGE)
+              if $fefieldeffect==30 # Mirror Arena
+                if (attacker.stages[PBStats::ACCURACY] < 0 || opponent.stages[PBStats::EVASION] > 0 ||
+                   (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) || (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
+                   ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
+                   ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL) ||
+                   opponent.vanished) &&
+                   !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) &&
+                   !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD)
+                  miniscore*=2
+                end
+              end
+            end
+          end
           miniscore*= unsetupminiscore(attacker,opponent,skill,move,roles,2,false)
           miniscore/=100.0
           score*=miniscore
@@ -256,6 +452,108 @@ class PokeBattle_Battle
             minimini+=100
             minimini/=100.0
             miniscore*=minimini
+          end
+          if skill>=PBTrainerAI.bestSkill
+            if move.id==(PBMoves::KINESIS)
+              if $fefieldeffect==20 # Ashen Beach
+                miniscore*=1.3
+              end
+              if $fefieldeffect==37 # Psychic Terrain
+                miniscore*=1.6
+              end
+            end
+            if move.id==(PBMoves::SANDATTACK)
+              if $fefieldeffect==20 || $fefieldeffect==12 # Ashen Beach/Desert
+                miniscore*=1.3
+              end
+            end
+            if move.id==(PBMoves::MIRRORSHOT)
+              if $fefieldeffect==30 # Mirror Arena
+                if (attacker.stages[PBStats::ACCURACY] < 0 || opponent.stages[PBStats::EVASION] > 0 ||
+                  (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) || (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
+                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
+                  ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL) ||
+                  opponent.vanished) &&
+                   !(!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) &&
+                   !(!attacker.abilitynulled && attacker.ability == PBAbilities::NOGUARD)
+                  miniscore*=2
+                end
+              end
+            end
+            if move.id==(PBMoves::MUDDYWATER)
+              if $fefieldeffect==7 # Burning
+                firevar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:FIRE)
+                    firevar=true
+                  end
+                end
+                if firevar
+                  miniscore*=0
+                else
+                  miniscore*=2
+                end
+              end
+              if $fefieldeffect==16 # Superheated
+                miniscore*=0.7
+              end
+              if $fefieldeffect==32 # Dragon's Den
+                firevar=false
+                dragonvar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:FIRE)
+                    firevar=true
+                  end
+                  if mon.hasType?(:DRAGON)
+                    dragonvar=true
+                  end
+                end
+                if firevar || dragonvar
+                  miniscore*=0
+                else
+                  miniscore*=1.5
+                end
+              end
+            end
+            if move.id==(PBMoves::NIGHTDAZE)
+              if $fefieldeffect==25 # Crystal Cavern
+                darkvar=false
+                dragonvar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:DARK)
+                    darkvar=true
+                  end
+                  if mon.hasType?(:DRAGON)
+                    dragonvar=true
+                  end
+                end
+                if darkvar
+                  miniscore*=2
+                end
+                if dragonvar
+                  miniscore*=0.75
+                end
+              end
+            end
+            if move.id==(PBMoves::LEAFTORNADO)
+              if $fefieldeffect==20 # Ahsen Beach
+                miniscore*=0.7
+              end
+            end
+            if move.id==(PBMoves::FLASH)
+              if $fefieldeffect==4 || $fefieldeffect==18 || $fefieldeffect==30 ||
+                 $fefieldeffect==34 || $fefieldeffect==35 # Dark Crystal Cavern/Short-Circuit/Mirror/Starlight/New World
+                miniscore*=1.3
+              end
+            end
+            if move.id==(PBMoves::SMOKESCREEN)
+              if $fefieldeffect==7 || $fefieldeffect==11 # Burning/Corrosive Mist
+                miniscore*=1.3
+              end
+            end
           end
           miniscore*= unsetupminiscore(attacker,opponent,skill,move,roles,1,false)
           miniscore/=100.0
@@ -363,6 +661,11 @@ class PokeBattle_Battle
             minimini/=100.0
             miniscore*=minimini
           end
+          if skill>=PBTrainerAI.bestSkill
+            if $fefieldeffect==6 # Big Top
+              miniscore*=1.5
+            end
+          end
           miniscore*= unsetupminiscore(attacker,opponent,skill,move,roles,1,true)
           miniscore/=100.0
           score*=miniscore
@@ -449,6 +752,34 @@ class PokeBattle_Battle
           end
         else
           miniscore=100
+          if skill>=PBTrainerAI.bestSkill
+            if move.id==(PBMoves::METALSOUND)
+              if $fefieldeffect==17 || $fefieldeffect==18 # Factory/Short-Circuit
+                miniscore*=1.5
+              end
+            end
+            if move.id==(PBMoves::SEEDFLARE)
+              if $fefieldeffect==10 # Corrosive
+                poisonvar=false
+                grassvar=false
+                for mon in pbParty(attacker.index)
+                  next if mon.nil?
+                  if mon.hasType?(:POISON)
+                    poisonvar=true
+                  end
+                  if mon.hasType?(:GRASS)
+                    grassvar=true
+                  end
+                end
+                if !poisonvar
+                  miniscore*=1.5
+                end
+                if grassvar
+                  miniscore*=1.5
+                end
+              end
+            end
+          end
           miniscore*= unsetupminiscore(attacker,opponent,skill,move,roles,2,false)
           miniscore/=100.0
           score*=miniscore
@@ -461,6 +792,27 @@ class PokeBattle_Battle
           score*=miniscore
           if (!opponent.abilitynulled && opponent.ability == PBAbilities::SPEEDBOOST)
             score*=1.1
+          end
+          if skill>=PBTrainerAI.bestSkill
+            if $fefieldeffect==3 # Misty
+              poisonvar=false
+              fairyvar=false
+              for mon in pbParty(attacker.index)
+                next if mon.nil?
+                if mon.hasType?(:POISON)
+                  poisonvar=true
+                end
+                if mon.hasType?(:FAIRY)
+                  fairyvar=true
+                end
+              end
+              if poisonvar
+                score*=1.3
+              end
+              if !fairyvar
+                score*=1.3
+              end
+            end
           end
         end
       when 0x51 # Haze
@@ -590,7 +942,29 @@ class PokeBattle_Battle
             score*=0.8
           end
         else
-          score=0
+          if $fefieldeffect==35 # New World
+            score=25
+          else
+            score=0
+          end
+        end
+        if $fefieldeffect==35 # New World
+          ministat = opponent.hp + attacker.hp*0.5
+          maxdam = checkAIdamage(aimem,attacker,opponent,skill)
+          if maxdam>ministat
+            score*=0.5
+          else
+            if maxdam>attacker.hp
+              if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
+                score*=2
+              else
+                score*=0*5
+              end
+            else
+              miniscore = opponent.hp * (1.0/attacker.hp)
+              score*=miniscore
+            end
+          end
         end
       when 0x55 # Psych Up
         stages=0
@@ -688,8 +1062,27 @@ class PokeBattle_Battle
             minimini*=1.3
           end
         end
-        if $fefieldeffect!=3   # not Misty Terrain
+        if $fefieldeffect!=3 && $fefieldeffect!=22 && $fefieldeffect!=35# (not) Misty Terrain
           miniscore*=getFieldDisruptScore(attacker,opponent,skill)
+          fairyvar=false
+          for mon in pbParty(attacker.index)
+            next if mon.nil?
+            if mon.hasType?(:FAIRY)
+              fairyvar=true
+            end
+          end
+          if fairyvar
+            miniscore*=1.3
+          end
+          if opponent.pbHasType?(:DRAGON) && !attacker.pbHasType?(:FAIRY)
+            miniscore*=1.3
+          end
+          if attacker.pbHasType?(:DRAGON)
+            miniscore*=0.5
+          end
+          if opponent.pbHasType?(:FAIRY)
+            miniscore*=0.5
+          end
           if attacker.pbHasType?(:FAIRY) && opponent.spatk>opponent.attack
             miniscore*=1.5
           end
@@ -842,6 +1235,67 @@ class PokeBattle_Battle
           if roles.include?(PBMonRoles::LEAD)
             score*=1.4
           end
+          if @opponent.is_a?(Array) == false
+            if @opponent.trainertype==PBTrainers::ADRIENN
+              score *= 2.5
+            end
+          end
+          if skill>=PBTrainerAI.bestSkill
+            if $fefieldeffect==3 # Misty
+              fairyvar=false
+              for mon in pbParty(attacker.index)
+                next if mon.nil?
+                if mon.hasType?(:FAIRY)
+                  fairyvar=true
+                end
+              end
+              if !fairyvar
+                score*=1.5
+              end
+              if !@opponent.is_a?(Array)
+                if @opponent.trainertype==PBTrainers::ADRIENN
+                  score*=2
+                end
+              end
+            end
+            if $fefieldeffect==7 # Burning
+              firevar=false
+              for mon in pbParty(attacker.index)
+                next if mon.nil?
+                if mon.hasType?(:FIRE)
+                  firevar=true
+                end
+                if !firevar
+                  score*=1.2
+                end
+              end
+            end
+            if $fefieldeffect==11 # Corromist
+              poisonvar=false
+              for mon in pbParty(attacker.index)
+                next if mon.nil?
+                if mon.hasType?(:POISON)
+                  poisonvar=true
+                end
+                if !poisonvar
+                  score*=1.2
+                end
+              end
+            end
+            if $fefieldeffect==27 || $fefieldeffect==28 # Mountain/Snowy Mountain
+              score*=1.5
+              for mon in pbParty(attacker.index)
+                flyingvar=false
+                next if mon.nil?
+                if mon.hasType?(:FLYING)
+                  flyingvar=true
+                end
+                if flyingvar
+                  score*=1.5
+                end
+              end
+            end
+          end
         end
       when 0x5C # Mimic
         blacklist=[
@@ -924,13 +1378,15 @@ class PokeBattle_Battle
         else
           score*=0
         end
-        miniscore = getFieldDisruptScore(attacker,opponent,skill)
-        if $feconversionuse!=2
-          miniscore-=1
-          miniscore/=2.0
-          miniscore+=1
+        if $fefieldeffect!=24 && $fefieldeffect!=22 && $fefieldeffect!=35
+          miniscore = getFieldDisruptScore(attacker,opponent,skill)
+          if $feconversionuse!=2
+            miniscore-=1
+            miniscore/=2.0
+            miniscore+=1
+          end
+          score*=miniscore
         end
-        score*=miniscore
         if (attacker.moves[0].type == attacker.type1 && attacker.moves[0].type == attacker.type2)
           score = 0
         end
@@ -954,16 +1410,26 @@ class PokeBattle_Battle
         if $feconversionuse==2
           score*=0.3
         end
-        miniscore = getFieldDisruptScore(attacker,opponent,skill)
-        if $feconversionuse!=1
-          miniscore-=1
-          miniscore/=2.0
-          miniscore+=1
+        if $fefieldeffect!=24 && $fefieldeffect!=22 && $fefieldeffect!=35
+          miniscore = getFieldDisruptScore(attacker,opponent,skill)
+          if $feconversionuse!=1
+            miniscore-=1
+            miniscore/=2.0
+            miniscore+=1
+          end
+          score*=miniscore
         end
-        score*=miniscore
       when 0x60 # Camouflage
-        camotypes = FieldEffects::MIMICRY
-        type = camotypes[$fefieldeffect]   # Combination of environment and Terrain
+        type = 0
+        case $fefieldeffect
+          when 25
+            type = PBTypes::QMARKS #type is random
+          when 35
+            type = PBTypes::QMARKS
+          else
+            camotypes = FieldEffects::MIMICRY
+            type = camotypes[$fefieldeffect]
+        end
         miniscore = [PBTypes.getCombinedEffectiveness(opponent.type1,attacker.type1,attacker.type2),
                      PBTypes.getCombinedEffectiveness(opponent.type2,attacker.type1,attacker.type2)].max
         minimini = [PBTypes.getEffectiveness(opponent.type1,type),
@@ -1243,6 +1709,21 @@ class PokeBattle_Battle
         else
           score*=0
         end
+        if move.id==(PBMoves::FISSURE)
+          if $fefieldeffect==17 # Factory
+            score*=1.2
+            darkvar=false
+            for mon in pbParty(attacker.index)
+              next if mon.nil?
+              if mon.hasType?(:DARK)
+                darkvar=true
+              end
+            end
+            if darkvar
+              score*=1.5
+            end
+          end
+        end
       when 0x71 # Counter
         maxdam = checkAIdamage(aimem,attacker,opponent,skill)
         if (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
@@ -1318,14 +1799,195 @@ class PokeBattle_Battle
         if @doublebattle && opponent.pbPartner.hp>0
           score*=1.1
         end
+        roastvar=false
+        firevar=false
+        poisvar=false
+        icevar=false
+        for mon in pbParty(attacker.index)
+          next if mon.nil?
+          if mon.hasType?(:GRASS) || mon.hasType?(:BUG)
+            roastvar=true
+          end
+          if mon.hasType?(:FIRE)
+            firevar=true
+          end
+          if mon.hasType?(:POISON)
+            poisvar=true
+          end
+          if mon.hasType?(:ICE)
+            icevar=true
+          end
+        end
+        if $fefieldeffect==2 || $fefieldeffect==15 || ($fefieldeffect==33 && $fecounter>1)
+          if firevar && !roastvar
+            score*=2
+          end
+        end
+        if $fefieldeffect==16
+          if firevar
+            score*=2
+          end
+        end
+        if $fefieldeffect==11
+          if !poisvar
+            score*=1.2
+          end
+          if attacker.hp*(1.0/attacker.totalhp)<0.2
+            score*=2
+          end
+          if pbPokemonCount(pbParty(opponent.index))==1
+            score*=5
+          end
+        end
+        if $fefieldeffect==13 || $fefieldeffect==28
+          if !icevar
+            score*=1.5
+          end
+        end
       when 0x75 # Surf
+        firevar=false
+        dragvar=false
+        for mon in pbParty(attacker.index)
+          next if mon.nil?
+          if mon.hasType?(:FIRE)
+            firevar=true
+          end
+          if mon.hasType?(:DRAGON)
+            dragvar=true
+          end
+        end
+        if $fefieldeffect==7
+          if firevar
+            score=0
+          else
+            score*=2
+          end
+        end
+        if $fefieldeffect==16
+          score*=0.7
+        end
+        if $fefieldeffect==32
+          if dragvar || firevar
+            score=0
+          else
+            score*=1.5
+          end
+        end
       when 0x76 # Earthquake
+        darkvar=false
+        rockvar=false
+        dragvar=false
+        icevar=false
+        for mon in pbParty(attacker.index)
+          next if mon.nil?
+          if mon.hasType?(:DARK)
+            darkvar=true
+          end
+          if mon.hasType?(:ROCK)
+            rockvar=true
+          end
+          if mon.hasType?(:DRAGON)
+            dragvar=true
+          end
+          if mon.hasType?(:ICE)
+            icevar=true
+          end
+        end
+        if $fefieldeffect==4
+          if !darkvar
+            score*=1.3
+            if rockvar
+              score*=1.2
+            end
+          end
+        end
+        if $fefieldeffect==25
+          if !dragonvar
+            score*=1.3
+            if rockvar
+              score*=1.2
+            end
+          end
+        end
+        if $fefieldeffect==13
+          if !icevar
+            score*=1.5
+          end
+        end
+        if $fefieldeffect==17
+          score*=1.2
+          if darkvar
+            score*=1.3
+          end
+        end
+        if $fefieldeffect==23
+          if !(!attacker.abilitynulled && attacker.ability == PBAbilities::ROCKHEAD) &&
+             !(!attacker.abilitynulled && attacker.ability == PBAbilities::BULLETPROOF)
+            score*=0.7
+            if $fecounter >=1
+              score *= 0.3
+            end
+          end
+        end
+        if $fefieldeffect==30
+          if (opponent.stages[PBStats::EVASION] > 0 ||
+             (oppitemworks && opponent.item == PBItems::BRIGHTPOWDER) ||
+             (oppitemworks && opponent.item == PBItems::LAXINCENSE) ||
+             ((!opponent.abilitynulled && opponent.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
+             ((!opponent.abilitynulled && opponent.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL))
+            score*=1.3
+          else
+            score*=0.5
+          end
+        end
       when 0x77 # Gust
+        fairvar=false
+        firevar=false
+        poisvar=false
+        for mon in pbParty(attacker.index)
+          next if mon.nil?
+          if mon.hasType?(:FAIRY)
+            fairvar=true
+          end
+          if mon.hasType?(:FIRE)
+            firevar=true
+          end
+          if mon.hasType?(:POISON)
+            poisvar=true
+          end
+        end
+        if $fefieldeffect==3
+          score*=1.3
+          if !fairyvar
+            score*=1.3
+          else
+            score*=0.6
+          end
+        end
+        if $fefieldeffect==7
+          if !firevar
+            score*=1.8
+          else
+            score*=0.5
+          end
+        end
+        if $fefieldeffect==11
+          if !poisvar
+            score*=3
+          else
+            score*=0.8
+          end
+        end
       when 0x78 # Twister
         if opponent.effects[PBEffects::Substitute]==0 && !(!opponent.abilitynulled && opponent.ability == PBAbilities::INNERFOCUS)
           if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)
             miniscore=100
             miniscore*=1.3
+            if skill>=PBTrainerAI.bestSkill
+              if $fefieldeffect==14 # Rocky
+                miniscore*=1.2
+              end
+            end
             if (!opponent.abilitynulled && opponent.ability == PBAbilities::STEADFAST)
               miniscore*=0.3
             end
@@ -1342,6 +2004,46 @@ class PokeBattle_Battle
             miniscore/=100.0
             score*=miniscore
           end
+        end
+        fairvar=false
+        firevar=false
+        poisvar=false
+        for mon in pbParty(attacker.index)
+          next if mon.nil?
+          if mon.hasType?(:FAIRY)
+            fairvar=true
+          end
+          if mon.hasType?(:FIRE)
+            firevar=true
+          end
+          if mon.hasType?(:POISON)
+            poisvar=true
+          end
+        end
+        if $fefieldeffect==3
+          score*=1.3
+          if !fairyvar
+            score*=1.3
+          else
+            score*=0.6
+          end
+        end
+        if $fefieldeffect==7
+          if !firevar
+            score*=1.8
+          else
+            score*=0.5
+          end
+        end
+        if $fefieldeffect==11
+          if !poisvar
+            score*=3
+          else
+            score*=0.8
+          end
+        end
+        if $fefieldeffect==20
+          score*=0.7
         end
       when 0x79 # Fusion Bolt
       when 0x7A # Fusion Flare
