@@ -1,7 +1,7 @@
 class PokeBattle_Battle
-  attr_accessor :scores
-  attr_accessor :targets
-  attr_accessor :myChoices
+  attr_accessor :scores   # Array of move scores (even zeroes), corresponding to battler.moves array
+  attr_accessor :targets   # Array containing best idxBattler to target for each move, corresponding to battler.moves array
+  attr_accessor :myChoices   # Array containing idxMoves that can be used
 
   ################################################################################
   # Choose a move to use.
@@ -17,8 +17,11 @@ class PokeBattle_Battle
     target=-1
     skill=0
     wildbattle=!@opponent && pbIsOpposing?(index)
+
+
+
     if wildbattle # If wild battle
-      preference = attacker.personalID % 16
+      preference = attacker.personalID % 16   # Doesn't correlate to any property of the attacker, but is consistent
       preference = preference % 4
       for i in 0...4
         if pbCanChooseMove?(index,i,false)
@@ -29,17 +32,25 @@ class PokeBattle_Battle
           @myChoices.push(i)
         end
       end
-    else
+      return
+
+
+
+    else   # Trainer battle
       skill=pbGetOwner(attacker.index).skill || 0
+
       opponent=attacker.pbOppositeOpposing
+
       fastermon = (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
       if fastermon && opponent
         PBDebug.log(sprintf("AI Pokemon #{attacker.name} is faster than #{opponent.name}.")) if $INTERNAL
       elsif opponent
         PBDebug.log(sprintf("Player Pokemon #{opponent.name} is faster than #{attacker.name}.")) if $INTERNAL
       end
+
       #if @doublebattle && !opponent.isFainted? && !opponent.pbPartner.isFainted?
       if @doublebattle && ((!opponent.isFainted? && !opponent.pbPartner.isFainted?) || !attacker.pbPartner.isFainted?)
+
         # Choose a target and move.  Also care about partner.
         otheropp=opponent.pbPartner
         fastermon = (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
@@ -49,7 +60,8 @@ class PokeBattle_Battle
           PBDebug.log(sprintf("Player Pokemon #{otheropp.name} is faster than #{attacker.name}.")) if $INTERNAL
         end
         notopp=attacker.pbPartner ###
-        scoresAndTargets=[]
+
+        scoresAndTargets=[]   # [tiebreaker value, idxMove, score, target]
         @targets=[-1,-1,-1,-1]
         maxscore1=0
         maxscore2=0
@@ -58,6 +70,9 @@ class PokeBattle_Battle
         baseDamageArray=[]
         baseDamageArray2=[]
         baseDamageArray3=[] ###
+
+        # For each move in turn, get probable percentage damage dealt against
+        # each opponent and against partner
         for j in 0...4
           next if attacker.moves[j].id < 1
           # check attacker.moves[j].basedamage and if this is 0 instead check the status method
@@ -73,6 +88,7 @@ class PokeBattle_Battle
             dmgPercent = pbStatusDamage(attacker.moves[j])
           end
           baseDamageArray.push(dmgPercent)
+
           #Second opponent
           dmgValue2 = pbRoughDamage(attacker.moves[j],attacker,otheropp,skill,attacker.moves[j].basedamage)
           if attacker.moves[j].basedamage!=0
@@ -86,6 +102,7 @@ class PokeBattle_Battle
             dmgPercent2 = pbStatusDamage(attacker.moves[j])
           end
           baseDamageArray2.push(dmgPercent2)
+
           #Partner ###
           dmgValue3 = pbRoughDamage(attacker.moves[j],attacker,notopp,skill,attacker.moves[j].basedamage)
           if attacker.moves[j].basedamage!=0
@@ -100,6 +117,10 @@ class PokeBattle_Battle
           end
           baseDamageArray3.push(dmgPercent3)
         end
+
+        # For each move in turn, calculate final score for each target, and modify
+        # scores if the move hits multiple targets
+        # Then push results to scoresAndTargets
         for i in 0...4
           if pbCanChooseMove?(index,i,false)
             score1=pbGetMoveScore(attacker.moves[i],attacker,opponent,skill,baseDamageArray[i],baseDamageArray,i)
@@ -109,8 +130,8 @@ class PokeBattle_Battle
               score1=totalscore # Consider both scores as it will hit BOTH targets
               score2=totalscore
               if attacker.pbPartner.isFainted? || (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::TELEPATHY) # No partner
-                  score1*=1.66
-                  score2*=1.66
+                score1*=1.66
+                score2*=1.66
               else
                 # If this move can also target the partner, get the partner's
                 # score too
@@ -159,14 +180,16 @@ class PokeBattle_Battle
             scoresAndTargets.push([i*2+1,i,-1,otheropp.index])
           end
         end
-        for i in 0...4 ### This whole bit
+
+        # Check certain moves for use on partner instead of opponent
+        for i in 0...4 ### This whole bit -
           if pbCanChooseMove?(index,i,false)
             movecode = attacker.moves[i].function
             if movecode == 0xDF || movecode == 0x63 || movecode == 0x67 || #Heal Pulse, Simple Beam, Skill Swap,
-              movecode == 0xA0 || movecode == 0xC1 || movecode == 0x142 || #Frost Breath, Beat Up, Topsy-Turvy,
-              movecode == 0x162 || movecode == 0x164 || movecode == 0x167 || #Floral Healing, Instruct, Pollen Puff,
-              movecode == 0x169 || movecode == 0x170 || movecode == 0x55 || #Purify, Spotlight, Psych Up,
-              movecode == 0x40 || movecode == 0x41 || movecode == 0x66  #Swagger, Flatter, Entrainment
+               movecode == 0xA0 || movecode == 0xC1 || movecode == 0x142 || #Frost Breath, Beat Up, Topsy-Turvy,
+               movecode == 0x162 || movecode == 0x164 || movecode == 0x167 || #Floral Healing, Instruct, Pollen Puff,
+               movecode == 0x169 || movecode == 0x170 || movecode == 0x55 || #Purify, Spotlight, Psych Up,
+               movecode == 0x40 || movecode == 0x41 || movecode == 0x66  #Swagger, Flatter, Entrainment
               partnerscore=pbGetMoveScore(attacker.moves[i],attacker,notopp,skill,baseDamageArray3[i],baseDamageArray3,i)
               PBDebug.log(sprintf("%s: Score for using on partner: %d",PBMoves.getName(attacker.moves[i].id),partnerscore))
               PBDebug.log(sprintf(""))
@@ -174,19 +197,25 @@ class PokeBattle_Battle
             end
           end
         end
+
+        # Sort scores for all possible targets of this move
         scoresAndTargets.sort!{|a,b|
-           if a[2]==b[2] # if scores are equal
-             a[0]<=>b[0] # sort by index (for stable comparison)
-           else
-             b[2]<=>a[2]
-           end
+          if a[2]==b[2] # if scores are equal
+            a[0]<=>b[0] # sort by index (for stable comparison)
+          else
+            b[2]<=>a[2]
+          end
         }
+
+        # Push this move's score to @scores (one per move) and usable move idxMove to @myChoices
+        # Also push move's target to @targets
+        # Ends up with the highest scoring move/target combo, or a 50/50 choice
+        # if two combos have the same score (or 25/25/50 if three combos have equal scores, etc.)
         for i in 0...scoresAndTargets.length
           idx=scoresAndTargets[i][1]
           thisScore=scoresAndTargets[i][2]
           if thisScore>0 || thisScore==-1
-            if scores[idx]==0 || ((scores[idx]==thisScore && pbAIRandom(10)<5) ||
-               (scores[idx] < thisScore))
+            if scores[idx]==0 || (scores[idx]==thisScore && pbAIRandom(10)<5) || (scores[idx] < thisScore)
            #    (scores[idx]!=thisScore && pbAIRandom(10)<3))
               @scores[idx]=thisScore
               @targets[idx]=scoresAndTargets[i][3]
@@ -194,19 +223,24 @@ class PokeBattle_Battle
           end
         end
       else
-        # Choose a move. There is only 1 opposing Pokémon.
+
+        # Choose a move. There is only 1 opposing Pokémon and no partner.
         if @doublebattle && opponent.isFainted?
           opponent=opponent.pbPartner
         end
         baseDamageArray=[]
         baseDamageArrayAdj=[]
+
+        # For each move in turn, get probable percentage damage dealt against opponent
         for j in 0...4
           next if attacker.moves[j].id < 1
           # check attacker.moves[j].basedamage and if this is 0 instead check the status method
           dmgValue = pbRoughDamage(attacker.moves[j],attacker,opponent,skill,attacker.moves[j].basedamage)
-          if attacker.moves[j].basedamage!=0
+          if attacker.moves[j].basedamage!=0   # Damaging moves
+            # Turn probable damage dealt into a percentage of the target's current HP
             dmgPercent = (dmgValue*100)/(opponent.hp)
-            dmgPercent = 110 if dmgPercent > 110
+            dmgPercent = 110 if dmgPercent > 110   # Cap at 110% of target's HP
+            # Halve the effective damage for two-turn moves (but not Hyper Beam)
             if attacker.moves[j].function == 0x115 || attacker.moves[j].function == 0xC3 ||
              attacker.moves[j].function == 0xC4 || attacker.moves[j].function == 0xC5 ||
              attacker.moves[j].function == 0xC6 || attacker.moves[j].function == 0xC7 ||
@@ -215,13 +249,15 @@ class PokeBattle_Battle
             else
                dmgPercentAdj = dmgPercent
             end
-          else
+          else   # Status moves
             dmgPercent = pbStatusDamage(attacker.moves[j])
             dmgPercentAdj = dmgPercent
           end
           baseDamageArray.push(dmgPercent)
-          baseDamageArrayAdj.push(dmgPercentAdj)
+          baseDamageArrayAdj.push(dmgPercentAdj)   # Adjusted percentage due to two-turn attacks
         end
+
+        # Push all scores to @scores (one per move) and usable move idxMoves to @myChoices
         for i in 0...4
           if pbCanChooseMove?(index,i,false)
             @scores[i]=pbGetMoveScore(attacker.moves[i],attacker,opponent,skill,baseDamageArray[i],baseDamageArrayAdj,i)
@@ -230,6 +266,7 @@ class PokeBattle_Battle
             @scores[i] = -1
           end
         end
+
       end
     end
   end
@@ -243,13 +280,16 @@ class PokeBattle_Battle
     attacker=@battlers[index]
     skill=pbGetOwner(attacker.index).skill rescue 0
     wildbattle=!@opponent && pbIsOpposing?(index)
+
+    # Calculate highest score and sum of scores
     for i in 0...4
       #next if scores[i] == -1
       @scores[i]=0 if @scores[i]<0
       maxscore=@scores[i] if @scores[i]>maxscore
       totalscore+=@scores[i]
     end
-    # Minmax choices depending on AI
+
+    # Minmax choices depending on AI (reduce the scores for moves that are already significantly lower than the highest score)
     if !wildbattle && skill>=PBTrainerAI.mediumSkill
       threshold=(skill>=PBTrainerAI.bestSkill) ? 1.5 : (skill>=PBTrainerAI.highSkill) ? 2 : 3
       newscore=(skill>=PBTrainerAI.bestSkill) ? 5 : (skill>=PBTrainerAI.highSkill) ? 10 : 15
@@ -260,6 +300,8 @@ class PokeBattle_Battle
         end
       end
     end
+
+    # Debug logging
     if $INTERNAL
       x="[#{attacker.pbThis}: "
       j=0
@@ -273,6 +315,11 @@ class PokeBattle_Battle
       x+="]"
       PBDebug.log(x)
     end
+
+    # Decide on a move whose score is at least 0.95 times the highest score
+    # If there are multiple moves with such high scores, randomly choose one (each
+    # is equally weighted apart from ones that equal the max score, which are each
+    # twice as likely to be chosen)
     if !wildbattle #&& maxscore>100
       stdev=pbStdDev(@scores)
       preferredMoves=[]
@@ -293,7 +340,13 @@ class PokeBattle_Battle
         return
       end
     end
+
+
+
+    # Trainer battles should have chosen a move by now. The below code is for wild Pokémon only.
     PBDebug.log("If this battle is not wild, something has gone wrong in scoring moves (no preference chosen).") if $INTERNAL
+
+    # n/a
     if !wildbattle && attacker.turncount
       badmoves=false
       if ((maxscore<=20 && attacker.turncount>2) ||
@@ -314,6 +367,8 @@ class PokeBattle_Battle
         badmoves=badmoves && pbAIRandom(10)!=0
       end
     end
+
+    # Choose a move (wild Pokémon only), either at random or with scores as weights
     if maxscore<=0
       # If all scores are 0 or less, choose a move at random
       if @myChoices.length>0
@@ -349,9 +404,11 @@ class PokeBattle_Battle
       roughdamage=1
     end
     PBDebug.log(sprintf("%s: initial score: %d",PBMoves.getName(move.id),roughdamage)) if $INTERNAL
+
     skill=PBTrainerAI.minimumSkill if skill<PBTrainerAI.minimumSkill
     #score=(pbRoughDamage(move,attacker,opponent,skill,move.basedamage)*100/opponent.hp) #roughdamage
     score=roughdamage
+
     #Temporarly mega-ing pokemon if it can    #perry
     if pbCanMegaEvolve?(attacker.index)
       attacker.pokemon.makeMega
@@ -359,6 +416,7 @@ class PokeBattle_Battle
       attacker.form=attacker.startform
       megaEvolved=true
     end
+
     #Little bit of prep before getting into the case statement
     oppitemworks = opponent.itemWorks?
     attitemworks = attacker.itemWorks?
@@ -367,35 +425,51 @@ class PokeBattle_Battle
     opponent=attacker.pbOppositeOpposing if !opponent
     opponent=opponent.pbPartner if opponent && opponent.isFainted?
     roles = pbGetMonRole(attacker,opponent,skill)
+
+    # Check priority of move (it's non-zero, or is a status move and attacker has Prankster)
     if move.priority>0 || (move.basedamage==0 && !attacker.abilitynulled && attacker.ability == PBAbilities::PRANKSTER)
-      if move.basedamage>0
+
+      if move.basedamage>0   # Damaging move
         PBDebug.log(sprintf("Priority Check Begin")) if $INTERNAL
         fastermon = (attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
         if fastermon
-          PBDebug.log(sprintf("AI Pokemon is faster.")) if $INTERNAL
+          PBDebug.log(sprintf("AI Pokemon is faster.")) if $INTERNAL   # attacker is faster
         else
-          PBDebug.log(sprintf("Player Pokemon is faster.")) if $INTERNAL
+          PBDebug.log(sprintf("Player Pokemon is faster.")) if $INTERNAL   # attacker is slower
         end
+
         if score>100
+          # Prefer moves that will KO the opponent
           if @doublebattle
             score*=1.3
           else
             if fastermon
               score*=1.3
             else
-              score*=2
+              score*=2   # Really prefer a KO move if attacker is slower than
+                         # opponent (this is a priority move which will overcome
+                         # attacker's speed disadvantage)
             end
           end
         else
+          # Don't prefer a non-KO priority move if attacker has Stance Change and
+          # is slower than the opponent (probably assumes attacker is in Shield Form
+          # with higher defences, and doesn't want to shift to Attack Form before
+          # the opponent this round and give them a change to hit the attacker's
+          # lowered defences)
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::STANCECHANGE)
             if !fastermon
               score*=0.7
             end
           end
         end
+
         movedamage = -1
         opppri = false
         pridam = -1
+
+        # If attacker is slower, check memory for most damaging move used previously
+        # and for most damaging priority move used previously
         if (attacker.pbSpeed<pbRoughStat(opponent,PBStats::SPEED,skill)) ^ (@trickroom!=0)
           if aimem.length > 0
             for i in aimem
@@ -413,6 +487,9 @@ class PokeBattle_Battle
           end
         end
         PBDebug.log(sprintf("Expected damage taken: %d",movedamage)) if $INTERNAL
+
+        # If attacker is slower and will faint from another hit from the most
+        # damaging move in memory, strongly prefer a priority move
         if !fastermon
           if movedamage>attacker.hp
             if @doublebattle
@@ -422,32 +499,53 @@ class PokeBattle_Battle
             end
           end
         end
+
+        # If attacker is slower and a priority move was used in the past and the
+        # attacker will faint from another hit from that priority move...
         if opppri
           score*=1.1
           if pridam>attacker.hp
             if fastermon
-              score*=3
+              score*=3   # NOTE: Can't get here because opppri is only true if attacker is slower
             else
-              score*=0.5
+              score*=0.5   # Don't prefer this priority move
             end
           end
         end
+
+        # If attacker is slower and opponent is in the middle of a two-turn attack
+        # (and is likely semi-invulnerable), discard a priority move because it's
+        # better to attack after the opponent has finished and is vulnerable again
         if !fastermon && opponent.effects[PBEffects::TwoTurnAttack]>0
           score*=0
         end
+
+        # Discard higher priority moves if Psychic Terrain is in effect (assumes
+        # the target is affected by Psychic Terrain's effect)
         if $fefieldeffect==37   # Psychic Terrain
           score*=0
         end
+
+        # Discard higher priority moves if opponent has an ability that makes it
+        # immune to high priority moves
         if !opponent.abilitynulled && (opponent.ability == PBAbilities::DAZZLING || opponent.ability == PBAbilities::QUEENLYMAJESTY)
           score*=0
         end
       end
+
+      # Strongly don't prefer priority moves if Quick Guard was previously used
       score*=0.2 if checkAImoves([PBMoves::QUICKGUARD],aimem)
       PBDebug.log(sprintf("Priority Check End")) if $INTERNAL
+
     elsif move.priority<0
+      
       if fastermon
+        # Slightly slower score if attacker is faster than the opponent but the
+        # move is a lower priority (i.e. can't make use of the speed advantage)
         score*=0.9
-        if move.basedamage>0
+        if move.basedamage>0   # Damaging move
+          # Prefer a lower priority damaging move if opponent is in the middle of
+          # a two-turn attack (i.e. is likely semi-invulnerable until their turn)
           if opponent.effects[PBEffects::TwoTurnAttack]>0
             score*=2
           end
@@ -458,7 +556,7 @@ class PokeBattle_Battle
     ##### Alter score depending on the move's function code ########################
     score = pbGetMoveScoreFunctions(move,attacker,opponent,skill,roughdamage,initialscores,scoreindex,
                                     score, oppitemworks, attitemworks, aimem, bettertype, roles, tempdam)
-    ###### END FUNCTION CODES
+    ###### END FUNCTION CODES ######################################################
 
     if (!opponent.abilitynulled && opponent.ability == PBAbilities::DANCER)
       if (PBStuff::DANCEMOVE).include?(move.id)
@@ -820,12 +918,5 @@ class PokeBattle_Battle
     PBDebug.log(sprintf(" ")) if $INTERNAL
     attacker.pbUpdate(true) if defined?(megaEvolved) && megaEvolved==true #perry
     return score
-  end
-
-  ##############################################################################
-  # Decide whether the opponent should use a Z-Move.
-  ##############################################################################
-  def pbEnemyShouldZMove?(index)
-    return pbCanZMove?(index) #Conditions based on effectiveness and type handled later
   end
 end

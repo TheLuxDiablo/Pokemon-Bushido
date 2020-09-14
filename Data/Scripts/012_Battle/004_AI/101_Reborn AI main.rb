@@ -50,6 +50,7 @@ class PokeBattle_Battle
       @battle.pbAutoChooseMove(idxBattler)
       return
     end
+
     pbBuildMoveScores(idxBattler)   # Grab the array of scores/targets before doing anything else
     return if pbShouldSwitch?(idxBattler)
 #    return if pbEnemyShouldWithdraw?(idxBattler)   # Old Switching Method
@@ -138,6 +139,13 @@ class PokeBattle_Battle
         end
       end
     end
+  end
+
+  ##############################################################################
+  # Decide whether the opponent should use a Z-Move.
+  ##############################################################################
+  def pbEnemyShouldZMove?(index)
+    return pbCanZMove?(index) #Conditions based on effectiveness and type handled later
   end
 
   #=============================================================================
