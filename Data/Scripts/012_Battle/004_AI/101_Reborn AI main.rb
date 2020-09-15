@@ -64,6 +64,9 @@ class PokeBattle_Battle
     pbChooseMoves(idxBattler)
   end
 
+  ##############################################################################
+  #
+  ##############################################################################
   def pbChooseEnemyZMove(index)  #Put specific cases for trainers using status Z-Moves
     chosenmove=false
     chosenindex=-1

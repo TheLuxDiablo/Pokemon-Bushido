@@ -1,12 +1,7 @@
 class PokeBattle_Battle
-  ################################################################################
-  # Decide whether the opponent should switch Pokémon, and what to switch to. NEW
-  ################################################################################
-    #if this function isn't here things break and i hate it.
-    def pbDefaultChooseNewEnemy(index,party)
-      return pbSwitchTo(@battlers[index],party,pbGetOwner(index).skill)
-    end
-
+    ################################################################################
+    # Primary method for deciding whether the Pokémon at position index should switch
+    ################################################################################
     def pbShouldSwitch?(index)
       return false if !@opponent
       switchscore = 0
@@ -812,71 +807,9 @@ class PokeBattle_Battle
       end
     end
 
-    def pbSpeedChangingSwitch(mon,currentmon)
-      speed = mon.speed
-      #if @unburdened
-      #  speed=speed*2
-      #end
-      if currentmon.pbOwnSide.effects[PBEffects::Tailwind]>0
-        speed=speed*2
-      end
-      if mon.ability == PBAbilities::SWIFTSWIM && pbWeather==PBWeather::RAINDANCE &&
-         mon.item != PBItems::UTILITYUMBRELLA
-        speed=speed*2
-      end
-      if mon.ability == PBAbilities::SLUSHRUSH && pbWeather==PBWeather::HAIL
-        speed=speed*2
-      end
-      if mon.ability == PBAbilities::SURGESURFER && $fefieldeffect == 1   # Electric Terrain
-        speed=speed*2
-      end
-      if mon.ability == PBAbilities::CHLOROPHYLL && pbWeather==PBWeather::SUNNYDAY &&
-         mon.item != PBItems::UTILITYUMBRELLA
-        speed=speed*2
-      end
-      if mon.ability == PBAbilities::SANDRUSH && pbWeather==PBWeather::SANDSTORM
-        speed=speed*2
-      end
-      if (mon.ability == PBAbilities::QUICKFEET) && mon.status>0
-        speed=(speed*1.5).floor
-      end
-      if (mon.item == PBItems::MACHOBRACE) ||
-         (mon.item == PBItems::POWERWEIGHT) ||
-         (mon.item == PBItems::POWERBRACER) ||
-         (mon.item == PBItems::POWERBELT) ||
-         (mon.item == PBItems::POWERANKLET) ||
-         (mon.item == PBItems::POWERLENS) ||
-         (mon.item == PBItems::POWERBAND)
-        speed=(speed/2).floor
-      end
-      if (mon.item == PBItems::CHOICESCARF)
-        speed=(speed*1.5).floor
-      end
-      if mon.item == PBItems::IRONBALL && mon.ability != PBAbilities::KLUTZ
-        speed=(speed/2).floor
-      end
-      if mon.species == PBSpecies::DITTO && mon.item == PBItems::QUICKPOWDER
-        speed=speed*2
-      end
-      if (mon.ability == PBAbilities::SLOWSTART)
-        speed=(speed/2).floor
-      end
-      if mon.status==PBStatuses::PARALYSIS && !(mon.ability == PBAbilities::QUICKFEET)
-        speed=(speed/2).floor
-      end
-      if currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&
-         !(mon.ability == PBAbilities::WHITESMOKE) &&
-         !(mon.ability == PBAbilities::CLEARBODY) &&
-         !(mon.ability == PBAbilities::CONTRARY)
-        speed=(speed*2/3).floor
-      elsif currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&
-         (mon.ability == PBAbilities::CONTRARY)
-        speed=(speed*1.5).floor
-      end
-      speed = 1 if speed <= 0
-      return speed
-    end
-
+    ################################################################################
+    #
+    ################################################################################
     def pbSwitchTo(currentmon,party,skill)
       opponent1 = currentmon.pbOppositeOpposing
       opponent2 = opponent1.pbPartner
@@ -1835,7 +1768,8 @@ class PokeBattle_Battle
             monscore+=30 if checkAIbest(aimem,1,[PBTypes::DARK]) || checkAIbest(aimem2,1,[PBTypes::DARK])
           end
           if (i.ability == PBAbilities::RATTLED)
-            monscore+=15 if checkAIbest(aimem,1,[PBTypes::DARK,PBTypes::GHOST,PBTypes::BUG]) || checkAIbest(aimem2,1,[PBTypes::DARK,PBTypes::GHOST,PBTypes::BUG])
+            monscore+=15 if checkAIbest(aimem,1,[PBTypes::DARK,PBTypes::GHOST,PBTypes::BUG]) ||
+                            checkAIbest(aimem2,1,[PBTypes::DARK,PBTypes::GHOST,PBTypes::BUG])
           end
           if (i.ability == PBAbilities::IRONBARBS) || (i.ability == PBAbilities::ROUGHSKIN)
             monscore+=30 if (opponent1.ability == PBAbilities::SKILLLINK)
@@ -1872,7 +1806,8 @@ class PokeBattle_Battle
             monscore+=20 if checkAIpriority(aimem)
             monscore+=20 if checkAIpriority(aimem2) && skill>=PBTrainerAI.bestSkill
           end
-          if (i.ability == PBAbilities::SANDSTREAM) || (i.ability == PBAbilities::SNOWWARNING) || (nonmegaform.ability == PBAbilities::SANDSTREAM) || (nonmegaform.ability == PBAbilities::SNOWWARNING)
+          if (i.ability == PBAbilities::SANDSTREAM) || (i.ability == PBAbilities::SNOWWARNING) ||
+             (nonmegaform.ability == PBAbilities::SANDSTREAM) || (nonmegaform.ability == PBAbilities::SNOWWARNING)
             monscore+=70 if (opponent1.ability == PBAbilities::WONDERGUARD)
             monscore+=70 if (opponent2.ability == PBAbilities::WONDERGUARD)
           end
@@ -2043,6 +1978,77 @@ class PokeBattle_Battle
       end
     end
 
+    ################################################################################
+    # Calculate the speed of mon if it's switched in
+    ################################################################################
+    def pbSpeedChangingSwitch(mon,currentmon)
+      speed = mon.speed
+      #if @unburdened
+      #  speed=speed*2
+      #end
+      if currentmon.pbOwnSide.effects[PBEffects::Tailwind]>0
+        speed=speed*2
+      end
+      if mon.ability == PBAbilities::SWIFTSWIM && pbWeather==PBWeather::RAINDANCE &&
+         mon.item != PBItems::UTILITYUMBRELLA
+        speed=speed*2
+      end
+      if mon.ability == PBAbilities::SLUSHRUSH && pbWeather==PBWeather::HAIL
+        speed=speed*2
+      end
+      if mon.ability == PBAbilities::SURGESURFER && $fefieldeffect == 1   # Electric Terrain
+        speed=speed*2
+      end
+      if mon.ability == PBAbilities::CHLOROPHYLL && pbWeather==PBWeather::SUNNYDAY &&
+         mon.item != PBItems::UTILITYUMBRELLA
+        speed=speed*2
+      end
+      if mon.ability == PBAbilities::SANDRUSH && pbWeather==PBWeather::SANDSTORM
+        speed=speed*2
+      end
+      if (mon.ability == PBAbilities::QUICKFEET) && mon.status>0
+        speed=(speed*1.5).floor
+      end
+      if (mon.item == PBItems::MACHOBRACE) ||
+         (mon.item == PBItems::POWERWEIGHT) ||
+         (mon.item == PBItems::POWERBRACER) ||
+         (mon.item == PBItems::POWERBELT) ||
+         (mon.item == PBItems::POWERANKLET) ||
+         (mon.item == PBItems::POWERLENS) ||
+         (mon.item == PBItems::POWERBAND)
+        speed=(speed/2).floor
+      end
+      if (mon.item == PBItems::CHOICESCARF)
+        speed=(speed*1.5).floor
+      end
+      if mon.item == PBItems::IRONBALL && mon.ability != PBAbilities::KLUTZ
+        speed=(speed/2).floor
+      end
+      if mon.species == PBSpecies::DITTO && mon.item == PBItems::QUICKPOWDER
+        speed=speed*2
+      end
+      if (mon.ability == PBAbilities::SLOWSTART)
+        speed=(speed/2).floor
+      end
+      if mon.status==PBStatuses::PARALYSIS && !(mon.ability == PBAbilities::QUICKFEET)
+        speed=(speed/2).floor
+      end
+      if currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&
+         !(mon.ability == PBAbilities::WHITESMOKE) &&
+         !(mon.ability == PBAbilities::CLEARBODY) &&
+         !(mon.ability == PBAbilities::CONTRARY)
+        speed=(speed*2/3).floor
+      elsif currentmon.pbOwnSide.effects[PBEffects::StickyWeb] && !mon.isAirborne? &&
+         (mon.ability == PBAbilities::CONTRARY)
+        speed=(speed*1.5).floor
+      end
+      speed = 1 if speed <= 0
+      return speed
+    end
+
+    ################################################################################
+    # Calculate the damage taken by a Pokémon with type1/type2 from entry hazards
+    ################################################################################
     def totalHazardDamage(side,type1,type2,airborne,skill)
       percentdamage = 0
       if side.effects[PBEffects::Spikes]>0 && (!airborne || @field.effects[PBEffects::Gravity]>0)

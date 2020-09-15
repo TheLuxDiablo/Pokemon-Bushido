@@ -6,27 +6,42 @@ class PokeBattle_Battle
   def pbGetMoveScoreFunctions(move,attacker,opponent,skill,roughdamage,initialscores,scoreindex,
                               score, oppitemworks, attitemworks, aimem, bettertype, roles, tempdam)
     case move.function
+      #---------------------------------------------------------------------------
       when 0x00 # No extra effect
+
+      #---------------------------------------------------------------------------
       when 0x01 # Splash
+
+      #---------------------------------------------------------------------------
       when 0x02 # Struggle
+
+      #---------------------------------------------------------------------------
       when 0x03 # Sleep
         if opponent.pbCanSleep?(false) && opponent.effects[PBEffects::Yawn]==0
           miniscore=100
+          # Inherently prefer this move
           miniscore*=1.3
+          # Prefer if attacker has a move/ability that depends on opponent being asleep
           if attacker.pbHasMove?(:DREAMEATER) || attacker.pbHasMove?(:NIGHTMARE) ||
             (!attacker.abilitynulled && attacker.ability == PBAbilities::BADDREAMS)
             miniscore*=1.5
           end
+          # Prefer if attacker has setup moves (i.e. want to stall to get them set up)
           miniscore*=1.3 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
+          # Prefer if attacker knows Leech Seed (stall for time in which Leech Seed can sap more HP)
           if attacker.pbHasMove?(:LEECHSEED)
             miniscore*=1.3
           end
+          # Prefer if attacker knows Substitute (another stall tactic)
           if attacker.pbHasMove?(:SUBSTITUTE)
             miniscore*=1.3
           end
+          # Prefer if opponent is at full HP
           if opponent.hp==opponent.totalhp
             miniscore*=1.2
           end
+          # Prefer if opponent's stat stages are increased (don't want to give
+          # opponent a chance to use their raised stat stages)
           ministat = statchangecounter(opponent,1,7)
           if ministat>0
             minimini=5*ministat
@@ -34,33 +49,42 @@ class PokeBattle_Battle
             minimini/=100.0
             miniscore*=minimini
           end
+          # Greatly don't prefer if opponent has used Sleep Talk/Snore in the past
           miniscore*=0.1 if checkAImoves([PBMoves::SLEEPTALK,PBMoves::SNORE],aimem)
+          # Don't prefer if opponent's ability will cure sleep/give it back to attacker
           if !opponent.abilitynulled
             miniscore*=0.3 if opponent.ability == PBAbilities::NATURALCURE
             miniscore*=0.7 if opponent.ability == PBAbilities::MARVELSCALE
             miniscore*=0.5 if opponent.ability == PBAbilities::SYNCHRONIZE && attacker.status==0
           end
+          # Prefer if attacker has certain roles
           if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
              roles.include?(PBMonRoles::CLERIC) || roles.include?(PBMonRoles::PIVOT)
             miniscore*=1.2
           end
+          # Prefer if attacker is faster than opponent
           if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)
             miniscore*=1.3
           end
+          # Prefer if attacker has EOR healing items (stall to give them more time to work)
           if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
-             ((!attacker.abilitynulled && attacker.ability == PBAbilities::POISONHEAL) &&
-             attacker.status==PBStatuses::POISON)
+             ((!attacker.abilitynulled && attacker.ability == PBAbilities::POISONHEAL) && attacker.status==PBStatuses::POISON)
             miniscore*=1.2
           end
+          # Don't prefer if opponent is confused (better to let it hurt itself in confusion)
           if opponent.effects[PBEffects::Confusion]>0
             miniscore*=0.6
           end
+          # Don't prefer if opponent is infatuated (better to let it miss from infatuation(?))
           if opponent.effects[PBEffects::Attract]>=0
             miniscore*=0.7
           end
+          # Prefer if attacker doesn't have moves that'll damage more than 35% of opponent's current HP
           if initialscores.length>0
             miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,35)
           end
+          # Discard if move is sound-based and opponent is immune to sound moves
+          # (this is checked elsewhere and is redundant here)
           if skill>=PBTrainerAI.bestSkill
             if move.id==(PBMoves::SING)
               if (!opponent.abilitynulled && opponent.ability == PBAbilities::SOUNDPROOF)
@@ -73,6 +97,8 @@ class PokeBattle_Battle
               end
             end
           end
+          # Discard if move is powder-based and opponent is immune to powder moves
+          # (this is checked elsewhere and is redundant here)
           if move.id==(PBMoves::SPORE)
             if (oppitemworks && opponent.item == PBItems::SAFETYGOGGLES) ||
                (!opponent.abilitynulled && opponent.ability == PBAbilities::OVERCOAT) || opponent.pbHasType?(:GRASS)
@@ -87,11 +113,15 @@ class PokeBattle_Battle
               end
             end
           end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
+          # Discard if opponent will cure itself of sleep because of its ability
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
             miniscore=0
           end
+
+          # Apply above modifiers to score
           if move.basedamage>0
             miniscore-=100
+            # Take additional effect chance into account
             if move.addlEffect.to_f != 100
               miniscore*=(move.addlEffect.to_f/100)
               if (!attacker.abilitynulled && attacker.ability == PBAbilities::SERENEGRACE)
@@ -105,25 +135,36 @@ class PokeBattle_Battle
             miniscore/=100.0
             score*=miniscore
           end
+
+          # Discard Dark Void if attacker isn't Darkrai (ignores whether attacker is Transformed into Darkrai)
           if (move.id == PBMoves::DARKVOID) && !(attacker.species == PBSpecies::DARKRAI)
             score=0
           end
+
         else
+          # Discard status move if it won't have an effect/is superfluous because Yawn is whirring
           if move.basedamage==0
             score=0
           end
         end
+
+      #---------------------------------------------------------------------------
       when 0x04 # Yawn
         if opponent.effects[PBEffects::Yawn]<=0 && opponent.pbCanSleep?(false)
+          # Inherently prefer this move
           score*=1.2
+          # Prefer if attacker has a move/ability that depends on opponent being asleep
           if attacker.pbHasMove?(:DREAMEATER) ||
             attacker.pbHasMove?(:NIGHTMARE) ||
             (!attacker.abilitynulled && attacker.ability == PBAbilities::BADDREAMS)
             score*=1.4
           end
+          # Prefer if opponent is at full HP
           if opponent.hp==opponent.totalhp
             score*=1.2
           end
+          # Prefer if opponent's stat stages are increased (don't want to give
+          # opponent a chance to use their raised stat stages)
           ministat = statchangecounter(opponent,1,7)
           if ministat>0
             miniscore=10*ministat
@@ -131,34 +172,48 @@ class PokeBattle_Battle
             miniscore/=100.0
             score*=miniscore
           end
+          # Greatly don't prefer if opponent has used Sleep Talk/Snore in the past
           score*=0.1 if checkAImoves([PBMoves::SLEEPTALK,PBMoves::SNORE],aimem)
+          # Don't prefer if opponent's ability will cure sleep
           if !opponent.abilitynulled
             score*=0.1 if opponent.ability == PBAbilities::NATURALCURE
             score*=0.8 if opponent.ability == PBAbilities::MARVELSCALE
           end
+          # Prefer if attacker has certain roles
           if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
              roles.include?(PBMonRoles::CLERIC) || roles.include?(PBMonRoles::PIVOT)
             score*=1.2
           end
+          # Don't prefer if opponent is confused (better to let it hurt itself in confusion)
           if opponent.effects[PBEffects::Confusion]>0
             score*=0.4
           end
+          # Don't prefer if opponent is infatuated (better to let it miss from infatuation(?))
           if opponent.effects[PBEffects::Attract]>=0
             score*=0.5
           end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
-            miniscore=0
+          # Discard if opponent will cure itself of sleep because of its ability
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
+            score=0
           end
+          # Prefer if attacker doesn't have moves that'll damage more than 30% of opponent's current HP
           if initialscores.length>0
             score*=1.3 if hasbadmoves(initialscores,scoreindex,30)
           end
+
         else
+          # Discard if it won't have an effect
           score=0
         end
+
+      #---------------------------------------------------------------------------
       when 0x05 # Poison
         if opponent.pbCanPoison?(false)
           miniscore=100
+          # Inherently prefer this move
           miniscore*=1.2
+          # Prefer if some of opponent's stat stages are increased (they'd lessen
+          # damage taken, so poison damage is a better prospect)
           ministat=0
           ministat+=opponent.stages[PBStats::DEFENSE]
           ministat+=opponent.stages[PBStats::SPDEF]
@@ -169,6 +224,9 @@ class PokeBattle_Battle
             minimini/=100.0
             miniscore*=minimini
           end
+          # Don't prefer if opponent's ability makes it immune to poisoning/benefit
+          # from poisoning/will give it back to attacker
+          # Prefer if damaging move and opponent has Sturdy
           if !opponent.abilitynulled
             miniscore*=0.3 if opponent.ability == PBAbilities::NATURALCURE
             miniscore*=0.7 if opponent.ability == PBAbilities::MARVELSCALE
@@ -178,22 +236,30 @@ class PokeBattle_Battle
             miniscore*=1.1 if opponent.ability == PBAbilities::STURDY && move.basedamage>0
             miniscore*=0.5 if opponent.ability == PBAbilities::SYNCHRONIZE && attacker.status==0 && !attacker.pbHasType?(:POISON) && !attacker.pbHasType?(:STEEL)
           end
+          # Greatly don't prefer if opponent has used Facade or Rest in the past
           miniscore*=0.2 if checkAImoves([PBMoves::FACADE],aimem)
           miniscore*=0.1 if checkAImoves([PBMoves::REST],aimem)
+          # Prefer if attacker has certain roles
           if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
             miniscore*=1.5
           end
+          # Prefer if attacker doesn't have moves that'll damage more than 30% of opponent's current HP
           if initialscores.length>0
             miniscore*=1.2 if hasbadmoves(initialscores,scoreindex,30)
           end
+          # Prefer if attacker knows a move that works better on a poisoned target,
+          # or attacker has Merciless (guaranteed crits against poisoned targets)
           if attacker.pbHasMove?(:VENOSHOCK) ||
-            attacker.pbHasMove?(:VENOMDRENCH) ||
-            (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
+             attacker.pbHasMove?(:VENOMDRENCH) ||
+             (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
             miniscore*=1.6
           end
+          # Don't prefer is opponent is yawning and will fall asleep
           if opponent.effects[PBEffects::Yawn]>0
             miniscore*=0.4
           end
+          # Discard if move is powder-based and opponent is immune to powder moves
+          # (this is checked elsewhere and is redundant here)
           if skill>=PBTrainerAI.bestSkill
             if move.id==(PBMoves::POISONPOWDER)
               if (oppitemworks && opponent.item == PBItems::SAFETYGOGGLES) ||
@@ -202,11 +268,15 @@ class PokeBattle_Battle
               end
             end
           end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
+          # Discard if opponent will cure itself of poisoning because of its ability
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
             miniscore=0
           end
+
+          # Apply above modifiers to score
           if move.basedamage>0
             miniscore-=100
+            # Take additional effect chance into account
             if move.addlEffect.to_f != 100
               miniscore*=(move.addlEffect.to_f/100)
               if (!attacker.abilitynulled && attacker.ability == PBAbilities::SERENEGRACE)
@@ -220,28 +290,22 @@ class PokeBattle_Battle
             miniscore/=100.0
             score*=miniscore
           end
+
         else
-          poisonvar=false
-          fairyvar=false
-          for mon in pbParty(attacker.index)
-            next if mon.nil?
-            if mon.hasType?(:FAIRY)
-              fairyvar=true
-            end
-            if mon.hasType?(:POISON)
-              poisonvar=true
-            end
-          end
-          if skill>=PBTrainerAI.bestSkill
-          end
+          # Discard status move if it won't have an effect
           if move.basedamage<=0
             score=0
           end
         end
+
+      #---------------------------------------------------------------------------
       when 0x06 # Toxic
         if opponent.pbCanPoison?(false)
           miniscore=100
+          # Inherently prefer this move
           miniscore*=1.3
+          # Prefer if some of opponent's stat stages are increased (they'd lessen
+          # damage taken, so poison damage is a better prospect)
           ministat=0
           ministat+=opponent.stages[PBStats::DEFENSE]
           ministat+=opponent.stages[PBStats::SPDEF]
@@ -253,7 +317,12 @@ class PokeBattle_Battle
             miniscore*=minimini
             PBDebug.log(sprintf("kll2")) if $INTERNAL
           end
+          # Greatly prefer if opponent has used a healing move in the past (because
+          # toxic just keeps getting worse and will overwhelm healing effects)
           miniscore*=2 if checkAIhealing(aimem)
+          # Don't prefer if opponent's ability makes it immune to poisoning/benefit
+          # from poisoning/will give it back to attacker
+          # Prefer if damaging move and opponent has Sturdy
           if !opponent.abilitynulled
             miniscore*=0.2 if opponent.ability == PBAbilities::NATURALCURE
             miniscore*=0.8 if opponent.ability == PBAbilities::MARVELSCALE
@@ -263,32 +332,44 @@ class PokeBattle_Battle
             miniscore*=1.1 if opponent.ability == PBAbilities::STURDY && move.basedamage>0
             miniscore*=0.5 if opponent.ability == PBAbilities::SYNCHRONIZE && attacker.status==0 && !attacker.pbHasType?(:POISON) && !attacker.pbHasType?(:STEEL)
           end
+          # Greatly don't prefer if opponent has used Facade or Rest in the past
           miniscore*=0.3 if checkAImoves([PBMoves::FACADE],aimem)
           miniscore*=0.1 if checkAImoves([PBMoves::REST],aimem)
+          # Prefer if attacker has certain roles
           if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
             miniscore*=1.6
           end
+          # Prefer if attacker doesn't have moves that'll damage more than 30% of opponent's current HP
           if initialscores.length>0
             miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,30)
           end
+          # Prefer if attacker knows a move that works better on a poisoned target,
+          # or attacker has Merciless (guaranteed crits against poisoned targets)
           if attacker.pbHasMove?(:VENOSHOCK) ||
-            attacker.pbHasMove?(:VENOMDRENCH) ||
-            (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
+             attacker.pbHasMove?(:VENOMDRENCH) ||
+             (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
             miniscore*=1.6
           end
+          # Don't prefer is opponent is yawning and will fall asleep
           if opponent.effects[PBEffects::Yawn]>0
             miniscore*=0.1
           end
+          # Prefer if attacker is Poison-type (because Toxic has infinite accuracy
+          # when used by Poison-type users)
           if move.id==(PBMoves::TOXIC)
             if attacker.pbHasType?(:POISON)
               miniscore*=1.1
             end
           end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
+          # Discard if opponent will cure itself of poisoning because of its ability
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
             miniscore=0
           end
+
+          # Apply above modifiers to score
           if move.basedamage>0
             miniscore-=100
+            # Take additional effect chance into account
             if move.addlEffect.to_f != 100
               miniscore*=(move.addlEffect.to_f/100)
               if (!attacker.abilitynulled && attacker.ability == PBAbilities::SERENEGRACE)
@@ -302,12 +383,16 @@ class PokeBattle_Battle
             miniscore/=100.0
             score*=miniscore
           end
+
         else
+          # Discard status move if it won't have an effect
           if move.basedamage<=0
             PBDebug.log(sprintf("KILL")) if $INTERNAL
             score=0
           end
         end
+
+      #---------------------------------------------------------------------------
       when 0x07 # Paralysis
         wavefail=false
         if move.id==(PBMoves::THUNDERWAVE)
@@ -318,10 +403,14 @@ class PokeBattle_Battle
         end
         if opponent.pbCanParalyze?(false) && !wavefail
           miniscore=100
+          # Prefer if attacker has setup moves (i.e. want to stall to get them set up)
           miniscore*=1.1 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
+          # Prefer if opponent is at full HP
           if opponent.hp==opponent.totalhp
             miniscore*=1.2
           end
+          # Prefer if some of opponent's stat stages are increased (they'd increase
+          # the damage that opponent deals/speed opponent up, so paralysis is a better prospect)
           ministat=0
           ministat+=opponent.stages[PBStats::ATTACK]
           ministat+=opponent.stages[PBStats::SPATK]
@@ -332,6 +421,8 @@ class PokeBattle_Battle
             minimini/=100.0
             miniscore*=minimini
           end
+          # Don't prefer if opponent's ability makes it immune to paralysis/benefit
+          # from paralysis/will give it back to attacker
           if !opponent.abilitynulled
             miniscore*=0.3 if opponent.ability == PBAbilities::NATURALCURE
             miniscore*=0.5 if opponent.ability == PBAbilities::MARVELSCALE
@@ -339,19 +430,24 @@ class PokeBattle_Battle
             miniscore*=0.7 if opponent.ability == PBAbilities::SHEDSKIN
             miniscore*=0.5 if opponent.ability == PBAbilities::SYNCHRONIZE && attacker.status==0
           end
+          # Prefer if attacker has certain roles
           if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) || roles.include?(PBMonRoles::PIVOT)
             miniscore*=1.2
           end
           if roles.include?(PBMonRoles::TANK)
             miniscore*=1.3
           end
+          # Prefer if attacker is slower than opponent but will be faster if
+          # opponent is paralysed
           if pbRoughStat(opponent,PBStats::SPEED,skill)>attacker.pbSpeed &&
              (pbRoughStat(opponent,PBStats::SPEED,skill)/2.0)<attacker.pbSpeed && @trickroom==0
             miniscore*=1.5
           end
+          # Prefer (less so) if attacker is slower than opponent (just want to slow it down)
           if pbRoughStat(opponent,PBStats::SPATK,skill)>pbRoughStat(opponent,PBStats::ATTACK,skill)
             miniscore*=1.1
           end
+          # Prefer if any mon in attacker's party fills the sweeper role
           count = -1
           sweepvar = false
           for i in pbParty(attacker.index)
@@ -363,28 +459,21 @@ class PokeBattle_Battle
             end
           end
           miniscore*=1.1 if sweepvar
+          # Don't prefer if opponent is confused (better to let it hurt itself in confusion)
           if opponent.effects[PBEffects::Confusion]>0
             miniscore*=1.1
           end
+          # Don't prefer if opponent is infatuated (better to let it miss from infatuation(?))
           if opponent.effects[PBEffects::Attract]>=0
             miniscore*=1.1
           end
+          # Don't prefer is opponent is yawning and will fall asleep
           if opponent.effects[PBEffects::Yawn]>0
             miniscore*=0.4
           end
-          #if move.id==(PBMoves::NUZZLE)
-          #  score+=40
-          #end
+          # Discard if move is powder-based and opponent is immune to powder moves
+          # (this is checked elsewhere and is redundant here)
           if skill>=PBTrainerAI.bestSkill
-            if move.id==(PBMoves::DISCHARGE)
-              ghostvar=false
-              for mon in pbParty(attacker.index)
-                next if mon.nil?
-                if mon.hasType?(:GHOST)
-                  ghostvar=true
-                end
-              end
-            end
             if move.id==(PBMoves::STUNSPORE)
               if (oppitemworks && opponent.item == PBItems::SAFETYGOGGLES) ||
                  (!opponent.abilitynulled && opponent.ability == PBAbilities::OVERCOAT) || opponent.pbHasType?(:GRASS)
@@ -392,11 +481,15 @@ class PokeBattle_Battle
               end
             end
           end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
+          # Discard if opponent will cure itself of poisoning because of its ability
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
             miniscore=0
           end
+
+          # Apply above modifiers to score
           if move.basedamage>0
             miniscore-=100
+            # Take additional effect chance into account
             if move.addlEffect.to_f != 100
               miniscore*=(move.addlEffect.to_f/100)
               if (!attacker.abilitynulled && attacker.ability == PBAbilities::SERENEGRACE)
@@ -410,11 +503,16 @@ class PokeBattle_Battle
             miniscore/=100.0
             score*=miniscore
           end
+
         else
+          # Discard status move if it won't have an effect (can't paralyse or
+          # opponent is immune to Thunder Wave)
           if move.basedamage==0
             score=0
           end
         end
+
+      #---------------------------------------------------------------------------
       when 0x08 # Thunder + Paralyze
         if opponent.pbCanParalyze?(false) && opponent.effects[PBEffects::Yawn]<=0
           miniscore=100
@@ -492,6 +590,8 @@ class PokeBattle_Battle
             score*=1.2 if checkAImoves(PBStuff::TWOTURNAIRMOVE,aimem)
           end
         end
+
+      #---------------------------------------------------------------------------
       when 0x09 # Paralysis + Flinch
         if opponent.pbCanParalyze?(false)
           miniscore=100
@@ -568,6 +668,8 @@ class PokeBattle_Battle
           miniscore/=100.0
           score*=miniscore
         end
+
+      #---------------------------------------------------------------------------
       when 0x0A # Burn
         if opponent.pbCanBurn?(false)
           miniscore=100

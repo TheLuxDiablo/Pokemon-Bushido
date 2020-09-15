@@ -538,7 +538,7 @@ class PokeBattle_Battle
       PBDebug.log(sprintf("Priority Check End")) if $INTERNAL
 
     elsif move.priority<0
-      
+
       if fastermon
         # Slightly slower score if attacker is faster than the opponent but the
         # move is a lower priority (i.e. can't make use of the speed advantage)
@@ -558,16 +558,21 @@ class PokeBattle_Battle
                                     score, oppitemworks, attitemworks, aimem, bettertype, roles, tempdam)
     ###### END FUNCTION CODES ######################################################
 
+    # Don't prefer a dance move if the opponent has Dancer (because they'll get
+    # a free move)
     if (!opponent.abilitynulled && opponent.ability == PBAbilities::DANCER)
       if (PBStuff::DANCEMOVE).include?(move.id)
         score*=0.5
       end
     end
+
     ioncheck = false
     destinycheck = false
     widecheck = false
     powdercheck = false
     shieldcheck = false
+
+    # Check the memory for various moves which are referenced below
     if skill>=PBTrainerAI.highSkill
       for j in aimem
         ioncheck = true if j.id==(PBMoves::IONDELUGE)
@@ -584,6 +589,10 @@ class PokeBattle_Battle
         end
       end
     end
+
+    # If Ion Deluge was used previously (turns Normal moves into Electric moves
+    # for the round), don't prefer Normal moves if the opponent has an ability
+    # that benefits from being hit by an Electric move
     if ioncheck == true
       if move.type == 0
         if (!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::LIGHTNINGROD) ||
@@ -594,34 +603,49 @@ class PokeBattle_Battle
         end
       end
     end
+
+    # If move targets one or more Pokémon (except the user)...
     if (move.target==PBTargets::SingleNonUser || move.target==PBTargets::RandomOpposing ||
        move.target==PBTargets::AllOpposing || move.target==PBTargets::SingleOpposing ||
        move.target==PBTargets::OppositeOpposing)
+      # If move is Electric (or Ion Deluge was used in the past and move is Normal),
+      # and opponent/partner has Lightning Rod, don't prefer it
       if move.type==13 || (ioncheck == true && move.type == 0)
         if (!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::LIGHTNINGROD)
           score*=0
         elsif (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::LIGHTNINGROD)
-          score*=0.3
+          score*=0.3   # Would rather hit the opponent, although the partner would benefit
         end
+      # If move is Water and opponent/partner has Storm Drain, don't prefer it
       elsif move.type==11
-        if (!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::LIGHTNINGROD)
+        if (!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::STORMDRAIN)
           score*=0
-        elsif (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::LIGHTNINGROD)
-          score*=0.3
+        elsif (!attacker.pbPartner.abilitynulled && attacker.pbPartner.ability == PBAbilities::STORMDRAIN)
+          score*=0.3   # Would rather hit the opponent, although the partner would benefit
         end
       end
     end
+
+    # If move is sound-based and opponent is immune/attacker can't use sound moves,
+    # discard the move
     if move.isSoundBased?
       if ((!opponent.abilitynulled && opponent.ability == PBAbilities::SOUNDPROOF) && !opponent.moldbroken) || attacker.effects[PBEffects::ThroatChop]!=0
         score*=0
       else
+        # If attacker can use sound moves but Throat Chop was used previously,
+        # don't prefer this sound move (because attacker may get throat chopped)
         score *= 0.6 if checkAImoves([PBMoves::THROATCHOP],aimem)
       end
     end
+
+    # If opponent isn't immune to critical hits and attacker isn't certain to
+    # deal a critical hit, prefer a high critical hit move
+    # Prefer the move more if opponent has raised defences and/or attacker has
+    # lowered offences
     if move.flags&0x80!=0 # Boosted crit moves
-      if !((!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR) ||
-         (!opponent.abilitynulled && opponent.ability == PBAbilities::BATTLEARMOR) ||
-         attacker.effects[PBEffects::LaserFocus]>0)
+      if !(!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR) &&
+         !(!opponent.abilitynulled && opponent.ability == PBAbilities::BATTLEARMOR) &&
+         attacker.effects[PBEffects::LaserFocus]==0
         boostercount = 0
         if move.pbIsPhysical?(move.type)
           boostercount += opponent.stages[PBStats::DEFENSE] if opponent.stages[PBStats::DEFENSE]>0
@@ -633,7 +657,12 @@ class PokeBattle_Battle
         score*=(1.05**boostercount)
       end
     end
-    if move.basedamage>0
+
+    # Don't prefer a damaging move if the opponent has a Destiny Bond in place
+    # Don't prefer a damaging move if the opponent is faster than the attacker
+    # and Destiny Bond has been used in the past
+    # (Note: Doesn't check if the move is likely to be lethal for some reason)
+    if move.basedamage>0   # Damaging move
       if skill>=PBTrainerAI.highSkill
         if opponent.effects[PBEffects::DestinyBond]
           score*=0.2
@@ -644,17 +673,29 @@ class PokeBattle_Battle
         end
       end
     end
+
+    # Don't prefer a move that will be blocked by Wide Guard if Wide Guard has
+    # been used in the past
     if widecheck && ((move.target == PBTargets::AllOpposing) || (move.target == PBTargets::AllNonUsers))
       score*=0.2
     end
+
+    # Don't prefer Fire moves if Powder has been used in the past
     if powdercheck && move.type==10
       score*=0.2
     end
+
+    # Check for items/abilities that will trigger upon the move making contact
     if move.isContactMove? && !(attacker.item == PBItems::PROTECTIVEPADS) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::LONGREACH)
+      # Rocky Helmet or Spiky Shield will damage the attacker; don't prefer the move
+      # The Spiky Shield part assumes opponent is faster than attacker and could
+      # get its shield up before attacker hits it (the check for whether it
+      # currently has a Spiky Shield up is below)
       if (oppitemworks && opponent.item == PBItems::ROCKYHELMET) || shieldcheck
         score*=0.85
       end
       if !opponent.abilitynulled
+        # Various abilities
         if opponent.ability == PBAbilities::ROUGHSKIN || opponent.ability == PBAbilities::IRONBARBS
           score*=0.85
         elsif opponent.ability == PBAbilities::EFFECTSPORE
@@ -667,7 +708,7 @@ class PokeBattle_Battle
           score*=0.75
         elsif opponent.ability == PBAbilities::CUTECHARM && attacker.effects[PBEffects::Attract]<0
           if initialscores.length>0
-            if initialscores[scoreindex] < 102
+            if initialscores[scoreindex] < 102   # Move won't be lethal
               score*=0.8
             end
           end
@@ -675,62 +716,82 @@ class PokeBattle_Battle
           if attacker.pbCanReduceStatStage?(PBStats::SPEED)
             score*=0.9
             if ((pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0))
-              score*=0.8
+              score*=0.8   # Don't prefer it even more if attacker is faster than the opponent (this may make it slower)
             end
           end
         elsif opponent.ability == PBAbilities::MUMMY
           if !attacker.abilitynulled && !attacker.unstoppableAbility? &&
              attacker.ability != opponent.ability && attacker.ability != PBAbilities::SHIELDDUST
-            mummyscore = getAbilityDisruptScore(move,opponent,attacker,skill)
+            mummyscore = getAbilityDisruptScore(move,opponent,attacker,skill)   # 1 makes no difference, >1 is a bad impact if ability is lost
             if mummyscore < 2
               mummyscore = 2 - mummyscore
             else
-              mummyscore = 0
+              mummyscore = 0   # Losing current ability is really disruptive; discard the move entirely
             end
-            score*=mummyscore
+            score*=mummyscore   # Don't prefer if attacker would rather keep its current ability
           end
         end
       end
+      # Prefer a contact move if the attacker has Poison Touch and it'll do something
       if (!attacker.abilitynulled && attacker.ability == PBAbilities::POISONTOUCH) && opponent.pbCanPoison?(false)
         score*=1.1
       end
+      # Prefer a contact move if the attacker has Pickpocket and it'll do something (assumes attacker has no item)
       if (!attacker.abilitynulled && attacker.ability == PBAbilities::PICKPOCKET) && opponent.item!=0 && !pbIsUnlosableItem(opponent,opponent.item)
         score*=1.1
       end
+      # Greatly don't prefer a contact move if opponent has a protecting move that
+      # triggers a negative effect if the attacker makes contact with it (see also
+      # above for a check of whether Spiky Shield has been used in the past)
+      # This check makes no sense because these effects only last until the end
+      # of the round, and AI is run at the start of a round
       if opponent.effects[PBEffects::KingsShield]== true ||
-      opponent.effects[PBEffects::BanefulBunker]== true ||
-      opponent.effects[PBEffects::SpikyShield]== true
+         opponent.effects[PBEffects::BanefulBunker]== true ||
+         opponent.effects[PBEffects::SpikyShield]== true
         score *=0.1
       end
     end
+
+    # This check makes no sense because these effects only last until the end
+    # of the round, and AI is run at the start of a round
     if move.basedamage>0 && (opponent.effects[PBEffects::SpikyShield] ||
       opponent.effects[PBEffects::BanefulBunker] || opponent.effects[PBEffects::KingsShield])
       score*=0.1
     end
-    if move.basedamage==0
+
+    # Don't prefer a status move if attacker has another move that'll KO the opponent
+    # If opponent has used a move in the past (in memory) that'll hurt the
+    # attacker by 30% or more of its current HP, reduce the status move's score by
+    # even more (because it's less safe to use a status move and leave the opponent alive)
+    if move.basedamage==0   # Status move
       if hasgreatmoves(initialscores,scoreindex,skill)
         maxdam=checkAIdamage(aimem,attacker,opponent,skill)
-        if maxdam>0 && maxdam<(attacker.hp*0.3)
+        if maxdam>0 && maxdam<(attacker.hp*0.3)   # Should status moves (maxdam==0) count here too?
           score*=0.6
         else
           score*=0.2 ### highly controversial, revert to 0.1 if shit sucks
         end
       end
     end
+
+    # Discard powder moves if opponent is immune to powder
     ispowder = (move.id==214 || move.id==218 || move.id==220 || move.id==445 || move.id==600 || move.id==18 || move.id==219)
     if ispowder && (opponent.type==(PBTypes::GRASS) ||
        (!opponent.abilitynulled && opponent.ability == PBAbilities::OVERCOAT) ||
        (oppitemworks && opponent.item == PBItems::SAFETYGOGGLES))
       score*=0
     end
-    # A score of 0 here means it should absolutely not be used
+
+    # A score of 0 here means it should absolutely not be used; return it
     if score<=0
       PBDebug.log(sprintf("%s: final score: 0",PBMoves.getName(move.id))) if $INTERNAL
       PBDebug.log(sprintf(" ")) if $INTERNAL
       attacker.pbUpdate(true) if defined?(megaEvolved) && megaEvolved==true #perry
       return score
     end
+
     ##### Other score modifications ################################################
+
     # Prefer damaging moves if AI has no more Pokémon
     if attacker.pbNonActivePokemonCount==0
       if skill>=PBTrainerAI.mediumSkill &&
@@ -738,55 +799,55 @@ class PokeBattle_Battle
         if move.basedamage==0
           PBDebug.log("[Not preferring status move]") if $INTERNAL
           score*=0.9
-        elsif opponent.hp<=opponent.totalhp/2.0
+        elsif opponent.hp<=opponent.totalhp/2.0   # Opponent is already weakened, hit 'im!
           PBDebug.log("[Preferring damaging move]") if $INTERNAL
           score*=1.1
         end
       end
     end
-    # Don't prefer attacking the opponent if they'd be semi-invulnerable
-    if opponent.effects[PBEffects::TwoTurnAttack]>0 &&
-      skill>=PBTrainerAI.highSkill
+
+    # Don't prefer attacking the opponent if they'd be semi-invulnerable; discard the move
+    if opponent.effects[PBEffects::TwoTurnAttack]>0 && skill>=PBTrainerAI.highSkill
       invulmove=$pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move
       if move.accuracy>0 &&   # Checks accuracy, i.e. targets opponent
-        ([0xC9,0xCA,0xCB,0xCC,0xCD,0xCE].include?(invulmove) ||
-        opponent.effects[PBEffects::SkyDrop]) &&
-        ((attacker.pbSpeed>opponent.pbSpeed) ^ (@trickroom!=0))
+         ([0xC9,0xCA,0xCB,0xCC,0xCD,0xCE].include?(invulmove) ||
+         opponent.effects[PBEffects::SkyDrop]) &&
+         ((attacker.pbSpeed>opponent.pbSpeed) ^ (@trickroom!=0))
         if skill>=PBTrainerAI.bestSkill   # Can get past semi-invulnerability
           miss=false
           case invulmove
-            when 0xC9, 0xCC # Fly, Bounce
-              miss=true unless move.function==0x08 ||  # Thunder
-                              move.function==0x15 ||  # Hurricane
-                              move.function==0x77 ||  # Gust
-                              move.function==0x78 ||  # Twister
-                              move.function==0x11B || # Sky Uppercut
-                              move.function==0x11C || # Smack Down
-                              (move.id == PBMoves::WHIRLWIND)
-            when 0xCA # Dig
-              miss=true unless move.function==0x76 || # Earthquake
-                              move.function==0x95    # Magnitude
-            when 0xCB # Dive
-              miss=true unless move.function==0x75 || # Surf
-                              move.function==0xD0 || # Whirlpool
-                              move.function==0x12D   # Shadow Storm
-            when 0xCD # Shadow Force
-              miss=true
-            when 0xCE # Sky Drop
-              miss=true unless move.function==0x08 ||  # Thunder
-                              move.function==0x15 ||  # Hurricane
-                              move.function==0x77 ||  # Gust
-                              move.function==0x78 ||  # Twister
-                              move.function==0x11B || # Sky Uppercut
-                              move.function==0x11C    # Smack Down
+          when 0xC9, 0xCC # Fly, Bounce
+            miss=true unless move.function==0x08 ||  # Thunder
+                             move.function==0x15 ||  # Hurricane
+                             move.function==0x77 ||  # Gust
+                             move.function==0x78 ||  # Twister
+                             move.function==0x11B || # Sky Uppercut
+                             move.function==0x11C || # Smack Down
+                             (move.id == PBMoves::WHIRLWIND)
+          when 0xCA # Dig
+            miss=true unless move.function==0x76 || # Earthquake
+                             move.function==0x95    # Magnitude
+          when 0xCB # Dive
+            miss=true unless move.function==0x75 || # Surf
+                             move.function==0xD0 || # Whirlpool
+                             move.function==0x12D   # Shadow Storm
+          when 0xCD # Shadow Force
+            miss=true
+          when 0xCE # Sky Drop
+            miss=true unless move.function==0x08 ||  # Thunder
+                             move.function==0x15 ||  # Hurricane
+                             move.function==0x77 ||  # Gust
+                             move.function==0x78 ||  # Twister
+                             move.function==0x11B || # Sky Uppercut
+                             move.function==0x11C    # Smack Down
           end
           if opponent.effects[PBEffects::SkyDrop]
             miss=true unless move.function==0x08 ||  # Thunder
-                            move.function==0x15 ||  # Hurricane
-                            move.function==0x77 ||  # Gust
-                            move.function==0x78 ||  # Twister
-                            move.function==0x11B || # Sky Uppercut
-                            move.function==0x11C    # Smack Down
+                             move.function==0x15 ||  # Hurricane
+                             move.function==0x77 ||  # Gust
+                             move.function==0x78 ||  # Twister
+                             move.function==0x11B || # Sky Uppercut
+                             move.function==0x11C    # Smack Down
           end
           score*=0 if miss
         else
@@ -794,12 +855,16 @@ class PokeBattle_Battle
         end
       end
     end
+
     # Pick a good move for the Choice items
     if attitemworks && (attacker.item == PBItems::CHOICEBAND ||
        attacker.item == PBItems::CHOICESPECS || attacker.item == PBItems::CHOICESCARF)
       if move.basedamage==0 && move.function!=0xF2 # Trick
-        score*=0.1
+        score*=0.1   # Really don't prefer status moves (except Trick)
       end
+      # Slightly less prefer certain move types (presumably ones that are considered
+      # less good offensively/are ineffective against some things)
+      # Types that are still good: Flying, Rock, Bug, Steel, Ice, Dark, Fairy
       if (move.type == PBTypes::NORMAL) ||
          (move.type == PBTypes::GHOST) || (move.type == PBTypes::FIGHTING) ||
          (move.type == PBTypes::DRAGON) || (move.type == PBTypes::PSYCHIC) ||
@@ -811,15 +876,18 @@ class PokeBattle_Battle
          (move.type == PBTypes::GRASS) || (move.type == PBTypes::ELECTRIC)
         score*=0.95
       end
+      # Don't prefer moves with lower accuracy
       if move.accuracy > 0
         miniacc = (move.accuracy/100.0)
         score *= miniacc
       end
+      # Don't prefer moves that don't have much current PP
       if move.pp < 6
         score *= 0.9
       end
     end
-    #If user is frozen, prefer a move that can thaw the user
+
+    # If user is frozen, prefer a move that can thaw the user
     if attacker.status==PBStatuses::FROZEN
       if skill>=PBTrainerAI.mediumSkill
         if move.canThawUser?
@@ -831,18 +899,21 @@ class PokeBattle_Battle
               hasFreezeMove=true; break
             end
           end
-          score*=0 if hasFreezeMove
+          score*=0 if hasFreezeMove   # Discard this move if it can't thaw the attacker, but it knows another that can
         end
       end
     end
+
     # If target is frozen, don't prefer moves that could thaw them
     if opponent.status==PBStatuses::FROZEN
       if (move.type == PBTypes::FIRE)
         score *= 0.1
       end
     end
+
     # Adjust score based on how much damage it can deal
-    if move.basedamage>0
+    if move.basedamage>0   # Damaging moves
+      # Discard damaging moves if they are ineffective because of their type
       typemod=pbTypeModNoMessages(bettertype,attacker,opponent,move,skill)
       if typemod==0 || score<=0
         score=0
@@ -851,20 +922,24 @@ class PokeBattle_Battle
           attacker.ability == PBAbilities::TURBOBLAZE ||
           attacker.ability == PBAbilities::TERAVOLT))
         if !opponent.abilitynulled
+          # Discard damaging moves if opponent is immune to them because of their ability
           if (typemod<=4 && opponent.ability == PBAbilities::WONDERGUARD) ||
-            (move.type == PBTypes::GROUND && (opponent.ability == PBAbilities::LEVITATE || (oppitemworks && opponent.item == PBItems::AIRBALLOON) || opponent.effects[PBEffects::MagnetRise]>0)) ||
-            (move.type == PBTypes::FIRE && opponent.ability == PBAbilities::FLASHFIRE) ||
-            (move.type == PBTypes::WATER && (opponent.ability == PBAbilities::WATERABSORB || opponent.ability == PBAbilities::STORMDRAIN || opponent.ability == PBAbilities::DRYSKIN)) ||
-            (move.type == PBTypes::GRASS && opponent.ability == PBAbilities::SAPSIPPER) ||
-            (move.type == PBTypes::ELECTRIC)&& (opponent.ability == PBAbilities::VOLTABSORB || opponent.ability == PBAbilities::LIGHTNINGROD || opponent.ability == PBAbilities::MOTORDRIVE)
+             (move.type == PBTypes::GROUND && (opponent.ability == PBAbilities::LEVITATE || (oppitemworks && opponent.item == PBItems::AIRBALLOON) || opponent.effects[PBEffects::MagnetRise]>0)) ||
+             (move.type == PBTypes::FIRE && opponent.ability == PBAbilities::FLASHFIRE) ||
+             (move.type == PBTypes::WATER && (opponent.ability == PBAbilities::WATERABSORB || opponent.ability == PBAbilities::STORMDRAIN || opponent.ability == PBAbilities::DRYSKIN)) ||
+             (move.type == PBTypes::GRASS && opponent.ability == PBAbilities::SAPSIPPER) ||
+             (move.type == PBTypes::ELECTRIC)&& (opponent.ability == PBAbilities::VOLTABSORB || opponent.ability == PBAbilities::LIGHTNINGROD || opponent.ability == PBAbilities::MOTORDRIVE)
             score=0
           end
         end
       else
+        # Discard damaging ground moves if the opponent is airborne (even moron trainers can do this much)
         if move.type == PBTypes::GROUND && (opponent.ability == PBAbilities::LEVITATE || (oppitemworks && opponent.item == PBItems::AIRBALLOON) || opponent.effects[PBEffects::MagnetRise]>0)
           score=0
         end
       end
+      # This calculation is unused as the base score already is the likely damage
+      # percentage
       if score != 0
         # Calculate how much damage the move will do (roughly)
         realBaseDamage=move.basedamage
@@ -875,6 +950,7 @@ class PokeBattle_Battle
       end
     else # non-damaging moves
       if !opponent.abilitynulled
+        # Discard status moves if opponent is immune to them because of their ability
         if (move.type == PBTypes::GROUND && (opponent.ability == PBAbilities::LEVITATE || (oppitemworks && opponent.item == PBItems::AIRBALLOON) || opponent.effects[PBEffects::MagnetRise]>0)) ||
           (move.type == PBTypes::FIRE && opponent.ability == PBAbilities::FLASHFIRE) ||
           (move.type == PBTypes::WATER && (opponent.ability == PBAbilities::WATERABSORB || opponent.ability == PBAbilities::STORMDRAIN || opponent.ability == PBAbilities::DRYSKIN)) ||
@@ -884,9 +960,14 @@ class PokeBattle_Battle
         end
       end
     end
+
+    # Multiply score by the move's accuracy
     accuracy=pbRoughAccuracy(move,attacker,opponent,skill)
     score*=accuracy/100.0
     #score=0 if score<=10 && skill>=PBTrainerAI.highSkill
+
+    # Discard a status move (except Nature Power) that targets a non-user if
+    # either opponent has Magic Bounce
     if (move.basedamage==0 && !(move.id == PBMoves::NATUREPOWER)) &&
        (move.target==PBTargets::SingleNonUser || move.target==PBTargets::RandomOpposing ||
        move.target==PBTargets::AllOpposing || move.target==PBTargets::OpposingSide ||
@@ -895,6 +976,9 @@ class PokeBattle_Battle
        (!opponent.pbPartner.abilitynulled && opponent.pbPartner.ability == PBAbilities::MAGICBOUNCE))
       score=0
     end
+
+    # Discard a move if it'll be made faster by attacker's Prankster but opponent
+    # will be immune because it's Dark-type
     if skill>=PBTrainerAI.mediumSkill
       if (!attacker.abilitynulled && attacker.ability == PBAbilities::PRANKSTER)
         if opponent.pbHasType?(:DARK)
@@ -904,7 +988,8 @@ class PokeBattle_Battle
         end
       end
     end
-    # Avoid shiny wild pokemon if you're an AI partner
+
+    # Avoid hitting shiny wild pokemon if you're an AI partner
     if pbIsWild?
       if attacker.index == 2
         if opponent.pokemon.isShiny?
@@ -912,6 +997,7 @@ class PokeBattle_Battle
         end
       end
     end
+    
     score=score.to_i
     score=0 if score<0
     PBDebug.log(sprintf("%s: final score: %d",PBMoves.getName(move.id),score)) if $INTERNAL
