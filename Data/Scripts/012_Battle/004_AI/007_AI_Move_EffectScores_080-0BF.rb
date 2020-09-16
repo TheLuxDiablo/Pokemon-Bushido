@@ -1,11 +1,11 @@
 class PokeBattle_AI
-  alias __c__pbGetMoveScoreFunctionCode pbGetMoveScoreFunctionCode
+  alias __c__pbGetMoveScoreFunctions pbGetMoveScoreFunctions
 
   #=============================================================================
   # Get a score for the given move based on its effect
   #=============================================================================
-  def pbGetMoveScoreFunctionCode(score,move,user,target,skill=100)
-    score = __c__pbGetMoveScoreFunctionCode(score,move,user,target,skill)
+  def pbGetMoveScoreFunctions(score,move,user,target,skill=100)
+    score = __c__pbGetMoveScoreFunctions(score,move,user,target,skill)
     case move.function
     #---------------------------------------------------------------------------
     when "080"

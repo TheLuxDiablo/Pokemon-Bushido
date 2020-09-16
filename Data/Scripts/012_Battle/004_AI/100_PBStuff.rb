@@ -1,3 +1,4 @@
+=begin
 class PBStuff
    #Standardized lists of moves with similar purposes/characteristics
   #(mostly just "stuff that gets called together")
@@ -106,3 +107,4 @@ class PBStuff
             :SOFTSAND,:SOOTHEBELL,:WAVEINCENSE,:WHITEHERB,:WIDELENS,:WISEGLASSES,
             :YELLOWSCARF,:ZOOMLENS,:BLUEMIC,:VANILLAIC,:STRAWBIC,:CHOCOLATEIC]}
 end
+=end

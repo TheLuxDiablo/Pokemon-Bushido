@@ -1,5 +1,5 @@
 class PokeBattle_Battle
-  alias __c__pbGetMoveScoreFunctionCode pbGetMoveScoreFunctionCode
+  alias __c__pbGetMoveScoreFunctions pbGetMoveScoreFunctions
 
   ##############################################################################
   # Get a score for each move being considered (trainer-owned Pokémon only).
@@ -7,7 +7,7 @@ class PokeBattle_Battle
   ##############################################################################
   def pbGetMoveScoreFunctions(move,attacker,opponent,skill,roughdamage,initialscores,scoreindex,
                               score, oppitemworks, attitemworks, aimem, bettertype, roles, tempdam)
-    score = __c__pbGetMoveScoreFunctionCode(move,attacker,opponent,skill,roughdamage,initialscores,scoreindex,
+    score = __c__pbGetMoveScoreFunctions(move,attacker,opponent,skill,roughdamage,initialscores,scoreindex,
                                             score, oppitemworks, attitemworks, aimem, bettertype, roles, tempdam)
     case move.function
       when 0x80 # Brine

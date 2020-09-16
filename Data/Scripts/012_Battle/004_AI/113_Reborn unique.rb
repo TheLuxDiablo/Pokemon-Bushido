@@ -1,11 +1,12 @@
 class PokeBattle_Battle
   def pbStatusDamage(move)
-    if (move.id == PBMoves::AFTERYOU || move.id == PBMoves::BESTOW ||
-      move.id == PBMoves::CRAFTYSHIELD || move.id == PBMoves::LUCKYCHANT ||
-      move.id == PBMoves::MEMENTO || move.id == PBMoves::QUASH ||
-      move.id == PBMoves::SAFEGUARD || move.id == PBMoves::SPITE ||
-      move.id == PBMoves::SPLASH || move.id == PBMoves::SWEETSCENT ||
-      move.id == PBMoves::TELEKINESIS || move.id == PBMoves::TELEPORT)
+    if (move.id == PBMoves::AFTERYOU || move.id == PBMoves::BESTOW ||   # 11D, 0F3
+       move.id == PBMoves::CRAFTYSHIELD || move.id == PBMoves::LUCKYCHANT ||   # 14A, 0A1
+       move.id == PBMoves::MEMENTO || move.id == PBMoves::QUASH ||   # 0E2, 11E
+       move.id == PBMoves::SAFEGUARD || move.id == PBMoves::SPITE ||   # 01A, 10E
+       move.id == PBMoves::SPLASH || move.id == PBMoves::SWEETSCENT ||   # 001, 048
+       move.id == PBMoves::TELEKINESIS || move.id == PBMoves::TELEPORT)   # 11A, 0EA
+      # "001", "01A", "048", "0A1", "0E2", "0EA", "0F3", "10E", "11A", "11D", "11E", "14A"
       return 0
     elsif (move.id == PBMoves::ALLYSWITCH || move.id == PBMoves::AROMATICMIST ||
       move.id == PBMoves::CONVERSION || move.id == PBMoves::ENDURE ||
@@ -30,6 +31,11 @@ class PokeBattle_Battle
       move.id == PBMoves::SPOTLIGHT || move.id == PBMoves::SWALLOW ||
       move.id == PBMoves::TEETERDANCE || move.id == PBMoves::WATERSPORT ||
       move.id == PBMoves::WIDEGUARD || move.id == PBMoves::WONDERROOM)
+      # "013", "047", "049", "052", "053", "057", "058", "059", "05E", "061",
+      # "062", "066", "067", "09C", "09D", "09E", "0A6", "0A6", "0A7", "0A7",
+      # "0A8", "0AB", "0AC", "0B1", "0B2", "0B8", "0BB", "0E6", "0E8", "0F6",
+      # "0F9", "10F", "114", "118", "119", "120", "124", "138", "13E", "13F",
+      # "143", "152", "15E", "161", "16A", "16B"
       return 5
     elsif (move.id == PBMoves::ACUPRESSURE || move.id == PBMoves::CAMOUFLAGE ||
       move.id == PBMoves::CHARM || move.id == PBMoves::CONFIDE ||
@@ -46,6 +52,9 @@ class PokeBattle_Battle
       move.id == PBMoves::SUPERSONIC || move.id == PBMoves::TAILWHIP ||
       move.id == PBMoves::TEARFULLOOK || move.id == PBMoves::TORMENT ||
       move.id == PBMoves::WITHDRAW || move.id == PBMoves::WORKUP)
+      # "013", "01C", "01C", "01D", "01D", "01E", "023", "027", "028", "029",
+      # "037", "042", "043", "043", "047", "047", "047", "04B", "04D", "04F",
+      # "051", "055", "060", "0B7", "0F8", "139", "13A", "13A", "13C", "148"
       return 10
     elsif (move.id == PBMoves::ASSIST || move.id == PBMoves::BABYDOLLEYES ||
       move.id == PBMoves::CAPTIVATE || move.id == PBMoves::COTTONSPORE ||
@@ -66,6 +75,10 @@ class PokeBattle_Battle
       move.id == PBMoves::GEARUP || move.id == PBMoves::MAGNETICFLUX ||
       move.id == PBMoves::SANDSTORM || move.id == PBMoves::HAIL ||
        move.id == PBMoves::SUNNYDAY || move.id == PBMoves::RAINDANCE)
+       # "003", "003", "003", "003", "005", "018", "01C", "021", "022", "030",
+       # "042", "04A", "04B", "04C", "04D", "04D", "04E", "04F", "05C", "05D",
+       # "065", "0B0", "0B5", "0DB", "0DF", "0E3", "0E4", "0FF", "100", "101",
+       # "102", "137", "13D", "140", "142", "151", "15C", "16E"
       return 15
     elsif (move.id == PBMoves::AQUARING || move.id == PBMoves::BLOCK ||
       move.id == PBMoves::CONVERSION2 || move.id == PBMoves::ELECTRIFY ||
@@ -81,6 +94,9 @@ class PokeBattle_Battle
       move.id == PBMoves::POISONGAS || move.id == PBMoves::TOXICTHREAD ||
       move.id == PBMoves::TRANSFORM || move.id == PBMoves::WHIRLWIND ||
       move.id == PBMoves::WORRYSEED || move.id == PBMoves::YAWN)
+      # "003", "003", "004", "005", "013", "040", "041", "054", "056", "05F",
+      # "063", "064", "068", "069", "0AE", "0AF", "0B6", "0D9", "0DA", "0E5",
+      # "0EB", "0EB", "0EF", "0EF", "0EF", "145", "146", "159"
       return 20
     elsif (move.id == PBMoves::AMNESIA || move.id == PBMoves::ATTRACT ||
       move.id == PBMoves::BARRIER || move.id == PBMoves::BELLYDRUM ||
@@ -104,6 +120,11 @@ class PokeBattle_Battle
       move.id == PBMoves::TAUNT || move.id == PBMoves::TOPSYTURVY ||
       move.id == PBMoves::TOXIC || move.id == PBMoves::TRICK ||
       move.id == PBMoves::WILLOWISP || move.id == PBMoves::WISH)
+      # "006", "007", "00A", "013", "016", "01B", "02A", "02A", "02F", "02F",
+      # "02F", "030", "031", "033", "034", "038", "03A", "05A", "0AA", "0AA",
+      # "0B9", "0BA", "0D5", "0D5", "0D5", "0D5", "0D5", "0D6", "0D7", "0D8",
+      # "0D8", "0D8", "0DC", "0E7", "0F2", "0F2", "10C", "112", "117", "117",
+      # "141", "160", "16D"
       return 25
     elsif (move.id == PBMoves::BATONPASS || move.id == PBMoves::BULKUP ||
       move.id == PBMoves::CALMMIND || move.id == PBMoves::COIL ||
@@ -115,6 +136,8 @@ class PokeBattle_Battle
       move.id == PBMoves::SPIKES || move.id == PBMoves::STEALTHROCK ||
       move.id == PBMoves::SPIKYSHIELD || move.id == PBMoves::THUNDERWAVE ||
       move.id == PBMoves::TOXICSPIKES || move.id == PBMoves::TRICKROOM)
+      # "007", "007", "024", "025", "02C", "0B3", "0B4", "0BC", "0ED", "103",
+      # "104", "105", "10D", "11F", "14C", "154", "155", "156", "15B", "173"
       return 30
     elsif (move.id == PBMoves::AROMATHERAPY || move.id == PBMoves::BANEFULBUNKER ||
       move.id == PBMoves::HEALBELL || move.id == PBMoves::KINGSSHIELD ||
@@ -122,13 +145,16 @@ class PokeBattle_Battle
       move.id == PBMoves::NASTYPLOT || move.id == PBMoves::REFLECT ||
       move.id == PBMoves::SWORDSDANCE || move.id == PBMoves::TAILGLOW ||
       move.id == PBMoves::TAILWIND)
+      # "019", "019", "02E", "032", "039", "05B", "0A2", "0A3", "149", "14B", "168"
       return 35
     elsif (move.id == PBMoves::DRAGONDANCE || move.id == PBMoves::GEOMANCY ||
       move.id == PBMoves::QUIVERDANCE || move.id == PBMoves::SHELLSMASH ||
       move.id == PBMoves::SHIFTGEAR)
+      # "026", "02B", "035", "036", "14E"
       return 40
     elsif (move.id == PBMoves::AURORAVEIL || move.id == PBMoves::STICKYWEB ||
       move.id == PBMoves::SPORE)
+      # "003", "153", "167"
       return 60
     end
   end

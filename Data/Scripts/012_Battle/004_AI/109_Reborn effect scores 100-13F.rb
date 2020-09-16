@@ -1,5 +1,5 @@
 class PokeBattle_Battle
-  alias __e__pbGetMoveScoreFunctionCode pbGetMoveScoreFunctionCode
+  alias __e__pbGetMoveScoreFunctions pbGetMoveScoreFunctions
 
   ##############################################################################
   # Get a score for each move being considered (trainer-owned Pokémon only).
@@ -7,7 +7,7 @@ class PokeBattle_Battle
   ##############################################################################
   def pbGetMoveScoreFunctions(move,attacker,opponent,skill,roughdamage,initialscores,scoreindex,
                               score, oppitemworks, attitemworks, aimem, bettertype, roles, tempdam)
-    score = __e__pbGetMoveScoreFunctionCode(move,attacker,opponent,skill,roughdamage,initialscores,scoreindex,
+    score = __e__pbGetMoveScoreFunctions(move,attacker,opponent,skill,roughdamage,initialscores,scoreindex,
                                             score, oppitemworks, attitemworks, aimem, bettertype, roles, tempdam)
     case move.function
       when 0x100 # Rain Dance

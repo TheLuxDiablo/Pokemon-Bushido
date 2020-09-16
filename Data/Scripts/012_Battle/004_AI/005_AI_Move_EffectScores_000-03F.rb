@@ -2,7 +2,7 @@ class PokeBattle_AI
   #=============================================================================
   # Get a score for the given move based on its effect
   #=============================================================================
-  def pbGetMoveScoreFunctionCode(score,move,user,target,skill=100)
+  def pbGetMoveScoreFunctions(score,move,user,target,skill=100)
     case move.function
     #---------------------------------------------------------------------------
     when "000"   # No extra effect
