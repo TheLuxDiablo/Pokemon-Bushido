@@ -422,7 +422,7 @@ class PokeBattle_Move_095 < PokeBattle_Move
 
   def pbModifyDamage(damageMult,user,target)
     damageMult *= 2 if target.inTwoTurnAttack?("0CA")   # Dig
-    damageMult = (damageMult/2.0).round if @battle.field.terrain==PBBattleTerrains::Grassy
+    damageMult /= 2 if @battle.field.terrain==PBBattleTerrains::Grassy
     return damageMult
   end
 end
@@ -2070,9 +2070,7 @@ class PokeBattle_Move_0C4 < PokeBattle_TwoTurnMove
 
   def pbBaseDamageMultiplier(damageMult,user,target)
     w = @battle.pbWeather
-    if w>0 && w!=PBWeather::Sun && w!=PBWeather::HarshSun
-      damageMult = (damageMult/2.0).round
-    end
+    damageMult /= 2 if w>0 && w!=PBWeather::Sun && w!=PBWeather::HarshSun
     return damageMult
   end
 end
@@ -3084,7 +3082,7 @@ class PokeBattle_Move_0EC < PokeBattle_Move
       switchedBattlers.push(b.index)
       roarSwitched.push(b.index)
     end
-    if roarSwitched>0
+    if roarSwitched.length>0
       @battle.moldBreaker = false if roarSwitched.include?(user.index)
       @battle.pbPriority(true).each do |b|
         b.pbEffectsOnSwitchIn(true) if roarSwitched.include?(b.index)
