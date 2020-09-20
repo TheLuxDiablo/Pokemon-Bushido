@@ -67,7 +67,7 @@ class PokeBattle_AI
     return if pbEnemyShouldWithdraw?
     return if @battle.pbAutoFightMenu(idxBattler)
     @battle.pbRegisterMegaEvolution(idxBattler) if pbEnemyShouldMegaEvolve?
-    pbChooseMoves
+    pbChooseMove
   end
 
   # Set some class variables for the Pokémon whose action is being chosen
@@ -79,5 +79,9 @@ class PokeBattle_AI
       @skill     = @battle.pbGetOwnerFromBattlerIndex(@user.index).skill || 0
       @skill     = PBTrainerAI.minimumSkill if @skill < PBTrainerAI.minimumSkill
     end
+  end
+
+  def skill_check(threshold)
+    return @skill >= threshold
   end
 end

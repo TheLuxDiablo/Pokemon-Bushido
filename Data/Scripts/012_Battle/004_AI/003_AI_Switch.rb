@@ -13,7 +13,7 @@ class PokeBattle_AI
     moveType = -1
     # If Pokémon is within 6 levels of the foe, and foe's last move was
     # super-effective and powerful
-    if !shouldSwitch && @user.turnCount>0 && skill>=PBTrainerAI.highSkill
+    if !shouldSwitch && @user.turnCount>0 && skill_check(PBTrainerAI.highSkill)
       target = @user.pbDirectOpposing(true)
       if !target.fainted? && target.lastMoveUsed>0 &&
          (target.level-@user.level).abs<=6
@@ -32,7 +32,7 @@ class PokeBattle_AI
       shouldSwitch = true
     end
     # Pokémon is Perish Songed and has Baton Pass
-    if skill>=PBTrainerAI.highSkill && @user.effects[PBEffects::PerishSong]==1
+    if skill_check(PBTrainerAI.highSkill) && @user.effects[PBEffects::PerishSong]==1
       @user.eachMoveWithIndex do |m,i|
         next if m.function!="0ED"   # Baton Pass
         next if !@battle.pbCanChooseMove?(@user.index,i,false)
@@ -43,7 +43,7 @@ class PokeBattle_AI
     # Pokémon will faint because of bad poisoning at the end of this round, but
     # would survive at least one more round if it were regular poisoning instead
     if @user.status==PBStatuses::POISON && @user.statusCount>0 &&
-       skill>=PBTrainerAI.highSkill
+       skill_check(PBTrainerAI.highSkill)
       toxicHP = @user.totalhp/16
       nextToxicHP = toxicHP*(@user.effects[PBEffects::Toxic]+1)
       if @user.hp<=nextToxicHP && @user.hp>toxicHP*2
@@ -51,13 +51,13 @@ class PokeBattle_AI
       end
     end
     # Pokémon is Encored into an unfavourable move
-    if @user.effects[PBEffects::Encore]>0 && skill>=PBTrainerAI.mediumSkill
+    if @user.effects[PBEffects::Encore]>0 && skill_check(PBTrainerAI.mediumSkill)
       idxEncoredMove = @user.pbEncoredMoveIndex
       if idxEncoredMove>=0
         scoreSum   = 0
         scoreCount = 0
         @user.eachOpposing do |b|
-          scoreSum += pbGetMoveScore(@user.moves[idxEncoredMove],@user,b)
+          scoreSum += pbGetMoveScore(@user.moves[idxEncoredMove],b)
           scoreCount += 1
         end
         if scoreCount>0 && scoreSum/scoreCount<=20
@@ -68,7 +68,7 @@ class PokeBattle_AI
     # If there is a single foe and it is resting after Hyper Beam or is
     # Truanting (i.e. free turn)
     if @battle.pbSideSize(@user.index+1)==1 &&
-       !@user.pbDirectOpposing.fainted? && skill>=PBTrainerAI.highSkill
+       !@user.pbDirectOpposing.fainted? && skill_check(PBTrainerAI.highSkill)
       opp = @user.pbDirectOpposing
       if opp.effects[PBEffects::HyperBeam]>0 ||
          (opp.hasActiveAbility?(:TRUANT) && opp.effects[PBEffects::Truant])
@@ -145,6 +145,7 @@ class PokeBattle_AI
   # action choosing)
   #=============================================================================
   def pbDefaultChooseNewEnemy(idxBattler,party)
+    set_up(idxBattler)
     enemies = []
     party.each_with_index do |_p,i|
       enemies.push(i) if @battle.pbCanSwitchLax?(idxBattler,i)
