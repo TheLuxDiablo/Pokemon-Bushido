@@ -1,3 +1,6 @@
+#===============================================================================
+#
+#===============================================================================
 # AI skill levels:
 #     0:     Wild Pokémon
 #     1-31:  Basic trainer (young/inexperienced)
@@ -15,11 +18,15 @@ module PBTrainerAI
   def self.bestSkill;    return 100; end
 end
 
-
-
+#===============================================================================
+#
+#===============================================================================
 class PokeBattle_AI
   def initialize(battle)
-    @battle = battle
+    @battle      = battle
+    @skill       = 0
+    @user        = nil
+    @wildBattler = @battle.wildBattle?   # Whether AI is choosing for a wild Pokémon
   end
 
   def pbAIRandom(x); return rand(x); end
@@ -44,26 +51,33 @@ class PokeBattle_AI
     return Math.sqrt(varianceTimesN/n)
   end
 
-  #=============================================================================
   # Decide whether the opponent should Mega Evolve their Pokémon
-  #=============================================================================
-  def pbEnemyShouldMegaEvolve?(idxBattler)
-    battler = @battle.battlers[idxBattler]
-    if @battle.pbCanMegaEvolve?(idxBattler)   # Simple "always should if possible"
-      PBDebug.log("[AI] #{battler.pbThis} (#{idxBattler}) will Mega Evolve")
+  def pbEnemyShouldMegaEvolve?
+    if @battle.pbCanMegaEvolve?(@user.index)   # Simple "always should if possible"
+      PBDebug.log("[AI] #{@user.pbThis} (#{@user.index}) will Mega Evolve")
       return true
     end
     return false
   end
 
-  #=============================================================================
   # Choose an action
-  #=============================================================================
   def pbDefaultChooseEnemyCommand(idxBattler)
-    return if pbEnemyShouldUseItem?(idxBattler)
-    return if pbEnemyShouldWithdraw?(idxBattler)
+    set_up(idxBattler)
+    return if pbEnemyShouldUseItem?
+    return if pbEnemyShouldWithdraw?
     return if @battle.pbAutoFightMenu(idxBattler)
-    @battle.pbRegisterMegaEvolution(idxBattler) if pbEnemyShouldMegaEvolve?(idxBattler)
-    pbChooseMoves(idxBattler)
+    @battle.pbRegisterMegaEvolution(idxBattler) if pbEnemyShouldMegaEvolve?
+    pbChooseMoves
+  end
+
+  # Set some class variables for the Pokémon whose action is being chosen
+  def set_up(idxBattler)
+    @user        = @battle.battlers[idxBattler]
+    @wildBattler = (@battle.wildBattle? && @user.opposes?)
+    @skill       = 0
+    if !@wildBattler
+      @skill     = @battle.pbGetOwnerFromBattlerIndex(@user.index).skill || 0
+      @skill     = PBTrainerAI.minimumSkill if @skill < PBTrainerAI.minimumSkill
+    end
   end
 end

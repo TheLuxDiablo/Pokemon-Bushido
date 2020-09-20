@@ -2,9 +2,8 @@ class PokeBattle_AI
   #=============================================================================
   # Decide whether the opponent should use an item on the Pokémon
   #=============================================================================
-  def pbEnemyShouldUseItem?(idxBattler)
-    user = @battle.battlers[idxBattler]
-    item, idxTarget = pbEnemyItemToUse(idxBattler)
+  def pbEnemyShouldUseItem?
+    item, idxTarget = pbEnemyItemToUse
     return false if item==0
     # Determine target of item (always the Pokémon choosing the action)
     useType = pbGetItemData(item,ITEM_BATTLE_USE)
@@ -12,19 +11,19 @@ class PokeBattle_AI
       idxTarget = @battle.battlers[idxTarget].pokemonIndex   # Party Pokémon
     end
     # Register use of item
-    @battle.pbRegisterItem(idxBattler,item,idxTarget)
-    PBDebug.log("[AI] #{user.pbThis} (#{user.index}) will use item #{PBItems.getName(item)}")
+    @battle.pbRegisterItem(@user.index,item,idxTarget)
+    PBDebug.log("[AI] #{@user.pbThis} (#{@user.index}) will use item #{PBItems.getName(item)}")
     return true
   end
 
   # NOTE: The AI will only consider using an item on the Pokémon it's currently
   #       choosing an action for.
-  def pbEnemyItemToUse(idxBattler)
+  def pbEnemyItemToUse
     return 0 if !@internalBattle
-    items = @battle.pbGetOwnerItems(idxBattler)
+    items = @battle.pbGetOwnerItems(@user.index)
     return 0 if !items || items.length==0
     # Determine target of item (always the Pokémon choosing the action)
-    idxTarget = idxBattler   # Battler using the item
+    idxTarget = @user.index   # Battler using the item
     battler = @battle.battlers[idxTarget]
     pkmn = battler.pokemon
     # Item categories

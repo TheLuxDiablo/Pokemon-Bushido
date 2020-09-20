@@ -212,23 +212,22 @@ class PokeBattle_AI
 
   alias _battlePalace_pbEnemyShouldWithdraw? pbEnemyShouldWithdraw?
 
-  def pbEnemyShouldWithdraw?(idxBattler)
-    return _battlePalace_pbEnemyShouldWithdraw?(idxBattler) if !@battlePalace
-    thispkmn = @battle.battlers[idxBattler]
+  def pbEnemyShouldWithdraw?
+    return _battlePalace_pbEnemyShouldWithdraw? if !@battlePalace
     shouldswitch = false
-    if thispkmn.effects[PBEffects::PerishSong]==1
+    if @user.effects[PBEffects::PerishSong]==1
       shouldswitch = true
-    elsif !@battle.pbCanChooseAnyMove?(idxBattler) &&
-       thispkmn.turnCount && thispkmn.turnCount>5
+    elsif !@battle.pbCanChooseAnyMove?(@user.index) &&
+       @user.turnCount && @user.turnCount>5
       shouldswitch = true
     else
-      hppercent = thispkmn.hp*100/thispkmn.totalhp
+      hppercent = @user.hp*100/@user.totalhp
       percents = []
       maxindex = -1
       maxpercent = 0
       factor = 0
-      @battle.pbParty(idxBattler).each_with_index do |pkmn,i|
-        if @battle.pbCanSwitch?(idxBattler,i)
+      @battle.pbParty(@user.index).each_with_index do |pkmn,i|
+        if @battle.pbCanSwitch?(@user.index,i)
           percents[i] = 100*pkmn.hp/pkmn.totalhp
           if percents[i]>maxpercent
             maxindex = i
@@ -244,7 +243,7 @@ class PokeBattle_AI
       if hppercent<25
         factor = (maxpercent<hppercent) ? 30 : 50
       end
-      case thispkmn.status
+      case @user.status
       when PBStatuses::SLEEP, PBStatuses::FROZEN
         factor += 20
       when PBStatuses::POISON, PBStatuses::BURN
@@ -252,21 +251,21 @@ class PokeBattle_AI
       when PBStatuses::PARALYSIS
         factor += 15
       end
-      if @justswitched[idxBattler]
+      if @justswitched[@user.index]
         factor -= 60
         factor = 0 if factor<0
       end
       shouldswitch = (pbAIRandom(100)<factor)
       if shouldswitch && maxindex>=0
-        @battle.pbRegisterSwitch(idxBattler,maxindex)
+        @battle.pbRegisterSwitch(@user.index,maxindex)
         return true
       end
     end
-    @justswitched[idxBattler] = shouldswitch
+    @justswitched[@user.index] = shouldswitch
     if shouldswitch
-      @battle.pbParty(idxBattler).each_with_index do |_pkmn,i|
-        next if !@battle.pbCanSwitch?(idxBattler,i)
-        @battle.pbRegisterSwitch(idxBattler,i)
+      @battle.pbParty(@user.index).each_with_index do |_pkmn,i|
+        next if !@battle.pbCanSwitch?(@user.index,i)
+        @battle.pbRegisterSwitch(@user.index,i)
         return true
       end
     end
