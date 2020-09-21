@@ -108,7 +108,7 @@ class PokeBattle_AI
         if moveType>=0 && PBTypes.ineffective?(pbCalcTypeMod(moveType,@user,@user))
           weight = 65
           typeMod = pbCalcTypeModPokemon(pkmn,@user.pbDirectOpposing(true))
-          if PBTypes.superEffective?(typeMod.to_f/PBTypeEffectivenesss::NORMAL_EFFECTIVE)
+          if PBTypes.superEffective?(typeMod)
             # Greater weight if new Pokemon's type is effective against target
             weight = 85
           end
@@ -116,7 +116,7 @@ class PokeBattle_AI
         elsif moveType>=0 && PBTypes.resistant?(pbCalcTypeMod(moveType,@user,@user))
           weight = 40
           typeMod = pbCalcTypeModPokemon(pkmn,@user.pbDirectOpposing(true))
-          if PBTypes.superEffective?(typeMod.to_f/PBTypeEffectivenesss::NORMAL_EFFECTIVE)
+          if PBTypes.superEffective?(typeMod)
             # Greater weight if new Pokemon's type is effective against target
             weight = 60
           end

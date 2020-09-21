@@ -19,7 +19,7 @@ class PokeBattle_Battle
     wildbattle=!@opponent && pbIsOpposing?(index)
 
 
-
+=begin
     if wildbattle # If wild battle
       preference = attacker.personalID % 16   # Doesn't correlate to any property of the attacker, but is consistent
       preference = preference % 4
@@ -33,7 +33,7 @@ class PokeBattle_Battle
         end
       end
       return
-
+=end
 
 
     else   # Trainer battle
@@ -997,7 +997,7 @@ class PokeBattle_Battle
         end
       end
     end
-    
+
     score=score.to_i
     score=0 if score<0
     PBDebug.log(sprintf("%s: final score: %d",PBMoves.getName(move.id),score)) if $INTERNAL

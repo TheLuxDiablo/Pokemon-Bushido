@@ -1,4 +1,6 @@
 class PokeBattle_Battle
+=begin
+  # Updated in Essentials
   def pbRoughStat(battler,stat,skill)
     if skill>=PBTrainerAI.highSkill && stat==PBStats::SPEED
       return battler.pbSpeed
@@ -14,244 +16,278 @@ class PokeBattle_Battle
     value=battler.spdef if stat==PBStats::SPDEF
     return (value*1.0*stagemul[stage]/stagediv[stage]).floor
   end
+=end
 
   def pbBetterBaseDamage(move,attacker,opponent,skill,basedamage)
     # Covers all function codes which have their own def pbBaseDamage
     aimem = getAIMemory(skill,opponent.pokemonIndex)
     case move.function
-      when 0x6A # SonicBoom
-        basedamage=20
-      when 0x6B # Dragon Rage
-        basedamage=40
-      when 0x6C # Super Fang
-        basedamage=(opponent.hp/2.0).floor
-      when 0x6D # Night Shade
-        basedamage=attacker.level
-      when 0x6E # Endeavor
-        basedamage=opponent.hp-attacker.hp
-      when 0x6F # Psywave
-        basedamage=attacker.level
-      when 0x70 # OHKO
-        basedamage=opponent.totalhp
-      when 0x71 # Counter
-        maxdam=60
-        if aimem.length > 0
-          for j in aimem
-            next if j.pbIsSpecial?(j.type)
-            next if j.basedamage<=1
-            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)*2
-            if tempdam>maxdam
-              maxdam=tempdam
+    #---------------------------------------------------------------------------
+    # Missing: 010 - Stomp
+    #---------------------------------------------------------------------------
+    when 0x6A # SonicBoom
+      basedamage=20
+    when 0x6B # Dragon Rage
+      basedamage=40
+    when 0x6C # Super Fang
+      basedamage=(opponent.hp/2.0).floor
+    when 0x6D # Night Shade
+      basedamage=attacker.level
+    when 0x6E # Endeavor
+      basedamage=opponent.hp-attacker.hp
+    #---------------------------------------------------------------------------
+    when 0x6F # Psywave
+      basedamage=attacker.level
+    #---------------------------------------------------------------------------
+    when 0x70 # OHKO
+      basedamage=opponent.totalhp
+    #---------------------------------------------------------------------------
+    when 0x71 # Counter
+      maxdam=60
+      if aimem.length > 0
+        for j in aimem
+          next if j.pbIsSpecial?(j.type)
+          next if j.basedamage<=1
+          tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)*2
+          if tempdam>maxdam
+            maxdam=tempdam
+          end
+        end
+      end
+      basedamage = maxdam
+    when 0x72 # Mirror Coat
+      maxdam=60
+      if aimem.length > 0
+        for j in aimem
+          next if j.pbIsPhysical?(j.type)
+          next if j.basedamage<=1
+          tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)*2
+          if tempdam>maxdam
+            maxdam=tempdam
+          end
+        end
+      end
+      basedamage = maxdam
+    when 0x73 # Metal Burst
+      maxdam=45
+      if aimem.length > 0
+        maxdam = checkAIdamage(aimem,attacker,opponent,skill)
+      end
+      basedamage = maxdam
+    #---------------------------------------------------------------------------
+    when 0x75, 0x12D # Surf, Shadow Storm
+      basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCB # Dive
+    when 0x76 # Earthquake
+      basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCA # Dig
+    when 0xD0 # Whirlpool
+      if skill>=PBTrainerAI.mediumSkill
+        basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCB # Dive
+      end
+    #---------------------------------------------------------------------------
+    when 0x77, 0x78 # Gust, Twister
+      basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xC9 || # Fly
+                       $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCC || # Bounce
+                       $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCE    # Sky Drop
+    when 0x7B # Venoshock
+     if opponent.status==PBStatuses::POISON
+       basedamage*=2
+     end
+    when 0x7C # SmellingSalt
+      basedamage*=2 if opponent.status==PBStatuses::PARALYSIS  && opponent.effects[PBEffects::Substitute]<=0
+    when 0x7D # Wake-Up Slap
+      basedamage*=2 if opponent.status==PBStatuses::SLEEP && opponent.effects[PBEffects::Substitute]<=0
+    when 0x7E # Facade
+      basedamage*=2 if attacker.status==PBStatuses::POISON ||
+                       attacker.status==PBStatuses::BURN ||
+                       attacker.status==PBStatuses::PARALYSIS
+    when 0x7F # Hex
+      basedamage*=2 if opponent.status!=0
+    when 0x80 # Brine
+      basedamage*=2 if opponent.hp<=(opponent.totalhp/2.0).floor
+    when 0x85 # Retaliate
+      basedamage*=2 if attacker.pbOwnSide.effects[PBEffects::Retaliate]
+    when 0x87 # Weather Ball
+      basedamage*=2 if pbWeather!=0
+    when 0x89 # Return
+      basedamage=[(attacker.happiness*2/5).floor,1].max
+    when 0x8A # Frustration
+      basedamage=[((255-attacker.happiness)*2/5).floor,1].max
+    when 0x8B # Eruption
+      basedamage=[(150*(attacker.hp.to_f)/attacker.totalhp).floor,1].max
+    when 0x8C # Crush Grip
+      basedamage=[(120*(opponent.hp.to_f)/opponent.totalhp).floor,1].max
+    when 0x8E # Stored Power
+      mult=0
+      for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
+                PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+        mult+=attacker.stages[i] if attacker.stages[i]>0
+      end
+      basedamage=20*(mult+1)
+    when 0x8F # Punishment
+      mult=0
+      for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
+                PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
+        mult+=opponent.stages[i] if opponent.stages[i]>0
+      end
+      basedamage=[20*(mult+3),200].min
+#    when 0x90 # Hidden Power
+#      hp=pbHiddenPower(attacker.iv)
+    when 0x91 # Fury Cutter
+      basedamage=basedamage<<(attacker.effects[PBEffects::FuryCutter]-1)
+    when 0x92 # Echoed Voice
+      basedamage*=attacker.effects[PBEffects::EchoedVoice]
+    when 0x97 # Trump Card
+      dmgs=[200,80,60,50,40]
+      ppleft=[move.pp-1,4].min   # PP is reduced before the move is used
+      basedamage=dmgs[ppleft]
+    when 0x98 # Flail
+      n=(48*(attacker.hp.to_f)/attacker.totalhp).floor
+      basedamage=20
+      basedamage=40 if n<33
+      basedamage=80 if n<17
+      basedamage=100 if n<10
+      basedamage=150 if n<5
+      basedamage=200 if n<2
+    when 0x99 # Electro Ball
+      n=(attacker.pbSpeed/opponent.pbSpeed).floor
+      basedamage=40
+      basedamage=60 if n>=1
+      basedamage=80 if n>=2
+      basedamage=120 if n>=3
+      basedamage=150 if n>=4
+    when 0x9A # Low Kick
+      weight=opponent.weight
+      basedamage=20
+      basedamage=40 if weight>100
+      basedamage=60 if weight>250
+      basedamage=80 if weight>500
+      basedamage=100 if weight>1000
+      basedamage=120 if weight>2000
+    when 0xF7 # Fling
+      if attacker.item ==0
+        basedamage=0
+      else
+        basedamage=10 if pbIsBerry?(attacker.item)
+        flingarray = PBStuff::FLINGDAMAGE
+        for i in flingarray.keys
+          data=flingarray[i]
+          if data
+            for j in data
+              basedamage = i if isConst?(attacker.item,PBItems,j)
             end
           end
         end
-        basedamage = maxdam
-      when 0x72 # Mirror Coat
-        maxdam=60
-        if aimem.length > 0
-          for j in aimem
-            next if j.pbIsPhysical?(j.type)
-            next if j.basedamage<=1
-            tempdam = pbRoughDamage(j,opponent,attacker,skill,j.basedamage)*2
-            if tempdam>maxdam
-              maxdam=tempdam
+      end
+    when 0x113 # Spit Up
+      basedamage = 100*attacker.effects[PBEffects::Stockpile]
+    #---------------------------------------------------------------------------
+    when 0x86 # Acrobatics
+      basedamage*=2 if attacker.item ==0 || attacker.hasWorkingItem(:FLYINGGEM)
+    #---------------------------------------------------------------------------
+    when 0x8D # Gyro Ball
+      ospeed=pbRoughStat(opponent,PBStats::SPEED,skill)
+      aspeed=pbRoughStat(attacker,PBStats::SPEED,skill)
+      basedamage=[[(25*ospeed/aspeed).floor,150].min,1].max
+    #---------------------------------------------------------------------------
+    when 0x94 # Present
+      basedamage=50
+    #---------------------------------------------------------------------------
+    when 0x95 # Magnitude
+      basedamage=71
+      basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCA # Dig
+    #---------------------------------------------------------------------------
+    when 0x96 # Natural Gift
+      damagearray = PBStuff::NATURALGIFTDAMAGE
+      haveanswer=false
+      for i in damagearray.keys
+        data=damagearray[i]
+        if data
+          for j in data
+            if isConst?(attacker.item,PBItems,j)
+              basedamage=i; haveanswer=true; break
             end
           end
         end
-        basedamage = maxdam
-      when 0x73 # Metal Burst
-        maxdam=45
+        break if haveanswer
+      end
+    #---------------------------------------------------------------------------
+    when 0x9B # Heavy Slam
+      n=(attacker.weight/opponent.weight).floor
+      basedamage=40
+      basedamage=60 if n>=2
+      basedamage=80 if n>=3
+      basedamage=100 if n>=4
+      basedamage=120 if n>=5
+    #---------------------------------------------------------------------------
+    when 0xA0 # Frost Breath
+      basedamage*=1.5
+    when 0xBD, 0xBE # Double Kick, Twineedle
+      basedamage*=2
+    #---------------------------------------------------------------------------
+    when 0xBF # Triple Kick
+      basedamage*=6
+    #---------------------------------------------------------------------------
+    when 0xC0 # Fury Attack
+      if (!attacker.abilitynulled && attacker.ability == PBAbilities::SKILLLINK)
+        basedamage*=5
+      else
+        basedamage=(basedamage*19/6).floor
+      end
+    #---------------------------------------------------------------------------
+    when 0xC1 # Beat Up
+      party=pbParty(attacker.index)
+      mult=0
+      for i in 0...party.length
+        mult+=1 if party[i] && !party[i].isEgg? &&
+                   party[i].hp>0 && party[i].status==0
+      end
+      basedamage*=mult
+    #---------------------------------------------------------------------------
+    when 0xC4 # SolarBeam
+      if pbWeather!=0 && pbWeather!=PBWeather::SUNNYDAY
+        basedamage=(basedamage*0.5).floor
+      end
+    #---------------------------------------------------------------------------
+    when 0xD3 # Rollout
+      if skill>=PBTrainerAI.mediumSkill
+        basedamage*=2 if attacker.effects[PBEffects::DefenseCurl]
+      end
+    #---------------------------------------------------------------------------
+    when 0xD4 # Bide
+      maxdam=30
+      if skill>=PBTrainerAI.bestSkill
         if aimem.length > 0
           maxdam = checkAIdamage(aimem,attacker,opponent,skill)
         end
-        basedamage = maxdam
-      when 0x75, 0x12D # Surf, Shadow Storm
-        basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCB # Dive
-      when 0x76 # Earthquake
-        basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCA # Dig
-      when 0x77, 0x78 # Gust, Twister
-        basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xC9 || # Fly
-                         $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCC || # Bounce
-                         $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCE    # Sky Drop
-      when 0x79 # Fusion Bolt
-        basedamage*=2 if previousMove == 127 || previousMove == 131
-      when 0x7A # Fusion Flare
-        basedamage*=2 if previousMove == 64 || previousMove == 68
-      when 0x7B # Venoshock
-        if opponent.status==PBStatuses::POISON
-          basedamage*=2
-        end
-      when 0x7C # SmellingSalt
-        basedamage*=2 if opponent.status==PBStatuses::PARALYSIS  && opponent.effects[PBEffects::Substitute]<=0
-      when 0x7D # Wake-Up Slap
-        basedamage*=2 if opponent.status==PBStatuses::SLEEP && opponent.effects[PBEffects::Substitute]<=0
-      when 0x7E # Facade
-        basedamage*=2 if attacker.status==PBStatuses::POISON ||
-                         attacker.status==PBStatuses::BURN ||
-                         attacker.status==PBStatuses::PARALYSIS
-      when 0x7F # Hex
-        basedamage*=2 if opponent.status!=0
-      when 0x80 # Brine
-        basedamage*=2 if opponent.hp<=(opponent.totalhp/2.0).floor
-      when 0x85 # Retaliate
-        basedamage*=2 if attacker.pbOwnSide.effects[PBEffects::Retaliate]
-      when 0x86 # Acrobatics
-        basedamage*=2 if attacker.item ==0 || attacker.hasWorkingItem(:FLYINGGEM)
-      when 0x87 # Weather Ball
-        basedamage*=2 if pbWeather!=0
-      when 0x89 # Return
-        basedamage=[(attacker.happiness*2/5).floor,1].max
-      when 0x8A # Frustration
-        basedamage=[((255-attacker.happiness)*2/5).floor,1].max
-      when 0x8B # Eruption
-        basedamage=[(150*(attacker.hp.to_f)/attacker.totalhp).floor,1].max
-      when 0x8C # Crush Grip
-        basedamage=[(120*(opponent.hp.to_f)/opponent.totalhp).floor,1].max
-      when 0x8D # Gyro Ball
-        ospeed=pbRoughStat(opponent,PBStats::SPEED,skill)
-        aspeed=pbRoughStat(attacker,PBStats::SPEED,skill)
-        basedamage=[[(25*ospeed/aspeed).floor,150].min,1].max
-      when 0x8E # Stored Power
-        mult=0
-        for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
-                  PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-          mult+=attacker.stages[i] if attacker.stages[i]>0
-        end
-        basedamage=20*(mult+1)
-      when 0x8F # Punishment
-        mult=0
-        for i in [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPEED,
-                  PBStats::SPATK,PBStats::SPDEF,PBStats::ACCURACY,PBStats::EVASION]
-          mult+=opponent.stages[i] if opponent.stages[i]>0
-        end
-        basedamage=[20*(mult+3),200].min
-      #when 0x90 # Hidden Power
-      #hp=pbHiddenPower(attacker.iv)
-
-      when 0x91 # Fury Cutter
-        basedamage=basedamage<<(attacker.effects[PBEffects::FuryCutter]-1)
-      when 0x92 # Echoed Voice
-        basedamage*=attacker.effects[PBEffects::EchoedVoice]
-      when 0x94 # Present
-        basedamage=50
-      when 0x95 # Magnitude
-        basedamage=71
-        basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCA # Dig
-      when 0x96 # Natural Gift
-        damagearray = PBStuff::NATURALGIFTDAMAGE
-        haveanswer=false
-        for i in damagearray.keys
-          data=damagearray[i]
-          if data
-            for j in data
-              if isConst?(attacker.item,PBItems,j)
-                basedamage=i; haveanswer=true; break
-              end
-            end
-          end
-          break if haveanswer
-        end
-      when 0x97 # Trump Card
-        dmgs=[200,80,60,50,40]
-        ppleft=[move.pp-1,4].min   # PP is reduced before the move is used
-        basedamage=dmgs[ppleft]
-      when 0x98 # Flail
-        n=(48*(attacker.hp.to_f)/attacker.totalhp).floor
-        basedamage=20
-        basedamage=40 if n<33
-        basedamage=80 if n<17
-        basedamage=100 if n<10
-        basedamage=150 if n<5
-        basedamage=200 if n<2
-      when 0x99 # Electro Ball
-        n=(attacker.pbSpeed/opponent.pbSpeed).floor
-        basedamage=40
-        basedamage=60 if n>=1
-        basedamage=80 if n>=2
-        basedamage=120 if n>=3
-        basedamage=150 if n>=4
-      when 0x9A # Low Kick
-        weight=opponent.weight
-        basedamage=20
-        basedamage=40 if weight>100
-        basedamage=60 if weight>250
-        basedamage=80 if weight>500
-        basedamage=100 if weight>1000
-        basedamage=120 if weight>2000
-      when 0x9B # Heavy Slam
-        n=(attacker.weight/opponent.weight).floor
-        basedamage=40
-        basedamage=60 if n>=2
-        basedamage=80 if n>=3
-        basedamage=100 if n>=4
-        basedamage=120 if n>=5
-      when 0xA0 # Frost Breath
-        basedamage*=1.5
-      when 0xBD, 0xBE # Double Kick, Twineedle
+      end
+      basedamage = maxdam
+    #---------------------------------------------------------------------------
+    when 0xE1 # Final Gambit
+      basedamage=attacker.hp
+    #---------------------------------------------------------------------------
+    # Missing: 144 - Flying Press
+    #---------------------------------------------------------------------------
+    when 0x166 # Stomping Tantrum
+      if attacker.effects[PBEffects::Tantrum]
         basedamage*=2
-      when 0xBF # Triple Kick
-        basedamage*=6
-      when 0xC0 # Fury Attack
-        if (!attacker.abilitynulled && attacker.ability == PBAbilities::SKILLLINK)
-          basedamage*=5
-        else
-          basedamage=(basedamage*19/6).floor
-        end
-      when 0xC1 # Beat Up
-        party=pbParty(attacker.index)
-        mult=0
-        for i in 0...party.length
-          mult+=1 if party[i] && !party[i].isEgg? &&
-                      party[i].hp>0 && party[i].status==0
-        end
-        basedamage*=mult
-      when 0xC4 # SolarBeam
-        if pbWeather!=0 && pbWeather!=PBWeather::SUNNYDAY
-          basedamage=(basedamage*0.5).floor
-        end
-      when 0xD0 # Whirlpool
-        if skill>=PBTrainerAI.mediumSkill
-          basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCB # Dive
-        end
-      when 0xD3 # Rollout
-        if skill>=PBTrainerAI.mediumSkill
-          basedamage*=2 if attacker.effects[PBEffects::DefenseCurl]
-        end
-      when 0xD4 # Bide
-        maxdam=30
-        if skill>=PBTrainerAI.bestSkill
-          if aimem.length > 0
-            maxdam = checkAIdamage(aimem,attacker,opponent,skill)
-          end
-        end
-        basedamage = maxdam
-      when 0xE1 # Final Gambit
-        basedamage=attacker.hp
-      when 0xF0 # Knock Off
-        if opponent.item!=0 && !pbIsUnlosableItem(opponent,opponent.item)
-          basedamage*=1.5
-        end
-      when 0xF7 # Fling
-        if attacker.item ==0
-          basedamage=0
-        else
-          basedamage=10 if pbIsBerry?(attacker.item)
-          flingarray = PBStuff::FLINGDAMAGE
-          for i in flingarray.keys
-            data=flingarray[i]
-            if data
-              for j in data
-                basedamage = i if isConst?(attacker.item,PBItems,j)
-              end
-            end
-          end
-        end
-      when 0x113 # Spit Up
-        basedamage = 100*attacker.effects[PBEffects::Stockpile]
-      when 0x171 # Stomping Tantrum
-        if attacker.effects[PBEffects::Tantrum]
-          basedamage*=2
-        end
+      end
+    #---------------------------------------------------------------------------
+    # Missing: 175 - Double Iron Bash
+    #---------------------------------------------------------------------------
+    # Added in Reborn
+    when 0xF0 # Knock Off
+      if opponent.item!=0 && !pbIsUnlosableItem(opponent,opponent.item)
+        basedamage*=1.5
+      end
+    #---------------------------------------------------------------------------
+    # Added in Reborn
+    when 0x79 # Fusion Bolt
+      basedamage*=2 if previousMove == 127 || previousMove == 131
+    #---------------------------------------------------------------------------
+    # Added in Reborn
+    when 0x7A # Fusion Flare
+      basedamage*=2 if previousMove == 64 || previousMove == 68
+    #---------------------------------------------------------------------------
     end
     return basedamage
   end
@@ -1187,6 +1223,8 @@ class PokeBattle_Battle
     return c
   end
 
+  =begin
+  # Updated in Essentials
   def pbRoughAccuracy(move,attacker,opponent,skill)
     # Get base accuracy
     baseaccuracy=move.accuracy
@@ -1196,6 +1234,7 @@ class PokeBattle_Battle
         accuracy=50
       end
     end
+
     # Accuracy stages
     accstage=attacker.stages[PBStats::ACCURACY]
     accstage=0 if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE)
@@ -1209,16 +1248,15 @@ class PokeBattle_Battle
                   (!attacker.abilitynulled && attacker.ability == PBAbilities::UNAWARE)
     evasion=(evastage>=0) ? (evastage+3)*100.0/3 : 300.0/(3-evastage)
     accuracy*=baseaccuracy/evasion
+
     # Accuracy modifiers
     if skill>=PBTrainerAI.mediumSkill
       accuracy*=1.3 if (!attacker.abilitynulled && attacker.ability == PBAbilities::COMPOUNDEYES)
-
       accuracy*=1.1 if (!attacker.abilitynulled && attacker.ability == PBAbilities::VICTORYSTAR)
       if skill>=PBTrainerAI.highSkill
         partner=attacker.pbPartner
         accuracy*=1.1 if partner && (!partner.abilitynulled && partner.ability == PBAbilities::VICTORYSTAR)
       end
-
       if skill>=PBTrainerAI.highSkill
         accuracy*=0.8 if (!attacker.abilitynulled && attacker.ability == PBAbilities::HUSTLE) &&
                          move.basedamage>0 && move.pbIsPhysical?(move.pbType(move.type,attacker,opponent))
@@ -1273,5 +1311,5 @@ class PokeBattle_Battle
     accuracy=100 if accuracy>100
     return accuracy
   end
-
+=end
 end

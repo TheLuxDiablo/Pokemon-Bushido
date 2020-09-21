@@ -122,7 +122,11 @@ class PokeBattle_AI
   #=============================================================================
   # Wild Pokémon choose their moves randomly.
   def pbRegisterMoveWild(idxMove, choices)
-    choices.push([idxMove, 100, -1])   # Move index, score, target
+    score = 100
+    # Doubly prefer one of the user's moves (the choice is random but consistent
+    # and does not correlate to any other property of the user)
+    score *= 2 if @user.personalID % @user.moves.length == idxMove
+    choices.push([idxMove, score, -1])   # Move index, score, target
   end
 
   # Trainer Pokémon calculate how much they want to use each of their moves.
@@ -130,7 +134,7 @@ class PokeBattle_AI
     move = @user.moves[idxMove]
     targetType = move.pbTarget(@user)
     if PBTargets.multipleTargets?(targetType)
-      # If move affects multiple battlers and you don't choose a particular one
+      # Move affects multiple battlers and you don't choose a particular one
       totalScore = 0
       @battle.eachBattler do |b|
         next if !@battle.pbMoveCanTarget?(@user.index, b.index, targetType)
@@ -139,11 +143,11 @@ class PokeBattle_AI
       end
       choices.push([idxMove, totalScore, -1]) if totalScore > 0
     elsif PBTargets.noTargets?(targetType)
-      # If move has no targets, affects the user, a side or the whole field
-      score = pbGetMoveScore(move, @user)
+      # Move has no targets, affects the user, a side or the whole field
+      score = pbGetMoveScore(move)
       choices.push([idxMove, score, -1]) if score > 0
     else
-      # If move affects one battler and you have to choose which one
+      # Move affects one battler and you have to choose which one
       scoresAndTargets = []
       @battle.eachBattler do |b|
         next if !@battle.pbMoveCanTarget?(@user.index, b.index, targetType)
@@ -162,7 +166,23 @@ class PokeBattle_AI
   #=============================================================================
   # Get a score for the given move being used against the given target
   #=============================================================================
-  def pbGetMoveScore(move, target)
+  def set_up_move_check(move)
+    @move   = move
+    @target = target
+    # Determine whether user or target is faster, and store that result so it
+    # doesn't need recalculating
+    if @target
+      user_speed   = pbRoughStat(@user,PBStats::SPEED)
+      target_speed = pbRoughStat(@target,PBStats::SPEED)
+      @user_faster = (user_speed > target_speed) ^ (@battle.field.effects[PBEffects::TrickRoom] > 0)
+    else
+      @user_faster = false   # Won't be used if there is no target
+    end
+  end
+
+  def pbGetMoveScore(move, target = nil)
+    set_up_move_check(move, target)
+
     if move.damagingMove?
       # Is also the predicted damage amount as a percentage of target's current HP
       score = pbGetDamagingMoveBaseScore(move, target)
@@ -178,6 +198,7 @@ class PokeBattle_AI
     return 0 if score <= 0
 
     if skill_check(PBTrainerAI.mediumSkill)
+
       # Prefer damaging moves if AI has no more Pokémon or AI is less clever
       if @battle.pbAbleNonActiveCount(@user.idxOwnSide) == 0
         if !(skill_check(PBTrainerAI.highSkill) && @battle.pbAbleNonActiveCount(target.idxOwnSide) > 0)
@@ -188,6 +209,7 @@ class PokeBattle_AI
           end
         end
       end
+
       # Don't prefer attacking the target if they'd be semi-invulnerable
       if skill_check(PBTrainerAI.highSkill) && move.accuracy > 0 &&
          (target.semiInvulnerable? || target.effects[PBEffects::SkyDrop] >= 0)
@@ -219,23 +241,20 @@ class PokeBattle_AI
         end
       end
 
-      # If user is asleep, prefer moves that are usable while asleep
-      if @user.status == PBStatuses::SLEEP && !move.usableWhenAsleep?
-        @user.eachMove do |m|
-          next unless m.usableWhenAsleep?
-          score -= 60
-          break
-        end
+      # If user is asleep, don't prefer moves that can't be used while asleep
+      if @user.status == PBStatuses::SLEEP && @user.statusCount>1 &&
+         !move.usableWhenAsleep? && skill_check(PBTrainerAI.mediumSkill)
+        score *= 0.2
       end
 
       # If user is frozen, prefer a move that can thaw the user
-      if @user.status == PBStatuses::FROZEN
+      if @user.status == PBStatuses::FROZEN && skill_check(PBTrainerAI.mediumSkill)
         if move.thawsUser?
-          score += 40
+          score += 30
         else
           @user.eachMove do |m|
             next unless m.thawsUser?
-            score -= 60
+            score *= 0   # Discard this move if user knows another move that thaws
             break
           end
         end
@@ -243,10 +262,9 @@ class PokeBattle_AI
 
       # If target is frozen, don't prefer moves that could thaw them
       if target.status == PBStatuses::FROZEN
-        @user.eachMove do |m|
-          next if m.thawsUser?
-          score -= 60
-          break
+        if isConst?(pbRoughType(move), PBTypes, :FIRE) ||
+           (NEWEST_BATTLE_MECHANICS && move.thawsUser?)
+          score *= 0.1
         end
       end
     end
@@ -256,7 +274,7 @@ class PokeBattle_AI
     score *= accuracy / 100.0
 
     # Move has a really low score; discard it
-    score = 0 if score <= 10 && skill_check(PBTrainerAI.highSkill)
+#    score = 0 if score <= 10 && skill_check(PBTrainerAI.highSkill)
 
     score = score.to_i
     score = 0 if score < 0
@@ -270,13 +288,16 @@ class PokeBattle_AI
   def pbGetDamagingMoveBaseScore(move, target)
     # Don't prefer moves that are ineffective because of abilities or effects
     return 0 if pbCheckMoveImmunity(move, target)
+
     # Calculate how much damage the move will do (roughly)
     baseDmg = pbMoveBaseDamage(move, target)
     realDamage = pbRoughDamage(move, target, baseDmg)
+
     # Two-turn attacks waste 2 turns to deal one lot of damage
     if move.chargingTurnMove? || move.function == "0C2"   # Hyper Beam
       realDamage *= 2 / 3   # Not halved because semi-invulnerable during use or hits first turn
     end
+
     # Prefer flinching external effects (note that move effects which cause
     # flinching are dealt with in the function code part of score calculation)
     if skill_check(PBTrainerAI.mediumSkill)
@@ -293,15 +314,18 @@ class PokeBattle_AI
         realDamage *= 1.3 if canFlinch
       end
     end
+
     # Convert damage to percentage of target's remaining HP
     damagePercentage = realDamage * 100.0 / target.hp
+
     # Don't prefer weak attacks
 #    damagePercentage /= 2 if damagePercentage<20
     # Prefer damaging attack if level difference is significantly high
     damagePercentage *= 1.2 if @user.level - 10 > target.level
     # Adjust score
-    damagePercentage = 120 if damagePercentage > 120   # Treat all lethal moves the same
+    damagePercentage = 110 if damagePercentage > 110   # Treat all lethal moves the same
     damagePercentage += 40 if damagePercentage > 100   # Prefer moves likely to be lethal
+
     score = damagePercentage.to_i
     return score
   end
