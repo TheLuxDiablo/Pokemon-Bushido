@@ -162,8 +162,6 @@ class PokeBattle_Move
   # Returns whether the move will be a critical hit.
   def pbIsCritical?(user,target)
     return false if target.pbOwnSide.effects[PBEffects::LuckyChant]>0
-    # Set up the critical hit ratios
-    ratios = (NEWEST_BATTLE_MECHANICS) ? [24,8,2,1] : [16,8,4,3,2]
     c = 0
     # Ability effects that alter critical hit rate
     if c>=0 && user.abilityActive?
@@ -191,9 +189,9 @@ class PokeBattle_Move
     c += 1 if highCriticalRate?
     c += user.effects[PBEffects::FocusEnergy]
     c += 1 if user.inHyperMode? && isConst?(@type,PBTypes,:SHADOW)
-    c = ratios.length-1 if c>=ratios.length
+    c = CRITICAL_HIT_RATIOS.length-1 if c>=CRITICAL_HIT_RATIOS.length
     # Calculation
-    return @battle.pbRandom(ratios[c])==0
+    return @battle.pbRandom(CRITICAL_HIT_RATIOS[c])==0
   end
 
   #=============================================================================

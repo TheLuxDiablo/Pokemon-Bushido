@@ -242,12 +242,12 @@ class PokeBattle_Battle
             dmgPercent = 110 if dmgPercent > 110   # Cap at 110% of target's HP
             # Halve the effective damage for two-turn moves (but not Hyper Beam)
             if attacker.moves[j].function == 0x115 || attacker.moves[j].function == 0xC3 ||
-             attacker.moves[j].function == 0xC4 || attacker.moves[j].function == 0xC5 ||
-             attacker.moves[j].function == 0xC6 || attacker.moves[j].function == 0xC7 ||
-             attacker.moves[j].function == 0xC8
-               dmgPercentAdj = (dmgPercent * 0.5)
+               attacker.moves[j].function == 0xC4 || attacker.moves[j].function == 0xC5 ||
+               attacker.moves[j].function == 0xC6 || attacker.moves[j].function == 0xC7 ||
+               attacker.moves[j].function == 0xC8
+              dmgPercentAdj = (dmgPercent * 0.5)
             else
-               dmgPercentAdj = dmgPercent
+              dmgPercentAdj = dmgPercent
             end
           else   # Status moves
             dmgPercent = pbStatusDamage(attacker.moves[j])
@@ -558,6 +558,7 @@ class PokeBattle_Battle
                                     score, oppitemworks, attitemworks, aimem, bettertype, roles, tempdam)
     ###### END FUNCTION CODES ######################################################
 
+=begin
     # Don't prefer a dance move if the opponent has Dancer (because they'll get
     # a free move)
     if (!opponent.abilitynulled && opponent.ability == PBAbilities::DANCER)
@@ -565,6 +566,7 @@ class PokeBattle_Battle
         score*=0.5
       end
     end
+=end
 
     ioncheck = false
     destinycheck = false
@@ -686,7 +688,8 @@ class PokeBattle_Battle
     end
 
     # Check for items/abilities that will trigger upon the move making contact
-    if move.isContactMove? && !(attacker.item == PBItems::PROTECTIVEPADS) && !(!attacker.abilitynulled && attacker.ability == PBAbilities::LONGREACH)
+    if move.isContactMove? && !(attacker.item == PBItems::PROTECTIVEPADS) &&
+       !(!attacker.abilitynulled && attacker.ability == PBAbilities::LONGREACH)
       # Rocky Helmet or Spiky Shield will damage the attacker; don't prefer the move
       # The Spiky Shield part assumes opponent is faster than attacker and could
       # get its shield up before attacker hits it (the check for whether it
@@ -755,7 +758,7 @@ class PokeBattle_Battle
     # This check makes no sense because these effects only last until the end
     # of the round, and AI is run at the start of a round
     if move.basedamage>0 && (opponent.effects[PBEffects::SpikyShield] ||
-      opponent.effects[PBEffects::BanefulBunker] || opponent.effects[PBEffects::KingsShield])
+       opponent.effects[PBEffects::BanefulBunker] || opponent.effects[PBEffects::KingsShield])
       score*=0.1
     end
 
@@ -774,6 +777,7 @@ class PokeBattle_Battle
       end
     end
 
+=begin
     # Discard powder moves if opponent is immune to powder
     ispowder = (move.id==214 || move.id==218 || move.id==220 || move.id==445 || move.id==600 || move.id==18 || move.id==219)
     if ispowder && (opponent.type==(PBTypes::GRASS) ||
@@ -781,6 +785,7 @@ class PokeBattle_Battle
        (oppitemworks && opponent.item == PBItems::SAFETYGOGGLES))
       score*=0
     end
+=end
 
     # A score of 0 here means it should absolutely not be used; return it
     if score<=0
@@ -792,6 +797,7 @@ class PokeBattle_Battle
 
     ##### Other score modifications ################################################
 
+=begin
     # Prefer damaging moves if AI has no more Pokémon
     if attacker.pbNonActivePokemonCount==0
       if skill>=PBTrainerAI.mediumSkill &&
@@ -938,8 +944,8 @@ class PokeBattle_Battle
           score=0
         end
       end
-      # This calculation is unused as the base score already is the likely damage
-      # percentage
+      # This calculation has no effect, and should be unused anyway as the base
+      # score already is the likely damage percentage
       if score != 0
         # Calculate how much damage the move will do (roughly)
         realBaseDamage=move.basedamage
@@ -952,10 +958,10 @@ class PokeBattle_Battle
       if !opponent.abilitynulled
         # Discard status moves if opponent is immune to them because of their ability
         if (move.type == PBTypes::GROUND && (opponent.ability == PBAbilities::LEVITATE || (oppitemworks && opponent.item == PBItems::AIRBALLOON) || opponent.effects[PBEffects::MagnetRise]>0)) ||
-          (move.type == PBTypes::FIRE && opponent.ability == PBAbilities::FLASHFIRE) ||
-          (move.type == PBTypes::WATER && (opponent.ability == PBAbilities::WATERABSORB || opponent.ability == PBAbilities::STORMDRAIN || opponent.ability == PBAbilities::DRYSKIN)) ||
-          (move.type == PBTypes::GRASS && opponent.ability == PBAbilities::SAPSIPPER) ||
-          (move.type == PBTypes::ELECTRIC)&& (opponent.ability == PBAbilities::VOLTABSORB || opponent.ability == PBAbilities::LIGHTNINGROD || opponent.ability == PBAbilities::MOTORDRIVE)
+           (move.type == PBTypes::FIRE && opponent.ability == PBAbilities::FLASHFIRE) ||
+           (move.type == PBTypes::WATER && (opponent.ability == PBAbilities::WATERABSORB || opponent.ability == PBAbilities::STORMDRAIN || opponent.ability == PBAbilities::DRYSKIN)) ||
+           (move.type == PBTypes::GRASS && opponent.ability == PBAbilities::SAPSIPPER) ||
+           (move.type == PBTypes::ELECTRIC)&& (opponent.ability == PBAbilities::VOLTABSORB || opponent.ability == PBAbilities::LIGHTNINGROD || opponent.ability == PBAbilities::MOTORDRIVE)
           score=0
         end
       end
@@ -965,6 +971,7 @@ class PokeBattle_Battle
     accuracy=pbRoughAccuracy(move,attacker,opponent,skill)
     score*=accuracy/100.0
     #score=0 if score<=10 && skill>=PBTrainerAI.highSkill
+=end
 
     # Discard a status move (except Nature Power) that targets a non-user if
     # either opponent has Magic Bounce
@@ -977,6 +984,7 @@ class PokeBattle_Battle
       score=0
     end
 
+=begin
     # Discard a move if it'll be made faster by attacker's Prankster but opponent
     # will be immune because it's Dark-type
     if skill>=PBTrainerAI.mediumSkill
@@ -997,6 +1005,7 @@ class PokeBattle_Battle
         end
       end
     end
+  =end
 
     score=score.to_i
     score=0 if score<0

@@ -7,19 +7,19 @@ class PokeBattle_AI
     case move.pbTarget(@user)
     when PBTargets::AllNearFoes
       @battle.eachOtherSideBattler(@user) { |b| numTargets += 1 if b.near?(@user) }
-      return numTargets>1
+      return numTargets > 1
     when PBTargets::AllNearOthers
       @battle.eachBattler { |b| numTargets += 1 if b.near?(@user) }
-      return numTargets>1
+      return numTargets > 1
     when PBTargets::UserAndAllies
       @battle.eachSameSideBattler(@user) { |_b| numTargets += 1 }
-      return numTargets>1
+      return numTargets > 1
     when PBTargets::AllFoes
       @battle.eachOtherSideBattler(@user) { |_b| numTargets += 1 }
-      return numTargets>1
+      return numTargets > 1
     when PBTargets::AllBattlers
       @battle.eachBattler { |_b| numTargets += 1 }
-      return numTargets>1
+      return numTargets > 1
     end
     return false
   end
@@ -85,27 +85,30 @@ class PokeBattle_AI
   #=============================================================================
   # Immunity to a move because of the target's ability, item or other effects
   #=============================================================================
-  def pbCheckMoveImmunity(move,target)
-    type = pbRoughType(move)
-    typeMod = pbCalcTypeMod(type,@user,target)
+  def pbCheckMoveImmunity(move, target)
+    # TODO: Add consideration of user's Mold Breaker.
+    move_type = pbRoughType(move)
+    typeMod = pbCalcTypeMod(move_type, @user, target)
     # Type effectiveness
     return true if PBTypes.ineffective?(typeMod)
     # Immunity due to ability/item/other effects
-    if skill_check(PBTrainerAI.mediumSkill)
-      if isConst?(move.type,PBTypes,:GROUND)
+    if skill_check(AILevel.medium)
+      if isConst?(move_type, PBTypes,:GROUND)
+        # TODO: Split target.airborne? into separate parts to allow different
+        #       skill levels to apply to each part.
         return true if target.airborne? && !move.hitsFlyingTargets?
-      elsif isConst?(move.type,PBTypes,:FIRE)
+      elsif isConst?(move_type, PBTypes,:FIRE)
         return true if target.hasActiveAbility?(:FLASHFIRE)
-      elsif isConst?(move.type,PBTypes,:WATER)
-        return true if target.hasActiveAbility?([:DRYSKIN,:STORMDRAIN,:WATERABSORB])
-      elsif isConst?(move.type,PBTypes,:GRASS)
+      elsif isConst?(move_type, PBTypes,:WATER)
+        return true if target.hasActiveAbility?([:DRYSKIN, :STORMDRAIN, :WATERABSORB])
+      elsif isConst?(move_type, PBTypes,:GRASS)
         return true if target.hasActiveAbility?(:SAPSIPPER)
-      elsif isConst?(move.type,PBTypes,:ELECTRIC)
-        return true if target.hasActiveAbility?([:LIGHTNINGROD,:MOTORDRIVE,:VOLTABSORB])
+      elsif isConst?(move_type, PBTypes,:ELECTRIC)
+        return true if target.hasActiveAbility?([:LIGHTNINGROD, :MOTORDRIVE, :VOLTABSORB])
       end
       return true if PBTypes.notVeryEffective?(typeMod) &&
                      target.hasActiveAbility?(:WONDERGUARD)
-      return true if move.damagingMove? && @user.index!=target.index && !target.opposes?(@user) &&
+      return true if move.damagingMove? && @user.index != target.index && !target.opposes?(@user) &&
                      target.hasActiveAbility?(:TELEPATHY)
       return true if move.canMagicCoat? && target.hasActiveAbility?(:MAGICBOUNCE) &&
                      target.opposes?(@user)
@@ -113,15 +116,16 @@ class PokeBattle_AI
       return true if move.bombMove? && target.hasActiveAbility?(:BULLETPROOF)
       if move.powderMove?
         return true if target.pbHasType?(:GRASS)
-        return true if target.hasActiveAbility?(:OVERCOAT)
-        return true if target.hasActiveItem?(:SAFETYGOGGLES)
+        return true if skill_check(AILevel.best) && target.hasActiveAbility?(:OVERCOAT)
+        return true if skill_check(AILevel.high) && target.hasActiveItem?(:SAFETYGOGGLES)
       end
-      return true if target.effects[PBEffects::Substitute]>0 && move.statusMove? &&
-                     !move.ignoresSubstitute?(@user) && @user.index!=target.index
+      return true if target.effects[PBEffects::Substitute] > 0 && move.statusMove? &&
+                     !move.ignoresSubstitute?(@user) && @user.index != target.index
       return true if NEWEST_BATTLE_MECHANICS && @user.hasActiveAbility?(:PRANKSTER) &&
                      target.pbHasType?(:DARK) && target.opposes?(@user)
-      return true if move.priority>0 && @battle.field.terrain==PBBattleTerrains::Psychic &&
+      return true if move.priority>0 && @battle.field.terrain == PBBattleTerrains::Psychic &&
                      target.affectedByTerrain? && target.opposes?(@user)
+      # TODO: Dazzling/Queenly Majesty go here.
     end
     return false
   end
@@ -131,14 +135,14 @@ class PokeBattle_AI
   #=============================================================================
   def pbRoughType(move)
     ret = move.type
-    if skill_check(PBTrainerAI.highSkill)
+    if skill_check(AILevel.high)
       ret = move.pbCalcType(@user)
     end
     return ret
   end
 
   def pbRoughStat(battler,stat)
-    return battler.pbSpeed if skill_check(PBTrainerAI.highSkill) && stat==PBStats::SPEED
+    return battler.pbSpeed if skill_check(AILevel.high) && stat==PBStats::SPEED
     stageMul = [2,2,2,2,2,2, 2, 3,4,5,6,7,8]
     stageDiv = [8,7,6,5,4,3, 2, 2,2,2,2,2,2]
     stage = battler.stages[stat]+6
@@ -156,10 +160,10 @@ class PokeBattle_AI
   #=============================================================================
   # Get a better move's base damage value
   #=============================================================================
-  def pbMoveBaseDamage(move,target)
+  def pbMoveBaseDamage(move, target)
     baseDmg = move.baseDamage
     baseDmg = 60 if baseDmg==1
-    return baseDmg if !skill_check(PBTrainerAI.highSkill)
+    return baseDmg if !skill_check(AILevel.high)
     # Covers all function codes which have their own def pbBaseDamage
     case move.function
     when "010"   # Stomp
@@ -229,7 +233,7 @@ class PokeBattle_AI
     when "144"   # Flying Press
       type = getConst(PBTypes,:FLYING) || -1
       if type>=0
-        if skill_check(PBTrainerAI.highSkill)
+        if skill_check(AILevel.high)
           targetTypes = target.pbTypes(true)
           mult = PBTypes.getCombinedEffectiveness(type,
              targetTypes[0],targetTypes[1],targetTypes[2])
@@ -281,12 +285,12 @@ class PokeBattle_AI
     ##### Calculate all multiplier effects #####
     multipliers = [0x1000,0x1000,0x1000,0x1000]
     # Ability effects that alter damage
-    moldBreaker = false
-    if skill_check(PBTrainerAI.highSkill) && @user.hasMoldBreaker?
-      moldBreaker = true
+    mold_breaker = false
+    if skill_check(AILevel.high) && @user.hasMoldBreaker?
+      mold_breaker = true
     end
 
-    if skill_check(PBTrainerAI.mediumSkill) && @user.abilityActive?
+    if skill_check(AILevel.medium) && @user.abilityActive?
       # NOTE: These abilities aren't suitable for checking at the start of the
       #       round.
       abilityBlacklist = [:ANALYTIC,:SNIPER,:TINTEDLENS,:AERILATE,:PIXILATE,:REFRIGERATE]
@@ -302,7 +306,7 @@ class PokeBattle_AI
       end
     end
 
-    if skill_check(PBTrainerAI.mediumSkill) && !moldBreaker
+    if skill_check(AILevel.medium) && !mold_breaker
       @user.eachAlly do |b|
         next if !b.abilityActive?
         BattleHandlers.triggerDamageCalcUserAllyAbility(b.ability,
@@ -310,7 +314,7 @@ class PokeBattle_AI
       end
     end
 
-    if skill_check(PBTrainerAI.bestSkill) && !moldBreaker && target.abilityActive?
+    if skill_check(AILevel.best) && !mold_breaker && target.abilityActive?
       # NOTE: These abilities aren't suitable for checking at the start of the
       #       round.
       abilityBlacklist = [:FILTER,:SOLIDROCK]
@@ -326,7 +330,7 @@ class PokeBattle_AI
       end
     end
 
-    if skill_check(PBTrainerAI.bestSkill) && !moldBreaker
+    if skill_check(AILevel.best) && !mold_breaker
       target.eachAlly do |b|
         next if !b.abilityActive?
         BattleHandlers.triggerDamageCalcTargetAllyAbility(b.ability,
@@ -337,7 +341,7 @@ class PokeBattle_AI
     # Item effects that alter damage
     # NOTE: Type-boosting gems aren't suitable for checking at the start of the
     #       round.
-    if skill_check(PBTrainerAI.mediumSkill) && @user.itemActive?
+    if skill_check(AILevel.medium) && @user.itemActive?
       # NOTE: These items aren't suitable for checking at the start of the
       #       round.
       itemBlacklist = [:EXPERTBELT,:LIFEORB]
@@ -353,7 +357,7 @@ class PokeBattle_AI
       end
     end
 
-    if skill_check(PBTrainerAI.bestSkill) && target.itemActive?
+    if skill_check(AILevel.best) && target.itemActive?
       # NOTE: Type-weakening berries aren't suitable for checking at the start
       #       of the round.
       if !pbIsBerry?(target.item)
@@ -363,7 +367,7 @@ class PokeBattle_AI
     end
 
     # Global abilities
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       if (@battle.pbCheckGlobalAbility(:DARKAURA) && isConst?(type,PBTypes,:DARK)) ||
          (@battle.pbCheckGlobalAbility(:FAIRYAURA) && isConst?(type,PBTypes,:FAIRY))
         if @battle.pbCheckGlobalAbility(:AURABREAK)
@@ -375,7 +379,7 @@ class PokeBattle_AI
     end
 
     # Parental Bond
-    if skill_check(PBTrainerAI.mediumSkill) && @user.hasActiveAbility?(:PARENTALBOND)
+    if skill_check(AILevel.medium) && @user.hasActiveAbility?(:PARENTALBOND)
       multipliers[BASE_DMG_MULT] = (multipliers[BASE_DMG_MULT]*1.25).floor
     end
 
@@ -385,14 +389,14 @@ class PokeBattle_AI
     # Helping Hand - n/a
 
     # Charge
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       if @user.effects[PBEffects::Charge]>0 && isConst?(type,PBTypes,:ELECTRIC)
         multipliers[BASE_DMG_MULT] *= 2
       end
     end
 
     # Mud Sport and Water Sport
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       if isConst?(type,PBTypes,:ELECTRIC)
         @battle.eachBattler do |b|
           next if !b.effects[PBEffects::MudSport]
@@ -416,7 +420,7 @@ class PokeBattle_AI
     end
 
     # Terrain moves
-    if @user.affectedByTerrain? && skill_check(PBTrainerAI.mediumSkill)
+    if @user.affectedByTerrain? && skill_check(AILevel.medium)
       case @battle.field.terrain
       when PBBattleTerrains::Electric
         if isConst?(type,PBTypes,:ELECTRIC)
@@ -432,14 +436,14 @@ class PokeBattle_AI
         end
       end
     end
-    if target.affectedByTerrain? && skill_check(PBTrainerAI.mediumSkill)
+    if target.affectedByTerrain? && skill_check(AILevel.medium)
       if @battle.field.terrain==PBBattleTerrains::Misty && isConst?(type,PBTypes,:DRAGON)
         multipliers[BASE_DMG_MULT] /= 2
       end
     end
 
     # Badge multipliers
-    if skill_check(PBTrainerAI.highSkill)
+    if skill_check(AILevel.high)
       if @battle.internalBattle
         # Don't need to check the Atk/Sp Atk-boosting badges because the AI
         # won't control the player's Pokémon.
@@ -454,14 +458,14 @@ class PokeBattle_AI
     end
 
     # Multi-targeting attacks
-    if skill_check(PBTrainerAI.highSkill)
+    if skill_check(AILevel.high)
       if pbTargetsMultiple?(move)
         multipliers[FINAL_DMG_MULT] = (multipliers[FINAL_DMG_MULT]*0.75).round
       end
     end
 
     # Weather
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       case @battle.pbWeather
       when PBWeather::Sun, PBWeather::HarshSun
         if isConst?(type,PBTypes,:FIRE)
@@ -487,7 +491,7 @@ class PokeBattle_AI
     # Random variance - n/a
 
     # STAB
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       if type>=0 && @user.pbHasType?(type)
         if @user.hasActiveAbility?(:ADAPTABILITY)
           multipliers[FINAL_DMG_MULT] *= 2
@@ -498,14 +502,14 @@ class PokeBattle_AI
     end
 
     # Type effectiveness
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       typemod = pbCalcTypeMod(type,@user,target)
       multipliers[FINAL_DMG_MULT] *= typemod.to_f/PBTypeEffectiveness::NORMAL_EFFECTIVE
       multipliers[FINAL_DMG_MULT] = multipliers[FINAL_DMG_MULT].round
     end
 
     # Burn
-    if skill_check(PBTrainerAI.highSkill)
+    if skill_check(AILevel.high)
       if @user.status==PBStatuses::BURN && move.physicalMove?(type) &&
          !@user.hasActiveAbility?(:GUTS) &&
          !(NEWEST_BATTLE_MECHANICS && move.function=="07E")   # Facade
@@ -514,7 +518,7 @@ class PokeBattle_AI
     end
 
     # Aurora Veil, Reflect, Light Screen
-    if skill_check(PBTrainerAI.highSkill)
+    if skill_check(AILevel.high)
       if !move.ignoresReflect? && !@user.hasActiveAbility?(:INFILTRATOR)
         if target.pbOwnSide.effects[PBEffects::AuroraVeil]>0
           if @battle.pbSideBattlerCount(target)>1
@@ -539,7 +543,7 @@ class PokeBattle_AI
     end
 
     # Minimize
-    if skill_check(PBTrainerAI.highSkill)
+    if skill_check(AILevel.high)
       if target.effects[PBEffects::Minimize] && move.tramplesMinimize?(2)
         multipliers[FINAL_DMG_MULT] *= 2
       end
@@ -557,18 +561,6 @@ class PokeBattle_AI
     defense = [(defense * multipliers[DEF_MULT]       / 0x1000).round,1].max
     damage  = (((2.0*@user.level/5+2).floor*baseDmg*atk/defense).floor/50).floor+2
     damage  = [(damage  * multipliers[FINAL_DMG_MULT] / 0x1000).round,1].max
-    # "AI-specific calculations below"
-
-    # Increased critical hit rate
-    if skill_check(PBTrainerAI.mediumSkill)
-      crit_stage = pbRoughCriticalHitStage(move, target)
-      if crit_stage >= 0
-        ratios = (NEWEST_BATTLE_MECHANICS) ? [24, 8, 2, 1] : [16, 8, 4, 3, 2]
-        crit_mult = (NEWEST_BATTLE_MECHANICS) ? 0.5 : 1
-        damage *= (1 + crit_mult / ratios[crit_stage])
-      end
-    end
-
     return damage.floor
   end
 
@@ -577,41 +569,40 @@ class PokeBattle_AI
   #=============================================================================
   def pbRoughCriticalHitStage(move, target)
     return -1 if target.pbOwnSide.effects[PBEffects::LuckyChant]>0
-    moldBreaker = false
-    if skill_check(PBTrainerAI.mediumSkill) && @user.hasMoldBreaker?
-      moldBreaker = true
+    mold_breaker = false
+    if skill_check(AILevel.medium) && @user.hasMoldBreaker?
+      mold_breaker = true
     end
-    ratios = (NEWEST_BATTLE_MECHANICS) ? [24,8,2,1] : [16,8,4,3,2]
     crit_stage = 0
     # Ability effects that alter critical hit rate
-    if skill_check(PBTrainerAI.mediumSkill) && @user.abilityActive?
+    if skill_check(AILevel.medium) && @user.abilityActive?
       crit_stage = BattleHandlers.triggerCriticalCalcUserAbility(@user.ability,@user,target,crit_stage)
       return -1 if crit_stage < 0
     end
-    if skill_check(PBTrainerAI.bestSkill) && !moldBreaker && target.abilityActive?
+    if skill_check(AILevel.best) && !mold_breaker && target.abilityActive?
       crit_stage = BattleHandlers.triggerCriticalCalcTargetAbility(target.ability,@user,target,crit_stage)
       return -1 if crit_stage < 0
     end
     # Item effects that alter critical hit rate
-    if skill_check(PBTrainerAI.mediumSkill) && @user.itemActive?
+    if skill_check(AILevel.medium) && @user.itemActive?
       crit_stage = BattleHandlers.triggerCriticalCalcUserItem(@user.item,@user,target,crit_stage)
       return -1 if crit_stage < 0
     end
-    if skill_check(PBTrainerAI.highSkill) && target.itemActive?
+    if skill_check(AILevel.high) && target.itemActive?
       crit_stage = BattleHandlers.triggerCriticalCalcTargetItem(target.item,@user,target,crit_stage)
       return -1 if crit_stage < 0
     end
     # Other effects
     case move.pbCritialOverride(@user, target)
-    when 1;  return ratios.length - 1
+    when 1;  return 99
     when -1; return -1
     end
-    return ratios.length - 1 if crit_stage > 50   # Merciless
-    return ratios.length - 1 if @user.effects[PBEffects::LaserFocus] > 0
+    return 99 if crit_stage > 50   # Merciless
+    return 99 if @user.effects[PBEffects::LaserFocus] > 0
     crit_stage += 1 if move.highCriticalRate?
     crit_stage += @user.effects[PBEffects::FocusEnergy]
     crit_stage += 1 if @user.inHyperMode? && isConst?(move.type, PBTypes, :SHADOW)
-    crit_stage = ratios.length - 1 if crit_stage > ratios.length - 1
+    crit_stage = [crit_stage, PokeBattle_Move::CRITICAL_HIT_RATIOS.length - 1].min
     return crit_stage
   end
 
@@ -620,16 +611,16 @@ class PokeBattle_AI
   #=============================================================================
   def pbRoughAccuracy(move, target)
     # "Always hit" effects and "always hit" accuracy
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       return 100 if target.effects[PBEffects::Minimize] && move.tramplesMinimize?(1)
       return 100 if target.effects[PBEffects::Telekinesis] > 0
     end
     # Get base accuracy
     baseAcc = move.accuracy
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       baseAcc = move.pbBaseAccuracy(@user, target)
     end
-    return 100 if baseAcc == 0 && skill_check(PBTrainerAI.mediumSkill)
+    return 100 if baseAcc == 0 && skill_check(AILevel.medium)
     # Get the move's type
     type = pbRoughType(move)
     # Calculate all modifier effects
@@ -657,32 +648,32 @@ class PokeBattle_AI
   end
 
   def pbCalcAccuracyModifiers(target,modifiers,move,type)
-    moldBreaker = false
-    if skill_check(PBTrainerAI.mediumSkill) && @user.hasMoldBreaker?
-      moldBreaker = true
+    mold_breaker = false
+    if skill_check(AILevel.medium) && @user.hasMoldBreaker?
+      mold_breaker = true
     end
     # Ability effects that alter accuracy calculation
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       if @user.abilityActive?
         BattleHandlers.triggerAccuracyCalcUserAbility(@user.ability,
            modifiers, @user, target, move, type)
       end
     end
-    if skill_check(PBTrainerAI.highSkill)
+    if skill_check(AILevel.high)
       @user.eachAlly do |b|
         next if !b.abilityActive?
         BattleHandlers.triggerAccuracyCalcUserAllyAbility(b.ability,
            modifiers, @user, target, move, type)
       end
     end
-    if skill_check(PBTrainerAI.bestSkill)
-      if target.abilityActive? && !moldBreaker
+    if skill_check(AILevel.best)
+      if target.abilityActive? && !mold_breaker
         BattleHandlers.triggerAccuracyCalcTargetAbility(target.ability,
            modifiers, @user, target, move, type)
       end
     end
     # Item effects that alter accuracy calculation
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       if @user.itemActive?
         # TODO: Zoom Lens needs to be checked differently (compare speeds of
         #       user and target).
@@ -690,7 +681,7 @@ class PokeBattle_AI
            modifiers, @user, target, move, type)
       end
     end
-    if skill_check(PBTrainerAI.highSkill)
+    if skill_check(AILevel.high)
       if target.itemActive?
         BattleHandlers.triggerAccuracyCalcTargetItem(target.item,
            modifiers, @user, target, move, type)
@@ -700,7 +691,7 @@ class PokeBattle_AI
     if @battle.field.effects[PBEffects::Gravity] > 0
       modifiers[ACC_MULT] *= 5 / 3.0
     end
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       if @user.effects[PBEffects::MicleBerry]
         modifiers[ACC_MULT] *= 1.2
       end
@@ -711,11 +702,11 @@ class PokeBattle_AI
     modifiers[EVA_STAGE] = 0 if move.function == "0A9"   # Chip Away
     modifiers[BASE_ACC] = 0 if ["0A5", "139", "13A", "13B", "13C",   # "Always hit"
                                 "147"].include?(move.function)
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       modifiers[BASE_ACC] = 0 if @user.effects[PBEffects::LockOn] > 0 &&
                                  @user.effects[PBEffects::LockOnPos] == target.index
     end
-    if skill_check(PBTrainerAI.mediumSkill)
+    if skill_check(AILevel.medium)
       if move.function == "006"   # Toxic
         modifiers[BASE_ACC] = 0 if NEWEST_BATTLE_MECHANICS && move.statusMove? &&
                                    @user.pbHasType?(:POISON)
@@ -723,10 +714,23 @@ class PokeBattle_AI
         modifiers[BASE_ACC] = move.accuracy + @user.level - target.level
         modifiers[BASE_ACC] = -1 if modifiers[BASE_ACC] <= 0   # Certain miss
         modifiers[ACC_MULT] = 0 if target.level > @user.level
-        if skill_check(PBTrainerAI.bestSkill)
-          modifiers[ACC_MULT] = 0 if target.hasActiveAbility?(:STURDY) && !moldBreaker
+        if skill_check(AILevel.best)
+          modifiers[ACC_MULT] = 0 if target.hasActiveAbility?(:STURDY) && !mold_breaker
         end
       end
     end
+  end
+
+  #=============================================================================
+  # Check if battler has a move that meets the criteria in the block provided
+  #=============================================================================
+  def check_for_move(battler)
+    ret = false
+    battler.eachMove do |move|
+      next unless yield move
+      ret = true
+      break
+    end
+    return ret
   end
 end

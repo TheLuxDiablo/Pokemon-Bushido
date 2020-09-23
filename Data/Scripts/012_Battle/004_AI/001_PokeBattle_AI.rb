@@ -10,12 +10,12 @@
 # NOTE: A trainer's skill value can range from 0-255, but by default only four
 #       distinct skill levels exist. The skill value is typically the same as
 #       the trainer's base money value.
-module PBTrainerAI
-  # Minimum skill level to be in each AI category.
-  def self.minimumSkill; return 1;   end
-  def self.mediumSkill;  return 32;  end
-  def self.highSkill;    return 48;  end
-  def self.bestSkill;    return 100; end
+module AILevel
+  # Minimum skill level to be in each AI skill bracket.
+  def self.minimum; return 1;   end
+  def self.medium;  return 32;  end
+  def self.high;    return 48;  end
+  def self.best;    return 100; end
 end
 
 #===============================================================================
@@ -63,21 +63,24 @@ class PokeBattle_AI
   # Choose an action
   def pbDefaultChooseEnemyCommand(idxBattler)
     set_up(idxBattler)
+    choices = pbGetMoveScores
     return if pbEnemyShouldUseItem?
     return if pbEnemyShouldWithdraw?
     return if @battle.pbAutoFightMenu(idxBattler)
     @battle.pbRegisterMegaEvolution(idxBattler) if pbEnemyShouldMegaEvolve?
-    pbChooseMove
+    pbChooseMove(choices)
   end
 
   # Set some class variables for the Pokémon whose action is being chosen
   def set_up(idxBattler)
+    # TODO: Where relevant, pretend the user is Mega Evolved if it isn't but can
+    #       be.
     @user        = @battle.battlers[idxBattler]
     @wildBattler = (@battle.wildBattle? && @user.opposes?)
     @skill       = 0
     if !@wildBattler
       @skill     = @battle.pbGetOwnerFromBattlerIndex(@user.index).skill || 0
-      @skill     = PBTrainerAI.minimumSkill if @skill < PBTrainerAI.minimumSkill
+      @skill     = AILevel.minimum if @skill < AILevel.minimum
     end
   end
 

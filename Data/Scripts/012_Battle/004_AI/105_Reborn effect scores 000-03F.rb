@@ -17,8 +17,24 @@ class PokeBattle_Battle
 
       #---------------------------------------------------------------------------
       when 0x03 # Sleep
+=begin
         if opponent.pbCanSleep?(false) && opponent.effects[PBEffects::Yawn]==0
           miniscore=100
+=end
+          # Prefer if attacker has setup moves (i.e. want to stall to get them set up)
+          miniscore*=1.3 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
+          # Greatly don't prefer if opponent has used Sleep Talk/Snore in the past
+          miniscore*=0.1 if checkAImoves([PBMoves::SLEEPTALK,PBMoves::SNORE],aimem)
+          # Prefer if attacker has certain roles
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
+             roles.include?(PBMonRoles::CLERIC) || roles.include?(PBMonRoles::PIVOT)
+            miniscore*=1.2
+          end
+          # Prefer if attacker doesn't have moves that'll damage more than 35% of opponent's current HP
+          if initialscores.length>0
+            miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,35)
+          end
+=begin
           # Inherently prefer this move
           miniscore*=1.3
           # Prefer if attacker has a move/ability that depends on opponent being asleep
@@ -26,8 +42,6 @@ class PokeBattle_Battle
             (!attacker.abilitynulled && attacker.ability == PBAbilities::BADDREAMS)
             miniscore*=1.5
           end
-          # Prefer if attacker has setup moves (i.e. want to stall to get them set up)
-          miniscore*=1.3 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
           # Prefer if attacker knows Leech Seed (stall for time in which Leech Seed can sap more HP)
           if attacker.pbHasMove?(:LEECHSEED)
             miniscore*=1.3
@@ -49,18 +63,11 @@ class PokeBattle_Battle
             minimini/=100.0
             miniscore*=minimini
           end
-          # Greatly don't prefer if opponent has used Sleep Talk/Snore in the past
-          miniscore*=0.1 if checkAImoves([PBMoves::SLEEPTALK,PBMoves::SNORE],aimem)
           # Don't prefer if opponent's ability will cure sleep/give it back to attacker
           if !opponent.abilitynulled
             miniscore*=0.3 if opponent.ability == PBAbilities::NATURALCURE
             miniscore*=0.7 if opponent.ability == PBAbilities::MARVELSCALE
             miniscore*=0.5 if opponent.ability == PBAbilities::SYNCHRONIZE && attacker.status==0
-          end
-          # Prefer if attacker has certain roles
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
-             roles.include?(PBMonRoles::CLERIC) || roles.include?(PBMonRoles::PIVOT)
-            miniscore*=1.2
           end
           # Prefer if attacker is faster than opponent
           if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)
@@ -78,10 +85,6 @@ class PokeBattle_Battle
           # Don't prefer if opponent is infatuated (better to let it miss from infatuation(?))
           if opponent.effects[PBEffects::Attract]>=0
             miniscore*=0.7
-          end
-          # Prefer if attacker doesn't have moves that'll damage more than 35% of opponent's current HP
-          if initialscores.length>0
-            miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,35)
           end
           # Discard if move is sound-based and opponent is immune to sound moves
           # (this is checked elsewhere and is redundant here)
@@ -117,7 +120,10 @@ class PokeBattle_Battle
           if (!opponent.abilitynulled && opponent.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
             miniscore=0
           end
-
+          # Discard Dark Void if attacker isn't Darkrai (ignores whether attacker is Transformed into Darkrai)
+          if (move.id == PBMoves::DARKVOID) && !(attacker.species == PBSpecies::DARKRAI)
+            score=0
+          end
           # Apply above modifiers to score
           if move.basedamage>0
             miniscore-=100
@@ -135,18 +141,13 @@ class PokeBattle_Battle
             miniscore/=100.0
             score*=miniscore
           end
-
-          # Discard Dark Void if attacker isn't Darkrai (ignores whether attacker is Transformed into Darkrai)
-          if (move.id == PBMoves::DARKVOID) && !(attacker.species == PBSpecies::DARKRAI)
-            score=0
-          end
-
         else
           # Discard status move if it won't have an effect/is superfluous because Yawn is whirring
           if move.basedamage==0
             score=0
           end
         end
+=end
 
       #---------------------------------------------------------------------------
       when 0x04 # Yawn

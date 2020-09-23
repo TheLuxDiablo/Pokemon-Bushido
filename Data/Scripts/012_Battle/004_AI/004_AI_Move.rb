@@ -3,10 +3,7 @@ class PokeBattle_AI
   # Main move-choosing method (moves with higher scores are more likely to be
   # chosen)
   #=============================================================================
-  def pbChooseMove
-    # Get scores and targets for each move
-    choices = pbGetMoveScores
-
+  def pbChooseMove(choices)
     # Figure out useful information about the choices
     totalScore = 0
     maxScore   = 0
@@ -16,7 +13,7 @@ class PokeBattle_AI
     end
 
     # Find any preferred moves and just choose from them
-    if skill_check(PBTrainerAI.highSkill) && maxScore > 100
+    if skill_check(AILevel.high) && maxScore > 100
       stDev = pbStdDev(choices)
       if stDev >= 40 && pbAIRandom(100) < 90
         preferredMoves = []
@@ -36,7 +33,7 @@ class PokeBattle_AI
     end
 
     # Decide whether all choices are bad, and if so, try switching instead
-    if !@wildBattler && skill_check(PBTrainerAI.highSkill)
+    if !@wildBattler && skill_check(AILevel.high)
       badMoves = false
       if (maxScore <= 20 && @user.turnCount > 2) ||
          (maxScore <= 40 && @user.turnCount > 5)
@@ -90,12 +87,20 @@ class PokeBattle_AI
   end
 
   #=============================================================================
-  # Get scores for the user's moves
+  # Get scores for the user's moves (done before any action is assessed)
   # NOTE: A move is only added to the choices array if it has a non-zero score.
   #=============================================================================
   def pbGetMoveScores
     # Get scores and targets for each move
     choices = []
+    # TODO: Split this into two, the first part being the calculation of all
+    #       predicted damages and the second part being the score calculations
+    #       (which are based on the predicted damages). Note that this requires
+    #       saving each of the scoresAndTargets entries in here rather than in
+    #       def pbRegisterMoveTrainer, and only at the very end are they
+    #       whittled down to one per move which are chosen from. Multi-target
+    #       moves could be fiddly since damages should be calculated for each
+    #       target but they're all related.
     @user.eachMoveWithIndex do |_m, i|
       next if !@battle.pbCanChooseMove?(@user.index, i, false)
       if @wildBattler
@@ -133,6 +138,7 @@ class PokeBattle_AI
   def pbRegisterMoveTrainer(idxMove, choices)
     move = @user.moves[idxMove]
     targetType = move.pbTarget(@user)
+    # TODO: Alter targetType if user has Protean and move is Curse.
     if PBTargets.multipleTargets?(targetType)
       # Move affects multiple battlers and you don't choose a particular one
       totalScore = 0
@@ -164,92 +170,177 @@ class PokeBattle_AI
   end
 
   #=============================================================================
-  # Get a score for the given move being used against the given target
+  # Set some class variables for the move being assessed
   #=============================================================================
-  def set_up_move_check(move)
+  def set_up_move_check(move, target)
     @move   = move
     @target = target
     # Determine whether user or target is faster, and store that result so it
     # doesn't need recalculating
     if @target
-      user_speed   = pbRoughStat(@user,PBStats::SPEED)
-      target_speed = pbRoughStat(@target,PBStats::SPEED)
+      user_speed   = pbRoughStat(@user, PBStats::SPEED)
+      target_speed = pbRoughStat(@target, PBStats::SPEED)
       @user_faster = (user_speed > target_speed) ^ (@battle.field.effects[PBEffects::TrickRoom] > 0)
     else
       @user_faster = false   # Won't be used if there is no target
     end
   end
 
+  #=============================================================================
+  # Get a score for the given move being used against the given target
+  #=============================================================================
   def pbGetMoveScore(move, target = nil)
     set_up_move_check(move, target)
 
-    if move.damagingMove?
+    # Get the base score for the move
+    if @move.damagingMove?
       # Is also the predicted damage amount as a percentage of target's current HP
-      score = pbGetDamagingMoveBaseScore(move, target)
+      score = pbGetDamagingMoveBaseScore
     else   # Status moves
-      # Gets base score depending on move's effect
-      score = pbGetStatusMoveBaseScore(move, target)
+      # Depends on the move's effect
+      score = pbGetStatusMoveBaseScore
     end
-    # Use the predicted damage as the base score, and modify it according to the
-    # move's effect
-    score = pbGetMoveScoreFunctions(score, move, target)
+    # Modify the score according to the move's effect
+    score = pbGetMoveScoreFunctions(score)
 
     # A score of 0 here means it absolutely should not be used
     return 0 if score <= 0
 
-    if skill_check(PBTrainerAI.mediumSkill)
+    # TODO: High priority checks:
+    # => Prefer move if it will KO the target (moreso if user is slower than target)
+    # => Don't prefer damaging move if it won't KO, user has Stance Change and
+    #    is in shield form, and user is slower than the target
+    # => Check memory for past damage dealt by a target's non-high priority move,
+    #    and prefer move if user is slower than the target and another hit from
+    #    the same amount will KO the user
+    # => Check memory for past damage dealt by a target's priority move, and don't
+    #    prefer the move if user is slower than the target and can't move faster
+    #    than it because of priority
+    # => Discard move if user is slower than the target and target is semi-
+    #    invulnerable (and move won't hit it)
+    # => Check memory for whether target has previously used Quick Guard, and
+    #    don't prefer move if so
+
+    # TODO: Low priority checks:
+    # => Don't prefer move if user is faster than the target
+    # => Prefer move if user is faster than the target and target is semi-
+    #    invulnerable
+
+    # Don't prefer a dancing move if the target has the Dancer ability
+    # TODO: Check all battlers, not just the target.
+    if skill_check(AILevel.high) && @move.danceMove? && @target.hasActiveAbility?(:DANCER)
+      score /= 2
+    end
+
+    # TODO: Check memory for whether target has previously used Ion Deluge, and
+    #       don't prefer move if it's Normal-type and target is immune because
+    #       of its ability (Lightning Rod, etc.).
+
+    # TODO: Discard move if it can be redirected by a non-target's ability
+    #       (Lightning Rod/Storm Drain). Include checking for a previous use of
+    #       Ion Deluge and this move being Normal-type.
+    # => If non-target is a user's ally, don't prefer move (rather than discarding
+    #    it)
+
+    # TODO: Discard move if it's sound-based and user has been Throat Chopped.
+    #       Don't prefer move if user hasn't been Throat Chopped but target has
+    #       previously used Throat Chop. The first part of this would probably
+    #       go elsewhere (damage calc?).
+
+    # TODO: Prefer move if it has a high critical hit rate, critical hits are
+    #       possible but not certain, and target has raised defences/user has
+    #       lowered offences (Atk/Def or SpAtk/SpDef, whichever is relevant).
+
+    # TODO: Don't prefer damaging moves if target is Destiny Bonding.
+    # => Also don't prefer damaging moves if user is slower than the target, move
+    #    is likely to be lethal, and target has previously used Destiny Bond
+
+    # TODO: Don't prefer a move that is stopped by Wide Guard if target has
+    #       previously used Wide Guard.
+
+    # TODO: Don't prefer Fire-type moves if target has previously used Powder.
+
+    # TODO: Don't prefer contact move if making contact with the target could
+    #       trigger an effect that's bad for the user (Static, etc.).
+    # => Also check if target has previously used Spiky Shield.King's Shield/
+    #    Baneful Bunker, and don't prefer move if so
+
+    # TODO: Prefer a contact move if making contact with the target could trigger
+    #       an effect that's good for the user (Poison Touch/Pickpocket).
+
+    # TODO: Don't prefer a status move if user has a damaging move that will KO
+    #       the target.
+    # => If target has previously used a move that will hurt the user by 30% of
+    #    its current HP or more, moreso don't prefer a status move.
+
+
+    if skill_check(AILevel.medium)
 
       # Prefer damaging moves if AI has no more Pokémon or AI is less clever
       if @battle.pbAbleNonActiveCount(@user.idxOwnSide) == 0
-        if !(skill_check(PBTrainerAI.highSkill) && @battle.pbAbleNonActiveCount(target.idxOwnSide) > 0)
-          if move.statusMove?
-            score /= 1.5
-          elsif target.hp <= target.totalhp / 2
-            score *= 1.5
+        if !(skill_check(AILevel.high) && @battle.pbAbleNonActiveCount(@target.idxOwnSide) > 0)
+          if @move.statusMove?
+            score *= 0.9
+          elsif @target.hp <= @target.totalhp / 2
+            score *= 1.1
           end
         end
       end
 
       # Don't prefer attacking the target if they'd be semi-invulnerable
-      if skill_check(PBTrainerAI.highSkill) && move.accuracy > 0 &&
-         (target.semiInvulnerable? || target.effects[PBEffects::SkyDrop] >= 0)
+      if skill_check(AILevel.high) && @move.accuracy > 0 && @user_faster &&
+         (@target.semiInvulnerable? || @target.effects[PBEffects::SkyDrop] >= 0)
         miss = true
-        miss = false if @user.hasActiveAbility?(:NOGUARD) || target.hasActiveAbility?(:NOGUARD)
-        if miss && pbRoughStat(@user, PBStats::SPEED) > pbRoughStat(target, PBStats::SPEED)
+        miss = false if @user.hasActiveAbility?(:NOGUARD)
+        miss = false if skill_check(AILevel.best) && @target.hasActiveAbility?(:NOGUARD)
+        if skill_check(AILevel.best) && miss
           # Knows what can get past semi-invulnerability
-          if target.effects[PBEffects::SkyDrop] >= 0
-            miss = false if move.hitsFlyingTargets?
+          if @target.effects[PBEffects::SkyDrop] >= 0
+             @target.effects[PBEffects::SkyDrop] != @user.index
+            miss = false if @move.hitsFlyingTargets?
           else
-            if target.inTwoTurnAttack?("0C9", "0CC", "0CE")   # Fly, Bounce, Sky Drop
-              miss = false if move.hitsFlyingTargets?
-            elsif target.inTwoTurnAttack?("0CA")          # Dig
-              miss = false if move.hitsDiggingTargets?
-            elsif target.inTwoTurnAttack?("0CB")          # Dive
-              miss = false if move.hitsDivingTargets?
+            if @target.inTwoTurnAttack?("0C9", "0CC", "0CE")   # Fly, Bounce, Sky Drop
+              miss = false if @move.hitsFlyingTargets?
+            elsif @target.inTwoTurnAttack?("0CA")          # Dig
+              miss = false if @move.hitsDiggingTargets?
+            elsif @target.inTwoTurnAttack?("0CB")          # Dive
+              miss = false if @move.hitsDivingTargets?
             end
           end
         end
-        score -= 80 if miss
+        score = 0 if miss
       end
 
       # Pick a good move for the Choice items
       if @user.hasActiveItem?([:CHOICEBAND, :CHOICESPECS, :CHOICESCARF])
-        if move.baseDamage >= 60;     score += 60
-        elsif move.damagingMove?;     score += 30
-        elsif move.function == "0F2"; score += 70   # Trick
-        else;                         score -= 60
+        # Really don't prefer status moves (except Trick)
+        score *= 0.1 if @move.statusMove? && @move.function != "0F2"   # Trick
+        # Don't prefer moves of certain types
+        move_type = pbRoughType(@move)
+        # Most unpreferred types are 0x effective against another type, except
+        # Fire/Water/Grass
+        unpreferred_types = [:NORMAL, :FIGHTING, :POISON, :GROUND, :GHOST,
+                             :FIRE, :WATER, :GRASS, :ELECTRIC, :PSYCHIC, :DRAGON]
+        unpreferred_types.each do |type|
+          next if !isConst?(move_type, PBTypes, type)
+          score *= 0.95
+          break
         end
+        # Don't prefer moves with lower accuracy
+        score *= @move.accuracy / 100.0 if @move.accuracy > 0
+        # Don't prefer moves with low PP
+        score *= 0.9 if @move.pp < 6
       end
 
       # If user is asleep, don't prefer moves that can't be used while asleep
-      if @user.status == PBStatuses::SLEEP && @user.statusCount>1 &&
-         !move.usableWhenAsleep? && skill_check(PBTrainerAI.mediumSkill)
+      if skill_check(AILevel.medium) && @user.status == PBStatuses::SLEEP &&
+         @user.statusCount > 1 && !@move.usableWhenAsleep?
         score *= 0.2
       end
 
       # If user is frozen, prefer a move that can thaw the user
-      if @user.status == PBStatuses::FROZEN && skill_check(PBTrainerAI.mediumSkill)
-        if move.thawsUser?
+      if skill_check(AILevel.medium) && @user.status == PBStatuses::FROZEN
+        if @move.thawsUser?
           score += 30
         else
           @user.eachMove do |m|
@@ -261,20 +352,41 @@ class PokeBattle_AI
       end
 
       # If target is frozen, don't prefer moves that could thaw them
-      if target.status == PBStatuses::FROZEN
-        if isConst?(pbRoughType(move), PBTypes, :FIRE) ||
-           (NEWEST_BATTLE_MECHANICS && move.thawsUser?)
+      if @target.status == PBStatuses::FROZEN
+        if isConst?(pbRoughType(@move), PBTypes, :FIRE) ||
+           (NEWEST_BATTLE_MECHANICS && @move.thawsUser?)
           score *= 0.1
         end
       end
     end
 
+    # Don't prefer hitting a wild shiny Pokémon
+    if @battle.wildBattle? && @target.opposes? && @target.shiny?
+      score *= 0.15
+    end
+
+    # TODO: Discard a move that can be Magic Coated if either opponent has Magic
+    #       Bounce.
+
     # Account for accuracy of move
-    accuracy = pbRoughAccuracy(move, target)
+    accuracy = pbRoughAccuracy(@move, @target)
     score *= accuracy / 100.0
 
-    # Move has a really low score; discard it
-#    score = 0 if score <= 10 && skill_check(PBTrainerAI.highSkill)
+    # Prefer flinching external effects (note that move effects which cause
+    # flinching are dealt with in the function code part of score calculation)
+    if skill_check(AILevel.medium)
+      if !@target.hasActiveAbility?(:INNERFOCUS) &&
+         !@target.hasActiveAbility?(:SHIELDDUST) &&
+         @target.effects[PBEffects::Substitute] == 0
+        can_flinch = false
+        if @move.canKingsRock? && @user.hasActiveItem?([:KINGSROCK, :RAZORFANG])
+          can_flinch = true
+        elsif @user.hasActiveAbility?(:STENCH) && !@move.flinchingMove?
+          can_flinch = true
+        end
+        calc_damage *= 1.3 if can_flinch
+      end
+    end
 
     score = score.to_i
     score = 0 if score < 0
@@ -282,55 +394,54 @@ class PokeBattle_AI
   end
 
   #=============================================================================
-  # Add to a move's score based on how much damage it will deal (as a percentage
-  # of the target's current HP)
+  # Calculate how much damage a move is likely to do to a given target (as a
+  # percentage of the target's current HP)
   #=============================================================================
-  def pbGetDamagingMoveBaseScore(move, target)
+  def pbGetDamagingMoveBaseScore
     # Don't prefer moves that are ineffective because of abilities or effects
-    return 0 if pbCheckMoveImmunity(move, target)
+    return 0 if pbCheckMoveImmunity(@move, @target)
 
     # Calculate how much damage the move will do (roughly)
-    baseDmg = pbMoveBaseDamage(move, target)
-    realDamage = pbRoughDamage(move, target, baseDmg)
+    base_damage = pbMoveBaseDamage(@move, @target)
+    calc_damage = pbRoughDamage(@move, @target, base_damage)
 
+    # TODO: Maybe move this check elsewhere? Note that Reborn's base score does
+    #       not include this halving, but the predicted damage does.
     # Two-turn attacks waste 2 turns to deal one lot of damage
-    if move.chargingTurnMove? || move.function == "0C2"   # Hyper Beam
-      realDamage *= 2 / 3   # Not halved because semi-invulnerable during use or hits first turn
-    end
+    calc_damage /= 2 if @move.chargingTurnMove?
 
-    # Prefer flinching external effects (note that move effects which cause
-    # flinching are dealt with in the function code part of score calculation)
-    if skill_check(PBTrainerAI.mediumSkill)
-      if !target.hasActiveAbility?(:INNERFOCUS) &&
-          !target.hasActiveAbility?(:SHIELDDUST) &&
-          target.effects[PBEffects::Substitute] == 0
-        canFlinch = false
-        if move.canKingsRock? && @user.hasActiveItem?([:KINGSROCK, :RAZORFANG])
-          canFlinch = true
-        end
-        if @user.hasActiveAbility?(:STENCH) && !move.flinchingMove?
-          canFlinch = true
-        end
-        realDamage *= 1.3 if canFlinch
+    # TODO: Maybe move this check elsewhere?
+    # Increased critical hit rate
+    if skill_check(AILevel.medium)
+      crit_stage = pbRoughCriticalHitStage(@move, @target)
+      if crit_stage >= 0
+        crit_fraction = (crit_stage > 50) ? 1 : PokeBattle_Move::CRITICAL_HIT_RATIOS[crit_stage]
+        crit_mult = (NEWEST_BATTLE_MECHANICS) ? 0.5 : 1
+        calc_damage *= (1 + crit_mult / crit_fraction)
       end
     end
 
     # Convert damage to percentage of target's remaining HP
-    damagePercentage = realDamage * 100.0 / target.hp
+    damage_percentage = calc_damage * 100.0 / @target.hp
 
     # Don't prefer weak attacks
-#    damagePercentage /= 2 if damagePercentage<20
-    # Prefer damaging attack if level difference is significantly high
-    damagePercentage *= 1.2 if @user.level - 10 > target.level
-    # Adjust score
-    damagePercentage = 110 if damagePercentage > 110   # Treat all lethal moves the same
-    damagePercentage += 40 if damagePercentage > 100   # Prefer moves likely to be lethal
+#    damage_percentage /= 2 if damage_percentage < 20
 
-    score = damagePercentage.to_i
+    # Prefer damaging attack if level difference is significantly high
+#    damage_percentage *= 1.2 if @user.level - 10 > @target.level
+
+    # Adjust score
+    damage_percentage = 110 if damage_percentage > 110   # Treat all lethal moves the same
+    damage_percentage += 40 if damage_percentage > 100   # Prefer moves likely to be lethal
+
+    score = damage_percentage.to_i
     return score
   end
 
-  def pbGetStatusMoveBaseScore(move, target)
+  def pbGetStatusMoveBaseScore
+    # TODO: Call pbCheckMoveImmunity here too, not just for damaging moves
+    #       (only if this status move will be affected).
+
     # TODO: Make sure all status moves are accounted for.
     # TODO: Duplicates:
     # 003 cause sleep - Dark Void (15), Grass Whistle (15), Hypnosis (15), Sing (15),
@@ -345,7 +456,7 @@ class PokeBattle_AI
     # 04B target Atk -2 - Charm (10), Feather Dance (15)
     # 04D target Spd -2 - String Shot (10), Cotton Spore (15), Scary Face (15)
     # 04F target SpDef -2 - Metal Sound (10), Fake Tears (15)
-    case move.function
+    case @move.function
     when "013", "047", "049", "052", "053", "057", "058", "059", "05E", "061",
          "062", "066", "067", "09C", "09D", "09E", "0A6", "0A7", "0A8", "0AB",
          "0AC", "0B1", "0B2", "0B8", "0BB", "0E6", "0E8", "0F6", "0F9", "10F",
@@ -383,5 +494,21 @@ class PokeBattle_AI
     # "001", "01A", "048", "0A1", "0E2", "0EA", "0F3", "10E", "11A", "11D",
     # "11E", "14A"
     return 0
+  end
+
+  #=============================================================================
+  # Apply additional effect chance to a move's score
+  # TODO: Apply all the additional effect chance modifiers.
+  #=============================================================================
+  def apply_effect_chance_to_score(score)
+    if @move.damagingMove?
+      effect_chance = @move.addlEffect
+      if effect_chance > 0
+        effect_chance *= 2 if @user.hasActiveAbility?(:SERENEGRACE) ||
+                              @user.pbOwnSide.effects[PBEffects::Rainbow] > 0
+        score *= [effect_chance.to_f, 100].min / 100
+      end
+    end
+    return score
   end
 end

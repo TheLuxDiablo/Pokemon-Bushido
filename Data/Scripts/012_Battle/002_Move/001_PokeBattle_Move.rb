@@ -18,6 +18,8 @@ class PokeBattle_Move
   attr_accessor :powerBoost
   attr_accessor :snatched
 
+  CRITICAL_HIT_RATIOS = (NEWEST_BATTLE_MECHANICS) ? [24, 8, 2, 1] : [16, 8, 4, 3, 2]
+
   def to_int; return @id; end
 
   #=============================================================================

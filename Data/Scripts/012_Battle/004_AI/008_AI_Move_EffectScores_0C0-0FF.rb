@@ -4,9 +4,9 @@ class PokeBattle_AI
   #=============================================================================
   # Get a score for the given move based on its effect
   #=============================================================================
-  def pbGetMoveScoreFunctions(score,move,target)
-    score = __d__pbGetMoveScoreFunctions(score,move,target)
-    case move.function
+  def pbGetMoveScoreFunctions(score)
+    score = __d__pbGetMoveScoreFunctions(score)
+    case @move.function
     #---------------------------------------------------------------------------
     when "0C0"
     #---------------------------------------------------------------------------
@@ -20,9 +20,9 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "0C7"
       score += 20 if @user.effects[PBEffects::FocusEnergy]>0
-      if skill_check(PBTrainerAI.highSkill)
-        score += 20 if !target.hasActiveAbility?(:INNERFOCUS) &&
-                       target.effects[PBEffects::Substitute]==0
+      if skill_check(AILevel.high)
+        score += 20 if !@target.hasActiveAbility?(:INNERFOCUS) &&
+                       @target.effects[PBEffects::Substitute]==0
       end
     #---------------------------------------------------------------------------
     when "0C9"
@@ -38,10 +38,10 @@ class PokeBattle_AI
     when "0CE"
     #---------------------------------------------------------------------------
     when "0CF"
-      score += 40 if target.effects[PBEffects::Trapping]==0
+      score += 40 if @target.effects[PBEffects::Trapping]==0
     #---------------------------------------------------------------------------
     when "0D0"
-      score += 40 if target.effects[PBEffects::Trapping]==0
+      score += 40 if @target.effects[PBEffects::Trapping]==0
     #---------------------------------------------------------------------------
     when "0D1"
     #---------------------------------------------------------------------------
@@ -57,7 +57,7 @@ class PokeBattle_AI
       end
     #---------------------------------------------------------------------------
     when "0D5", "0D6"
-      if @user.hp==@user.totalhp || (skill_check(PBTrainerAI.mediumSkill) && !@user.canHeal?)
+      if @user.hp==@user.totalhp || (skill_check(AILevel.medium) && !@user.canHeal?)
         score -= 90
       else
         score += 50
@@ -68,7 +68,7 @@ class PokeBattle_AI
       score -= 90 if @battle.positions[@user.index].effects[PBEffects::Wish]>0
     #---------------------------------------------------------------------------
     when "0D8"
-      if @user.hp==@user.totalhp || (skill_check(PBTrainerAI.mediumSkill) && !@user.canHeal?)
+      if @user.hp==@user.totalhp || (skill_check(AILevel.medium) && !@user.canHeal?)
         score -= 90
       else
         case @battle.pbWeather
@@ -98,36 +98,36 @@ class PokeBattle_AI
       score -= 90 if @user.effects[PBEffects::Ingrain]
     #---------------------------------------------------------------------------
     when "0DC"
-      if target.effects[PBEffects::LeechSeed]>=0
+      if @target.effects[PBEffects::LeechSeed]>=0
         score -= 90
-      elsif skill_check(PBTrainerAI.mediumSkill) && target.pbHasType?(:GRASS)
+      elsif skill_check(AILevel.medium) && @target.pbHasType?(:GRASS)
         score -= 90
       else
         score += 60 if @user.turnCount==0
       end
     #---------------------------------------------------------------------------
     when "0DD"
-      if skill_check(PBTrainerAI.highSkill) && target.hasActiveAbility?(:LIQUIDOOZE)
+      if skill_check(AILevel.high) && @target.hasActiveAbility?(:LIQUIDOOZE)
         score -= 70
       else
         score += 20 if @user.hp<=@user.totalhp/2
       end
     #---------------------------------------------------------------------------
     when "0DE"
-      if !target.asleep?
+      if !@target.asleep?
         score -= 100
-      elsif skill_check(PBTrainerAI.highSkill) && target.hasActiveAbility?(:LIQUIDOOZE)
+      elsif skill_check(AILevel.high) && @target.hasActiveAbility?(:LIQUIDOOZE)
         score -= 70
       else
         score += 20 if @user.hp<=@user.totalhp/2
       end
     #---------------------------------------------------------------------------
     when "0DF"
-      if @user.opposes?(target)
+      if @user.opposes?(@target)
         score -= 100
       else
-        score += 20 if target.hp<target.totalhp/2 &&
-                       target.effects[PBEffects::Substitute]==0
+        score += 20 if @target.hp<@target.totalhp/2 &&
+                       @target.effects[PBEffects::Substitute]==0
       end
     #---------------------------------------------------------------------------
     when "0E0"
@@ -135,9 +135,9 @@ class PokeBattle_AI
       foes     = @battle.pbAbleNonActiveCount(@user.idxOpposingSide)
       if @battle.pbCheckGlobalAbility(:DAMP)
         score -= 100
-      elsif skill_check(PBTrainerAI.mediumSkill) && reserves==0 && foes>0
+      elsif skill_check(AILevel.medium) && reserves==0 && foes>0
         score -= 100   # don't want to lose
-      elsif skill_check(PBTrainerAI.highSkill) && reserves==0 && foes==0
+      elsif skill_check(AILevel.high) && reserves==0 && foes==0
         score += 80   # want to draw
       else
         score -= @user.hp*100/@user.totalhp
@@ -146,14 +146,14 @@ class PokeBattle_AI
     when "0E1"
     #---------------------------------------------------------------------------
     when "0E2"
-      if !target.pbCanLowerStatStage?(PBStats::ATTACK,@user) &&
-         !target.pbCanLowerStatStage?(PBStats::SPATK,@user)
+      if !@target.pbCanLowerStatStage?(PBStats::ATTACK,@user) &&
+         !@target.pbCanLowerStatStage?(PBStats::SPATK,@user)
         score -= 100
       elsif @battle.pbAbleNonActiveCount(@user.idxOwnSide)==0
         score -= 100
       else
-        score += target.stages[PBStats::ATTACK]*10
-        score += target.stages[PBStats::SPATK]*10
+        score += @target.stages[PBStats::ATTACK]*10
+        score += @target.stages[PBStats::SPATK]*10
         score -= @user.hp*100/@user.totalhp
       end
     #---------------------------------------------------------------------------
@@ -164,7 +164,7 @@ class PokeBattle_AI
       if @battle.pbAbleNonActiveCount(@user.idxOwnSide)==0
         score -= 90
       else
-        score -= 90 if target.effects[PBEffects::PerishSong]>0
+        score -= 90 if @target.effects[PBEffects::PerishSong]>0
       end
     #---------------------------------------------------------------------------
     when "0E6"
@@ -179,19 +179,19 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "0E8"
       score -= 25 if @user.hp>@user.totalhp/2
-      if skill_check(PBTrainerAI.mediumSkill)
+      if skill_check(AILevel.medium)
         score -= 90 if @user.effects[PBEffects::ProtectRate]>1
-        score -= 90 if target.effects[PBEffects::HyperBeam]>0
+        score -= 90 if @target.effects[PBEffects::HyperBeam]>0
       else
         score -= @user.effects[PBEffects::ProtectRate]*40
       end
     #---------------------------------------------------------------------------
     when "0E9"
-      if target.hp==1
+      if @target.hp==1
         score -= 90
-      elsif target.hp<=target.totalhp/8
+      elsif @target.hp<=@target.totalhp/8
         score -= 60
-      elsif target.hp<=target.totalhp/4
+      elsif @target.hp<=@target.totalhp/4
         score -= 30
       end
     #---------------------------------------------------------------------------
@@ -199,28 +199,28 @@ class PokeBattle_AI
       score -= 100 if @battle.trainerBattle?
     #---------------------------------------------------------------------------
     when "0EB"
-      if target.effects[PBEffects::Ingrain] ||
-         (skill_check(PBTrainerAI.highSkill) && target.hasActiveAbility?(:SUCTIONCUPS))
+      if @target.effects[PBEffects::Ingrain] ||
+         (skill_check(AILevel.high) && @target.hasActiveAbility?(:SUCTIONCUPS))
         score -= 90
       else
         ch = 0
-        @battle.pbParty(target.index).each_with_index do |pkmn,i|
-          ch += 1 if @battle.pbCanSwitchLax?(target.index,i)
+        @battle.pbParty(@target.index).each_with_index do |pkmn,i|
+          ch += 1 if @battle.pbCanSwitchLax?(@target.index,i)
         end
         score -= 90 if ch==0
       end
       if score>20
-        score += 50 if target.pbOwnSide.effects[PBEffects::Spikes]>0
-        score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
-        score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
+        score += 50 if @target.pbOwnSide.effects[PBEffects::Spikes]>0
+        score += 50 if @target.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+        score += 50 if @target.pbOwnSide.effects[PBEffects::StealthRock]
       end
     #---------------------------------------------------------------------------
     when "0EC"
-      if !target.effects[PBEffects::Ingrain] &&
-         !(skill_check(PBTrainerAI.highSkill) && target.hasActiveAbility?(:SUCTIONCUPS))
-        score += 40 if target.pbOwnSide.effects[PBEffects::Spikes]>0
-        score += 40 if target.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
-        score += 40 if target.pbOwnSide.effects[PBEffects::StealthRock]
+      if !@target.effects[PBEffects::Ingrain] &&
+         !(skill_check(AILevel.high) && @target.hasActiveAbility?(:SUCTIONCUPS))
+        score += 40 if @target.pbOwnSide.effects[PBEffects::Spikes]>0
+        score += 40 if @target.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+        score += 40 if @target.pbOwnSide.effects[PBEffects::StealthRock]
       end
     #---------------------------------------------------------------------------
     when "0ED"
@@ -248,16 +248,16 @@ class PokeBattle_AI
     when "0EE"
     #---------------------------------------------------------------------------
     when "0EF"
-      score -= 90 if target.effects[PBEffects::MeanLook]>=0
+      score -= 90 if @target.effects[PBEffects::MeanLook]>=0
     #---------------------------------------------------------------------------
     when "0F0"
-      if skill_check(PBTrainerAI.highSkill)
-        score += 20 if target.item!=0
+      if skill_check(AILevel.high)
+        score += 20 if @target.item!=0
       end
     #---------------------------------------------------------------------------
     when "0F1"
-      if skill_check(PBTrainerAI.highSkill)
-        if @user.item==0 && target.item!=0
+      if skill_check(AILevel.high)
+        if @user.item==0 && @target.item!=0
           score += 40
         else
           score -= 90
@@ -267,19 +267,19 @@ class PokeBattle_AI
       end
     #---------------------------------------------------------------------------
     when "0F2"
-      if @user.item==0 && target.item==0
+      if @user.item==0 && @target.item==0
         score -= 90
-      elsif skill_check(PBTrainerAI.highSkill) && target.hasActiveAbility?(:STICKYHOLD)
+      elsif skill_check(AILevel.high) && @target.hasActiveAbility?(:STICKYHOLD)
         score -= 90
       elsif @user.hasActiveItem?([:FLAMEORB,:TOXICORB,:STICKYBARB,:IRONBALL,
                                  :CHOICEBAND,:CHOICESCARF,:CHOICESPECS])
         score += 50
-      elsif @user.item==0 && target.item!=0
+      elsif @user.item==0 && @target.item!=0
         score -= 30 if pbGetMoveData(@user.lastMoveUsed,MOVE_FUNCTION_CODE)=="0F2"   # Trick/Switcheroo
       end
     #---------------------------------------------------------------------------
     when "0F3"
-      if @user.item==0 || target.item!=0
+      if @user.item==0 || @target.item!=0
         score -= 90
       else
         if @user.hasActiveItem?([:FLAMEORB,:TOXICORB,:STICKYBARB,:IRONBALL,
@@ -291,8 +291,8 @@ class PokeBattle_AI
       end
     #---------------------------------------------------------------------------
     when "0F4", "0F5"
-      if target.effects[PBEffects::Substitute]==0
-        if skill_check(PBTrainerAI.highSkill) && pbIsBerry?(target.item)
+      if @target.effects[PBEffects::Substitute]==0
+        if skill_check(AILevel.high) && pbIsBerry?(@target.item)
           score += 30
         end
       end
@@ -311,13 +311,13 @@ class PokeBattle_AI
       end
     #---------------------------------------------------------------------------
     when "0F8"
-      score -= 90 if target.effects[PBEffects::Embargo]>0
+      score -= 90 if @target.effects[PBEffects::Embargo]>0
     #---------------------------------------------------------------------------
     when "0F9"
       if @battle.field.effects[PBEffects::MagicRoom]>0
         score -= 90
       else
-        score += 30 if @user.item==0 && target.item!=0
+        score += 30 if @user.item==0 && @target.item!=0
       end
     #---------------------------------------------------------------------------
     when "0FA"
@@ -331,28 +331,28 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "0FD"
       score -= 30
-      if target.pbCanParalyze?(@user,false)
+      if @target.pbCanParalyze?(@user,false)
         score += 30
-        if skill_check(PBTrainerAI.mediumSkill)
+        if skill_check(AILevel.medium)
            aspeed = pbRoughStat(@user,PBStats::SPEED)
-           ospeed = pbRoughStat(target,PBStats::SPEED)
+           ospeed = pbRoughStat(@target,PBStats::SPEED)
           if aspeed<ospeed
             score += 30
           elsif aspeed>ospeed
             score -= 40
           end
         end
-        if skill_check(PBTrainerAI.highSkill)
-          score -= 40 if target.hasActiveAbility?([:GUTS,:MARVELSCALE,:QUICKFEET])
+        if skill_check(AILevel.high)
+          score -= 40 if @target.hasActiveAbility?([:GUTS,:MARVELSCALE,:QUICKFEET])
         end
       end
     #---------------------------------------------------------------------------
     when "0FE"
       score -= 30
-      if target.pbCanBurn?(@user,false)
+      if @target.pbCanBurn?(@user,false)
         score += 30
-        if skill_check(PBTrainerAI.highSkill)
-          score -= 40 if target.hasActiveAbility?([:GUTS,:MARVELSCALE,:QUICKFEET,:FLAREBOOST])
+        if skill_check(AILevel.high)
+          score -= 40 if @target.hasActiveAbility?([:GUTS,:MARVELSCALE,:QUICKFEET,:FLAREBOOST])
         end
       end
     #---------------------------------------------------------------------------
