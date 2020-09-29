@@ -33,10 +33,10 @@ class PokeBattle_Battle
         end
       end
       return
+    else   # Trainer battle
 =end
 
 
-    else   # Trainer battle
       skill=pbGetOwner(attacker.index).skill || 0
 
       opponent=attacker.pbOppositeOpposing
@@ -268,7 +268,7 @@ class PokeBattle_Battle
         end
 
       end
-    end
+#    end
   end
 
   ################################################################################
@@ -801,7 +801,7 @@ class PokeBattle_Battle
     # Prefer damaging moves if AI has no more Pokémon
     if attacker.pbNonActivePokemonCount==0
       if skill>=PBTrainerAI.mediumSkill &&
-        !(skill>=PBTrainerAI.highSkill && opponent.pbNonActivePokemonCount>0)
+         !(skill>=PBTrainerAI.highSkill && opponent.pbNonActivePokemonCount>0)
         if move.basedamage==0
           PBDebug.log("[Not preferring status move]") if $INTERNAL
           score*=0.9
@@ -925,8 +925,8 @@ class PokeBattle_Battle
         score=0
       elsif skill>=PBTrainerAI.mediumSkill && !(!attacker.abilitynulled &&
          (attacker.ability == PBAbilities::MOLDBREAKER ||
-          attacker.ability == PBAbilities::TURBOBLAZE ||
-          attacker.ability == PBAbilities::TERAVOLT))
+         attacker.ability == PBAbilities::TURBOBLAZE ||
+         attacker.ability == PBAbilities::TERAVOLT))
         if !opponent.abilitynulled
           # Discard damaging moves if opponent is immune to them because of their ability
           if (typemod<=4 && opponent.ability == PBAbilities::WONDERGUARD) ||
@@ -1005,7 +1005,7 @@ class PokeBattle_Battle
         end
       end
     end
-  =end
+=end
 
     score=score.to_i
     score=0 if score<0

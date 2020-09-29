@@ -167,7 +167,7 @@ class PokeBattle_AI
     # Covers all function codes which have their own def pbBaseDamage
     case move.function
     when "010"   # Stomp
-      baseDmg *= 2 if && target.effects[PBEffects::Minimize]
+      baseDmg *= 2 if target.effects[PBEffects::Minimize]
     # Sonic Boom, Dragon Rage, Super Fang, Night Shade, Endeavor
     when "06A", "06B", "06C", "06D", "06E"
       baseDmg = move.pbFixedDamage(@user,target)

@@ -15,7 +15,7 @@ class PokeBattle_AI
       # Can't use Dark Void if user isn't Darkrai
       if NEWEST_BATTLE_MECHANICS && isConst?(@move.id, PBMoves, :DARKVOID)
         return 0 if !@user.isSpecies?(:DARKRAI) &&
-                    !isConst?(@user.effects[PBEffects::TransformSpecies], PBSpecies, :DARKRAI))
+                    !isConst?(@user.effects[PBEffects::TransformSpecies], PBSpecies, :DARKRAI)
       end
       # Check whether the target can be put to sleep
       if @target.pbCanSleep?(@user, false) && @target.effects[PBEffects::Yawn] == 0
@@ -84,63 +84,319 @@ class PokeBattle_AI
         return 0 if @move.statusMove?
       end
     #---------------------------------------------------------------------------
-    when "004"
-      if @target.effects[PBEffects::Yawn]>0 || !@target.pbCanSleep?(@user,false)
-        score -= 90 if skill_check(AILevel.medium)
-      else
-        score += 30
-        if skill_check(AILevel.high)
-          score -= 30 if @target.hasActiveAbility?(:MARVELSCALE)
+    when "004"   # Yawn (target falls asleep at end of next round)
+      return 0 if @target.effects[PBEffects::Yawn] > 0 || !@target.pbCanSleep?(@user, false)
+      mini_score = 1.0
+      # Inherently prefer
+      mini_score *= 1.2
+
+      # Prefer if user has a move that depends on the target being asleep
+      mini_score *= 1.4 if @user.pbHasMoveFunction?("0DE", "10F")   # Dream Eater, Nightmare
+      # Prefer if user has an ability that depends on the target being asleep
+      mini_score *= 1.4 if skill_check(AILevel.medium) && @user.hasActiveAbility?(:BADDREAMS)
+      # TODO: Prefer if user has certain roles (walls/cleric/pivot).
+
+      # Prefer if target is at full HP
+      mini_score *= 1.2 if @target.hp == @target.totalhp
+      # Prefer if target's stats are raised
+      sum_stages = 0
+      PBStats.eachBattleStat { |s| sum_stages += @target.stages[s] }
+      mini_score *= 1 + sum_stages * 0.1 if sum_stages > 0
+      # Don't prefer if target is confused or infatuated
+      mini_score *= 0.4 if @target.effects[PBEffects::Confusion] > 0
+      mini_score *= 0.5 if @target.effects[PBEffects::Attract] >= 0
+      # TODO: Don't prefer if target has previously used a move that is usable
+      #       while asleep.
+      if skill_check(AILevel.best)
+        mini_score *= 0.1 if check_for_move(@target) { |move| move.usableWhenAsleep? }
+      end
+      # Don't prefer if target can cure itself, benefits from being asleep, or
+      # can pass sleep back to the user
+      # TODO: Check for other effects to list here.
+      if skill_check(AILevel.best) && @target.abilityActive?
+        if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          return 0
+        elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
+           [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+          return 0
+        elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          mini_score *= 0.1
+        elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          mini_score *= 0.8
         end
+      end
+
+      # TODO: Prefer if user's moves won't do much damage to the target.
+
+      # Apply mini_score to score
+      mini_score = apply_effect_chance_to_score(mini_score)
+      score *= mini_score
+    #---------------------------------------------------------------------------
+    when "005", "0BE"   # Poisons the target
+      if @target.pbCanPoison?(@user, false)
+        mini_score = 1.0
+        # Inherently prefer
+        mini_score *= 1.2
+
+        # Prefer if user has a move that benefits from the target being poisoned
+        mini_score *= 1.6 if @user.pbHasMoveFunction?("08B", "140")   # Venoshock, Venom Drench
+        # Prefer if user has an ability that benefits from the target being poisoned
+        mini_score *= 1.6 if skill_check(AILevel.medium) && @user.hasActiveAbility?(:MERCILESS)
+        # TODO: Prefer if user has certain roles (walls).
+
+        # Prefer if some of target's stats are raised
+        sum_stages = 0
+        [PBStats::DEFENSE, PBStats::SPDEF, PBStats::EVASION].each do |s|
+          sum_stages += @target.stages[s]
+        end
+        mini_score *= 1 + sum_stages * 0.05 if sum_stages > 0
+        # Prefer if target has Sturdy
+        if skill_check(AILevel.best) && @target.hasActiveAbility?(:STURDY) && @move.damagingMove?
+          mini_score *= 1.1
+        end
+        # Don't prefer if target is yawning
+        mini_score *= 0.4 if @target.effects[PBEffects::Yawn] > 0
+        # TODO: Don't prefer if target has previously used a move that benefits
+        #       from being poisoned or can clear poisoning.
         if skill_check(AILevel.best)
-          if @target.pbHasMoveFunction?("011","0B4")   # Snore, Sleep Talk
-            score -= 50
+          mini_score *= 0.2 if check_for_move(@target) { |move| isConst?(move.id, PBMoves, :FACADE) }
+          mini_score *= 0.1 if check_for_move(@target) { |move| isConst?(move.id, PBMoves, :REST) }
+        end
+        # Don't prefer if target can cure itself, benefits from being poisoned,
+        # or can pass poisoning back to the user
+        # TODO: Check for other effects to list here.
+        if skill_check(AILevel.best) && @target.abilityActive?
+          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+            mini_score *= 0.7
+          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
+             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+            return 0
+          elsif isConst?(@target.ability, PBAbilities, :TOXICBOOST) ||
+                isConst?(@target.ability, PBAbilities, :GUTS) ||
+                isConst?(@target.ability, PBAbilities, :QUICKFEET)
+            mini_score *= 0.2
+          elsif isConst?(@target.ability, PBAbilities, :POISONHEAL) ||
+                isConst?(@target.ability, PBAbilities, :MAGICGUARD)
+            mini_score *= 0.1
+          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+            mini_score *= 0.3
+          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+            mini_score *= 0.7
+          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && @user.pbHasAnyStatus?
+            mini_score *= 0.5
           end
         end
-      end
-    #---------------------------------------------------------------------------
-    when "005", "006", "0BE"
-      if @target.pbCanPoison?(@user,false)
-        score += 30
-        if skill_check(AILevel.medium)
-          score += 30 if @target.hp<=@target.totalhp/4
-          score += 50 if @target.hp<=@target.totalhp/8
-          score -= 40 if @target.effects[PBEffects::Yawn]>0
-        end
-        if skill_check(AILevel.high)
-          score += 10 if pbRoughStat(@target,PBStats::DEFENSE)>100
-          score += 10 if pbRoughStat(@target,PBStats::SPDEF)>100
-          score -= 40 if @target.hasActiveAbility?([:GUTS,:MARVELSCALE,:TOXICBOOST])
-        end
+
+        # TODO: Prefer if user's moves won't do much damage to the target.
+
+        # Apply mini_score to score
+        mini_score = apply_effect_chance_to_score(mini_score)
+        score *= mini_score
       else
-        if skill_check(AILevel.medium)
-          score -= 90 if @move.statusMove?
-        end
+        return 0 if @move.statusMove?
       end
     #---------------------------------------------------------------------------
-    when "007", "008", "009", "0C5"
-      if @target.pbCanParalyze?(@user,false) &&
-         !(skill_check(AILevel.medium) &&
-         isConst?(@move.id,PBMoves,:THUNDERWAVE) &&
-         PBTypes.ineffective?(pbCalcTypeMod(@move.type,@user,@target)))
-        score += 30
-        if skill_check(AILevel.medium)
-           aspeed = pbRoughStat(@user,PBStats::SPEED)
-           ospeed = pbRoughStat(@target,PBStats::SPEED)
-          if aspeed<ospeed
-            score += 30
-          elsif aspeed>ospeed
-            score -= 40
+    when "006"   # Badly poisons the target (Toxic)
+      if @target.pbCanPoison?(@user, false)
+        mini_score = 1.0
+        # Inherently prefer
+        mini_score *= 1.3
+
+        # Prefer if user has a move that benefits from the target being poisoned
+        mini_score *= 1.6 if @user.pbHasMoveFunction?("08B", "140")   # Venoshock, Venom Drench
+        # Prefer if user has an ability that benefits from the target being poisoned
+        mini_score *= 1.6 if skill_check(AILevel.medium) && @user.hasActiveAbility?(:MERCILESS)
+        # TODO: Prefer if user has certain roles (walls).
+        # Prefer if status move and user is Poison-type (can't miss)
+        mini_score *= 1.1 if NEWEST_BATTLE_MECHANICS && @move.statusMove? &&
+                             @user.pbHasType?(:POISON)
+
+        # Prefer if some of target's stats are raised
+        sum_stages = 0
+        [PBStats::DEFENSE, PBStats::SPDEF, PBStats::EVASION].each do |s|
+          sum_stages += @target.stages[s]
+        end
+        mini_score *= 1 + sum_stages * 0.05 if sum_stages > 0
+        # Prefer if target has Sturdy
+        if skill_check(AILevel.best) && @target.hasActiveAbility?(:STURDY) && @move.damagingMove?
+          mini_score *= 1.1
+        end
+        # TODO: Prefer if target has previously used a HP-restoring move.
+        if skill_check(AILevel.best)
+          mini_score *= 2 if check_for_move(@target) { |move| move.healingMove? }
+        end
+        # Don't prefer if target is yawning
+        mini_score *= 0.1 if @target.effects[PBEffects::Yawn] > 0
+        # TODO: Don't prefer if target has previously used a move that benefits
+        #       from being poisoned or can clear poisoning.
+        if skill_check(AILevel.best)
+          mini_score *= 0.3 if check_for_move(@target) { |move| isConst?(move.id, PBMoves, :FACADE) }
+          mini_score *= 0.1 if check_for_move(@target) { |move| isConst?(move.id, PBMoves, :REST) }
+        end
+        # Don't prefer if target can cure itself, benefits from being poisoned,
+        # or can pass poisoning back to the user
+        # TODO: Check for other effects to list here.
+        if skill_check(AILevel.best) && @target.abilityActive?
+          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+            mini_score *= 0.7
+          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
+             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+            return 0
+          elsif isConst?(@target.ability, PBAbilities, :TOXICBOOST) ||
+                isConst?(@target.ability, PBAbilities, :GUTS) ||
+                isConst?(@target.ability, PBAbilities, :QUICKFEET)
+            mini_score *= 0.2
+          elsif isConst?(@target.ability, PBAbilities, :POISONHEAL) ||
+                isConst?(@target.ability, PBAbilities, :MAGICGUARD)
+            mini_score *= 0.1
+          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+            mini_score *= 0.2
+          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+            mini_score *= 0.8
+          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && @user.pbHasAnyStatus?
+            mini_score *= 0.5
           end
         end
-        if skill_check(AILevel.high)
-          score -= 40 if @target.hasActiveAbility?([:GUTS,:MARVELSCALE,:QUICKFEET])
-        end
+
+        # TODO: Prefer if user's moves won't do much damage to the target.
+
+        # Apply mini_score to score
+        mini_score = apply_effect_chance_to_score(mini_score)
+        score *= mini_score
       else
-        if skill_check(AILevel.medium)
-          score -= 90 if @move.statusMove?
-        end
+        return 0 if @move.statusMove?
       end
+    #---------------------------------------------------------------------------
+    when "007", "0C5"   # Paralyses the target
+      return 0 if isConst?(@move.id, PBMoves, :THUNDERWAVE) &&
+                  PBTypes.ineffective?(pbCalcTypeMod(@move.type, @user, @target))
+
+      if @target.pbCanParalyze?(@user, false)
+        mini_score = 1.0
+
+        # TODO: Prefer if user has certain roles (walls/pivot/tank).
+        # TODO: Prefer if user has any setup moves (i.e. it wants to stall to
+        #       get them set up).
+
+        # Prefer if target is at full HP
+        mini_score *= 1.2 if @target.hp == @target.totalhp
+        # Prefer if target is confused or infatuated
+        mini_score *= 1.1 if @target.effects[PBEffects::Confusion] > 0
+        mini_score *= 1.1 if @target.effects[PBEffects::Attract] >= 0
+        # Prefer if some of target's stats are raised
+        sum_stages = 0
+        [PBStats::ATTACK, PBStats::SPATK, PBStats::SPEED].each do |s|
+          sum_stages += @target.stages[s]
+        end
+        mini_score *= 1 + sum_stages * 0.05 if sum_stages > 0
+        # Don't prefer if target is yawning
+        mini_score *= 0.4 if @target.effects[PBEffects::Yawn] > 0
+        # Don't prefer if target can cure itself, benefits from being paralysed,
+        # or can pass paralysis back to the user
+        # TODO: Check for other effects to list here.
+        if skill_check(AILevel.best) && @target.abilityActive?
+          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+            mini_score *= 0.7
+          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
+             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+            return 0
+          elsif isConst?(@target.ability, PBAbilities, :GUTS) ||
+                isConst?(@target.ability, PBAbilities, :QUICKFEET)
+            mini_score *= 0.2
+          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+            mini_score *= 0.3
+          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+            mini_score *= 0.5
+          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && @user.pbHasAnyStatus?
+            mini_score *= 0.5
+          end
+        end
+
+        # Prefer if user is slower than the target but will be faster if target
+        # is paralysed
+        if !@user_faster && skill_check(AILevel.best) && !@target.hasActiveAbility?(:QUICKFEET)
+          user_speed   = pbRoughStat(@user, PBStats::SPEED)
+          target_speed = pbRoughStat(@target, PBStats::SPEED)
+          paralysis_factor = (NEWEST_BATTLE_MECHANICS) ? 2 : 4
+          if (user_speed > target_speed / paralysis_factor) ^ (@battle.field.effects[PBEffects::TrickRoom] > 0)
+            mini_score *= 1.5
+          end
+        end
+
+        # TODO: Prefer if any Pokémon in the user's party has the Sweeper role.
+
+        # Apply mini_score to score
+        mini_score = apply_effect_chance_to_score(mini_score)
+        score *= mini_score
+      else
+        return 0 if @move.statusMove?
+      end
+    #---------------------------------------------------------------------------
+    when "008"   # Paralyses the target, weather-dependent accuracy
+      if @target.pbCanParalyze?(@user, false) && @target.effects[PBEffects::Yawn] == 0
+        mini_score = 1.0
+
+        # TODO: Prefer if user has certain roles (walls/pivot/tank).
+        # TODO: Prefer if user has any setup moves (i.e. it wants to stall to
+        #       get them set up).
+
+        # Prefer if target is at full HP
+        mini_score *= 1.2 if @target.hp == @target.totalhp
+        # Prefer if target is confused or infatuated
+        mini_score *= 1.1 if @target.effects[PBEffects::Confusion] > 0
+        mini_score *= 1.1 if @target.effects[PBEffects::Attract] >= 0
+        # Prefer if some of target's stats are raised
+        sum_stages = 0
+        [PBStats::ATTACK, PBStats::SPATK, PBStats::SPEED].each do |s|
+          sum_stages += @target.stages[s]
+        end
+        mini_score *= 1 + sum_stages * 0.05 if sum_stages > 0
+        # TODO: Prefer if user is slower and target has previously used a move
+        #       that makes it semi-invulnerable in the air (Fly, Bounce, Sky Drop).
+        if !@user_faster && skill_check(AILevel.best)
+          if check_for_move(@target) { |move| ["0C9", "0CC", "0CE"].include?(move.function) }
+            mini_score *= 1.2
+          end
+        end
+        # Don't prefer if target can cure itself, benefits from being paralysed,
+        # or can pass paralysis back to the user
+        # TODO: Check for other effects to list here.
+        if skill_check(AILevel.best) && @target.abilityActive?
+          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+            mini_score *= 0.7
+          elsif isConst?(@target.ability, PBAbilities, :GUTS) ||
+                isConst?(@target.ability, PBAbilities, :QUICKFEET)
+            mini_score *= 0.2
+          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+            mini_score *= 0.3
+          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+            mini_score *= 0.5
+          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && @user.pbHasAnyStatus?
+            mini_score *= 0.5
+          end
+        end
+
+        # Prefer if user is slower than the target but will be faster if target
+        # is paralysed
+        if !@user_faster && skill_check(AILevel.best) && !@target.hasActiveAbility?(:QUICKFEET)
+          user_speed   = pbRoughStat(@user, PBStats::SPEED)
+          target_speed = pbRoughStat(@target, PBStats::SPEED)
+          paralysis_factor = (NEWEST_BATTLE_MECHANICS) ? 2 : 4
+          if (user_speed > target_speed / paralysis_factor) ^ (@battle.field.effects[PBEffects::TrickRoom] > 0)
+            mini_score *= 1.5
+          end
+        end
+
+        # TODO: Prefer if any Pokémon in the user's party has the Sweeper role.
+
+        # Apply mini_score to score
+        mini_score = apply_effect_chance_to_score(mini_score)
+        score *= mini_score
+      else
+        return 0 if @move.statusMove?
+      end
+    #---------------------------------------------------------------------------
+    when "009"   # Paralyses the target, makes the target flinch
     #---------------------------------------------------------------------------
     when "00A", "00B", "0C6"
       if @target.pbCanBurn?(@user,false)

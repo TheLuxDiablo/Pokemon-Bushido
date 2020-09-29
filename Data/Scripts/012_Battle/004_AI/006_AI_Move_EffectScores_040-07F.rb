@@ -540,7 +540,7 @@ class PokeBattle_AI
            :ROCK,   # Cave
            :GROUND  # Sand
         ]
-        type = envtypes[@environment]
+        type = envtypes[@battle.environment]
         score -= 90 if @user.pbHasType?(type)
       end
     #---------------------------------------------------------------------------

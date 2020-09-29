@@ -319,6 +319,12 @@ class PokeBattle_AI
         move_type = pbRoughType(@move)
         # Most unpreferred types are 0x effective against another type, except
         # Fire/Water/Grass
+        # TODO: Actually check through the types for 0x instead of hardcoding
+        #       them.
+        # TODO: Reborn separately doesn't prefer Fire/Water/Grass/Electric, also
+        #       with a 0.95x score, meaning Electric can be 0.95x twice. Why are
+        #       these four types not preferred? Maybe because they're all not
+        #       very effective against Dragon.
         unpreferred_types = [:NORMAL, :FIGHTING, :POISON, :GROUND, :GHOST,
                              :FIRE, :WATER, :GRASS, :ELECTRIC, :PSYCHIC, :DRAGON]
         unpreferred_types.each do |type|

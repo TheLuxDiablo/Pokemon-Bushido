@@ -1223,7 +1223,7 @@ class PokeBattle_Battle
     return c
   end
 
-  =begin
+=begin
   # Updated in Essentials
   def pbRoughAccuracy(move,attacker,opponent,skill)
     # Get base accuracy
