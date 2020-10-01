@@ -27,6 +27,8 @@ class PokeBattle_AI
     @skill       = 0
     @user        = nil
     @wildBattler = @battle.wildBattle?   # Whether AI is choosing for a wild Pokémon
+    @roles       = [Array.new(@battle.party1.length) { |i| determine_roles(0, i) },
+                    Array.new(@battle.party2.length) { |i| determine_roles(1, i) }]
   end
 
   def pbAIRandom(x); return rand(x); end

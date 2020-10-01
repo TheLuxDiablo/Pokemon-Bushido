@@ -15,16 +15,21 @@ class PokeBattle_Battle
     restmove=false
     weathermove=false
     fieldmove=false
+
     if mon.class == PokeBattle_Battler
       if mon.ev[3]>251 && (mon.nature==PBNatures::MODEST ||
-        mon.nature==PBNatures::JOLLY || mon.nature==PBNatures::TIMID ||
-        mon.nature==PBNatures::ADAMANT) || (mon.item==(PBItems::CHOICEBAND) ||
-        mon.item==(PBItems::CHOICESPECS) || mon.item==(PBItems::CHOICESCARF))
+         mon.nature==PBNatures::JOLLY || mon.nature==PBNatures::TIMID ||
+         mon.nature==PBNatures::ADAMANT) || (mon.item==(PBItems::CHOICEBAND) ||
+         mon.item==(PBItems::CHOICESPECS) || mon.item==(PBItems::CHOICESCARF))
         monRoles.push(PBMonRoles::SWEEPER)
       end
+
       for i in mon.moves
         next if i.nil?
         next if i.id == 0
+=begin
+        # Unused as only counts for REVENGEKILLER, which is only used if mon is
+        # a Pokémon and not a battler (used in switching calculation)
         if i.priority>0
           dam=pbRoughDamage(i,mon,opponent,skill,i.basedamage)
           if opponent.hp>0
@@ -32,6 +37,7 @@ class PokeBattle_Battle
             priorityko=true if percentage>100
           end
         end
+=end
         if i.isHealingMove?
           healingmove=true
         elsif (i.id == (PBMoves::HEALBELL) || i.id == (PBMoves::AROMATHERAPY))
@@ -39,9 +45,9 @@ class PokeBattle_Battle
         elsif (i.id == (PBMoves::WISH))
           wishmove=true
         elsif (i.id == (PBMoves::YAWN) || i.id == (PBMoves::PERISHSONG) ||
-          i.id == (PBMoves::DRAGONTAIL) || i.id == (PBMoves::CIRCLETHROW) ||
-          i.id == (PBMoves::WHIRLWIND) || i.id == (PBMoves::ROAR))
-           phasemove=true
+               i.id == (PBMoves::DRAGONTAIL) || i.id == (PBMoves::CIRCLETHROW) ||
+               i.id == (PBMoves::WHIRLWIND) || i.id == (PBMoves::ROAR))
+          phasemove=true
         elsif (i.id == (PBMoves::UTURN) || i.id == (PBMoves::VOLTSWITCH))
           pivotmove=true
         elsif (i.id == (PBMoves::RAPIDSPIN))
@@ -53,23 +59,24 @@ class PokeBattle_Battle
         elsif (i.id == (PBMoves::REST))
           restmove=true
         elsif (i.id == (PBMoves::SUNNYDAY) || i.id == (PBMoves::RAINDANCE) ||
-          i.id == (PBMoves::HAIL) || i.id == (PBMoves::SANDSTORM))
+               i.id == (PBMoves::HAIL) || i.id == (PBMoves::SANDSTORM))
           weathermove=true
         elsif (i.id == (PBMoves::GRASSYTERRAIN) || i.id == (PBMoves::ELECTRICTERRAIN) ||
-          i.id == (PBMoves::MISTYTERRAIN) || i.id == (PBMoves::PSYCHICTERRAIN) ||
-          i.id == (PBMoves::MIST) || i.id == (PBMoves::IONDELUGE) ||
-          i.id == (PBMoves::TOPSYTURVY))
+               i.id == (PBMoves::MISTYTERRAIN) || i.id == (PBMoves::PSYCHICTERRAIN) ||
+               i.id == (PBMoves::MIST) || i.id == (PBMoves::IONDELUGE) ||
+               i.id == (PBMoves::TOPSYTURVY))
           fieldmove=true
         end
       end
+
       if healingmove && (mon.ev[2]>251 && (mon.nature==PBNatures::BOLD ||
-        mon.nature==PBNatures::RELAXED || mon.nature==PBNatures::IMPISH ||
-        mon.nature==PBNatures::LAX))
+         mon.nature==PBNatures::RELAXED || mon.nature==PBNatures::IMPISH ||
+         mon.nature==PBNatures::LAX))
         monRoles.push(PBMonRoles::PHYSICALWALL)
       end
       if healingmove && (mon.ev[5]>251 && (mon.nature==PBNatures::CALM ||
-        mon.nature==PBNatures::GENTLE || mon.nature==PBNatures::SASSY ||
-        mon.nature==PBNatures::CAREFUL))
+         mon.nature==PBNatures::GENTLE || mon.nature==PBNatures::SASSY ||
+         mon.nature==PBNatures::CAREFUL))
         monRoles.push(PBMonRoles::SPECIALWALL)
       end
       if mon.pokemonIndex==0
@@ -84,9 +91,12 @@ class PokeBattle_Battle
       if mon.item==(PBItems::LIGHTCLAY)
         monRoles.push(PBMonRoles::SCREENER)
       end
+=begin
+      # Unused
       if priorityko || (mon.speed>opponent.speed)
         monRoles.push(PBMonRoles::REVENGEKILLER)
       end
+=end
       if (pivotmove && healingmove) || (monability == PBAbilities::REGENERATOR)
         monRoles.push(PBMonRoles::PIVOT)
       end
@@ -100,7 +110,7 @@ class PokeBattle_Battle
         monRoles.push(PBMonRoles::BATONPASSER)
       end
       if tauntmove || mon.item==(PBItems::CHOICEBAND) ||
-        mon.item==(PBItems::CHOICESPECS)
+         mon.item==(PBItems::CHOICESPECS)
         monRoles.push(PBMonRoles::STALLBREAKER)
       end
       if restmove || (monability == PBAbilities::COMATOSE) ||
@@ -140,6 +150,7 @@ class PokeBattle_Battle
       if mon.pokemonIndex==(pbParty(mon.index).length-1)
         monRoles.push(PBMonRoles::ACE)
       end
+
       secondhighest=true
       if pbParty(mon.index).length>2
         for i in 0..(pbParty(mon.index).length-2)
@@ -153,9 +164,13 @@ class PokeBattle_Battle
       if secondhighest
         monRoles.push(PBMonRoles::SECOND)
       end
+
       #PBDebug.log(sprintf("Ending role assignment for %s",PBSpecies.getName(mon.species))) if $INTERNAL
       #PBDebug.log(sprintf("")) if $INTERNAL
       return monRoles
+
+
+
     elsif mon.class == PokeBattle_Pokemon
       movelist = []
       for i in mon.moves
@@ -165,9 +180,9 @@ class PokeBattle_Battle
         movelist.push(movedummy)
       end
       if mon.ev[3]>251 && (mon.nature==PBNatures::MODEST ||
-        mon.nature==PBNatures::JOLLY || mon.nature==PBNatures::TIMID ||
-        mon.nature==PBNatures::ADAMANT) || (mon.item==(PBItems::CHOICEBAND) ||
-        mon.item==(PBItems::CHOICESPECS) || mon.item==(PBItems::CHOICESCARF))
+         mon.nature==PBNatures::JOLLY || mon.nature==PBNatures::TIMID ||
+         mon.nature==PBNatures::ADAMANT) || (mon.item==(PBItems::CHOICEBAND) ||
+         mon.item==(PBItems::CHOICESPECS) || mon.item==(PBItems::CHOICESCARF))
         monRoles.push(PBMonRoles::SWEEPER)
       end
       for i in movelist
@@ -179,8 +194,8 @@ class PokeBattle_Battle
         elsif (i.id == (PBMoves::WISH))
           wishmove=true
         elsif (i.id == (PBMoves::YAWN) || i.id == (PBMoves::PERISHSONG) ||
-          i.id == (PBMoves::DRAGONTAIL) || i.id == (PBMoves::CIRCLETHROW) ||
-          i.id == (PBMoves::WHIRLWIND) || i.id == (PBMoves::ROAR))
+               i.id == (PBMoves::DRAGONTAIL) || i.id == (PBMoves::CIRCLETHROW) ||
+               i.id == (PBMoves::WHIRLWIND) || i.id == (PBMoves::ROAR))
            phasemove=true
         elsif (i.id == (PBMoves::UTURN) || i.id == (PBMoves::VOLTSWITCH))
           pivotmove=true
@@ -193,27 +208,30 @@ class PokeBattle_Battle
         elsif (i.id == (PBMoves::REST))
           restmove=true
         elsif (i.id == (PBMoves::SUNNYDAY) || i.id == (PBMoves::RAINDANCE) ||
-          i.id == (PBMoves::HAIL) || i.id == (PBMoves::SANDSTORM))
+               i.id == (PBMoves::HAIL) || i.id == (PBMoves::SANDSTORM))
           weathermove=true
         elsif (i.id == (PBMoves::GRASSYTERRAIN) || i.id == (PBMoves::ELECTRICTERRAIN) ||
-          i.id == (PBMoves::MISTYTERRAIN) || i.id == (PBMoves::PSYCHICTERRAIN) ||
-          i.id == (PBMoves::MIST) || i.id == (PBMoves::IONDELUGE) ||
-          i.id == (PBMoves::TOPSYTURVY))
+               i.id == (PBMoves::MISTYTERRAIN) || i.id == (PBMoves::PSYCHICTERRAIN) ||
+               i.id == (PBMoves::MIST) || i.id == (PBMoves::IONDELUGE) ||
+               i.id == (PBMoves::TOPSYTURVY))
           fieldmove=true
         end
       end
       if healingmove && (mon.ev[2]>251 && (mon.nature==PBNatures::BOLD ||
-        mon.nature==PBNatures::RELAXED || mon.nature==PBNatures::IMPISH ||
-        mon.nature==PBNatures::LAX))
+         mon.nature==PBNatures::RELAXED || mon.nature==PBNatures::IMPISH ||
+         mon.nature==PBNatures::LAX))
         monRoles.push(PBMonRoles::PHYSICALWALL)
       end
       if healingmove && (mon.ev[5]>251 && (mon.nature==PBNatures::CALM ||
-        mon.nature==PBNatures::GENTLE || mon.nature==PBNatures::SASSY ||
-        mon.nature==PBNatures::CAREFUL))
+         mon.nature==PBNatures::GENTLE || mon.nature==PBNatures::SASSY ||
+         mon.nature==PBNatures::CAREFUL))
         monRoles.push(PBMonRoles::SPECIALWALL)
       end
       if position==0
         monRoles.push(PBMonRoles::LEAD)
+      end
+      if curemove || (wishmove && mon.ev[0]>251)
+        monRoles.push(PBMonRoles::CLERIC)
       end
       if (phasemove)
         monRoles.push(PBMonRoles::PHAZER)
@@ -244,7 +262,7 @@ class PokeBattle_Battle
         monRoles.push(PBMonRoles::BATONPASSER)
       end
       if tauntmove || mon.item==(PBItems::CHOICEBAND) ||
-        mon.item==(PBItems::CHOICESPECS)
+         mon.item==(PBItems::CHOICESPECS)
         monRoles.push(PBMonRoles::STALLBREAKER)
       end
       if restmove || (monability == PBAbilities::COMATOSE) ||
@@ -256,6 +274,7 @@ class PokeBattle_Battle
          (monability == PBAbilities::NATURALCURE) ||
          (monability == PBAbilities::MAGICGUARD) ||
          (monability == PBAbilities::MAGICBOUNCE) ||
+         # TODO: Reference to the weather here.
          ((monability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE)
         monRoles.push(PBMonRoles::STATUSABSORBER)
       end
@@ -286,7 +305,7 @@ class PokeBattle_Battle
       end
       secondhighest=true
       if party.length>2
-        for i in 0..(party.length-2)
+        for i in 0...(party.length-1)
           next if party[i].nil?
           if mon.level<party[i].level
             secondhighest=false

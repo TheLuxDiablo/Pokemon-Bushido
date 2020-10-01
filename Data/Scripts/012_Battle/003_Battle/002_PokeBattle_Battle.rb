@@ -99,7 +99,6 @@ class PokeBattle_Battle
     end
     @scene             = scene
     @peer              = PokeBattle_BattlePeer.create
-    @battleAI          = PokeBattle_AI.new(self)
     @field             = PokeBattle_ActiveField.new    # Whole field (gravity/rooms)
     @sides             = [PokeBattle_ActiveSide.new,   # Player's side
                           PokeBattle_ActiveSide.new]   # Foe's side
@@ -165,6 +164,7 @@ class PokeBattle_Battle
     else
       @struggle = PokeBattle_Struggle.new(self,nil)
     end
+    @battleAI          = PokeBattle_AI.new(self)
   end
 
   #=============================================================================

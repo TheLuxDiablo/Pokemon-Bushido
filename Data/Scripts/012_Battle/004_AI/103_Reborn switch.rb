@@ -1245,6 +1245,8 @@ class PokeBattle_Battle
           if theseRoles.include?(PBMonRoles::SCREENER)
             monscore+=60
           end
+          # Note: REVENGEKILLER needs to be calculated in Essentials. It isn't a
+          #       role.
           if theseRoles.include?(PBMonRoles::REVENGEKILLER)
             if opponent2.totalhp!=0 && opponent1.totalhp!=0
               if ((opponent1.hp.to_f)/opponent1.totalhp)<0.3 || ((opponent2.hp.to_f)/opponent2.totalhp)<0.3

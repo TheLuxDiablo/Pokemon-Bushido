@@ -175,6 +175,7 @@ class PokeBattle_AI
   def set_up_move_check(move, target)
     @move   = move
     @target = target
+    # TODO: Calculate pbRoughType once here.
     # Determine whether user or target is faster, and store that result so it
     # doesn't need recalculating
     if @target
@@ -339,7 +340,7 @@ class PokeBattle_AI
       end
 
       # If user is asleep, don't prefer moves that can't be used while asleep
-      if skill_check(AILevel.medium) && @user.status == PBStatuses::SLEEP &&
+      if skill_check(AILevel.medium) && @user.asleep? &&
          @user.statusCount > 1 && !@move.usableWhenAsleep?
         score *= 0.2
       end
