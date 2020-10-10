@@ -130,7 +130,7 @@ class PokeBattle_AI
     score = 100
     # Doubly prefer one of the user's moves (the choice is random but consistent
     # and does not correlate to any other property of the user)
-    score *= 2 if @user.personalID % @user.moves.length == idxMove
+    score *= 2 if @user.pokemon.personalID % @user.moves.length == idxMove
     choices.push([idxMove, score, -1])   # Move index, score, target
   end
 
@@ -501,21 +501,5 @@ class PokeBattle_AI
     # "001", "01A", "048", "0A1", "0E2", "0EA", "0F3", "10E", "11A", "11D",
     # "11E", "14A"
     return 0
-  end
-
-  #=============================================================================
-  # Apply additional effect chance to a move's score
-  # TODO: Apply all the additional effect chance modifiers.
-  #=============================================================================
-  def apply_effect_chance_to_score(score)
-    if @move.damagingMove?
-      effect_chance = @move.addlEffect
-      if effect_chance > 0
-        effect_chance *= 2 if @user.hasActiveAbility?(:SERENEGRACE) ||
-                              @user.pbOwnSide.effects[PBEffects::Rainbow] > 0
-        score *= [effect_chance.to_f, 100].min / 100
-      end
-    end
-    return score
   end
 end

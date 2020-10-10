@@ -23,25 +23,6 @@ class PokeBattle_Battle
     aimem = getAIMemory(skill,opponent.pokemonIndex)
     case move.function
     #---------------------------------------------------------------------------
-    # Missing: 010 - Stomp
-    #---------------------------------------------------------------------------
-    when 0x6A # SonicBoom
-      basedamage=20
-    when 0x6B # Dragon Rage
-      basedamage=40
-    when 0x6C # Super Fang
-      basedamage=(opponent.hp/2.0).floor
-    when 0x6D # Night Shade
-      basedamage=attacker.level
-    when 0x6E # Endeavor
-      basedamage=opponent.hp-attacker.hp
-    #---------------------------------------------------------------------------
-    when 0x6F # Psywave
-      basedamage=attacker.level
-    #---------------------------------------------------------------------------
-    when 0x70 # OHKO
-      basedamage=opponent.totalhp
-    #---------------------------------------------------------------------------
     when 0x71 # Counter
       maxdam=60
       if aimem.length > 0
@@ -74,6 +55,35 @@ class PokeBattle_Battle
         maxdam = checkAIdamage(aimem,attacker,opponent,skill)
       end
       basedamage = maxdam
+    #---------------------------------------------------------------------------
+    when 0xD4 # Bide
+      maxdam=30
+      if skill>=PBTrainerAI.bestSkill
+        if aimem.length > 0
+          maxdam = checkAIdamage(aimem,attacker,opponent,skill)
+        end
+      end
+      basedamage = maxdam
+=begin
+    #---------------------------------------------------------------------------
+    # Missing: 010 - Stomp
+    #---------------------------------------------------------------------------
+    when 0x6A # SonicBoom
+      basedamage=20
+    when 0x6B # Dragon Rage
+      basedamage=40
+    when 0x6C # Super Fang
+      basedamage=(opponent.hp/2.0).floor
+    when 0x6D # Night Shade
+      basedamage=attacker.level
+    when 0x6E # Endeavor
+      basedamage=opponent.hp-attacker.hp
+    #---------------------------------------------------------------------------
+    when 0x6F # Psywave
+      basedamage=attacker.level
+    #---------------------------------------------------------------------------
+    when 0x70 # OHKO
+      basedamage=opponent.totalhp
     #---------------------------------------------------------------------------
     when 0x75, 0x12D # Surf, Shadow Storm
       basedamage*=2 if $pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move==0xCB # Dive
@@ -221,6 +231,7 @@ class PokeBattle_Battle
     #---------------------------------------------------------------------------
     when 0xA0 # Frost Breath
       basedamage*=1.5
+    #---------------------------------------------------------------------------
     when 0xBD, 0xBE # Double Kick, Twineedle
       basedamage*=2
     #---------------------------------------------------------------------------
@@ -253,15 +264,6 @@ class PokeBattle_Battle
         basedamage*=2 if attacker.effects[PBEffects::DefenseCurl]
       end
     #---------------------------------------------------------------------------
-    when 0xD4 # Bide
-      maxdam=30
-      if skill>=PBTrainerAI.bestSkill
-        if aimem.length > 0
-          maxdam = checkAIdamage(aimem,attacker,opponent,skill)
-        end
-      end
-      basedamage = maxdam
-    #---------------------------------------------------------------------------
     when 0xE1 # Final Gambit
       basedamage=attacker.hp
     #---------------------------------------------------------------------------
@@ -280,14 +282,15 @@ class PokeBattle_Battle
         basedamage*=1.5
       end
     #---------------------------------------------------------------------------
-    # Added in Reborn
+    # Added in Reborn - n/a
     when 0x79 # Fusion Bolt
       basedamage*=2 if previousMove == 127 || previousMove == 131
     #---------------------------------------------------------------------------
-    # Added in Reborn
+    # Added in Reborn - n/a
     when 0x7A # Fusion Flare
       basedamage*=2 if previousMove == 64 || previousMove == 68
     #---------------------------------------------------------------------------
+=end
     end
     return basedamage
   end
@@ -1194,36 +1197,37 @@ class PokeBattle_Battle
     return typemod
   end
 
+=begin
+  # Updated in Essentials
   def pbAICritRate(attacker,opponent,move)
+#    $buffs = 0
+    return 0 if opponent.pbOwnSide.effects[PBEffects::LuckyChant]>0
+    c=0
     if ((!opponent.abilitynulled && opponent.ability == PBAbilities::BATTLEARMOR) ||
         (!opponent.abilitynulled && opponent.ability == PBAbilities::SHELLARMOR)) &&
         !(opponent.moldbroken)
-            return 0
+      return 0
     end
-    return 0 if opponent.pbOwnSide.effects[PBEffects::LuckyChant]>0
-    $buffs = 0
-    if attacker.effects[PBEffects::LaserFocus]>0
-      return 3
-    end
-    return 3 if move.function==0xA0 # Frost Breath
     return 3 if (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS) && opponent.status == PBStatuses::POISON
-    c=0
-    c+=attacker.effects[PBEffects::FocusEnergy]
-    c+=1 if move.hasHighCriticalRate?
     c+=1 if (!attacker.abilitynulled && attacker.ability == PBAbilities::SUPERLUCK)
+    c+=1 if attacker.hasWorkingItem(:RAZORCLAW)
+    c+=1 if attacker.hasWorkingItem(:SCOPELENS)
     if (attacker.species == PBSpecies::FARFETCHD) && attacker.hasWorkingItem(:STICK)
       c+=2
     end
     if (attacker.species == PBSpecies::CHANSEY) && attacker.hasWorkingItem(:LUCKYPUNCH)
       c+=2
     end
-    c+=1 if attacker.hasWorkingItem(:RAZORCLAW)
-    c+=1 if attacker.hasWorkingItem(:SCOPELENS)
+    return 3 if move.function==0xA0 # Frost Breath
+    if attacker.effects[PBEffects::LaserFocus]>0
+      return 3
+    end
+    c+=1 if move.hasHighCriticalRate?
+    c+=attacker.effects[PBEffects::FocusEnergy]
     c=3 if c>3
     return c
   end
 
-=begin
   # Updated in Essentials
   def pbRoughAccuracy(move,attacker,opponent,skill)
     # Get base accuracy

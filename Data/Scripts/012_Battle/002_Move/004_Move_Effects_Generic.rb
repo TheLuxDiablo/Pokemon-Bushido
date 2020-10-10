@@ -230,6 +230,8 @@ end
 # Generic user's stat increase/decrease classes.
 #===============================================================================
 class PokeBattle_StatUpMove < PokeBattle_Move
+  attr_reader :statUp
+
   def pbMoveFailed?(user,targets)
     return false if damagingMove?
     return !user.pbCanRaiseStatStage?(@statUp[0],user,self,true)
@@ -250,6 +252,8 @@ end
 
 
 class PokeBattle_MultiStatUpMove < PokeBattle_Move
+  attr_reader :statUp
+
   def pbMoveFailed?(user,targets)
     return false if damagingMove?
     failed = true

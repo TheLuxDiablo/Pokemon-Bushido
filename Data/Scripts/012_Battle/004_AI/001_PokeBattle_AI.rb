@@ -1,34 +1,34 @@
-#===============================================================================
-#
-#===============================================================================
-# AI skill levels:
-#     0:     Wild Pokémon
-#     1-31:  Basic trainer (young/inexperienced)
-#     32-47: Some skill
-#     48-99: High skill
-#     100+:  Best trainers (Gym Leaders, Elite Four, Champion)
-# NOTE: A trainer's skill value can range from 0-255, but by default only four
-#       distinct skill levels exist. The skill value is typically the same as
-#       the trainer's base money value.
-module AILevel
-  # Minimum skill level to be in each AI skill bracket.
-  def self.minimum; return 1;   end
-  def self.medium;  return 32;  end
-  def self.high;    return 48;  end
-  def self.best;    return 100; end
-end
-
-#===============================================================================
-#
-#===============================================================================
 class PokeBattle_AI
+  #=============================================================================
+  #
+  #=============================================================================
+  # AI skill levels:
+  #     0:     Wild Pokémon
+  #     1-31:  Basic trainer (young/inexperienced)
+  #     32-47: Some skill
+  #     48-99: High skill
+  #     100+:  Best trainers (Gym Leaders, Elite Four, Champion)
+  # NOTE: A trainer's skill value can range from 0-255, but by default only four
+  #       distinct skill levels exist. The skill value is typically the same as
+  #       the trainer's base money value.
+  module AILevel
+    # Minimum skill level to be in each AI skill bracket.
+    def self.minimum; return 1;   end
+    def self.medium;  return 32;  end
+    def self.high;    return 48;  end
+    def self.best;    return 100; end
+  end
+
+  #=============================================================================
+  #
+  #=============================================================================
   def initialize(battle)
     @battle      = battle
     @skill       = 0
     @user        = nil
     @wildBattler = @battle.wildBattle?   # Whether AI is choosing for a wild Pokémon
-    @roles       = [Array.new(@battle.party1.length) { |i| determine_roles(0, i) },
-                    Array.new(@battle.party2.length) { |i| determine_roles(1, i) }]
+    @roles       = [Array.new(@battle.pbParty(0).length) { |i| determine_roles(0, i) },
+                    Array.new(@battle.pbParty(1).length) { |i| determine_roles(1, i) }]
   end
 
   def pbAIRandom(x); return rand(x); end

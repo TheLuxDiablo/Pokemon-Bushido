@@ -1,30 +1,31 @@
-# TODO: Reborn has the REVENGEKILLER role which compares mon's speed with
-#       opponent (only when deciding whether to switch mon in) - this comparison
-#       should be calculated when needed instead of being a role.
-module BattleRole
-  PHAZER         = 0
-  CLERIC         = 1
-  STALLBREAKER   = 2
-  STATUSABSORBER = 3
-  BATONPASSER    = 4
-  SPINNER        = 5
-  FIELDSETTER    = 6
-  WEATHERSETTER  = 7
-  SWEEPER        = 8
-  PIVOT          = 9
-  PHYSICALWALL   = 10
-  SPECIALWALL    = 11
-  TANK           = 12
-  TRAPPER        = 13
-  SCREENER       = 14
-  ACE            = 15
-  LEAD           = 16
-  SECOND         = 17
-end
-
-
-
 class PokeBattle_AI
+  #=============================================================================
+  #
+  #=============================================================================
+  # TODO: Reborn has the REVENGEKILLER role which compares mon's speed with
+  #       opponent (only when deciding whether to switch mon in) - this
+  #       comparison should be calculated when needed instead of being a role.
+  module BattleRole
+    PHAZER         = 0
+    CLERIC         = 1
+    STALLBREAKER   = 2
+    STATUSABSORBER = 3
+    BATONPASSER    = 4
+    SPINNER        = 5
+    FIELDSETTER    = 6
+    WEATHERSETTER  = 7
+    SWEEPER        = 8
+    PIVOT          = 9
+    PHYSICALWALL   = 10
+    SPECIALWALL    = 11
+    TANK           = 12
+    TRAPPER        = 13
+    SCREENER       = 14
+    ACE            = 15
+    LEAD           = 16
+    SECOND         = 17
+  end
+
   #=============================================================================
   # Determine the roles filled by a Pokémon on a given side at a given party
   # index.
@@ -39,7 +40,7 @@ class PokeBattle_AI
     hasPivotMove = false
     pkmn.moves.each do |m|
       next if !m || m.id == 0
-      move = PokeBattle_Move.pbFromPBMove(@battle, m, pkmn)
+      move = PokeBattle_Move.pbFromPBMove(@battle, m)
       hasHealMove = true if !hasHealMove && move.healingMove?
       case move.function
       when "004", "0E5", "0EB", "0EC"   # Yawn, Perish Song, Roar, Circle Throw
@@ -124,18 +125,18 @@ class PokeBattle_AI
 
     # Check for position in team, level relative to other levels in team
     partyStarts = @battle.pbPartyStarts(side)
-    if partyStarts.include?(index + 1) || index == partyStarts.length - 1
+    if partyStarts.include?(index + 1) || index == @battle.pbParty(side).length - 1
       ret.push(BattleRole::ACE)
     else
       ret.push(BattleRole::LEAD) if partyStarts.include?(index)
-      idxTrainer = pbGetOwnerIndexFromPartyIndex(side, index)
+      idxTrainer = @battle.pbGetOwnerIndexFromPartyIndex(side, index)
       maxLevel = @battle.pbMaxLevelInTeam(side, idxTrainer)
       if pkmn.level >= maxLevel
         ret.push(BattleRole::SECOND)
       else
         secondHighest = true
         seenHigherLevel = false
-        @battle.eachInTeam(side, pbGetOwnerIndexFromPartyIndex(side, index)).each do |p|
+        @battle.eachInTeam(side, @battle.pbGetOwnerIndexFromPartyIndex(side, index)).each do |p|
           next if p.level < pkmn.level
           if seenHigherLevel
             secondHighest = false
@@ -150,5 +151,19 @@ class PokeBattle_AI
     end
 
     return ret
+  end
+
+  def check_role(side, idxBattler, *roles)
+    role_array = @roles[side][idxBattler]
+    roles.each do |r|
+      return true if role_array.include?(r)
+    end
+    return false
+  end
+
+  def check_battler_role(battler, *roles)
+    side = idxParty.idxOwnSide
+    idxParty = idxParty.pokemonIndex
+    return check_role(side, idxParty, *roles)
   end
 end

@@ -162,51 +162,63 @@ class PokeBattle_AI
   #=============================================================================
   def pbMoveBaseDamage(move, target)
     baseDmg = move.baseDamage
-    baseDmg = 60 if baseDmg==1
-    return baseDmg if !skill_check(AILevel.high)
+    baseDmg = 60 if baseDmg == 1
+    return baseDmg if !skill_check(AILevel.medium)
     # Covers all function codes which have their own def pbBaseDamage
     case move.function
     when "010"   # Stomp
       baseDmg *= 2 if target.effects[PBEffects::Minimize]
     # Sonic Boom, Dragon Rage, Super Fang, Night Shade, Endeavor
     when "06A", "06B", "06C", "06D", "06E"
-      baseDmg = move.pbFixedDamage(@user,target)
+      baseDmg = move.pbFixedDamage(@user, target)
     when "06F"   # Psywave
       baseDmg = @user.level
     when "070"   # OHKO
       baseDmg = target.totalhp
     when "071", "072", "073"   # Counter, Mirror Coat, Metal Burst
-      baseDmg = 60
       # TODO: Check memory to find the move that did the most damage, and use
       #       that value (if this move counters it, applying this move's
       #       doubling effect if appropriate).
+      baseDmg = 60
     when "075", "076", "0D0", "12D"   # Surf, Earthquake, Whirlpool, Shadow Storm
-      baseDmg = move.pbModifyDamage(baseDmg,@user,target)
-    # Gust, Twister, Venoshock, Smelling Salts, Wake-Up Slap, Facade, Hex, Brine,
-    # Retaliate, Weather Ball, Return, Frustration, Eruption, Crush Grip,
-    # Stored Power, Punishment, Hidden Power, Fury Cutter, Echoed Voice,
-    # Trump Card, Flail, Electro Ball, Low Kick, Fling, Spit Up
-    when "077", "078", "07B", "07C", "07D", "07E", "07F", "080", "085", "087",
-         "089", "08A", "08B", "08C", "08E", "08F", "090", "091", "092", "097",
-         "098", "099", "09A", "0F7", "113"
-      baseDmg = move.pbBaseDamage(baseDmg,@user,target)
+      baseDmg = move.pbModifyDamage(baseDmg, @user, target)
+    # Bulldoze, Gust, Twister, Venoshock, Smelling Salts, Wake-Up Slap, Facade,
+    # Hex, Brine, Retaliate, Weather Ball, Return, Frustration, Eruption,
+    # Crush Grip, Stored Power, Punishment, Flail, Electro Ball, Low Kick,
+    # Knock Off, Spit Up, Stomping Tantrum
+    when "044", "077", "078", "07B", "07C", "07D", "07E", "07F", "080", "085",
+         "087", "089", "08A", "08B", "08C", "08E", "08F", "098", "099", "09A",
+         "0F0", "113", "166"
+      baseDmg = move.pbBaseDamage(baseDmg, @user, target)
     when "086"   # Acrobatics
-      baseDmg *= 2 if @user.item==0 || @user.hasActiveItem?(:FLYINGGEM)
+      baseDmg *= 2 if @user.item == 0 || @user.hasActiveItem?(:FLYINGGEM)
     when "08D"   # Gyro Ball
-      targetSpeed = pbRoughStat(target,PBStats::SPEED)
-      userSpeed = pbRoughStat(@user,PBStats::SPEED)
-      baseDmg = [[(25*targetSpeed/userSpeed).floor,150].min,1].max
+      target_speed = pbRoughStat(target, PBStats::SPEED)
+      user_speed = pbRoughStat(@user, PBStats::SPEED)
+      baseDmg = [[(25 * target_speed / user_speed).floor, 150].min, 1].max
+    when "091"   # Fury Cutter
+      baseDmg = move.pbBaseDamage(baseDmg, @user, target)
+      baseDmg *= 2 if baseDmg < 160 && @user.effects[PBEffects::FuryCutter] > 0
+    when "092"   # Echoed Voice
+      factor = @user.pbOwnSide.effects[PBEffects::EchoedVoiceCounter]
+      baseDmg *= [(factor + 1), 5].min
     when "094"   # Present
       baseDmg = 50
     when "095"   # Magnitude
       baseDmg = 71
       baseDmg *= 2 if target.inTwoTurnAttack?("0CA")   # Dig
+      baseDmg /= 2 if @battle.field.terrain == PBBattleTerrains::Grassy
     when "096"   # Natural Gift
-      baseDmg = move.pbNaturalGiftBaseDamage(@user.item)
+      baseDmg = 0 if !pbIsBerry?(@user.item) || !@user.itemActive?
+      baseDmg = move.pbNaturalGiftBaseDamage(@user.item) if baseDmg > 0
+    when "097"   # Trump Card
+      dmgs = [200, 80, 60, 50, 40]
+      pp_left = [[move.pp - 1, dmgs.length - 1].min, 0].max
+      return dmgs[pp_left]
     when "09B"   # Heavy Slam
-      baseDmg = move.pbBaseDamage(baseDmg,@user,target)
+      baseDmg = move.pbBaseDamage(baseDmg, @user, target)
       baseDmg *= 2 if NEWEST_BATTLE_MECHANICS && target.effects[PBEffects::Minimize]
-    when "0A0", "0BD", "0BE"   # Frost Breath, Double Kick, Twineedle
+    when "0BD", "0BE"   # Double Kick, Twineedle
       baseDmg *= 2
     when "0BF"   # Triple Kick
       baseDmg *= 6   # Hits do x1, x2, x3 baseDmg in turn, for x6 in total
@@ -214,39 +226,46 @@ class PokeBattle_AI
       if @user.hasActiveAbility?(:SKILLLINK)
         baseDmg *= 5
       else
-        baseDmg = (baseDmg*19/6).floor   # Average damage dealt
+        baseDmg = (baseDmg * 19 / 6).floor   # Average damage dealt
       end
     when "0C1"   # Beat Up
       mult = 0
-      @battle.eachInTeamFromBattlerIndex(@user.index) do |pkmn,_i|
-        mult += 1 if pkmn && pkmn.able? && pkmn.status==PBStatuses::NONE
+      @battle.eachInTeamFromBattlerIndex(@user.index) do |pkmn, _i|
+        mult += 1 if pkmn && pkmn.able? && pkmn.status == PBStatuses::NONE
       end
       baseDmg *= mult
     when "0C4"   # Solar Beam
-      baseDmg = move.pbBaseDamageMultiplier(baseDmg,@user,target)
+      baseDmg = move.pbBaseDamageMultiplier(baseDmg, @user, target)
     when "0D3"   # Rollout
       baseDmg *= 2 if @user.effects[PBEffects::DefenseCurl]
     when "0D4"   # Bide
+      # TODO: Maybe make this equal to the highest damage a foe has dealt?
       baseDmg = 40
     when "0E1"   # Final Gambit
       baseDmg = @user.hp
+    when "0F7"   # Fling
+      if @user.item == 0 || !@user.itemActive? || @user.unlosableItem?(@user.item) ||
+         (pbIsBerry?(@user.item) && @battle.pbCheckOpposingAbility(:UNNERVE, @user.index))
+        baseDmg = 0
+      else
+        # TODO: Currently assumes a power of 10 if item is unflingable.
+        baseDmg = move.pbBaseDamage(baseDmg, @user, target)
+      end
     when "144"   # Flying Press
-      type = getConst(PBTypes,:FLYING) || -1
-      if type>=0
+      type = getConst(PBTypes, :FLYING) || -1
+      if type >= 0
         if skill_check(AILevel.high)
           targetTypes = target.pbTypes(true)
           mult = PBTypes.getCombinedEffectiveness(type,
-             targetTypes[0],targetTypes[1],targetTypes[2])
-          baseDmg = (baseDmg.to_f*mult/PBTypeEffectiveness::NORMAL_EFFECTIVE).round
+             targetTypes[0], targetTypes[1], targetTypes[2])
+          baseDmg = (baseDmg.to_f * mult / PBTypeEffectiveness::NORMAL_EFFECTIVE).round
         else
           mult = PBTypes.getCombinedEffectiveness(type,
-             target.type1,target.type2,target.effects[PBEffects::Type3])
-          baseDmg = (baseDmg.to_f*mult/PBTypeEffectiveness::NORMAL_EFFECTIVE).round
+             target.type1, target.type2, target.effects[PBEffects::Type3])
+          baseDmg = (baseDmg.to_f * mult / PBTypeEffectiveness::NORMAL_EFFECTIVE).round
         end
       end
       baseDmg *= 2 if target.effects[PBEffects::Minimize]
-    when "166"   # Stomping Tantrum
-      baseDmg *= 2 if @user.lastRoundMoveFailed
     when "175"   # Double Iron Bash
       baseDmg *= 2
       baseDmg *= 2 if target.effects[PBEffects::Minimize]
@@ -355,6 +374,7 @@ class PokeBattle_AI
         BattleHandlers.triggerDamageCalcUserItem(@user.item,
            @user,target,move,multipliers,baseDmg,type)
       end
+      # TODO: Prefer (1.5x?) if item will be consumed and user has Unburden.
     end
 
     if skill_check(AILevel.best) && target.itemActive?
@@ -568,28 +588,25 @@ class PokeBattle_AI
   # Critical hit rate calculation
   #=============================================================================
   def pbRoughCriticalHitStage(move, target)
-    return -1 if target.pbOwnSide.effects[PBEffects::LuckyChant]>0
-    mold_breaker = false
-    if skill_check(AILevel.medium) && @user.hasMoldBreaker?
-      mold_breaker = true
-    end
+    return -1 if target.pbOwnSide.effects[PBEffects::LuckyChant] > 0
+    mold_breaker = (skill_check(AILevel.medium) && @user.hasMoldBreaker?)
     crit_stage = 0
     # Ability effects that alter critical hit rate
     if skill_check(AILevel.medium) && @user.abilityActive?
-      crit_stage = BattleHandlers.triggerCriticalCalcUserAbility(@user.ability,@user,target,crit_stage)
+      crit_stage = BattleHandlers.triggerCriticalCalcUserAbility(@user.ability, @user, target, crit_stage)
       return -1 if crit_stage < 0
     end
     if skill_check(AILevel.best) && !mold_breaker && target.abilityActive?
-      crit_stage = BattleHandlers.triggerCriticalCalcTargetAbility(target.ability,@user,target,crit_stage)
+      crit_stage = BattleHandlers.triggerCriticalCalcTargetAbility(target.ability, @user, target, crit_stage)
       return -1 if crit_stage < 0
     end
     # Item effects that alter critical hit rate
     if skill_check(AILevel.medium) && @user.itemActive?
-      crit_stage = BattleHandlers.triggerCriticalCalcUserItem(@user.item,@user,target,crit_stage)
+      crit_stage = BattleHandlers.triggerCriticalCalcUserItem(@user.item, @user, target, crit_stage)
       return -1 if crit_stage < 0
     end
     if skill_check(AILevel.high) && target.itemActive?
-      crit_stage = BattleHandlers.triggerCriticalCalcTargetItem(target.item,@user,target,crit_stage)
+      crit_stage = BattleHandlers.triggerCriticalCalcTargetItem(target.item, @user, target, crit_stage)
       return -1 if crit_stage < 0
     end
     # Other effects

@@ -1,4 +1,6 @@
 class PokeBattle_Battle
+=begin
+  # Added to Essentials
   def pbStatusDamage(move)
     if (move.id == PBMoves::AFTERYOU || move.id == PBMoves::BESTOW ||   # 11D, 0F3
        move.id == PBMoves::CRAFTYSHIELD || move.id == PBMoves::LUCKYCHANT ||   # 14A, 0A1
@@ -158,6 +160,7 @@ class PokeBattle_Battle
       return 60
     end
   end
+=end
 
   def pbAegislashStats(aegi)
     if aegi.form==1
@@ -698,37 +701,24 @@ class PokeBattle_Battle
     return fieldscore
   end
 
+  # Used by all moves that raise the user's stat(s)
   def setupminiscore(attacker,opponent,skill,move,sweep,code,double,initialscores,scoreindex)
     aimem = getAIMemory(skill,opponent.pokemonIndex)
     miniscore=100
-    if attacker.effects[PBEffects::Substitute]>0 || attacker.effects[PBEffects::Disguise]
-      miniscore*=1.3
-    end
+    #hi we are going in the comments for this one because it is in dire need of explanation
+    #up until this point, most of the key differences between different set up moves has
+    #been whether they are good for setting up to sweep or not.
+    #this is not the case past here.
+    #there are some really obnoxious differences between moves, and the way i'm dealing
+    #with it is through binary strings.
+    #this string is passed as a single number and is then processed by the function as such:
+    # 00001 = attack    00010 = defense   00100 = sp.attack   01000 = sp.defense  10000 = speed
+    #cosmic power would be  01010 in binary or 10 in normal, bulk up would be 00011 or 3, etc
+    #evasion has a code of 0
+    #this way new moves can be added and still use this function without any loss in
+    #the overall scoring precision of the AI
     if initialscores.length>0
       miniscore*=1.3 if hasbadmoves(initialscores,scoreindex,20)
-    end
-    if (attacker.hp.to_f)/attacker.totalhp>0.75
-      miniscore*=1.2 if sweep
-      miniscore*=1.1 if !sweep
-    end
-    if (attacker.hp.to_f)/attacker.totalhp<0.33
-      miniscore*=0.3
-    end
-    if (attacker.hp.to_f)/attacker.totalhp<0.75 &&
-       (!attacker.abilitynulled && (attacker.ability == PBAbilities::EMERGENCYEXIT || attacker.ability == PBAbilities::WIMPOUT) ||
-       (attacker.itemWorks? && attacker.item == PBItems::EJECTBUTTON))
-      miniscore*=0.3
-    end
-    if attacker.pbOpposingSide.effects[PBEffects::Retaliate]
-      miniscore*=0.3
-    end
-    if opponent.effects[PBEffects::HyperBeam]>0
-      miniscore*=1.3 if sweep
-      miniscore*=1.2 if !sweep
-    end
-    if opponent.effects[PBEffects::Yawn]>0
-      miniscore*=1.7 if sweep
-      miniscore*=1.3 if !sweep
     end
     if skill>=PBTrainerAI.mediumSkill
       if aimem.length > 0
@@ -760,18 +750,56 @@ class PokeBattle_Battle
         end
       end
     end
-    #hi we are going in the comments for this one because it is in dire need of explanation
-    #up until this point, most of the key differences between different set up moves has
-    #been whether they are good for setting up to sweep or not.
-    #this is not the case past here.
-    #there are some really obnoxious differences between moves, and the way i'm dealing
-    #with it is through binary strings.
-    #this string is passed as a single number and is then processed by the function as such:
-    # 00001 = attack    00010 = defense   00100 = sp.attack   01000 = sp.defense  10000 = speed
-    #cosmic power would be  01010 in binary or 10 in normal, bulk up would be 00011 or 3, etc
-    #evasion has a code of 0
-    #this way new moves can be added and still use this function without any loss in
-    #the overall scoring precision of the AI
+    if attacker.effects[PBEffects::Confusion]>0
+      if code & 0b1 == 0b1 #if move boosts attack
+        miniscore*=0.2
+        miniscore*=0.5 if double #using swords dance or shell smash while confused is Extra Bad
+        miniscore*=1.5 if code & 0b11 == 0b11 #adds a correction for moves that boost attack and defense
+      else
+        miniscore*=0.5
+      end
+    end
+    if !sweep
+      miniscore*=1.1 if opponent.status==PBStatuses::BURN && code & 0b1000 == 0b1000 #sp.def boosting
+    end
+    if checkAImoves(PBStuff::SWITCHOUTMOVE,aimem)
+      miniscore*=0.5 if sweep
+      miniscore*=0.2 if !sweep
+      miniscore*=1.5 if code == 0 #correction for evasion moves
+    end
+=begin
+    if attacker.effects[PBEffects::Substitute]>0 || attacker.effects[PBEffects::Disguise]
+      miniscore*=1.3
+    end
+    if (attacker.hp.to_f)/attacker.totalhp<0.33
+      miniscore*=0.3
+    end
+    if (attacker.hp.to_f)/attacker.totalhp<0.75 &&
+       (!attacker.abilitynulled && (attacker.ability == PBAbilities::EMERGENCYEXIT || attacker.ability == PBAbilities::WIMPOUT) ||
+       (attacker.itemWorks? && attacker.item == PBItems::EJECTBUTTON))
+      miniscore*=0.3
+    end
+    if attacker.pbOpposingSide.effects[PBEffects::Retaliate]
+      miniscore*=0.3
+    end
+    if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
+      miniscore*=1.3
+    end
+    if (!attacker.abilitynulled && attacker.ability == PBAbilities::SIMPLE)
+      miniscore*=2
+    end
+    if (attacker.hp.to_f)/attacker.totalhp>0.75
+      miniscore*=1.2 if sweep
+      miniscore*=1.1 if !sweep
+    end
+    if opponent.effects[PBEffects::HyperBeam]>0
+      miniscore*=1.3 if sweep
+      miniscore*=1.2 if !sweep
+    end
+    if opponent.effects[PBEffects::Yawn]>0
+      miniscore*=1.7 if sweep
+      miniscore*=1.3 if !sweep
+    end
     if attacker.turncount<2
       miniscore*=1.2 if sweep
       miniscore*=1.1 if !sweep
@@ -779,9 +807,6 @@ class PokeBattle_Battle
     if opponent.status!=0
       miniscore*=1.2 if sweep
       miniscore*=1.1 if !sweep
-    end
-    if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
-      miniscore*=1.3
     end
     if opponent.effects[PBEffects::Encore]>0
       if opponent.moves[(opponent.effects[PBEffects::EncoreIndex])].basedamage==0
@@ -792,65 +817,23 @@ class PokeBattle_Battle
         end
       end
     end
-    if attacker.effects[PBEffects::Confusion]>0
-      if code & 0b1 == 0b1 #if move boosts attack
-        miniscore*=0.2
-        miniscore*=0.5 if double #using swords dance or shell smash while confused is Extra Bad
-        miniscore*=1.5 if code & 0b11 == 0b11 #adds a correction for moves that boost attack and defense
-      else
-        miniscore*=0.5
-      end
-    end
     sweep = false if code == 3 #from here on out, bulk up is not a sweep move
     if attacker.effects[PBEffects::LeechSeed]>=0 || attacker.effects[PBEffects::Attract]>=0
       miniscore*=0.6 if sweep
       miniscore*=0.3 if !sweep
     end
-    if !sweep
-      miniscore*=0.2 if attacker.effects[PBEffects::Toxic]>0
-      miniscore*=1.1 if opponent.status==PBStatuses::BURN && code & 0b1000 == 0b1000 #sp.def boosting
-    end
-    if checkAImoves(PBStuff::SWITCHOUTMOVE,aimem)
-      miniscore*=0.5 if sweep
-      miniscore*=0.2 if !sweep
-      miniscore*=1.5 if code == 0 #correction for evasion moves
-    end
-    if (!attacker.abilitynulled && attacker.ability == PBAbilities::SIMPLE)
-      miniscore*=2
-    end
+    miniscore*=0.2 if attacker.effects[PBEffects::Toxic]>0 && !sweep
     if @doublebattle
       miniscore*=0.5
       miniscore*=0.5 if !sweep  #drop is doubled
     end
+=end
+
     return miniscore
   end
 
-  def hasgreatmoves(initialscores,scoreindex,skill)
-    #slight variance in precision based on trainer skill
-    threshold = 100
-    threshold = 105 if skill>=PBTrainerAI.highSkill
-    threshold = 110 if skill>=PBTrainerAI.bestSkill
-    for i in 0...initialscores.length
-      next if i==scoreindex
-      if initialscores[i]>=threshold
-        return true
-      end
-    end
-    return false
-  end
-
-  def hasbadmoves(initialscores,scoreindex,threshold)
-    for i in 0...initialscores.length
-      next if i==scoreindex
-      if initialscores[i]>threshold
-        return false
-      end
-    end
-    return false
-  end
-
+  # General processing for stat-dropping moves
   def unsetupminiscore(attacker,opponent,skill,move,roles,type,physical,greatmoves=false)
-    #general processing for stat-dropping moves
     #attack stat = type 1   defense stat = type 2   speed = 3   evasion = no
     miniscore = 100
     aimem = getAIMemory(skill,opponent.pokemonIndex)
@@ -943,6 +926,30 @@ class PokeBattle_Battle
     end
     miniscore /= 100
     return miniscore
+  end
+
+  def hasgreatmoves(initialscores,scoreindex,skill)
+    #slight variance in precision based on trainer skill
+    threshold = 100
+    threshold = 105 if skill>=PBTrainerAI.highSkill
+    threshold = 110 if skill>=PBTrainerAI.bestSkill
+    for i in 0...initialscores.length
+      next if i==scoreindex
+      if initialscores[i]>=threshold
+        return true
+      end
+    end
+    return false
+  end
+
+  def hasbadmoves(initialscores,scoreindex,threshold)
+    for i in 0...initialscores.length
+      next if i==scoreindex
+      if initialscores[i]>threshold
+        return false
+      end
+    end
+    return false
   end
 
   def statchangecounter(mon,initial,final,limiter=0)

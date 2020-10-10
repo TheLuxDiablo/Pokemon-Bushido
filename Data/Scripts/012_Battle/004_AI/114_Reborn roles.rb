@@ -1,3 +1,4 @@
+=begin
 class PokeBattle_Battle
   def pbGetMonRole(mon,opponent,skill,position=0,party=nil)
     #PBDebug.log(sprintf("Beginning role assignment for %s",PBSpecies.getName(mon.species))) if $INTERNAL
@@ -27,7 +28,6 @@ class PokeBattle_Battle
       for i in mon.moves
         next if i.nil?
         next if i.id == 0
-=begin
         # Unused as only counts for REVENGEKILLER, which is only used if mon is
         # a Pokémon and not a battler (used in switching calculation)
         if i.priority>0
@@ -37,7 +37,6 @@ class PokeBattle_Battle
             priorityko=true if percentage>100
           end
         end
-=end
         if i.isHealingMove?
           healingmove=true
         elsif (i.id == (PBMoves::HEALBELL) || i.id == (PBMoves::AROMATHERAPY))
@@ -91,12 +90,12 @@ class PokeBattle_Battle
       if mon.item==(PBItems::LIGHTCLAY)
         monRoles.push(PBMonRoles::SCREENER)
       end
-=begin
+
       # Unused
       if priorityko || (mon.speed>opponent.speed)
         monRoles.push(PBMonRoles::REVENGEKILLER)
       end
-=end
+
       if (pivotmove && healingmove) || (monability == PBAbilities::REGENERATOR)
         monRoles.push(PBMonRoles::PIVOT)
       end
@@ -325,3 +324,4 @@ class PokeBattle_Battle
     return monRoles
   end
 end
+=end

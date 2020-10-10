@@ -21,11 +21,6 @@ class PokeBattle_Battle
         if opponent.pbCanSleep?(false) && opponent.effects[PBEffects::Yawn]==0
 =end
           miniscore=100
-          # Prefer if attacker has certain roles
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
-             roles.include?(PBMonRoles::CLERIC) || roles.include?(PBMonRoles::PIVOT)
-            miniscore*=1.2
-          end
           # Prefer if attacker has setup moves (i.e. want to stall to get them set up)
           miniscore*=1.3 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
           # Greatly don't prefer if opponent has used Sleep Talk/Snore in the past
@@ -41,6 +36,11 @@ class PokeBattle_Battle
           if attacker.pbHasMove?(:DREAMEATER) || attacker.pbHasMove?(:NIGHTMARE) ||
             (!attacker.abilitynulled && attacker.ability == PBAbilities::BADDREAMS)
             miniscore*=1.5
+          end
+          # Prefer if attacker has certain roles
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
+             roles.include?(PBMonRoles::CLERIC) || roles.include?(PBMonRoles::PIVOT)
+            miniscore*=1.2
           end
           # Prefer if attacker knows Leech Seed (stall for time in which Leech Seed can sap more HP)
           if attacker.pbHasMove?(:LEECHSEED)
@@ -152,11 +152,6 @@ class PokeBattle_Battle
       #---------------------------------------------------------------------------
       when 0x04 # Yawn
         if opponent.effects[PBEffects::Yawn]<=0 && opponent.pbCanSleep?(false)
-          # Prefer if attacker has certain roles
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
-             roles.include?(PBMonRoles::CLERIC) || roles.include?(PBMonRoles::PIVOT)
-            score*=1.2
-          end
           # Prefer if attacker doesn't have moves that'll damage more than 30% of opponent's current HP
           if initialscores.length>0
             score*=1.3 if hasbadmoves(initialscores,scoreindex,30)
@@ -169,6 +164,11 @@ class PokeBattle_Battle
             attacker.pbHasMove?(:NIGHTMARE) ||
             (!attacker.abilitynulled && attacker.ability == PBAbilities::BADDREAMS)
             score*=1.4
+          end
+          # Prefer if attacker has certain roles
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
+             roles.include?(PBMonRoles::CLERIC) || roles.include?(PBMonRoles::PIVOT)
+            score*=1.2
           end
           # Prefer if opponent is at full HP
           if opponent.hp==opponent.totalhp
@@ -213,10 +213,6 @@ class PokeBattle_Battle
       when 0x05 # Poison
         if opponent.pbCanPoison?(false)
           miniscore=100
-          # Prefer if attacker has certain roles
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-            miniscore*=1.5
-          end
           # Prefer if attacker doesn't have moves that'll damage more than 30% of opponent's current HP
           if initialscores.length>0
             miniscore*=1.2 if hasbadmoves(initialscores,scoreindex,30)
@@ -224,6 +220,10 @@ class PokeBattle_Battle
 =begin
           # Inherently prefer this move
           miniscore*=1.2
+          # Prefer if attacker has certain roles
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+            miniscore*=1.5
+          end
           # Prefer if some of opponent's stat stages are increased (they'd lessen
           # damage taken, so poison damage is a better prospect)
           ministat=0
@@ -306,10 +306,6 @@ class PokeBattle_Battle
       when 0x06 # Toxic
         if opponent.pbCanPoison?(false)
           miniscore=100
-          # Prefer if attacker has certain roles
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-            miniscore*=1.6
-          end
           # Greatly prefer if opponent has used a healing move in the past (because
           # toxic just keeps getting worse and will overwhelm healing effects)
           miniscore*=2 if checkAIhealing(aimem)
@@ -325,6 +321,10 @@ class PokeBattle_Battle
           if attacker.pbHasMove?(:VENOSHOCK) ||
              attacker.pbHasMove?(:VENOMDRENCH) ||
              (!attacker.abilitynulled && attacker.ability == PBAbilities::MERCILESS)
+            miniscore*=1.6
+          end
+          # Prefer if attacker has certain roles
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
             miniscore*=1.6
           end
           # Prefer if attacker is Poison-type (because Toxic has infinite accuracy
@@ -411,32 +411,21 @@ class PokeBattle_Battle
 =end
         if opponent.pbCanParalyze?(false) #&& !wavefail
           miniscore=100
-          # Prefer if attacker has certain roles
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) || roles.include?(PBMonRoles::PIVOT)
-            miniscore*=1.2
-          end
-          if roles.include?(PBMonRoles::TANK)
-            miniscore*=1.3
-          end
           # Prefer if attacker has setup moves (i.e. want to stall to get them set up)
           miniscore*=1.1 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
           # Prefer if opponent's SpAtk is higher than its Atk - why?
           if pbRoughStat(opponent,PBStats::SPATK,skill)>pbRoughStat(opponent,PBStats::ATTACK,skill)
             miniscore*=1.1
           end
-          # Prefer if any mon in attacker's party fills the sweeper role
-          count = -1
-          sweepvar = false
-          for i in pbParty(attacker.index)
-            count+=1
-            next if i.nil?
-            temprole = pbGetMonRole(i,opponent,skill,count,pbParty(attacker.index))
-            if temprole.include?(PBMonRoles::SWEEPER)
-              sweepvar = true
-            end
-          end
-          miniscore*=1.1 if sweepvar
 =begin
+          # Prefer if attacker has certain roles
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
+             roles.include?(PBMonRoles::PIVOT)
+            miniscore*=1.2
+          end
+          if roles.include?(PBMonRoles::TANK)
+            miniscore*=1.3
+          end
           # Prefer if opponent is at full HP
           if opponent.hp==opponent.totalhp
             miniscore*=1.2
@@ -484,6 +473,18 @@ class PokeBattle_Battle
              (pbRoughStat(opponent,PBStats::SPEED,skill)/2.0)<attacker.pbSpeed && @trickroom==0
             miniscore*=1.5
           end
+          # Prefer if any mon in attacker's party fills the sweeper role
+          count = -1
+          sweepvar = false
+          for i in pbParty(attacker.index)
+            count+=1
+            next if i.nil?
+            temprole = pbGetMonRole(i,opponent,skill,count,pbParty(attacker.index))
+            if temprole.include?(PBMonRoles::SWEEPER)
+              sweepvar = true
+            end
+          end
+          miniscore*=1.1 if sweepvar
           # Discard if move is powder-based and opponent is immune to powder moves
           # (this is checked elsewhere and is redundant here)
           if skill>=PBTrainerAI.bestSkill
@@ -525,32 +526,22 @@ class PokeBattle_Battle
       when 0x08 # Thunder + Paralyze
         if opponent.pbCanParalyze?(false) && opponent.effects[PBEffects::Yawn]<=0
           miniscore=100
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) || roles.include?(PBMonRoles::PIVOT)
-            miniscore*=1.2
-          end
-          if roles.include?(PBMonRoles::TANK)
-            miniscore*=1.3
-          end
           miniscore*=1.1 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
           # Why this?
           if pbRoughStat(opponent,PBStats::SPATK,skill)>pbRoughStat(opponent,PBStats::ATTACK,skill)
             miniscore*=1.1
           end
-          count = -1
-          sweepvar = false
-          for i in pbParty(attacker.index)
-            count+=1
-            next if i.nil?
-            temprole = pbGetMonRole(i,opponent,skill,count,pbParty(attacker.index))
-            if temprole.include?(PBMonRoles::SWEEPER)
-              sweepvar = true
-            end
-          end
-          miniscore*=1.1 if sweepvar
           if (pbRoughStat(opponent,PBStats::SPEED,skill)>attacker.pbSpeed) ^ (@trickroom!=0)
             score*=1.2 if checkAImoves(PBStuff::TWOTURNAIRMOVE,aimem)
           end
 =begin
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
+            roles.include?(PBMonRoles::PIVOT)
+            miniscore*=1.2
+          end
+          if roles.include?(PBMonRoles::TANK)
+            miniscore*=1.3
+          end
           if opponent.hp==opponent.totalhp
             miniscore*=1.2
           end
@@ -584,6 +575,17 @@ class PokeBattle_Battle
              (pbRoughStat(opponent,PBStats::SPEED,skill)/2.0)<attacker.pbSpeed && @trickroom==0
             miniscore*=1.5
           end
+          count = -1
+          sweepvar = false
+          for i in pbParty(attacker.index)
+            count+=1
+            next if i.nil?
+            temprole = pbGetMonRole(i,opponent,skill,count,pbParty(attacker.index))
+            if temprole.include?(PBMonRoles::SWEEPER)
+              sweepvar = true
+            end
+          end
+          miniscore*=1.1 if sweepvar
           miniscore-=100
           if move.addlEffect.to_f != 100
             miniscore*=(move.addlEffect.to_f/100)
@@ -608,8 +610,29 @@ class PokeBattle_Battle
         if opponent.pbCanParalyze?(false)
           miniscore=100
           miniscore*=1.1 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
+          # Why this?
+          if pbRoughStat(opponent,PBStats::SPATK,skill)>pbRoughStat(opponent,PBStats::ATTACK,skill)
+            miniscore*=1.1
+          end
+=begin
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) ||
+             roles.include?(PBMonRoles::PIVOT)
+            miniscore*=1.2
+          end
+          if roles.include?(PBMonRoles::TANK)
+            miniscore*=1.1
+          end
           if opponent.hp==opponent.totalhp
             miniscore*=1.1
+          end
+          if opponent.effects[PBEffects::Confusion]>0
+            miniscore*=1.1
+          end
+          if opponent.effects[PBEffects::Attract]>=0
+            miniscore*=1.1
+          end
+          if opponent.effects[PBEffects::Yawn]>0
+            miniscore*=0.4
           end
           ministat=0
           ministat+=opponent.stages[PBStats::ATTACK]
@@ -628,18 +651,17 @@ class PokeBattle_Battle
             miniscore*=0.7 if opponent.ability == PBAbilities::SHEDSKIN
             miniscore*=0.5 if opponent.ability == PBAbilities::SYNCHRONIZE && attacker.status==0
           end
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL) || roles.include?(PBMonRoles::PIVOT)
-            miniscore*=1.2
-          end
-          if roles.include?(PBMonRoles::TANK)
-            miniscore*=1.1
-          end
           if pbRoughStat(opponent,PBStats::SPEED,skill)>attacker.pbSpeed &&
              (pbRoughStat(opponent,PBStats::SPEED,skill)/2)<attacker.pbSpeed && @trickroom==0
             miniscore*=1.1
           end
-          if pbRoughStat(opponent,PBStats::SPATK,skill)>pbRoughStat(opponent,PBStats::ATTACK,skill)
-            miniscore*=1.1
+          if opponent.effects[PBEffects::Substitute]==0 && !(!opponent.abilitynulled && opponent.ability == PBAbilities::INNERFOCUS)
+            if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)
+              miniscore*=1.1
+            end
+            if (!opponent.abilitynulled && opponent.ability == PBAbilities::STEADFAST)
+              miniscore*=0.3
+            end
           end
           count = -1
           sweepvar = false
@@ -652,23 +674,6 @@ class PokeBattle_Battle
             end
           end
           miniscore*=1.1 if sweepvar
-          if opponent.effects[PBEffects::Confusion]>0
-            miniscore*=1.1
-          end
-          if opponent.effects[PBEffects::Attract]>=0
-            miniscore*=1.1
-          end
-          if opponent.effects[PBEffects::Yawn]>0
-            miniscore*=0.4
-          end
-          if opponent.effects[PBEffects::Substitute]==0 && !(!opponent.abilitynulled && opponent.ability == PBAbilities::INNERFOCUS)
-            if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)
-              miniscore*=1.1
-            end
-            if (!opponent.abilitynulled && opponent.ability == PBAbilities::STEADFAST)
-              miniscore*=0.3
-            end
-          end
           miniscore-=100
           if move.addlEffect.to_f != 100
             miniscore*=(move.addlEffect.to_f/100)
@@ -679,10 +684,12 @@ class PokeBattle_Battle
           miniscore+=100
           miniscore/=100.0
           score*=miniscore
+=end
         end
 
       #---------------------------------------------------------------------------
       when 0x0A # Burn
+=begin
         if opponent.pbCanBurn?(false)
           miniscore=100
           miniscore*=1.2
@@ -696,6 +703,11 @@ class PokeBattle_Battle
             minimini/=100.0
             miniscore*=minimini
           end
+          if opponent.effects[PBEffects::Yawn]>0
+            miniscore*=0.4
+          end
+          miniscore*=0.1 if checkAImoves([PBMoves::REST],aimem)
+          miniscore*=0.3 if checkAImoves([PBMoves::FACADE],aimem)
           if !opponent.abilitynulled
             miniscore*=0.3 if opponent.ability == PBAbilities::NATURALCURE
             miniscore*=0.7 if opponent.ability == PBAbilities::MARVELSCALE
@@ -706,16 +718,11 @@ class PokeBattle_Battle
             miniscore*=0.3 if opponent.ability == PBAbilities::QUICKFEET
             miniscore*=1.1 if opponent.ability == PBAbilities::STURDY && move.basedamage>0
           end
-          miniscore*=0.1 if checkAImoves([PBMoves::REST],aimem)
-          miniscore*=0.3 if checkAImoves([PBMoves::FACADE],aimem)
-          if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
-            miniscore*=1.4
-          end
-          if opponent.effects[PBEffects::Yawn]>0
-            miniscore*=0.4
-          end
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::HYDRATION) && pbWeather==PBWeather::RAINDANCE
             miniscore=0
+          end
+          if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
+            miniscore*=1.4
           end
           if move.basedamage>0
             miniscore-=100
@@ -737,7 +744,9 @@ class PokeBattle_Battle
             score=0
           end
         end
+=end
       when 0x0B # Burn + Flinch
+=begin
         if opponent.pbCanBurn?(false)
           miniscore=100
           ministat=0
@@ -750,6 +759,14 @@ class PokeBattle_Battle
             minimini/=100.0
             miniscore*=minimini
           end
+          if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
+            miniscore*=1.4
+          end
+          if opponent.effects[PBEffects::Yawn]>0
+            miniscore*=0.4
+          end
+          miniscore*=0.1 if checkAImoves([PBMoves::REST],aimem)
+          miniscore*=0.3 if checkAImoves([PBMoves::FACADE],aimem)
           if !opponent.abilitynulled
             miniscore*=0.3 if opponent.ability == PBAbilities::NATURALCURE
             miniscore*=0.7 if opponent.ability == PBAbilities::MARVELSCALE
@@ -759,14 +776,6 @@ class PokeBattle_Battle
             miniscore*=0.5 if opponent.ability == PBAbilities::MAGICGUARD
             miniscore*=0.3 if opponent.ability == PBAbilities::QUICKFEET
             miniscore*=1.1 if opponent.ability == PBAbilities::STURDY && move.basedamage>0
-          end
-          miniscore*=0.1 if checkAImoves([PBMoves::REST],aimem)
-          miniscore*=0.3 if checkAImoves([PBMoves::FACADE],aimem)
-          if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
-            miniscore*=1.4
-          end
-          if opponent.effects[PBEffects::Yawn]>0
-            miniscore*=0.4
           end
           if opponent.effects[PBEffects::Substitute]==0 && !(!opponent.abilitynulled && opponent.ability == PBAbilities::INNERFOCUS)
             if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)
@@ -787,13 +796,15 @@ class PokeBattle_Battle
           miniscore/=100.0
           score*=miniscore
         end
+=end
       when 0x0C # Freeze
         if opponent.pbCanFreeze?(false)
           miniscore=100
-          miniscore*=1.2
-          miniscore*=0 if checkAImoves(PBStuff::UNFREEZEMOVE,aimem)
           miniscore*=1.2 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
           miniscore*=1.2 if checkAIhealing(aimem)
+          miniscore*=0 if checkAImoves(PBStuff::UNFREEZEMOVE,aimem)
+=begin
+          miniscore*=1.2
           ministat = statchangecounter(opponent,1,7)
           if ministat>0
             minimini=5*ministat
@@ -816,14 +827,16 @@ class PokeBattle_Battle
           miniscore+=100
           miniscore/=100.0
           score*=miniscore
+=end
         end
       when 0x0D # Blizzard Freeze
         if opponent.pbCanFreeze?(false)
           miniscore=100
-          miniscore*=1.4
-          miniscore*=0 if checkAImoves(PBStuff::UNFREEZEMOVE,aimem)
           miniscore*=1.3 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
           miniscore*=1.2 if checkAIhealing(aimem)
+          miniscore*=0 if checkAImoves(PBStuff::UNFREEZEMOVE,aimem)
+=begin
+          miniscore*=1.4
           ministat = statchangecounter(opponent,1,7)
           if ministat>0
             minimini=5*ministat
@@ -849,14 +862,16 @@ class PokeBattle_Battle
         #  if pbWeather == PBWeather::HAIL
         #    score*=1.3
         #  end
+=end
         end
       when 0x0E # Freeze + Flinch
         if opponent.pbCanFreeze?(false)
           miniscore=100
-          miniscore*=1.1
-          miniscore*=0 if checkAImoves(PBStuff::UNFREEZEMOVE,aimem)
           miniscore*=1.3 if attacker.moves.any? {|moveloop| (PBStuff::SETUPMOVE).include?(moveloop)}
           miniscore*=1.2 if checkAIhealing(aimem)
+          miniscore*=0 if checkAImoves(PBStuff::UNFREEZEMOVE,aimem)
+=begin
+          miniscore*=1.1
           ministat = statchangecounter(opponent,1,7)
           if ministat>0
             minimini=5*ministat
@@ -887,8 +902,10 @@ class PokeBattle_Battle
           miniscore+=100
           miniscore/=100.0
           score*=miniscore
+=end
         end
       when 0x0F # Flinch
+=begin
         if opponent.effects[PBEffects::Substitute]==0 && !(!opponent.abilitynulled && opponent.ability == PBAbilities::INNERFOCUS)
           if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed)  ^ (@trickroom!=0)
             miniscore=100
@@ -917,7 +934,9 @@ class PokeBattle_Battle
             score*=miniscore
           end
         end
+=end
       when 0x10 # Stomp
+=begin
         if opponent.effects[PBEffects::Substitute]==0 && !(!opponent.abilitynulled && opponent.ability == PBAbilities::INNERFOCUS)
           if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)
             miniscore=100
@@ -938,7 +957,9 @@ class PokeBattle_Battle
           end
         end
         score*=2 if opponent.effects[PBEffects::Minimize]
+=end
       when 0x11 # Snore
+=begin
         if attacker.status==PBStatuses::SLEEP
           score*=2
           if opponent.effects[PBEffects::Substitute]!=0
@@ -965,10 +986,13 @@ class PokeBattle_Battle
         else
           score=0
         end
+=end
       when 0x12 # Fake Out
         if attacker.turncount==0
           if opponent.effects[PBEffects::Substitute]==0 &&
              !(!opponent.abilitynulled && opponent.ability == PBAbilities::INNERFOCUS)
+            score*=0.3 if checkAImoves([PBMoves::ENCORE],aimem)
+=begin
             if score>1
               score+=115
             end
@@ -984,15 +1008,30 @@ class PokeBattle_Battle
             if (!opponent.abilitynulled && opponent.ability == PBAbilities::STEADFAST)
               score*=0.3
             end
-            score*=0.3 if checkAImoves([PBMoves::ENCORE],aimem)
+=end
           end
         else
+=begin
           score=0
+=end
         end
       when 0x13 # Confusion
         if opponent.pbCanConfuse?(false)
           miniscore=100
+          if initialscores.length>0
+            miniscore*=1.4 if hasbadmoves(initialscores,scoreindex,40)
+          end
+=begin
           miniscore*=1.2
+          if attacker.pbHasMove?(:SUBSTITUTE)
+            if attacker.effects[PBEffects::Substitute]>0
+              miniscore*=1.3
+            end
+            miniscore*=1.2
+          end
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+            miniscore*=1.3
+          end
           ministat=0
           ministat+=opponent.stages[PBStats::ATTACK]
           if ministat>0
@@ -1004,13 +1043,10 @@ class PokeBattle_Battle
           if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
             miniscore*=1.2
           end
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-            miniscore*=1.3
-          end
-          if opponent.effects[PBEffects::Attract]>=0
+          if opponent.status==PBStatuses::PARALYSIS
             miniscore*=1.1
           end
-          if opponent.status==PBStatuses::PARALYSIS
+          if opponent.effects[PBEffects::Attract]>=0
             miniscore*=1.1
           end
           if opponent.effects[PBEffects::Yawn]>0 || opponent.status==PBStatuses::SLEEP
@@ -1018,15 +1054,6 @@ class PokeBattle_Battle
           end
           if (!opponent.abilitynulled && opponent.ability == PBAbilities::TANGLEDFEET)
             miniscore*=0.7
-          end
-          if attacker.pbHasMove?(:SUBSTITUTE)
-            miniscore*=1.2
-            if attacker.effects[PBEffects::Substitute]>0
-              miniscore*=1.3
-            end
-          end
-          if initialscores.length>0
-            miniscore*=1.4 if hasbadmoves(initialscores,scoreindex,40)
           end
           if move.basedamage>0
             miniscore-=100
@@ -1044,14 +1071,28 @@ class PokeBattle_Battle
           if move.basedamage<=0
             score=0
           end
+=end
         end
       when 0x14 # Chatter
         #This is no longer used, Chatter works off of the standard confusion
         #function code, 0x13
       when 0x15 # Hurricane
+=begin
+        if (pbRoughStat(opponent,PBStats::SPEED,skill)>attacker.pbSpeed) ^ (@trickroom!=0)
+          score*=1.2 if checkAImoves(PBStuff::TWOTURNAIRMOVE,aimem)
+        end
         if opponent.pbCanConfuse?(false)
           miniscore=100
           miniscore*=1.2
+          if attacker.pbHasMove?(:SUBSTITUTE)
+            if attacker.effects[PBEffects::Substitute]>0
+              miniscore*=1.3
+            end
+            miniscore*=1.2
+          end
+          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+            miniscore*=1.3
+          end
           ministat=0
           ministat+=opponent.stages[PBStats::ATTACK]
           if ministat>0
@@ -1063,13 +1104,10 @@ class PokeBattle_Battle
           if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
             miniscore*=1.2
           end
-          if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-            miniscore*=1.3
-          end
-          if opponent.effects[PBEffects::Attract]>=0
+          if opponent.status==PBStatuses::PARALYSIS
             miniscore*=1.1
           end
-          if opponent.status==PBStatuses::PARALYSIS
+          if opponent.effects[PBEffects::Attract]>=0
             miniscore*=1.1
           end
           if opponent.effects[PBEffects::Yawn]>0 || opponent.status==PBStatuses::SLEEP
@@ -1077,12 +1115,6 @@ class PokeBattle_Battle
           end
           if (!opponent.abilitynulled && opponent.ability == PBAbilities::TANGLEDFEET)
             miniscore*=0.7
-          end
-          if attacker.pbHasMove?(:SUBSTITUTE)
-            miniscore*=1.2
-            if attacker.effects[PBEffects::Substitute]>0
-              miniscore*=1.3
-            end
           end
           miniscore-=100
           if move.addlEffect.to_f != 100
@@ -1095,16 +1127,16 @@ class PokeBattle_Battle
           miniscore/=100.0
           score*=miniscore
         end
+        # Already accounted for elsewhere (can hit sky semi-invulnerable targets)
         invulmove=$pkmn_move[opponent.effects[PBEffects::TwoTurnAttack]][0] #the function code of the current move
         if invulmove==0xC9 || invulmove==0xCC || invulmove==0xCE
           if (pbRoughStat(opponent,PBStats::SPEED,skill)<attacker.pbSpeed) ^ (@trickroom!=0)
             score*=2
           end
         end
-        if (pbRoughStat(opponent,PBStats::SPEED,skill)>attacker.pbSpeed) ^ (@trickroom!=0)
-          score*=1.2 if checkAImoves(PBStuff::TWOTURNAIRMOVE,aimem)
-        end
+=end
       when 0x16 # Attract
+=begin
         canattract=true
         agender=attacker.gender
         ogender=opponent.gender
@@ -1119,16 +1151,22 @@ class PokeBattle_Battle
         end
         if canattract
           score*=1.2
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::CUTECHARM)
-            score*=0.7
+          if attacker.pbHasMove?(:SUBSTITUTE)
+            score*=1.2
+            if attacker.effects[PBEffects::Substitute]>0
+              score*=1.3
+            end
           end
           if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
             score*=1.3
           end
-          if opponent.effects[PBEffects::Confusion]>0
-            score*=1.1
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::CUTECHARM)
+            score*=0.7
           end
           if opponent.status==PBStatuses::PARALYSIS
+            score*=1.1
+          end
+          if opponent.effects[PBEffects::Confusion]>0
             score*=1.1
           end
           if opponent.effects[PBEffects::Yawn]>0 || opponent.status==PBStatuses::SLEEP
@@ -1137,16 +1175,12 @@ class PokeBattle_Battle
           if (oppitemworks && opponent.item == PBItems::DESTINYKNOT)
             score*=0.1
           end
-          if attacker.pbHasMove?(:SUBSTITUTE)
-            score*=1.2
-            if attacker.effects[PBEffects::Substitute]>0
-              score*=1.3
-            end
-          end
         else
           score=0
         end
+=end
       when 0x17 # Tri Attack
+=begin
         if opponent.status==0
           miniscore=100
           miniscore*=1.4
@@ -1175,7 +1209,11 @@ class PokeBattle_Battle
           miniscore/=100.0
           score*=miniscore
         end
+=end
       when 0x18 # Refresh
+        score*=1.3 if checkAImoves([PBMoves::HEX],aimem)
+        score*=0.1 if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
+=begin
         if attacker.status==PBStatuses::BURN || attacker.status==PBStatuses::POISON || attacker.status==PBStatuses::PARALYSIS
           score*=3
         else
@@ -1189,11 +1227,10 @@ class PokeBattle_Battle
         if opponent.effects[PBEffects::Yawn]>0
           score*=0.1
         end
-        score*=0.1 if checkAIdamage(aimem,attacker,opponent,skill)>attacker.hp
         if opponent.effects[PBEffects::Toxic]>2
           score*=1.3
         end
-        score*=1.3 if checkAImoves([PBMoves::HEX],aimem)
+=end
       when 0x19 # Aromatherapy
         party=pbParty(attacker.index)
         statuses=0
@@ -1201,13 +1238,25 @@ class PokeBattle_Battle
           statuses+=1 if party[i] && party[i].status!=0
         end
         if statuses!=0
+          score*=1.1 if checkAIhealing(aimem)
+=begin
           score*=1.2
-          statuses=0
+          if attacker.status!=0
+            score*=1.3
+          end
+          if attacker.effects[PBEffects::Toxic]>2
+            score*=1.3
+          end
           count=-1
           for i in 0...party.length
             count+=1
             next if party[i].nil?
-            temproles = pbGetMonRole(party[i],opponent,skill,count,party)
+            if party[i].status==PBStatuses::SLEEP || party[i].status==PBStatuses::FROZEN
+              score*=1.1
+            end
+            if party[i].attack>party[i].spatk && party[i].status==PBStatuses::BURN
+              score*=1.2
+            end
             if party[i].status==PBStatuses::POISON && (party[i].ability == PBAbilities::POISONHEAL)
               score*=0.5
             end
@@ -1215,9 +1264,7 @@ class PokeBattle_Battle
                (party[i].ability == PBAbilities::QUICKFEET) || party[i].knowsMove?(:FACADE)
               score*=0.8
             end
-            if party[i].status==PBStatuses::SLEEP || party[i].status==PBStatuses::FROZEN
-              score*=1.1
-            end
+            temproles = pbGetMonRole(party[i],opponent,skill,count,party)
             if (temproles.include?(PBMonRoles::PHYSICALWALL) ||
                temproles.include?(PBMonRoles::SPECIALWALL)) && party[i].status==PBStatuses::POISON
               score*=1.2
@@ -1225,19 +1272,10 @@ class PokeBattle_Battle
             if temproles.include?(PBMonRoles::SWEEPER) && party[i].status==PBStatuses::PARALYSIS
               score*=1.2
             end
-            if party[i].attack>party[i].spatk && party[i].status==PBStatuses::BURN
-              score*=1.2
-            end
           end
-          if attacker.status!=0
-            score*=1.3
-          end
-          if attacker.effects[PBEffects::Toxic]>2
-            score*=1.3
-          end
-          score*=1.1 if checkAIhealing(aimem)
         else
           score=0
+=end
         end
       when 0x1A # Safeguard
         if attacker.pbOwnSide.effects[PBEffects::Safeguard]<=0 &&
@@ -1247,8 +1285,15 @@ class PokeBattle_Battle
         end
       when 0x1B # Psycho Shift
         if attacker.status!=0 && opponent.effects[PBEffects::Substitute]<=0
+=begin
           score*=1.3
+          if attacker.pbHasMove?(:HEX)
+            score*=1.3
+          end
+=end
           if opponent.status==0 && opponent.effects[PBEffects::Yawn]==0
+            score*=0.7 if checkAImoves([PBMoves::HEX],aimem)
+=begin
             score*=1.3
             if attacker.status==PBStatuses::BURN && opponent.pbCanBurn?(false)
               if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
@@ -1285,16 +1330,19 @@ class PokeBattle_Battle
                opponent.ability == PBAbilities::MARVELSCALE)
               score*=0.7
             end
-            score*=0.7 if checkAImoves([PBMoves::HEX],aimem)
+=end
           end
-          if attacker.pbHasMove?(:HEX)
-            score*=1.3
-          end
+=begin
         else
           score=0
+=end
         end
       when 0x1C # Howl
         miniscore = setupminiscore(attacker,opponent,skill,move,true,1,false,initialscores,scoreindex)
+        miniscore*=1.3 if checkAIhealing(aimem)
+        miniscore*=0.3 if checkAImoves([PBMoves::FOULPLAY],aimem)
+        miniscore*=0.6 if checkAIpriority(aimem)
+=begin
         if attacker.stages[PBStats::SPEED]<0
           ministat=attacker.stages[PBStats::SPEED]
           minimini=5*ministat
@@ -1312,7 +1360,6 @@ class PokeBattle_Battle
           minimini/=100.0
           miniscore*=minimini
         end
-        miniscore*=1.3 if checkAIhealing(aimem)
         if attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill) && @trickroom==0
           miniscore*=1.5
         end
@@ -1322,14 +1369,12 @@ class PokeBattle_Battle
         if attacker.status==PBStatuses::BURN || attacker.status==PBStatuses::PARALYSIS
           miniscore*=0.5
         end
-        miniscore*=0.3 if checkAImoves([PBMoves::FOULPLAY],aimem)
         if attacker.hp==attacker.totalhp && (((attitemworks && attacker.item == PBItems::FOCUSSASH) ||
            ((!attacker.abilitynulled && attacker.ability == PBAbilities::STURDY) && !attacker.moldbroken)) &&
            (pbWeather!=PBWeather::HAIL || attacker.pbHasType?(:ICE)) &&
            (pbWeather!=PBWeather::SANDSTORM || attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:GROUND) || attacker.pbHasType?(:STEEL)))
           miniscore*=1.4
         end
-        miniscore*=0.6 if checkAIpriority(aimem)
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::SPEEDBOOST)
           miniscore*=0.6
         end
@@ -1343,18 +1388,22 @@ class PokeBattle_Battle
           end
           miniscore+=100
           miniscore/=100.0
+
           if attacker.pbTooHigh?(PBStats::ATTACK)
             miniscore=1
           end
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
             miniscore*=0.5
           end
+
         else
           miniscore/=100.0
           if attacker.pbTooHigh?(PBStats::ATTACK)
             miniscore=0
           end
+=end
           miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
+=begin
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
             miniscore*=0
           end
@@ -1378,24 +1427,17 @@ class PokeBattle_Battle
           end
           score=0 if !physmove
         end
+=end
       when 0x1D # Harden
         miniscore = setupminiscore(attacker,opponent,skill,move,false,2,false,initialscores,scoreindex)
-        if attacker.stages[PBStats::DEFENSE]>0
-          ministat=attacker.stages[PBStats::DEFENSE]
-          minimini=-15*ministat
-          minimini+=100
-          minimini/=100.0
-          miniscore*=minimini
-        end
         if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
           miniscore*=1.3
         end
         if skill>=PBTrainerAI.mediumSkill
           miniscore*=0.3 if (checkAIdamage(aimem,attacker,opponent,skill).to_f/attacker.hp)<0.12 && (aimem.length > 0)
         end
-        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-          miniscore*=1.3
-        end
+        miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
+=begin
         if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
            ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
           miniscore*=1.2
@@ -1409,11 +1451,21 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
+        if attacker.pbHasMove?(:PAINSPLIT)
+          miniscore*=1.2
+        end
         if attacker.pbHasMove?(:LEECHSEED)
           miniscore*=1.3
         end
-        if attacker.pbHasMove?(:PAINSPLIT)
-          miniscore*=1.2
+        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+          miniscore*=1.3
+        end
+        if attacker.stages[PBStats::DEFENSE]>0
+          ministat=attacker.stages[PBStats::DEFENSE]
+          minimini=-15*ministat
+          minimini+=100
+          minimini/=100.0
+          miniscore*=minimini
         end
         if move.basedamage>0
           miniscore-=100
@@ -1428,6 +1480,7 @@ class PokeBattle_Battle
           if attacker.pbTooHigh?(PBStats::DEFENSE)
             miniscore=1
           end
+
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
             miniscore*=0.5
           end
@@ -1436,10 +1489,10 @@ class PokeBattle_Battle
           if attacker.pbTooHigh?(PBStats::DEFENSE)
             miniscore=0
           end
-          miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
             miniscore*=0
           end
+
           if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE)
             miniscore=1
           end
@@ -1451,15 +1504,9 @@ class PokeBattle_Battle
             score*=0.2
           end
         end
+=end
       when 0x1E # Defense Curl
         miniscore = setupminiscore(attacker,opponent,skill,move,false,2,false,initialscores,scoreindex)
-        if attacker.stages[PBStats::DEFENSE]>0
-          ministat=attacker.stages[PBStats::DEFENSE]
-          minimini=-15*ministat
-          minimini+=100
-          minimini/=100.0
-          miniscore*=minimini
-        end
         if pbRoughStat(opponent,PBStats::ATTACK,skill)>pbRoughStat(opponent,PBStats::SPATK,skill)
           miniscore*=1.3
         end
@@ -1469,14 +1516,12 @@ class PokeBattle_Battle
             miniscore*=0.3
           end
         end
-        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-          miniscore*=1.3
-        end
+        miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
+=begin
         if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
            ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
           miniscore*=1.2
         end
-        healmove=false
         for j in attacker.moves
           if j.isHealingMove?
             healmove=true
@@ -1485,12 +1530,26 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?(:LEECHSEED)
-          miniscore*=1.3
-        end
         if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
+        if attacker.pbHasMove?(:LEECHSEED)
+          miniscore*=1.3
+        end
+        if attacker.pbHasMove?(:ROLLOUT) && attacker.effects[PBEffects::DefenseCurl]==false
+          score*=1.3
+        end
+        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+          miniscore*=1.3
+        end
+        if attacker.stages[PBStats::DEFENSE]>0
+          ministat=attacker.stages[PBStats::DEFENSE]
+          minimini=-15*ministat
+          minimini+=100
+          minimini/=100.0
+          miniscore*=minimini
+        end
+        healmove=false
         if move.basedamage>0
           miniscore-=100
           if move.addlEffect.to_f != 100
@@ -1512,7 +1571,6 @@ class PokeBattle_Battle
           if attacker.pbTooHigh?(PBStats::DEFENSE)
             miniscore=0
           end
-          miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
             miniscore*=0
           end
@@ -1521,17 +1579,21 @@ class PokeBattle_Battle
           end
         end
         score*=miniscore
-        if attacker.pbHasMove?(:ROLLOUT) && attacker.effects[PBEffects::DefenseCurl]==false
-          score*=1.3
-        end
         if (opponent.level-5)>attacker.level
           score*=0.6
           if (opponent.level-10)>attacker.level
             score*=0.2
           end
         end
+=end
       when 0x1F # Flame Charge
         miniscore = setupminiscore(attacker,opponent,skill,move,true,16,false,initialscores,scoreindex)
+        if @trickroom!=0 || checkAImoves([PBMoves::TRICKROOM],aimem)
+          miniscore*=0.2
+        end
+        miniscore*=0.6 if checkAIpriority(aimem)
+        miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
+=begin
         if attacker.attack<attacker.spatk
           if attacker.stages[PBStats::SPATK]<0
             ministat=attacker.stages[PBStats::SPATK]
@@ -1558,12 +1620,8 @@ class PokeBattle_Battle
           minimini/=100.0
           miniscore*=minimini
         end
-
         if roles.include?(PBMonRoles::SWEEPER)
           miniscore*=1.3
-        end
-        if @trickroom!=0 || checkAImoves([PBMoves::TRICKROOM],aimem)
-          miniscore*=0.2
         end
         if attacker.status==PBStatuses::PARALYSIS
           miniscore*=0.2
@@ -1574,7 +1632,6 @@ class PokeBattle_Battle
            (pbWeather!=PBWeather::SANDSTORM || attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:GROUND) || attacker.pbHasType?(:STEEL)))
           miniscore*=1.4
         end
-        miniscore*=0.6 if checkAIpriority(aimem)
         if (!attacker.abilitynulled && attacker.ability == PBAbilities::MOXIE)
           miniscore*=1.3
         end
@@ -1602,7 +1659,6 @@ class PokeBattle_Battle
           if attacker.pbTooHigh?(PBStats::SPEED)
             miniscore=0
           end
-          miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
             miniscore*=0
           end
@@ -1616,9 +1672,36 @@ class PokeBattle_Battle
           if (opponent.level-10)>attacker.level
             score*=0.2
           end
+=end
         end
       when 0x20 # Charge Beam
         miniscore = setupminiscore(attacker,opponent,skill,move,true,4,false,initialscores,scoreindex)
+        # Why?
+        if attacker.status==PBStatuses::PARALYSIS
+          miniscore*=0.5
+        end
+        miniscore*=1.3 if checkAIhealing(aimem)
+        miniscore*=0.6 if checkAIpriority(aimem)
+        miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
+=begin
+        if move.basedamage==0
+          specmove=false
+          for j in attacker.moves
+            if j.pbIsSpecial?(j.type)
+              specmove=true
+            end
+          end
+          score=0 if !specmove
+        end
+        if attacker.hp==attacker.totalhp && (((attitemworks && attacker.item == PBItems::FOCUSSASH) ||
+           ((!attacker.abilitynulled && attacker.ability == PBAbilities::STURDY) && !attacker.moldbroken)) &&
+           (pbWeather!=PBWeather::HAIL || attacker.pbHasType?(:ICE)) &&
+           (pbWeather!=PBWeather::SANDSTORM || attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:GROUND) || attacker.pbHasType?(:STEEL)))
+          miniscore*=1.4
+        end
+        if roles.include?(PBMonRoles::SWEEPER)
+          miniscore*=1.3
+        end
         if attacker.stages[PBStats::SPEED]<0
           ministat=attacker.stages[PBStats::SPEED]
           minimini=5*ministat
@@ -1636,25 +1719,11 @@ class PokeBattle_Battle
           minimini/=100.0
           miniscore*=minimini
         end
-        miniscore*=1.3 if checkAIhealing(aimem)
-        if attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill) && @trickroom==0
-          miniscore*=1.5
-        end
-        if roles.include?(PBMonRoles::SWEEPER)
-          miniscore*=1.3
-        end
-        if attacker.status==PBStatuses::PARALYSIS
-          miniscore*=0.5
-        end
-        if attacker.hp==attacker.totalhp && (((attitemworks && attacker.item == PBItems::FOCUSSASH) ||
-           ((!attacker.abilitynulled && attacker.ability == PBAbilities::STURDY) && !attacker.moldbroken)) &&
-           (pbWeather!=PBWeather::HAIL || attacker.pbHasType?(:ICE)) &&
-           (pbWeather!=PBWeather::SANDSTORM || attacker.pbHasType?(:ROCK) || attacker.pbHasType?(:GROUND) || attacker.pbHasType?(:STEEL)))
-          miniscore*=1.4
-        end
-        miniscore*=0.6 if checkAIpriority(aimem)
         if (!opponent.abilitynulled && opponent.ability == PBAbilities::SPEEDBOOST)
           miniscore*=0.6
+        end
+        if attacker.pbSpeed>pbRoughStat(opponent,PBStats::SPEED,skill) && @trickroom==0
+          miniscore*=1.5
         end
         if move.basedamage>0
           miniscore-=100
@@ -1680,7 +1749,6 @@ class PokeBattle_Battle
           if attacker.pbTooHigh?(PBStats::SPATK)
             miniscore=0
           end
-          miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
             miniscore*=0
           end
@@ -1695,24 +1763,9 @@ class PokeBattle_Battle
             score*=0.2
           end
         end
-        if move.basedamage==0
-          specmove=false
-          for j in attacker.moves
-            if j.pbIsSpecial?(j.type)
-              specmove=true
-            end
-          end
-          score=0 if !specmove
-        end
+=end
       when 0x21 # Charge
         miniscore = setupminiscore(attacker,opponent,skill,move,false,8,false,initialscores,scoreindex)
-        if attacker.stages[PBStats::SPDEF]>0
-          ministat=attacker.stages[PBStats::SPDEF]
-          minimini=-15*ministat
-          minimini+=100
-          minimini/=100.0
-          miniscore*=minimini
-        end
         if pbRoughStat(opponent,PBStats::ATTACK,skill)<pbRoughStat(opponent,PBStats::SPATK,skill)
           miniscore*=1.1
         end
@@ -1722,9 +1775,8 @@ class PokeBattle_Battle
             miniscore*=0.3
           end
         end
-        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-          miniscore*=1.3
-        end
+        miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
+=begin
         if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
            ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
           miniscore*=1.2
@@ -1738,40 +1790,11 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?(:LEECHSEED)
-          miniscore*=1.3
-        end
         if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
-        if move.basedamage>0
-          miniscore-=100
-          if move.addlEffect.to_f != 100
-            miniscore*=(move.addlEffect.to_f/100)
-            if (!attacker.abilitynulled && attacker.ability == PBAbilities::SERENEGRACE)
-              miniscore*=2
-            end
-          end
-          miniscore+=100
-          miniscore/=100.0
-          if attacker.pbTooHigh?(PBStats::SPDEF)
-            miniscore=1
-          end
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
-            miniscore*=0.5
-          end
-        else
-          miniscore/=100.0
-          if attacker.pbTooHigh?(PBStats::SPDEF)
-            miniscore=0
-          end
-          miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
-          if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
-            miniscore*=0
-          end
-          if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE)
-            miniscore=1
-          end
+        if attacker.pbHasMove?(:LEECHSEED)
+          miniscore*=1.3
         end
         elecmove=false
         for j in attacker.moves
@@ -1784,21 +1807,67 @@ class PokeBattle_Battle
         if elecmove==true && attacker.effects[PBEffects::Charge]==0
           miniscore*=1.5
         end
-        score*=miniscore
+        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
+          miniscore*=1.3
+        end
+        if attacker.stages[PBStats::SPDEF]>0
+          ministat=attacker.stages[PBStats::SPDEF]
+          minimini=-15*ministat
+          minimini+=100
+          minimini/=100.0
+          miniscore*=minimini
+        end
+        if move.basedamage>0
+          miniscore-=100
+          if move.addlEffect.to_f != 100
+            miniscore*=(move.addlEffect.to_f/100)
+            if (!attacker.abilitynulled && attacker.ability == PBAbilities::SERENEGRACE)
+              miniscore*=2
+            end
+          end
+          miniscore+=100
+          miniscore/=100.0
+          if attacker.pbTooHigh?(PBStats::SPDEF)
+            miniscore=1
+          end
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
+            miniscore*=0.5
+          end
+        else
+          miniscore/=100.0
+          if attacker.pbTooHigh?(PBStats::SPDEF)
+            miniscore=0
+          end
+          if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
+            miniscore*=0
+          end
+          if (!opponent.abilitynulled && opponent.ability == PBAbilities::UNAWARE)
+            miniscore=1
+          end
+        end
         if (opponent.level-5)>attacker.level
           score*=0.6
           if (opponent.level-10)>attacker.level
             score*=0.2
           end
         end
+        score*=miniscore
+=end
       when 0x22 # Double Team
         miniscore = setupminiscore(attacker,opponent,skill,move,false,0,false,initialscores,scoreindex)
-        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
-          miniscore*=1.3
+        if (!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) || checkAIaccuracy(aimem)
+          miniscore*=0.2
         end
+        miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
+=begin
         if (attitemworks && attacker.item == PBItems::LEFTOVERS) ||
            ((attitemworks && attacker.item == PBItems::BLACKSLUDGE) && attacker.pbHasType?(:POISON))
           miniscore*=1.2
+        end
+        if (attitemworks && attacker.item == PBItems::BRIGHTPOWDER) || (attitemworks && attacker.item == PBItems::LAXINCENSE) ||
+          ((!attacker.abilitynulled && attacker.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
+          ((!attacker.abilitynulled && attacker.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+          miniscore*=1.3
         end
         healmove=false
         for j in attacker.moves
@@ -1809,18 +1878,13 @@ class PokeBattle_Battle
         if healmove
           miniscore*=1.3
         end
-        if attacker.pbHasMove?(:LEECHSEED)
-          miniscore*=1.3
-        end
         if attacker.pbHasMove?(:PAINSPLIT)
           miniscore*=1.2
         end
-        if (!opponent.abilitynulled && opponent.ability == PBAbilities::NOGUARD) || checkAIaccuracy(aimem)
-          miniscore*=0.2
+        if attacker.pbHasMove?(:LEECHSEED)
+          miniscore*=1.3
         end
-        if (attitemworks && attacker.item == PBItems::BRIGHTPOWDER) || (attitemworks && attacker.item == PBItems::LAXINCENSE) ||
-          ((!attacker.abilitynulled && attacker.ability == PBAbilities::SANDVEIL) && pbWeather==PBWeather::SANDSTORM) ||
-          ((!attacker.abilitynulled && attacker.ability == PBAbilities::SNOWCLOAK) && pbWeather==PBWeather::HAIL)
+        if roles.include?(PBMonRoles::PHYSICALWALL) || roles.include?(PBMonRoles::SPECIALWALL)
           miniscore*=1.3
         end
         if move.basedamage>0
@@ -1844,7 +1908,6 @@ class PokeBattle_Battle
           if attacker.pbTooHigh?(PBStats::EVASION)
             miniscore=0
           end
-          miniscore*=0 if checkAImoves([PBMoves::CLEARSMOG,PBMoves::HAZE],aimem)
           if (!attacker.abilitynulled && attacker.ability == PBAbilities::CONTRARY)
             miniscore*=0
           end
@@ -1859,53 +1922,20 @@ class PokeBattle_Battle
             score*=0.2
           end
         end
+=end
       when 0x23 # Focus Energy
         if attacker.effects[PBEffects::FocusEnergy]!=2
+          score*=1.2 if (attacker.hp/4.0)>checkAIdamage(aimem,attacker,opponent,skill) && (aimem.length > 0)
+          score*=0.5 if checkAImoves(PBStuff::SWITCHOUTMOVE,aimem)
+=begin
           if (attacker.hp.to_f)/attacker.totalhp>0.75
             score*=1.2
           end
           if (attacker.hp.to_f)/attacker.totalhp<0.33
             score*=0.3
           end
-          if (attacker.hp.to_f)/attacker.totalhp<0.75 &&
-             ((!attacker.abilitynulled && attacker.ability == PBAbilities::EMERGENCYEXIT) ||
-             (!attacker.abilitynulled && attacker.ability == PBAbilities::WIMPOUT) ||
-             (attitemworks && attacker.item == PBItems::EJECTBUTTON))
-            score*=0.3
-          end
-          if attacker.pbOpposingSide.effects[PBEffects::Retaliate]
-            score*=0.3
-          end
-          if opponent.effects[PBEffects::HyperBeam]>0
-            score*=1.3
-          end
-          if opponent.effects[PBEffects::Yawn]>0
-            score*=1.7
-          end
-          score*=1.2 if (attacker.hp/4.0)>checkAIdamage(aimem,attacker,opponent,skill) && (aimem.length > 0)
           if attacker.turncount<2
             score*=1.2
-          end
-          if opponent.status!=0
-            score*=1.2
-          end
-          if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
-            score*=1.3
-          end
-          if opponent.effects[PBEffects::Encore]>0
-            if opponent.moves[(opponent.effects[PBEffects::EncoreIndex])].basedamage==0
-              score*=1.5
-            end
-          end
-          if attacker.effects[PBEffects::Confusion]>0
-            score*=0.2
-          end
-          if attacker.effects[PBEffects::LeechSeed]>=0 || attacker.effects[PBEffects::Attract]>=0
-            score*=0.6
-          end
-          score*=0.5 if checkAImoves(PBStuff::SWITCHOUTMOVE,aimem)
-          if @doublebattle
-            score*=0.5
           end
           if !attacker.abilitynulled && (attacker.ability == PBAbilities::SUPERLUCK || attacker.ability == PBAbilities::SNIPER)
             score*=2
@@ -1919,29 +1949,65 @@ class PokeBattle_Battle
           if (attitemworks && attacker.item == PBItems::LANSATBERRY)
             score*=1.3
           end
-          if !opponent.abilitynulled && (opponent.ability == PBAbilities::ANGERPOINT ||
-             opponent.ability == PBAbilities::SHELLARMOR || opponent.ability == PBAbilities::BATTLEARMOR)
+          for j in attacker.moves
+            if j.hasHighCriticalRate?
+              score*=2
+            end
+          end
+          if attacker.effects[PBEffects::Confusion]>0
             score*=0.2
+          end
+          if attacker.effects[PBEffects::LeechSeed]>=0 || attacker.effects[PBEffects::Attract]>=0
+            score*=0.6
+          end
+          if (attacker.hp.to_f)/attacker.totalhp<0.75 &&
+             ((!attacker.abilitynulled && attacker.ability == PBAbilities::EMERGENCYEXIT) ||
+             (!attacker.abilitynulled && attacker.ability == PBAbilities::WIMPOUT) ||
+             (attitemworks && attacker.item == PBItems::EJECTBUTTON))
+            score*=0.3
           end
           if attacker.pbHasMove?(:LASERFOCUS) ||
              attacker.pbHasMove?(:FROSTBREATH) ||
              attacker.pbHasMove?(:STORMTHROW)
             score*=0.5
           end
-          for j in attacker.moves
-            if j.hasHighCriticalRate?
-              score*=2
+          if opponent.status!=0
+            score*=1.2
+          end
+          if opponent.status==PBStatuses::SLEEP || opponent.status==PBStatuses::FROZEN
+            score*=1.3
+          end
+          if opponent.effects[PBEffects::Yawn]>0
+            score*=1.7
+          end
+          if opponent.effects[PBEffects::HyperBeam]>0
+            score*=1.3
+          end
+          if opponent.effects[PBEffects::Encore]>0
+            if opponent.moves[(opponent.effects[PBEffects::EncoreIndex])].basedamage==0
+              score*=1.5
             end
+          end
+          if !opponent.abilitynulled && (opponent.ability == PBAbilities::ANGERPOINT ||
+             opponent.ability == PBAbilities::SHELLARMOR || opponent.ability == PBAbilities::BATTLEARMOR)
+            score*=0.2
+          end
+          if (opponent.level-5)>attacker.level
+            score*=0.6
+            if (opponent.level-10)>attacker.level
+              score*=0.2
+            end
+          end
+          if attacker.pbOpposingSide.effects[PBEffects::Retaliate]
+            score*=0.3
+          end
+          if @doublebattle
+            score*=0.5
           end
         else
           score=0
-        end
-        if (opponent.level-5)>attacker.level
-          score*=0.6
-          if (opponent.level-10)>attacker.level
-            score*=0.2
-          end
-        end
+=end
+      end
       when 0x24 # Bulk Up
         miniscore = setupminiscore(attacker,opponent,skill,move,true,3,false,initialscores,scoreindex)
         if attacker.stages[PBStats::SPEED]<0

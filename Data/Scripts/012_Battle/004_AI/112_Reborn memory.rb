@@ -2,8 +2,8 @@ class PokeBattle_Battle
   attr_accessor :aiMoveMemory
 
   alias __ai__initialize initialize
-  def initialize(battle)
-    __ai__initialize(battle)
+  def initialize(scene,p1,p2,player,opponent)
+    __ai__initialize(scene,p1,p2,player,opponent)
     @aiMoveMemory = [[],
                      [],
                      [[], [], [], [], [], [], [], [], [], [], [], []]   # One array for each party index
