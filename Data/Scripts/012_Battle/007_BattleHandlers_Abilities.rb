@@ -24,7 +24,7 @@ BattleHandlers::SpeedCalcAbility.add(:SANDRUSH,
 
 BattleHandlers::SpeedCalcAbility.add(:SLOWSTART,
   proc { |ability,battler,mult|
-    next mult/2 if battler.turnCount<=5
+    next mult/2 if battler.effects[PBEffects::SlowStart]>0
   }
 )
 
@@ -83,7 +83,8 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:EMERGENCYEXIT,
       next false if !battle.pbCanRun?(battler.index)
       battle.pbShowAbilitySplash(battler,true)
       battle.pbHideAbilitySplash(battler)
-      battle.pbDisplay(_INTL("{1} fled from battle!",battler.pbThis)) { pbSEPlay("Battle flee") }
+      pbSEPlay("Battle flee")
+      battle.pbDisplay(_INTL("{1} fled from battle!",battler.pbThis))
       battle.decision = 3   # Escaped
       next true
     end
@@ -1030,7 +1031,7 @@ BattleHandlers::DamageCalcUserAbility.add(:SHEERFORCE,
 
 BattleHandlers::DamageCalcUserAbility.add(:SLOWSTART,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    mults[ATK_MULT] /= 2 if user.turnCount<=5 && move.physicalMove?
+    mults[ATK_MULT] /= 2 if user.effects[PBEffects::SlowStart]>0 && move.physicalMove?
   }
 )
 
@@ -2405,7 +2406,7 @@ BattleHandlers::AbilityOnSwitchOut.add(:NATURALCURE,
 
 BattleHandlers::AbilityOnSwitchOut.add(:REGENERATOR,
   proc { |ability,battler,endOfBattle|
-    next if !endOfBattle
+    next if endOfBattle
     PBDebug.log("[Ability triggered] #{battler.pbThis}'s #{battler.abilityName}")
     battler.pbRecoverHP(battler.totalhp/3,false,false)
   }

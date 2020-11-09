@@ -126,7 +126,7 @@ class PokeBattle_AI
         end
       end
       if list.length>0
-        if batonPass>=0 && @battle.pbRegisterMove(idx@user,batonPass,false)
+        if batonPass>=0 && @battle.pbRegisterMove(@user.index,batonPass,false)
           PBDebug.log("[AI] #{@user.pbThis} (#{@user.index}) will use Baton Pass to avoid Perish Song")
           return true
         end
