@@ -27,7 +27,7 @@ class PokemonPokedexInfo_Scene
     @sprites["infosprite"].x = 104
     @sprites["infosprite"].y = 136
     @mapdata = pbLoadTownMapData
-    mappos = ($game_map) ? pbGetMetadata($game_map.map_id,MetadataMapPosition) : nil
+    mappos = ($game_map) ? GameData::MapMetadata.get($game_map.map_id).town_map_position : nil
     if @region<0                                   # Use player's current region
       @region = (mappos) ? mappos[0] : 0                      # Region 0 default
     end
@@ -142,7 +142,7 @@ class PokemonPokedexInfo_Scene
       @sprites["formback"].setSpeciesBitmap(@species,(@gender==1),@form,false,false,true)
       @sprites["formback"].y = 256
       fSpecies = pbGetFSpeciesFromForm(@species,@form)
-      @sprites["formback"].y += (pbLoadSpeciesMetrics[MetricBattlerPlayerY][fSpecies] || 0)*2
+      @sprites["formback"].y += (pbLoadSpeciesMetrics[SpeciesData::METRIC_PLAYER_Y][fSpecies] || 0)*2
     end
     if @sprites["formicon"]
       @sprites["formicon"].pbSetParams(@species,@gender,@form)
@@ -158,7 +158,7 @@ class PokemonPokedexInfo_Scene
       for i in 0...formdata[@species].length
         fSpecies = pbGetFSpeciesFromForm(@species,i)
         formname = pbGetMessage(MessageTypes::FormNames,fSpecies)
-        genderRate = pbGetSpeciesData(@species,i,SpeciesGenderRate)
+        genderRate = pbGetSpeciesData(@species,i,SpeciesData::GENDER_RATE)
         if i==0 || (formname && formname!="")
           multiforms = true if i>0
           case genderRate
@@ -186,8 +186,8 @@ class PokemonPokedexInfo_Scene
         thisformname = thisform[2]
       else   # Necessarily applies only to form 0
         case thisform[1]
-        when 0; thisformname = _INTL("Male")
-        when 1; thisformname = _INTL("Female")
+        when 0 then thisformname = _INTL("Male")
+        when 1 then thisformname = _INTL("Female")
         else
           thisformname = (multiforms) ? _INTL("One Form") : _INTL("Genderless")
         end
@@ -212,9 +212,9 @@ class PokemonPokedexInfo_Scene
     @sprites["formicon"].visible      = (@page==3) if @sprites["formicon"]
     # Draw page-specific information
     case page
-    when 1; drawPageInfo
-    when 2; drawPageArea
-    when 3; drawPageForms
+    when 1 then drawPageInfo
+    when 2 then drawPageArea
+    when 3 then drawPageForms
     end
   end
 
@@ -248,8 +248,8 @@ class PokemonPokedexInfo_Scene
       kind = pbGetMessage(MessageTypes::Kinds,@species) if !kind || kind==""
       textpos.push([_INTL("{1} Pokémon",kind),246,74,0,base,shadow])
       # Write the height and weight
-      height = speciesData[SpeciesHeight] || 1
-      weight = speciesData[SpeciesWeight] || 1
+      height = speciesData[SpeciesData::HEIGHT] || 1
+      weight = speciesData[SpeciesData::WEIGHT] || 1
       if pbGetCountry==0xF4   # If the user is in the United States
         inches = (height/0.254).round
         pounds = (weight/0.45359).round
@@ -273,8 +273,8 @@ class PokemonPokedexInfo_Scene
       # Show the owned icon
       imagepos.push(["Graphics/Pictures/Pokedex/icon_own",212,44])
       # Draw the type icon(s)
-      type1 = speciesData[SpeciesType1] || 0
-      type2 = speciesData[SpeciesType2] || type1
+      type1 = speciesData[SpeciesData::TYPE1] || 0
+      type2 = speciesData[SpeciesData::TYPE2] || type1
       type1rect = Rect.new(0,type1*32,96,32)
       type2rect = Rect.new(0,type2*32,96,32)
       overlay.blt(296,120,@typebitmap.bitmap,type1rect)
@@ -311,7 +311,7 @@ class PokemonPokedexInfo_Scene
     for enc in encdata.keys
       enctypes = encdata[enc][1]
       if pbFindEncounter(enctypes,@species)
-        mappos = pbGetMetadata(enc,MetadataMapPosition)
+        mappos = GameData::MapMetadata.get(enc).town_map_position
         if mappos && mappos[0]==@region
           showpoint = true
           for loc in @mapdata[@region][2]
@@ -319,7 +319,7 @@ class PokemonPokedexInfo_Scene
                                  loc[7] && !$game_switches[loc[7]]
           end
           if showpoint
-            mapsize = pbGetMetadata(enc,MetadataMapSize)
+            mapsize = GameData::MapMetadata.get(enc).town_map_size
             if mapsize && mapsize[0] && mapsize[0]>0
               sqwidth  = mapsize[0]
               sqheight = (mapsize[1].length*1.0/mapsize[0]).ceil

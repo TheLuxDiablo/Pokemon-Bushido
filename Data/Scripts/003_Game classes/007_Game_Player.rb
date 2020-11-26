@@ -351,17 +351,17 @@ class Game_Player < Game_Character
       if @moved_last_frame ||
          (dir > 0 && dir == @lastdir && Graphics.frame_count - @lastdirframe > Graphics.frame_rate / 20)
         case dir
-        when 2; move_down
-        when 4; move_left
-        when 6; move_right
-        when 8; move_up
+        when 2 then move_down
+        when 4 then move_left
+        when 6 then move_right
+        when 8 then move_up
         end
       elsif dir != @lastdir
         case dir
-        when 2; turn_down
-        when 4; turn_left
-        when 6; turn_right
-        when 8; turn_up
+        when 2 then turn_down
+        when 4 then turn_left
+        when 6 then turn_right
+        when 8 then turn_up
         end
       end
     end
@@ -429,7 +429,7 @@ def pbGetPlayerCharset(meta,charset,trainer=nil,force=false)
 end
 
 def pbUpdateVehicle
-  meta = pbGetMetadata(0,MetadataPlayerA+$PokemonGlobal.playerID)
+  meta = GameData::Metadata.get_player($PokemonGlobal.playerID)
   if meta
     charset = 1                                 # Regular graphic
     if $PokemonGlobal.diving;     charset = 5   # Diving graphic
@@ -448,10 +448,10 @@ def pbCancelVehicles(destination=nil)
   pbUpdateVehicle
 end
 
-def pbCanUseBike?(mapid)
-  return true if pbGetMetadata(mapid,MetadataBicycleAlways)
-  val = pbGetMetadata(mapid,MetadataBicycle)
-  val = pbGetMetadata(mapid,MetadataOutdoor) if val==nil
+def pbCanUseBike?(map_id)
+  return true if GameData::MapMetadata.get(map_id).always_bicycle
+  val = GameData::MapMetadata.get(map_id).can_bicycle
+  val = GameData::MapMetadata.get(map_id).outdoor_map if val.nil?
   return (val) ? true : false
 end
 
@@ -459,8 +459,8 @@ def pbMountBike
   return if $PokemonGlobal.bicycle
   $PokemonGlobal.bicycle = true
   pbUpdateVehicle
-  bikebgm = pbGetMetadata(0,MetadataBicycleBGM)
-  pbCueBGM(bikebgm,0.5) if bikebgm
+  bike_bgm = GameData::Metadata.get.bicycle_BGM
+  pbCueBGM(bike_bgm, 0.5) if bike_bgm
 end
 
 def pbDismountBike

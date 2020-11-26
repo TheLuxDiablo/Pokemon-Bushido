@@ -13,16 +13,16 @@ class PokeBattle_AI
     moveType = -1
     # If Pokémon is within 6 levels of the foe, and foe's last move was
     # super-effective and powerful
-    if !shouldSwitch && @user.turnCount>0 && skill_check(AILevel.high)
+    if !shouldSwitch && @user.turnCount > 0 && skill_check(AILevel.high)
       target = @user.pbDirectOpposing(true)
-      if !target.fainted? && target.lastMoveUsed>0 &&
-         (target.level-@user.level).abs<=6
-        moveData = pbGetMoveData(target.lastMoveUsed)
-        moveType = moveData[MOVE_TYPE]
-        typeMod = pbCalcTypeMod(moveType,target,@user)
-        if PBTypes.superEffective?(typeMod) && moveData[MOVE_BASE_DAMAGE]>50
-          switchChance = (moveData[MOVE_BASE_DAMAGE]>70) ? 30 : 20
-          shouldSwitch = (pbAIRandom(100)<switchChance)
+      if !target.fainted? && target.lastMoveUsed &&
+         (target.level - @user.level).abs <= 6
+        moveData = GameData::Move.get(target.lastMoveUsed)
+        moveType = moveData.type
+        typeMod = pbCalcTypeMod(moveType, target, @user)
+        if PBTypes.superEffective?(typeMod) && moveData.base_damage > 50
+          switchChance = (moveData.base_damage > 70) ? 30 : 20
+          shouldSwitch = (pbAIRandom(100) < switchChance)
         end
       end
     end
@@ -158,18 +158,14 @@ class PokeBattle_AI
     return -1 if !enemies || enemies.length==0
     best    = -1
     bestSum = 0
-    movesData = pbLoadMovesData
     enemies.each do |i|
       pkmn = party[i]
       sum  = 0
       pkmn.moves.each do |m|
-        next if m.id==0
-        moveData = movesData[m.id]
-        next if moveData[MOVE_BASE_DAMAGE]==0
+        next if m.base_damage == 0
         @battle.battlers[idxBattler].eachOpposing do |b|
           bTypes = b.pbTypes(true)
-          sum += PBTypes.getCombinedEffectiveness(moveData[MOVE_TYPE],
-             bTypes[0],bTypes[1],bTypes[2])
+          sum += PBTypes.getCombinedEffectiveness(m.type, bTypes[0], bTypes[1], bTypes[2])
         end
       end
       if best==-1 || sum>bestSum

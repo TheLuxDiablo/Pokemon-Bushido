@@ -298,15 +298,17 @@ end
 def pbTrainerTypeEditor
   selection = 0
   trainerTypes = [
-    [_INTL("Internal Name"),ReadOnlyProperty,_INTL("Internal name that appears in constructs like PBTrainers::XXX.")],
-    [_INTL("Trainer Name"),StringProperty,_INTL("Name of the trainer type as displayed by the game.")],
-    [_INTL("Money Per Level"),LimitProperty.new(9999),_INTL("Player earns this amount times the highest level among the trainer's Pokémon.")],
-    [_INTL("Battle BGM"),BGMProperty,_INTL("BGM played in battles against trainers of this type.")],
-    [_INTL("Battle End ME"),MEProperty,_INTL("ME played when player wins battles against trainers of this type.")],
-    [_INTL("Battle Intro ME"),MEProperty,_INTL("ME played before battles against trainers of this type.")],
-    [_INTL("Gender"),EnumProperty.new([_INTL("Male"),_INTL("Female"),_INTL("Mixed gender")]),_INTL("Gender of this Trainer type.")],
-    [_INTL("Skill"),LimitProperty.new(9999),_INTL("Skill level of this Trainer type.")],
-    [_INTL("Skill Codes"),StringProperty,_INTL("Letters/phrases representing AI modifications of trainers of this type.")],
+    [_INTL("Internal Name"),   ReadOnlyProperty,        _INTL("Internal name that appears in constructs like PBTrainers::XXX.")],
+    [_INTL("Trainer Name"),    StringProperty,          _INTL("Name of the trainer type as displayed by the game.")],
+    [_INTL("Money Per Level"), LimitProperty.new(9999), _INTL("Player earns this amount times the highest level among the trainer's Pokémon.")],
+    [_INTL("Battle BGM"),      BGMProperty,             _INTL("BGM played in battles against trainers of this type.")],
+    [_INTL("Battle End ME"),   MEProperty,              _INTL("ME played when player wins battles against trainers of this type.")],
+    [_INTL("Battle Intro ME"), MEProperty,              _INTL("ME played before battles against trainers of this type.")],
+    [_INTL("Gender"),          EnumProperty.new([
+       _INTL("Male"),_INTL("Female"),_INTL("Mixed gender")]),
+                                                        _INTL("Gender of this Trainer type.")],
+    [_INTL("Skill"),           LimitProperty.new(9999), _INTL("Skill level of this Trainer type.")],
+    [_INTL("Skill Codes"),     StringProperty,          _INTL("Letters/phrases representing AI modifications of trainers of this type.")],
   ]
   pbListScreenBlock(_INTL("Trainer Types"),TrainerTypeLister.new(selection,true)) { |button,trtype|
     if trtype
@@ -354,24 +356,24 @@ module TrainerBattleProperty
   def self.set(settingname,oldsetting)
     return nil if !oldsetting
     properties = [
-       [_INTL("Trainer Type"),TrainerTypeProperty,_INTL("Name of the trainer type for this Trainer.")],
-       [_INTL("Trainer Name"),StringProperty,_INTL("Name of the Trainer.")],
-       [_INTL("Battle ID"),LimitProperty.new(9999),_INTL("ID used to distinguish Trainers with the same name and trainer type.")],
-       [_INTL("Lose Text"),StringProperty,_INTL("Message shown in battle when the Trainer is defeated.")],
-       [_INTL("Pokémon 1"),TrainerPokemonProperty,_INTL("First Pokémon.")],
-       [_INTL("Pokémon 2"),TrainerPokemonProperty,_INTL("Second Pokémon.")],
-       [_INTL("Pokémon 3"),TrainerPokemonProperty,_INTL("Third Pokémon.")],
-       [_INTL("Pokémon 4"),TrainerPokemonProperty,_INTL("Fourth Pokémon.")],
-       [_INTL("Pokémon 5"),TrainerPokemonProperty,_INTL("Fifth Pokémon.")],
-       [_INTL("Pokémon 6"),TrainerPokemonProperty,_INTL("Sixth Pokémon.")],
-       [_INTL("Item 1"),ItemProperty,_INTL("Item used by the Trainer during battle.")],
-       [_INTL("Item 2"),ItemProperty,_INTL("Item used by the Trainer during battle.")],
-       [_INTL("Item 3"),ItemProperty,_INTL("Item used by the Trainer during battle.")],
-       [_INTL("Item 4"),ItemProperty,_INTL("Item used by the Trainer during battle.")],
-       [_INTL("Item 5"),ItemProperty,_INTL("Item used by the Trainer during battle.")],
-       [_INTL("Item 6"),ItemProperty,_INTL("Item used by the Trainer during battle.")],
-       [_INTL("Item 7"),ItemProperty,_INTL("Item used by the Trainer during battle.")],
-       [_INTL("Item 8"),ItemProperty,_INTL("Item used by the Trainer during battle.")]
+       [_INTL("Trainer Type"), TrainerTypeProperty,     _INTL("Name of the trainer type for this Trainer.")],
+       [_INTL("Trainer Name"), StringProperty,          _INTL("Name of the Trainer.")],
+       [_INTL("Battle ID"),    LimitProperty.new(9999), _INTL("ID used to distinguish Trainers with the same name and trainer type.")],
+       [_INTL("Lose Text"),    StringProperty,          _INTL("Message shown in battle when the Trainer is defeated.")],
+       [_INTL("Pokémon 1"),    TrainerPokemonProperty,  _INTL("First Pokémon.")],
+       [_INTL("Pokémon 2"),    TrainerPokemonProperty,  _INTL("Second Pokémon.")],
+       [_INTL("Pokémon 3"),    TrainerPokemonProperty,  _INTL("Third Pokémon.")],
+       [_INTL("Pokémon 4"),    TrainerPokemonProperty,  _INTL("Fourth Pokémon.")],
+       [_INTL("Pokémon 5"),    TrainerPokemonProperty,  _INTL("Fifth Pokémon.")],
+       [_INTL("Pokémon 6"),    TrainerPokemonProperty,  _INTL("Sixth Pokémon.")],
+       [_INTL("Item 1"),       ItemProperty,            _INTL("Item used by the Trainer during battle.")],
+       [_INTL("Item 2"),       ItemProperty,            _INTL("Item used by the Trainer during battle.")],
+       [_INTL("Item 3"),       ItemProperty,            _INTL("Item used by the Trainer during battle.")],
+       [_INTL("Item 4"),       ItemProperty,            _INTL("Item used by the Trainer during battle.")],
+       [_INTL("Item 5"),       ItemProperty,            _INTL("Item used by the Trainer during battle.")],
+       [_INTL("Item 6"),       ItemProperty,            _INTL("Item used by the Trainer during battle.")],
+       [_INTL("Item 7"),       ItemProperty,            _INTL("Item used by the Trainer during battle.")],
+       [_INTL("Item 8"),       ItemProperty,            _INTL("Item used by the Trainer during battle.")]
     ]
     if !pbPropertyList(settingname,oldsetting,properties,true)
       return nil
@@ -457,8 +459,8 @@ def pbTrainerBattleEditor
           trainerdata = [
              data[0],
              data[1],
-             [data[10],data[11],data[12],data[13],data[14],data[15],data[16],data[17]].find_all { |i| i && i!=0 },   # Item list
-             [data[4],data[5],data[6],data[7],data[8],data[9]].find_all { |i| i && i[TPSPECIES]!=0 },   # Pokémon list
+             [data[10],data[11],data[12],data[13],data[14],data[15],data[16],data[17]].compact!,   # Item list
+             [data[4],data[5],data[6],data[7],data[8],data[9]].find_all { |i| i && i[TrainerData::SPECIES]!=0 },   # Pokémon list
              data[2],
              data[3]
           ]
@@ -491,10 +493,10 @@ module TrainerPokemonProperty
   def self.set(settingname,initsetting)
     initsetting = [0,10] if !initsetting
     oldsetting = []
-    for i in 0...TPEV
-      if i==TPMOVES
+    for i in 0...TrainerData::EV
+      if i==TrainerData::MOVES
         for j in 0...4
-          oldsetting.push((initsetting[TPMOVES]) ? initsetting[TPMOVES][j] : nil)
+          oldsetting.push((initsetting[TrainerData::MOVES]) ? initsetting[TrainerData::MOVES][j] : nil)
         end
       else
         oldsetting.push(initsetting[i])
@@ -502,47 +504,47 @@ module TrainerPokemonProperty
     end
     mLevel = PBExperience.maxLevel
     properties = [
-       [_INTL("Species"),SpeciesProperty,_INTL("Species of the Pokémon.")],
-       [_INTL("Level"),NonzeroLimitProperty.new(mLevel),_INTL("Level of the Pokémon (1-{1}).",mLevel)],
-       [_INTL("Held item"),ItemProperty,_INTL("Item held by the Pokémon.")],
-       [_INTL("Move 1"),MoveProperty2.new(oldsetting),_INTL("First move. Leave all moves blank (use Z key) to give it a wild moveset.")],
-       [_INTL("Move 2"),MoveProperty2.new(oldsetting),_INTL("Second move. Leave all moves blank (use Z key) to give it a wild moveset.")],
-       [_INTL("Move 3"),MoveProperty2.new(oldsetting),_INTL("Third move. Leave all moves blank (use Z key) to give it a wild moveset.")],
-       [_INTL("Move 4"),MoveProperty2.new(oldsetting),_INTL("Fourth move. Leave all moves blank (use Z key) to give it a wild moveset.")],
-       [_INTL("Ability"),LimitProperty2.new(5),_INTL("Ability flag. 0=first ability, 1=second ability, 2-5=hidden ability.")],
-       [_INTL("Gender"),GenderProperty.new,_INTL("Gender of the Pokémon.")],
-       [_INTL("Form"),LimitProperty2.new(999),_INTL("Form of the Pokémon.")],
-       [_INTL("Shiny"),BooleanProperty2,_INTL("If set to true, the Pokémon is a different-colored Pokémon.")],
-       [_INTL("Nature"),NatureProperty,_INTL("Nature of the Pokémon.")],
-       [_INTL("IVs"),IVsProperty.new(PokeBattle_Pokemon::IV_STAT_LIMIT),_INTL("Individual values for each of the Pokémon's stats.")],
-       [_INTL("Happiness"),LimitProperty2.new(255),_INTL("Happiness of the Pokémon (0-255).")],
-       [_INTL("Nickname"),StringProperty,_INTL("Name of the Pokémon.")],
-       [_INTL("Shadow"),BooleanProperty2,_INTL("If set to true, the Pokémon is a Shadow Pokémon.")],
-       [_INTL("Ball"),BallProperty.new(oldsetting),_INTL("The kind of Poké Ball the Pokémon is kept in.")],
-       [_INTL("EVs"),EVsProperty.new(PokeBattle_Pokemon::EV_STAT_LIMIT),_INTL("Effort values for each of the Pokémon's stats.")]
+       [_INTL("Species"),   SpeciesProperty,                         _INTL("Species of the Pokémon.")],
+       [_INTL("Level"),     NonzeroLimitProperty.new(mLevel),        _INTL("Level of the Pokémon (1-{1}).",mLevel)],
+       [_INTL("Held item"), ItemProperty,                            _INTL("Item held by the Pokémon.")],
+       [_INTL("Move 1"),    MoveProperty2.new(oldsetting),           _INTL("First move. Leave all moves blank (use Z key) to give it a wild moveset.")],
+       [_INTL("Move 2"),    MoveProperty2.new(oldsetting),           _INTL("Second move. Leave all moves blank (use Z key) to give it a wild moveset.")],
+       [_INTL("Move 3"),    MoveProperty2.new(oldsetting),           _INTL("Third move. Leave all moves blank (use Z key) to give it a wild moveset.")],
+       [_INTL("Move 4"),    MoveProperty2.new(oldsetting),           _INTL("Fourth move. Leave all moves blank (use Z key) to give it a wild moveset.")],
+       [_INTL("Ability"),   LimitProperty2.new(5),                   _INTL("Ability flag. 0=first ability, 1=second ability, 2-5=hidden ability.")],
+       [_INTL("Gender"),    GenderProperty.new,                      _INTL("Gender of the Pokémon.")],
+       [_INTL("Form"),      LimitProperty2.new(999),                 _INTL("Form of the Pokémon.")],
+       [_INTL("Shiny"),     BooleanProperty2,                        _INTL("If set to true, the Pokémon is a different-colored Pokémon.")],
+       [_INTL("Nature"),    NatureProperty,                          _INTL("Nature of the Pokémon.")],
+       [_INTL("IVs"),       IVsProperty.new(Pokemon::IV_STAT_LIMIT), _INTL("Individual values for each of the Pokémon's stats.")],
+       [_INTL("Happiness"), LimitProperty2.new(255),                 _INTL("Happiness of the Pokémon (0-255).")],
+       [_INTL("Nickname"),  StringProperty,                          _INTL("Name of the Pokémon.")],
+       [_INTL("Shadow"),    BooleanProperty2,                        _INTL("If set to true, the Pokémon is a Shadow Pokémon.")],
+       [_INTL("Ball"),      BallProperty.new(oldsetting),            _INTL("The kind of Poké Ball the Pokémon is kept in.")],
+       [_INTL("EVs"),       EVsProperty.new(Pokemon::EV_STAT_LIMIT), _INTL("Effort values for each of the Pokémon's stats.")]
     ]
     pbPropertyList(settingname,oldsetting,properties,false)
-    return nil if !oldsetting[TPSPECIES] || oldsetting[TPSPECIES]==0
+    return nil if !oldsetting[TrainerData::SPECIES] || oldsetting[TrainerData::SPECIES]==0
     ret = []
     moves = []
     for i in 0...oldsetting.length
-      if i>=TPMOVES && i<TPMOVES+4
-        ret.push(nil) if i==TPMOVES
+      if i>=TrainerData::MOVES && i<TrainerData::MOVES+4
+        ret.push(nil) if i==TrainerData::MOVES
         moves.push(oldsetting[i])
       else
         ret.push(oldsetting[i])
       end
     end
     moves.compact!
-    ret[TPMOVES] = moves if moves.length>0
-    # Remove unnecessarily nils from the end of ret
+    ret[TrainerData::MOVES] = moves if moves.length>0
+    # Remove unnecessary nils from the end of ret
     ret.pop while ret.last.nil? && ret.size>0
     return ret
   end
 
   def self.format(value)
-    return "-" if !value || !value[TPSPECIES] || value[TPSPECIES]<=0
-    return sprintf("%s,%d",PBSpecies.getName(value[TPSPECIES]),value[TPLEVEL])
+    return "-" if !value || !value[TrainerData::SPECIES] || value[TrainerData::SPECIES]<=0
+    return sprintf("%s,%d",PBSpecies.getName(value[TrainerData::SPECIES]),value[TrainerData::LEVEL])
   end
 end
 
@@ -551,27 +553,85 @@ end
 #===============================================================================
 # Metadata editor
 #===============================================================================
-def pbMetadataScreen(defaultMapId=nil)
-  metadata = nil
-  mapinfos = pbLoadRxData("Data/MapInfos")
-  metadata = pbLoadMetadata
-  map = defaultMapId ? defaultMapId : 0
+def pbMetadataScreen(map_id = 0)
   loop do
-    map = pbListScreen(_INTL("SET METADATA"),MapLister.new(map,true))
-    break if map<0
-    mapname = (map==0) ? _INTL("Global Metadata") : mapinfos[map].name
-    data = []
-    properties = (map==0) ? MapScreenScene::GLOBALMETADATA : MapScreenScene::LOCALMAPS
-    for i in 0...properties.length
-      data.push((metadata[map]) ? metadata[map][i+1] : nil)
-    end
-    pbPropertyList(mapname,data,properties)
-    for i in 0...properties.length
-      metadata[map] = [] if !metadata[map]
-      metadata[map][i+1] = data[i]
-    end
+    map_id = pbListScreen(_INTL("SET METADATA"), MapLister.new(map_id, true))
+    break if map_id < 0
+    pbEditMetadata(map_id)
   end
-  pbSerializeMetadata(metadata,mapinfos) if metadata
+end
+
+def pbEditMetadata(map_id = 0)
+  mapinfos = pbLoadRxData("Data/MapInfos")
+  data = []
+  if map_id == 0   # Global metadata
+    map_name = _INTL("Global Metadata")
+    metadata = GameData::Metadata.get
+    properties = GameData::Metadata.editor_properties
+  else   # Map metadata
+    map_name = mapinfos[map_id].name
+    metadata = GameData::MapMetadata.get(map_id)
+    properties = GameData::MapMetadata.editor_properties
+  end
+  properties.each do |property|
+    data.push(metadata.property_from_string(property[0]))
+  end
+  if pbPropertyList(map_name, data, properties, true)
+    if map_id == 0   # Global metadata
+      # Construct metadata hash
+      metadata_hash = {
+        :id                 => map_id,
+        :home               => data[0],
+        :wild_battle_BGM    => data[1],
+        :trainer_battle_BGM => data[2],
+        :wild_victory_ME    => data[3],
+        :trainer_victory_ME => data[4],
+        :wild_capture_ME    => data[5],
+        :surf_BGM           => data[6],
+        :bicycle_BGM        => data[7],
+        :player_A           => data[8],
+        :player_B           => data[9],
+        :player_C           => data[10],
+        :player_D           => data[11],
+        :player_E           => data[12],
+        :player_F           => data[13],
+        :player_G           => data[14],
+        :player_H           => data[15]
+      }
+      # Add metadata's data to records
+      GameData::Metadata::DATA[map_id] = GameData::Metadata.new(metadata_hash)
+      GameData::Metadata.save
+    else   # Map metadata
+      # Construct metadata hash
+      metadata_hash = {
+        :id                   => map_id,
+        :outdoor_map          => data[0],
+        :announce_location    => data[1],
+        :can_bicycle          => data[2],
+        :always_bicycle       => data[3],
+        :teleport_destination => data[4],
+        :weather              => data[5],
+        :town_map_position    => data[6],
+        :dive_map_id          => data[7],
+        :dark_map             => data[8],
+        :safari_map           => data[9],
+        :snap_edges           => data[10],
+        :random_dungeon       => data[11],
+        :battle_background    => data[12],
+        :wild_battle_BGM      => data[13],
+        :trainer_battle_BGM   => data[14],
+        :wild_victory_ME      => data[15],
+        :trainer_victory_ME   => data[16],
+        :wild_capture_ME      => data[17],
+        :town_map_size        => data[18],
+        :battle_environment   => data[19]
+      }
+      # Add metadata's data to records
+      GameData::MapMetadata::DATA[map_id] = GameData::MapMetadata.new(metadata_hash)
+      GameData::MapMetadata.save
+    end
+    pbSaveMetadata
+  end
 end
 
 
@@ -582,153 +642,141 @@ end
 def pbItemEditor
   selection = 0
   items = [
-     [_INTL("Internal Name"),ReadOnlyProperty,_INTL("Internal name that appears in constructs like PBItems::XXX.")],
-     [_INTL("Item Name"),ItemNameProperty,_INTL("Name of the item as displayed by the game.")],
-     [_INTL("Item Name Plural"),ItemNameProperty,_INTL("Plural name of the item as displayed by the game.")],
-     [_INTL("Pocket"),PocketProperty,_INTL("Pocket in the bag where the item is stored.")],
-     [_INTL("Purchase price"),LimitProperty.new(999999),_INTL("Purchase price of the item.")],
-     [_INTL("Description"),StringProperty,_INTL("Description of the item")],
-     [_INTL("Use Out of Battle"),EnumProperty.new([
-        _INTL("Can't Use"),_INTL("On a Pokémon"),_INTL("Use directly"),
-        _INTL("TM"),_INTL("HM"),_INTL("On a Pokémon reusable")]),
-        _INTL("Specifies how this item can be used outside of battle.")],
-     [_INTL("Use In Battle"),EnumProperty.new([
-        _INTL("Can't Use"),_INTL("On a Pokémon"),_INTL("On Pokémon's move"),
-        _INTL("On battler"),_INTL("On foe battler"),_INTL("Use directly"),
-        _INTL("On a Pokémon reusable"),_INTL("On Pokémon's move reusable"),
-        _INTL("On battler reusable"),_INTL("On foe battler reusable"),
+     [_INTL("Internal Name"),     ReadOnlyProperty,          _INTL("Internal name that is used as a symbol like :XXX.")],
+     [_INTL("Item Name"),         ItemNameProperty,          _INTL("Name of the item as displayed by the game.")],
+     [_INTL("Item Name Plural"),  ItemNameProperty,          _INTL("Plural name of the item as displayed by the game.")],
+     [_INTL("Pocket"),            PocketProperty,            _INTL("Pocket in the bag where the item is stored.")],
+     [_INTL("Purchase price"),    LimitProperty.new(999999), _INTL("Purchase price of the item.")],
+     [_INTL("Description"),       StringProperty,            _INTL("Description of the item")],
+     [_INTL("Use Out of Battle"), EnumProperty.new([
+        _INTL("Can't Use"), _INTL("On a Pokémon"), _INTL("Use directly"),
+        _INTL("TM"), _INTL("HM"), _INTL("On a Pokémon reusable")]),
+                                                             _INTL("Specifies how this item can be used outside of battle.")],
+     [_INTL("Use In Battle"),     EnumProperty.new([
+        _INTL("Can't Use"), _INTL("On a Pokémon"), _INTL("On Pokémon's move"),
+        _INTL("On battler"), _INTL("On foe battler"), _INTL("Use directly"),
+        _INTL("On a Pokémon reusable"), _INTL("On Pokémon's move reusable"),
+        _INTL("On battler reusable"), _INTL("On foe battler reusable"),
         _INTL("Use directly reusable")]),
-        _INTL("Specifies how this item can be used within a battle.")],
-     [_INTL("Special Items"),EnumProperty.new([
-        _INTL("None of below"),_INTL("Mail"),_INTL("Mail with Pictures"),
-        _INTL("Snag Ball"),_INTL("Poké Ball"),_INTL("Plantable Berry"),
-        _INTL("Key Item"),_INTL("Evolution Stone"),_INTL("Fossil"),
-        _INTL("Apricorn"),_INTL("Type-boosting Gem"),_INTL("Mulch"),
+                                                             _INTL("Specifies how this item can be used within a battle.")],
+     [_INTL("Special Items"),     EnumProperty.new([
+        _INTL("None of below"), _INTL("Mail"), _INTL("Mail with Pictures"),
+        _INTL("Snag Ball"), _INTL("Poké Ball"), _INTL("Plantable Berry"),
+        _INTL("Key Item"), _INTL("Evolution Stone"), _INTL("Fossil"),
+        _INTL("Apricorn"), _INTL("Type-boosting Gem"), _INTL("Mulch"),
         _INTL("Mega Stone")]),
-        _INTL("For special kinds of items.")],
-     [_INTL("Machine"),MoveProperty,_INTL("Move taught by this TM or HM.")]
+                                                             _INTL("For special kinds of items.")],
+     [_INTL("Machine"),           MoveProperty,              _INTL("Move taught by this TM or HM.")]
   ]
-  pbListScreenBlock(_INTL("Items"),ItemLister.new(selection,true)) { |button,trtype|
-    if trtype
+  pbListScreenBlock(_INTL("Items"), ItemLister.new(selection, true)) { |button, item|
+    if item
       if button==Input::A
-        if trtype>=0
+        if item.is_a?(Symbol)
           if pbConfirmMessageSerious("Delete this item?")
-            data = pbLoadItemsData
-            removeConstantValue(PBItems,trtype)
-            data.delete_if { |item| item[0]==trtype }
-            for x in data
-              p x if data[0]==0
-            end
-            save_data(data,"Data/items.dat")
-            $PokemonTemp.itemsData = nil
+            id_number = GameData::Item.get(item).id_number
+            GameData::Item::DATA.delete(item)
+            GameData::Item::DATA.delete(id_number)
+            GameData::Item.save
             pbSaveItems
             pbMessage(_INTL("The item was deleted."))
           end
         end
       elsif button==Input::C
-        selection = trtype
-        if selection<0
-          newid = pbItemEditorNew(nil)
-          if newid>=0
-            selection = newid
-          end
-        else
-          data = [getConstantName(PBItems,selection)]
-          itemdata = pbLoadItemsData
-          data.push(itemdata[selection][ITEM_NAME])
-          data.push(itemdata[selection][ITEM_PLURAL])
-          data.push(itemdata[selection][ITEM_POCKET])
-          data.push(itemdata[selection][ITEM_PRICE])
-          data.push(itemdata[selection][ITEM_DESCRIPTION])
-          data.push(itemdata[selection][ITEM_FIELD_USE])
-          data.push(itemdata[selection][ITEM_BATTLE_USE])
-          data.push(itemdata[selection][ITEM_TYPE])
-          data.push(itemdata[selection][ITEM_MACHINE])
-          save = pbPropertyList(data[ITEM_NAME],data,items,true)
-          if save
-            itemdata[selection][ITEM_NAME]        = data[ITEM_NAME]
-            itemdata[selection][ITEM_PLURAL]      = data[ITEM_PLURAL]
-            itemdata[selection][ITEM_POCKET]      = data[ITEM_POCKET]
-            itemdata[selection][ITEM_PRICE]       = data[ITEM_PRICE]
-            itemdata[selection][ITEM_DESCRIPTION] = data[ITEM_DESCRIPTION]
-            itemdata[selection][ITEM_FIELD_USE]   = data[ITEM_FIELD_USE]
-            itemdata[selection][ITEM_BATTLE_USE]  = data[ITEM_BATTLE_USE]
-            itemdata[selection][ITEM_TYPE]        = data[ITEM_TYPE]
-            itemdata[selection][ITEM_MACHINE]     = data[ITEM_MACHINE]
-            save_data(itemdata,"Data/items.dat")
-            $PokemonTemp.itemsData = nil
+        if item.is_a?(Symbol)
+          itm = GameData::Item.get(item)
+          data = [
+            itm.id.to_s,
+            itm.real_name,
+            itm.real_name_plural,
+            itm.pocket,
+            itm.price,
+            itm.real_description,
+            itm.field_use,
+            itm.battle_use,
+            itm.type,
+            itm.move
+          ]
+          if pbPropertyList(itm.id.to_s, data, items, true)
+            # Construct item hash
+            item_hash = {
+              :id_number   => itm.id_number,
+              :id          => itm.id,
+              :name        => data[1],
+              :name_plural => data[2],
+              :pocket      => data[3],
+              :price       => data[4],
+              :description => data[5],
+              :field_use   => data[6],
+              :battle_use  => data[7],
+              :type        => data[8],
+              :move        => data[9]
+            }
+            # Add item's data to records
+            GameData::Item::DATA[itm.id_number] = GameData::Item::DATA[itm.id] = GameData::Item.new(item_hash)
+            GameData::Item.save
             pbSaveItems
           end
+        else   # Add a new item
+          pbItemEditorNew(nil)
         end
       end
     end
   }
 end
 
-def pbItemEditorNew(defaultname)
-  itemdata = pbLoadItemsData
-  # Get the first blank ID for the new item to use.
-  maxid = PBItems.maxValue+1
-  index = maxid
-  itemname = pbMessageFreeText(_INTL("Please enter the item's name."),
-     (defaultname) ? defaultname.gsub(/_+/," ") : "",false,30)
-  if itemname=="" && !defaultname
-    return -1
-  else
-    # Create a default name if there is none.
-    if !defaultname
-      defaultname = itemname.gsub(/[^A-Za-z0-9_]/,"")
-      defaultname = defaultname.sub(/^([a-z])/) { $1.upcase }
-      if defaultname.length==0
-        defaultname = sprintf("Item%03d",index)
-      elsif !defaultname[0,1][/[A-Z]/]
-        defaultname = "Item"+defaultname
-      end
-    end
-    itemname = defaultname if itemname==""
-    # Create an internal name based on the item name.
-    cname = itemname.gsub(/é/,"e")
-    cname = cname.gsub(/[^A-Za-z0-9_]/,"")
-    cname = cname.upcase
-    if hasConst?(PBItems,cname)
-      suffix = 1
-      100.times do
-        tname = sprintf("%s_%d",cname,suffix)
-        if !hasConst?(PBItems,tname)
-          cname = tname
-          break
-        end
-        suffix += 1
-      end
-    end
-    if hasConst?(PBItems,cname)
-      pbMessage(_INTL("Failed to create the item. Choose a different name."))
-      return -1
-    end
-    pocket = PocketProperty.set("",0)
-    return -1 if pocket==0
-    price = LimitProperty.new(999999).set(_INTL("Purchase price"),-1)
-    return -1 if price==-1
-    desc = StringProperty.set(_INTL("Description"),"")
-    # Item list will create record automatically
-    itemdata[index][ITEM_ID]          = index
-    itemdata[index][ITEM_NAME]        = itemname
-    itemdata[index][ITEM_POCKET]      = pocket
-    itemdata[index][ITEM_PRICE]       = price
-    itemdata[index][ITEM_DESCRIPTION] = desc
-    itemdata[index][ITEM_FIELD_USE]   = 0
-    itemdata[index][ITEM_BATTLE_USE]  = 0
-    itemdata[index][ITEM_TYPE]        = 0
-    itemdata[index][ITEM_MACHINE]     = 0
-    PBItems.const_set(cname,index)
-    save_data(itemdata,"Data/items.dat")
-    $PokemonTemp.itemsData = nil
-    pbSaveItems
-    pbMessage(_INTL("The item was created (ID: {1}).",index))
-    pbMessage(_ISPRINTF("Put the item's graphic (item{1:03d}.png or item{2:s}.png) in Graphics/Icons, or it will be blank.",
-       index,getConstantName(PBItems,index)))
-    return index
+def pbItemEditorNew(default_name)
+  # Get an unused ID number for the new item
+  max_id = 0
+  GameData::Item.each { |i| max_id = i.id_number if max_id < i.id_number }
+  id_number = max_id + 1
+  # Choose a name
+  name = pbMessageFreeText(_INTL("Please enter the item's name."),
+     (default_name) ? default_name.gsub(/_+/, " ") : "", false, 30)
+  if name == ""
+    return if !default_name
+    name = default_name
   end
+  # Generate an ID based on the item name
+  id = name.gsub(/é/, "e")
+  id = id.gsub(/[^A-Za-z0-9_]/, "")
+  id = id.upcase
+  if GameData::Item.exists?(id)
+    for i in 1..100
+      trial_id = sprintf("%s_%d", id, i)
+      next if GameData::Item.exists?(trial_id)
+      id = trial_id
+      break
+    end
+  end
+  if GameData::Item.exists?(id)
+    pbMessage(_INTL("Failed to create the item. Choose a different name."))
+    return
+  end
+  # Choose a pocket
+  pocket = PocketProperty.set("", 0)
+  return if pocket == 0
+  # Choose a price
+  price = LimitProperty.new(999999).set(_INTL("Purchase price"), -1)
+  return if price == -1
+  # Choose a description
+  description = StringProperty.set(_INTL("Description"), "")
+  # Construct item hash
+  item_hash = {
+    :id_number   => id_number,
+    :id          => id.to_sym,
+    :name        => name,
+    :name_plural => name + "s",
+    :pocket      => pocket,
+    :price       => price,
+    :description => description
+  }
+  # Add item's data to records
+  GameData::Item::DATA[id_number] = GameData::Item::DATA[id.to_sym] = GameData::Item.new(item_hash)
+  GameData::Item.save
+  pbSaveItems
+  pbMessage(_INTL("The item {1} was created (ID: {2}).", name, id.to_s))
+  pbMessage(_ISPRINTF("Put the item's graphic (item{1:s}.png or item{2:03d}.png) in Graphics/Icons, or it will be blank.",
+     id.to_s, id_number))
 end
 
 
@@ -741,71 +789,71 @@ def pbPokemonEditor
   metrics       = pbLoadSpeciesMetrics
   selection = 0
   species = [
-     [_INTL("Name"),LimitStringProperty.new(PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE),_INTL("Name of the Pokémon.")],
-     [_INTL("InternalName"),ReadOnlyProperty,_INTL("Internal name of the Pokémon.")],
-     [_INTL("Type1"),TypeProperty,_INTL("Pokémon's type. If same as Type2, this Pokémon has a single type.")],
-     [_INTL("Type2"),TypeProperty,_INTL("Pokémon's type. If same as Type1, this Pokémon has a single type.")],
-     [_INTL("BaseStats"),BaseStatsProperty,_INTL("Base stats of the Pokémon.")],
-     [_INTL("GenderRate"),EnumProperty.new([
+     [_INTL("Name"),              LimitStringProperty.new(Pokemon::MAX_NAME_SIZE), _INTL("Name of the Pokémon.")],
+     [_INTL("InternalName"),      ReadOnlyProperty,               _INTL("Internal name of the Pokémon.")],
+     [_INTL("Type1"),             TypeProperty,                   _INTL("Pokémon's type. If same as Type2, this Pokémon has a single type.")],
+     [_INTL("Type2"),             TypeProperty,                   _INTL("Pokémon's type. If same as Type1, this Pokémon has a single type.")],
+     [_INTL("BaseStats"),         BaseStatsProperty,              _INTL("Base stats of the Pokémon.")],
+     [_INTL("GenderRate"),        EnumProperty.new([
         _INTL("Genderless"),_INTL("AlwaysMale"),_INTL("FemaleOneEighth"),
         _INTL("Female25Percent"),_INTL("Female50Percent"),_INTL("Female75Percent"),
         _INTL("FemaleSevenEighths"),_INTL("AlwaysFemale")]),
-        _INTL("Proportion of males to females for this species.")],
-     [_INTL("GrowthRate"),EnumProperty.new([
+                                                                  _INTL("Proportion of males to females for this species.")],
+     [_INTL("GrowthRate"),        EnumProperty.new([
         _INTL("Medium"),_INTL("Erratic"),_INTL("Fluctuating"),_INTL("Parabolic"),
         _INTL("Fast"),_INTL("Slow")]),
-        _INTL("Pokémon's growth rate.")],
-     [_INTL("BaseEXP"),LimitProperty.new(9999),_INTL("Base experience earned when this species is defeated.")],
-     [_INTL("EffortPoints"),EffortValuesProperty,_INTL("Effort Value points earned when this species is defeated.")],
-     [_INTL("Rareness"),LimitProperty.new(255),_INTL("Catch rate of this species (0-255).")],
-     [_INTL("Happiness"),LimitProperty.new(255),_INTL("Base happiness of this species (0-255).")],
-     [_INTL("Ability1"),AbilityProperty,_INTL("One ability which the Pokémon can have.")],
-     [_INTL("Ability2"),AbilityProperty,_INTL("Another ability which the Pokémon can have.")],
-     [_INTL("HiddenAbility 1"),AbilityProperty,_INTL("A secret ability which the Pokémon can have.")],
-     [_INTL("HiddenAbility 2"),AbilityProperty,_INTL("A secret ability which the Pokémon can have.")],
-     [_INTL("HiddenAbility 3"),AbilityProperty,_INTL("A secret ability which the Pokémon can have.")],
-     [_INTL("HiddenAbility 4"),AbilityProperty,_INTL("A secret ability which the Pokémon can have.")],
-     [_INTL("Moves"),MovePoolProperty,_INTL("Moves which the Pokémon learns while levelling up.")],
-     [_INTL("EggMoves"),EggMovesProperty,_INTL("Moves which the Pokémon can learn via breeding.")],
-     [_INTL("Compat1"),EnumProperty.new([
+                                                                  _INTL("Pokémon's growth rate.")],
+     [_INTL("BaseEXP"),           LimitProperty.new(9999),        _INTL("Base experience earned when this species is defeated.")],
+     [_INTL("EffortPoints"),      EffortValuesProperty,           _INTL("Effort Value points earned when this species is defeated.")],
+     [_INTL("Rareness"),          LimitProperty.new(255),         _INTL("Catch rate of this species (0-255).")],
+     [_INTL("Happiness"),         LimitProperty.new(255),         _INTL("Base happiness of this species (0-255).")],
+     [_INTL("Ability1"),          AbilityProperty,                _INTL("One ability which the Pokémon can have.")],
+     [_INTL("Ability2"),          AbilityProperty,                _INTL("Another ability which the Pokémon can have.")],
+     [_INTL("HiddenAbility 1"),   AbilityProperty,                _INTL("A secret ability which the Pokémon can have.")],
+     [_INTL("HiddenAbility 2"),   AbilityProperty,                _INTL("A secret ability which the Pokémon can have.")],
+     [_INTL("HiddenAbility 3"),   AbilityProperty,                _INTL("A secret ability which the Pokémon can have.")],
+     [_INTL("HiddenAbility 4"),   AbilityProperty,                _INTL("A secret ability which the Pokémon can have.")],
+     [_INTL("Moves"),             MovePoolProperty,               _INTL("Moves which the Pokémon learns while levelling up.")],
+     [_INTL("EggMoves"),          EggMovesProperty,               _INTL("Moves which the Pokémon can learn via breeding.")],
+     [_INTL("Compat1"),           EnumProperty.new([
         "Undiscovered","Monster","Water 1","Bug","Flying",
         "Field","Fairy","Grass","Human-like","Water 3",
         "Mineral","Amorphous","Water 2","Ditto","Dragon"]),
-        _INTL("Compatibility group (egg group) for breeding purposes.")],
-     [_INTL("Compat2"),EnumProperty.new([
+                                                                  _INTL("Compatibility group (egg group) for breeding purposes.")],
+     [_INTL("Compat2"),           EnumProperty.new([
         "Undiscovered","Monster","Water 1","Bug","Flying",
         "Field","Fairy","Grass","Human-like","Water 3",
         "Mineral","Amorphous","Water 2","Ditto","Dragon"]),
-        _INTL("Compatibility group (egg group) for breeding purposes.")],
-     [_INTL("StepsToHatch"),LimitProperty.new(99999),_INTL("Number of steps until an egg of this species hatches.")],
-     [_INTL("Height"),NonzeroLimitProperty.new(999),_INTL("Height of the Pokémon in 0.1 metres (e.g. 42 = 4.2m).")],
-     [_INTL("Weight"),NonzeroLimitProperty.new(9999),_INTL("Weight of the Pokémon in 0.1 kilograms (e.g. 42 = 4.2kg).")],
-     [_INTL("Color"),EnumProperty.new([
+                                                                  _INTL("Compatibility group (egg group) for breeding purposes.")],
+     [_INTL("StepsToHatch"),      LimitProperty.new(99999),       _INTL("Number of steps until an egg of this species hatches.")],
+     [_INTL("Height"),            NonzeroLimitProperty.new(999),  _INTL("Height of the Pokémon in 0.1 metres (e.g. 42 = 4.2m).")],
+     [_INTL("Weight"),            NonzeroLimitProperty.new(9999), _INTL("Weight of the Pokémon in 0.1 kilograms (e.g. 42 = 4.2kg).")],
+     [_INTL("Color"),             EnumProperty.new([
         _INTL("Red"),_INTL("Blue"),_INTL("Yellow"),_INTL("Green"),_INTL("Black"),
         _INTL("Brown"),_INTL("Purple"),_INTL("Gray"),_INTL("White"),_INTL("Pink")]),
-        _INTL("Pokémon's body color.")],
-     [_INTL("Shape"),LimitProperty.new(14),_INTL("Body shape of this species (0-14).")],
-     [_INTL("Habitat"),EnumProperty.new([
+                                                                  _INTL("Pokémon's body color.")],
+     [_INTL("Shape"),             LimitProperty.new(14),          _INTL("Body shape of this species (0-14).")],
+     [_INTL("Habitat"),           EnumProperty.new([
         _INTL("None"),_INTL("Grassland"),_INTL("Forest"),_INTL("WatersEdge"),
         _INTL("Sea"),_INTL("Cave"),_INTL("Mountain"),_INTL("RoughTerrain"),
         _INTL("Urban"),_INTL("Rare")]),
-        _INTL("The habitat of this species.")],
-     [_INTL("RegionalNumbers"),ReadOnlyProperty,_INTL("Regional Dex numbers for the Pokémon. These are edited elsewhere.")],
-     [_INTL("Kind"),StringProperty,_INTL("Kind of Pokémon species.")],
-     [_INTL("Pokédex"),StringProperty,_INTL("Description of the Pokémon as displayed in the Pokédex.")],
-     [_INTL("FormName"),StringProperty,_INTL("Name of this form of the Pokémon.")],
-     [_INTL("WildItemCommon"),ItemProperty,_INTL("Item commonly held by wild Pokémon of this species.")],
-     [_INTL("WildItemUncommon"),ItemProperty,_INTL("Item uncommonly held by wild Pokémon of this species.")],
-     [_INTL("WildItemRare"),ItemProperty,_INTL("Item rarely held by wild Pokémon of this species.")],
-     [_INTL("BattlerPlayerX"),ReadOnlyProperty,_INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
-     [_INTL("BattlerPlayerY"),ReadOnlyProperty,_INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
-     [_INTL("BattlerEnemyX"),ReadOnlyProperty,_INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
-     [_INTL("BattlerEnemyY"),ReadOnlyProperty,_INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
-     [_INTL("BattlerAltitude"),ReadOnlyProperty,_INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
-     [_INTL("BattlerShadowX"),ReadOnlyProperty,_INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
-     [_INTL("BattlerShadowSize"),ReadOnlyProperty,_INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
-     [_INTL("Evolutions"),EvolutionsProperty.new,_INTL("Evolution paths of this species.")],
-     [_INTL("Incense"),ItemProperty,_INTL("Item needed to be held by a parent to produce an egg of this species.")],
+                                                                  _INTL("The habitat of this species.")],
+     [_INTL("RegionalNumbers"),   ReadOnlyProperty,               _INTL("Regional Dex numbers for the Pokémon. These are edited elsewhere.")],
+     [_INTL("Kind"),              StringProperty,                 _INTL("Kind of Pokémon species.")],
+     [_INTL("Pokédex"),           StringProperty,                 _INTL("Description of the Pokémon as displayed in the Pokédex.")],
+     [_INTL("FormName"),          StringProperty,                 _INTL("Name of this form of the Pokémon.")],
+     [_INTL("WildItemCommon"),    ItemProperty,                   _INTL("Item commonly held by wild Pokémon of this species.")],
+     [_INTL("WildItemUncommon"),  ItemProperty,                   _INTL("Item uncommonly held by wild Pokémon of this species.")],
+     [_INTL("WildItemRare"),      ItemProperty,                   _INTL("Item rarely held by wild Pokémon of this species.")],
+     [_INTL("BattlerPlayerX"),    ReadOnlyProperty,               _INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
+     [_INTL("BattlerPlayerY"),    ReadOnlyProperty,               _INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
+     [_INTL("BattlerEnemyX"),     ReadOnlyProperty,               _INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
+     [_INTL("BattlerEnemyY"),     ReadOnlyProperty,               _INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
+     [_INTL("BattlerAltitude"),   ReadOnlyProperty,               _INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
+     [_INTL("BattlerShadowX"),    ReadOnlyProperty,               _INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
+     [_INTL("BattlerShadowSize"), ReadOnlyProperty,               _INTL("Affects positioning of the Pokémon in battle. This is edited elsewhere.")],
+     [_INTL("Evolutions"),        EvolutionsProperty.new,         _INTL("Evolution paths of this species.")],
+     [_INTL("Incense"),           ItemProperty,                   _INTL("Item needed to be held by a parent to produce an egg of this species.")],
   ]
   pbListScreenBlock(_INTL("Pokémon species"),SpeciesLister.new(selection,false)) { |button,index|
     if index
@@ -836,7 +884,7 @@ def pbPokemonEditor
           entry       = messages.get(MessageTypes::Entries,selection)
           cname       = getConstantName(PBSpecies,selection) rescue sprintf("POKE%03d",selection)
           formname    = messages.get(MessageTypes::FormNames,selection)
-          abilities = speciesData[SpeciesAbilities]
+          abilities = speciesData[SpeciesData::ABILITIES]
           if abilities.is_a?(Array)
             ability1       = abilities[0]
             ability2       = abilities[1]
@@ -844,20 +892,20 @@ def pbPokemonEditor
             ability1       = abilities
             ability2       = nil
           end
-          color            = speciesData[SpeciesColor]
-          habitat          = speciesData[SpeciesHabitat]
-          type1            = speciesData[SpeciesType1]
-          type2            = speciesData[SpeciesType2]
+          color            = speciesData[SpeciesData::COLOR]
+          habitat          = speciesData[SpeciesData::HABITAT]
+          type1            = speciesData[SpeciesData::TYPE1]
+          type2            = speciesData[SpeciesData::TYPE2]
           type2            = nil if type2==type1
-          baseStats        = speciesData[SpeciesBaseStats].clone if speciesData[SpeciesBaseStats]
-          rareness         = speciesData[SpeciesRareness]
-          shape            = speciesData[SpeciesShape]
-          genderrate       = speciesData[SpeciesGenderRate]
-          happiness        = speciesData[SpeciesHappiness]
-          growthrate       = speciesData[SpeciesGrowthRate]
-          stepstohatch     = speciesData[SpeciesStepsToHatch]
-          effort           = speciesData[SpeciesEffortPoints].clone if speciesData[SpeciesEffortPoints]
-          compats = speciesData[SpeciesCompatibility]
+          baseStats        = speciesData[SpeciesData::BASE_STATS].clone if speciesData[SpeciesData::BASE_STATS]
+          rareness         = speciesData[SpeciesData::RARENESS]
+          shape            = speciesData[SpeciesData::SHAPE]
+          genderrate       = speciesData[SpeciesData::GENDER_RATE]
+          happiness        = speciesData[SpeciesData::HAPPINESS]
+          growthrate       = speciesData[SpeciesData::GROWTH_RATE]
+          stepstohatch     = speciesData[SpeciesData::STEPS_TO_HATCH]
+          effort           = speciesData[SpeciesData::EFFORT_POINTS].clone if speciesData[SpeciesData::EFFORT_POINTS]
+          compats = speciesData[SpeciesData::COMPATIBILITY]
           if compats.is_a?(Array)
             compat1        = compats[0]
             compat2        = compats[1]
@@ -865,10 +913,10 @@ def pbPokemonEditor
             compat1        = compats
             compat2        = nil
           end
-          height           = speciesData[SpeciesHeight]
-          weight           = speciesData[SpeciesWeight]
-          baseexp          = speciesData[SpeciesBaseExp]
-          hiddenAbils = speciesData[SpeciesHiddenAbility]
+          height           = speciesData[SpeciesData::HEIGHT]
+          weight           = speciesData[SpeciesData::WEIGHT]
+          baseexp          = speciesData[SpeciesData::BASE_EXP]
+          hiddenAbils = speciesData[SpeciesData::HIDDEN_ABILITY]
           if hiddenAbils.is_a?(Array)
             hiddenability1 = hiddenAbils[0]
             hiddenability2 = hiddenAbils[1]
@@ -880,17 +928,17 @@ def pbPokemonEditor
             hiddenability3 = nil
             hiddenability4 = nil
           end
-          item1            = speciesData[SpeciesWildItemCommon]
-          item2            = speciesData[SpeciesWildItemUncommon]
-          item3            = speciesData[SpeciesWildItemRare]
-          incense          = speciesData[SpeciesIncense]
+          item1            = speciesData[SpeciesData::WILD_ITEM_COMMON]
+          item2            = speciesData[SpeciesData::WILD_ITEM_UNCOMMON]
+          item3            = speciesData[SpeciesData::WILD_ITEM_RARE]
+          incense          = speciesData[SpeciesData::INCENSE]
           originalMoveset = pbGetSpeciesMoveset(selection)
           movelist = []
           originalMoveset.each_with_index { |m,i| movelist.push([m[0],m[1],i]) }
           movelist.sort! { |a,b| (a[0]==b[0]) ? a[2]<=>b[2] : a[0]<=>b[0] }
           originalEggMoves = pbGetSpeciesEggMoves(selection)
           eggmovelist = []
-          originalEggMoves.each { |m| eggmovelist.push(m) if m!=0 }
+          originalEggMoves.each { |m| eggmovelist.push(m) }
           regionallist = []
           for i in 0...regionalDexes.length
             regionallist.push(regionalDexes[i][selection])
@@ -939,7 +987,7 @@ def pbPokemonEditor
           for i in 0...6
             data.push(metrics[i][selection] || 0)   # 34, 35, 36, 37, 38, 39
           end
-          data.push(metrics[MetricBattlerShadowSize][selection] || 2)   # 40
+          data.push(metrics[SpeciesData::METRIC_SHADOW_SIZE][selection] || 2)   # 40
           data.push(evolutions)                     # 41
           data.push(incense)                        # 42
           # Edit the properties
@@ -953,41 +1001,36 @@ def pbPokemonEditor
             data[20] = data[19] if !data[20] || data[20]==0
             compats = (data[20] && data[20]>0) ? [data[19],data[20]] : data[19]
             # Make sure both Abilities are recorded correctly
-            data[11] = data[12] if !data[11] || data[11]==0
-            data[11] = 0 if !data[11]
-            data[12] = 0 if data[11]==data[12]
-            abils = (data[12] && data[12]>0) ? [data[11],data[12]] : data[11]
+            data[11] = data[12] if !data[11]
+            data[12] = nil if data[11] == data[12]
+            abils = (data[12]) ? [data[11], data[12]] : data[11]
             # Make sure all Hidden Abilities are recorded correctly
-            hiddenAbils = []; shouldArray = false
-            for i in 13..17
-              data[i] = nil if data[i] && data[i]==0
-              hiddenAbils.push(data[i])
-              shouldArray = true if i>13 && data[i]
-            end
-            hiddenAbils = hiddenAbils[0] if !shouldArray
+            hiddenAbils = [data[13], data[14], data[15], data[16]]
+            hiddenAbils.compact!
+            hiddenAbils = hiddenAbils[0] if hiddenAbils.length <= 1
             # Save data
-            speciesData[SpeciesAbilities]        = abils
-            speciesData[SpeciesColor]            = data[24]
-            speciesData[SpeciesHabitat]          = data[26]
-            speciesData[SpeciesType1]            = data[2]
-            speciesData[SpeciesType2]            = data[3]
-            speciesData[SpeciesBaseStats]        = data[4]
-            speciesData[SpeciesRareness]         = data[9]
-            speciesData[SpeciesShape]            = data[25]
-            speciesData[SpeciesGenderRate]       = data[5]
-            speciesData[SpeciesHappiness]        = data[10]
-            speciesData[SpeciesGrowthRate]       = data[6]
-            speciesData[SpeciesStepsToHatch]     = data[21]
-            speciesData[SpeciesEffortPoints]     = data[8]
-            speciesData[SpeciesCompatibility]    = compats
-            speciesData[SpeciesHeight]           = data[22]
-            speciesData[SpeciesWeight]           = data[23]
-            speciesData[SpeciesBaseExp]          = data[7]
-            speciesData[SpeciesHiddenAbility]    = hiddenAbils
-            speciesData[SpeciesWildItemCommon]   = data[31]
-            speciesData[SpeciesWildItemUncommon] = data[32]
-            speciesData[SpeciesWildItemRare]     = data[33]
-            speciesData[SpeciesIncense]          = data[42]
+            speciesData[SpeciesData::ABILITIES]          = abils
+            speciesData[SpeciesData::COLOR]              = data[24]
+            speciesData[SpeciesData::HABITAT]            = data[26]
+            speciesData[SpeciesData::TYPE1]              = data[2]
+            speciesData[SpeciesData::TYPE2]              = data[3]
+            speciesData[SpeciesData::BASE_STATS]         = data[4]
+            speciesData[SpeciesData::RARENESS]           = data[9]
+            speciesData[SpeciesData::SHAPE]              = data[25]
+            speciesData[SpeciesData::GENDER_RATE]        = data[5]
+            speciesData[SpeciesData::HAPPINESS]          = data[10]
+            speciesData[SpeciesData::GROWTH_RATE]        = data[6]
+            speciesData[SpeciesData::STEPS_TO_HATCH]     = data[21]
+            speciesData[SpeciesData::EFFORT_POINTS]      = data[8]
+            speciesData[SpeciesData::COMPATIBILITY]      = compats
+            speciesData[SpeciesData::HEIGHT]             = data[22]
+            speciesData[SpeciesData::WEIGHT]             = data[23]
+            speciesData[SpeciesData::BASE_EXP]           = data[7]
+            speciesData[SpeciesData::HIDDEN_ABILITY]     = hiddenAbils
+            speciesData[SpeciesData::WILD_ITEM_COMMON]   = data[31]
+            speciesData[SpeciesData::WILD_ITEM_UNCOMMON] = data[32]
+            speciesData[SpeciesData::WILD_ITEM_RARE]     = data[33]
+            speciesData[SpeciesData::INCENSE]            = data[42]
             save_data(pbLoadSpeciesData,"Data/species.dat")
             namearray  = []
             kindarray  = []
@@ -1057,8 +1100,11 @@ def pbPokemonEditor
             save_data(evos,"Data/species_evolutions.dat")
             # Don't need to save metrics or regional numbers
             # because they can't be edited here
+            # TODO: Only need to reload whichever sets of Pokémon data were
+            #       edited here (species, movesets, egg moves, evolutions).
+            #       These are likely to be merged into a single data file.
             pbClearData
-            pbSavePokemonData
+            pbSavePokemonData   # Rewrite PBS files pokemon.txt and pokemonforms.txt
             pbMessage(_INTL("Data saved."))
           end
         end
@@ -1116,12 +1162,12 @@ def pbRegionalDexEditor(dex)
     refreshlist = false
     cmd = pbCommands3(cmdwin,commands,-1,cmd[1],true)
     case cmd[0]
-    when 1   # Swap move up
+    when 1   # Swap entry up
       if cmd[1]<tdex.length-1
         tdex[cmd[1]+1],tdex[cmd[1]] = tdex[cmd[1]],tdex[cmd[1]+1]
         refreshlist = true
       end
-     when 2   # Swap move down
+     when 2   # Swap entry down
       if cmd[1]>0
         tdex[cmd[1]-1],tdex[cmd[1]] = tdex[cmd[1]],tdex[cmd[1]-1]
         refreshlist = true

@@ -109,7 +109,7 @@ class PokemonEggHatch_Scene
     if pbConfirmMessage(
         _INTL("Would you like to nickname the newly hatched {1}?",@pokemon.name)) { update }
       nickname=pbEnterPokemonName(_INTL("{1}'s nickname?",@pokemon.name),
-         0,PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE,"",@pokemon,true)
+                                  0, Pokemon::MAX_NAME_SIZE, "", @pokemon, true)
       @pokemon.name=nickname if nickname!=""
       @nicknamed=true
     end
@@ -192,8 +192,7 @@ end
 def pbHatch(pokemon)
   speciesname = pokemon.speciesName
   pokemon.name           = speciesname
-  pokemon.trainerID      = $Trainer.id
-  pokemon.ot             = $Trainer.name
+  pokemon.owner          = Pokemon::Owner.new_from_trainer($Trainer)
   pokemon.happiness      = 120
   pokemon.timeEggHatched = pbGetTimeNow
   pokemon.obtainMode     = 1   # hatched from egg
@@ -209,7 +208,7 @@ def pbHatch(pokemon)
     pbMessage(_INTL("{1} hatched from the Egg!",speciesname))
     if pbConfirmMessage(_INTL("Would you like to nickname the newly hatched {1}?",speciesname))
       nickname = pbEnterPokemonName(_INTL("{1}'s nickname?",speciesname),
-         0,PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE,"",pokemon)
+                                    0, Pokemon::MAX_NAME_SIZE, "", pokemon)
       pokemon.name = nickname if nickname!=""
     end
   end
@@ -220,8 +219,7 @@ Events.onStepTaken += proc { |_sender,_e|
     next if egg.eggsteps<=0
     egg.eggsteps -= 1
     for i in $Trainer.pokemonParty
-      next if !isConst?(i.ability,PBAbilities,:FLAMEBODY) &&
-              !isConst?(i.ability,PBAbilities,:MAGMAARMOR)
+      next if !i.hasAbility?(:FLAMEBODY) && !i.hasAbility?(:MAGMAARMOR)
       egg.eggsteps -= 1
       break
     end

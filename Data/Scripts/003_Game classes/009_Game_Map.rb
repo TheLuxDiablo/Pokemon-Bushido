@@ -31,8 +31,8 @@ class Game_Map
 
   TILE_WIDTH  = 32
   TILE_HEIGHT = 32
-  X_SUBPIXELS = ($RPGVX) ? 8 : 4
-  Y_SUBPIXELS = ($RPGVX) ? 8 : 4
+  X_SUBPIXELS = 4
+  Y_SUBPIXELS = 4
   REAL_RES_X  = TILE_WIDTH * X_SUBPIXELS
   REAL_RES_Y  = TILE_HEIGHT * Y_SUBPIXELS
 
@@ -44,7 +44,7 @@ class Game_Map
 
   def setup(map_id)
     @map_id               = map_id
-    @map = load_data(sprintf("Data/Map%03d.%s",map_id,($RPGVX) ? "rvdata" : "rxdata"))
+    @map = load_data(sprintf("Data/Map%03d.rxdata",map_id))
     tileset = $data_tilesets[@map.tileset_id]
     updateTileset
     @fog_ox               = 0
@@ -161,14 +161,26 @@ class Game_Map
     # All other events
     newx = x; newy = y
     case d
-    when 1; newx -= 1; newy += 1
-    when 2;            newy += 1
-    when 3; newx += 1; newy += 1
-    when 4; newx -= 1
-    when 6; newx += 1
-    when 7; newx -= 1; newy -= 1
-    when 8;            newy -= 1
-    when 9; newx += 1; newy -= 1
+    when 1
+      newx -= 1
+      newy += 1
+    when 2
+      newy += 1
+    when 3
+      newx += 1
+      newy += 1
+    when 4
+      newx -= 1
+    when 6
+      newx += 1
+    when 7
+      newx -= 1
+      newy -= 1
+    when 8
+      newy -= 1
+    when 9
+      newx += 1
+      newy -= 1
     end
     return false if !valid?(newx, newy)
     for i in [2, 1, 0]
@@ -318,7 +330,7 @@ class Game_Map
 
   def display_x=(value)
     @display_x = value
-    if pbGetMetadata(self.map_id,MetadataSnapEdges)
+    if GameData::MapMetadata.get(self.map_id).snap_edges
       max_x = (self.width - Graphics.width*1.0/TILE_WIDTH) * REAL_RES_X
       @display_x = [0, [@display_x, max_x].min].max
     end
@@ -327,7 +339,7 @@ class Game_Map
 
   def display_y=(value)
     @display_y = value
-    if pbGetMetadata(self.map_id,MetadataSnapEdges)
+    if GameData::MapMetadata.get(self.map_id).snap_edges
       max_y = (self.height - Graphics.height*1.0/TILE_HEIGHT) * REAL_RES_Y
       @display_y = [0, [@display_y, max_y].min].max
     end
@@ -403,10 +415,10 @@ class Game_Map
       distance = (1<<@scroll_speed)*40.0/Graphics.frame_rate
       distance = @scroll_rest if distance>@scroll_rest
       case @scroll_direction
-      when 2; scroll_down(distance)
-      when 4; scroll_left(distance)
-      when 6; scroll_right(distance)
-      when 8; scroll_up(distance)
+      when 2 then scroll_down(distance)
+      when 4 then scroll_left(distance)
+      when 6 then scroll_right(distance)
+      when 8 then scroll_up(distance)
       end
       @scroll_rest -= distance
     end

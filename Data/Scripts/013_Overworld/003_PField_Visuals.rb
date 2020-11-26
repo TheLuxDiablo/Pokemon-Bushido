@@ -52,7 +52,7 @@ def pbBattleAnimation(bgm=nil,battletype=0,foe=nil)
       location = 3
     elsif $PokemonEncounters.isCave?
       location = 2
-    elsif !pbGetMetadata($game_map.map_id,MetadataOutdoor)
+    elsif !GameData::MapMetadata.get($game_map.map_id).outdoor_map
       location = 1
     end
     anim = ""
@@ -625,11 +625,7 @@ end
 # Blacking out animation
 #===============================================================================
 def pbRxdataExists?(file)
-  if $RPGVX
-    return pbRgssExists?(file+".rvdata")
-  else
-    return pbRgssExists?(file+".rxdata")
-  end
+  return pbRgssExists?(file+".rxdata")
 end
 
 def pbStartOver(gameover=false)
@@ -654,7 +650,7 @@ def pbStartOver(gameover=false)
     $scene.transfer_player if $scene.is_a?(Scene_Map)
     $game_map.refresh
   else
-    homedata = pbGetMetadata(0,MetadataHome)
+    homedata = GameData::Metadata.get.home
     if homedata && !pbRxdataExists?(sprintf("Data/Map%03d",homedata[0]))
       if $DEBUG
         pbMessage(_ISPRINTF("Can't find the map 'Map{1:03d}' in the Data folder. The game will resume at the player's position.",homedata[0]))
@@ -707,10 +703,10 @@ end
 def pbScrollMap(direction,distance,speed)
   if speed==0
     case direction
-    when 2; $game_map.scroll_down(distance * Game_Map::REAL_RES_Y)
-    when 4; $game_map.scroll_left(distance * Game_Map::REAL_RES_X)
-    when 6; $game_map.scroll_right(distance * Game_Map::REAL_RES_X)
-    when 8; $game_map.scroll_up(distance * Game_Map::REAL_RES_Y)
+    when 2 then $game_map.scroll_down(distance * Game_Map::REAL_RES_Y)
+    when 4 then $game_map.scroll_left(distance * Game_Map::REAL_RES_X)
+    when 6 then $game_map.scroll_right(distance * Game_Map::REAL_RES_X)
+    when 8 then $game_map.scroll_up(distance * Game_Map::REAL_RES_Y)
     end
   else
     $game_map.start_scroll(direction, distance, speed)

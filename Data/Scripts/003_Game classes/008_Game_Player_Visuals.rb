@@ -3,10 +3,10 @@ class Game_Player < Game_Character
 
   def fullPattern
     case self.direction
-    when 2; return self.pattern
-    when 4; return 4+self.pattern
-    when 6; return 8+self.pattern
-    when 8; return 12+self.pattern
+    when 2 then return self.pattern
+    when 4 then return self.pattern + 4
+    when 6 then return self.pattern + 8
+    when 8 then return self.pattern + 12
     end
     return 0
   end
@@ -38,7 +38,7 @@ class Game_Player < Game_Character
     @defaultCharacterName = "" if !@defaultCharacterName
     return @defaultCharacterName if @defaultCharacterName!=""
     if !@move_route_forcing && $PokemonGlobal.playerID>=0
-      meta = pbGetMetadata(0,MetadataPlayerA+$PokemonGlobal.playerID)
+      meta = GameData::Metadata.get_player($PokemonGlobal.playerID)
       if meta && !$PokemonGlobal.bicycle && !$PokemonGlobal.diving && !$PokemonGlobal.surfing
         charset = 1   # Display normal character sprite
         if pbCanRun? && (moving? || @wasmoving) && Input.dir4!=0 && meta[4] && meta[4]!=""

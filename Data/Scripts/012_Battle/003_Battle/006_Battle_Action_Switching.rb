@@ -168,7 +168,7 @@ class PokeBattle_Battle
              @battlers[0].effects[PBEffects::Outrage]==0
             idxPartyForName = idxPartyNew
             enemyParty = pbParty(idxBattler)
-            if isConst?(enemyParty[idxPartyNew].ability,PBAbilities,:ILLUSION)
+            if enemyParty[idxPartyNew].ability == :ILLUSION
               idxPartyForName = pbLastInTeam(idxBattler)
             end
             if pbDisplayConfirm(_INTL("{1} is about to send in {2}. Will you switch your Pokémon?",
@@ -223,11 +223,11 @@ class PokeBattle_Battle
   end
 
   # Actually performs the recalling and sending out in all situations.
-  def pbRecallAndReplace(idxBattler,idxParty,batonPass=false)
+  def pbRecallAndReplace(idxBattler,idxParty,randomReplacement=false,batonPass=false)
     @scene.pbRecall(idxBattler) if !@battlers[idxBattler].fainted?
     @battlers[idxBattler].pbAbilitiesOnSwitchOut   # Inc. primordial weather check
     @scene.pbShowPartyLineup(idxBattler&1) if pbSideSize(idxBattler)==1
-    pbMessagesOnReplace(idxBattler,idxParty)
+    pbMessagesOnReplace(idxBattler,idxParty) if !randomReplacement
     pbReplace(idxBattler,idxParty,batonPass)
   end
 
@@ -254,7 +254,7 @@ class PokeBattle_Battle
   def pbMessagesOnReplace(idxBattler,idxParty)
     party = pbParty(idxBattler)
     newPkmnName = party[idxParty].name
-    if isConst?(party[idxParty].ability,PBAbilities,:ILLUSION)
+    if party[idxParty].ability == :ILLUSION
       newPkmnName = party[pbLastInTeam(idxBattler)].name
     end
     if pbOwnedByPlayer?(idxBattler)
@@ -323,8 +323,7 @@ class PokeBattle_Battle
       pbDisplay(_INTL("Oh!\nA Shadow Pokémon!"))
     end
     # Record money-doubling effect of Amulet Coin/Luck Incense
-    if !battler.opposes? && (isConst?(battler.item,PBItems,:AMULETCOIN) ||
-                             isConst?(battler.item,PBItems,:LUCKINCENSE))
+    if !battler.opposes? && [:AMULETCOIN, :LUCKINCENSE].include?(battler.item_id)
       @field.effects[PBEffects::AmuletCoin] = true
     end
     # Update battlers' participants (who will gain Exp/EVs when a battler faints)
@@ -343,7 +342,7 @@ class PokeBattle_Battle
       pbDisplay(_INTL("{1} became cloaked in mystical moonlight!",battler.pbThis))
       battler.pbRecoverHP(battler.totalhp)
       battler.pbCureStatus(false)
-      battler.eachMove { |m| m.pp = m.totalpp }
+      battler.eachMove { |m| m.pp = m.total_pp }
       @positions[battler.index].effects[PBEffects::LunarDance] = false
     end
     # Entry hazards

@@ -166,7 +166,7 @@ def pbDebugMenuCommands(showall=true)
   commands.add("main","editorsmenu",_INTL("Information editors..."),
      _INTL("Edit information in the PBS files, terrain tags, battle animations, etc."))
   commands.add("editorsmenu","setmetadata",_INTL("Edit Metadata"),
-     _INTL("Edit global and map-specific metadata."))
+     _INTL("Edit global and map metadata."))
   commands.add("editorsmenu","mapconnections",_INTL("Edit Map Connections"),
      _INTL("Connect maps using a visual interface. Can also edit map encounters/metadata."))
   commands.add("editorsmenu","terraintags",_INTL("Edit Terrain Tags"),
@@ -350,7 +350,7 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
           params.setCancelValue(0)
           level = pbMessageChooseNumber(_INTL("Set the wild {1}'s level.",PBSpecies.getName(species)),params)
           if level>0
-            pkmn.push(pbGenerateWildPokemon(species,level))
+            pkmn.push(Pokemon.new(species,level))
           end
         end
       else                                     # Edit a Pokémon
@@ -492,16 +492,17 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
   # Item options
   #=============================================================================
   when "additem"
-    pbListScreenBlock(_INTL("ADD ITEM"),ItemLister.new(0)) { |button,item|
-      if button==Input::C && item && item>0
+    pbListScreenBlock(_INTL("ADD ITEM"),ItemLister.new) { |button,item|
+      if button==Input::C && item
         params = ChooseNumberParams.new
         params.setRange(1,BAG_MAX_PER_SLOT)
         params.setInitialValue(1)
         params.setCancelValue(0)
-        qty = pbMessageChooseNumber(_INTL("Choose the number of items."),params)
+        qty = pbMessageChooseNumber(_INTL("Add how many {1}?",
+           GameData::Item.get(item).name_plural), params)
         if qty>0
           $PokemonBag.pbStoreItem(item,qty)
-          pbMessage(_INTL("Gave {1}x {2}.",qty,PBItems.getName(item)))
+          pbMessage(_INTL("Gave {1}x {2}.",qty,GameData::Item.get(item).name))
         end
       end
     }
@@ -512,14 +513,7 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
     params.setCancelValue(0)
     qty = pbMessageChooseNumber(_INTL("Choose the number of items."),params)
     if qty>0
-      itemconsts = []
-      for i in PBItems.constants
-        itemconsts.push(PBItems.const_get(i))
-      end
-      itemconsts.sort! { |a,b| a<=>b }
-      for i in itemconsts
-        $PokemonBag.pbStoreItem(i,qty)
-      end
+      GameData::Item.each { |i| $PokemonBag.pbStoreItem(i.id, qty) }
       pbMessage(_INTL("The Bag was filled with {1} of each item.",qty))
     end
   when "emptybag"
@@ -565,7 +559,7 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
       end
       cname = getConstantName(PBSpecies,i) rescue nil
       next if !cname
-      pkmn = pbNewPkmn(i,50)
+      pkmn = Pokemon.new(i,50)
       $PokemonStorage[(i-1)/$PokemonStorage.maxPokemon(0),
                       (i-1)%$PokemonStorage.maxPokemon(0)] = pkmn
       # Record all forms of this Pokémon as seen and owned
@@ -577,7 +571,7 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
         next if !formdata[i][form] || formdata[i][form]==0
         fSpecies = pbGetFSpeciesFromForm(i,form)
         formname = pbGetMessage(MessageTypes::FormNames,fSpecies)
-        genderRate = speciesData[i][SpeciesGenderRate] || 0
+        genderRate = speciesData[i][SpeciesData::GENDER_RATE] || 0
         gender = (genderRate==PBGenderRates::AlwaysFemale) ? 1 : 0
         if form==0
           case genderRate
@@ -685,7 +679,7 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
   when "setplayer"
     limit = 0
     for i in 0...8
-      meta = pbGetMetadata(0,MetadataPlayerA+i)
+      meta = GameData::Metadata.get_player(i)
       if !meta
         limit = i; break
       end
@@ -733,6 +727,7 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
   #=============================================================================
   when "setmetadata"
     pbMetadataScreen(pbDefaultMap)
+    # TODO: Only need to reload the metadata.
     pbClearData
   when "mapconnections"
     pbFadeOutIn { pbConnectionsEditor }
@@ -747,8 +742,9 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
       pbEncounterEditorMap(encdata,map)
     end
     save_data(encdata,"Data/encounters.dat")
+    # TODO: Only need to reload the encounters data.
     pbClearData
-    pbSaveEncounterData
+    pbSaveEncounterData   # Rewrite PBS file encounters.txt
   when "trainertypes"
     pbFadeOutIn { pbTrainerTypeEditor }
   when "edittrainers"
@@ -792,7 +788,7 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
     pbCompileTextUI
   when "compiledata"
     msgwindow = pbCreateMessageWindow
-    pbCompileAllData(true) { |msg| pbMessageDisplay(msgwindow,msg,false) }
+    Compiler.compile_all(true) { |msg| pbMessageDisplay(msgwindow,msg,false) }
     pbMessageDisplay(msgwindow,_INTL("All game data was compiled."))
     pbDisposeMessageWindow(msgwindow)
   when "debugconsole"

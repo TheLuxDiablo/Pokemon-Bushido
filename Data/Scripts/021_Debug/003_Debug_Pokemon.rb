@@ -218,8 +218,8 @@ module PokemonDebugMixin
             evcommands.push(_INTL("Randomise all"))
             evcommands.push(_INTL("Max randomise all"))
             cmd2 = pbShowCommands(_INTL("Change which EV?\nTotal: {1}/{2} ({3}%)",
-               totalev,PokeBattle_Pokemon::EV_LIMIT,
-               100*totalev/PokeBattle_Pokemon::EV_LIMIT),evcommands,cmd2)
+                                        totalev, Pokemon::EV_LIMIT,
+                                        100*totalev/Pokemon::EV_LIMIT), evcommands, cmd2)
             break if cmd2<0
             if cmd2<numstats
               params = ChooseNumberParams.new
@@ -227,8 +227,8 @@ module PokemonDebugMixin
               for i in 0...numstats
                 upperLimit += pkmn.ev[i] if i!=cmd2
               end
-              upperLimit = PokeBattle_Pokemon::EV_LIMIT-upperLimit
-              upperLimit = [upperLimit,PokeBattle_Pokemon::EV_STAT_LIMIT].min
+              upperLimit = Pokemon::EV_LIMIT-upperLimit
+              upperLimit = [upperLimit, Pokemon::EV_STAT_LIMIT].min
               thisValue = [pkmn.ev[cmd2],upperLimit].min
               params.setRange(0,upperLimit)
               params.setDefaultValue(thisValue)
@@ -241,19 +241,19 @@ module PokemonDebugMixin
                 pbRefreshSingle(pkmnid)
               end
             elsif cmd2<evcommands.length   # Randomise
-              evTotalTarget = PokeBattle_Pokemon::EV_LIMIT
+              evTotalTarget = Pokemon::EV_LIMIT
               if cmd2==evcommands.length-2
-                evTotalTarget = rand(PokeBattle_Pokemon::EV_LIMIT)
+                evTotalTarget = rand(Pokemon::EV_LIMIT)
               end
               for i in 0...numstats
                 pkmn.ev[i] = 0
               end
               while evTotalTarget>0
                 r = rand(numstats)
-                next if pkmn.ev[r]>=PokeBattle_Pokemon::EV_STAT_LIMIT
-                addVal = 1+rand(PokeBattle_Pokemon::EV_STAT_LIMIT/4)
+                next if pkmn.ev[r]>=Pokemon::EV_STAT_LIMIT
+                addVal = 1+rand(Pokemon::EV_STAT_LIMIT/4)
                 addVal = evTotalTarget if addVal>evTotalTarget
-                addVal = [addVal,PokeBattle_Pokemon::EV_STAT_LIMIT-pkmn.ev[r]].min
+                addVal = [addVal, Pokemon::EV_STAT_LIMIT-pkmn.ev[r]].min
                 next if addVal==0
                 pkmn.ev[r] += addVal
                 evTotalTarget -= addVal
@@ -292,17 +292,14 @@ module PokemonDebugMixin
               end
             elsif cmd2==ivcommands.length-1   # Randomise
               for i in 0...numstats
-                pkmn.iv[i] = rand(PokeBattle_Pokemon::IV_STAT_LIMIT+1)
+                pkmn.iv[i] = rand(Pokemon::IV_STAT_LIMIT+1)
               end
               pkmn.calcStats
               pbRefreshSingle(pkmnid)
             end
           end
         when 2   # Randomise pID
-          pkmn.personalID = rand(256)
-          pkmn.personalID |= rand(256)<<8
-          pkmn.personalID |= rand(256)<<16
-          pkmn.personalID |= rand(256)<<24
+          pkmn.personalID = rand(2**16) | rand(2**16) << 16
           pkmn.calcStats
           pbRefreshSingle(pkmnid)
         end
@@ -321,12 +318,24 @@ module PokemonDebugMixin
     #===========================================================================
     when "setbeauty", "setcool", "setcute", "setsmart", "settough", "setsheen"
       case command
-      when "setbeauty"; statname = _INTL("Beauty"); defval = pkmn.beauty
-      when "setcool";   statname = _INTL("Cool");   defval = pkmn.cool
-      when "setcute";   statname = _INTL("Cute");   defval = pkmn.cute
-      when "setsmart";  statname = _INTL("Smart");  defval = pkmn.smart
-      when "settough";  statname = _INTL("Tough");  defval = pkmn.tough
-      when "setsheen";  statname = _INTL("Sheen");  defval = pkmn.sheen
+      when "setbeauty"
+        statname = _INTL("Beauty")
+        defval = pkmn.beauty
+      when "setcool"
+        statname = _INTL("Cool")
+        defval = pkmn.cool
+      when "setcute"
+        statname = _INTL("Cute")
+        defval = pkmn.cute
+      when "setsmart"
+        statname = _INTL("Smart")
+        defval = pkmn.smart
+      when "settough"
+        statname = _INTL("Tough")
+        defval = pkmn.tough
+      when "setsheen"
+        statname = _INTL("Sheen")
+        defval = pkmn.sheen
       end
       params = ChooseNumberParams.new
       params.setRange(0,255)
@@ -335,19 +344,19 @@ module PokemonDebugMixin
          _INTL("Set the Pokémon's {1} (max. 255).",statname),params) { pbUpdate }
       if newval!=defval
         case command
-        when "setbeauty"; pkmn.beauty = newval
-        when "setcool";   pkmn.cool   = newval
-        when "setcute";   pkmn.cute   = newval
-        when "setsmart";  pkmn.smart  = newval
-        when "settough";  pkmn.tough  = newval
-        when "setsheen";  pkmn.sheen  = newval
+        when "setbeauty" then pkmn.beauty = newval
+        when "setcool"   then pkmn.cool   = newval
+        when "setcute"   then pkmn.cute   = newval
+        when "setsmart"  then pkmn.smart  = newval
+        when "settough"  then pkmn.tough  = newval
+        when "setsheen"  then pkmn.sheen  = newval
         end
         pbRefreshSingle(pkmnid)
       end
     #===========================================================================
     when "teachmove"
       move = pbChooseMoveList
-      if move!=0
+      if move
         pbLearnMove(pkmn,move)
         pbRefreshSingle(pkmnid)
       end
@@ -355,7 +364,7 @@ module PokemonDebugMixin
     when "forgetmove"
       moveindex = pbChooseMove(pkmn,_INTL("Choose move to forget."))
       if moveindex>=0
-        movename = PBMoves.getName(pkmn.moves[moveindex].id)
+        movename = pkmn.moves[moveindex].name
         pkmn.pbDeleteMoveAtIndex(moveindex)
         pbDisplay(_INTL("{1} forgot {2}.",pkmn.name,movename))
         pbRefreshSingle(pkmnid)
@@ -371,11 +380,11 @@ module PokemonDebugMixin
       loop do
         commands = []
         for i in pkmn.moves
-          break if i.id==0
-          if i.totalpp<=0
-            commands.push(_INTL("{1} (PP: ---)",PBMoves.getName(i.id)))
+          break if !i.id
+          if i.total_pp<=0
+            commands.push(_INTL("{1} (PP: ---)",i.name))
           else
-            commands.push(_INTL("{1} (PP: {2}/{3})",PBMoves.getName(i.id),i.pp,i.totalpp))
+            commands.push(_INTL("{1} (PP: {2}/{3})",i.name,i.pp,i.total_pp))
           end
         end
         commands.push(_INTL("Restore all PP"))
@@ -383,13 +392,13 @@ module PokemonDebugMixin
         break if cmd<0
         if cmd>=0 && cmd<commands.length-1   # Move
           move = pkmn.moves[cmd]
-          movename = PBMoves.getName(move.id)
-          if move.totalpp<=0
+          movename = move.name
+          if move.total_pp<=0
             pbDisplay(_INTL("{1} has infinite PP.",movename))
           else
             cmd2 = 0
             loop do
-              msg = _INTL("{1}: PP {2}/{3} (PP Up {4}/3)",movename,move.pp,move.totalpp,move.ppup)
+              msg = _INTL("{1}: PP {2}/{3} (PP Up {4}/3)",movename,move.pp,move.total_pp,move.ppup)
               cmd2 = pbShowCommands(msg,[
                  _INTL("Set PP"),
                  _INTL("Full PP"),
@@ -398,13 +407,13 @@ module PokemonDebugMixin
               case cmd2
               when 0   # Change PP
                 params = ChooseNumberParams.new
-                params.setRange(0,move.totalpp)
+                params.setRange(0,move.total_pp)
                 params.setDefaultValue(move.pp)
                 h = pbMessageChooseNumber(
-                   _INTL("Set PP of {1} (max. {2}).",movename,move.totalpp),params) { pbUpdate }
+                   _INTL("Set PP of {1} (max. {2}).",movename,move.total_pp),params) { pbUpdate }
                 move.pp = h
               when 1   # Full PP
-                move.pp = move.totalpp
+                move.pp = move.total_pp
               when 2   # Change PP Up
                 params = ChooseNumberParams.new
                 params.setRange(0,3)
@@ -412,7 +421,7 @@ module PokemonDebugMixin
                 h = pbMessageChooseNumber(
                    _INTL("Set PP Up of {1} (max. 3).",movename),params) { pbUpdate }
                 move.ppup = h
-                move.pp = move.totalpp if move.pp>move.totalpp
+                move.pp = move.total_pp if move.pp>move.total_pp
               end
             end
           end
@@ -430,10 +439,10 @@ module PokemonDebugMixin
       cmd = 0
       loop do
         abils = pkmn.getAbilityList
-        oldabil = PBAbilities.getName(pkmn.ability)
+        oldabil = (pkmn.ability) ? pkmn.ability.name : "No ability"
         commands = []
         for i in abils
-          commands.push(((i[1]<2) ? "" : "(H) ")+PBAbilities.getName(i[0]))
+          commands.push(((i[1]<2) ? "" : "(H) ") + GameData::Ability.get(i[0]).name)
         end
         commands.push(_INTL("Remove override"))
         msg = [_INTL("Ability {1} is natural.",oldabil),
@@ -601,7 +610,7 @@ module PokemonDebugMixin
         when 0   # Rename
           oldname = (pkmn.name && pkmn.name!=speciesname) ? pkmn.name : ""
           newname = pbEnterPokemonName(_INTL("{1}'s nickname?",speciesname),
-             0,PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE,oldname,pkmn)
+                                       0, Pokemon::MAX_NAME_SIZE, oldname, pkmn)
           if newname && newname!=""
             pkmn.name = newname
             pbRefreshSingle(pkmnid)
@@ -615,8 +624,8 @@ module PokemonDebugMixin
     when "setpokeball"
       commands = []; balls = []
       for key in $BallTypes.keys
-        item = getID(PBItems,$BallTypes[key])
-        balls.push([key.to_i,PBItems.getName(item)]) if item && item>0
+        item = GameData::Item.try_get($BallTypes[key])
+        balls.push([key.to_i, item.name]) if item
       end
       balls.sort! { |a,b| a[1]<=>b[1] }
       cmd = 0
@@ -629,7 +638,7 @@ module PokemonDebugMixin
         commands.push(i[1])
       end
       loop do
-        oldball = PBItems.getName(pbBallTypeToItem(pkmn.ballused))
+        oldball = pbBallTypeToItem(pkmn.ballused).name
         cmd = pbShowCommands(_INTL("{1} used.",oldball),commands,cmd)
         break if cmd<0
         pkmn.ballused = balls[cmd][0]
@@ -667,9 +676,9 @@ module PokemonDebugMixin
     when "ownership"
       cmd = 0
       loop do
-        gender = [_INTL("Male"),_INTL("Female"),_INTL("Unknown")][pkmn.otgender]
-        msg = [_INTL("Player's Pokémon\n{1}\n{2}\n{3} ({4})",pkmn.ot,gender,pkmn.publicID,pkmn.trainerID),
-               _INTL("Foreign Pokémon\n{1}\n{2}\n{3} ({4})",pkmn.ot,gender,pkmn.publicID,pkmn.trainerID)
+        gender = [_INTL("Male"),_INTL("Female"),_INTL("Unknown")][pkmn.owner.gender]
+        msg = [_INTL("Player's Pokémon\n{1}\n{2}\n{3} ({4})",pkmn.owner.name,gender,pkmn.owner.public_id,pkmn.owner.id),
+               _INTL("Foreign Pokémon\n{1}\n{2}\n{3} ({4})",pkmn.owner.name,gender,pkmn.owner.public_id,pkmn.owner.id)
               ][pkmn.foreign?($Trainer) ? 1 : 0]
         cmd = pbShowCommands(msg,[
              _INTL("Make player's"),
@@ -680,25 +689,23 @@ module PokemonDebugMixin
         break if cmd<0
         case cmd
         when 0   # Make player's
-          pkmn.trainerID = $Trainer.id
-          pkmn.ot        = $Trainer.name
-          pkmn.otgender  = $Trainer.gender
+          pkmn.owner = Pokemon::Owner.new_from_trainer($Trainer)
         when 1   # Set OT's name
-          pkmn.ot = pbEnterPlayerName(_INTL("{1}'s OT's name?",pkmn.name),1,MAX_PLAYER_NAME_SIZE)
+          pkmn.owner.name = pbEnterPlayerName(_INTL("{1}'s OT's name?",pkmn.name),1,MAX_PLAYER_NAME_SIZE)
         when 2   # Set OT's gender
           cmd2 = pbShowCommands(_INTL("Set OT's gender."),
-             [_INTL("Male"),_INTL("Female"),_INTL("Unknown")],pkmn.otgender)
-          pkmn.otgender = cmd2 if cmd2>=0
+             [_INTL("Male"),_INTL("Female"),_INTL("Unknown")],pkmn.owner.gender)
+          pkmn.owner.gender = cmd2 if cmd2>=0
         when 3   # Random foreign ID
-          pkmn.trainerID = $Trainer.getForeignID
+          pkmn.owner.id = $Trainer.getForeignID
         when 4   # Set foreign ID
           params = ChooseNumberParams.new
           params.setRange(0,65535)
-          params.setDefaultValue(pkmn.publicID)
+          params.setDefaultValue(pkmn.owner.public_id)
           val = pbMessageChooseNumber(
              _INTL("Set the new ID (max. 65535)."),params) { pbUpdate }
-          pkmn.trainerID = val
-          pkmn.trainerID |= val << 16
+          pkmn.owner.id = val
+          pkmn.owner.id |= val << 16
         end
       end
     #===========================================================================
@@ -719,7 +726,7 @@ module PokemonDebugMixin
             pkmn.level = EGG_LEVEL
             pkmn.calcStats
             pkmn.name = _INTL("Egg")
-            pkmn.eggsteps = pbGetSpeciesData(pkmn.species,pkmn.form,SpeciesStepsToHatch)
+            pkmn.eggsteps = pbGetSpeciesData(pkmn.species,pkmn.form,SpeciesData::STEPS_TO_HATCH)
             pkmn.hatchedMap = 0
             pkmn.obtainMode = 1
             pbRefreshSingle(pkmnid)
@@ -759,10 +766,10 @@ module PokemonDebugMixin
           if pkmn.shadowPokemon?
             oldheart = pkmn.heartgauge
             params = ChooseNumberParams.new
-            params.setRange(0,PokeBattle_Pokemon::HEARTGAUGESIZE)
+            params.setRange(0, Pokemon::HEARTGAUGESIZE)
             params.setDefaultValue(pkmn.heartgauge)
             val = pbMessageChooseNumber(
-               _INTL("Set the heart gauge (max. {1}).",PokeBattle_Pokemon::HEARTGAUGESIZE),
+               _INTL("Set the heart gauge (max. {1}).", Pokemon::HEARTGAUGESIZE),
                params) { pbUpdate }
             if val!=oldheart
               pkmn.adjustHeart(val-oldheart)

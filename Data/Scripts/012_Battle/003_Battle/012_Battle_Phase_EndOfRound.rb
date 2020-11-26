@@ -61,14 +61,14 @@ class PokeBattle_Battle
     # Weather continues
     pbCommonAnimation(PBWeather.animationName(@field.weather))
     case @field.weather
-#    when PBWeather::Sun;         pbDisplay(_INTL("The sunlight is strong."))
-#    when PBWeather::Rain;        pbDisplay(_INTL("Rain continues to fall."))
-    when PBWeather::Sandstorm;   pbDisplay(_INTL("The sandstorm is raging."))
-    when PBWeather::Hail;        pbDisplay(_INTL("The hail is crashing down."))
-#    when PBWeather::HarshSun;    pbDisplay(_INTL("The sunlight is extremely harsh."))
-#    when PBWeather::HeavyRain;   pbDisplay(_INTL("It is raining heavily."))
-#    when PBWeather::StrongWinds; pbDisplay(_INTL("The wind is strong."))
-    when PBWeather::ShadowSky;   pbDisplay(_INTL("The shadow sky continues."));
+#    when PBWeather::Sun         then pbDisplay(_INTL("The sunlight is strong."))
+#    when PBWeather::Rain        then pbDisplay(_INTL("Rain continues to fall."))
+    when PBWeather::Sandstorm   then pbDisplay(_INTL("The sandstorm is raging."))
+    when PBWeather::Hail        then pbDisplay(_INTL("The hail is crashing down."))
+#    when PBWeather::HarshSun    then pbDisplay(_INTL("The sunlight is extremely harsh."))
+#    when PBWeather::HeavyRain   then pbDisplay(_INTL("It is raining heavily."))
+#    when PBWeather::StrongWinds then pbDisplay(_INTL("The wind is strong."))
+    when PBWeather::ShadowSky   then pbDisplay(_INTL("The shadow sky continues."))
     end
     # Effects due to weather
     curWeather = pbWeather
@@ -132,10 +132,10 @@ class PokeBattle_Battle
     # Terrain continues
     pbCommonAnimation(PBBattleTerrains.animationName(@field.terrain))
     case @field.terrain
-    when PBBattleTerrains::Electric; pbDisplay(_INTL("An electric current is running across the battlefield."))
-    when PBBattleTerrains::Grassy;   pbDisplay(_INTL("Grass is covering the battlefield."))
-    when PBBattleTerrains::Misty;    pbDisplay(_INTL("Mist is swirling about the battlefield."))
-    when PBBattleTerrains::Psychic;  pbDisplay(_INTL("The battlefield is weird."))
+    when PBBattleTerrains::Electric then pbDisplay(_INTL("An electric current is running across the battlefield."))
+    when PBBattleTerrains::Grassy   then pbDisplay(_INTL("Grass is covering the battlefield."))
+    when PBBattleTerrains::Misty    then pbDisplay(_INTL("Mist is swirling about the battlefield."))
+    when PBBattleTerrains::Psychic  then pbDisplay(_INTL("The battlefield is weird."))
     end
   end
 
@@ -174,8 +174,8 @@ class PokeBattle_Battle
           # Get the position to move to
           pos = -1
           case pbSideSize(side)
-          when 2; pos = [2,3,0,1][b.index]   # The unoccupied position
-          when 3; pos = (side==0) ? 2 : 3    # The centre position
+          when 2 then pos = [2,3,0,1][b.index]   # The unoccupied position
+          when 3 then pos = (side==0) ? 2 : 3    # The centre position
           end
           next if pos<0
           # Can't move if the same trainer doesn't control both positions
@@ -234,7 +234,8 @@ class PokeBattle_Battle
       end
       next if !moveUser   # User is fainted
       move = pos.effects[PBEffects::FutureSightMove]
-      pbDisplay(_INTL("{1} took the {2} attack!",@battlers[idxPos].pbThis,PBMoves.getName(move)))
+      pbDisplay(_INTL("{1} took the {2} attack!",@battlers[idxPos].pbThis,
+         GameData::Move.get(move).name))
       # NOTE: Future Sight failing against the target here doesn't count towards
       #       Stomping Tantrum.
       userLastMoveFailed = moveUser.lastMoveFailed
@@ -244,7 +245,7 @@ class PokeBattle_Battle
       moveUser.lastMoveFailed = userLastMoveFailed
       @battlers[idxPos].pbFaint if @battlers[idxPos].fainted?
       pos.effects[PBEffects::FutureSightCounter]        = 0
-      pos.effects[PBEffects::FutureSightMove]           = 0
+      pos.effects[PBEffects::FutureSightMove]           = nil
       pos.effects[PBEffects::FutureSightUserIndex]      = -1
       pos.effects[PBEffects::FutureSightUserPartyIndex] = -1
     end
@@ -401,19 +402,19 @@ class PokeBattle_Battle
     priority.each do |b|
       next if b.fainted? || b.effects[PBEffects::Trapping]==0
       b.effects[PBEffects::Trapping] -= 1
-      moveName = PBMoves.getName(b.effects[PBEffects::TrappingMove])
+      moveName = GameData::Move.get(b.effects[PBEffects::TrappingMove]).name
       if b.effects[PBEffects::Trapping]==0
         pbDisplay(_INTL("{1} was freed from {2}!",b.pbThis,moveName))
       else
-        trappingMove = b.effects[PBEffects::TrappingMove]
-        if isConst?(trappingMove,PBMoves,:BIND);           pbCommonAnimation("Bind",b)
-        elsif isConst?(trappingMove,PBMoves,:CLAMP);       pbCommonAnimation("Clamp",b)
-        elsif isConst?(trappingMove,PBMoves,:FIRESPIN);    pbCommonAnimation("FireSpin",b)
-        elsif isConst?(trappingMove,PBMoves,:MAGMASTORM);  pbCommonAnimation("MagmaStorm",b)
-        elsif isConst?(trappingMove,PBMoves,:SANDTOMB);    pbCommonAnimation("SandTomb",b)
-        elsif isConst?(trappingMove,PBMoves,:WRAP);        pbCommonAnimation("Wrap",b)
-        elsif isConst?(trappingMove,PBMoves,:INFESTATION); pbCommonAnimation("Infestation",b)
-        else;                                              pbCommonAnimation("Wrap",b)
+        case b.effects[PBEffects::TrappingMove]
+        when :BIND        then pbCommonAnimation("Bind", b)
+        when :CLAMP       then pbCommonAnimation("Clamp", b)
+        when :FIRESPIN    then pbCommonAnimation("FireSpin", b)
+        when :MAGMASTORM  then pbCommonAnimation("MagmaStorm", b)
+        when :SANDTOMB    then pbCommonAnimation("SandTomb", b)
+        when :WRAP        then pbCommonAnimation("Wrap", b)
+        when :INFESTATION then pbCommonAnimation("Infestation", b)
+        else                   pbCommonAnimation("Wrap", b)
         end
         if b.takesIndirectDamage?
           hpLoss = (NEWEST_BATTLE_MECHANICS) ? b.totalhp/8 : b.totalhp/16
@@ -446,12 +447,12 @@ class PokeBattle_Battle
       else
         PBDebug.log("[End of effect] #{b.pbThis}'s encore ended (encored move no longer known)")
         b.effects[PBEffects::Encore]     = 0
-        b.effects[PBEffects::EncoreMove] = 0
+        b.effects[PBEffects::EncoreMove] = nil
       end
     end
     # Disable/Cursed Body
     pbEORCountDownBattlerEffect(priority,PBEffects::Disable) { |battler|
-      battler.effects[PBEffects::DisableMove] = 0
+      battler.effects[PBEffects::DisableMove] = nil
       pbDisplay(_INTL("{1} is no longer disabled!",battler.pbThis))
     }
     # Magnet Rise

@@ -45,7 +45,7 @@ class Window_Pokedex < Window_DrawableCommand
     else
       text = sprintf("%03d  ----------",indexNumber)
     end
-    pbDrawShadowText(self.contents,rect.x+36,rect.y+6,rect.width,rect.height,
+    pbDrawShadowText(self.contents,rect.x+36,rect.y+6 + 6,rect.width,rect.height,
        text,self.baseColor,self.shadowColor)
   end
 
@@ -327,12 +327,12 @@ class PokemonPokedex_Scene
       if pbCanAddForModeList?($PokemonGlobal.pokedexMode,nationalSpecies)
         form = $Trainer.formlastseen[nationalSpecies][1] || 0
         fspecies = pbGetFSpeciesFromForm(nationalSpecies,form)
-        color  = speciesData[fspecies][SpeciesColor] || 0
-        type1  = speciesData[fspecies][SpeciesType1] || 0
-        type2  = speciesData[fspecies][SpeciesType2] || type1
-        shape  = speciesData[fspecies][SpeciesShape] || 0
-        height = speciesData[fspecies][SpeciesHeight] || 1
-        weight = speciesData[fspecies][SpeciesWeight] || 1
+        color  = speciesData[fspecies][SpeciesData::COLOR] || 0
+        type1  = speciesData[fspecies][SpeciesData::TYPE1] || 0
+        type2  = speciesData[fspecies][SpeciesData::TYPE2] || type1
+        shape  = speciesData[fspecies][SpeciesData::SHAPE] || 0
+        height = speciesData[fspecies][SpeciesData::HEIGHT] || 1
+        weight = speciesData[fspecies][SpeciesData::WEIGHT] || 1
         shift = DEXES_WITH_OFFSETS.include?(region)
         dexlist.push([nationalSpecies,PBSpecies.getName(nationalSpecies),
            height,weight,i,shift,type1,type2,color,shape])
@@ -760,12 +760,12 @@ class PokemonPokedex_Scene
     # Remove all unseen species from the results
     dexlist = dexlist.find_all { |item| next $Trainer.seen[item[0]] }
     case $PokemonGlobal.pokedexMode
-    when MODENUMERICAL; dexlist.sort! { |a,b| a[4]<=>b[4] }
-    when MODEATOZ;      dexlist.sort! { |a,b| a[1]<=>b[1] }
-    when MODEHEAVIEST;  dexlist.sort! { |a,b| b[3]<=>a[3] }
-    when MODELIGHTEST;  dexlist.sort! { |a,b| a[3]<=>b[3] }
-    when MODETALLEST;   dexlist.sort! { |a,b| b[2]<=>a[2] }
-    when MODESMALLEST;  dexlist.sort! { |a,b| a[2]<=>b[2] }
+    when MODENUMERICAL then dexlist.sort! { |a,b| a[4]<=>b[4] }
+    when MODEATOZ      then dexlist.sort! { |a,b| a[1]<=>b[1] }
+    when MODEHEAVIEST  then dexlist.sort! { |a,b| b[3]<=>a[3] }
+    when MODELIGHTEST  then dexlist.sort! { |a,b| a[3]<=>b[3] }
+    when MODETALLEST   then dexlist.sort! { |a,b| b[2]<=>a[2] }
+    when MODESMALLEST  then dexlist.sort! { |a,b| a[2]<=>b[2] }
     end
     return dexlist
   end
@@ -822,17 +822,17 @@ class PokemonPokedex_Scene
     ret = nil
     # Set background
     case mode
-    when 0;   @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_order")
-    when 1;   @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_name")
+    when 0    then @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_order")
+    when 1    then @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_name")
     when 2
       if PBTypes.regularTypesCount==18
         @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_type_18")
       else
         @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_type")
       end
-    when 3,4; @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_size")
-    when 5;   @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_color")
-    when 6;   @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_shape")
+    when 3, 4 then @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_size")
+    when 5    then @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_color")
+    when 6    then @sprites["searchbg"].setBitmap("Graphics/Pictures/Pokedex/bg_search_shape")
     end
     selindex = selitems.clone
     index     = selindex[0]

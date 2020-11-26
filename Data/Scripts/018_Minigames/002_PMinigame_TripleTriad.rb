@@ -13,16 +13,16 @@ class TriadCard
   def initialize(species,form=0)
     @species = species
     @form    = form
-    baseStats = pbGetSpeciesData(species,form,SpeciesBaseStats)
+    baseStats = pbGetSpeciesData(species,form,SpeciesData::BASE_STATS)
     hp      = baseStats[PBStats::HP]
     attack  = baseStats[PBStats::ATTACK]
     defense = baseStats[PBStats::DEFENSE]
     spAtk   = baseStats[PBStats::SPATK]
     spDef   = baseStats[PBStats::SPDEF]
     speed   = baseStats[PBStats::SPEED]
-    @type = pbGetSpeciesData(species,form,SpeciesType1)
+    @type = pbGetSpeciesData(species,form,SpeciesData::TYPE1)
     if isConst?(@type,PBTypes,:NORMAL)
-      type2 = pbGetSpeciesData(species,form,SpeciesType2)
+      type2 = pbGetSpeciesData(species,form,SpeciesData::TYPE2)
       @type = type2 if type2
     end
     @west  = baseStatToValue(attack+speed/3)
@@ -56,9 +56,9 @@ class TriadCard
     aType = @type
     oType = opponent.type
     case PBTypes.getEffectiveness(aType,oType)
-    when PBTypeEffectiveness::INEFFECTIVE;         return -2
-    when PBTypeEffectiveness::NOT_EFFECTIVE_ONE;   return -1
-    when PBTypeEffectiveness::SUPER_EFFECTIVE_ONE; return 1
+    when PBTypeEffectiveness::INEFFECTIVE         then return -2
+    when PBTypeEffectiveness::NOT_EFFECTIVE_ONE   then return -1
+    when PBTypeEffectiveness::SUPER_EFFECTIVE_ONE then return 1
     end
     return 0
   end
@@ -627,7 +627,7 @@ class TriadScreen
   end
 
   def pbQuantity(items,item)
-    return ItemStorageHelper.pbQuantity(items,$PokemonGlobal.triads.maxSize,item)
+    return ItemStorageHelper.pbQuantity(items, item)
   end
 
   def pbAdd(items,item)
@@ -635,8 +635,8 @@ class TriadScreen
        $PokemonGlobal.triads.maxPerSlot,item,1)
   end
 
-  def pbSubtract(items,item)
-    return ItemStorageHelper.pbDeleteItem(items,$PokemonGlobal.triads.maxSize,item,1)
+  def pbSubtract(items, item)
+    return ItemStorageHelper.pbDeleteItem(items, item, 1)
   end
 
   def flipBoard(x,y,attackerParam=nil,recurse=false)
@@ -1041,7 +1041,7 @@ class TriadStorage
   end
 
   def pbQuantity(item)
-    return ItemStorageHelper.pbQuantity(@items,self.maxSize,item)
+    return ItemStorageHelper.pbQuantity(@items, item)
   end
 
   def pbCanStore?(item,qty=1)
@@ -1052,8 +1052,8 @@ class TriadStorage
     return ItemStorageHelper.pbStoreItem(@items,self.maxSize,self.maxPerSlot,item,qty)
   end
 
-  def pbDeleteItem(item,qty=1)
-    return ItemStorageHelper.pbDeleteItem(@items,self.maxSize,item,qty)
+  def pbDeleteItem(item, qty = 1)
+    return ItemStorageHelper.pbDeleteItem(@items, item, qty)
   end
 end
 

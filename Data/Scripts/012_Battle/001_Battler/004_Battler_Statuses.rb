@@ -9,14 +9,14 @@ class PokeBattle_Battler
   #       "counts as having that status", which includes Comatose which can't be
   #       cured.
   def pbHasStatus?(checkStatus)
-    if BattleHandlers.triggerStatusCheckAbilityNonIgnorable(@ability,self,checkStatus)
+    if BattleHandlers.triggerStatusCheckAbilityNonIgnorable(self.ability,self,checkStatus)
       return true
     end
     return @status==checkStatus
   end
 
   def pbHasAnyStatus?
-    if BattleHandlers.triggerStatusCheckAbilityNonIgnorable(@ability,self,nil)
+    if BattleHandlers.triggerStatusCheckAbilityNonIgnorable(self.ability,self,nil)
       return true
     end
     return @status!=PBStatuses::NONE
@@ -30,11 +30,11 @@ class PokeBattle_Battler
       if showMessages
         msg = ""
         case self.status
-        when PBStatuses::SLEEP;     msg = _INTL("{1} is already asleep!",pbThis)
-        when PBStatuses::POISON;    msg = _INTL("{1} is already poisoned!",pbThis)
-        when PBStatuses::BURN;      msg = _INTL("{1} already has a burn!",pbThis)
-        when PBStatuses::PARALYSIS; msg = _INTL("{1} is already paralyzed!",pbThis)
-        when PBStatuses::FROZEN;    msg = _INTL("{1} is already frozen solid!",pbThis)
+        when PBStatuses::SLEEP     then msg = _INTL("{1} is already asleep!",pbThis)
+        when PBStatuses::POISON    then msg = _INTL("{1} is already poisoned!",pbThis)
+        when PBStatuses::BURN      then msg = _INTL("{1} already has a burn!",pbThis)
+        when PBStatuses::PARALYSIS then msg = _INTL("{1} is already paralyzed!",pbThis)
+        when PBStatuses::FROZEN    then msg = _INTL("{1} is already frozen solid!",pbThis)
         end
         @battle.pbDisplay(msg)
       end
@@ -103,10 +103,10 @@ class PokeBattle_Battler
     end
     # Ability immunity
     immuneByAbility = false; immAlly = nil
-    if BattleHandlers.triggerStatusImmunityAbilityNonIgnorable(@ability,self,newStatus)
+    if BattleHandlers.triggerStatusImmunityAbilityNonIgnorable(self.ability,self,newStatus)
       immuneByAbility = true
     elsif selfInflicted || !@battle.moldBreaker
-      if abilityActive? && BattleHandlers.triggerStatusImmunityAbility(@ability,self,newStatus)
+      if abilityActive? && BattleHandlers.triggerStatusImmunityAbility(self.ability,self,newStatus)
         immuneByAbility = true
       else
         eachAlly do |b|
@@ -124,11 +124,11 @@ class PokeBattle_Battler
         msg = ""
         if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
           case newStatus
-          when PBStatuses::SLEEP;     msg = _INTL("{1} stays awake!",pbThis)
-          when PBStatuses::POISON;    msg = _INTL("{1} cannot be poisoned!",pbThis)
-          when PBStatuses::BURN;      msg = _INTL("{1} cannot be burned!",pbThis)
-          when PBStatuses::PARALYSIS; msg = _INTL("{1} cannot be paralyzed!",pbThis)
-          when PBStatuses::FROZEN;    msg = _INTL("{1} cannot be frozen solid!",pbThis)
+          when PBStatuses::SLEEP     then msg = _INTL("{1} stays awake!",pbThis)
+          when PBStatuses::POISON    then msg = _INTL("{1} cannot be poisoned!",pbThis)
+          when PBStatuses::BURN      then msg = _INTL("{1} cannot be burned!",pbThis)
+          when PBStatuses::PARALYSIS then msg = _INTL("{1} cannot be paralyzed!",pbThis)
+          when PBStatuses::FROZEN    then msg = _INTL("{1} cannot be frozen solid!",pbThis)
           end
         elsif immAlly
           case newStatus
@@ -150,11 +150,11 @@ class PokeBattle_Battler
           end
         else
           case newStatus
-          when PBStatuses::SLEEP;     msg = _INTL("{1} stays awake because of its {2}!",pbThis,abilityName)
-          when PBStatuses::POISON;    msg = _INTL("{1}'s {2} prevents poisoning!",pbThis,abilityName)
-          when PBStatuses::BURN;      msg = _INTL("{1}'s {2} prevents burns!",pbThis,abilityName)
-          when PBStatuses::PARALYSIS; msg = _INTL("{1}'s {2} prevents paralysis!",pbThis,abilityName)
-          when PBStatuses::FROZEN;    msg = _INTL("{1}'s {2} prevents freezing!",pbThis,abilityName)
+          when PBStatuses::SLEEP     then msg = _INTL("{1} stays awake because of its {2}!",pbThis,abilityName)
+          when PBStatuses::POISON    then msg = _INTL("{1}'s {2} prevents poisoning!",pbThis,abilityName)
+          when PBStatuses::BURN      then msg = _INTL("{1}'s {2} prevents burns!",pbThis,abilityName)
+          when PBStatuses::PARALYSIS then msg = _INTL("{1}'s {2} prevents paralysis!",pbThis,abilityName)
+          when PBStatuses::FROZEN    then msg = _INTL("{1}'s {2} prevents freezing!",pbThis,abilityName)
           end
         end
         @battle.pbDisplay(msg)
@@ -193,10 +193,10 @@ class PokeBattle_Battler
     end
     return false if hasImmuneType
     # Ability immunity
-    if BattleHandlers.triggerStatusImmunityAbilityNonIgnorable(@ability,self,newStatus)
+    if BattleHandlers.triggerStatusImmunityAbilityNonIgnorable(self.ability,self,newStatus)
       return false
     end
-    if abilityActive? && BattleHandlers.triggerStatusImmunityAbility(@ability,self,newStatus)
+    if abilityActive? && BattleHandlers.triggerStatusImmunityAbility(self.ability,self,newStatus)
       return false
     end
     eachAlly do |b|
@@ -249,7 +249,7 @@ class PokeBattle_Battler
     pbCheckFormOnStatusChange
     # Synchronize
     if abilityActive?
-      BattleHandlers.triggerAbilityOnStatusInflicted(@ability,self,user,newStatus)
+      BattleHandlers.triggerAbilityOnStatusInflicted(self.ability,self,user,newStatus)
     end
     # Status cures
     pbItemStatusCureCheck
@@ -261,7 +261,7 @@ class PokeBattle_Battler
     #       disabled/anything else). This behaviour was tested in Gen 5.
     if @status==PBStatuses::SLEEP && @effects[PBEffects::Outrage]>0
       @effects[PBEffects::Outrage] = 0
-      @currentMove = 0
+      @currentMove = nil
     end
   end
 
@@ -287,13 +287,13 @@ class PokeBattle_Battler
         return false if b.effects[PBEffects::Uproar]>0
       end
     end
-    if BattleHandlers.triggerStatusImmunityAbilityNonIgnorable(@ability,self,PBStatuses::SLEEP)
+    if BattleHandlers.triggerStatusImmunityAbilityNonIgnorable(self.ability,self,PBStatuses::SLEEP)
       return false
     end
     # NOTE: Bulbapedia claims that Flower Veil shouldn't prevent sleep due to
     #       drowsiness, but I disagree because that makes no sense. Also, the
     #       comparable Sweet Veil does prevent sleep due to drowsiness.
-    if abilityActive? && BattleHandlers.triggerStatusImmunityAbility(@ability,self,PBStatuses::SLEEP)
+    if abilityActive? && BattleHandlers.triggerStatusImmunityAbility(self.ability,self,PBStatuses::SLEEP)
       return false
     end
     eachAlly do |b|
@@ -401,16 +401,20 @@ class PokeBattle_Battler
     anim = ""; msg = ""
     case self.status
     when PBStatuses::SLEEP
-      anim = "Sleep";     msg = _INTL("{1} is fast asleep.",pbThis)
+      anim = "Sleep"
+      msg = _INTL("{1} is fast asleep.", pbThis)
     when PBStatuses::POISON
       anim = (@statusCount>0) ? "Toxic" : "Poison"
-      msg = _INTL("{1} was hurt by poison!",pbThis)
+      msg = _INTL("{1} was hurt by poison!", pbThis)
     when PBStatuses::BURN
-      anim = "Burn";      msg = _INTL("{1} was hurt by its burn!",pbThis)
+      anim = "Burn"
+      msg = _INTL("{1} was hurt by its burn!", pbThis)
     when PBStatuses::PARALYSIS
-      anim = "Paralysis"; msg = _INTL("{1} is paralyzed! It can't move!",pbThis)
+      anim = "Paralysis"
+      msg = _INTL("{1} is paralyzed! It can't move!", pbThis)
     when PBStatuses::FROZEN
-      anim = "Frozen";    msg = _INTL("{1} is frozen solid!",pbThis)
+      anim = "Frozen"
+      msg = _INTL("{1} is frozen solid!", pbThis)
     end
     @battle.pbCommonAnimation(anim,self) if anim!=""
     yield if block_given?
@@ -423,11 +427,11 @@ class PokeBattle_Battler
     self.status = PBStatuses::NONE
     if showMessages
       case oldStatus
-      when PBStatuses::SLEEP;     @battle.pbDisplay(_INTL("{1} woke up!",pbThis))
-      when PBStatuses::POISON;    @battle.pbDisplay(_INTL("{1} was cured of its poisoning.",pbThis))
-      when PBStatuses::BURN;      @battle.pbDisplay(_INTL("{1}'s burn was healed.",pbThis))
-      when PBStatuses::PARALYSIS; @battle.pbDisplay(_INTL("{1} was cured of paralysis.",pbThis))
-      when PBStatuses::FROZEN;    @battle.pbDisplay(_INTL("{1} thawed out!",pbThis))
+      when PBStatuses::SLEEP     then @battle.pbDisplay(_INTL("{1} woke up!",pbThis))
+      when PBStatuses::POISON    then @battle.pbDisplay(_INTL("{1} was cured of its poisoning.",pbThis))
+      when PBStatuses::BURN      then @battle.pbDisplay(_INTL("{1}'s burn was healed.",pbThis))
+      when PBStatuses::PARALYSIS then @battle.pbDisplay(_INTL("{1} was cured of paralysis.",pbThis))
+      when PBStatuses::FROZEN    then @battle.pbDisplay(_INTL("{1} thawed out!",pbThis))
       end
     end
     PBDebug.log("[Status change] #{pbThis}'s status was cured") if !showMessages

@@ -1,4 +1,5 @@
-pbCompiler
+Compiler.main
+pbSetUpSystem
 
 class Scene_DebugIntro
   def main
@@ -38,7 +39,6 @@ def mainFunctionDebug
     $data_common_events = pbLoadRxData("Data/CommonEvents")
     $data_system        = pbLoadRxData("Data/System")
     $game_system        = Game_System.new
-    setScreenBorderName("border")   # Sets image file for the border
     Graphics.update
     Graphics.freeze
     $scene = pbCallTitle

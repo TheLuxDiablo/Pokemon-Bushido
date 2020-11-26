@@ -50,23 +50,6 @@ def pbClearData
 end
 
 #===============================================================================
-# Methods to get metadata.
-#===============================================================================
-def pbLoadMetadata
-  $PokemonTemp = PokemonTemp.new if !$PokemonTemp
-  if !$PokemonTemp.metadata
-    $PokemonTemp.metadata = load_data("Data/metadata.dat") || []
-  end
-  return $PokemonTemp.metadata
-end
-
-def pbGetMetadata(map_id, metadata_type)
-  meta = pbLoadMetadata
-  return meta[map_id][metadata_type] if meta[map_id]
-  return nil
-end
-
-#===============================================================================
 # Method to get Town Map data.
 #===============================================================================
 def pbLoadTownMapData
@@ -134,10 +117,14 @@ def pbGetSpeciesData(species, form = 0, species_data_type = -1)
   end
   return species_data[s][species_data_type] if species_data[s] && species_data[s][species_data_type]
   case species_data_type
-  when SpeciesType2;                                      return nil
-  when SpeciesBaseStats;                                  return [1, 1, 1, 1, 1, 1]
-  when SpeciesEffortPoints;                               return [0, 0, 0, 0, 0, 0]
-  when SpeciesStepsToHatch, SpeciesHeight, SpeciesWeight; return 1
+  when SpeciesData::TYPE2
+    return nil
+  when SpeciesData::BASE_STATS
+    return [1, 1, 1, 1, 1, 1]
+  when SpeciesData::EFFORT_POINTS
+    return [0, 0, 0, 0, 0, 0]
+  when SpeciesData::STEPS_TO_HATCH, SpeciesData::HEIGHT, SpeciesData::WEIGHT
+    return 1
   end
   return 0
 end
@@ -195,7 +182,7 @@ end
 def pbLoadSpeciesTMData
   $PokemonTemp = PokemonTemp.new if !$PokemonTemp
   if !$PokemonTemp.speciesTMData
-    $PokemonTemp.speciesTMData = load_data("Data/tm.dat") || []
+    $PokemonTemp.speciesTMData = load_data("Data/tm.dat") || {}
   end
   return $PokemonTemp.speciesTMData
 end

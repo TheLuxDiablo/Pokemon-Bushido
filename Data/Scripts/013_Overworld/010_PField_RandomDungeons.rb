@@ -335,22 +335,31 @@ class Maze
     end
   end
 
-  def recurseDepthFirst(x,y,depth)
+  def recurseDepthFirst(x, y, depth)
     setVisited(x,y)
-    dirs=@@dirs.shuffle!
+    dirs = @@dirs.shuffle!
     for c in 0...4
-      d=dirs[c]
-      cx=0;cy=0
+      d = dirs[c]
+      cx = 0
+      cy = 0
       case d
-      when EdgeMasks::North; cx=x; cy=y-1
-      when EdgeMasks::South; cx=x; cy=y+1
-      when EdgeMasks::East; cx=x+1; cy=y
-      when EdgeMasks::West; cx=x-1; cy=y
+      when EdgeMasks::North
+        cx = x
+        cy = y - 1
+      when EdgeMasks::South
+        cx = x
+        cy = y + 1
+      when EdgeMasks::East
+        cx = x + 1
+        cy = y
+      when EdgeMasks::West
+        cx = x - 1
+        cy = y
       end
-      if cx>=0 && cy>=0 && cx<cellWidth && cy<cellHeight
-        if !getVisited(cx,cy)
-          clearEdgeNode(x,y,d)
-          recurseDepthFirst(cx,cy,depth+1)
+      if cx >= 0 && cy >= 0 && cx < cellWidth && cy < cellHeight
+        if !getVisited(cx, cy)
+          clearEdgeNode(x, y, d)
+          recurseDepthFirst(cx, cy, depth + 1)
         end
       end
     end
@@ -555,7 +564,7 @@ end
 Events.onMapCreate += proc { |_sender, e|
   mapID=e[0]
   map=e[1]
-  if pbGetMetadata(mapID,MetadataDungeon)
+  if GameData::MapMetadata.get(mapID).random_dungeon
     # this map is a randomly generated dungeon
     dungeon=Dungeon.new(map.width,map.height)
     dungeon.generate

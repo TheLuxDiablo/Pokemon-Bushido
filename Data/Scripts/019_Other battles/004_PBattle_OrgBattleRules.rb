@@ -1,5 +1,5 @@
 def pbBaseStatTotal(species)
-  baseStats = pbGetSpeciesData(species,0,SpeciesBaseStats)
+  baseStats = pbGetSpeciesData(species,0,SpeciesData::BASE_STATS)
   ret = 0
   baseStats.each { |s| ret += s }
   return ret
@@ -10,16 +10,16 @@ def pbBalancedLevelFromBST(species)
 end
 
 def pbTooTall?(pkmn,maxHeightInMeters)
-  species = (pkmn.is_a?(PokeBattle_Pokemon)) ? pkmn.species : pkmn
-  form    = (pkmn.is_a?(PokeBattle_Pokemon)) ? pkmn.form : 0
-  height = pbGetSpeciesData(species,form,SpeciesHeight)
+  species = (pkmn.is_a?(Pokemon)) ? pkmn.species : pkmn
+  form    = (pkmn.is_a?(Pokemon)) ? pkmn.form : 0
+  height = pbGetSpeciesData(species,form,SpeciesData::HEIGHT)
   return height>(maxHeightInMeters*10).round
 end
 
 def pbTooHeavy?(pkmn,maxWeightInKg)
-  species = (pkmn.is_a?(PokeBattle_Pokemon)) ? pkmn.species : pkmn
-  form    = (pkmn.is_a?(PokeBattle_Pokemon)) ? pkmn.form : 0
-  weight = pbGetSpeciesData(species,form,SpeciesWeight)
+  species = (pkmn.is_a?(Pokemon)) ? pkmn.species : pkmn
+  form    = (pkmn.is_a?(Pokemon)) ? pkmn.form : 0
+  weight = pbGetSpeciesData(species,form,SpeciesData::WEIGHT)
   return weight>(maxWeightInKg*10).round
 end
 
@@ -333,15 +333,12 @@ class BannedItemRestriction
   end
 
   def isSpecies?(species,specieslist)
-    for s in specieslist
-      return true if isConst?(species,PBItems,s)
-    end
-    return false
+    return specieslist.any? { |s| species == s }
   end
 
   def isValid?(pokemon)
     count=0
-    if pokemon.item!=0 && isSpecies?(pokemon.item,@specieslist)
+    if pokemon.item && isSpecies?(pokemon.item,@specieslist)
       count+=1
     end
     return count==0
@@ -396,11 +393,10 @@ class StandardRestriction
   def isValid?(pokemon)
     return false if !pokemon || pokemon.egg?
     # Species with disadvantageous abilities are not banned
-    abilities = pbGetSpeciesData(pokemon.species,pokemon.form,SpeciesAbilities)
+    abilities = pbGetSpeciesData(pokemon.species,pokemon.form,SpeciesData::ABILITIES)
     abilities = [abilities] if !abilities.is_a?(Array)
     abilities.each do |a|
-      return true if isConst?(a,PBAbilities,:TRUANT) ||
-                     isConst?(a,PBAbilities,:SLOWSTART)
+      return true if [:TRUANT, :SLOWSTART].include?(a)
     end
     # Certain named species are not banned
     speciesWhitelist = [:DRAGONITE,:SALAMENCE,:TYRANITAR]
@@ -413,7 +409,7 @@ class StandardRestriction
       return false if pokemon.isSpecies?(i)
     end
     # Species with total base stat 600 or more are banned
-    baseStats = pbGetSpeciesData(pokemon.species,pokemon.form,SpeciesBaseStats)
+    baseStats = pbGetSpeciesData(pokemon.species,pokemon.form,SpeciesData::BASE_STATS)
     bst = 0
     baseStats.each { |s| bst += s }
     return false if bst>=600

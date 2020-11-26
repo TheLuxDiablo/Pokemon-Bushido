@@ -9,7 +9,7 @@ def pbNickname(pokemon)
   speciesname = PBSpecies.getName(pokemon.species)
   if pbConfirmMessage(_INTL("Would you like to give a nickname to {1}?",speciesname))
     helptext = _INTL("{1}'s nickname?",speciesname)
-    newname = pbEnterPokemonName(helptext,0,PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE,"",pokemon)
+    newname = pbEnterPokemonName(helptext, 0, Pokemon::MAX_NAME_SIZE, "", pokemon)
     pokemon.name = newname if newname!=""
   end
 end
@@ -74,7 +74,7 @@ def pbAddPokemon(pokemon,level=nil,seeform=true)
   end
   pokemon = getID(PBSpecies,pokemon)
   if pokemon.is_a?(Integer) && level.is_a?(Integer)
-    pokemon = pbNewPkmn(pokemon,level)
+    pokemon = Pokemon.new(pokemon,level)
   end
   speciesname = PBSpecies.getName(pokemon.species)
   pbMessage(_INTL("{1} obtained {2}!\\me[Pkmn get]\\wtnp[80]\1",$Trainer.name,speciesname))
@@ -87,7 +87,7 @@ def pbAddPokemonSilent(pokemon,level=nil,seeform=true)
   return false if !pokemon || pbBoxesFull?
   pokemon = getID(PBSpecies,pokemon)
   if pokemon.is_a?(Integer) && level.is_a?(Integer)
-    pokemon = pbNewPkmn(pokemon,level)
+    pokemon = Pokemon.new(pokemon,level)
   end
   $Trainer.seen[pokemon.species]  = true
   $Trainer.owned[pokemon.species] = true
@@ -110,7 +110,7 @@ def pbAddToParty(pokemon,level=nil,seeform=true)
   return false if !pokemon || $Trainer.party.length>=6
   pokemon = getID(PBSpecies,pokemon)
   if pokemon.is_a?(Integer) && level.is_a?(Integer)
-    pokemon = pbNewPkmn(pokemon,level)
+    pokemon = Pokemon.new(pokemon,level)
   end
   speciesname = PBSpecies.getName(pokemon.species)
   pbMessage(_INTL("{1} obtained {2}!\\me[Pkmn get]\\wtnp[80]\1",$Trainer.name,speciesname))
@@ -123,7 +123,7 @@ def pbAddToPartySilent(pokemon,level=nil,seeform=true)
   return false if !pokemon || $Trainer.party.length>=6
   pokemon = getID(PBSpecies,pokemon)
   if pokemon.is_a?(Integer) && level.is_a?(Integer)
-    pokemon = pbNewPkmn(pokemon,level)
+    pokemon = Pokemon.new(pokemon,level)
   end
   $Trainer.seen[pokemon.species]  = true
   $Trainer.owned[pokemon.species] = true
@@ -137,16 +137,12 @@ def pbAddForeignPokemon(pokemon,level=nil,ownerName=nil,nickname=nil,ownerGender
   return false if !pokemon || $Trainer.party.length>=6
   pokemon = getID(PBSpecies,pokemon)
   if pokemon.is_a?(Integer) && level.is_a?(Integer)
-    pokemon = pbNewPkmn(pokemon,level)
+    pokemon = Pokemon.new(pokemon,level)
   end
-  # Set original trainer to a foreign one (if ID isn't already foreign)
-  if pokemon.trainerID==$Trainer.id
-    pokemon.trainerID = $Trainer.getForeignID
-    pokemon.ot        = ownerName if ownerName && ownerName!=""
-    pokemon.otgender  = ownerGender
-  end
+  # Set original trainer to a foreign one
+  pokemon.owner = Pokemon::Owner.new_foreign(ownerName || "", ownerGender)
   # Set nickname
-  pokemon.name = nickname[0,PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE] if nickname && nickname!=""
+  pokemon.name = nickname[0, Pokemon::MAX_NAME_SIZE] if nickname && nickname!=""
   # Recalculate stats
   pokemon.calcStats
   if ownerName
@@ -165,10 +161,10 @@ def pbGenerateEgg(pokemon,text="")
   return false if !pokemon || $Trainer.party.length>=6
   pokemon = getID(PBSpecies,pokemon)
   if pokemon.is_a?(Integer)
-    pokemon = pbNewPkmn(pokemon,EGG_LEVEL)
+    pokemon = Pokemon.new(pokemon,EGG_LEVEL)
   end
   # Get egg steps
-  eggSteps = pbGetSpeciesData(pokemon.species,pokemon.form,SpeciesStepsToHatch)
+  eggSteps = pbGetSpeciesData(pokemon.species,pokemon.form,SpeciesData::STEPS_TO_HATCH)
   # Set egg's details
   pokemon.name       = _INTL("Egg")
   pokemon.eggsteps   = eggSteps
@@ -206,7 +202,7 @@ end
 def pbSeenForm(pkmn,gender=0,form=0)
   $Trainer.formseen     = [] if !$Trainer.formseen
   $Trainer.formlastseen = [] if !$Trainer.formlastseen
-  if pkmn.is_a?(PokeBattle_Pokemon)
+  if pkmn.is_a?(Pokemon)
     gender  = pkmn.gender
     form    = (pkmn.form rescue 0)
     species = pkmn.species
@@ -217,7 +213,7 @@ def pbSeenForm(pkmn,gender=0,form=0)
   fSpecies = pbGetFSpeciesFromForm(species,form)
   species, form = pbGetSpeciesFromFSpecies(fSpecies)
   gender = 0 if gender>1
-  dexForm = pbGetSpeciesData(species,form,SpeciesPokedexForm)
+  dexForm = pbGetSpeciesData(species,form,SpeciesData::POKEDEX_FORM)
   form = dexForm if dexForm>0
   fSpecies = pbGetFSpeciesFromForm(species,form)
   formName = pbGetMessage(MessageTypes::FormNames,fSpecies)
@@ -231,7 +227,7 @@ end
 def pbUpdateLastSeenForm(pkmn)
   $Trainer.formlastseen = [] if !$Trainer.formlastseen
   form = (pkmn.form rescue 0)
-  dexForm = pbGetSpeciesData(pkmn.species,pkmn.form,SpeciesPokedexForm)
+  dexForm = pbGetSpeciesData(pkmn.species,pkmn.form,SpeciesData::POKEDEX_FORM)
   form = dexForm if dexForm>0
   formName = pbGetMessage(MessageTypes::FormNames,pkmn.fSpecies)
   form = 0 if !formName || formName==""
@@ -372,12 +368,8 @@ end
 # Checks whether any Pokémon in the party knows the given move, and returns
 # the first Pokémon it finds with that move, or nil if no Pokémon has that move.
 def pbCheckMove(move)
-  move = getID(PBMoves,move)
-  return nil if !move || move<=0
-  for i in $Trainer.pokemonParty
-    for j in i.moves
-      return i if j.id==move
-    end
+  $Trainer.pokemonParty.each do |pkmn|
+    return pkmn if pkmn.hasMove?(move)
   end
   return nil
 end
@@ -452,7 +444,7 @@ end
 # Calculates a Pokémon's size (in millimeters)
 #===============================================================================
 def pbSize(pkmn)
-  baseheight = pbGetSpeciesData(pkmn.species,pkmn.form,SpeciesHeight)
+  baseheight = pbGetSpeciesData(pkmn.species,pkmn.form,SpeciesData::HEIGHT)
   hpiv = pkmn.iv[0]&15
   ativ = pkmn.iv[1]&15
   dfiv = pkmn.iv[2]&15
@@ -493,13 +485,13 @@ def pbHasEgg?(species)
   # species may be unbreedable, so check its evolution's compatibilities
   evoSpecies = pbGetEvolvedFormData(species,true)
   compatSpecies = (evoSpecies && evoSpecies[0]) ? evoSpecies[0][2] : species
-  compat = pbGetSpeciesData(compatSpecies,0,SpeciesCompatibility)
+  compat = pbGetSpeciesData(compatSpecies,0,SpeciesData::COMPATIBILITY)
   compat = [compat] if !compat.is_a?(Array)
   return false if compat.include?(getConst(PBEggGroups,:Undiscovered))
   return false if compat.include?(getConst(PBEggGroups,:Ditto))
   baby = pbGetBabySpecies(species)
   return true if species==baby   # Is a basic species
-  baby = pbGetBabySpecies(species,0,0)
+  baby = pbGetBabySpecies(species,true)
   return true if species==baby   # Is an egg species without incense
   return false
 end

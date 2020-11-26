@@ -105,7 +105,7 @@ end
 # Check compatibility of Pokémon in the Day Care.
 #===============================================================================
 def pbIsDitto?(pkmn)
-  compat = pbGetSpeciesData(pkmn.species,pkmn.form,SpeciesCompatibility)
+  compat = pbGetSpeciesData(pkmn.species,pkmn.form,SpeciesData::COMPATIBILITY)
   if compat.is_a?(Array)
     return compat.include?(getConst(PBEggGroups,:Ditto))
   end
@@ -129,14 +129,14 @@ def pbDayCareGetCompat
   return 0 if pkmn1.shadowPokemon?
   return 0 if pkmn2.shadowPokemon?
   # Insert code here if certain forms of certain species cannot breed
-  compat1 = pbGetSpeciesData(pkmn1.species,pkmn1.form,SpeciesCompatibility)
+  compat1 = pbGetSpeciesData(pkmn1.species,pkmn1.form,SpeciesData::COMPATIBILITY)
   if compat1.is_a?(Array)
     compat10 = compat1[0] || 0
     compat11 = compat1[1] || compat10
   else
     compat10 = compat11 = compat || 0
   end
-  compat2 = pbGetSpeciesData(pkmn2.species,pkmn2.form,SpeciesCompatibility)
+  compat2 = pbGetSpeciesData(pkmn2.species,pkmn2.form,SpeciesData::COMPATIBILITY)
   if compat2.is_a?(Array)
     compat20 = compat2[0] || 0
     compat21 = compat2[1] || compat20
@@ -155,8 +155,8 @@ def pbDayCareGetCompat
      isConst?(compat21,PBEggGroups,:Ditto)
     if pbDayCareCompatibleGender(pkmn1,pkmn2)
       ret = 1
-      ret += 1 if pkmn1.species==pkmn2.species
-      ret += 1 if pkmn1.trainerID!=pkmn2.trainerID
+      ret += 1 if pkmn1.species == pkmn2.species
+      ret += 1 if pkmn1.owner.id != pkmn2.owner.id
       return ret
     end
   end
@@ -192,7 +192,7 @@ def pbDayCareGenerateEgg
     father = pokemon0
   end
   # Determine the egg's species
-  babyspecies = pbGetBabySpecies(babyspecies,mother.item,father.item)
+  babyspecies = pbGetBabySpecies(babyspecies,true,mother.item_id,father.item_id)
   if isConst?(babyspecies,PBSpecies,:MANAPHY) && hasConst?(PBSpecies,:PHIONE)
     babyspecies = getConst(PBSpecies,:PHIONE)
   elsif (isConst?(babyspecies,PBSpecies,:NIDORANfE) && hasConst?(PBSpecies,:NIDORANmA)) ||
@@ -205,7 +205,7 @@ def pbDayCareGenerateEgg
                    getConst(PBSpecies,:ILLUMISE)][rand(2)]
   end
   # Generate egg
-  egg = pbNewPkmn(babyspecies,EGG_LEVEL)
+  egg = Pokemon.new(babyspecies,EGG_LEVEL)
   # Randomise personal ID
   pid = rand(65536)
   pid |= (rand(65536)<<16)
@@ -233,7 +233,7 @@ def pbDayCareGenerateEgg
      isConst?(babyspecies,PBSpecies,:GRIMER)
     if mother.form==1
       egg.form = 1 if mother.hasItem?(:EVERSTONE)
-    elsif pbGetBabySpecies(father.species,mother.item,father.item)==babyspecies
+    elsif pbGetBabySpecies(father.species,true,mother.item_id,father.item_id)==babyspecies
       egg.form = 1 if father.form==1 && father.hasItem?(:EVERSTONE)
     end
   end
@@ -260,11 +260,9 @@ def pbDayCareGenerateEgg
   end
   # Inheriting Machine Moves
   if !NEWEST_BATTLE_MECHANICS
-    itemsData = pbLoadItemsData
-    for i in 0...itemsData.length
-      next if !itemsData[i]
-      atk = itemsData[i][ITEM_MACHINE]
-      next if !atk || atk==0
+    GameData::Item.each do |i|
+      atk = i.move
+      next if !atk
       next if !egg.compatibleWithMove?(atk)
       next if !movefather.hasMove?(atk)
       moves.push(atk)
@@ -288,20 +286,18 @@ def pbDayCareGenerateEgg
       mother.hasItem?(:LIGHTBALL)
     lightball = true
   end
-  if lightball && isConst?(babyspecies,PBSpecies,:PICHU) &&
-     hasConst?(PBMoves,:VOLTTACKLE)
-    moves.push(getConst(PBMoves,:VOLTTACKLE))
+  if lightball && isConst?(babyspecies,PBSpecies,:PICHU) && GameData::Move.exists?(:VOLTTACKLE)
+    moves.push(:VOLTTACKLE)
   end
   moves = moves.reverse
   moves |= []   # remove duplicates
   moves = moves.reverse
   # Assembling move list
+  first_move_index = moves.length - Pokemon::MAX_MOVES
+  first_move_index = 0 if first_move_index < 0
   finalmoves = []
-  listend = moves.length-4
-  listend = 0 if listend<0
-  for i in listend...listend+4
-    moveid = (i>=moves.length) ? 0 : moves[i]
-    finalmoves[finalmoves.length] = PBMove.new(moveid)
+  for i in first_move_index...moves.length
+    finalmoves.push(PBMove.new(moves[i]))
   end
   # Inheriting Individual Values
   ivs = []
@@ -350,12 +346,12 @@ def pbDayCareGenerateEgg
   end
   # Masuda method and Shiny Charm
   shinyretries = 0
-  shinyretries += 5 if father.language!=mother.language
-  shinyretries += 2 if hasConst?(PBItems,:SHINYCHARM) && $PokemonBag.pbHasItem?(:SHINYCHARM)
+  shinyretries += 5 if father.owner.language != mother.owner.language
+  shinyretries += 2 if GameData::Item.exists?(:SHINYCHARM) && $PokemonBag.pbHasItem?(:SHINYCHARM)
   if shinyretries>0
     shinyretries.times do
       break if egg.shiny?
-      egg.personalID = rand(65536)|(rand(65536)<<16)
+      egg.personalID = rand(2**16) | rand(2**16) << 16
     end
   end
   # Inheriting ability from the mother
@@ -377,8 +373,7 @@ def pbDayCareGenerateEgg
   end
   # Inheriting Poké Ball from the mother
   if mother.female? &&
-     !isConst?(pbBallTypeToItem(mother.ballused),PBItems,:MASTERBALL) &&
-     !isConst?(pbBallTypeToItem(mother.ballused),PBItems,:CHERISHBALL)
+     ![:MASTERBALL, :CHERISHBALL].include?(pbBallTypeToItem(mother.ballused).id)
     egg.ballused = mother.ballused
   end
   # Set all stats
@@ -389,14 +384,11 @@ def pbDayCareGenerateEgg
   egg.iv[3] = ivs[3]
   egg.iv[4] = ivs[4]
   egg.iv[5] = ivs[5]
-  egg.moves[0] = finalmoves[0]
-  egg.moves[1] = finalmoves[1]
-  egg.moves[2] = finalmoves[2]
-  egg.moves[3] = finalmoves[3]
+  egg.moves = finalmoves
   egg.calcStats
   egg.obtainText = _INTL("Day-Care Couple")
   egg.name = _INTL("Egg")
-  eggSteps = pbGetSpeciesData(babyspecies,egg.form,SpeciesStepsToHatch)
+  eggSteps = pbGetSpeciesData(babyspecies,egg.form,SpeciesData::STEPS_TO_HATCH)
   egg.eggsteps = eggSteps
   egg.givePokerus if rand(65536)<POKERUS_CHANCE
   # Add egg to party
@@ -417,7 +409,7 @@ Events.onStepTaken += proc { |_sender,_e|
     if $PokemonGlobal.daycareEggSteps==256
       $PokemonGlobal.daycareEggSteps = 0
       compatval = [0,20,50,70][pbDayCareGetCompat]
-      if hasConst?(PBItems,:OVALCHARM) && $PokemonBag.pbHasItem?(:OVALCHARM)
+      if GameData::Item.exists?(:OVALCHARM) && $PokemonBag.pbHasItem?(:OVALCHARM)
         compatval = [0,40,80,88][pbDayCareGetCompat]
       end
       $PokemonGlobal.daycareEgg = 1 if rand(100)<compatval   # Egg is generated

@@ -273,14 +273,14 @@ class PokeBattle_Battle
     # Weather announcement
     pbCommonAnimation(PBWeather.animationName(@field.weather))
     case @field.weather
-    when PBWeather::Sun;         pbDisplay(_INTL("The sunlight is strong."))
-    when PBWeather::Rain;        pbDisplay(_INTL("It is raining."))
-    when PBWeather::Sandstorm;   pbDisplay(_INTL("A sandstorm is raging."))
-    when PBWeather::Hail;        pbDisplay(_INTL("Hail is falling."))
-    when PBWeather::HarshSun;    pbDisplay(_INTL("The sunlight is extremely harsh."))
-    when PBWeather::HeavyRain;   pbDisplay(_INTL("It is raining heavily."))
-    when PBWeather::StrongWinds; pbDisplay(_INTL("The wind is strong."))
-    when PBWeather::ShadowSky;   pbDisplay(_INTL("The sky is shadowy."))
+    when PBWeather::Sun         then pbDisplay(_INTL("The sunlight is strong."))
+    when PBWeather::Rain        then pbDisplay(_INTL("It is raining."))
+    when PBWeather::Sandstorm   then pbDisplay(_INTL("A sandstorm is raging."))
+    when PBWeather::Hail        then pbDisplay(_INTL("Hail is falling."))
+    when PBWeather::HarshSun    then pbDisplay(_INTL("The sunlight is extremely harsh."))
+    when PBWeather::HeavyRain   then pbDisplay(_INTL("It is raining heavily."))
+    when PBWeather::StrongWinds then pbDisplay(_INTL("The wind is strong."))
+    when PBWeather::ShadowSky   then pbDisplay(_INTL("The sky is shadowy."))
     end
     # Terrain announcement
     pbCommonAnimation(PBBattleTerrains.animationName(@field.terrain))
@@ -478,7 +478,7 @@ class PokeBattle_Battle
     pbParty(0).each_with_index do |pkmn,i|
       next if !pkmn
       @peer.pbOnLeavingBattle(self,pkmn,@usedInBattle[0][i],true)   # Reset form
-      pkmn.setItem(@initialItems[0][i] || 0)
+      pkmn.setItem(@initialItems[0][i])
     end
     return @decision
   end

@@ -105,9 +105,10 @@ class SpriteWindow_DebugVariables < Window_DrawableCommand
     idWidth     = totalWidth*15/100
     nameWidth   = totalWidth*65/100
     statusWidth = totalWidth*20/100
-    self.shadowtext(rect.x,rect.y,idWidth,rect.height,id_text)
-    self.shadowtext(rect.x+idWidth,rect.y,nameWidth,rect.height,name,0,(codeswitch) ? 1 : 0)
-    self.shadowtext(rect.x+idWidth+nameWidth,rect.y,statusWidth,rect.height,status,1,colors)
+    text_y = rect.y + 6
+    self.shadowtext(rect.x,text_y,idWidth,rect.height,id_text)
+    self.shadowtext(rect.x+idWidth,text_y,nameWidth,rect.height,name,0,(codeswitch) ? 1 : 0)
+    self.shadowtext(rect.x+idWidth+nameWidth,text_y,statusWidth,rect.height,status,1,colors)
   end
 end
 
@@ -368,7 +369,7 @@ class SpriteWindow_DebugRoamers < Window_DrawableCommand
   end
 
   def roamerCount
-    return RoamingSpecies.length
+    return ROAMING_SPECIES.length
   end
 
   def itemCount
@@ -399,7 +400,7 @@ class SpriteWindow_DebugRoamers < Window_DrawableCommand
       # Advance roaming
       self.shadowtext(_INTL("[Clear all current roamer locations]"),rect.x,rect.y,nameWidth,rect.height)
     else
-      pkmn = RoamingSpecies[index]
+      pkmn = ROAMING_SPECIES[index]
       name = PBSpecies.getName(getID(PBSpecies,pkmn[0]))+" (Lv. #{pkmn[1]})"
       status = ""
       statuscolor = 0
@@ -416,7 +417,7 @@ class SpriteWindow_DebugRoamers < Window_DrawableCommand
           # roaming
           curmap = $PokemonGlobal.roamPosition[index]
           if curmap
-            mapinfos = ($RPGVX) ? load_data("Data/MapInfos.rvdata") : load_data("Data/MapInfos.rxdata")
+            mapinfos = load_data("Data/MapInfos.rxdata")
             status = "[ROAMING][#{curmap}: #{mapinfos[curmap].name}]"
           else
             status = "[ROAMING][map not set]"
@@ -426,8 +427,9 @@ class SpriteWindow_DebugRoamers < Window_DrawableCommand
       else
         status = "[NOT ROAMING][Switch #{pkmn[2]} is off]"
       end
-      self.shadowtext(name,rect.x,rect.y,nameWidth,rect.height)
-      self.shadowtext(status,rect.x+nameWidth,rect.y,statusWidth,rect.height,1,statuscolor)
+      text_y = rect.y + 6
+      self.shadowtext(name,rect.x,text_y,nameWidth,rect.height)
+      self.shadowtext(status,rect.x+nameWidth,text_y,statusWidth,rect.height,1,statuscolor)
     end
   end
 end
@@ -474,7 +476,7 @@ def pbDebugRoamers
       if cmdwindow.index<cmdwindow.roamerCount
         pbPlayDecisionSE
         # Toggle through roaming, not roaming, defeated
-        pkmn = RoamingSpecies[cmdwindow.index]
+        pkmn = ROAMING_SPECIES[cmdwindow.index]
         if pkmn[2]>0 && !$game_switches[pkmn[2]]
           # not roaming -> roaming
           $game_switches[pkmn[2]] = true
@@ -494,7 +496,7 @@ def pbDebugRoamers
         end
         cmdwindow.refresh
       elsif cmdwindow.index==cmdwindow.itemCount-2   # All roam
-        if RoamingSpecies.length==0
+        if ROAMING_SPECIES.length==0
           pbPlayBuzzerSE
         else
           pbPlayDecisionSE
@@ -503,11 +505,11 @@ def pbDebugRoamers
           cmdwindow.refresh
         end
       else   # Clear all roaming locations
-        if RoamingSpecies.length==0
+        if ROAMING_SPECIES.length==0
           pbPlayBuzzerSE
         else
           pbPlayDecisionSE
-          for i in 0...RoamingSpecies.length
+          for i in 0...ROAMING_SPECIES.length
             $PokemonGlobal.roamPosition[i] = nil
           end
           $PokemonGlobal.roamedAlready = false
@@ -534,7 +536,7 @@ def pbCreatePokemon
   for i in 0...party.length
     species = party[i]
     # Generate Pokémon with species and level 20
-    $Trainer.party[i] = pbNewPkmn(species,20)
+    $Trainer.party[i] = Pokemon.new(species,20)
     $Trainer.seen[species]  = true # Set this species to seen and owned
     $Trainer.owned[species] = true
     pbSeenForm($Trainer.party[i])
@@ -814,7 +816,7 @@ def pbDebugFixInvalidTiles
     changed = false
     map = mapData.getMap(id)
     next if !map || !mapData.mapinfos[id]
-    Win32API.SetWindowText(_INTL("Processing map {1} ({2})", id, mapData.mapinfos[id].name))
+    pbSetWindowText(_INTL("Processing map {1} ({2})", id, mapData.mapinfos[id].name))
     passages = mapData.getTilesetPassages(map, id)
     # Check all tiles in map for non-existent tiles
     for x in 0...map.data.xsize
@@ -980,11 +982,10 @@ class PokemonDebugPartyScreen
   def pbChooseMove(pkmn,text,index=0)
     moveNames = []
     for i in pkmn.moves
-      break if i.id==0
-      if i.totalpp<=0
-        moveNames.push(_INTL("{1} (PP: ---)",PBMoves.getName(i.id)))
+      if i.total_pp<=0
+        moveNames.push(_INTL("{1} (PP: ---)",i.name))
       else
-        moveNames.push(_INTL("{1} (PP: {2}/{3})",PBMoves.getName(i.id),i.pp,i.totalpp))
+        moveNames.push(_INTL("{1} (PP: {2}/{3})",i.name,i.pp,i.total_pp))
       end
     end
     return pbShowCommands(text,moveNames,index)
