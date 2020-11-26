@@ -67,7 +67,7 @@ class PokeBattle_AI
     when "095"
     #---------------------------------------------------------------------------
     when "096"
-      score -= 90 if !pbIsBerry?(@user.item) || !@user.itemActive?
+      score -= 90 if !@user.item || !@user.item.is_berry? || !@user.itemActive?
     #---------------------------------------------------------------------------
     when "097"
     #---------------------------------------------------------------------------
@@ -144,7 +144,7 @@ class PokeBattle_AI
           score -= @user.effects[PBEffects::ProtectRate]*40
         end
         score += 50 if @user.turnCount==0
-        score += 30 if @target.effects[PBEffects::TwoTurnAttack]>0
+        score += 30 if @target.effects[PBEffects::TwoTurnAttack]
       end
     #---------------------------------------------------------------------------
     when "0AB"
@@ -156,8 +156,8 @@ class PokeBattle_AI
     when "0AE"
       score -= 40
       if skill_check(AILevel.high)
-        score -= 100 if @target.lastRegularMoveUsed<=0 ||
-           !pbGetMoveData(@target.lastRegularMoveUsed,MOVE_FLAGS)[/e/]   # Not copyable by Mirror Move
+        score -= 100 if !@target.lastRegularMoveUsed ||
+           !GameData::Move.get(@target.lastRegularMoveUsed).flags[/e/]   # Not copyable by Mirror Move
       end
     #---------------------------------------------------------------------------
     when "0AF"
@@ -202,17 +202,16 @@ class PokeBattle_AI
       if @target.effects[PBEffects::Encore]>0
         score -= 90
       elsif aspeed>ospeed
-        if @target.lastMoveUsed<=0
+        if !@target.lastRegularMoveUsed
           score -= 90
         else
-          moveData = pbGetMoveData(@target.lastRegularMoveUsed)
-          if moveData[MOVE_CATEGORY]==2 &&   # Status move
-             (moveData[MOVE_TARGET]==PBTargets::User ||
-             moveData[MOVE_TARGET]==PBTargets::BothSides)
+          moveData = GameData::Move.get(@target.lastRegularMoveUsed)
+          if moveData.category == 2 &&   # Status move
+             [PBTargets::User, PBTargets::BothSides].include?(moveData.target)
             score += 60
-          elsif moveData[MOVE_CATEGORY]!=2 &&   # Damaging move
-             moveData[MOVE_TARGET]==PBTargets::NearOther &&
-             PBTypes.ineffective?(pbCalcTypeMod(moveData[MOVE_TYPE],@target,@user))
+          elsif moveData.category != 2 &&   # Damaging move
+             moveData.target == PBTargets::NearOther &&
+             PBTypes.ineffective?(pbCalcTypeMod(moveData.type, @target, @user))
             score += 60
           end
         end

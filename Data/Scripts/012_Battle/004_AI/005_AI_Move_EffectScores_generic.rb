@@ -53,8 +53,8 @@ class PokeBattle_AI
     mini_score *= 2 if @user.hasActiveAbility?(:SIMPLE)
     # TODO: Prefer if user's moves won't do much damage.
     # Prefer if user has something that will limit damage taken
-    mini_score *= 1.3 if @user.effects[PBEffects::Substitute] >0 ||
-                         (@user.form == 0 && isConst?(@user.ability, PBAbilities, :DISGUISE))
+    mini_score *= 1.3 if @user.effects[PBEffects::Substitute] > 0 ||
+                         (@user.form == 0 && @user.ability_id == :DISGUISE)
 
     # Don't prefer if user doesn't have much HP left
     mini_score *= 0.3 if @user.hp < @user.totalhp / 3
@@ -99,7 +99,7 @@ class PokeBattle_AI
     end
     # Prefer if target is Encored into a status move
     if @target.effects[PBEffects::Encore] > 0 &&
-       pbGetMoveData(@target.effects[PBEffects::EncoreMove], MOVE_CATEGORY) == 2   # Status move
+       GameData::Move.get(@target.effects[PBEffects::EncoreMove]).category == 2   # Status move
       # TODO: Why should this check greatly prefer raising both the user's defences?
       if sweeping_stat || @move.function == "02A"   # +Def +SpDef
         mini_score *= 1.5

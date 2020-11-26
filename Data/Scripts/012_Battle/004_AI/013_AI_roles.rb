@@ -39,7 +39,7 @@ class PokeBattle_AI
     hasHealMove  = false
     hasPivotMove = false
     pkmn.moves.each do |m|
-      next if !m || m.id == 0
+      next if !m
       move = PokeBattle_Move.pbFromPBMove(@battle, m)
       hasHealMove = true if !hasHealMove && move.healingMove?
       case move.function
@@ -87,39 +87,35 @@ class PokeBattle_AI
     end
 
     # Check for abilities indicative of particular roles
-    if pkmn.hasAbility?(:REGENERATOR)
+    case pkmn.ability_id
+    when :REGENERATOR
       ret.push(BattleRole::PIVOT)
-    elsif pkmn.hasAbility?(:GUTS) || pkmn.hasAbility?(:QUICKFEET) ||
-          pkmn.hasAbility?(:FLAREBOOST) || pkmn.hasAbility?(:TOXICBOOST) ||
-          pkmn.hasAbility?(:NATURALCURE) || pkmn.hasAbility?(:MAGICGUARD) ||
-          pkmn.hasAbility?(:MAGICBOUNCE) || pkmn.hasAbility?(:HYDRATION)
+    when :GUTS, :QUICKFEET, :FLAREBOOST, :TOXICBOOST, :NATURALCURE, :MAGICGUARD,
+         :MAGICBOUNCE, :HYDRATION
       ret.push(BattleRole::STATUSABSORBER)
-    elsif pkmn.hasAbility?(:SHADOWTAG) || pkmn.hasAbility?(:ARENATRAP) ||
-          pkmn.hasAbility?(:MAGNETPULL)
+    when :SHADOWTAG, :ARENATRAP, :MAGNETPULL
       ret.push(BattleRole::TRAPPER)
-    elsif pkmn.hasAbility?(:DROUGHT) || pkmn.hasAbility?(:DRIZZLE) ||
-          pkmn.hasAbility?(:SANDSTREAM) || pkmn.hasAbility?(:SNOWWARNING) ||
-          pkmn.hasAbility?(:PRIMORDIALSEA) || pkmn.hasAbility?(:DESOLATELAND) ||
-          pkmn.hasAbility?(:DELTASTREAM)
+    when :DROUGHT, :DRIZZLE, :SANDSTREAM, :SNOWWARNING, :PRIMORDIALSEA,
+         :DESOLATELAND, :DELTASTREAM
       ret.push(BattleRole::WEATHERSETTER)
-    elsif pkmn.hasAbility?(:GRASSYSURGE) || pkmn.hasAbility?(:ELECTRICSURGE) ||
-          pkmn.hasAbility?(:MISTYSURGE) || pkmn.hasAbility?(:PSYCHICSURGE)
+    when :GRASSYSURGE, :ELECTRICSURGE, :MISTYSURGE, :PSYCHICSURGE
       ret.push(BattleRole::FIELDSETTER)
     end
 
     # Check for items indicative of particular roles
-    if pkmn.hasItem?(:LIGHTCLAY)
+    case pkmn.item_id
+    when :LIGHTCLAY
       ret.push(BattleRole::SCREENER)
-    elsif pkmn.hasItem?(:ASSAULTVEST)
+    when :ASSAULTVEST
       ret.push(BattleRole::TANK)
-    elsif pkmn.hasItem?(:CHOICEBAND) ||  pkmn.hasItem?(:CHOICESPECS)
+    when :CHOICEBAND, :CHOICESPECS
       ret.push(BattleRole::STALLBREAKER)
       ret.push(BattleRole::SWEEPER) if pkmn.ev[PBStats::SPEED] == PokeBattle_Pokemon::EV_STAT_LIMIT
-    elsif pkmn.hasItem?(:CHOICESCARF)
+    when :CHOICESCARF
       ret.push(BattleRole::SWEEPER) if pkmn.ev[PBStats::SPEED] == PokeBattle_Pokemon::EV_STAT_LIMIT
-    elsif pkmn.hasItem?(:TOXICORB) ||  pkmn.hasItem?(:FLAMEORB)
+    when :TOXICORB, :FLAMEORB
       ret.push(BattleRole::STATUSABSORBER)
-    elsif pkmn.hasItem?(:TERRAINEXTENDER)
+    when :TERRAINEXTENDER
       ret.push(BattleRole::FIELDSETTER)
     end
 

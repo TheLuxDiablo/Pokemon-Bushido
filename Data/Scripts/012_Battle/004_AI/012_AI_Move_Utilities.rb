@@ -148,11 +148,11 @@ class PokeBattle_AI
     stage = battler.stages[stat]+6
     value = 0
     case stat
-    when PBStats::ATTACK;  value = battler.attack
-    when PBStats::DEFENSE; value = battler.defense
-    when PBStats::SPATK;   value = battler.spatk
-    when PBStats::SPDEF;   value = battler.spdef
-    when PBStats::SPEED;   value = battler.speed
+    when PBStats::ATTACK then value = battler.attack
+    when PBStats::DEFENSE then value = battler.defense
+    when PBStats::SPATK then value = battler.spatk
+    when PBStats::SPDEF then value = battler.spdef
+    when PBStats::SPEED then value = battler.speed
     end
     return (value.to_f * stageMul[stage] / stageDiv[stage]).floor
   end
@@ -191,7 +191,7 @@ class PokeBattle_AI
          "0F0", "113", "166"
       baseDmg = move.pbBaseDamage(baseDmg, @user, target)
     when "086"   # Acrobatics
-      baseDmg *= 2 if @user.item == 0 || @user.hasActiveItem?(:FLYINGGEM)
+      baseDmg *= 2 if !@user.item || @user.hasActiveItem?(:FLYINGGEM)
     when "08D"   # Gyro Ball
       target_speed = pbRoughStat(target, PBStats::SPEED)
       user_speed = pbRoughStat(@user, PBStats::SPEED)
@@ -209,8 +209,8 @@ class PokeBattle_AI
       baseDmg *= 2 if target.inTwoTurnAttack?("0CA")   # Dig
       baseDmg /= 2 if @battle.field.terrain == PBBattleTerrains::Grassy
     when "096"   # Natural Gift
-      baseDmg = 0 if !pbIsBerry?(@user.item) || !@user.itemActive?
-      baseDmg = move.pbNaturalGiftBaseDamage(@user.item) if baseDmg > 0
+      baseDmg = 0 if !@user.item || !@user.item.is_berry? || !@user.itemActive?
+      baseDmg = move.pbNaturalGiftBaseDamage(@user.item_id) if baseDmg > 0
     when "097"   # Trump Card
       dmgs = [200, 80, 60, 50, 40]
       pp_left = [[move.pp - 1, dmgs.length - 1].min, 0].max
@@ -244,8 +244,8 @@ class PokeBattle_AI
     when "0E1"   # Final Gambit
       baseDmg = @user.hp
     when "0F7"   # Fling
-      if @user.item == 0 || !@user.itemActive? || @user.unlosableItem?(@user.item) ||
-         (pbIsBerry?(@user.item) && @battle.pbCheckOpposingAbility(:UNNERVE, @user.index))
+      if !@user.item || !@user.itemActive? || @user.unlosableItem?(@user.item) ||
+         (@user.item.is_berry? && @battle.pbCheckOpposingAbility(:UNNERVE, @user.index))
         baseDmg = 0
       else
         # TODO: Currently assumes a power of 10 if item is unflingable.
@@ -302,7 +302,7 @@ class PokeBattle_AI
     end
 
     ##### Calculate all multiplier effects #####
-    multipliers = [0x1000,0x1000,0x1000,0x1000]
+    multipliers = [1.0, 1.0, 1.0, 1.0]
     # Ability effects that alter damage
     mold_breaker = false
     if skill_check(AILevel.high) && @user.hasMoldBreaker?
@@ -312,14 +312,8 @@ class PokeBattle_AI
     if skill_check(AILevel.medium) && @user.abilityActive?
       # NOTE: These abilities aren't suitable for checking at the start of the
       #       round.
-      abilityBlacklist = [:ANALYTIC,:SNIPER,:TINTEDLENS,:AERILATE,:PIXILATE,:REFRIGERATE]
-      canCheck = true
-      abilityBlacklist.each do |m|
-        next if !isConst?(move.id,PBMoves,m)
-        canCheck = false
-        break
-      end
-      if canCheck
+      if ![:ANALYTIC, :SNIPER, :TINTEDLENS, :AERILATE, :PIXILATE,
+           :REFRIGERATE].include?(@user.ability_id)
         BattleHandlers.triggerDamageCalcUserAbility(@user.ability,
            @user,target,move,multipliers,baseDmg,type)
       end
@@ -336,14 +330,7 @@ class PokeBattle_AI
     if skill_check(AILevel.best) && !mold_breaker && target.abilityActive?
       # NOTE: These abilities aren't suitable for checking at the start of the
       #       round.
-      abilityBlacklist = [:FILTER,:SOLIDROCK]
-      canCheck = true
-      abilityBlacklist.each do |m|
-        next if !isConst?(move.id,PBMoves,m)
-        canCheck = false
-        break
-      end
-      if canCheck
+      if ![:FILTER, :SOLIDROCK].include?(target.ability_id)
         BattleHandlers.triggerDamageCalcTargetAbility(target.ability,
            @user,target,move,multipliers,baseDmg,type)
       end
@@ -363,14 +350,7 @@ class PokeBattle_AI
     if skill_check(AILevel.medium) && @user.itemActive?
       # NOTE: These items aren't suitable for checking at the start of the
       #       round.
-      itemBlacklist = [:EXPERTBELT,:LIFEORB]
-      canCheck = true
-      itemBlacklist.each do |i|
-        next if !isConst?(@user.item,PBItems,i)
-        canCheck = false
-        break
-      end
-      if canCheck
+      if ![:EXPERTBELT, :LIFEORB].include?(@user.item_id)
         BattleHandlers.triggerDamageCalcUserItem(@user.item,
            @user,target,move,multipliers,baseDmg,type)
       end
@@ -380,7 +360,7 @@ class PokeBattle_AI
     if skill_check(AILevel.best) && target.itemActive?
       # NOTE: Type-weakening berries aren't suitable for checking at the start
       #       of the round.
-      if !pbIsBerry?(target.item)
+      if !target.item.is_berry?
         BattleHandlers.triggerDamageCalcTargetItem(target.item,
            @user,target,move,multipliers,baseDmg,type)
       end
@@ -391,16 +371,16 @@ class PokeBattle_AI
       if (@battle.pbCheckGlobalAbility(:DARKAURA) && isConst?(type,PBTypes,:DARK)) ||
          (@battle.pbCheckGlobalAbility(:FAIRYAURA) && isConst?(type,PBTypes,:FAIRY))
         if @battle.pbCheckGlobalAbility(:AURABREAK)
-          multipliers[BASE_DMG_MULT] *= 2/3
+          multipliers[BASE_DMG_MULT] *= 2.0 / 3
         else
-          multipliers[BASE_DMG_MULT] *= 4/3
+          multipliers[BASE_DMG_MULT] *= 4.0 / 3
         end
       end
     end
 
     # Parental Bond
     if skill_check(AILevel.medium) && @user.hasActiveAbility?(:PARENTALBOND)
-      multipliers[BASE_DMG_MULT] = (multipliers[BASE_DMG_MULT]*1.25).floor
+      multipliers[BASE_DMG_MULT] *= 1.25
     end
 
     # Me First
@@ -444,15 +424,15 @@ class PokeBattle_AI
       case @battle.field.terrain
       when PBBattleTerrains::Electric
         if isConst?(type,PBTypes,:ELECTRIC)
-          multipliers[BASE_DMG_MULT] = (multipliers[BASE_DMG_MULT]*1.5).round
+          multipliers[BASE_DMG_MULT] *= 1.5
         end
       when PBBattleTerrains::Grassy
         if isConst?(type,PBTypes,:GRASS)
-          multipliers[BASE_DMG_MULT] = (multipliers[BASE_DMG_MULT]*1.5).round
+          multipliers[BASE_DMG_MULT] *= 1.5
         end
       when PBBattleTerrains::Psychic
         if isConst?(type,PBTypes,:PSYCHIC)
-          multipliers[BASE_DMG_MULT] = (multipliers[BASE_DMG_MULT]*1.5).round
+          multipliers[BASE_DMG_MULT] *= 1.5
         end
       end
     end
@@ -469,9 +449,9 @@ class PokeBattle_AI
         # won't control the player's Pokémon.
         if target.pbOwnedByPlayer?
           if move.physicalMove?(type) && @battle.pbPlayer.numbadges>=NUM_BADGES_BOOST_DEFENSE
-            multipliers[DEF_MULT] = (multipliers[DEF_MULT]*1.1).round
+            multipliers[DEF_MULT] *= 1.1
           elsif move.specialMove?(type) && @battle.pbPlayer.numbadges>=NUM_BADGES_BOOST_SPDEF
-            multipliers[DEF_MULT] = (multipliers[DEF_MULT]*1.1).round
+            multipliers[DEF_MULT] *= 1.1
           end
         end
       end
@@ -480,7 +460,7 @@ class PokeBattle_AI
     # Multi-targeting attacks
     if skill_check(AILevel.high)
       if pbTargetsMultiple?(move)
-        multipliers[FINAL_DMG_MULT] = (multipliers[FINAL_DMG_MULT]*0.75).round
+        multipliers[FINAL_DMG_MULT] *= 0.75
       end
     end
 
@@ -489,7 +469,7 @@ class PokeBattle_AI
       case @battle.pbWeather
       when PBWeather::Sun, PBWeather::HarshSun
         if isConst?(type,PBTypes,:FIRE)
-          multipliers[FINAL_DMG_MULT] = (multipliers[FINAL_DMG_MULT]*1.5).round
+          multipliers[FINAL_DMG_MULT] *= 1.5
         elsif isConst?(type,PBTypes,:WATER)
           multipliers[FINAL_DMG_MULT] /= 2
         end
@@ -497,11 +477,11 @@ class PokeBattle_AI
         if isConst?(type,PBTypes,:FIRE)
           multipliers[FINAL_DMG_MULT] /= 2
         elsif isConst?(type,PBTypes,:WATER)
-          multipliers[FINAL_DMG_MULT] = (multipliers[FINAL_DMG_MULT]*1.5).round
+          multipliers[FINAL_DMG_MULT] *= 1.5
         end
       when PBWeather::Sandstorm
         if target.pbHasType?(:ROCK) && move.specialMove?(type) && move.function!="122"   # Psyshock
-          multipliers[DEF_MULT] = (multipliers[DEF_MULT]*1.5).round
+          multipliers[DEF_MULT] *= 1.5
         end
       end
     end
@@ -525,7 +505,6 @@ class PokeBattle_AI
     if skill_check(AILevel.medium)
       typemod = pbCalcTypeMod(type,@user,target)
       multipliers[FINAL_DMG_MULT] *= typemod.to_f/PBTypeEffectiveness::NORMAL_EFFECTIVE
-      multipliers[FINAL_DMG_MULT] = multipliers[FINAL_DMG_MULT].round
     end
 
     # Burn
@@ -542,19 +521,19 @@ class PokeBattle_AI
       if !move.ignoresReflect? && !@user.hasActiveAbility?(:INFILTRATOR)
         if target.pbOwnSide.effects[PBEffects::AuroraVeil]>0
           if @battle.pbSideBattlerCount(target)>1
-            multipliers[FINAL_DMG_MULT] = (multipliers[FINAL_DMG_MULT]*2/3).round
+            multipliers[FINAL_DMG_MULT] *= 2.0 / 3
           else
             multipliers[FINAL_DMG_MULT] /= 2
           end
         elsif target.pbOwnSide.effects[PBEffects::Reflect]>0 && move.physicalMove?(type)
           if @battle.pbSideBattlerCount(target)>1
-            multipliers[FINAL_DMG_MULT] = (multipliers[FINAL_DMG_MULT]*2/3).round
+            multipliers[FINAL_DMG_MULT] *= 2.0 / 3
           else
             multipliers[FINAL_DMG_MULT] /= 2
           end
         elsif target.pbOwnSide.effects[PBEffects::LightScreen]>0 && move.specialMove?(type)
           if @battle.pbSideBattlerCount(target)>1
-            multipliers[FINAL_DMG_MULT] = (multipliers[FINAL_DMG_MULT]*2/3).round
+            multipliers[FINAL_DMG_MULT] *= 2.0 / 3
           else
             multipliers[FINAL_DMG_MULT] /= 2
           end
@@ -576,11 +555,11 @@ class PokeBattle_AI
     # TODO
 
     ##### Main damage calculation #####
-    baseDmg = [(baseDmg * multipliers[BASE_DMG_MULT]  / 0x1000).round,1].max
-    atk     = [(atk     * multipliers[ATK_MULT]       / 0x1000).round,1].max
-    defense = [(defense * multipliers[DEF_MULT]       / 0x1000).round,1].max
-    damage  = (((2.0*@user.level/5+2).floor*baseDmg*atk/defense).floor/50).floor+2
-    damage  = [(damage  * multipliers[FINAL_DMG_MULT] / 0x1000).round,1].max
+    baseDmg = [(baseDmg * multipliers[BASE_DMG_MULT]).round, 1].max
+    atk     = [(atk     * multipliers[ATK_MULT]).round, 1].max
+    defense = [(defense * multipliers[DEF_MULT]).round, 1].max
+    damage  = (((2.0 * @user.level / 5 + 2).floor * baseDmg * atk / defense).floor / 50).floor + 2
+    damage  = [(damage  * multipliers[FINAL_DMG_MULT]).round, 1].max
     return damage.floor
   end
 
@@ -611,8 +590,8 @@ class PokeBattle_AI
     end
     # Other effects
     case move.pbCritialOverride(@user, target)
-    when 1;  return 99
-    when -1; return -1
+    when 1  then return 99
+    when -1 then return -1
     end
     return 99 if crit_stage > 50   # Merciless
     return 99 if @user.effects[PBEffects::LaserFocus] > 0

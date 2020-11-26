@@ -13,7 +13,7 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "003"   # Make target fall asleep
       # Can't use Dark Void if user isn't Darkrai
-      if NEWEST_BATTLE_MECHANICS && isConst?(@move.id, PBMoves, :DARKVOID)
+      if NEWEST_BATTLE_MECHANICS && @move.id == :DARKVOID
         return 0 if !@user.isSpecies?(:DARKRAI) &&
                     !isConst?(@user.effects[PBEffects::TransformSpecies], PBSpecies, :DARKRAI)
       end
@@ -59,17 +59,19 @@ class PokeBattle_AI
         # can pass sleep back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-            return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :HYDRATION
+            if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+              return (@move.statusMove?) ? 0 : score
+            end
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && !@user.pbHasAnyStatus?
-            mini_score *= 0.3
+          when :SYNCHRONIZE
+            mini_score *= 0.3 if !@user.pbHasAnyStatus?
           end
         end
 
@@ -114,14 +116,14 @@ class PokeBattle_AI
       # can pass sleep back to the user
       # TODO: Check for other effects to list here.
       if skill_check(AILevel.best) && @target.abilityActive?
-        if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+        case @target.ability_id
+        when :SHEDSKIN
           return 0
-        elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-           [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-          return 0
-        elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+        when :HYDRATION
+          return 0 if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+        when :NATURALCURE
           mini_score *= 0.1
-        elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+        when :MARVELSCALE
           mini_score *= 0.8
         end
       end
@@ -166,24 +168,23 @@ class PokeBattle_AI
         # or can pass poisoning back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-            return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :TOXICBOOST) ||
-                isConst?(@target.ability, PBAbilities, :GUTS) ||
-                isConst?(@target.ability, PBAbilities, :QUICKFEET)
+          when :HYDRATION
+            if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+              return (@move.statusMove?) ? 0 : score
+            end
+          when :TOXICBOOST, :GUTS, :QUICKFEET
             mini_score *= 0.2
-          elsif isConst?(@target.ability, PBAbilities, :POISONHEAL) ||
-                isConst?(@target.ability, PBAbilities, :MAGICGUARD)
+          when :POISONHEAL, :MAGICGUARD
             mini_score *= 0.1
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && !@user.pbHasAnyStatus?
-            mini_score *= 0.5
+          when :SYNCHRONIZE
+            mini_score *= 0.5 if !@user.pbHasAnyStatus?
           end
         end
 
@@ -235,24 +236,23 @@ class PokeBattle_AI
         # or can pass poisoning back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-            return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :TOXICBOOST) ||
-                isConst?(@target.ability, PBAbilities, :GUTS) ||
-                isConst?(@target.ability, PBAbilities, :QUICKFEET)
+          when :HYDRATION
+            if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+              return (@move.statusMove?) ? 0 : score
+            end
+          when :TOXICBOOST, :GUTS, :QUICKFEET
             mini_score *= 0.2
-          elsif isConst?(@target.ability, PBAbilities, :POISONHEAL) ||
-                isConst?(@target.ability, PBAbilities, :MAGICGUARD)
+          when :POISONHEAL, :MAGICGUARD
             mini_score *= 0.1
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :NATURALCURE
             mini_score *= 0.2
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.8
-          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && !@user.pbHasAnyStatus?
-            mini_score *= 0.5
+          when :SYNCHRONIZE
+            mini_score *= 0.5 if !@user.pbHasAnyStatus?
           end
         end
 
@@ -266,7 +266,7 @@ class PokeBattle_AI
       end
     #---------------------------------------------------------------------------
     when "007", "0C5"   # Paralyse the target
-      return 0 if isConst?(@move.id, PBMoves, :THUNDERWAVE) &&
+      return 0 if @move.id == :THUNDERWAVE &&
                   PBTypes.ineffective?(pbCalcTypeMod(@move.type, @user, @target))
 
       if @target.pbCanParalyze?(@user, false)
@@ -296,20 +296,21 @@ class PokeBattle_AI
         # or can pass paralysis back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-            return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :GUTS) ||
-                isConst?(@target.ability, PBAbilities, :QUICKFEET)
+          when :HYDRATION
+            if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+              return (@move.statusMove?) ? 0 : score
+            end
+          when :GUTS, :QUICKFEET
             mini_score *= 0.2
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.5
-          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && !@user.pbHasAnyStatus?
-            mini_score *= 0.5
+          when :SYNCHRONIZE
+            mini_score *= 0.5 if !@user.pbHasAnyStatus?
           end
         end
 
@@ -372,17 +373,17 @@ class PokeBattle_AI
         # or can pass paralysis back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :GUTS) ||
-                isConst?(@target.ability, PBAbilities, :QUICKFEET)
+          when :GUTS, :QUICKFEET
             mini_score *= 0.2
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.5
-          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && !@user.pbHasAnyStatus?
-            mini_score *= 0.5
+          when :SYNCHRONIZE
+            mini_score *= 0.5 if !@user.pbHasAnyStatus?
           end
         end
 
@@ -437,17 +438,17 @@ class PokeBattle_AI
         # or can pass paralysis back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :GUTS) ||
-                isConst?(@target.ability, PBAbilities, :QUICKFEET)
+          when :GUTS, :QUICKFEET
             mini_score *= 0.2
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.5
-          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && !@user.pbHasAnyStatus?
-            mini_score *= 0.5
+          when :SYNCHRONIZE
+            mini_score *= 0.5 if !@user.pbHasAnyStatus?
           end
         end
 
@@ -513,23 +514,24 @@ class PokeBattle_AI
         # can pass a burn back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-            return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :GUTS) ||
-                isConst?(@target.ability, PBAbilities, :FLAREBOOST)
+          when :HYDRATION
+            if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+              return (@move.statusMove?) ? 0 : score
+            end
+          when :GUTS, :FLAREBOOST
             mini_score *= 0.1
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && !@user.pbHasAnyStatus?
+          when :SYNCHRONIZE
+            mini_score *= 0.5 if !@user.pbHasAnyStatus?
+          when :MAGICGUARD
             mini_score *= 0.5
-          elsif isConst?(@target.ability, PBAbilities, :MAGICGUARD)
-            mini_score *= 0.5
-          elsif isConst?(@target.ability, PBAbilities, :QUICKFEET)
+          when :QUICKFEET
             mini_score *= 0.3
           end
         end
@@ -569,23 +571,24 @@ class PokeBattle_AI
         # or can pass paralysis back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-            return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :GUTS) ||
-                isConst?(@target.ability, PBAbilities, :FLAREBOOST)
+          when :HYDRATION
+            if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+              return (@move.statusMove?) ? 0 : score
+            end
+          when :GUTS, :FLAREBOOST
             mini_score *= 0.1
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && !@user.pbHasAnyStatus?
+          when :SYNCHRONIZE
+            mini_score *= 0.5 if !@user.pbHasAnyStatus?
+          when :MAGICGUARD
             mini_score *= 0.5
-          elsif isConst?(@target.ability, PBAbilities, :MAGICGUARD)
-            mini_score *= 0.5
-          elsif isConst?(@target.ability, PBAbilities, :QUICKFEET)
+          when :QUICKFEET
             mini_score *= 0.3
           end
         end
@@ -628,14 +631,16 @@ class PokeBattle_AI
         # or can pass paralysis back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-            return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :HYDRATION
+            if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+              return (@move.statusMove?) ? 0 : score
+            end
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.8
           end
         end
@@ -670,14 +675,16 @@ class PokeBattle_AI
         # or can pass paralysis back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-            return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :HYDRATION
+            if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+              return (@move.statusMove?) ? 0 : score
+            end
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.8
           end
         end
@@ -712,14 +719,16 @@ class PokeBattle_AI
         # or can pass paralysis back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-            return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :HYDRATION
+            if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+              return (@move.statusMove?) ? 0 : score
+            end
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.8
           end
         end
@@ -1008,20 +1017,21 @@ class PokeBattle_AI
         # or can pass paralysis back to the user
         # TODO: Check for other effects to list here.
         if skill_check(AILevel.best) && @target.abilityActive?
-          if isConst?(@target.ability, PBAbilities, :SHEDSKIN)
+          case @target.ability_id
+          when :SHEDSKIN
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :HYDRATION) &&
-             [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
-            return (@move.statusMove?) ? 0 : score
-          elsif isConst?(@target.ability, PBAbilities, :GUTS) ||
-                isConst?(@target.ability, PBAbilities, :QUICKFEET)
+          when :HYDRATION
+            if [PBWeather::Rain, PBWeather::HeavyRain].include?(@battle.pbWeather)
+              return (@move.statusMove?) ? 0 : score
+            end
+          when :GUTS, :QUICKFEET
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :NATURALCURE)
+          when :NATURALCURE
             mini_score *= 0.3
-          elsif isConst?(@target.ability, PBAbilities, :MARVELSCALE)
+          when :MARVELSCALE
             mini_score *= 0.7
-          elsif isConst?(@target.ability, PBAbilities, :SYNCHRONIZE) && !@user.pbHasAnyStatus?
-            mini_score *= 0.5
+          when :SYNCHRONIZE
+            mini_score *= 0.5 if !@user.pbHasAnyStatus?
           end
         end
 
@@ -1658,7 +1668,7 @@ class PokeBattle_AI
       mini_score *= 1.3 if @target.effects[PBEffects::HyperBeam] > 0
       # Prefer if target is Encored into a status move
       if @target.effects[PBEffects::Encore] > 0 &&
-         pbGetMoveData(@target.effects[PBEffects::EncoreMove], MOVE_CATEGORY) == 2   # Status move
+         GameData::Move.get(@target.effects[PBEffects::EncoreMove]).category == 2   # Status move
         mini_score *= 1.5
       end
       # Don't prefer if target has an ability that prevents or benefits from

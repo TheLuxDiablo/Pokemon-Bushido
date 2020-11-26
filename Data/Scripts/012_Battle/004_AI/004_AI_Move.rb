@@ -382,8 +382,7 @@ class PokeBattle_AI
     # Prefer flinching external effects (note that move effects which cause
     # flinching are dealt with in the function code part of score calculation)
     if skill_check(AILevel.medium)
-      if !@target.hasActiveAbility?(:INNERFOCUS) &&
-         !@target.hasActiveAbility?(:SHIELDDUST) &&
+      if !@target.hasActiveAbility?([:INNERFOCUS, :SHIELDDUST]) &&
          @target.effects[PBEffects::Substitute] == 0
         can_flinch = false
         if @move.canKingsRock? && @user.hasActiveItem?([:KINGSROCK, :RAZORFANG])

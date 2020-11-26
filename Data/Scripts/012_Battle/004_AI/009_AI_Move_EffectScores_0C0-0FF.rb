@@ -252,12 +252,12 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "0F0"
       if skill_check(AILevel.high)
-        score += 20 if @target.item!=0
+        score += 20 if @target.item
       end
     #---------------------------------------------------------------------------
     when "0F1"
       if skill_check(AILevel.high)
-        if @user.item==0 && @target.item!=0
+        if !@user.item && @target.item
           score += 40
         else
           score -= 90
@@ -267,19 +267,20 @@ class PokeBattle_AI
       end
     #---------------------------------------------------------------------------
     when "0F2"
-      if @user.item==0 && @target.item==0
+      if !@user.item && !@target.item
         score -= 90
       elsif skill_check(AILevel.high) && @target.hasActiveAbility?(:STICKYHOLD)
         score -= 90
       elsif @user.hasActiveItem?([:FLAMEORB,:TOXICORB,:STICKYBARB,:IRONBALL,
                                  :CHOICEBAND,:CHOICESCARF,:CHOICESPECS])
         score += 50
-      elsif @user.item==0 && @target.item!=0
-        score -= 30 if pbGetMoveData(@user.lastMoveUsed,MOVE_FUNCTION_CODE)=="0F2"   # Trick/Switcheroo
+      elsif !@user.item && @target.item
+        score -= 30 if user.lastMoveUsed &&
+           GameData::Move.get(@user.lastMoveUsed).function_code == "0F2"   # Trick/Switcheroo
       end
     #---------------------------------------------------------------------------
     when "0F3"
-      if @user.item==0 || @target.item!=0
+      if !@user.item || @target.item
         score -= 90
       else
         if @user.hasActiveItem?([:FLAMEORB,:TOXICORB,:STICKYBARB,:IRONBALL,
@@ -292,21 +293,21 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "0F4", "0F5"
       if @target.effects[PBEffects::Substitute]==0
-        if skill_check(AILevel.high) && pbIsBerry?(@target.item)
+        if skill_check(AILevel.high) && @target.item && @target.item.is_berry?
           score += 30
         end
       end
     #---------------------------------------------------------------------------
     when "0F6"
-      if @user.recycleItem==0 || @user.item!=0
+      if !@user.recycleItem || @user.item
         score -= 80
-      elsif @user.recycleItem!=0
+      elsif @user.recycleItem
         score += 30
       end
     #---------------------------------------------------------------------------
     when "0F7"
-      if @user.item==0 || !@user.itemActive? ||
-         @user.unlosableItem?(@user.item) || pbIsPokeBall?(@user.item)
+      if !@user.item || !@user.itemActive? ||
+         @user.unlosableItem?(@user.item) || @user.item.is_poke_ball?
         score -= 90
       end
     #---------------------------------------------------------------------------
@@ -317,7 +318,7 @@ class PokeBattle_AI
       if @battle.field.effects[PBEffects::MagicRoom]>0
         score -= 90
       else
-        score += 30 if @user.item==0 && @target.item!=0
+        score += 30 if !@user.item && @target.item
       end
     #---------------------------------------------------------------------------
     when "0FA"

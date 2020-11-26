@@ -88,7 +88,7 @@ class PokeBattle_AI
           score -= @user.effects[PBEffects::ProtectRate]*40
         end
         score += 50 if @user.turnCount==0
-        score += 30 if @target.effects[PBEffects::TwoTurnAttack]>0
+        score += 30 if @target.effects[PBEffects::TwoTurnAttack]
       end
     #---------------------------------------------------------------------------
     when "14D"
@@ -300,7 +300,7 @@ class PokeBattle_AI
           score -= @user.effects[PBEffects::ProtectRate]*40
         end
         score += 50 if @user.turnCount==0
-        score += 30 if @target.effects[PBEffects::TwoTurnAttack]>0
+        score += 30 if @target.effects[PBEffects::TwoTurnAttack]
         score += 20   # Because of possible poisoning
       end
     #---------------------------------------------------------------------------
@@ -316,7 +316,7 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "16B"
       if skill_check(AILevel.medium)
-        if @target.lastRegularMoveUsed<0 ||
+        if !@target.lastRegularMoveUsed ||
            !@target.pbHasMove?(@target.lastRegularMoveUsed) ||
            @target.usingMultiTurnAttack?
           score -= 90
