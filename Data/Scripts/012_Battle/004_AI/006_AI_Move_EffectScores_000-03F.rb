@@ -1181,433 +1181,33 @@ class PokeBattle_AI
       score *= mini_score
     #---------------------------------------------------------------------------
     when "01C"   # Increase user's Attack by 1 stage
-      # Discard move if it will have no effect
-      if @user.statStageAtMax?(PBStats::ATTACK)
-        return (@move.statusMove?) ? 0 : score
-      end
-      # Discard move if user will not benefit from a raised Attack stat
-      has_physical_move = false
-      @user.eachMove do |m|
-        next if !m.physicalMove?(m.type)
-        has_physical_move = true
-        break
-      end
-      if !has_physical_move
-        return (@move.statusMove?) ? 0 : score
-      end
-      # Discard status move if user has Contrary
-      return 0 if @move.statusMove? && @user.hasActiveAbility?(:CONTRARY)
-
-      mini_score = get_mini_score_for_user_stat_raise
-
-      # Prefer if user can definitely survive a hit no matter how powerful, and
-      # it won't be hurt by weather
-      if @user.hp == @user.totalhp &&
-         (@user.hasActiveItem?(:FOCUSSASH) || @user.hasActiveAbility?(:STURDY))
-        if !(@battle.pbWeather == PBWeather::Sandstorm && @user.takesSandstormDamage?) &&
-           !(@battle.pbWeather == PBWeather::Hail && @user.takesHailDamage?) &&
-           !(@battle.pbWeather == PBWeather::ShadowSky && @user.takesShadowSkyDamage?)
-          mini_score *= 1.4
-        end
-      end
-      # Prefer if user has the Sweeper role
-      mini_score *= 1.3 if check_battler_role(@user, BattleRole::SWEEPER)
-      # Don't prefer if user is burned or paralysed
-      mini_score *= 0.5 if @user.status == PBStatuses::BURN || @user.status == PBStatuses::PARALYSIS
-      # Don't prefer if user has Contrary
-      mini_score *= 0.5 if @user.hasActiveAbility?(:CONTRARY)
-      # Don't prefer if user's Speed stat is lowered
-      sum_stages = @user.stages[PBStats::SPEED]
-      mini_score *= 1 + sum_stages * 0.05 if sum_stages < 0
-
-      # TODO: Prefer if target has previously used a HP-restoring move.
-      # TODO: Don't prefer if some of foes' stats are raised
-      sum_stages = 0
-      [PBStats::ATTACK, PBStats::SPATK, PBStats::SPEED].each do |s|
-        sum_stages += @target.stages[s]
-      end
-      mini_score *= 1 - sum_stages * 0.05 if sum_stages > 0
-      # TODO: Don't prefer if target has Speed Boost (+Spd at end of each round)
-      mini_score *= 0.6 if @target.hasActiveAbility?(:SPEEDBOOST)
-      # TODO: Don't prefer if target has previously used a move that benefits
-      #       from user's Attack being boosted.
-      mini_score *= 0.3 if check_for_move(@target) { |move| move.function == "121" }   # Foul Play
-      # TODO: Don't prefer if the target has previously used a priority move.
-      # TODO: Don't prefer if target has Unaware? Reborn resets mini_score to 1.
-      #       This check needs more consideration. Note that @target is user for
-      #       status moves, so that part is wrong.
-      mini_score *= 0.5 if @move.statusMove? && @target.hasActiveAbility?(:UNAWARE)
-
-      # TODO: Don't prefer if any foe has previously used a stat stage-clearing
-      #       move (050, 051 Clear Smog/Haze).
-      mini_score *= 0.3 if check_for_move(@target) { |move| ["050", "051"].include?(move.function) }   # Clear Smog, Haze
-
-      # TODO: Prefer if user is faster than the target
-      mini_score *= 1.5 if @user_faster
-      # TODO: Don't prefer if target is a higher level than the user
-      if @target.level > @user.level + 5
-        mini_score *= 0.6
-        if @target.level > @user.level + 10
-          mini_score *= 0.2
-        end
-      end
-
-      mini_score = apply_effect_chance_to_score(mini_score)
-      score *= mini_score
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "01D", "0C8"   # Increase user's Defense by 1 stage
-      # Discard move if it will have no effect
-      if @user.statStageAtMax?(PBStats::DEFENSE)
-        return (@move.statusMove?) ? 0 : score
-      end
-      # Discard status move if user has Contrary
-      return 0 if @move.statusMove? && @user.hasActiveAbility?(:CONTRARY)
-
-      mini_score = get_mini_score_for_user_stat_raise
-
-      # Prefer if user has a healing item
-      mini_score *= 1.2 if @user.hasActiveItem?(:LEFTOVERS) ||
-                           (@user.hasActiveItem?(:BLACKSLUDGE) && @user.pbHasType?(:POISON))
-      # Prefer if user knows any healing moves
-      mini_score *= 1.3 if check_for_move(@user) { |move| move.healingMove? }
-      # Prefer if user knows Pain Split or Leech Seed
-      mini_score *= 1.2 if @user.pbHasMoveFunction?("05A")   # Pain Split
-      mini_score *= 1.3 if @user.pbHasMoveFunction?("0DC")   # Leech Seed
-      # Prefer if user has certain roles
-      mini_score *= 1.3 if check_battler_role(@user, BattleRole::PHYSICALWALL, BattleRole::SPECIALWALL)
-      # Don't prefer if user has Contrary
-      mini_score *= 0.5 if @user.hasActiveAbility?(:CONTRARY)
-      # Don't prefer if user's Defense stat is raised
-      sum_stages = @user.stages[PBStats::DEFENSE]
-      mini_score *= 1 - sum_stages * 0.15 if sum_stages > 0
-
-      # TODO: Prefer if foes have higher Attack than Special Attack.
-      # TODO: Don't prefer if target has Unaware? Reborn resets mini_score to 1.
-      #       This check needs more consideration. Note that @target is user for
-      #       status moves, so that part is wrong.
-      mini_score *= 0.5 if @move.statusMove? && @target.hasActiveAbility?(:UNAWARE)
-
-      # TODO: Don't prefer if previous damage done by foes wouldn't hurt the
-      #       user much.
-      # TODO: Don't prefer if any foe has previously used a stat stage-clearing
-      #       move (050, 051 Clear Smog/Haze).
-      mini_score *= 0.3 if check_for_move(@target) { |move| ["050", "051"].include?(move.function) }   # Clear Smog, Haze
-
-      # TODO: Prefer if user is faster than the target
-      mini_score *= 1.5 if @user_faster
-      # TODO: Don't prefer if target is a higher level than the user
-      if @target.level > @user.level + 5
-        mini_score *= 0.6
-        if @target.level > @user.level + 10
-          mini_score *= 0.2
-        end
-      end
-
-      mini_score = apply_effect_chance_to_score(mini_score)
-      score *= mini_score
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "01E"   # Increase user's Defense by 1 stage, user curls up
-      # Discard move if it will have no effect
-      if @user.statStageAtMax?(PBStats::DEFENSE)
-        return (@move.statusMove?) ? 0 : score
-      end
-      # Discard status move if user has Contrary
-      return 0 if @move.statusMove? && @user.hasActiveAbility?(:CONTRARY)
-
-      mini_score = get_mini_score_for_user_stat_raise
-
-      # Prefer if user has a healing item
-      mini_score *= 1.2 if @user.hasActiveItem?(:LEFTOVERS) ||
-                           (@user.hasActiveItem?(:BLACKSLUDGE) && @user.pbHasType?(:POISON))
-      # Prefer if user knows any healing moves
-      mini_score *= 1.3 if check_for_move(@user) { |move| move.healingMove? }
-      # Prefer if user knows Pain Split or Leech Seed
-      mini_score *= 1.2 if @user.pbHasMoveFunction?("05A")   # Pain Split
-      mini_score *= 1.3 if @user.pbHasMoveFunction?("0DC")   # Leech Seed
+      score = get_score_for_user_stat_raise(score)
       # Prefer if user knows Rollout and hasn't curled up yet
-      mini_score *= 1.3 if !@user.effects[PBEffects::DefenseCurl] && @user.pbHasMoveFunction?("0D3")   # Pain Split
-      # Prefer if user has certain roles
-      mini_score *= 1.3 if check_battler_role(@user, BattleRole::PHYSICALWALL, BattleRole::SPECIALWALL)
-      # Don't prefer if user has Contrary
-      mini_score *= 0.5 if @user.hasActiveAbility?(:CONTRARY)
-      # Don't prefer if user's Defense stat is raised
-      sum_stages = @user.stages[PBStats::DEFENSE]
-      mini_score *= 1 - sum_stages * 0.15 if sum_stages > 0
-
-      # TODO: Prefer if foes have higher Attack than Special Attack.
-      # TODO: Don't prefer if target has Unaware? Reborn resets mini_score to 1.
-      #       This check needs more consideration. Note that @target is user for
-      #       status moves, so that part is wrong.
-      mini_score *= 0.5 if @move.statusMove? && @target.hasActiveAbility?(:UNAWARE)
-
-      # TODO: Don't prefer if previous damage done by foes wouldn't hurt the
-      #       user much.
-      # TODO: Don't prefer if any foe has previously used a stat stage-clearing
-      #       move (050, 051 Clear Smog/Haze).
-      mini_score *= 0.3 if check_for_move(@target) { |move| ["050", "051"].include?(move.function) }   # Clear Smog, Haze
-
-      # TODO: Prefer if user is faster than the target
-      mini_score *= 1.5 if @user_faster
-      # TODO: Don't prefer if target is a higher level than the user
-      if @target.level > @user.level + 5
-        mini_score *= 0.6
-        if @target.level > @user.level + 10
-          mini_score *= 0.2
-        end
-      end
-
-      mini_score = apply_effect_chance_to_score(mini_score)
-      score *= mini_score
+      score *= 1.3 if !@user.effects[PBEffects::DefenseCurl] && @user.pbHasMoveFunction?("0D3")   # Rollout
     #---------------------------------------------------------------------------
     when "01F"   # Increase user's Speed by 1 stage
-      # Discard move if it will have no effect
-      if @user.statStageAtMax?(PBStats::SPEED)
-        return (@move.statusMove?) ? 0 : score
-      end
-      # Discard status move if user has Contrary
-      return 0 if @move.statusMove? && @user.hasActiveAbility?(:CONTRARY)
-
-      mini_score = get_mini_score_for_user_stat_raise
-
-      # Prefer if user can definitely survive a hit no matter how powerful, and
-      # it won't be hurt by weather
-      if @user.hp == @user.totalhp &&
-         (@user.hasActiveItem?(:FOCUSSASH) || @user.hasActiveAbility?(:STURDY))
-        if !(@battle.pbWeather == PBWeather::Sandstorm && @user.takesSandstormDamage?) &&
-           !(@battle.pbWeather == PBWeather::Hail && @user.takesHailDamage?) &&
-           !(@battle.pbWeather == PBWeather::ShadowSky && @user.takesShadowSkyDamage?)
-          mini_score *= 1.4
-        end
-      end
-      # Prefer if user's Attack/SpAtk stat (whichever is higher) is lowered
-      if @user.attack > @user.spatk
-        sum_stages = @user.stages[PBStats::ATTACK]
-        mini_score *= 1 + sum_stages * 0.05 if sum_stages < 0
-      else
-        sum_stages = @user.stages[PBStats::SPATK]
-        mini_score *= 1 + sum_stages * 0.05 if sum_stages < 0
-      end
-      # Prefer if user has Moxie
-      mini_score *= 1.3 if @user.hasActiveAbility?(:MOXIE)
-      # Prefer if user has the Sweeper role
-      mini_score *= 1.3 if check_battler_role(@user, BattleRole::SWEEPER)
-      # Don't prefer if user is burned orparalysed
-      mini_score *= 0.2 if @user.status == PBStatuses::PARALYSIS
-      # Don't prefer if user has Contrary or Speed Boost
-      mini_score *= 0.5 if @user.hasActiveAbility?(:CONTRARY)
-      mini_score *= 0.6 if @user.hasActiveAbility?(:SPEEDBOOST)
-
-      # TODO: Don't prefer if target has raised defenses.
-      sum_stages = 0
-      [PBStats::DEFENSE, PBStats::SPDEF].each { |s| sum_stages += @target.stages[s] }
-      mini_score *= 1 - sum_stages * 0.05 if sum_stages > 0
-      # TODO: Don't prefer if the target has previously used a priority move.
-      # TODO: Don't prefer if target has Unaware? Reborn resets mini_score to 1.
-      #       This check needs more consideration. Note that @target is user for
-      #       status moves, so that part is wrong.
-      mini_score *= 0.5 if @move.statusMove? && @target.hasActiveAbility?(:UNAWARE)
-
-      # TODO: Don't prefer if any foe has previously used a stat stage-clearing
-      #       move (050, 051 Clear Smog/Haze).
-      mini_score *= 0.3 if check_for_move(@target) { |move| ["050", "051"].include?(move.function) }   # Clear Smog, Haze
-      # TODO: Don't prefer if Trick Room applies or any foe has previously used
-      #       Trick Room.
-      mini_score *= 0.2 if @battle.field.effects[PBEffects::TrickRoom] > 0
-
-      # TODO: Prefer if user is slower than the target
-      mini_score *= 1.5 if !@user_faster
-      # TODO: Don't prefer if target is a higher level than the user
-      if @target.level > @user.level + 5
-        mini_score *= 0.6
-        if @target.level > @user.level + 10
-          mini_score *= 0.2
-        end
-      end
-
-      mini_score = apply_effect_chance_to_score(mini_score)
-      score *= mini_score
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "020"   # Increase user's Special Attack by 1 stage
-      # Discard move if it will have no effect
-      if @user.statStageAtMax?(PBStats::SPATK)
-        return (@move.statusMove?) ? 0 : score
-      end
-      # Discard move if user will not benefit from a raised Special Attack stat
-      has_special_move = false
-      @user.eachMove do |m|
-        next if !m.specialMove?(m.type)
-        has_special_move = true
-        break
-      end
-      if !has_special_move
-        return (@move.statusMove?) ? 0 : score
-      end
-      # Discard status move if user has Contrary
-      return 0 if @move.statusMove? && @user.hasActiveAbility?(:CONTRARY)
-
-      mini_score = get_mini_score_for_user_stat_raise
-
-      # Prefer if user can definitely survive a hit no matter how powerful, and
-      # it won't be hurt by weather
-      if @user.hp == @user.totalhp &&
-         (@user.hasActiveItem?(:FOCUSSASH) || @user.hasActiveAbility?(:STURDY))
-        if !(@battle.pbWeather == PBWeather::Sandstorm && @user.takesSandstormDamage?) &&
-           !(@battle.pbWeather == PBWeather::Hail && @user.takesHailDamage?) &&
-           !(@battle.pbWeather == PBWeather::ShadowSky && @user.takesShadowSkyDamage?)
-          mini_score *= 1.4
-        end
-      end
-      # Prefer if user has the Sweeper role
-      mini_score *= 1.3 if check_battler_role(@user, BattleRole::SWEEPER)
-      # Don't prefer if user has Contrary
-      mini_score *= 0.5 if @user.hasActiveAbility?(:CONTRARY)
-      # Don't prefer if user's Speed stat is lowered
-      sum_stages = @user.stages[PBStats::SPEED]
-      mini_score *= 1 + sum_stages * 0.05 if sum_stages < 0
-
-      # TODO: Prefer if target has previously used a HP-restoring move.
-      # TODO: Don't prefer if some of foes' stats are raised
-      sum_stages = 0
-      [PBStats::ATTACK, PBStats::SPATK, PBStats::SPEED].each do |s|
-        sum_stages += @target.stages[s]
-      end
-      mini_score *= 1 - sum_stages * 0.05 if sum_stages > 0
-      # TODO: Don't prefer if target has Speed Boost (+Spd at end of each round)
-      mini_score *= 0.6 if @target.hasActiveAbility?(:SPEEDBOOST)
-      # TODO: Don't prefer if the target has previously used a priority move.
-      # TODO: Don't prefer if target has Unaware? Reborn resets mini_score to 1.
-      #       This check needs more consideration. Note that @target is user for
-      #       status moves, so that part is wrong.
-      mini_score *= 0.5 if @move.statusMove? && @target.hasActiveAbility?(:UNAWARE)
-
-      # TODO: Don't prefer if any foe has previously used a stat stage-clearing
-      #       move (050, 051 Clear Smog/Haze).
-      mini_score *= 0.3 if check_for_move(@target) { |move| ["050", "051"].include?(move.function) }   # Clear Smog, Haze
-
-      # TODO: Prefer if user is faster than the target
-      mini_score *= 1.5 if @user_faster
-      # TODO: Don't prefer if target is a higher level than the user
-      if @target.level > @user.level + 5
-        mini_score *= 0.6
-        if @target.level > @user.level + 10
-          mini_score *= 0.2
-        end
-      end
-
-      mini_score = apply_effect_chance_to_score(mini_score)
-      score *= mini_score
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "021"   # Increase user's Special Defense by 1 stage, charges next Electric move
-      # Discard move if it will have no effect
-      if @user.statStageAtMax?(PBStats::SPDEF)
-        return (@move.statusMove?) ? 0 : score
-      end
-      # Discard status move if user has Contrary
-      return 0 if @move.statusMove? && @user.hasActiveAbility?(:CONTRARY)
-
-      mini_score = get_mini_score_for_user_stat_raise
-
-      # Prefer if user has a healing item
-      mini_score *= 1.2 if @user.hasActiveItem?(:LEFTOVERS) ||
-                           (@user.hasActiveItem?(:BLACKSLUDGE) && @user.pbHasType?(:POISON))
-      # Prefer if user knows any healing moves
-      mini_score *= 1.3 if check_for_move(@user) { |move| move.healingMove? }
-      # Prefer if user knows Pain Split or Leech Seed
-      mini_score *= 1.2 if @user.pbHasMoveFunction?("05A")   # Pain Split
-      mini_score *= 1.3 if @user.pbHasMoveFunction?("0DC")   # Leech Seed
+      score = get_score_for_user_stat_raise(score)
       # Prefer if user knows any damaging Electric-type moves and isn't charged
       if @user.effects[PBEffects::Charge] == 0
-        mini_score *= 1.5 if check_for_move(@user) do |move|
+        score *= 1.5 if check_for_move(@user) do |move|
           next move.damagingMove? && isConst?(move.type, PBTypes, :ELECTRIC)
         end
       end
-      # Prefer if user has certain roles
-      mini_score *= 1.3 if check_battler_role(@user, BattleRole::PHYSICALWALL, BattleRole::SPECIALWALL)
-      # Don't prefer if user has Contrary
-      mini_score *= 0.5 if @user.hasActiveAbility?(:CONTRARY)
-      # Don't prefer if user's Defense stat is raised
-      sum_stages = @user.stages[PBStats::SPDEF]
-      mini_score *= 1 - sum_stages * 0.15 if sum_stages > 0
-
-      # TODO: Prefer if foes have higher Special Attack than Attack.
-      # TODO: Don't prefer if target has Unaware? Reborn resets mini_score to 1.
-      #       This check needs more consideration. Note that @target is user for
-      #       status moves, so that part is wrong.
-      mini_score *= 0.5 if @move.statusMove? && @target.hasActiveAbility?(:UNAWARE)
-
-      # TODO: Don't prefer if previous damage done by foes wouldn't hurt the
-      #       user much.
-      # TODO: Don't prefer if any foe has previously used a stat stage-clearing
-      #       move (050, 051 Clear Smog/Haze).
-      mini_score *= 0.3 if check_for_move(@target) { |move| ["050", "051"].include?(move.function) }   # Clear Smog, Haze
-
-      # TODO: Prefer if user is faster than the target
-      mini_score *= 1.5 if @user_faster
-      # TODO: Don't prefer if target is a higher level than the user
-      if @target.level > @user.level + 5
-        mini_score *= 0.6
-        if @target.level > @user.level + 10
-          mini_score *= 0.2
-        end
-      end
-
-      mini_score = apply_effect_chance_to_score(mini_score)
-      score *= mini_score
     #---------------------------------------------------------------------------
     when "022"   # Increase user's evasion by 1 stage
-      # Discard move if it will have no effect
-      if @user.statStageAtMax?(PBStats::EVASION)
-        return (@move.statusMove?) ? 0 : score
-      end
-      # Discard status move if user has Contrary
-      return 0 if @move.statusMove? && @user.hasActiveAbility?(:CONTRARY)
-
-      mini_score = get_mini_score_for_user_stat_raise
-
-      # Prefer if user has a healing item
-      mini_score *= 1.2 if @user.hasActiveItem?(:LEFTOVERS) ||
-                           (@user.hasActiveItem?(:BLACKSLUDGE) && @user.pbHasType?(:POISON))
-      # Prefer if user has an item that lowers foes' accuracy
-      mini_score *= 1.3 if @user.hasActiveItem?([:BRIGHTPOWDER, :LAXINCENSE])
-      # Prefer if user has an ability that lowers foes' accuracy
-      # TODO: Tangled Feet while user is confused?
-      if (@battle.pbWeather == PBWeather::Sandstorm && @user.hasActiveAbility?(:SANDVEIL)) ||
-         (@battle.pbWeather == PBWeather::Hail && @user.hasActiveAbility?(:SNOWCLOAK))
-        mini_score *= 1.3
-      end
-      # Prefer if user knows any healing moves
-      mini_score *= 1.3 if check_for_move(@user) { |move| move.healingMove? }
-      # Prefer if user knows Pain Split or Leech Seed
-      mini_score *= 1.2 if @user.pbHasMoveFunction?("05A")   # Pain Split
-      mini_score *= 1.3 if @user.pbHasMoveFunction?("0DC")   # Leech Seed
-      # Prefer if user has certain roles
-      mini_score *= 1.3 if check_battler_role(@user, BattleRole::PHYSICALWALL, BattleRole::SPECIALWALL)
-      # Don't prefer if user has Contrary
-      mini_score *= 0.5 if @user.hasActiveAbility?(:CONTRARY)
-      # TODO: Don't prefer if user's evasion stat is raised
-
-      # TODO: Don't prefer if target has Unaware? Reborn resets mini_score to 1.
-      #       This check needs more consideration. Note that @target is user for
-      #       status moves, so that part is wrong.
-      mini_score *= 0.5 if @move.statusMove? && @target.hasActiveAbility?(:UNAWARE)
-      # TODO: Don't prefer if target has No Guard.
-      mini_score *= 0.2 if @target.hasActiveAbility?(:NOGUARD)
-      # TODO: Don't prefer if target has previously used any moves that never miss.
-
-      # TODO: Don't prefer if any foe has previously used a stat stage-clearing
-      #       move (050, 051 Clear Smog/Haze).
-      mini_score *= 0.3 if check_for_move(@target) { |move| ["050", "051"].include?(move.function) }   # Clear Smog, Haze
-
-      # TODO: Don't prefer if target is a higher level than the user
-      if @target.level > @user.level + 5
-        mini_score *= 0.6
-        if @target.level > @user.level + 10
-          mini_score *= 0.2
-        end
-      end
-
-      mini_score = apply_effect_chance_to_score(mini_score)
-      score *= mini_score
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "023"   # Set user's critical hit rate to 2
       # TODO: This is mimicking def get_mini_score_for_user_stat_raise for the
@@ -1703,80 +1303,18 @@ class PokeBattle_AI
       score *= mini_score
     #---------------------------------------------------------------------------
     when "024"   # Increase user's Attack and Defense by 1 stage each
-      if @user.statStageAtMax?(PBStats::ATTACK) &&
-         @user.statStageAtMax?(PBStats::DEFENSE)
-        score -= 90
-      else
-        score -= @user.stages[PBStats::ATTACK]*10
-        score -= @user.stages[PBStats::DEFENSE]*10
-        if skill_check(AILevel.medium)
-          hasPhysicalAttack = false
-          @user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
-            hasPhysicalAttack = true
-            break
-          end
-          if hasPhysicalAttack
-            score += 20
-          elsif skill_check(AILevel.high)
-            score -= 90
-          end
-        end
-      end
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "025"   # Increase user's Attack, Defense and accuracy by 1 stage each
-      if @user.statStageAtMax?(PBStats::ATTACK) &&
-         @user.statStageAtMax?(PBStats::DEFENSE) &&
-         @user.statStageAtMax?(PBStats::ACCURACY)
-        score -= 90
-      else
-        score -= @user.stages[PBStats::ATTACK]*10
-        score -= @user.stages[PBStats::DEFENSE]*10
-        score -= @user.stages[PBStats::ACCURACY]*10
-        if skill_check(AILevel.medium)
-          hasPhysicalAttack = false
-          @user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
-            hasPhysicalAttack = true
-            break
-          end
-          if hasPhysicalAttack
-            score += 20
-          elsif skill_check(AILevel.high)
-            score -= 90
-          end
-        end
-      end
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "026"   # Increase user's Attack and Speed by 1 stage each
-      score += 40 if @user.turnCount==0   # Dragon Dance tends to be popular
-      if @user.statStageAtMax?(PBStats::ATTACK) &&
-         @user.statStageAtMax?(PBStats::SPEED)
-        score -= 90
-      else
-        score -= @user.stages[PBStats::ATTACK]*10
-        score -= @user.stages[PBStats::SPEED]*10
-        if skill_check(AILevel.medium)
-          hasPhysicalAttack = false
-          @user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
-            hasPhysicalAttack = true
-            break
-          end
-          if hasPhysicalAttack
-            score += 20
-          elsif skill_check(AILevel.high)
-            score -= 90
-          end
-        end
-        if skill_check(AILevel.high)
-          aspeed = pbRoughStat(@user,PBStats::SPEED)
-          ospeed = pbRoughStat(@target,PBStats::SPEED)
-          score += 20 if aspeed<ospeed && aspeed*2>ospeed
-        end
-      end
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "027"   # Increase user's Attack and Special Attack by 1 stage each
+      score = get_score_for_user_stat_raise(score)
+    #---------------------------------------------------------------------------
+    when "028"   # Increase user's Attack and Special Attack by 1 stage each (2 in sun)
       if @user.statStageAtMax?(PBStats::ATTACK) &&
          @user.statStageAtMax?(PBStats::SPATK)
         score -= 90
@@ -1796,31 +1334,9 @@ class PokeBattle_AI
             score -= 90
           end
         end
+        score += 20 if @battle.pbWeather==PBWeather::Sun ||
+                       @battle.pbWeather==PBWeather::HarshSun
       end
-      #---------------------------------------------------------------------------
-      when "028"   # Increase user's Attack and Special Attack by 1 stage each (2 in sun)
-        if @user.statStageAtMax?(PBStats::ATTACK) &&
-           @user.statStageAtMax?(PBStats::SPATK)
-          score -= 90
-        else
-          score -= @user.stages[PBStats::ATTACK]*10
-          score -= @user.stages[PBStats::SPATK]*10
-          if skill_check(AILevel.medium)
-            hasDamagingAttack = false
-            @user.eachMove do |m|
-              next if !m.damagingMove?
-              hasDamagingAttack = true
-              break
-            end
-            if hasDamagingAttack
-              score += 20
-            elsif skill_check(AILevel.high)
-              score -= 90
-            end
-          end
-          score += 20 if @battle.pbWeather==PBWeather::Sun ||
-                         @battle.pbWeather==PBWeather::HarshSun
-        end
     #---------------------------------------------------------------------------
     when "029"   # Increase user's Attack and accuracy by 1 stage each
       if @user.statStageAtMax?(PBStats::ATTACK) &&
