@@ -1,4 +1,4 @@
-class PokeBattle_AI
+<<<class PokeBattle_AI
   #=============================================================================
   # Main move-choosing method (moves with higher scores are more likely to be
   # chosen)
@@ -63,10 +63,8 @@ class PokeBattle_AI
         next if !@battle.pbCanChooseMove?(@user.index, i, false)
         choices.push([i, 100, -1])   # Move index, score, target
       end
-      if choices.length == 0   # No moves are physically possible to use
-        @user.eachMoveWithIndex do |_m, i|
-          choices.push([i, 100, -1])   # Move index, score, target
-        end
+      if choices.length == 0   # No moves are physically possible to use; use Struggle
+        @battle.pbAutoChooseMove(@user.index)
       end
     end
 
