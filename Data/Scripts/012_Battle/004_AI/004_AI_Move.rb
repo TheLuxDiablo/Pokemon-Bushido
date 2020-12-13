@@ -326,11 +326,7 @@
         #       very effective against Dragon.
         unpreferred_types = [:NORMAL, :FIGHTING, :POISON, :GROUND, :GHOST,
                              :FIRE, :WATER, :GRASS, :ELECTRIC, :PSYCHIC, :DRAGON]
-        unpreferred_types.each do |type|
-          next if !isConst?(move_type, PBTypes, type)
-          score *= 0.95
-          break
-        end
+        score *= 0.95 if unpreferred_types.include?(move_type)
         # Don't prefer moves with lower accuracy
         score *= @move.accuracy / 100.0 if @move.accuracy > 0
         # Don't prefer moves with low PP
@@ -358,8 +354,7 @@
 
       # If target is frozen, don't prefer moves that could thaw them
       if @target.status == PBStatuses::FROZEN
-        if isConst?(pbRoughType(@move), PBTypes, :FIRE) ||
-           (NEWEST_BATTLE_MECHANICS && @move.thawsUser?)
+        if pbRoughType(@move) == :FIRE || (NEWEST_BATTLE_MECHANICS && @move.thawsUser?)
           score *= 0.1
         end
       end

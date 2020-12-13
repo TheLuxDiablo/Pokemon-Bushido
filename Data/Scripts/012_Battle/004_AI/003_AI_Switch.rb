@@ -10,7 +10,7 @@ class PokeBattle_AI
     return false if @wildBattler
     shouldSwitch = forceSwitch
     batonPass = -1
-    moveType = -1
+    moveType = nil
     # If Pokémon is within 6 levels of the foe, and foe's last move was
     # super-effective and powerful
     if !shouldSwitch && @user.turnCount > 0 && skill_check(AILevel.high)
@@ -108,7 +108,7 @@ class PokeBattle_AI
         if moveType && PBTypeEffectiveness.ineffective?(pbCalcTypeMod(moveType,@user,@user))
           weight = 65
           typeMod = pbCalcTypeModPokemon(pkmn,@user.pbDirectOpposing(true))
-          if PBTypeEffectiveness.superEffective?(typeMod.to_f / PBTypeEffectivenesss::NORMAL_EFFECTIVE)
+          if PBTypeEffectiveness.superEffective?(typeMod)
             # Greater weight if new Pokemon's type is effective against target
             weight = 85
           end
@@ -116,7 +116,7 @@ class PokeBattle_AI
         elsif moveType && PBTypeEffectiveness.resistant?(pbCalcTypeMod(moveType,@user,@user))
           weight = 40
           typeMod = pbCalcTypeModPokemon(pkmn,@user.pbDirectOpposing(true))
-          if PBTypeEffectiveness.superEffective?(typeMod.to_f / PBTypeEffectivenesss::NORMAL_EFFECTIVE)
+          if PBTypeEffectiveness.superEffective?(typeMod)
             # Greater weight if new Pokemon's type is effective against target
             weight = 60
           end

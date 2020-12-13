@@ -456,7 +456,7 @@ class PokeBattle_AI
       else
         lastMoveData = GameData::Move.get(@target.lastRegularMoveUsed)
         if moveBlacklist.include?(lastMoveData.function_code) ||
-           isConst?(lastMoveData.type, PBTypes, :SHADOW)
+           lastMoveData.type == :SHADOW
           score -= 90
         end
         @user.eachMove do |m|
@@ -477,7 +477,7 @@ class PokeBattle_AI
       else
         lastMoveData = GameData::Move.get(@target.lastRegularMoveUsed)
         if moveBlacklist.include?(lastMoveData.function_code) ||
-           isConst?(lastMoveData.type, PBTypes, :SHADOW)
+           lastMoveData.type == :SHADOW
           score -= 90
         end
         @user.eachMove do |m|
@@ -508,21 +508,20 @@ class PokeBattle_AI
          PBTypes.isPseudoType?(GameData::Move.get(@target.lastMoveUsed).type)
         score -= 90
       else
-        aType = -1
+        aType = nil
         @target.eachMove do |m|
           next if m.id!=@target.lastMoveUsed
           aType = m.pbCalcType(@user)
           break
         end
-        if aType<0
-          score -= 90
-        else
+        if aType
           types = []
-          for i in 0..PBTypes.maxValue
-            next if @user.pbHasType?(i)
-            types.push(i) if PBTypes.resistant?(aType,i)
+          GameData::Type.each do |t|
+            types.push(t.id) if !@user.pbHasType?(t.id) && PBTypes.resistant?(aType, t.id)
           end
           score -= 90 if types.length==0
+        else
+          score -= 90
         end
       end
     #---------------------------------------------------------------------------

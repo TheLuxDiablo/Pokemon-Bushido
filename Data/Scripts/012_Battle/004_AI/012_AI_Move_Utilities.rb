@@ -35,30 +35,29 @@ class PokeBattle_AI
     end
     # Foresight
     if user.hasActiveAbility?(:SCRAPPY) || target.effects[PBEffects::Foresight]
-      ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:GHOST) &&
+      ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if defType == :GHOST &&
                                                          PBTypes.ineffective?(moveType,defType)
     end
     # Miracle Eye
     if target.effects[PBEffects::MiracleEye]
-      ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:DARK) &&
+      ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if defType == :DARK &&
                                                          PBTypes.ineffective?(moveType,defType)
     end
     # Delta Stream's weather
     if @battle.pbWeather==PBWeather::StrongWinds
-      ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:FLYING) &&
+      ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if defType == :FLYING &&
                                                          PBTypes.superEffective?(moveType,defType)
     end
     # Grounded Flying-type Pokémon become susceptible to Ground moves
     if !target.airborne?
-      ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:FLYING) &&
-                                                         isConst?(moveType,PBTypes,:GROUND)
+      ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if defType == :FLYING && moveType == :GROUND
     end
     return ret
   end
 
   def pbCalcTypeMod(moveType,user,target)
-    return PBTypeEffectiveness::NORMAL_EFFECTIVE if moveType<0
-    return PBTypeEffectiveness::NORMAL_EFFECTIVE if isConst?(moveType,PBTypes,:GROUND) &&
+    return PBTypeEffectiveness::NORMAL_EFFECTIVE if !moveType
+    return PBTypeEffectiveness::NORMAL_EFFECTIVE if moveType == :GROUND &&
        target.pbHasType?(:FLYING) && target.hasActiveItem?(:IRONBALL)
     # Determine types
     tTypes = target.pbTypes(true)
@@ -90,23 +89,24 @@ class PokeBattle_AI
     move_type = pbRoughType(move)
     typeMod = pbCalcTypeMod(move_type, @user, target)
     # Type effectiveness
-    return true if PBTypes.ineffective?(typeMod)
+    return true if PBTypeEffectiveness.ineffective?(typeMod)
     # Immunity due to ability/item/other effects
     if skill_check(AILevel.medium)
-      if isConst?(move_type, PBTypes,:GROUND)
+      case move_type
+      when :GROUND
         # TODO: Split target.airborne? into separate parts to allow different
         #       skill levels to apply to each part.
         return true if target.airborne? && !move.hitsFlyingTargets?
-      elsif isConst?(move_type, PBTypes,:FIRE)
+      when :FIRE
         return true if target.hasActiveAbility?(:FLASHFIRE)
-      elsif isConst?(move_type, PBTypes,:WATER)
+      when :WATER
         return true if target.hasActiveAbility?([:DRYSKIN, :STORMDRAIN, :WATERABSORB])
-      elsif isConst?(move_type, PBTypes,:GRASS)
+      when :GRASS
         return true if target.hasActiveAbility?(:SAPSIPPER)
-      elsif isConst?(move_type, PBTypes,:ELECTRIC)
+      when :ELECTRIC
         return true if target.hasActiveAbility?([:LIGHTNINGROD, :MOTORDRIVE, :VOLTABSORB])
       end
-      return true if PBTypes.notVeryEffective?(typeMod) &&
+      return true if PBTypeEffectiveness.notVeryEffective?(typeMod) &&
                      target.hasActiveAbility?(:WONDERGUARD)
       return true if move.damagingMove? && @user.index != target.index && !target.opposes?(@user) &&
                      target.hasActiveAbility?(:TELEPATHY)
@@ -252,15 +252,14 @@ class PokeBattle_AI
         baseDmg = move.pbBaseDamage(baseDmg, @user, target)
       end
     when "144"   # Flying Press
-      type = getConst(PBTypes, :FLYING) || -1
-      if type >= 0
+      if GameData::Type.exists?(:FLYING)
         if skill_check(AILevel.high)
           targetTypes = target.pbTypes(true)
-          mult = PBTypes.getCombinedEffectiveness(type,
+          mult = PBTypes.getCombinedEffectiveness(:FLYING,
              targetTypes[0], targetTypes[1], targetTypes[2])
           baseDmg = (baseDmg.to_f * mult / PBTypeEffectiveness::NORMAL_EFFECTIVE).round
         else
-          mult = PBTypes.getCombinedEffectiveness(type,
+          mult = PBTypes.getCombinedEffectiveness(:FLYING,
              target.type1, target.type2, target.effects[PBEffects::Type3])
           baseDmg = (baseDmg.to_f * mult / PBTypeEffectiveness::NORMAL_EFFECTIVE).round
         end
@@ -368,8 +367,8 @@ class PokeBattle_AI
 
     # Global abilities
     if skill_check(AILevel.medium)
-      if (@battle.pbCheckGlobalAbility(:DARKAURA) && isConst?(type,PBTypes,:DARK)) ||
-         (@battle.pbCheckGlobalAbility(:FAIRYAURA) && isConst?(type,PBTypes,:FAIRY))
+      if (@battle.pbCheckGlobalAbility(:DARKAURA) && type == :DARK) ||
+         (@battle.pbCheckGlobalAbility(:FAIRYAURA) && type == :FAIRY)
         if @battle.pbCheckGlobalAbility(:AURABREAK)
           multipliers[BASE_DMG_MULT] *= 2.0 / 3
         else
@@ -390,14 +389,14 @@ class PokeBattle_AI
 
     # Charge
     if skill_check(AILevel.medium)
-      if @user.effects[PBEffects::Charge]>0 && isConst?(type,PBTypes,:ELECTRIC)
+      if @user.effects[PBEffects::Charge]>0 && type == :ELECTRIC
         multipliers[BASE_DMG_MULT] *= 2
       end
     end
 
     # Mud Sport and Water Sport
     if skill_check(AILevel.medium)
-      if isConst?(type,PBTypes,:ELECTRIC)
+      if type == :ELECTRIC
         @battle.eachBattler do |b|
           next if !b.effects[PBEffects::MudSport]
           multipliers[BASE_DMG_MULT] /= 3
@@ -407,7 +406,7 @@ class PokeBattle_AI
           multipliers[BASE_DMG_MULT] /= 3
         end
       end
-      if isConst?(type,PBTypes,:FIRE)
+      if type == :FIRE
         @battle.eachBattler do |b|
           next if !b.effects[PBEffects::WaterSport]
           multipliers[BASE_DMG_MULT] /= 3
@@ -423,21 +422,15 @@ class PokeBattle_AI
     if @user.affectedByTerrain? && skill_check(AILevel.medium)
       case @battle.field.terrain
       when PBBattleTerrains::Electric
-        if isConst?(type,PBTypes,:ELECTRIC)
-          multipliers[BASE_DMG_MULT] *= 1.5
-        end
+        multipliers[BASE_DMG_MULT] *= 1.5 if type == :ELECTRIC
       when PBBattleTerrains::Grassy
-        if isConst?(type,PBTypes,:GRASS)
-          multipliers[BASE_DMG_MULT] *= 1.5
-        end
+        multipliers[BASE_DMG_MULT] *= 1.5 if type == :GRASS
       when PBBattleTerrains::Psychic
-        if isConst?(type,PBTypes,:PSYCHIC)
-          multipliers[BASE_DMG_MULT] *= 1.5
-        end
+        multipliers[BASE_DMG_MULT] *= 1.5 if type == :PSYCHIC
       end
     end
     if target.affectedByTerrain? && skill_check(AILevel.medium)
-      if @battle.field.terrain==PBBattleTerrains::Misty && isConst?(type,PBTypes,:DRAGON)
+      if @battle.field.terrain==PBBattleTerrains::Misty && type == :DRAGON
         multipliers[BASE_DMG_MULT] /= 2
       end
     end
@@ -468,15 +461,15 @@ class PokeBattle_AI
     if skill_check(AILevel.medium)
       case @battle.pbWeather
       when PBWeather::Sun, PBWeather::HarshSun
-        if isConst?(type,PBTypes,:FIRE)
+        if type == :FIRE
           multipliers[FINAL_DMG_MULT] *= 1.5
-        elsif isConst?(type,PBTypes,:WATER)
+        elsif type == :WATER
           multipliers[FINAL_DMG_MULT] /= 2
         end
       when PBWeather::Rain, PBWeather::HeavyRain
-        if isConst?(type,PBTypes,:FIRE)
+        if type == :FIRE
           multipliers[FINAL_DMG_MULT] /= 2
-        elsif isConst?(type,PBTypes,:WATER)
+        elsif type == :WATER
           multipliers[FINAL_DMG_MULT] *= 1.5
         end
       when PBWeather::Sandstorm
@@ -492,7 +485,7 @@ class PokeBattle_AI
 
     # STAB
     if skill_check(AILevel.medium)
-      if type>=0 && @user.pbHasType?(type)
+      if type && @user.pbHasType?(type)
         if @user.hasActiveAbility?(:ADAPTABILITY)
           multipliers[FINAL_DMG_MULT] *= 2
         else
@@ -597,7 +590,7 @@ class PokeBattle_AI
     return 99 if @user.effects[PBEffects::LaserFocus] > 0
     crit_stage += 1 if move.highCriticalRate?
     crit_stage += @user.effects[PBEffects::FocusEnergy]
-    crit_stage += 1 if @user.inHyperMode? && isConst?(move.type, PBTypes, :SHADOW)
+    crit_stage += 1 if @user.inHyperMode? && move.type == :SHADOW
     crit_stage = [crit_stage, PokeBattle_Move::CRITICAL_HIT_RATIOS.length - 1].min
     return crit_stage
   end

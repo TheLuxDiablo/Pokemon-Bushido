@@ -16,8 +16,7 @@ class PokeBattle_AI
         score -= 90
       else
         @user.eachMove do |m|
-          next if !m.damagingMove? || !isConst?(m.type,PBTypes,:WATER)
-          score += 20
+          score += 20 if m.damagingMove? && m.type == :WATER
         end
       end
     #---------------------------------------------------------------------------

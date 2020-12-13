@@ -267,7 +267,7 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "007", "0C5"   # Paralyse the target
       return 0 if @move.id == :THUNDERWAVE &&
-                  PBTypes.ineffective?(pbCalcTypeMod(@move.type, @user, @target))
+                  PBTypeEffectiveness.ineffective?(pbCalcTypeMod(@move.type, @user, @target))
 
       if @target.pbCanParalyze?(@user, false)
         mini_score = 1.0
@@ -1202,7 +1202,7 @@ class PokeBattle_AI
       # Prefer if user knows any damaging Electric-type moves and isn't charged
       if @user.effects[PBEffects::Charge] == 0
         score *= 1.5 if check_for_move(@user) do |move|
-          next move.damagingMove? && isConst?(move.type, PBTypes, :ELECTRIC)
+          next move.damagingMove? && move.type == :ELECTRIC
         end
       end
     #---------------------------------------------------------------------------

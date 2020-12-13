@@ -211,7 +211,7 @@ class PokeBattle_AI
             score += 60
           elsif moveData.category != 2 &&   # Damaging move
              moveData.target == PBTargets::NearOther &&
-             PBTypes.ineffective?(pbCalcTypeMod(moveData.type, @target, @user))
+             PBTypeEffectiveness.ineffective?(pbCalcTypeMod(moveData.type, @target, @user))
             score += 60
           end
         end
