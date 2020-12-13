@@ -311,7 +311,7 @@ module Compiler
       end
       return enumer.const_get(ret.to_sym)
     elsif enumer.is_a?(Symbol) || enumer.is_a?(String)
-      if [:Ability, :Item, :Move].include?(enumer)
+      if GameData.const_defined?(enumer.to_sym)
         enumer = GameData.const_get(enumer.to_sym)
         begin
           if ret == "" || !enumer.exists?(ret.to_sym)
@@ -322,7 +322,6 @@ module Compiler
         end
         return ret.to_sym
       end
-
       enumer = Object.const_get(enumer.to_sym)
       begin
         if ret=="" || !enumer.const_defined?(ret)
@@ -353,12 +352,11 @@ module Compiler
       return nil if ret=="" || !(enumer.const_defined?(ret) rescue false)
       return enumer.const_get(ret.to_sym)
     elsif enumer.is_a?(Symbol) || enumer.is_a?(String)
-      if [:Ability, :Item, :Move].include?(enumer)
+      if GameData.const_defined?(enumer.to_sym)
         enumer = GameData.const_get(enumer.to_sym)
         return nil if ret == "" || !enumer.exists?(ret.to_sym)
         return ret.to_sym
       end
-
       enumer = Object.const_get(enumer.to_sym)
       return nil if ret=="" || !(enumer.const_defined?(ret) rescue false)
       return enumer.const_get(ret.to_sym)
@@ -564,13 +562,13 @@ module Compiler
 
   def parseItem(item)
     clonitem = item.upcase
-    clonitem.sub!(/^\s*/,"")
-    clonitem.sub!(/\s*$/,"")
+    clonitem.sub!(/^\s*/, "")
+    clonitem.sub!(/\s*$/, "")
     itm = GameData::Item.try_get(clonitem)
     if !itm
-      raise _INTL("Undefined item constant name: %s\r\nName must consist only of letters, numbers and\r\nunderscores, and can't begin with a number.\r\nMake sure the item is defined in\r\nPBS/items.txt.\r\n{1}", item, FileLineData.linereport)
+      raise _INTL("Undefined item constant name: {1}\r\nName must consist only of letters, numbers and\r\nunderscores, and can't begin with a number.\r\nMake sure the item is defined in\r\nPBS/items.txt.\r\n{2}", item, FileLineData.linereport)
     end
-    return itm.id.to_s
+    return itm.id
   end
 
   def parseSpecies(item)
@@ -589,9 +587,9 @@ module Compiler
     mov = GameData::Move.try_get(clonmove)
     if !mov
       return nil if skip_unknown
-      raise _INTL("Undefined move constant name: %s\r\nName must consist only of letters, numbers and\r\nunderscores, and can't begin with a number.\r\nMake sure the move is defined in\r\nPBS/moves.txt.\r\n{1}", move, FileLineData.linereport)
+      raise _INTL("Undefined move constant name: {1}\r\nName must consist only of letters, numbers and\r\nunderscores, and can't begin with a number.\r\nMake sure the move is defined in\r\nPBS/moves.txt.\r\n{2}", move, FileLineData.linereport)
     end
-    return mov.id.to_s
+    return mov.id
   end
 
   # Unused
@@ -603,11 +601,15 @@ module Compiler
   end
 
   # Unused
-  def parseTrainer(item)
-    clonitem = item.clone
-    clonitem.sub!(/^\s*/,"")
-    clonitem.sub!(/\s*$/,"")
-    return pbGetConst(PBTrainers,clonitem,_INTL("Undefined Trainer constant name: %s\r\nName must consist only of letters, numbers, and\r\nunderscores and can't begin with a number.\r\nIn addition, the name must be defined\r\nin trainertypes.txt.\r\n{1}",FileLineData.linereport))
+  def parseTrainer(type)
+    clontype = type.clone
+    clontype.sub!(/^\s*/, "")
+    clontype.sub!(/\s*$/, "")
+    typ = GameData::TrainerType.try_get(clontype)
+    if !typ
+      raise _INTL("Undefined Trainer type constant name: {1}\r\nName must consist only of letters, numbers and\r\nunderscores, and can't begin with a number.\r\nMake sure the trainer type is defined in\r\ntrainertypes.txt.\r\n{2}", type, FileLineData.linereport)
+    end
+    return typ.id
   end
 
   #=============================================================================
@@ -628,15 +630,15 @@ module Compiler
       yield(_INTL("Compiling ability data"))
       compile_abilities              # No dependencies
       yield(_INTL("Compiling move data"))
-      compile_moves                  # Depends on PBTypes
+      compile_moves                  # Depends on Type
       yield(_INTL("Compiling item data"))
       compile_items                  # Depends on Move
       yield(_INTL("Compiling berry plant data"))
       compile_berry_plants           # Depends on Item
       yield(_INTL("Compiling Pokémon data"))
-      compile_pokemon                # Depends on Move, Item, PBTypes, Ability
+      compile_pokemon                # Depends on Move, Item, Type, Ability
       yield(_INTL("Compiling Pokémon forms data"))
-      compile_pokemon_forms          # Depends on PBSpecies, Move, Item, PBTypes, Ability
+      compile_pokemon_forms          # Depends on PBSpecies, Move, Item, Type, Ability
       yield(_INTL("Compiling machine data"))
       compile_move_compatibilities   # Depends on PBSpecies, Move
       yield(_INTL("Compiling Trainer type data"))
@@ -644,11 +646,11 @@ module Compiler
       yield(_INTL("Compiling Trainer data"))
       compile_trainers               # Depends on PBSpecies, Item, Move
       yield(_INTL("Compiling phone data"))
-      compile_phone                  # Depends on PBTrainers
+      compile_phone
       yield(_INTL("Compiling metadata"))
-      compile_metadata               # Depends on PBTrainers
+      compile_metadata               # Depends on TrainerType
       yield(_INTL("Compiling battle Trainer data"))
-      compile_trainer_lists          # Depends on PBTrainers
+      compile_trainer_lists          # Depends on TrainerType
       yield(_INTL("Compiling encounter data"))
       compile_encounters             # Depends on PBSpecies
       yield(_INTL("Compiling shadow moveset data"))

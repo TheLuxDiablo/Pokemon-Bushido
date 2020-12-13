@@ -1,5 +1,3 @@
-class PBTrainers; end
-
 module Compiler
   module_function
 
@@ -193,7 +191,7 @@ module Compiler
       if line[/^\s*(\w+)\s*=\s*(.*)$/]   # Of the format XXX = YYY
         key   = $1
         value = $2
-        item_symbol = parseItem(key).to_sym
+        item_symbol = parseItem(key)
         item_number = GameData::Item.get(item_symbol).id_number
         line = pbGetCsvRecord(value, line_no, [0, "vuuv"])
         # Construct berry plant hash
@@ -256,123 +254,73 @@ module Compiler
   # Compile types
   #=============================================================================
   def compile_types
-    typechart  = []
-    types      = []
-    requiredtypes = {
-      "Name"          => [1, "s"],
-      "InternalName"  => [2, "s"],
-    }
-    optionaltypes = {
-      "IsPseudoType"  => [3, "b"],
-      "IsSpecialType" => [4, "b"],
-      "Weaknesses"    => [5, "*s"],
-      "Resistances"   => [6, "*s"],
-      "Immunities"    => [7, "*s"]
-    }
-    currentmap = -1
-    foundtypes = []
-    pbCompilerEachCommentedLine("PBS/types.txt") { |line,lineno|
-      if line[/^\s*\[\s*(\d+)\s*\]\s*$/]
-        sectionname = $~[1]
-        if currentmap>=0
-          for reqtype in requiredtypes.keys
-            if !foundtypes.include?(reqtype)
-              raise _INTL("Required value '{1}' not given in section [{2}].\r\n{3}",reqtype,currentmap,FileLineData.linereport)
+    GameData::Type::DATA.clear
+    type_names = []
+    # Read from PBS file
+    File.open("PBS/types.txt", "rb") { |f|
+      FileLineData.file = "PBS/types.txt"   # For error reporting
+      # Read a whole section's lines at once, then run through this code.
+      # contents is a hash containing all the XXX=YYY lines in that section, where
+      # the keys are the XXX and the values are the YYY (as unprocessed strings).
+      pbEachFileSection(f) { |contents, type_number|
+        schema = GameData::Type::SCHEMA
+        # Go through schema hash of compilable data and compile this section
+        for key in schema.keys
+          FileLineData.setSection(type_number, key, contents[key])   # For error reporting
+          # Skip empty properties, or raise an error if a required property is
+          # empty
+          if contents[key].nil?
+            if ["Name", "InternalName"].include?(key)
+              raise _INTL("The entry {1} is required in PBS/types.txt section {2}.", key, type_id)
             end
+            next
           end
-          foundtypes.clear
+          # Compile value for key
+          value = pbGetCsvRecord(contents[key], key, schema[key])
+          value = nil if value.is_a?(Array) && value.length == 0
+          contents[key] = value
+          # Ensure weaknesses/resistances/immunities are in arrays and are symbols
+          if value && ["Weaknesses", "Resistances", "Immunities"].include?(key)
+            contents[key] = [contents[key]] if !contents[key].is_a?(Array)
+            contents[key].map! { |x| x.to_sym }
+            contents[key].uniq!
+          end
         end
-        currentmap = sectionname.to_i
-        types[currentmap] = [currentmap,nil,nil,false,false,[],[],[]]
-      else
-        if currentmap<0
-          raise _INTL("Expected a section at the beginning of the file.\r\n{1}",FileLineData.linereport)
-        end
-        if !line[/^\s*(\w+)\s*=\s*(.*)$/]
-          raise _INTL("Bad line syntax (expected syntax like XXX=YYY).\r\n{1}",FileLineData.linereport)
-        end
-        matchData = $~
-        schema = nil
-        FileLineData.setSection(currentmap,matchData[1],matchData[2])
-        if requiredtypes.keys.include?(matchData[1])
-          schema = requiredtypes[matchData[1]]
-          foundtypes.push(matchData[1])
-        else
-          schema = optionaltypes[matchData[1]]
-        end
-        if schema
-          record = pbGetCsvRecord(matchData[2],lineno,schema)
-          types[currentmap][schema[0]] = record
-        end
-      end
+        # Construct type hash
+        type_symbol = contents["InternalName"].to_sym
+        type_hash = {
+          :id           => type_symbol,
+          :id_number    => type_number,
+          :name         => contents["Name"],
+          :pseudo_type  => contents["IsPseudoType"],
+          :special_type => contents["IsSpecialType"],
+          :weaknesses   => contents["Weaknesses"],
+          :resistances  => contents["Resistances"],
+          :immunities   => contents["Immunities"]
+        }
+        # Add type's data to records
+        GameData::Type::DATA[type_number] = GameData::Type::DATA[type_symbol] = GameData::Type.new(type_hash)
+        type_names[type_number] = type_hash[:name]
+      }
     }
-    types.compact!
-    maxValue = 0
-    for type in types; maxValue = [maxValue,type[0]].max; end
-    pseudotypes  = []
-    specialtypes = []
-    typenames    = []
-    typeinames   = []
-    typehash     = {}
-    for type in types
-      pseudotypes.push(type[0]) if type[3]
-      typenames[type[0]]  = type[1]
-      typeinames[type[0]] = type[2]
-      typehash[type[0]]   = type
-    end
-    for type in types
-      n = type[1]
-      for w in type[5]
-        if !typeinames.include?(w)
-          raise _INTL("'{1}' is not a defined type (PBS/types.txt, {2}, Weaknesses).",w,n)
-        end
+    # Ensure all weaknesses/resistances/immunities are valid types
+    GameData::Type.each do |type|
+      type.weaknesses.each do |other_type|
+        next if GameData::Type.exists?(other_type)
+        raise _INTL("'{1}' is not a defined type (PBS/types.txt, section {2}, Weaknesses).", other_type.to_s, type.id_number)
       end
-      for w in type[6]
-        if !typeinames.include?(w)
-          raise _INTL("'{1}' is not a defined type (PBS/types.txt, {2}, Resistances).",w,n)
-        end
+      type.resistances.each do |other_type|
+        next if GameData::Type.exists?(other_type)
+        raise _INTL("'{1}' is not a defined type (PBS/types.txt, section {2}, Resistances).", other_type.to_s, type.id_number)
       end
-      for w in type[7]
-        if !typeinames.include?(w)
-          raise _INTL("'{1}' is not a defined type (PBS/types.txt, {2}, Immunities).",w,n)
-        end
+      type.immunities.each do |other_type|
+        next if GameData::Type.exists?(other_type)
+        raise _INTL("'{1}' is not a defined type (PBS/types.txt, section {2}, Immunities).", other_type.to_s, type.id_number)
       end
     end
-    for i in 0..maxValue
-      pseudotypes.push(i) if !typehash[i]
-    end
-    pseudotypes.sort!
-    types.each { |type| specialtypes.push(type[0]) if type[4] }
-    specialtypes.sort!
-    count = maxValue+1
-    for i in 0...count
-      type = typehash[i]
-      j = 0; k = i
-      while j<count
-        typechart[k] = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE
-        atype = typehash[j]
-        if type && atype
-          typechart[k] = PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if type[5].include?(atype[2])   # weakness
-          typechart[k] = PBTypeEffectiveness::NOT_EFFECTIVE_ONE if type[6].include?(atype[2])     # resistance
-          typechart[k] = PBTypeEffectiveness::INEFFECTIVE if type[7].include?(atype[2])           # immune
-        end
-        j += 1; k += count
-      end
-    end
-    MessageTypes.setMessages(MessageTypes::Types,typenames)
-    code = "class PBTypes\r\n"
-    for type in types
-      code += "#{type[2]}=#{type[0]}\r\n"
-    end
-    code += "def self.getName(id)\r\n"
-    code += "id=getID(PBTypes,id)\r\n"
-    code += "return pbGetMessage(MessageTypes::Types,id); end\r\n"
-    code += "def self.getCount; return #{types.length}; end\r\n"
-    code += "def self.maxValue; return #{maxValue}; end\r\n"
-    code += "end\r\n"
-    eval(code, TOPLEVEL_BINDING)
-    save_data([pseudotypes,specialtypes,typechart],"Data/types.dat")
-    pbAddScript(code,"PBTypes")
+    # Save all data
+    GameData::Type.save
+    MessageTypes.setMessages(MessageTypes::Types, type_names)
     Graphics.update
   end
 
@@ -515,7 +463,7 @@ module Compiler
     # Read each line of moves.txt at a time and compile it into an move
     pbCompilerEachPreppedLine("PBS/moves.txt") { |line, line_no|
       line = pbGetCsvRecord(line, line_no, [0, "vnssueeuuuyiss",
-         nil, nil, nil, nil, nil, PBTypes, ["Physical", "Special", "Status"],
+         nil, nil, nil, nil, nil, :Type, ["Physical", "Special", "Status"],
          nil, nil, nil, PBTargets, nil, nil, nil
       ])
       move_number = line[0]
@@ -1044,7 +992,7 @@ module Compiler
   def compile_move_compatibilities
     lineno = 1
     havesection = false
-    sectionname = nil
+    move_id = nil
     sections    = {}
     if safeExists?("PBS/tm.txt")
       f = File.open("PBS/tm.txt","rb")
@@ -1056,21 +1004,21 @@ module Compiler
         FileLineData.setLine(line,lineno)
         if !line[/^\#/] && !line[/^\s*$/]
           if line[/^\s*\[\s*(.*)\s*\]\s*$/]
-            sectionname = parseMove($~[1])
-            if sections[sectionname]
-              raise _INTL("TM section [{1}] is defined twice.\r\n{2}",sectionname,FileLineData.linereport)
+            move_id = parseMove($~[1])
+            if sections[move_id]
+              raise _INTL("TM section [{1}] is defined twice.\r\n{2}",move_id.to_s,FileLineData.linereport)
             end
-            sections[sectionname] = []
+            sections[move_id] = []
             havesection = true
           else
-            if sectionname==nil
+            if !move_id
               raise _INTL("Expected a section at the beginning of the file. This error may also occur if the file was not saved in UTF-8.\r\n{1}",
                  FileLineData.linereport)
             end
             specieslist = line.sub(/\s+$/,"").split(",")
             for species in specieslist
               next if !species || species==""
-              sec = sections[sectionname]
+              sec = sections[move_id]
               sec[sec.length] = parseSpecies(species)
             end
           end
@@ -1220,42 +1168,45 @@ module Compiler
   # Compile trainer types
   #=============================================================================
   def compile_trainer_types
-    records = []
-    trainernames = []
-    maxValue = 0
-    pbCompilerEachPreppedLine("PBS/trainertypes.txt") { |line,lineno|
-      record=pbGetCsvRecord(line,lineno,[0,"unsUSSSeUS",   # ID can be 0
-         nil,nil,nil,nil,nil,nil,nil,{
-         "" => 2,
-         "Male" => 0,"M" => 0,"0" => 0,
-         "Female" => 1,"F" => 1,"1" => 1,
-         "Mixed" => 2,"X" => 2,"2" => 2
-         },nil,nil]
+    GameData::TrainerType::DATA.clear
+    tr_type_names = []
+    # Read each line of trainertypes.txt at a time and compile it into a trainer type
+    pbCompilerEachCommentedLine("PBS/trainertypes.txt") { |line, line_no|
+      line = pbGetCsvRecord(line, line_no, [0, "unsUSSSeUS",
+        nil, nil, nil, nil, nil, nil, nil, {
+        "Male"   => 0, "M" => 0, "0" => 0,
+        "Female" => 1, "F" => 1, "1" => 1,
+        "Mixed"  => 2, "X" => 2, "2" => 2, "" => 2
+        }, nil, nil]
       )
-      if records[record[0]]
-        raise _INTL("Two trainer types ({1} and {2}) have the same ID ({3}), which is not allowed.\r\n{4}",
-           records[record[0]][1],record[1],record[0],FileLineData.linereport)
+      type_number = line[0]
+      type_symbol = line[1].to_sym
+      if GameData::TrainerType::DATA[type_number]
+        raise _INTL("Trainer type ID number '{1}' is used twice.\r\n{2}", type_number, FileLineData.linereport)
+      elsif GameData::TrainerType::DATA[type_symbol]
+        raise _INTL("Trainer type ID '{1}' is used twice.\r\n{2}", type_symbol, FileLineData.linereport)
       end
-      trainernames[record[0]] = record[2]
-      records[record[0]]      = record
-      maxValue = [maxValue,record[0]].max
+      # Construct trainer type hash
+      type_hash = {
+        :id_number   => type_number,
+        :id          => type_symbol,
+        :name        => line[2],
+        :base_money  => line[3],
+        :battle_BGM  => line[4],
+        :victory_ME  => line[5],
+        :intro_ME    => line[6],
+        :gender      => line[7],
+        :skill_level => line[8],
+        :skill_code  => line[9]
+      }
+      # Add trainer type's data to records
+      GameData::TrainerType::DATA[type_number] = GameData::TrainerType::DATA[type_symbol] = GameData::TrainerType.new(type_hash)
+      tr_type_names[type_number] = type_hash[:name]
     }
-    count = records.compact.length
-    MessageTypes.setMessages(MessageTypes::TrainerTypes,trainernames)
-    code = "class PBTrainers\r\n"
-    for rec in records
-      next if !rec
-      code += "#{rec[1]}=#{rec[0]}\r\n"
-    end
-    code += "def self.getName(id)\r\n"
-    code += "id=getID(PBTrainers,id)\r\n"
-    code += "return pbGetMessage(MessageTypes::TrainerTypes,id); end\r\n"
-    code += "def self.getCount; return #{count}; end\r\n"
-    code += "def self.maxValue; return #{maxValue}; end\r\n"
-    code += "end\r\n"
-    eval(code, TOPLEVEL_BINDING)
-    pbAddScript(code,"PBTrainers")
-    save_data(records,"Data/trainer_types.dat")
+    # Save all data
+    GameData::TrainerType.save
+    MessageTypes.setMessages(MessageTypes::TrainerTypes, tr_type_names)
+    Graphics.update
   end
 
   #=============================================================================
@@ -1280,7 +1231,7 @@ module Compiler
         if pokemonindex==-1
           raise _INTL("Started new trainer while previous trainer has no Pokémon.\r\n{1}",FileLineData.linereport)
         end
-        section = pbGetCsvRecord($~[1],lineno,[0,"esU",PBTrainers])
+        section = pbGetCsvRecord($~[1],lineno,[0,"esU",:TrainerType])
         trainerindex += 1
         trainertype = section[0]
         trainername = section[1]
@@ -1378,7 +1329,7 @@ module Compiler
         oldcompilerline += 1
         case oldcompilerline
         when 1   # Trainer type
-          record = pbGetCsvRecord(line,lineno,[0,"e",PBTrainers])
+          record = pbGetCsvRecord(line,lineno,[0,"e",:TrainerType])
           trainers[trainerindex][0] = record
         when 2   # Trainer name, version number
           record = pbGetCsvRecord(line,lineno,[0,"sU"])
@@ -1462,7 +1413,7 @@ module Compiler
   def compile_battle_tower_trainers(filename)
     sections = []
     requiredtypes = {
-       "Type"          => [0, "e",PBTrainers],
+       "Type"          => [0, "e", :TrainerType],
        "Name"          => [1, "s"],
        "BeginSpeech"   => [2, "s"],
        "EndSpeechWin"  => [3, "s"],

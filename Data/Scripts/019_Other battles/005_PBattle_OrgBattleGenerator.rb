@@ -25,10 +25,10 @@ def addMove(moves,move,base)
      [:REFLECT, :LIGHTSCREEN, :SAFEGUARD, :SUBSTITUTE, :FAKEOUT].include?(data.id)
     count=base+2
   end
-  if data.base_damage>=80 && isConst?(data.type,PBTypes,:NORMAL)
+  if data.base_damage >= 80 && data.type == :NORMAL
     count=base+5
   end
-  if data.base_damage>=80 && isConst?(data.type,PBTypes,:NORMAL)
+  if data.base_damage >= 80 && data.type == :NORMAL
     count=base+3
   end
   if [:PROTECT, :DETECT, :TOXIC, :AERIALACE, :WILLOWISP, :SPORE, :THUNDERWAVE,
@@ -423,7 +423,7 @@ def pbRandomPokemonFromRule(rule,trainer)
           d=GameData::Move.get(move)
           totalbasedamage+=d.base_damage
           if d.base_damage>=1
-            hasNormal=true if isConst?(d.type,PBTypes,:NORMAL)
+            hasNormal=true if d.type == :NORMAL
             hasPhysical=true if d.category==0
             hasSpecial=true if d.category==1
           end
@@ -461,9 +461,7 @@ def pbRandomPokemonFromRule(rule,trainer)
     if item == :BLACKSLUDGE
       type1 = pbGetSpeciesData(species,0,SpeciesData::TYPE1)
       type2 = pbGetSpeciesData(species,0,SpeciesData::TYPE2) || type1
-      if !isConst?(type1,PBTypes,:POISON) && !isConst?(type2,PBTypes,:POISON)
-        item = :LEFTOVERS
-      end
+      item = :LEFTOVERS if type1 != :POISON && type2 != :POISON
     end
     if item == :HEATROCK && !moves.any? { |m| m == :SUNNYDAY }
       item = :LEFTOVERS
@@ -789,26 +787,26 @@ end
 
 
 
-def pbDecideWinnerEffectiveness(move,otype1,otype2,ability,scores)
-  data=GameData::Move.get(move)
-  return 0 if data.base_damage==0
-  atype=data.type
-  typemod=PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE*PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE
-  if ability != :LEVITATE || !isConst?(data.type,PBTypes,:GROUND)
-    mod1=PBTypes.getEffectiveness(atype,otype1)
-    mod2=(otype1==otype2) ? PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE : PBTypes.getEffectiveness(atype,otype2)
+def pbDecideWinnerEffectiveness(move, otype1, otype2, ability, scores)
+  data = GameData::Move.get(move)
+  return 0 if data.base_damage == 0
+  atype = data.type
+  typemod = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE * PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE
+  if ability != :LEVITATE || data.type != :GROUND
+    mod1 = PBTypes.getEffectiveness(atype, otype1)
+    mod2 = (otype1 == otype2) ? PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE : PBTypes.getEffectiveness(atype, otype2)
     if ability == :WONDERGUARD
-      mod1=PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if !PBTypes.superEffective?(mod1)
-      mod2=PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if !PBTypes.superEffective?(mod2)
+      mod1 = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if mod1 <= PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE
+      mod2 = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if mod2 <= PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE
     end
-    typemod=mod1*mod2
+    typemod = mod1 * mod2
   end
-  return scores[0] if typemod==0    # Ineffective
-  return scores[1] if typemod==1    # Doubly not very effective
-  return scores[2] if typemod==2    # Not very effective
-  return scores[3] if typemod==4    # Normal effective
-  return scores[4] if typemod==8    # Super effective
-  return scores[5] if typemod==16   # Doubly super effective
+  return scores[0] if typemod == 0    # Ineffective
+  return scores[1] if typemod == 1    # Doubly not very effective
+  return scores[2] if typemod == 2    # Not very effective
+  return scores[3] if typemod == 4    # Normal effective
+  return scores[4] if typemod == 8    # Super effective
+  return scores[5] if typemod == 16   # Doubly super effective
   return 0
 end
 
@@ -922,34 +920,30 @@ end
 def pbTrainerInfo(pokemonlist,trfile,rules)
   bttrainers=pbGetBTTrainers(trfile)
   btpokemon=pbGetBTPokemon(trfile)
-  trainertypes=pbLoadTrainerTypesData
   if bttrainers.length==0
     for i in 0...200
       yield(nil) if block_given? && i%50==0
       trainerid=0
-      money=30
-      loop do
-        trainerid=rand(PBTrainers.maxValue)+1
-        trainerid=getID(PBTrainers,:YOUNGSTER) if rand(30)==0
-        next if PBTrainers.getName(trainerid)==""
-        money=(!trainertypes[trainerid] ||
-               !trainertypes[trainerid][3]) ? 30 : trainertypes[trainerid][3]
-        next if money>=100
-        break
+      if GameData::TrainerType.exists?(:YOUNGSTER) && rand(30) == 0
+        trainerid = :YOUNGSTER
+      else
+        tr_type_values = GameData::TrainerType::DATA.values
+        loop do
+          tr_type_data = tr_type_values[rand(tr_type_values.length)]
+          next if tr_type_data.base_money >= 100
+          trainerid = tr_type_data.id
+        end
       end
-      gender=(!trainertypes[trainerid] ||
-              !trainertypes[trainerid][7]) ? 2 : trainertypes[trainerid][7]
+      gender = GameData::TrainerType.get(trainerid).gender
       randomName=getRandomNameEx(gender,nil,0,12)
       tr=[trainerid,randomName,_INTL("Here I come!"),
           _INTL("Yes, I won!"),_INTL("Man, I lost!"),[]]
       bttrainers.push(tr)
     end
-    bttrainers.sort! { |a,b|
-      money1=(!trainertypes[a[0]] ||
-              !trainertypes[a[0]][3]) ? 30 : trainertypes[a[0]][3]
-      money2=(!trainertypes[b[0]] ||
-              !trainertypes[b[0]][3]) ? 30 : trainertypes[b[0]][3]
-      money1==money2 ? a[0]<=>b[0] : money1<=>money2
+    bttrainers.sort! { |a, b|
+      money1 = GameData::TrainerType.get(a[0]).base_money
+      money2 = GameData::TrainerType.get(b[0]).base_money
+      (money1 == money2) ? a[0].to_s <=> b[0].to_s : money1 <=> money2
     }
   end
   yield(nil) if block_given?
@@ -968,9 +962,9 @@ def pbTrainerInfo(pokemonlist,trfile,rules)
     trainerdata=bttrainers[btt]
     pokemonnumbers=trainerdata[5] || []
     species=[]
-    types=[]
+    types={}
     #p trainerdata[1]
-    (PBTypes.maxValue+1).times { |typ| types[typ]=0 }
+    GameData::Type.each { |t| types[t.id] = 0 }
     for pn in pokemonnumbers
       pkmn=btpokemon[pn]
       species.push(pkmn.species)
@@ -979,18 +973,18 @@ def pbTrainerInfo(pokemonlist,trfile,rules)
     end
     species|=[] # remove duplicates
     count=0
-    (PBTypes.maxValue+1).times { |typ|
-      if types[typ]>=5
-        types[typ]/=4
-        types[typ]=10 if types[typ]>10
+    GameData::Type.each do |t|
+      if types[t.id] >= 5
+        types[t.id] /= 4
+        types[t.id] = 10 if types[t.id] > 10
       else
-        types[typ]=0
+        types[t.id] = 0
       end
-      count+=types[typ]
-    }
-    types[0]=1 if count==0
+      count += types[t.id]
+    end
+    types[:NORMAL] = 1 if count == 0
     if pokemonnumbers.length==0
-      (PBTypes.maxValue+1).times { |typ| types[typ]=1 }
+      GameData::Type.each { |t| types[t.id] = 1 }
     end
     numbers=[]
     if pokemonlist
