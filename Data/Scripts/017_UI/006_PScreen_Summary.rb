@@ -1,3 +1,6 @@
+#===============================================================================
+#
+#===============================================================================
 class MoveSelectionSprite < SpriteWrapper
   attr_reader :preselected
   attr_reader :index
@@ -52,8 +55,9 @@ class MoveSelectionSprite < SpriteWrapper
   end
 end
 
-
-
+#===============================================================================
+#
+#===============================================================================
 class RibbonSelectionSprite < MoveSelectionSprite
   def initialize(viewport=nil)
     super(viewport)
@@ -94,8 +98,9 @@ class RibbonSelectionSprite < MoveSelectionSprite
   end
 end
 
-
-
+#===============================================================================
+#
+#===============================================================================
 class PokemonSummary_Scene
   def pbUpdate
     pbUpdateSpriteHash(@sprites)
@@ -374,7 +379,7 @@ class PokemonSummary_Scene
     textpos = [
        [_INTL("Dex No."),238,80,0,base,shadow],
        [_INTL("Species"),238,112,0,base,shadow],
-       [PBSpecies.getName(@pokemon.species),435,112,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [@pokemon.speciesName,435,112,2,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("Type"),238,144,0,base,shadow],
        [_INTL("OT"),238,176,0,base,shadow],
        [_INTL("ID No."),238,208,0,base,shadow],
@@ -898,7 +903,7 @@ class PokemonSummary_Scene
     @sprites["pokemon"].setPokemonBitmap(@pokemon)
     @sprites["itemicon"].item = @pokemon.item_id
     pbSEStop
-    pbPlayCry(@pokemon)
+    GameData::Species.play_cry_from_pokemon(@pokemon)
   end
 
   def pbMoveSelection
@@ -1235,7 +1240,7 @@ class PokemonSummary_Scene
   end
 
   def pbScene
-    pbPlayCry(@pokemon)
+    GameData::Species.play_cry_from_pokemon(@pokemon)
     loop do
       Graphics.update
       Input.update
@@ -1243,7 +1248,7 @@ class PokemonSummary_Scene
       dorefresh = false
       if Input.trigger?(Input::A)
         pbSEStop
-        pbPlayCry(@pokemon)
+        GameData::Species.play_cry_from_pokemon(@pokemon)
       elsif Input.trigger?(Input::B)
         pbPlayCloseMenuSE
         break
@@ -1305,8 +1310,9 @@ class PokemonSummary_Scene
   end
 end
 
-
-
+#===============================================================================
+#
+#===============================================================================
 class PokemonSummaryScreen
   def initialize(scene,inbattle=false)
     @scene = scene
@@ -1345,4 +1351,24 @@ class PokemonSummaryScreen
     @scene.pbEndScene
     return ret
   end
+end
+
+#===============================================================================
+#
+#===============================================================================
+def pbChooseMove(pokemon,variableNumber,nameVarNumber)
+  return if !pokemon
+  ret = -1
+  pbFadeOutIn {
+    scene = PokemonSummary_Scene.new
+    screen = PokemonSummaryScreen.new(scene)
+    ret = screen.pbStartForgetScreen([pokemon],0,nil)
+  }
+  $game_variables[variableNumber] = ret
+  if ret>=0
+    $game_variables[nameVarNumber] = pokemon.moves[ret].name
+  else
+    $game_variables[nameVarNumber] = ""
+  end
+  $game_map.need_refresh = true if $game_map
 end
