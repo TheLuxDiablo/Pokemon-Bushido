@@ -134,6 +134,7 @@ class PokeBattle_AI
   #=============================================================================
   #
   #=============================================================================
+  # TODO: This method doesn't take the increment into account but should.
   def calc_user_stat_raise_one(stat, increment)
     mini_score = 1.0
 
@@ -265,6 +266,9 @@ class PokeBattle_AI
 
       # TODO: Don't prefer if user is already faster than the target. Exception
       #       for moves that benefit from a raised user's Speed?
+      # TODO: Don't prefer if user is already faster than the target and there's
+      #       only 1 unfainted foe (this check is done by Agility/Autotomize
+      #       (both +2 Spd) only in Reborn.)
 
     when PBStats::SPATK
       # Prefer if user can definitely survive a hit no matter how powerful, and

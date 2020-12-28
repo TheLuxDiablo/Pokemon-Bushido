@@ -15,7 +15,7 @@ class PokeBattle_AI
       # Can't use Dark Void if user isn't Darkrai
       if NEWEST_BATTLE_MECHANICS && @move.id == :DARKVOID
         return 0 if !@user.isSpecies?(:DARKRAI) &&
-                    !isConst?(@user.effects[PBEffects::TransformSpecies], PBSpecies, :DARKRAI)
+                    @user.effects[PBEffects::TransformSpecies] != :DARKRAI
       end
       # Check whether the target can be put to sleep
       if @target.pbCanSleep?(@user, false) && @target.effects[PBEffects::Yawn] == 0
@@ -1315,359 +1315,114 @@ class PokeBattle_AI
       score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "028"   # Increase user's Attack and Special Attack by 1 stage each (2 in sun)
-      if @user.statStageAtMax?(PBStats::ATTACK) &&
-         @user.statStageAtMax?(PBStats::SPATK)
-        score -= 90
-      else
-        score -= @user.stages[PBStats::ATTACK]*10
-        score -= @user.stages[PBStats::SPATK]*10
-        if skill_check(AILevel.medium)
-          hasDamagingAttack = false
-          @user.eachMove do |m|
-            next if !m.damagingMove?
-            hasDamagingAttack = true
-            break
-          end
-          if hasDamagingAttack
-            score += 20
-          elsif skill_check(AILevel.high)
-            score -= 90
-          end
-        end
-        score += 20 if @battle.pbWeather==PBWeather::Sun ||
-                       @battle.pbWeather==PBWeather::HarshSun
-      end
+      # TODO: Needs to account for different stat gain in sun.
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "029"   # Increase user's Attack and accuracy by 1 stage each
-      if @user.statStageAtMax?(PBStats::ATTACK) &&
-         @user.statStageAtMax?(PBStats::ACCURACY)
-        score -= 90
-      else
-        score -= @user.stages[PBStats::ATTACK]*10
-        score -= @user.stages[PBStats::ACCURACY]*10
-        if skill_check(AILevel.medium)
-          hasPhysicalAttack = false
-          @user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
-            hasPhysicalAttack = true
-            break
-          end
-          if hasPhysicalAttack
-            score += 20
-          elsif skill_check(AILevel.high)
-            score -= 90
-          end
-        end
-      end
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "02A"   # Increase user's Defense and Special Defense by 1 stage each
-      if @user.statStageAtMax?(PBStats::DEFENSE) &&
-         @user.statStageAtMax?(PBStats::SPDEF)
-        score -= 90
-      else
-        score -= @user.stages[PBStats::DEFENSE]*10
-        score -= @user.stages[PBStats::SPDEF]*10
-      end
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "02B"   # Increase user's Special Attack, Special Defense and Speed by 1 stage each
-      if @user.statStageAtMax?(PBStats::SPEED) &&
-         @user.statStageAtMax?(PBStats::SPATK) &&
-         @user.statStageAtMax?(PBStats::SPDEF)
-        score -= 90
-      else
-        score -= @user.stages[PBStats::SPATK]*10
-        score -= @user.stages[PBStats::SPDEF]*10
-        score -= @user.stages[PBStats::SPEED]*10
-        if skill_check(AILevel.medium)
-          hasSpecicalAttack = false
-          @user.eachMove do |m|
-            next if !m.specialMove?(m.type)
-            hasSpecicalAttack = true
-            break
-          end
-          if hasSpecicalAttack
-            score += 20
-          elsif skill_check(AILevel.high)
-            score -= 90
-          end
-        end
-        if skill_check(AILevel.high)
-          aspeed = pbRoughStat(@user,PBStats::SPEED)
-          ospeed = pbRoughStat(@target,PBStats::SPEED)
-          if aspeed<ospeed && aspeed*2>ospeed
-            score += 20
-          end
-        end
-      end
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "02C"   # Increase user's Special Attack and Special Defense by 1 stage each
-      if @user.statStageAtMax?(PBStats::SPATK) &&
-         @user.statStageAtMax?(PBStats::SPDEF)
-        score -= 90
-      else
-        score += 40 if @user.turnCount==0   # Calm Mind tends to be popular
-        score -= @user.stages[PBStats::SPATK]*10
-        score -= @user.stages[PBStats::SPDEF]*10
-        if skill_check(AILevel.medium)
-          hasSpecicalAttack = false
-          @user.eachMove do |m|
-            next if !m.specialMove?(m.type)
-            hasSpecicalAttack = true
-            break
-          end
-          if hasSpecicalAttack
-            score += 20
-          elsif skill_check(AILevel.high)
-            score -= 90
-          end
-        end
-      end
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
     when "02D"   # Increase user's Atk/Def/Speed/SpAtk/SpDef by 1 stage each
-      PBStats.eachMainBattleStat { |s| score += 10 if @user.stages[s]<0 }
-      if skill_check(AILevel.medium)
-        hasDamagingAttack = false
-        @user.eachMove do |m|
-          next if !m.damagingMove?
-          hasDamagingAttack = true
-          break
-        end
-        score += 20 if hasDamagingAttack
+      score = get_score_for_user_stat_raise(score)
+    #---------------------------------------------------------------------------
+    when "02E"   # Increase user's Attack by 2 stages
+      score = get_score_for_user_stat_raise(score)
+    #---------------------------------------------------------------------------
+    when "02F"   # Increase user's Defense by 2 stages
+      score = get_score_for_user_stat_raise(score)
+    #---------------------------------------------------------------------------
+    when "030"   # Increase user's Speed by 2 stages
+      score = get_score_for_user_stat_raise(score)
+    #---------------------------------------------------------------------------
+    when "031"   # Increase user's Speed by 2 stages, user loses 100kg
+      score = get_score_for_user_stat_raise(score)
+      if @user.pbWeight > 1
+        # TODO: Don't prefer if user knows 09B Heavy Slam (being heavier means
+        #       that move does more damage).
+
+        # TODO: Prefer if target has previously used a move that deals more
+        #       damage to a heavier target - 09A Low Kick.
+        # TODO: Don't prefer if target has previously used a move that deals
+        #       more damage to a lighter target - 09B Heavy Slam.
       end
     #---------------------------------------------------------------------------
-    when "02E"
-      if @move.statusMove?
-        if @user.statStageAtMax?(PBStats::ATTACK)
-          score -= 90
-        else
-          score += 40 if @user.turnCount==0
-          score -= @user.stages[PBStats::ATTACK]*20
-          if skill_check(AILevel.medium)
-            hasPhysicalAttack = false
-            @user.eachMove do |m|
-              next if !m.physicalMove?(m.type)
-              hasPhysicalAttack = true
-              break
-            end
-            if hasPhysicalAttack
-              score += 20
-            elsif skill_check(AILevel.high)
-              score -= 90
-            end
-          end
-        end
-      else
-        score += 10 if @user.turnCount==0
-        score += 20 if @user.stages[PBStats::ATTACK]<0
-        if skill_check(AILevel.medium)
-          hasPhysicalAttack = false
-          @user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
-            hasPhysicalAttack = true
-            break
-          end
-          score += 20 if hasPhysicalAttack
-        end
-      end
+    when "032"   # Increase user's Special Attack by 2 stages
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
-    when "02F"
-      if @move.statusMove?
-        if @user.statStageAtMax?(PBStats::DEFENSE)
-          score -= 90
-        else
-          score += 40 if @user.turnCount==0
-          score -= @user.stages[PBStats::DEFENSE]*20
-        end
-      else
-        score += 10 if @user.turnCount==0
-        score += 20 if @user.stages[PBStats::DEFENSE]<0
-      end
+    when "033"   # Increase user's Special Defense by 2 stages
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
-    when "030", "031"
-      if @move.statusMove?
-        if @user.statStageAtMax?(PBStats::SPEED)
-          score -= 90
-        else
-          score += 20 if @user.turnCount==0
-          score -= @user.stages[PBStats::SPEED]*10
-          if skill_check(AILevel.high)
-            aspeed = pbRoughStat(@user,PBStats::SPEED)
-            ospeed = pbRoughStat(@target,PBStats::SPEED)
-            score += 30 if aspeed<ospeed && aspeed*2>ospeed
-          end
-        end
-      else
-        score += 10 if @user.turnCount==0
-        score += 20 if @user.stages[PBStats::SPEED]<0
-      end
+    when "034"   # Increase user's evasion by 2 stages, user is minimized
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
-    when "032"
-      if @move.statusMove?
-        if @user.statStageAtMax?(PBStats::SPATK)
-          score -= 90
-        else
-          score += 40 if @user.turnCount==0
-          score -= @user.stages[PBStats::SPATK]*20
-          if skill_check(AILevel.medium)
-            hasSpecicalAttack = false
-            @user.eachMove do |m|
-              next if !m.specialMove?(m.type)
-              hasSpecicalAttack = true
-              break
-            end
-            if hasSpecicalAttack
-              score += 20
-            elsif skill_check(AILevel.high)
-              score -= 90
-            end
-          end
-        end
-      else
-        score += 10 if @user.turnCount==0
-        score += 20 if @user.stages[PBStats::SPATK]<0
-        if skill_check(AILevel.medium)
-          hasSpecicalAttack = false
-          @user.eachMove do |m|
-            next if !m.specialMove?(m.type)
-            hasSpecicalAttack = true
-            break
-          end
-          score += 20 if hasSpecicalAttack
-        end
-      end
+    when "035"   # Decrease user's Def/SpDef by 1 stage each, increase user's Atk/SpAtk/Speed by 2 stages each
+      score = get_score_for_user_stat_raise(score)
+      # TODO: The stat-lowerings of this one.
     #---------------------------------------------------------------------------
-    when "033"
-      if @move.statusMove?
-        if @user.statStageAtMax?(PBStats::SPDEF)
-          score -= 90
-        else
-          score += 40 if @user.turnCount==0
-          score -= @user.stages[PBStats::SPDEF]*20
-        end
-      else
-        score += 10 if @user.turnCount==0
-        score += 20 if @user.stages[PBStats::SPDEF]<0
-      end
+    when "036"   # Increase user's Speed by 2 stages, increase user's Attack by 1 stage
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
-    when "034"
-      if @move.statusMove?
-        if @user.statStageAtMax?(PBStats::EVASION)
-          score -= 90
-        else
-          score += 40 if @user.turnCount==0
-          score -= @user.stages[PBStats::EVASION]*10
-        end
-      else
-        score += 10 if @user.turnCount==0
-        score += 20 if @user.stages[PBStats::EVASION]<0
+    when "037"   # Increase one random target's stat by 2 stages
+      # Discard status move if target has Contrary
+      return 0 if @move.statusMove? && @target.hasActiveAbility?(:CONTRARY)
+
+      # Discard move if it can't raise any stats
+      can_change_any_stat = false
+      PBStats.eachBattleStat do |stat|
+        next if @target.statStageAtMax?(stat)
+        can_change_any_stat = true
+        break
       end
+      if !can_change_any_stat
+        return (@move.statusMove?) ? 0 : score
+      end
+
+      mini_score = 1.0
+
+      # Prefer if target has the ability Simple
+      mini_score *= 2 if @target.hasActiveAbility?(:SIMPLE)
+
+      # Don't prefer if target doesn't have much HP left
+      mini_score *= 0.3 if @target.hp < @target.totalhp / 3
+      # Don't prefer if target is badly poisoned
+      mini_score *= 0.2 if @target.effects[PBEffects::Toxic] > 0
+      # Don't prefer if target is confused
+      mini_score *= 0.4 if @target.effects[PBEffects::Confusion] > 0
+      # Don't prefer if target is infatuated or Leech Seeded
+      if @target.effects[PBEffects::Attract] >= 0 || @target.effects[PBEffects::LeechSeed] >= 0
+        mini_score *= 0.3
+      end
+      # Don't prefer if target has an ability or item that will force it to
+      # switch out
+      if @target.hp < @target.totalhp * 3 / 4
+        mini_score *= 0.3 if @target.hasActiveAbility?([:EMERGENCYEXIT, :WIMPOUT])
+        mini_score *= 0.3 if @target.hasActiveItem?(:EJECTBUTTON)
+      end
+      # Don't prefer if target has Contrary
+      mini_score *= 0.5 if @target.hasActiveAbility?(:CONTRARY)
+
+      # TODO: Don't prefer if any foe has previously used a stat stage-clearing
+      #       move (050, 051 Clear Smog/Haze). Shouldn't query @target's moves.
+#      mini_score *= 0.3 if check_for_move(@target) { |move| ["050", "051"].include?(move.function) }   # Clear Smog, Haze
+
+      # Apply the mini-score to the actual score
+      score = apply_effect_chance_to_score(score * mini_score)
     #---------------------------------------------------------------------------
-    when "035"
-      score -= @user.stages[PBStats::ATTACK]*20
-      score -= @user.stages[PBStats::SPEED]*20
-      score -= @user.stages[PBStats::SPATK]*20
-      score += @user.stages[PBStats::DEFENSE]*10
-      score += @user.stages[PBStats::SPDEF]*10
-      if skill_check(AILevel.medium)
-        hasDamagingAttack = false
-        @user.eachMove do |m|
-          next if !m.damagingMove?
-          hasDamagingAttack = true
-          break
-        end
-        score += 20 if hasDamagingAttack
-      end
+    when "038"   # Increase user's Defense by 3 stages
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
-    when "036"
-      if @user.statStageAtMax?(PBStats::ATTACK) &&
-         @user.statStageAtMax?(PBStats::SPEED)
-        score -= 90
-      else
-        score -= @user.stages[PBStats::ATTACK]*10
-        score -= @user.stages[PBStats::SPEED]*10
-        if skill_check(AILevel.medium)
-          hasPhysicalAttack = false
-          @user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
-            hasPhysicalAttack = true
-            break
-          end
-          if hasPhysicalAttack
-            score += 20
-          elsif skill_check(AILevel.high)
-            score -= 90
-          end
-        end
-        if skill_check(AILevel.high)
-          aspeed = pbRoughStat(@user,PBStats::SPEED)
-          ospeed = pbRoughStat(@target,PBStats::SPEED)
-          score += 30 if aspeed<ospeed && aspeed*2>ospeed
-        end
-      end
+    when "039"   # Increase user's Special Attack by 3 stages
+      score = get_score_for_user_stat_raise(score)
     #---------------------------------------------------------------------------
-    when "037"
-      avgStat = 0; canChangeStat = false
-      PBStats.eachBattleStat do |s|
-        next if @target.statStageAtMax?(s)
-        avgStat -= @target.stages[s]
-        canChangeStat = true
-      end
-      if canChangeStat
-        avgStat = avgStat/2 if avgStat<0   # More chance of getting even better
-        score += avgStat*10
-      else
-        score -= 90
-      end
-    #---------------------------------------------------------------------------
-    when "038"
-      if @move.statusMove?
-        if @user.statStageAtMax?(PBStats::DEFENSE)
-          score -= 90
-        else
-          score += 40 if @user.turnCount==0
-          score -= @user.stages[PBStats::DEFENSE]*30
-        end
-      else
-        score += 10 if @user.turnCount==0
-        score += 30 if @user.stages[PBStats::DEFENSE]<0
-      end
-    #---------------------------------------------------------------------------
-    when "039"
-      if @move.statusMove?
-        if @user.statStageAtMax?(PBStats::SPATK)
-          score -= 90
-        else
-          score += 40 if @user.turnCount==0
-          score -= @user.stages[PBStats::SPATK]*30
-          if skill_check(AILevel.medium)
-            hasSpecicalAttack = false
-            @user.eachMove do |m|
-              next if !m.specialMove?(m.type)
-              hasSpecicalAttack = true
-              break
-            end
-            if hasSpecicalAttack
-              score += 20
-            elsif skill_check(AILevel.high)
-              score -= 90
-            end
-          end
-        end
-      else
-        score += 10 if @user.turnCount==0
-        score += 30 if @user.stages[PBStats::SPATK]<0
-        if skill_check(AILevel.medium)
-          hasSpecicalAttack = false
-          @user.eachMove do |m|
-            next if !m.specialMove?(m.type)
-            hasSpecicalAttack = true
-            break
-          end
-          score += 30 if hasSpecicalAttack
-        end
-      end
-    #---------------------------------------------------------------------------
-    when "03A"
+    when "03A"   # Halves user's HP, sets user's Attack to +6 stages
       if @user.statStageAtMax?(PBStats::ATTACK) ||
          @user.hp<=@user.totalhp/2
         score -= 100
@@ -1688,26 +1443,26 @@ class PokeBattle_AI
         end
       end
     #---------------------------------------------------------------------------
-    when "03B"
+    when "03B"   # Decreases user's Attack and Defense by 1 stage each
       avg =  @user.stages[PBStats::ATTACK]*10
       avg += @user.stages[PBStats::DEFENSE]*10
       score += avg/2
     #---------------------------------------------------------------------------
-    when "03C"
+    when "03C"   # Decreases user's Defense and Special Defense by 1 stage each
       avg =  @user.stages[PBStats::DEFENSE]*10
       avg += @user.stages[PBStats::SPDEF]*10
       score += avg/2
     #---------------------------------------------------------------------------
-    when "03D"
+    when "03D"   # Decreases user's Defense, Special Defense and Speed by 1 stage each
       avg =  @user.stages[PBStats::DEFENSE]*10
       avg += @user.stages[PBStats::SPEED]*10
       avg += @user.stages[PBStats::SPDEF]*10
       score += (avg/3).floor
     #---------------------------------------------------------------------------
-    when "03E"
+    when "03E"   # Decreases user's Speed by 1 stage
       score += @user.stages[PBStats::SPEED]*10
     #---------------------------------------------------------------------------
-    when "03F"
+    when "03F"   # Decreases user's Special Attack by 2 stages
       score += @user.stages[PBStats::SPATK]*10
     #---------------------------------------------------------------------------
     end
