@@ -120,6 +120,7 @@ def pbDebugSetVariable(id,diff)
     pbPlayCursorSE
     $game_variables[id] = [$game_variables[id]+diff,99999999].min
     $game_variables[id] = [$game_variables[id],-99999999].max
+    $game_map.need_refresh = true
   end
 end
 
@@ -133,10 +134,12 @@ def pbDebugVariableScreen(id)
     value = pbMessageChooseNumber(_INTL("Set variable {1}.",id),params)
     $game_variables[id] = [value,99999999].min
     $game_variables[id] = [$game_variables[id],-99999999].max
+    $game_map.need_refresh = true
   elsif $game_variables[id].is_a?(String)
     value = pbMessageFreeText(_INTL("Set variable {1}.",id),
        $game_variables[id],false,250,Graphics.width)
     $game_variables[id] = value
+    $game_map.need_refresh = true
   end
 end
 
@@ -162,6 +165,7 @@ def pbDebugVariables(mode)
         pbPlayDecisionSE
         $game_switches[current_id] = !$game_switches[current_id]
         right_window.refresh
+        $game_map.need_refresh = true
       end
     elsif mode==1 # Variables
       if Input.repeat?(Input::LEFT)
@@ -181,6 +185,7 @@ def pbDebugVariables(mode)
           $game_variables[current_id] = ""
         end
         right_window.refresh
+        $game_map.need_refresh = true
       elsif Input.trigger?(Input::C)
         pbPlayDecisionSE
         pbDebugVariableScreen(current_id)
@@ -392,12 +397,13 @@ class SpriteWindow_DebugRoamers < Window_DrawableCommand
     rect = drawCursor(index,rect)
     nameWidth   = rect.width*50/100
     statusWidth = rect.width*50/100
+    text_y = rect.y + 6
     if index==self.itemCount-2
       # Advance roaming
-      self.shadowtext(_INTL("[All roam to new locations]"),rect.x,rect.y,nameWidth,rect.height)
+      self.shadowtext(_INTL("[All roam to new locations]"),rect.x,text_y,nameWidth,rect.height)
     elsif index==self.itemCount-1
       # Advance roaming
-      self.shadowtext(_INTL("[Clear all current roamer locations]"),rect.x,rect.y,nameWidth,rect.height)
+      self.shadowtext(_INTL("[Clear all current roamer locations]"),rect.x,text_y,nameWidth,rect.height)
     else
       pkmn = ROAMING_SPECIES[index]
       name = GameData::Species.get(pkmn[0]).name + " (Lv. #{pkmn[1]})"
@@ -426,7 +432,6 @@ class SpriteWindow_DebugRoamers < Window_DrawableCommand
       else
         status = "[NOT ROAMING][Switch #{pkmn[2]} is off]"
       end
-      text_y = rect.y + 6
       self.shadowtext(name,rect.x,text_y,nameWidth,rect.height)
       self.shadowtext(status,rect.x+nameWidth,text_y,statusWidth,rect.height,1,statuscolor)
     end
@@ -519,50 +524,6 @@ def pbDebugRoamers
   end
   pbDisposeSpriteHash(sprites)
   viewport.dispose
-end
-
-#===============================================================================
-# Give the player a party of Pokémon.
-# For demonstration purposes only, not to be used in a real game.
-#===============================================================================
-def pbCreatePokemon
-  party = []
-  species = [:PIKACHU, :PIDGEOTTO, :KADABRA, :GYARADOS, :DIGLETT, :CHANSEY]
-  for id in species
-    party.push(id) if GameData::Species.exists?(id)
-  end
-  # Species IDs of the Pokémon to be created
-  for i in 0...party.length
-    species = party[i]
-    # Generate Pokémon with species and level 20
-    $Trainer.party[i] = Pokemon.new(species, 20)
-    $Trainer.seen[species]  = true
-    $Trainer.owned[species] = true
-    pbSeenForm($Trainer.party[i])
-    case species
-    when :PIDGEOTTO
-      $Trainer.party[i].pbLearnMove(:FLY)
-    when :KADABRA
-      $Trainer.party[i].pbLearnMove(:FLASH)
-      $Trainer.party[i].pbLearnMove(:TELEPORT)
-    when :GYARADOS
-      $Trainer.party[i].pbLearnMove(:SURF)
-      $Trainer.party[i].pbLearnMove(:DIVE)
-      $Trainer.party[i].pbLearnMove(:WATERFALL)
-    when :DIGLETT
-      $Trainer.party[i].pbLearnMove(:DIG)
-      $Trainer.party[i].pbLearnMove(:CUT)
-      $Trainer.party[i].pbLearnMove(:HEADBUTT)
-      $Trainer.party[i].pbLearnMove(:ROCKSMASH)
-    when :CHANSEY
-      $Trainer.party[i].pbLearnMove(:SOFTBOILED)
-      $Trainer.party[i].pbLearnMove(:STRENGTH)
-      $Trainer.party[i].pbLearnMove(:SWEETSCENT)
-    end
-  end
-  for i in 0...party.length
-    $Trainer.party[i].pbRecordFirstMoves
-  end
 end
 
 
