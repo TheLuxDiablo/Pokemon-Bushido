@@ -337,7 +337,7 @@ FISHING_END_COMMON_EVENT   = -1
 #===============================================================================
 GRASS_ANIMATION_ID           = 1
 DUST_ANIMATION_ID            = 2
-EXCLAMATION_ANIMATION_ID     = 3
+EXCLAMATION_ANIMATION_ID     = 8
 RUSTLE_NORMAL_ANIMATION_ID   = 1
 RUSTLE_VIGOROUS_ANIMATION_ID = 5
 RUSTLE_SHINY_ANIMATION_ID    = 6
