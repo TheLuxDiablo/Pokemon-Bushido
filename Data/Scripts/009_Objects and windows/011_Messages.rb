@@ -1248,6 +1248,16 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
       msgwindow.resume if msgwindow.busy?
       break if !msgwindow.busy?
     end
+    if Input.press?(Input::B)
+      msgwindow.textspeed=-999
+      msgwindow.update
+      if msgwindow.busy?
+        pbPlayDecisionSE() if msgwindow.pausing?
+        msgwindow.resume
+      else
+        break if signWaitCount==0
+      end
+    end
     if Input.trigger?(Input::C) || Input.trigger?(Input::B)
       if msgwindow.busy?
         pbPlayDecisionSE if msgwindow.pausing?

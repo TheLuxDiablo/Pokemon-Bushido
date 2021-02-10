@@ -1,6 +1,8 @@
 Things to do:
-
+add in battle themes for trainer types
+add in spotted ME for types
 
 Things done:
 2/9/21
+- installed mid battle dialogue
 - 

@@ -72,3 +72,5 @@
 69,ELITEFOUR_Agatha,Elite Four,100,Battle Elite,Battle victory leader,,Female,,
 70,ELITEFOUR_Lance,Elite Four,100,Battle Elite,Battle victory leader,,Male,,
 71,CHAMPION,Champion,100,Battle Elite,Battle victory leader,,Male,,
+72,SHADOWCLAN_M,Akui Clan,100,Battle Elite,Battle victory leader,,Male,,
+73,SHADOWCLAN_F,Akui Clan,100,Battle Elite,Battle victory leader,,Male,,
