@@ -9,7 +9,7 @@ TrainerBattleBGM = Battle trainer.mid
 SurfBGM = Surfing.mid
 BicycleBGM = Bicycle.mid
 Home = 3,7,5,8
-WildBattleBGM = Battle wild.mid
+WildBattleBGM = Conquest-BattleNormal.ogg
 #-------------------------------
 [001]
 # Intro
@@ -238,6 +238,11 @@ Weather = Rain,0
 MapPosition = 0,15,10
 Outdoor = true
 Environment = Rock
+ShowArea = true
+#-------------------------------
+[048]
+# CamTest
+Outdoor = true
 ShowArea = true
 #-------------------------------
 [049]

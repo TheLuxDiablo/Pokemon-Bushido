@@ -115,3 +115,8 @@ Pokemon = CHARIZARD,63
     Item = SITRUSBERRY
 Pokemon = BLASTOISE,63
     Item = SITRUSBERRY
+#-------------------------------
+[SHADOWCLAN_M,Kaze]
+LoseText = "No! This can't be!"
+Pokemon = ELECTABUZZ,5
+    Shadow = yes

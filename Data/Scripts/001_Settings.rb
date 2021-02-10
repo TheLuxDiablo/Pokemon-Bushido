@@ -35,13 +35,13 @@ MAP_VIEW_MODE      = 1
 #===============================================================================
 MAXIMUM_LEVEL        = 100
 EGG_LEVEL            = 1
-SHINY_POKEMON_CHANCE = 8
+SHINY_POKEMON_CHANCE = 120
 POKERUS_CHANCE       = 3
 
 #===============================================================================
 # * Whether outdoor maps should be shaded according to the time of day.
 #===============================================================================
-TIME_SHADING = true
+TIME_SHADING = false
 
 #===============================================================================
 # * Whether poisoned Pokémon will lose HP while walking around in the field.
@@ -231,6 +231,7 @@ USE_CURRENT_REGION_DEX = false
 def pbDexNames; return [
   [_INTL("Kanto Pokédex"), 0],
   [_INTL("Johto Pokédex"), 1],
+  [_INTL("Aisho Journal"), 2],
   _INTL("National Pokédex")
 ]; end
 DEX_SHOWS_ALL_FORMS = false

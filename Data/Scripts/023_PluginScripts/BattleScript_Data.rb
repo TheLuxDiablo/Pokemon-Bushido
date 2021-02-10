@@ -393,12 +393,25 @@ module DialogueModule
                     battle.decision=3
                     pbMessage("Hmph! Just when he finally gets a lucky break. He decides to be a nice guy too.")
                   }
-      ShadowIntro = Proc.new{|battle|
-                    battle.scene.pbShowOpponent(0)
+      ShadowIntroToxic = Proc.new{|battle|
                     battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
                     pbMessage("I'm with Shadow Clan! You're going down!")
-                    battle.scene.pbHideOpponent
                     battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowIntroSpikes = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I'm with Shadow Clan! You're going down!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    battle.scene.pbHideOpponent
                   }
 
 

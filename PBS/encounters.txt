@@ -304,6 +304,22 @@ RockSmash
     GEODUDE,12,15
     GEODUDE,12,15
 #-------------------------------
+048 # CamTest
+25,10,10
+Land
+    PAWNIARD,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+#-------------------------------
 049 # Rock Cave
 25,10,10
 Cave

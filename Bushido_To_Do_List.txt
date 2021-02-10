@@ -1,8 +1,20 @@
 Things to do:
-add in battle themes for trainer types
 add in spotted ME for types
+add shadow icon for enemy battlers in the UI
+add always on bush script
+set up our Aisho Journal, pokedex for the region. Let's keep it around 200-300
+FINALIZE OUR STARTERS
+	- Fighting (Treecko), Steel (Oshawatt), Fairy (based on Sakura trees)
 
 Things done:
 2/9/21
 - installed mid battle dialogue
-- 
+	- early shadow clan mid-battle dialogue example
+	- set up base events for toxic/non-toxic spike usage
+- Added shadow clan trainerypes, with their battle theme
+- made test map
+- upped shiny odds
+- removed shading for now
+- updated grass rustle
+- running shoes always enabled
+- added in amethyst quick text skip
