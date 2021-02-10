@@ -5,6 +5,12 @@ add always on bush script
 set up our Aisho Journal, pokedex for the region. Let's keep it around 200-300
 FINALIZE OUR STARTERS
 	- Fighting (Treecko), Steel (Oshawatt), Fairy (based on Sakura trees)
+add party screen script
+add menu screen script
+	- Remove gym badges
+	- Change font
+	- Add Katana progression (?)
+change grass autotile to be less outlined/fit more with the trees
 
 Things done:
 2/9/21
