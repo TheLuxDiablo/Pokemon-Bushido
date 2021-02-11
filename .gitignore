@@ -5,3 +5,5 @@ RGSS*.dll
 # Temp files
 
 ~*
+# Word files
+*.docx
