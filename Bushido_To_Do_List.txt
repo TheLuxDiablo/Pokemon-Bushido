@@ -1,7 +1,6 @@
 Things to do:
 add in spotted ME for types
 add shadow icon for enemy battlers in the UI
-add always on bush script
 set up our Aisho Journal, pokedex for the region. Let's keep it around 200-300
 FINALIZE OUR STARTERS
 	- Fighting (Treecko), Steel (Oshawatt), Fairy (based on Sakura trees)
@@ -14,10 +13,19 @@ change grass autotile to be less outlined/fit more with the trees
 - Purge old splice scripting
 
 
+
 Things done:
 
 2/10/21
 - MKXP Port
+	- lots of bugfixing, more to come too
+- Enabled shadow pokemon stealing and tested it
+- Set up Gen 4 trainertypes and battler sprites
+- FRLG battle UI
+	- UPDATE THIS MORE LATER! More japanese with watercolor inspiration, maybe red trees
+- add always on bush script
+- work on setting up a basic bridge
+- plug in some pog battlebacks
 
 
 

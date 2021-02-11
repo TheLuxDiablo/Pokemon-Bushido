@@ -118,5 +118,14 @@ Pokemon = BLASTOISE,63
 #-------------------------------
 [AKUICLAN_M,Kaze]
 LoseText = "No! This can't be!"
+Pokemon = MIGHTYENA,5
+    Ability = 0
+    Shadow = yes
+Pokemon = ELECTABUZZ,5
+    Shadow = yes
+Pokemon = ELECTABUZZ,5
+    Shadow = yes
+Pokemon = ELECTABUZZ,5
+    Shadow = yes
 Pokemon = ELECTABUZZ,5
     Shadow = yes

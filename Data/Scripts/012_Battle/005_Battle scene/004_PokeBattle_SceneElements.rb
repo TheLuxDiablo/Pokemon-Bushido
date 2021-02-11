@@ -460,6 +460,11 @@ class AbilitySplashBar < SpriteWrapper
     refresh
   end
 
+  def ability=(value)
+    @ability = value
+    refresh
+  end
+
   def refresh
     self.bitmap.clear
     return if !@battler
