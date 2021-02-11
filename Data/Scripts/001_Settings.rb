@@ -19,10 +19,7 @@
 #===============================================================================
 SCREEN_WIDTH       = 512
 SCREEN_HEIGHT      = 384
-SCREEN_ZOOM        = 1.0
-BORDER_FULLY_SHOWS = false
-BORDER_WIDTH       = 78
-BORDER_HEIGHT      = 78
+SCREEN_SCALE       = 1.0
 MAP_VIEW_MODE      = 1
 # To forbid the player from changing the screen size themselves, quote out or
 # delete the relevant bit of code in the PScreen_Options script section.
@@ -35,13 +32,13 @@ MAP_VIEW_MODE      = 1
 #===============================================================================
 MAXIMUM_LEVEL        = 100
 EGG_LEVEL            = 1
-SHINY_POKEMON_CHANCE = 120
+SHINY_POKEMON_CHANCE = 160
 POKERUS_CHANCE       = 3
 
 #===============================================================================
 # * Whether outdoor maps should be shaded according to the time of day.
 #===============================================================================
-TIME_SHADING = false
+TIME_SHADING = true
 
 #===============================================================================
 # * Whether poisoned Pokémon will lose HP while walking around in the field.
@@ -99,7 +96,10 @@ MAX_PLAYER_NAME_SIZE = 10
 RIVAL_NAMES = [
   [:RIVAL1, 12],
   [:RIVAL2, 12],
-  [:CHAMPION, 12]
+  [:CHAMPION, 12],
+  [:SPLICERIVAL,12],
+  [:SPLICERIVAL1,12],
+  [:SPLICERIVAL2,12]
 ]
 
 #===============================================================================
@@ -129,6 +129,7 @@ BADGE_FOR_FLY            = 5
 BADGE_FOR_STRENGTH       = 6
 BADGE_FOR_DIVE           = 7
 BADGE_FOR_WATERFALL      = 8
+ALWAYS_LISTEN            = true
 
 #===============================================================================
 # * Whether a move's physical/special category depends on the move itself as in
@@ -171,7 +172,7 @@ def pbPocketNames; return ["",
   _INTL("Poké Balls"),
   _INTL("TMs & HMs"),
   _INTL("Berries"),
-  _INTL("Mail"),
+  _INTL("Cellulose"),
   _INTL("Battle Items"),
   _INTL("Key Items")
 ]; end
@@ -199,7 +200,7 @@ REGION_MAP_EXTRAS = [
 # * The number of boxes in Pokémon storage.
 #===============================================================================
 def pbStorageCreator
-  return _INTL("Bill")
+  return _INTL("Theo")
 end
 NUM_STORAGE_BOXES = 30
 
@@ -231,7 +232,7 @@ USE_CURRENT_REGION_DEX = false
 def pbDexNames; return [
   [_INTL("Kanto Pokédex"), 0],
   [_INTL("Johto Pokédex"), 1],
-  [_INTL("Aisho Journal"), 2],
+  [_INTL("Stacona Pokédex"),2],
   _INTL("National Pokédex")
 ]; end
 DEX_SHOWS_ALL_FORMS = false
@@ -352,3 +353,11 @@ LANGUAGES = [
 #  ["English", "english.dat"],
 #  ["Deutsch", "deutsch.dat"]
 ]
+#===============================================================================
+# * When turned on, the summary screen will have 4 pages and show the IV/EV
+#   stats of a pokemon (When turned on, the IV/EV will always be shown)
+# * The switch which has to be turned on to see the IV/EV stats in the
+#   summary screen
+#===============================================================================
+SHOW_IV_EV_IN_SUMMARY = true
+SHOW_IV_EV_IN_SUMMARY_SWITCH = 86

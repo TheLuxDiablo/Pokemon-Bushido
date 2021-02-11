@@ -117,6 +117,10 @@ begin
     WaterSport          = 111
     WeightChange        = 112
     Yawn                = 113
+    QuickParry          = 114
+    JawLock             = 115
+    JawLockUser         = 116
+    Reconfigure         = 117
 
     #===========================================================================
     # These effects apply to a battler position

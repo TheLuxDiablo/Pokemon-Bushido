@@ -166,14 +166,17 @@ class PokeBattle_Battler
   def pbCheckFormOnWeatherChange
     return if fainted? || @effects[PBEffects::Transform]
     # Castform - Forecast
-    if isSpecies?(:CASTFORM)
+    if isSpecies?(:CASTFORM) || isSpecies?(:TOGEKISS)
       if hasActiveAbility?(:FORECAST)
         newForm = 0
         case @battle.pbWeather
         when PBWeather::Sun, PBWeather::HarshSun;   newForm = 1
         when PBWeather::Rain, PBWeather::HeavyRain; newForm = 2
         when PBWeather::Hail;                       newForm = 3
+        when PBWeather::Sandstorm;                  newForm = 4
         end
+        # Togekiss Form Change
+        newForm += 1 if isSpecies?(:TOGEKISS)
         if @form!=newForm
           @battle.pbShowAbilitySplash(self,true)
           @battle.pbHideAbilitySplash(self)

@@ -54,7 +54,7 @@ class Window_PokemonBag < Window_DrawableCommand
   def drawCursor(index,rect)
     if self.index==index
       bmp = (@sorting) ? @swaparrow.bitmap : @selarrow.bitmap
-      pbCopyBitmap(self.contents,bmp,rect.x,rect.y+2)
+      pbCopyBitmap(self.contents,bmp,rect.x,rect.y+2 + ((mkxp? && $PokemonSystem.font == 0) ? -3 : 0))
     end
   end
 
@@ -124,12 +124,12 @@ end
 # Bag visuals
 #===============================================================================
 class PokemonBag_Scene
-  ITEMLISTBASECOLOR     = Color.new(88,88,80)
-  ITEMLISTSHADOWCOLOR   = Color.new(168,184,184)
+  ITEMLISTBASECOLOR     = Color.new(96,96,96)
+  ITEMLISTSHADOWCOLOR   = Color.new(208,208,208)
   ITEMTEXTBASECOLOR     = Color.new(248,248,248)
   ITEMTEXTSHADOWCOLOR   = Color.new(0,0,0)
-  POCKETNAMEBASECOLOR   = Color.new(88,88,80)
-  POCKETNAMESHADOWCOLOR = Color.new(168,184,184)
+  POCKETNAMEBASECOLOR   = Color.new(96,96,96)
+  POCKETNAMESHADOWCOLOR = Color.new(208,208,208)
   ITEMSVISIBLE          = 7
 
   def pbUpdate
@@ -445,7 +445,7 @@ end
 # Bag mechanics
 #===============================================================================
 class PokemonBagScreen
-  def initialize(scene,bag)
+  def initialize(scene,bag,lastpocket=-1)
     @bag   = bag
     @scene = scene
   end
@@ -580,6 +580,22 @@ class PokemonBagScreen
     oldlastpocket = @bag.lastpocket
     oldchoices = @bag.getAllChoices
     @scene.pbStartScene(@bag,true,proc)
+    item = @scene.pbChooseItem
+    @scene.pbEndScene
+    @bag.lastpocket = oldlastpocket
+    @bag.setAllChoices(oldchoices)
+    return item
+  end
+
+  # UI logic for the item screen for choosing a Cellulose.
+  def pbChooseItemCelluloseScreen(proc=nil,tutorial=false)
+    oldlastpocket = @bag.lastpocket
+    oldchoices = @bag.getAllChoices
+    @bag.lastpocket = 6
+    @scene.pbStartScene(@bag,true,Proc.new { |item| [1,2,5,6].include?(pbGetPocket(item)) },false)
+    if tutorial
+      pbMessage("\\rCypress: Great, now just select the Cellulose you want Arenay to hold! ")
+    end
     item = @scene.pbChooseItem
     @scene.pbEndScene
     @bag.lastpocket = oldlastpocket

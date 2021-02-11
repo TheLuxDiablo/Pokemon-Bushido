@@ -357,7 +357,8 @@ class PokeBattle_Battler
       :ZENMODE,
       # Abilities intended to be inherent properties of a certain species
       :COMATOSE,
-      :RKSSYSTEM
+      :RKSSYSTEM,
+      :SPLICE
     ]
     abilityBlacklist.each do |a|
       return true if isConst?(abil, PBAbilities, a)
@@ -385,7 +386,8 @@ class PokeBattle_Battler
       :IMPOSTER,
       # Abilities intended to be inherent properties of a certain species
       :COMATOSE,
-      :RKSSYSTEM
+      :RKSSYSTEM,
+      :SPLICE
     ]
     abilityBlacklist.each do |a|
       return true if isConst?(abil, PBAbilities, a)
@@ -461,7 +463,8 @@ class PokeBattle_Battler
 
   def canChangeType?
     return false if isConst?(@ability,PBAbilities,:MULTITYPE) ||
-                    isConst?(@ability,PBAbilities,:RKSSYSTEM)
+                    isConst?(@ability,PBAbilities,:RKSSYSTEM) ||
+                    isConst?(@ability,PBAbilities,:SPLICE)
     return true
   end
 

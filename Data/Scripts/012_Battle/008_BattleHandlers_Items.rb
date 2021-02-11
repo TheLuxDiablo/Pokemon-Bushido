@@ -148,7 +148,11 @@ BattleHandlers::HPHealItem.add(:ORANBERRY,
     next false if !forced && !battler.canConsumeBerry?
     next false if !forced && battler.hp>battler.totalhp/2
     battle.pbCommonAnimation("EatBerry",battler) if !forced
-    battler.pbRecoverHP(10)
+    if battler.hasWorkingAbility(:RIPEN)
+      battler.pbRecoverHP(20)
+    else
+      battler.pbRecoverHP(10)
+    end
     itemName = PBItems.getName(item)
     if forced
       PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
@@ -178,7 +182,11 @@ BattleHandlers::HPHealItem.add(:SITRUSBERRY,
     next false if !forced && !battler.canConsumeBerry?
     next false if !forced && battler.hp>battler.totalhp/2
     battle.pbCommonAnimation("EatBerry",battler) if !forced
-    battler.pbRecoverHP(battler.totalhp/4)
+    if battler.hasWorkingAbility(:RIPEN)
+      battler.pbRecoverHP(battler.totalhp/2)
+    else
+      battler.pbRecoverHP(battler.totalhp/4)
+    end
     itemName = PBItems.getName(item)
     if forced
       PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
@@ -459,7 +467,7 @@ BattleHandlers::DamageCalcUserItem.add(:BLACKBELT,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:BLACKBELT,:FISTPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:BLACKBELT,:FISTPLATE,:FIGHTCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:BLACKGLASSES,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -467,7 +475,7 @@ BattleHandlers::DamageCalcUserItem.add(:BLACKGLASSES,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:BLACKGLASSES,:DREADPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:BLACKGLASSES,:DREADPLATE,:DARKCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:BUGGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -481,7 +489,7 @@ BattleHandlers::DamageCalcUserItem.add(:CHARCOAL,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:CHARCOAL,:FLAMEPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:CHARCOAL,:FLAMEPLATE,:FIRECELL)
 
 BattleHandlers::DamageCalcUserItem.add(:CHOICEBAND,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -515,7 +523,7 @@ BattleHandlers::DamageCalcUserItem.add(:DRAGONFANG,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:DRAGONFANG,:DRACOPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:DRAGONFANG,:DRACOPLATE,:DRAGONCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:DRAGONGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -594,7 +602,7 @@ BattleHandlers::DamageCalcUserItem.add(:HARDSTONE,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:HARDSTONE,:STONEPLATE,:ROCKINCENSE)
+BattleHandlers::DamageCalcUserItem.copy(:HARDSTONE,:STONEPLATE,:ROCKINCENSE,:ROCKCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:ICEGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -633,7 +641,7 @@ BattleHandlers::DamageCalcUserItem.add(:MAGNET,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:MAGNET,:ZAPPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:MAGNET,:ZAPPLATE,:ELECCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:METALCOAT,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -641,7 +649,7 @@ BattleHandlers::DamageCalcUserItem.add(:METALCOAT,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:METALCOAT,:IRONPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:METALCOAT,:IRONPLATE,:STEELCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:METRONOME,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -656,7 +664,7 @@ BattleHandlers::DamageCalcUserItem.add(:MIRACLESEED,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:MIRACLESEED,:MEADOWPLATE,:ROSEINCENSE)
+BattleHandlers::DamageCalcUserItem.copy(:MIRACLESEED,:MEADOWPLATE,:ROSEINCENSE,:GRASSCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:MUSCLEBAND,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -670,7 +678,7 @@ BattleHandlers::DamageCalcUserItem.add(:MYSTICWATER,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:MYSTICWATER,:SPLASHPLATE,:SEAINCENSE,:WAVEINCENSE)
+BattleHandlers::DamageCalcUserItem.copy(:MYSTICWATER,:SPLASHPLATE,:SEAINCENSE,:WAVEINCENSE,:WATERCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:NEVERMELTICE,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -678,7 +686,7 @@ BattleHandlers::DamageCalcUserItem.add(:NEVERMELTICE,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:NEVERMELTICE,:ICICLEPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:NEVERMELTICE,:ICICLEPLATE,:ICECELL)
 
 BattleHandlers::DamageCalcUserItem.add(:NORMALGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -692,13 +700,15 @@ BattleHandlers::DamageCalcUserItem.add(:PIXIEPLATE,
   }
 )
 
+BattleHandlers::DamageCalcUserItem.copy(:PIXIEPLATE,:FAIRYCELL)
+
 BattleHandlers::DamageCalcUserItem.add(:POISONBARB,
   proc { |item,user,target,move,mults,baseDmg,type|
     mults[BASE_DMG_MULT] *= 1.2 if isConst?(type,PBTypes,:POISON)
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:POISONBARB,:TOXICPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:POISONBARB,:TOXICPLATE,:POISONCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:POISONGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -724,7 +734,7 @@ BattleHandlers::DamageCalcUserItem.add(:SHARPBEAK,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:SHARPBEAK,:SKYPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:SHARPBEAK,:SKYPLATE,:FLYCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:SILKSCARF,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -738,7 +748,7 @@ BattleHandlers::DamageCalcUserItem.add(:SILVERPOWDER,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:SILVERPOWDER,:INSECTPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:SILVERPOWDER,:INSECTPLATE,:BUGCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:SOFTSAND,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -746,7 +756,7 @@ BattleHandlers::DamageCalcUserItem.add(:SOFTSAND,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:SOFTSAND,:EARTHPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:SOFTSAND,:EARTHPLATE,:GROUNDCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:SOULDEW,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -769,7 +779,7 @@ BattleHandlers::DamageCalcUserItem.add(:SPELLTAG,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:SPELLTAG,:SPOOKYPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:SPELLTAG,:SPOOKYPLATE,:GHOSTCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:STEELGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -791,7 +801,7 @@ BattleHandlers::DamageCalcUserItem.add(:TWISTEDSPOON,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:TWISTEDSPOON,:MINDPLATE,:ODDINCENSE)
+BattleHandlers::DamageCalcUserItem.copy(:TWISTEDSPOON,:MINDPLATE,:ODDINCENSE,:PSYCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:WATERGEM,
   proc { |item,user,target,move,mults,baseDmg,type|

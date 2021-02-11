@@ -452,6 +452,15 @@ class PokeBattle_Move
     if target.effects[PBEffects::Minimize] && tramplesMinimize?(2)
       multipliers[FINAL_DMG_MULT] *= 2
     end
+    # Quick Parry
+    if target.effects[PBEffects::QuickParry]
+      multipliers[FINAL_DMG_MULT] /= 2
+    end
+    # Reconfigure Boost
+    if user.effects[PBEffects::Reconfigure] == 2 && user.pbHasType?(type)
+      multipliers[FINAL_DMG_MULT] *= 1.5
+      user.effects[PBEffects::Reconfigure] = 1
+    end
     # Move-specific base damage modifiers
     multipliers[BASE_DMG_MULT] = pbBaseDamageMultiplier(multipliers[BASE_DMG_MULT],user,target)
     # Move-specific final damage modifiers

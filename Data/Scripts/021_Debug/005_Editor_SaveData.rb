@@ -329,7 +329,7 @@ def pbSaveMachines
     f.write("\r\n")
     for i in 1...machines.length
       Graphics.update if i%50==0
-      Win32API.SetWindowText(_INTL("Writing move {1}/{2}",i,machines.length)) if i%20==0
+      pbSetWindowText(_INTL("Writing move {1}/{2}",i,machines.length)) if i%20==0
       next if !machines[i]
       movename = getConstantName(PBMoves,i) rescue pbGetMoveConst(i) rescue nil
       next if !movename || movename==""
@@ -857,7 +857,7 @@ def pbSavePokemonData
     end
     if i%20==0
       Graphics.update
-      Win32API.SetWindowText(_INTL("Processing species {1}...",i))
+      pbSetWindowText(_INTL("Processing species {1}...",i))
     end
   end
   pokedata.close
@@ -1323,7 +1323,7 @@ def pbSavePokemonFormsData
     end
     if i%20==0
       Graphics.update
-      Win32API.SetWindowText(_INTL("Processing species {1}...",i))
+      pbSetWindowText(_INTL("Processing species {1}...",i))
     end
   end
   pokedata.close

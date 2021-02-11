@@ -138,6 +138,17 @@ class PokemonBag
                                          BAG_MAX_PER_SLOT,item,qty,true)
   end
 
+  def pbStoreItemById(item,qty=1)
+    if !item || item<1
+      raise ArgumentError.new(_INTL("Item number {1} is invalid",item))
+    end
+    pocket = pbGetPocket(item)
+    maxsize = maxPocketSize(pocket)
+    maxsize = @pockets[pocket].length+1 if maxsize<0
+    return ItemStorageHelper.pbStoreItem(@pockets[pocket],maxsize,
+                                         BAG_MAX_PER_SLOT,item,qty,true)
+  end
+
   def pbChangeItem(olditem,newitem)
     olditem = getID(PBItems,olditem)
     newitem = getID(PBItems,newitem)

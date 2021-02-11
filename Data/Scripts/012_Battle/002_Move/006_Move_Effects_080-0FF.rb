@@ -1107,6 +1107,7 @@ class PokeBattle_Move_0AD < PokeBattle_Move
     target.effects[PBEffects::KingsShield]            = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::QuickParry]             = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false
@@ -2225,6 +2226,7 @@ class PokeBattle_Move_0CD < PokeBattle_TwoTurnMove
     target.effects[PBEffects::KingsShield]            = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::QuickParry]             = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false

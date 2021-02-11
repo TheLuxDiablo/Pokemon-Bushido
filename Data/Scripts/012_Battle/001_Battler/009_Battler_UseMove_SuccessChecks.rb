@@ -103,6 +103,7 @@ class PokeBattle_Battler
   # Return true if Pokémon continues attacking (although it may have chosen to
   # use a different move in disobedience), or false if attack stops.
   def pbObedienceCheck?(choice)
+    return true if ALWAYS_LISTEN
     return true if usingMultiTurnAttack?
     return true if choice[0]!=:UseMove
     return true if !@battle.internalBattle
@@ -290,6 +291,8 @@ class PokeBattle_Battler
   def pbSuccessCheckAgainstTarget(move,user,target)
     typeMod = move.pbCalcTypeMod(move.calcType,user,target)
     target.damageState.typeMod = typeMod
+    # thundaga adding unseen fist
+    unseenfist=(isConst?(user.ability,PBAbilities,:UNSEENFIST) && move.pbContactMove?(user))
     # Two-turn attacks can't fail here in the charging turn
     return true if user.effects[PBEffects::TwoTurnAttack]>0
     # Move-specific failures
@@ -303,7 +306,7 @@ class PokeBattle_Battler
     end
     # Crafty Shield
     if target.pbOwnSide.effects[PBEffects::CraftyShield] && user.index!=target.index &&
-       move.statusMove? && move.pbTarget(user)!=PBTargets::AllBattlers
+       move.statusMove? && move.pbTarget(user)!=PBTargets::AllBattlers && !unseenfist
       @battle.pbCommonAnimation("CraftyShield",target)
       @battle.pbDisplay(_INTL("Crafty Shield protected {1}!",target.pbThis(true)))
       target.damageState.protected = true
@@ -313,7 +316,7 @@ class PokeBattle_Battler
     # Wide Guard
     if target.pbOwnSide.effects[PBEffects::WideGuard] && user.index!=target.index &&
        PBTargets.multipleTargets?(move.pbTarget(user)) &&
-       (NEWEST_BATTLE_MECHANICS || move.damagingMove?)
+       (NEWEST_BATTLE_MECHANICS || move.damagingMove?) && !unseenfist
       @battle.pbCommonAnimation("WideGuard",target)
       @battle.pbDisplay(_INTL("Wide Guard protected {1}!",target.pbThis(true)))
       target.damageState.protected = true
@@ -322,7 +325,7 @@ class PokeBattle_Battler
     end
     if move.canProtectAgainst?
       # Quick Guard
-      if target.pbOwnSide.effects[PBEffects::QuickGuard] &&
+      if target.pbOwnSide.effects[PBEffects::QuickGuard] && !unseenfist &&
          @battle.choices[user.index][4]>0   # Move priority saved from pbCalculatePriority
         @battle.pbCommonAnimation("QuickGuard",target)
         @battle.pbDisplay(_INTL("Quick Guard protected {1}!",target.pbThis(true)))
@@ -331,7 +334,7 @@ class PokeBattle_Battler
         return false
       end
       # Protect
-      if target.effects[PBEffects::Protect]
+      if target.effects[PBEffects::Protect] && !unseenfist
         @battle.pbCommonAnimation("Protect",target)
         @battle.pbDisplay(_INTL("{1} protected itself!",target.pbThis))
         target.damageState.protected = true
@@ -339,7 +342,7 @@ class PokeBattle_Battler
         return false
       end
       # King's Shield
-      if target.effects[PBEffects::KingsShield] && move.damagingMove?
+      if target.effects[PBEffects::KingsShield] && move.damagingMove? && !unseenfist
         @battle.pbCommonAnimation("KingsShield",target)
         @battle.pbDisplay(_INTL("{1} protected itself!",target.pbThis))
         target.damageState.protected = true
@@ -352,7 +355,7 @@ class PokeBattle_Battler
         return false
       end
       # Spiky Shield
-      if target.effects[PBEffects::SpikyShield]
+      if target.effects[PBEffects::SpikyShield] && !unseenfist
         @battle.pbCommonAnimation("SpikyShield",target)
         @battle.pbDisplay(_INTL("{1} protected itself!",target.pbThis))
         target.damageState.protected = true
@@ -366,7 +369,7 @@ class PokeBattle_Battler
         return false
       end
       # Baneful Bunker
-      if target.effects[PBEffects::BanefulBunker]
+      if target.effects[PBEffects::BanefulBunker] && !unseenfist
         @battle.pbCommonAnimation("BanefulBunker",target)
         @battle.pbDisplay(_INTL("{1} protected itself!",target.pbThis))
         target.damageState.protected = true
@@ -377,12 +380,17 @@ class PokeBattle_Battler
         return false
       end
       # Mat Block
-      if target.pbOwnSide.effects[PBEffects::MatBlock] && move.damagingMove?
+      if target.pbOwnSide.effects[PBEffects::MatBlock] && move.damagingMove? && !unseenfist
         # NOTE: Confirmed no common animation for this effect.
         @battle.pbDisplay(_INTL("{1} was blocked by the kicked-up mat!",move.name))
         target.damageState.protected = true
         @battle.successStates[user.index].protected = true
         return false
+      end
+      # Quick Parry
+      if target.effects[PBEffects::QuickParry] && move.pbContactMove?(target) && !unseenfist
+        target.damageState.quickParry = (move.pbCalcDamage(user,target) * 2)
+        @battle.successStates[user.index].protected = true
       end
     end
     # Magic Coat/Magic Bounce

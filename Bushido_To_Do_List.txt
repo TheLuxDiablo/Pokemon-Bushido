@@ -11,8 +11,16 @@ add menu screen script
 	- Change font
 	- Add Katana progression (?)
 change grass autotile to be less outlined/fit more with the trees
+- Purge old splice scripting
+
 
 Things done:
+
+2/10/21
+- MKXP Port
+
+
+
 2/9/21
 - installed mid battle dialogue
 	- early shadow clan mid-battle dialogue example

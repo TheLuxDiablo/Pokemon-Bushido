@@ -18,6 +18,12 @@ module PBTerrain
   SootGrass       = 14
   Bridge          = 15
   Puddle          = 16
+  PoisonBog       = 17
+  UpArrow         = 18
+  DownArrow       = 19
+  LeftArrow       = 20
+  RightArrow      = 21
+  FallHole        = 22
 
   def self.isSurfable?(tag)
     return PBTerrain.isWater?(tag)
@@ -71,6 +77,30 @@ module PBTerrain
 
   def self.isIce?(tag)
     return tag==PBTerrain::Ice
+  end
+
+  def self.isBog?(tag)
+    return tag==PBTerrain::PoisonBog
+  end
+
+  def self.isUpArrow?(tag)
+    return tag==PBTerrain::UpArrow
+  end
+
+  def self.isDownArrow?(tag)
+    return tag==PBTerrain::DownArrow
+  end
+
+  def self.isLeftArrow?(tag)
+    return tag==PBTerrain::LeftArrow
+  end
+
+  def self.isRightArrow?(tag)
+    return tag==PBTerrain::RightArrow
+  end
+
+  def self.isFallHole?(tag)
+    return tag==PBTerrain::FallHole
   end
 
   def self.isBridge?(tag)

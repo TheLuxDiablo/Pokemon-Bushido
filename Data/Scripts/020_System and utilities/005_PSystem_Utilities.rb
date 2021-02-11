@@ -93,6 +93,17 @@ end
 
 # Returns a language ID
 def pbGetLanguage()
+  if !System.platform[/Windows/]
+    lang = System.user_language[0..1]
+    return 1 if lang == "ja" # Japanese
+    return 2 if lang == "en" # English
+    return 3 if lang == "fr" # French
+    return 4 if lang == "it" # Italian
+    return 5 if lang == "de" # German
+    return 6 if lang == "es" # Spanish
+    return 7 if lang == "ko" # Korean
+    return 2 # Use 'English' by default
+  end
   getUserDefaultLangID = Win32API.new("kernel32","GetUserDefaultLangID","","i") rescue nil
   ret = 0
   ret = getUserDefaultLangID.call()&0x3FF if getUserDefaultLangID
@@ -727,8 +738,10 @@ def pbSuggestTrainerName(gender)
     userName[0,1] = userName[0,1].upcase
     return userName
   end
-  owner = MiniRegistry.get(MiniRegistry::HKEY_LOCAL_MACHINE,
-     "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion","RegisteredOwner","")
+  owner="" # ~Zoro
+  owner=MiniRegistry.get(MiniRegistry::HKEY_LOCAL_MACHINE,
+    "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion",
+    "RegisteredOwner","") if System.platform[/Windows/]
   owner = owner.gsub(/\s+.*$/,"")
   if owner.length>0 && owner.length<7
     owner[0,1] = owner[0,1].upcase
@@ -738,6 +751,10 @@ def pbSuggestTrainerName(gender)
 end
 
 def pbGetUserName
+  if !System.platform[/Windows/]
+    user = ENV["USER"]
+    return (user ? user : "")
+  end
   buffersize = 100
   getUserName=Win32API.new('advapi32.dll','GetUserName','pp','i')
   10.times do

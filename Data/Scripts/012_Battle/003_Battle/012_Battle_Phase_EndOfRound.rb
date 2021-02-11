@@ -583,6 +583,18 @@ class PokeBattle_Battle
           pbDisplay(_INTL("{1} finally got its act together!",b.pbThis))
         end
       end
+      # Hunger Switch
+      if b.hasWorkingAbility(:HUNGERSWITCH) && isConst?(b.species,PBSpecies,:MORPEKO)
+        b.form=(b.form==0) ? 1 : 0
+        b.pbUpdate(true)
+        scene.pbChangePokemon(b,b.pokemon)
+        if b.form==1
+          pbDisplay(_INTL("{1} transformed to Hangry Mode!",b.pbThis))
+        else
+          pbDisplay(_INTL("{1} transformed to Full Belly Mode!",b.pbThis))
+        end
+        PBDebug.log("[Form changed] #{b.pbThis} changed to form #{b.form}")
+      end
       # Bad Dreams, Moody, Speed Boost
       BattleHandlers.triggerEOREffectAbility(b.ability,b,self) if b.abilityActive?
       # Flame Orb, Sticky Barb, Toxic Orb
@@ -635,6 +647,7 @@ class PokeBattle_Battle
       b.effects[PBEffects::Roost]            = false
       b.effects[PBEffects::Snatch]           = 0
       b.effects[PBEffects::SpikyShield]      = false
+      b.effects[PBEffects::QuickParry]       = false
       b.effects[PBEffects::Spotlight]        = 0
       b.effects[PBEffects::ThroatChop]       -= 1 if b.effects[PBEffects::ThroatChop]>0
       b.lastHPLost                           = 0

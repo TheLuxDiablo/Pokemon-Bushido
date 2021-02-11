@@ -7,6 +7,7 @@ class PokeBattle_DamageState
   attr_accessor :magicBounce
   attr_accessor :totalHPLost     # Like hpLost, but cumulative over all hits
   attr_accessor :fainted         # Whether battler was knocked out by the move
+  attr_accessor :quickParry
 
   attr_accessor :missed          # Whether the move failed the accuracy check
   attr_accessor :calcDamage      # Calculated damage
@@ -31,6 +32,7 @@ class PokeBattle_DamageState
     @magicBounce        = false
     @totalHPLost        = 0
     @fainted            = false
+    @quickParry         = 0
     resetPerHit
   end
 

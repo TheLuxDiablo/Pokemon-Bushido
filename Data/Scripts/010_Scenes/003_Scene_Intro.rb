@@ -1,7 +1,7 @@
 class IntroEventScene < EventScene
-  TICKS_PER_PIC         = 40   # 20 ticks per second, so 2 seconds
-  TICKS_PER_ENTER_FLASH = 40
-  FADE_TICKS            = 8
+  TICKS_PER_PIC         = 200   # 20 ticks per second, so 2 seconds
+  TICKS_PER_ENTER_FLASH = 60
+  FADE_TICKS            = 10
 
   def initialize(pics,splash,_viewport=nil)
     super(nil)

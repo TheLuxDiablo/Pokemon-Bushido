@@ -71,7 +71,7 @@ class Window_UnformattedTextPokemon < SpriteWindow_Base
   def resizeHeightToFit(text,width=-1)   # width is current window width
     dims=resizeToFitInternal(text,width)
     self.width=width<0 ? Graphics.width : width
-    self.height=dims[1]+self.borderY
+    self.height = dims[1] + self.borderY - (mkxp? ? 4 : 0)
     refresh
   end
 
@@ -715,10 +715,7 @@ class Window_InputNumberPokemon < SpriteWindow_Base
 
   def textHelper(x,y,text,i)
     textwidth=self.contents.text_size(text).width
-    self.contents.font.color=@shadowColor
-    pbDrawShadow(self.contents,x+(12-textwidth/2),y, textwidth+4, 32, text)
-    self.contents.font.color=@baseColor
-    self.contents.draw_text(x+(12-textwidth/2),y, textwidth+4, 32, text)
+    pbDrawShadowText(self.contents,x+(12-textwidth/2),y + 2, textwidth+4 , 32, text, @baseColor, @shadowColor)
     if @index==i && @active && @frame/15==0
       colors=getDefaultTextColors(self.windowskin)
       self.contents.fill_rect(x+(12-textwidth/2),y+30,textwidth,2,colors[0])
@@ -1109,7 +1106,7 @@ class Window_DrawableCommand < SpriteWindow_SelectableEx
 
   def drawCursor(index,rect)
     if self.index==index
-      pbCopyBitmap(self.contents,@selarrow.bitmap,rect.x,rect.y)
+      pbCopyBitmap(self.contents,@selarrow.bitmap,rect.x,rect.y + ((mkxp? && $PokemonSystem.font == 0) ? -3 : 0))
     end
     return Rect.new(rect.x+16,rect.y,rect.width-16,rect.height)
   end
@@ -1227,7 +1224,7 @@ class Window_CommandPokemon < Window_DrawableCommand
   def drawItem(index,_count,rect)
     pbSetSystemFont(self.contents) if @starting
     rect=drawCursor(index,rect)
-    pbDrawShadowText(self.contents,rect.x,rect.y,rect.width,rect.height,
+    pbDrawShadowText(self.contents,rect.x,rect.y + (mkxp? ? 6 : 0),rect.width,rect.height,
        @commands[index],self.baseColor,self.shadowColor)
   end
 end
@@ -1331,7 +1328,7 @@ class Window_AdvancedCommandPokemon < Window_DrawableCommand
     dims=[]
     getAutoDims(commands,dims,width)
     self.width=dims[0]
-    self.height=dims[1]
+    self.height=dims[1] - (mkxp? ? 6 : 0)
   end
 
   def itemCount
@@ -1343,7 +1340,7 @@ class Window_AdvancedCommandPokemon < Window_DrawableCommand
     rect=drawCursor(index,rect)
     if toUnformattedText(@commands[index]).gsub(/\n/,"")==@commands[index]
       # Use faster alternative for unformatted text without line breaks
-      pbDrawShadowText(self.contents,rect.x,rect.y,rect.width,rect.height,
+      pbDrawShadowText(self.contents,rect.x,rect.y + (mkxp? ? 6 : 0),rect.width,rect.height,
          @commands[index],self.baseColor,self.shadowColor)
     else
       chars=getFormattedText(

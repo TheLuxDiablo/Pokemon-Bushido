@@ -286,6 +286,17 @@ class PokeBattle_Move
       target.effects[PBEffects::Substitute] = 0
       @battle.pbDisplay(_INTL("{1}'s substitute faded!",target.pbThis))
     end
+    # Quick Parry
+    if target.effects[PBEffects::QuickParry] && target.damageState.quickParry > 0
+      if user.affectedByContactEffect?
+        @battle.pbCommonAnimation("QuickParry",target)
+        @battle.pbDisplay(_INTL("{1} parried the attack!",target.pbThis))
+        @battle.scene.pbDamageAnimation(user)
+        user.pbReduceHP(target.damageState.quickParry/5,false)
+        target.effects[PBEffects::QuickParry] = false
+        target.damageState.quickParry = 0
+      end
+    end
   end
 
   def pbEndureKOMessage(target)

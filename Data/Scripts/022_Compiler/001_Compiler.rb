@@ -50,7 +50,7 @@ def pbPrintException(e)
     maxlength = ($INTERNAL) ? 25 : 10
     e.backtrace[0,maxlength].each { |i| btrace += "#{i}\r\n" }
   end
-  btrace.gsub!(/Section(\d+)/) { $RGSS_SCRIPTS[$1.to_i][1] }
+#  btrace.gsub!(/Section(\d+)/) { $RGSS_SCRIPTS[$1.to_i][1] }
   message = "[Pokémon Essentials version #{ESSENTIALS_VERSION}]\r\n"
   message += "#{ERROR_TEXT}"   # For third party scripts to add to
   message += "Exception: #{e.class}\r\n"
@@ -197,7 +197,7 @@ def pbEachFileSectionEx(f)
     end
     lineno += 1
     Graphics.update if lineno%500==0
-    Win32API.SetWindowText(_INTL("Processing {1} line {2}",FileLineData.file,lineno)) if lineno%50==0
+    pbSetWindowText(_INTL("Processing {1} line {2}",FileLineData.file,lineno)) if lineno%50==0
   }
   yield lastsection,sectionname  if havesection
 end
@@ -1184,6 +1184,7 @@ def pbCompileAllData(mustCompile)
   if !$INEDITOR && LANGUAGES.length>=2
     pbLoadMessages("Data/"+LANGUAGES[$PokemonSystem.language][1])
   end
+  pbSetWindowText(System.game_title) if mkxp?
 end
 
 def pbCompiler
@@ -1247,6 +1248,7 @@ def pbCompiler
     end
     # Check data files and PBS files, and recompile if any PBS file was edited
     # more recently than the data files were last created
+=begin
     for i in 0...dataFiles.length
       begin
         File.open("Data/#{dataFiles[i]}") { |file|
@@ -1265,6 +1267,7 @@ def pbCompiler
       end
     end
     mustCompile |= (latestTextTime>=latestDataTime)
+=end
     # Should recompile if holding Ctrl
     Input.update
     mustCompile = true if Input.press?(Input::CTRL)
@@ -1278,7 +1281,7 @@ def pbCompiler
       end
     end
     # Recompile all data
-    pbCompileAllData(mustCompile) { |msg| Win32API.SetWindowText(msg) }
+    pbCompileAllData(mustCompile) { |msg| pbSetWindowText(msg) }
   rescue Exception
     e = $!
     raise e if "#{e.class}"=="Reset" || e.is_a?(Reset) || e.is_a?(SystemExit)

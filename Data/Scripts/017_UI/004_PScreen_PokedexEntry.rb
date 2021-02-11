@@ -104,14 +104,20 @@ class PokemonPokedexInfo_Scene
     @sprites = {}
     @sprites["background"] = IconSprite.new(0,0,@viewport)
     @sprites["infosprite"] = PokemonSprite.new(@viewport)
+    @sprites["infosprite"].tone = Tone.new(-255,-255,-255)
     @sprites["infosprite"].setOffset(PictureOrigin::Center)
     @sprites["infosprite"].x = 104
     @sprites["infosprite"].y = 136
+    @sprites["formicon"] = PokemonSpeciesIconSprite.new(0,@viewport)
+    @sprites["formicon"].tone = Tone.new(-255,-255,-255)
+    @sprites["formicon"].setOffset(PictureOrigin::Center)
+    @sprites["formicon"].x = 82
+    @sprites["formicon"].y = 328
     @sprites["overlay"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
     pbSetSystemFont(@sprites["overlay"].bitmap)
     pbUpdateDummyPokemon
     drawPage(@page)
-    pbFadeInAndShow(@sprites) { pbUpdate }
+    pbFadeInAndShow(@sprites) { for key in @sprites.keys; next if key == "formicon"; @sprites[key].update; end }
   end
 
   def pbEndScene
@@ -209,7 +215,11 @@ class PokemonPokedexInfo_Scene
     @sprites["areaoverlay"].visible   = (@page==2) if @sprites["areaoverlay"]
     @sprites["formfront"].visible     = (@page==3) if @sprites["formfront"]
     @sprites["formback"].visible      = (@page==3) if @sprites["formback"]
-    @sprites["formicon"].visible      = (@page==3) if @sprites["formicon"]
+    @sprites["formicon"].visible      = (@page==3 || @page==1) if @sprites["formicon"]
+    @sprites["formicon"].x = 242 if @page==1
+    @sprites["formicon"].y = 158 if @page==1
+    @sprites["formicon"].x = 82 if @page==3
+    @sprites["formicon"].y = 328 if @page==3
     # Draw page-specific information
     case page
     when 1; drawPageInfo
@@ -219,14 +229,18 @@ class PokemonPokedexInfo_Scene
   end
 
   def drawPageInfo
-    @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_info"))
-    overlay = @sprites["overlay"].bitmap
-    base   = Color.new(88,88,80)
-    shadow = Color.new(168,184,184)
-    imagepos = []
-    if @brief
-      imagepos.push([_INTL("Graphics/Pictures/Pokedex/overlay_info"),0,0])
+    if !@brief
+      @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_info"))
+    else
+      @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_info_reg"))
     end
+    overlay = @sprites["overlay"].bitmap
+    base   = Color.new(96,96,96)
+    shadow = Color.new(208,208,208)
+    imagepos = []
+    #if @brief
+  #    imagepos.push([_INTL("Graphics/Pictures/Pokedex/overlay_info"),0,0])
+  #  end
     # Write various bits of text
     indexText = "???"
     if @dexlist[@index][4]>0
@@ -236,9 +250,9 @@ class PokemonPokedexInfo_Scene
     end
     textpos = [
        [_INTL("{1}{2} {3}",indexText," ",PBSpecies.getName(@species)),
-          246,42,0,Color.new(248,248,248),Color.new(0,0,0)],
-       [_INTL("Height"),314,158,0,base,shadow],
-       [_INTL("Weight"),314,190,0,base,shadow]
+          246,46,0,Color.new(0,0,0),Color.new(248,248,248)],
+       [_INTL("Height"),300,158,0,base,shadow],
+       [_INTL("Weight"),300,190,0,base,shadow]
     ]
     if $Trainer.owned[@species]
       speciesData = pbGetSpeciesData(@species,@form)
@@ -246,32 +260,34 @@ class PokemonPokedexInfo_Scene
       # Write the kind
       kind = pbGetMessage(MessageTypes::Kinds,fSpecies)
       kind = pbGetMessage(MessageTypes::Kinds,@species) if !kind || kind==""
-      textpos.push([_INTL("{1} Pokémon",kind),246,74,0,base,shadow])
+      textpos.push([_INTL("{1} Pokémon",kind),246,78,0,Color.new(0,0,0),Color.new(248,248,248)])
       # Write the height and weight
       height = speciesData[SpeciesHeight] || 1
       weight = speciesData[SpeciesWeight] || 1
       if pbGetCountry==0xF4   # If the user is in the United States
         inches = (height/0.254).round
         pounds = (weight/0.45359).round
-        textpos.push([_ISPRINTF("{1:d}'{2:02d}\"",inches/12,inches%12),460,158,1,base,shadow])
-        textpos.push([_ISPRINTF("{1:4.1f} lbs.",pounds/10.0),494,190,1,base,shadow])
+        textpos.push([_ISPRINTF("{1:d}'{2:02d}\"",inches/12,inches%12),455,158,1,base,shadow])
+        textpos.push([_ISPRINTF("{1:4.1f} lbs.",pounds/10.0),479,190,1,base,shadow])
       else
-        textpos.push([_ISPRINTF("{1:.1f} m",height/10.0),470,158,1,base,shadow])
-        textpos.push([_ISPRINTF("{1:.1f} kg",weight/10.0),482,190,1,base,shadow])
+        textpos.push([_ISPRINTF("{1:.1f} m",height/10.0),455,158,1,base,shadow])
+        textpos.push([_ISPRINTF("{1:.1f} kg",weight/10.0),467,190,1,base,shadow])
       end
       # Draw the Pokédex entry text
       entry = pbGetMessage(MessageTypes::Entries,fSpecies)
       entry = pbGetMessage(MessageTypes::Entries,@species) if !entry || entry==""
       drawTextEx(overlay,40,240,Graphics.width-(40*2),4,entry,base,shadow)
       # Draw the footprint
+=begin
       footprintfile = pbPokemonFootprintFile(@species,@form)
       if footprintfile
         footprint = BitmapCache.load_bitmap(footprintfile)
         overlay.blt(226,138,footprint,footprint.rect)
         footprint.dispose
       end
+=end
       # Show the owned icon
-      imagepos.push(["Graphics/Pictures/Pokedex/icon_own",212,44])
+      imagepos.push(["Graphics/Pictures/Pokedex/icon_own",212,46])
       # Draw the type icon(s)
       type1 = speciesData[SpeciesType1] || 0
       type2 = speciesData[SpeciesType2] || type1
@@ -281,15 +297,18 @@ class PokemonPokedexInfo_Scene
       overlay.blt(396,120,@typebitmap.bitmap,type2rect) if type1!=type2
     else
       # Write the kind
-      textpos.push([_INTL("????? Pokémon"),246,74,0,base,shadow])
+      textpos.push([_INTL("????? Pokémon"),246,78,0,Color.new(0,0,0),Color.new(248,248,248)])
       # Write the height and weight
       if pbGetCountry()==0xF4 # If the user is in the United States
-        textpos.push([_INTL("???'??\""),460,158,1,base,shadow])
-        textpos.push([_INTL("????.? lbs."),494,190,1,base,shadow])
+        textpos.push([_INTL("???'??\""),455,158,1,base,shadow])
+        textpos.push([_INTL("????.? lbs."),479,190,1,base,shadow])
       else
-        textpos.push([_INTL("????.? m"),470,158,1,base,shadow])
-        textpos.push([_INTL("????.? kg"),482,190,1,base,shadow])
+        textpos.push([_INTL("????.? m"),455,158,1,base,shadow])
+        textpos.push([_INTL("????.? kg"),467,190,1,base,shadow])
       end
+    end
+    if @brief
+      textpos.push([_INTL("Pokedex Registration Completed"),256,3,2,Color.new(248,248,248),Color.new(0,0,0)])
     end
     # Draw all text
     pbDrawTextPositions(@sprites["overlay"].bitmap,textpos)
@@ -300,8 +319,8 @@ class PokemonPokedexInfo_Scene
   def drawPageArea
     @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_area"))
     overlay = @sprites["overlay"].bitmap
-    base   = Color.new(88,88,80)
-    shadow = Color.new(168,184,184)
+    base   = Color.new(96,96,96)
+    shadow = Color.new(208,208,208)
     @sprites["areahighlight"].bitmap.clear
     # Fill the array "points" with all squares of the region map in which the
     # species can be found
@@ -367,9 +386,8 @@ class PokemonPokedexInfo_Scene
     textpos = []
     if points.length==0
       pbDrawImagePositions(overlay,[
-         [sprintf("Graphics/Pictures/Pokedex/overlay_areanone"),108,188]
+         [sprintf("Graphics/Pictures/Pokedex/overlay_areanone"),108,178]
       ])
-      textpos.push([_INTL("Area unknown"),Graphics.width/2,Graphics.height/2,2,base,shadow])
     end
     textpos.push([pbGetMessage(MessageTypes::RegionNames,@region),414,44,2,base,shadow])
     textpos.push([_INTL("{1}'s area",PBSpecies.getName(@species)),
@@ -380,8 +398,8 @@ class PokemonPokedexInfo_Scene
   def drawPageForms
     @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_forms"))
     overlay = @sprites["overlay"].bitmap
-    base   = Color.new(88,88,80)
-    shadow = Color.new(168,184,184)
+    base   = Color.new(96,96,96)
+    shadow = Color.new(208,208,208)
     # Write species and form name
     formname = ""
     for i in @available
@@ -529,6 +547,33 @@ class PokemonPokedexInfo_Scene
   end
 
   def pbSceneBrief
+    pbSEPlay("Pkmn exp gain")
+    v = -255
+    for i in 0...127
+      @sprites["infosprite"].tone = Tone.new(v,v,v)
+      @sprites["formicon"].tone = Tone.new(v,v,v)
+      v+=(2)
+      Graphics.update
+    end
+    @sprites["infosprite"].tone = Tone.new(0,0,0)
+    @sprites["formicon"].tone = Tone.new(0,0,0)
+    pbSEPlay("Pkmn exp full")
+    for i in 0...5
+      @sprites["infosprite"].tone = Tone.new(46*i,40*i,6*i)
+      @sprites["infosprite"].zoom_x += (0.05)*i
+      @sprites["infosprite"].zoom_y += (0.05)*i
+      Graphics.update
+    end
+    v=255
+    for i in 0...5
+      @sprites["infosprite"].tone = Tone.new(230-(46*i),200-(40*i),30-(6*i))
+      @sprites["infosprite"].zoom_x -= (0.05)*i
+      @sprites["infosprite"].zoom_y -= (0.05)*i
+      Graphics.update
+    end
+    @sprites["infosprite"].tone = Tone.new(0,0,0)
+    @sprites["formicon"].tone = Tone.new(0,0,0)
+    pbWait(8)
     pbPlayCrySpecies(@species,@form)
     loop do
       Graphics.update
