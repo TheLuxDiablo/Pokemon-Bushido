@@ -37,15 +37,6 @@ class PokeBattle_Pokemon
     return pbGetFSpeciesFromForm(@species,formSimple)
   end
 
-  alias __mf_compatibleWithMove? compatibleWithMove?   # Deprecated
-  def compatibleWithMove?(move)
-    v = MultipleForms.call("getMoveCompatibility",self)
-    if v!=nil
-      return v.any? { |j| j==move }
-    end
-    return __mf_compatibleWithMove?(move)
-  end
-
   alias __mf_initialize initialize
   def initialize(*args)
     @form = (pbGetSpeciesFromFSpecies(args[0])[1] rescue 0)
@@ -63,7 +54,7 @@ end
 
 
 class PokeBattle_RealBattlePeer
-  def pbOnEnteringBattle(battle,pkmn,wild=false)
+  def pbOnEnteringBattle(_battle,pkmn,wild=false)
     f = MultipleForms.call("getFormOnEnteringBattle",pkmn,wild)
     pkmn.form = f if f
   end
@@ -275,7 +266,7 @@ MultipleForms.register(:PIKACHU,{
 
 MultipleForms.register(:UNOWN,{
   "getFormOnCreation" => proc { |pkmn|
-    next rand(28)+28
+    next rand(28)
   }
 })
 
@@ -288,20 +279,6 @@ MultipleForms.register(:SPINDA,{
 MultipleForms.register(:CASTFORM,{
   "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
     next 0
-  }
-})
-
-MultipleForms.register(:TOGEKISS,{
-  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
-    next 1
-  },
-  "getFormOnCreation"=>proc{|pokemon|
-     maps=[1]
-     if $game_map && maps.include?($game_map.map_id)
-       next 0
-     else
-       next 1
-     end
   }
 })
 
@@ -318,7 +295,6 @@ MultipleForms.register(:BURMY,{
   },
   "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
     next if !endBattle || !usedInBattle
-    env = battle.environment
     case battle.environment
     when PBEnvironment::Rock, PBEnvironment::Sand, PBEnvironment::Cave
       next 1   # Sandy Cloak
@@ -344,12 +320,6 @@ MultipleForms.register(:WORMADAM,{
 })
 
 MultipleForms.register(:CHERRIM,{
-  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
-    next 0
-  }
-})
-
-MultipleForms.register(:MORPEKO,{
   "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
     next 0
   }
@@ -406,8 +376,7 @@ MultipleForms.register(:ROTOM,{
 MultipleForms.register(:GIRATINA,{
   "getForm" => proc { |pkmn|
     maps = [49,50,51,72,73]   # Map IDs for Origin Forme
-    if isConst?(pkmn.item,PBItems,:GRISEOUSORB) ||
-       maps.include?($game_map.map_id)
+    if pkmn.hasItem?(:GRISEOUSORB) || maps.include?($game_map.map_id)
       next 1
     end
     next 0
@@ -446,8 +415,8 @@ MultipleForms.register(:ARCEUS,{
     ret = 0
     next 0 if !pkmn.hasItem?
     typeArray.each do |f, items|
-      for i in items
-        next if !isConst?(pkmn.item,PBItems,i)
+      for item in items
+        next if !pkmn.hasItem?(item)
         ret = f
         break
       end
@@ -456,42 +425,6 @@ MultipleForms.register(:ARCEUS,{
     next ret
   }
 })
-
-#THUNDAGA ARENAYFORMS
-MultipleForms.register(:ARENAY,{
-  "getForm"=>proc{|pokemon|
-    next 1  if isConst?(pokemon.item,PBItems,:FIRECELL)
-    next 2  if isConst?(pokemon.item,PBItems,:WATERCELL)
-    next 3  if isConst?(pokemon.item,PBItems,:GRASSCELL)
-    next 4  if isConst?(pokemon.item,PBItems,:FLYCELL)
-    next 5  if isConst?(pokemon.item,PBItems,:STEELCELL)
-    next 6  if isConst?(pokemon.item,PBItems,:ELECCELL)
-    next 7  if isConst?(pokemon.item,PBItems,:ICECELL)
-    next 8  if isConst?(pokemon.item,PBItems,:PSYCELL)
-    next 9  if isConst?(pokemon.item,PBItems,:BUGCELL)
-    next 10 if isConst?(pokemon.item,PBItems,:GROUNDCELL)
-    next 11 if isConst?(pokemon.item,PBItems,:POISONCELL)
-    next 12 if isConst?(pokemon.item,PBItems,:DRAGONCELL)
-    next 13 if isConst?(pokemon.item,PBItems,:FIGHTCELL)
-    next 14 if isConst?(pokemon.item,PBItems,:ROCKCELL)
-    next 15 if isConst?(pokemon.item,PBItems,:GHOSTCELL)
-    next 16 if isConst?(pokemon.item,PBItems,:DARKCELL)
-    next 17 if isConst?(pokemon.item,PBItems,:FAIRYCELL)
-    next 0
-  },
-  "onSetForm" => proc { |pkmn,form,oldForm|
-    pkmn.moves.each_with_index do |move,i|
-      next if !move || move.id==0
-      if pkmn.tmMoves.include?(move.id) && !pkmn.hasType?(pbGetMoveData(move.id)[MOVE_TYPE])
-        pbMessage(_INTL("{1} forgot {2}...",pkmn.name,PBMoves.getName(move.id)))
-        pkmn.pbDeleteMoveAtIndex(i)
-      end
-    end
-    pkmn.pbLearnMove(:CELLSHOT) if pkmn.numMoves==0
-  }
-})
-
-MultipleForms.copy(:ARENAY,:DRAGAIA,:PRISMATRIX)
 
 MultipleForms.register(:BASCULIN,{
   "getFormOnCreation" => proc { |pkmn|
@@ -574,17 +507,17 @@ MultipleForms.register(:MELOETTA,{
 
 MultipleForms.register(:GENESECT,{
   "getForm" => proc { |pkmn|
-    next 1 if isConst?(pkmn.item,PBItems,:SHOCKDRIVE)
-    next 2 if isConst?(pkmn.item,PBItems,:BURNDRIVE)
-    next 3 if isConst?(pkmn.item,PBItems,:CHILLDRIVE)
-    next 4 if isConst?(pkmn.item,PBItems,:DOUSEDRIVE)
+    next 1 if pkmn.hasItem?(:SHOCKDRIVE)
+    next 2 if pkmn.hasItem?(:BURNDRIVE)
+    next 3 if pkmn.hasItem?(:CHILLDRIVE)
+    next 4 if pkmn.hasItem?(:DOUSEDRIVE)
     next 0
   }
 })
 
 MultipleForms.register(:GRENINJA,{
   "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
-    next 0 if pkmn.fainted? || endBattle
+    next 1 if pkmn.form == 2 && (pkmn.fainted? || endBattle)
   }
 })
 
@@ -614,6 +547,14 @@ MultipleForms.register(:FURFROU,{
     pkmn.formTime = (form>0) ? pbGetTimeNow.to_i : nil
   }
 })
+
+MultipleForms.register(:ESPURR,{
+  "getForm" => proc { |pkmn|
+    next pkmn.gender
+  }
+})
+
+MultipleForms.copy(:ESPURR,:MEOWSTIC)
 
 MultipleForms.register(:AEGISLASH,{
   "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
@@ -712,8 +653,8 @@ MultipleForms.register(:SILVALLY,{
     }
     ret = 0
     typeArray.each do |f, items|
-      for i in items
-        next if !isConst?(pkmn.item,PBItems,i)
+      for item in items
+        next if !pkmn.hasItem?(item)
         ret = f
         break
       end

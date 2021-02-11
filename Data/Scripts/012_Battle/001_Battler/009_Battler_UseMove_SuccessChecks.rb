@@ -16,6 +16,14 @@ class PokeBattle_Battler
       end
       return false
     end
+    # Stuff Cheeks
+    if move.function=="183" && (self.item && !pbIsBerry?(self.item))
+      if showMessages
+        msg = _INTL("{1} can't use that move because it doesn't have any berry!",pbThis,move.name)
+        (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
+      end
+      return false
+    end
     # Heal Block
     if @effects[PBEffects::HealBlock]>0 && move.healingMove?
       if showMessages
@@ -54,6 +62,20 @@ class PokeBattle_Battler
         end
       else
         @effects[PBEffects::ChoiceBand] = -1
+      end
+    end
+    # Gorilla Tactics
+    if @effects[PBEffects::GorillaTactics]>=0
+      if hasActiveAbility?(:GORILLATACTICS)
+        if move.id!=@effects[PBEffects::GorillaTactics]
+          if showMessages
+            msg = _INTL("{1} allows the use of only {2} !",abilityName,PBMoves.getName(@effects[PBEffects::GorillaTactics]))
+            (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
+          end
+          return false
+        end
+      else
+        @effects[PBEffects::GorillaTactics] = -1
       end
     end
     # Taunt
@@ -103,7 +125,6 @@ class PokeBattle_Battler
   # Return true if Pokémon continues attacking (although it may have chosen to
   # use a different move in disobedience), or false if attack stops.
   def pbObedienceCheck?(choice)
-    return true if ALWAYS_LISTEN
     return true if usingMultiTurnAttack?
     return true if choice[0]!=:UseMove
     return true if !@battle.internalBattle
@@ -289,10 +310,10 @@ class PokeBattle_Battler
   # Includes move-specific failure conditions, protections and type immunities.
   #=============================================================================
   def pbSuccessCheckAgainstTarget(move,user,target)
+    # Unseen Fist
+    unseenfist=isConst?(user.ability,PBAbilities,:UNSEENFIST) && move.contactMove?
     typeMod = move.pbCalcTypeMod(move.calcType,user,target)
     target.damageState.typeMod = typeMod
-    # thundaga adding unseen fist
-    unseenfist=(isConst?(user.ability,PBAbilities,:UNSEENFIST) && move.pbContactMove?(user))
     # Two-turn attacks can't fail here in the charging turn
     return true if user.effects[PBEffects::TwoTurnAttack]>0
     # Move-specific failures
@@ -306,7 +327,7 @@ class PokeBattle_Battler
     end
     # Crafty Shield
     if target.pbOwnSide.effects[PBEffects::CraftyShield] && user.index!=target.index &&
-       move.statusMove? && move.pbTarget(user)!=PBTargets::AllBattlers && !unseenfist
+       move.statusMove? && move.pbTarget(user)!=PBTargets::AllBattlers && !unseenfist && !move.function == "18E"
       @battle.pbCommonAnimation("CraftyShield",target)
       @battle.pbDisplay(_INTL("Crafty Shield protected {1}!",target.pbThis(true)))
       target.damageState.protected = true
@@ -315,8 +336,9 @@ class PokeBattle_Battler
     end
     # Wide Guard
     if target.pbOwnSide.effects[PBEffects::WideGuard] && user.index!=target.index &&
-       PBTargets.multipleTargets?(move.pbTarget(user)) &&
-       (NEWEST_BATTLE_MECHANICS || move.damagingMove?) && !unseenfist
+       PBTargets.multipleTargets?(move.pbTarget(user)) && move.function != "17C" &&
+       (NEWEST_BATTLE_MECHANICS || move.damagingMove?) && !unseenfist 
+	   # move.function == 17C is Dragon Darts. 
       @battle.pbCommonAnimation("WideGuard",target)
       @battle.pbDisplay(_INTL("Wide Guard protected {1}!",target.pbThis(true)))
       target.damageState.protected = true
@@ -325,8 +347,8 @@ class PokeBattle_Battler
     end
     if move.canProtectAgainst?
       # Quick Guard
-      if target.pbOwnSide.effects[PBEffects::QuickGuard] && !unseenfist &&
-         @battle.choices[user.index][4]>0   # Move priority saved from pbCalculatePriority
+      if target.pbOwnSide.effects[PBEffects::QuickGuard] &&
+         @battle.choices[user.index][4]>0 && !unseenfist   # Move priority saved from pbCalculatePriority
         @battle.pbCommonAnimation("QuickGuard",target)
         @battle.pbDisplay(_INTL("Quick Guard protected {1}!",target.pbThis(true)))
         target.damageState.protected = true
@@ -341,6 +363,18 @@ class PokeBattle_Battler
         @battle.successStates[user.index].protected = true
         return false
       end
+      if target.effects[PBEffects::Obstruct] && !unseenfist
+        @battle.pbCommonAnimation("Obstruct",target)
+        @battle.pbDisplay(_INTL("{1} protected itself!",target.pbThis))
+        target.damageState.protected = true
+        @battle.successStates[user.index].protected = true
+        if move.pbContactMove?(user) && user.affectedByContactEffect?
+          if user.pbCanLowerStatStage?(PBStats::DEFENSE)
+            user.pbLowerStatStage(PBStats::DEFENSE,2,nil)
+          end
+        end
+        return false
+      end
       # King's Shield
       if target.effects[PBEffects::KingsShield] && move.damagingMove? && !unseenfist
         @battle.pbCommonAnimation("KingsShield",target)
@@ -349,7 +383,7 @@ class PokeBattle_Battler
         @battle.successStates[user.index].protected = true
         if move.pbContactMove?(user) && user.affectedByContactEffect?
           if user.pbCanLowerStatStage?(PBStats::ATTACK)
-            user.pbLowerStatStage(PBStats::ATTACK,2,nil)
+            user.pbLowerStatStage(PBStats::ATTACK,1,nil)
           end
         end
         return false
@@ -386,11 +420,6 @@ class PokeBattle_Battler
         target.damageState.protected = true
         @battle.successStates[user.index].protected = true
         return false
-      end
-      # Quick Parry
-      if target.effects[PBEffects::QuickParry] && move.pbContactMove?(target) && !unseenfist
-        target.damageState.quickParry = (move.pbCalcDamage(user,target) * 2)
-        @battle.successStates[user.index].protected = true
       end
     end
     # Magic Coat/Magic Bounce

@@ -648,12 +648,12 @@ def pbExclaim(event,id=EXCLAMATION_ANIMATION_ID,tinting=false)
     done = []
     for i in event
       if !done.include?(i.id)
-        sprite = $scene.spriteset.addUserAnimation(id,i.x,i.y,tinting,2)
+        sprite = $scene.spriteset.addUserAnimation(id,i.x,i.y-1,tinting,2)
         done.push(i.id)
       end
     end
   else
-    sprite = $scene.spriteset.addUserAnimation(id,event.x,event.y,tinting,2)
+    sprite = $scene.spriteset.addUserAnimation(id,event.x,event.y-1,tinting,2)
   end
   while !sprite.disposed?
     Graphics.update

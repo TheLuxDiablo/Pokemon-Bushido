@@ -71,10 +71,6 @@ class PokeBattle_Battle
     if pkmn.pokerusStage>=1   # Infected or cured
       evYield.collect! { |a| a*2 }
     end
-    # x20 EV gain when in the EV training dojo Thundaga
-    if $game_map.map_id==149
-      evYield.collect! { |a| a*20 }
-    end
     # Gain EVs for each stat in turn
     PBStats.eachStat do |s|
       evGain = evYield[s]

@@ -298,18 +298,6 @@ class PokeBattle_Battle
     when PBBattleTerrains::Psychic
       pbDisplay(_INTL("The battlefield is weird!"))
     end
-    # Announcing Ability Charm
-    if wildBattle?
-      eachOtherSideBattler do |b|
-         if $PokemonBag.pbHasItem?(:ABILITYCHARM) && b.pokemon.abilityIndex>=2
-          pbDisplay(_INTL("{1} activated!",PBItems.getName(getID(PBItems,:ABILITYCHARM))))
-          pbCommonAnimation("Shiny",b)
-          pbDisplay(_INTL("Looks like {1} has a Dream World Ability!",b.pbThis(true)))
-          break
-        end
-      end
-    end
-    #end
     # Abilities upon entering battle
     pbOnActiveAll
     # Main battle loop
@@ -359,7 +347,6 @@ class PokeBattle_Battle
       end
       tMoney *= 2 if @field.effects[PBEffects::AmuletCoin]
       tMoney *= 2 if @field.effects[PBEffects::HappyHour]
-      #tMoney *= 2 #Thundaga double money in Splice
       oldMoney = pbPlayer.money
       pbPlayer.money += tMoney
       moneyGained = pbPlayer.money-oldMoney

@@ -38,7 +38,7 @@ POKERUS_CHANCE       = 3
 #===============================================================================
 # * Whether outdoor maps should be shaded according to the time of day.
 #===============================================================================
-TIME_SHADING = true
+TIME_SHADING = false
 
 #===============================================================================
 # * Whether poisoned Pokémon will lose HP while walking around in the field.
@@ -353,11 +353,5 @@ LANGUAGES = [
 #  ["English", "english.dat"],
 #  ["Deutsch", "deutsch.dat"]
 ]
-#===============================================================================
-# * When turned on, the summary screen will have 4 pages and show the IV/EV
-#   stats of a pokemon (When turned on, the IV/EV will always be shown)
-# * The switch which has to be turned on to see the IV/EV stats in the
-#   summary screen
-#===============================================================================
-SHOW_IV_EV_IN_SUMMARY = true
-SHOW_IV_EV_IN_SUMMARY_SWITCH = 86
+
+DYNAMIC_PRIORITY = true

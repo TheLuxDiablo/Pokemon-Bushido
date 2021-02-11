@@ -61,6 +61,7 @@ module BattleHandlers
   # Abilities/items that trigger at the end of using a move
   UserAbilityEndOfMove                = AbilityHandlerHash.new
   TargetItemAfterMoveUse              = ItemHandlerHash.new
+  ItemOnStatLoss                      = ItemHandlerHash.new
   UserItemAfterMoveUse                = ItemHandlerHash.new
   TargetAbilityAfterMoveUse           = AbilityHandlerHash.new
   EndOfMoveItem                       = ItemHandlerHash.new   # Leppa Berry
@@ -362,6 +363,12 @@ module BattleHandlers
 
   #=============================================================================
 
+  def self.triggerItemOnStatLoss(item,battler,user,move,switched,battle)
+    ItemOnStatLoss.trigger(item,battler,user,move,switched,battle)
+  end
+
+  #=============================================================================
+
   def self.triggerExpGainModifierItem(item,battler,exp)
     ret = ExpGainModifierItem.trigger(item,battler,exp)
     return (ret!=nil) ? ret : -1
@@ -494,11 +501,8 @@ def pbBattleConfusionBerry(battler,battle,item,forced,flavor,confuseMsg)
   return false if !forced && !battler.canConsumePinchBerry?(item,false)
   itemName = PBItems.getName(item)
   battle.pbCommonAnimation("EatBerry",battler) if !forced
-  amt = (NEWEST_BATTLE_MECHANICS) ? battler.pbRecoverHP(battler.totalhp/2) : battler.pbRecoverHP(battler.totalhp/8)
-  #thundaga ripen
-  if battler.hasWorkingAbility(:RIPEN)
-    amt = (amt*2)
-  end
+  amt = (NEWEST_BATTLE_MECHANICS) ? battler.pbRecoverHP(battler.totalhp/3) : battler.pbRecoverHP(battler.totalhp/8)
+  amt *= 2 if battler.hasActiveAbility?(:RIPEN)
   if amt>0
     if forced
       PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
@@ -520,10 +524,7 @@ def pbBattleStatIncreasingBerry(battler,battle,item,forced,stat,increment=1)
   return false if !forced && !battler.canConsumePinchBerry?(item)
   return false if !battler.pbCanRaiseStatStage?(stat,battler)
   itemName = PBItems.getName(item)
-  #thundaga ripen
-  if battler.hasWorkingAbility(:RIPEN)
-    increment = (increment*2)
-  end
+  increment *=2 if battler.hasActiveAbility?(:RIPEN)
   if forced
     PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
     return battler.pbRaiseStatStage(stat,increment,battler)
@@ -595,12 +596,7 @@ end
 def pbBattleTypeWeakingBerry(type,moveType,target,mults)
   return if !isConst?(moveType,PBTypes,type)
   return if PBTypes.resistant?(target.damageState.typeMod) && !isConst?(moveType,PBTypes,:NORMAL)
-  #thundaga ripen
-  if battler.hasWorkingAbility(:RIPEN)
-    mults[FINAL_DMG_MULT] = (mults[FINAL_DMG_MULT]/4).round
-  else
-    mults[FINAL_DMG_MULT] = (mults[FINAL_DMG_MULT]/2).round
-  end
+  mults[FINAL_DMG_MULT] = (mults[FINAL_DMG_MULT]/((target.hasActiveAbility?(:RIPEN))? 4 : 2)).round
   target.damageState.berryWeakened = true
   target.battle.pbCommonAnimation("EatBerry",target)
 end

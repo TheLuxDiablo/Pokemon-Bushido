@@ -61,7 +61,7 @@ class PokeBattle_Battler
     }
     @battle.pbJudge
     # Update priority order
-#    @battle.pbCalculatePriority if NEWEST_BATTLE_MECHANICS
+    @battle.pbCalculatePriority if DYNAMIC_PRIORITY
     return true
   end
 
@@ -108,6 +108,10 @@ class PokeBattle_Battler
 
   def pbEndTurn(_choice)
     @lastRoundMoved = @battle.turnCount   # Done something this round
+    # Gorilla Tactics
+    if @effects[PBEffects::GorillaTactics]<0 && @lastMoveUsed>=0 && hasActiveAbility?(:GORILLATACTICS)
+      @effects[PBEffects::GorillaTactics]=@lastMoveUsed
+    end
     if @effects[PBEffects::ChoiceBand]<0 &&
        hasActiveItem?([:CHOICEBAND,:CHOICESPECS,:CHOICESCARF])
       if @lastMoveUsed>=0 && pbHasMove?(@lastMoveUsed)
@@ -117,7 +121,6 @@ class PokeBattle_Battler
       end
     end
     @effects[PBEffects::Charge]      = 0 if @effects[PBEffects::Charge]==1
-    @effects[PBEffects::Reconfigure] = 0 if @effects[PBEffects::Reconfigure] == 1
     @effects[PBEffects::GemConsumed] = 0
     @battle.eachBattler { |b| b.pbContinualAbilityChecks }   # Trace, end primordial weathers
   end
@@ -255,7 +258,7 @@ class PokeBattle_Battler
       @lastRegularMoveTarget = choice[3]   # For Instruct (remembering original target is fine)
       @movesUsed.push(move.id) if !@movesUsed.include?(move.id)   # For Last Resort
     end
-    @battle.lastMoveUsed = move.id   # For Copycat
+    @battle.lastMoveUsed = move.id 
     @battle.lastMoveUser = @index   # For "self KO" battle clause to avoid draws
     @battle.successStates[@index].useState = 1   # Battle Arena - assume failure
     # Find the default user (self or Snatcher) and target(s)
@@ -360,9 +363,8 @@ class PokeBattle_Battler
         end
       end
     end
-    # Protean and Libero
-    if user.hasActiveAbility?(:PROTEAN) || user.hasActiveAbility?(:LIBERO) &&
-       !move.callsAnotherMove? && !move.snatched
+    # Protean / Libero
+    if (user.hasActiveAbility?(:PROTEAN) || user.hasActiveAbility?(:LIBERO)) && !move.callsAnotherMove? && !move.snatched
       if user.pbHasOtherType?(move.calcType) && !PBTypes.isPseudoType?(move.calcType)
         @battle.pbShowAbilitySplash(user)
         user.pbChangeTypes(move.calcType)
@@ -370,14 +372,18 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1} transformed into the {2} type!",user.pbThis,typeName))
         @battle.pbHideAbilitySplash(user)
         # NOTE: The GF games say that if Curse is used by a non-Ghost-type
-        #       Pokémon which becomes Ghost-type because of Protean, it should
-        #       target and curse itself. I think this is silly, so I'm making it
-        #       choose a random opponent to curse instead.
+        #       Pokémon which becomes Ghost-type because of Protean / Libero,
+        #       it should target and curse itself. I think this is silly, so
+        #       I'm making it choose a random opponent to curse instead.
         if move.function=="10D" && targets.length==0   # Curse
           choice[3] = -1
           targets = pbFindTargets(choice,move,user)
         end
       end
+    end
+    # Redirect Dragon Darts first hit if necessary
+    if move.function=="17C" && @battle.pbSideSize(targets[0].index)>1
+      targets=pbChangeTargets(move,user,targets,0)
     end
     #---------------------------------------------------------------------------
     magicCoater  = -1
@@ -441,7 +447,9 @@ class PokeBattle_Battler
         # NOTE: If a multi-hit move becomes disabled partway through doing those
         #       hits (e.g. by Cursed Body), the rest of the hits continue as
         #       normal.
-        break if !targets.any? { |t| !t.fainted? }   # All targets are fainted
+        # All targets are fainted
+        # Don't stop using the move if Dragon Darts could still hit something
+        break if !targets.any? { |t| !t.fainted? } unless move.function=="17C" && realNumHits<numHits && !@battle.pbAllFainted?(user.idxOpposingSide)
       end
       # Battle Arena only - attack is successful
       @battle.successStates[user.index].useState = 2
@@ -571,6 +579,13 @@ class PokeBattle_Battler
         return if @battle.decision>0
       end
     end
+    @battle.eachBattler do |b|
+      next if battle.field.effects[PBEffects::TrickRoom] == 0
+      next if !b.pbCanLowerStatStage?(PBStats::SPEED,b)
+      next if !b.hasActiveItem?(:ROOMSERVICE)
+      b.pbLowerStatStageByCause(PBStats::SPEED,1,b,b.itemName)
+      b.pbConsumeItem
+    end
   end
 
   #=============================================================================
@@ -581,9 +596,13 @@ class PokeBattle_Battler
     # For two-turn attacks being used in a single turn
     move.pbInitialEffect(user,targets,hitNum)
     numTargets = 0   # Number of targets that are affected by this hit
-    targets.each { |b| b.damageState.resetPerHit }
     # Count a hit for Parental Bond (if it applies)
     user.effects[PBEffects::ParentalBond] -= 1 if user.effects[PBEffects::ParentalBond]>0
+    # Redirect Dragon Darts other hits
+	if move.function=="17C" && @battle.pbSideSize(targets[0].index)>1 && hitNum>0
+	  targets=pbChangeTargets(move,user,targets,1)
+	end
+    targets.each { |b| b.damageState.resetPerHit }
     # Accuracy check (accuracy/evasion calc)
     if hitNum==0 || move.successCheckPerHit?
       targets.each do |b|
@@ -603,6 +622,14 @@ class PokeBattle_Battler
         end
         move.pbCrashDamage(user)
         user.pbItemHPHealCheck
+        # Blunder Policy
+        if user.hasActiveItem?(:BLUNDERPOLICY) && user.effects[PBEffects::BlunderPolicy] &&
+           targets[0].effects[PBEffects::TwoTurnAttack]==0 && move.function!="070" && hitNum==0
+          if user.pbCanRaiseStatStage?(PBStats::SPEED,user,self)
+            pbRaiseStatStageByCause(PBStats::SPEED,2,user,itemName,showAnim=true,ignoreContrary=false)
+            user.pbConsumeItem
+          end
+        end
         pbCancelMoves
         return false
       end
@@ -624,11 +651,6 @@ class PokeBattle_Battler
         move.pbReduceDamage(user,b)   # Stored in damageState.hpLost
       end
     end
-    if user.effects[PBEffects::Reconfigure] == 1
-      @battle.pbDisplay(_INTL("{1}'s cellular configuration boosted {2}'s power!",user.pbThis,move.name))
-    elsif user.effects[PBEffects::Reconfigure] == 2
-      user.effects[PBEffects::Reconfigure] = 0
-    end
     # Show move animation (for this hit)
     move.pbShowAnimation(move.id,user,targets,hitNum)
     # Type-boosting Gem consume animation/message
@@ -643,6 +665,14 @@ class PokeBattle_Battler
     targets.each do |b|
       next if !b.damageState.missed
       pbMissMessage(move,user,b)
+		# Blunder Policy (also activates if only one target is missed)
+		if user.hasActiveItem?(:BLUNDERPOLICY) && user.effects[PBEffects::BlunderPolicy] &&
+		   b.effects[PBEffects::TwoTurnAttack]==0 && move.function!="070" && hitNum==0
+		  if user.pbCanRaiseStatStage?(PBStats::SPEED,user,self)
+			pbRaiseStatStageByCause(PBStats::SPEED,2,user,itemName,showAnim=true,ignoreContrary=false)
+			user.pbConsumeItem
+		  end
+		end
     end
     # Deal the damage (to all allies first simultaneously, then all foes
     # simultaneously)
