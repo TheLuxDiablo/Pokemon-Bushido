@@ -5,7 +5,7 @@ LoseText = "A very good battle, indeed!"
 Pokemon = DIGLETT,10
 Pokemon = BONSLY,11
 #-------------------------------
-[LEADER_Brock,Brock]
+[AKUICLAN_M,Brock]
 Items = FULLRESTORE,FULLRESTORE
 LoseText = "Very good."
 Pokemon = GEODUDE,12
@@ -76,38 +76,38 @@ LoseText = "You didn't have to win so convincingly!"
 Pokemon = PLUSLE,17
 Pokemon = MINUN,17
 #-------------------------------
-[COOLCOUPLE,Alice & Bob]
+[YOUNGCOUPLE,Alice & Bob]
 LoseText = "Our teamwork failed!"
 Pokemon = TURTWIG,19
 Pokemon = CHIMCHAR,19
 #-------------------------------
-[POKEMONTRAINER_Brendan,Brendan]
+[YOUNGCOUPLE,Brendan]
 Pokemon = MARSHTOMP,19
 #-------------------------------
-[SWIMMER2_F,Ariel]
+[AKUICLAN_F,Ariel]
 LoseText = "Washed out!"
 Pokemon = STARYU,15
 Pokemon = GOLDEEN,11
 #-------------------------------
-[RIVAL1,Blue]
+[AKUICLAN_M,Blue]
 LoseText = "Not too shabby."
 Pokemon = PIDGEOTTO,17
 Pokemon = RATTATA,15
 Pokemon = BULBASAUR,18
 #-------------------------------
-[RIVAL1,Blue,1]
+[AKUICLAN_M,Blue,1]
 LoseText = "Not too shabby."
 Pokemon = PIDGEOTTO,17
 Pokemon = RATTATA,15
 Pokemon = CHARMANDER,18
 #-------------------------------
-[RIVAL1,Blue,2]
+[AKUICLAN_M,Blue,2]
 LoseText = "Not too shabby."
 Pokemon = PIDGEOTTO,17
 Pokemon = RATTATA,15
 Pokemon = SQUIRTLE,18
 #-------------------------------
-[CHAMPION,Blue]
+[CHAMPION_M,Blue]
 LoseText = "A good battle indeed!"
 Pokemon = VENUSAUR,63
     Item = SITRUSBERRY
@@ -116,7 +116,7 @@ Pokemon = CHARIZARD,63
 Pokemon = BLASTOISE,63
     Item = SITRUSBERRY
 #-------------------------------
-[SHADOWCLAN_M,Kaze]
+[AKUICLAN_M,Kaze]
 LoseText = "No! This can't be!"
 Pokemon = ELECTABUZZ,5
     Shadow = yes
