@@ -107,7 +107,7 @@ end
 # Giving Pokémon/eggs to the player (can only add to party)
 #===============================================================================
 def pbAddToParty(pokemon,level=nil,seeform=true)
-  return false if !pokemon || $Trainer.party.length>=6
+  return false if !pokemon
   pokemon = getID(PBSpecies,pokemon)
   if pokemon.is_a?(Integer) && level.is_a?(Integer)
     pokemon = pbNewPkmn(pokemon,level)
@@ -161,8 +161,57 @@ def pbAddForeignPokemon(pokemon,level=nil,ownerName=nil,nickname=nil,ownerGender
   return true
 end
 
+def pbAddForeignPokemonBetter(pokemon,level=nil,ownerName=nil,nickname=nil,
+  ownerGender=0,seeform=true,shiny=true,ability=0,form=0,pokeGender=0,nature=0,ballUsed=0,
+  move1=nil,move2=nil,move3=nil,move4=nil,
+  hpIV=rand(31),atkIV=rand(31),defIV=rand(31),spdIV=rand(31),satkIV=rand(31),sdefIV=rand(31))
+  return false if !pokemon# || $Trainer.party.length>=6
+  pokemon = getID(PBSpecies,pokemon)
+  if pokemon.is_a?(Integer) && level.is_a?(Integer)
+    pokemon = pbNewPkmn(pokemon,level)
+  end
+  # Set original trainer to a foreign one (if ID isn't already foreign)
+  if pokemon.trainerID==$Trainer.id
+    pokemon.trainerID = $Trainer.getForeignID
+    pokemon.ot        = ownerName if ownerName && ownerName!=""
+    pokemon.otgender  = ownerGender
+  end
+  # Set nickname, ball used and gender
+  pokemon.name = nickname[0,PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE] if nickname && nickname!=""
+  pokemon.ballused = ballUsed
+  pokemon.setGender(pokeGender)
+  # Shininess
+  if shiny
+    pokemon.makeShiny
+  end
+  # Ability and form and nature
+  pokemon.setAbility(ability)   # Hidden Ability
+  pokemon.form=form
+  # Set nature and IVs
+  pokemon.setNature(nature)
+  pokemon.iv=[hpIV,atkIV,defIV,spdIV,satkIV,sdefIV]
+  # Set Moves
+  movesArray=[move1,move2,move3,move4]
+  for move in movesArray
+    if move != nil
+      pokemon.pbLearnMove(move)
+    end
+  end
+  # Recalculate stats
+  pokemon.calcStats
+  if ownerName
+    pbMessage(_INTL("\\me[Pkmn get]{1} received a Pokémon from {2}.\1",$Trainer.name,ownerName))
+  else
+    pbMessage(_INTL("\\me[Pkmn get]{1} received a Pokémon.\1",$Trainer.name))
+  end
+  pbStorePokemon(pokemon)
+  $Trainer.seen[pokemon.species]  = true
+  $Trainer.owned[pokemon.species] = true
+  pbSeenForm(pokemon) if seeform
+  return true
+end
+
 def pbGenerateEgg(pokemon,text="")
-  return false if !pokemon || $Trainer.party.length>=6
   pokemon = getID(PBSpecies,pokemon)
   if pokemon.is_a?(Integer)
     pokemon = pbNewPkmn(pokemon,EGG_LEVEL)
@@ -175,7 +224,8 @@ def pbGenerateEgg(pokemon,text="")
   pokemon.obtainText = text
   pokemon.calcStats
   # Add egg to party
-  $Trainer.party[$Trainer.party.length] = pokemon
+  pbMessage("\\Me[HGSSGetKeyItem]\\PN received a Pokémon Egg!\\wtnp[40]")
+  pbStorePokemon(pokemon)
   return true
 end
 alias pbAddEgg pbGenerateEgg

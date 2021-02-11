@@ -18,16 +18,16 @@ class BattleIntroAnimation < PokeBattle_Animation
     makeSlideSprite("base_0",1,appearTime,PictureOrigin::Bottom)
     makeSlideSprite("base_1",-1,appearTime,PictureOrigin::Center)
     # Player sprite, partner trainer sprite
-    @battle.player.each_with_index do |_p,i|
+    @battle.player.each_with_index do |p,i|
       makeSlideSprite("player_#{i+1}",1,appearTime,PictureOrigin::Bottom)
     end
     # Opposing trainer sprite(s) or wild Pokémon sprite(s)
     if @battle.trainerBattle?
-      @battle.opponent.each_with_index do |_p,i|
+      @battle.opponent.each_with_index do |p,i|
         makeSlideSprite("trainer_#{i+1}",-1,appearTime,PictureOrigin::Bottom)
       end
     else   # Wild battle
-      @battle.pbParty(1).each_with_index do |_pkmn,i|
+      @battle.pbParty(1).each_with_index do |pkmn,i|
         idxBattler = 2*i+1
         makeSlideSprite("pokemon_#{idxBattler}",-1,appearTime,PictureOrigin::Bottom)
       end
@@ -101,18 +101,19 @@ class LineupAppearAnimation < PokeBattle_Animation
     bar = sprites["partyBar_#{@side}"]
     case @side
     when 0   # Player's lineup
-      barX  = Graphics.width - BAR_DISPLAY_WIDTH
-      barY  = Graphics.height - 142
-      ballX = barX + 44
-      ballY = barY - 30
+      barX  = Graphics.width - BAR_DISPLAY_WIDTH + 40
+      barY  = Graphics.height - 150
+      ballX = barX + 32
+      ballY = barY
     when 1   # Opposing lineup
-      barX  = BAR_DISPLAY_WIDTH
-      barY  = 114
-      ballX = barX - 44 - 30   # 30 is width of ball icon
-      ballY = barY - 30
+      barX  = BAR_DISPLAY_WIDTH - 40
+      barY  = 90
+      ballX = barX - 44   # 30 is width of ball icon
+      ballY = barY
       barX  -= bar.bitmap.width
     end
-    ballXdiff = 32*(1-2*@side)
+    #thundaga ball diff
+    ballXdiff = 18*(1-2*@side)
     bar.x       = barX
     bar.y       = barY
     bar.opacity = 255
@@ -574,7 +575,9 @@ class BattlerRecallAnimation < PokeBattle_Animation
     # Calculate the color to turn the battler sprite
     col = getBattlerColorFromBallType(ballType)
     col.alpha = 0
-    # Calculate end coordinates for battler sprite movement
+    # Calculate start and end coordinates for battler sprite movement
+    battlerStartX = batSprite.x
+    battlerStartY = batSprite.y
     ballPos = PokeBattle_SceneConstants.pbBattlerPosition(@idxBattler,batSprite.sideSize)
     battlerEndX = ballPos[0]
     battlerEndY = ballPos[1]
@@ -670,7 +673,7 @@ class BattlerFaintAnimation < PokeBattle_Animation
     delay = 10
     cry = pbCryFile(batSprite.pkmn)
     if cry
-      battler.setSE(0,pbCryFile(batSprite.pkmn),nil,75)   # 75 is pitch
+      battler.setSE(0,pbCryFile(batSprite.pkmn))
       delay = pbCryFrameLength(batSprite.pkmn)*20/Graphics.frame_rate
     end
     # Sprite drops down
@@ -865,6 +868,8 @@ class PokeballThrowDeflectAnimation < PokeBattle_Animation
     # Set up Poké Ball sprite
     ball = addBallSprite(ballStartX,ballStartY,@ballType)
     ball.setZ(0,90)
+    # Set up battler sprite
+    battler = addSprite(batSprite,PictureOrigin::Bottom)
     # Poké Ball arc animation
     ball.setSE(0,"Battle throw")
     createBallTrajectory(ball,0,16,

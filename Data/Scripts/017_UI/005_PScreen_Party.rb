@@ -79,7 +79,7 @@ end
 
 class PokemonPartyCancelSprite < PokemonPartyConfirmCancelSprite
   def initialize(viewport=nil)
-    super(_INTL("CANCEL"),398,328,false,viewport)
+    super(_INTL(""),383,318,false,viewport)
   end
 end
 
@@ -87,7 +87,7 @@ end
 
 class PokemonPartyConfirmSprite < PokemonPartyConfirmCancelSprite
   def initialize(viewport=nil)
-    super(_INTL("CONFIRM"),398,308,true,viewport)
+    super(_INTL(""),383,318,true,viewport)
   end
 end
 
@@ -95,7 +95,7 @@ end
 
 class PokemonPartyCancelSprite2 < PokemonPartyConfirmCancelSprite
   def initialize(viewport=nil)
-    super(_INTL("CANCEL"),398,346,true,viewport)
+    super(_INTL(""),383,318,true,viewport)
   end
 end
 
@@ -122,7 +122,8 @@ class Window_CommandPokemonColor < Window_CommandPokemon
       base   = Color.new(0,80,160)
       shadow = Color.new(128,192,240)
     end
-    pbDrawShadowText(self.contents,rect.x,rect.y,rect.width,rect.height,@commands[index],base,shadow)
+    pbDrawShadowText(self.contents,rect.x,rect.y + (mkxp? ? 6 : 0),rect.width,rect.height,
+       @commands[index],base,shadow)
   end
 end
 
@@ -137,7 +138,7 @@ class PokemonPartyBlankPanel < SpriteWrapper
   def initialize(_pokemon,index,viewport=nil)
     super(viewport)
     self.x = [0, Graphics.width/2][index%2]
-    self.y = [0, 16, 96, 112, 192, 208][index]
+    self.y = [10,20,110,120,210,220][index]
     @panelbgsprite = AnimatedBitmap.new("Graphics/Pictures/Party/panel_blank")
     self.bitmap = @panelbgsprite.bitmap
     @text = nil
@@ -173,7 +174,8 @@ class PokemonPartyPanel < SpriteWrapper
     @active = (index==0)   # true = rounded panel, false = rectangular panel
     @refreshing = true
     self.x = [0, Graphics.width/2][index%2]
-    self.y = [0, 16, 96, 112, 192, 208][index]
+    self.y = [4,20,104,120,204,221][index]
+    # self.y = [0,16,96,112,192,208][index]
     @panelbgsprite = ChangelingSprite.new(0,0,viewport)
     @panelbgsprite.z = self.z
     if @active   # Rounded panel
@@ -323,13 +325,13 @@ class PokemonPartyPanel < SpriteWrapper
     end
     if @ballsprite && !@ballsprite.disposed?
       @ballsprite.changeBitmap((self.selected) ? "sel" : "desel")
-      @ballsprite.x     = self.x+10
-      @ballsprite.y     = self.y
+      @ballsprite.x     = self.x+13
+      @ballsprite.y     = self.y+3
       @ballsprite.color = self.color
     end
     if @pkmnsprite && !@pkmnsprite.disposed?
-      @pkmnsprite.x        = self.x+60
-      @pkmnsprite.y        = self.y+40
+      @pkmnsprite.x        = self.x+57
+      @pkmnsprite.y        = self.y+37
       @pkmnsprite.color    = self.color
       @pkmnsprite.selected = self.selected
     end
@@ -349,7 +351,7 @@ class PokemonPartyPanel < SpriteWrapper
       @refreshBitmap = false
       @overlaysprite.bitmap.clear if @overlaysprite.bitmap
       basecolor   = Color.new(248,248,248)
-      shadowcolor = Color.new(40,40,40)
+      shadowcolor = Color.new(106,106,106)
       pbSetSystemFont(@overlaysprite.bitmap)
       textpos = []
       # Draw Pokémon name
@@ -357,7 +359,9 @@ class PokemonPartyPanel < SpriteWrapper
       if !@pokemon.egg?
         if !@text || @text.length==0
           # Draw HP numbers
-          textpos.push([sprintf("% 3d /% 3d",@pokemon.hp,@pokemon.totalhp),224,60,1,basecolor,shadowcolor])
+          pbSetSmallFont(@overlaysprite.bitmap)
+          pbDrawTextPositions(@overlaysprite.bitmap,[[sprintf("% 3d /% 3d",@pokemon.hp,@pokemon.totalhp),224,61,1,basecolor,shadowcolor]])
+          pbSetSystemFont(@overlaysprite.bitmap)
           # Draw HP bar
           if @pokemon.hp>0
             w = @pokemon.hp*96*1.0/@pokemon.totalhp
@@ -366,8 +370,8 @@ class PokemonPartyPanel < SpriteWrapper
             hpzone = 0
             hpzone = 1 if @pokemon.hp<=(@pokemon.totalhp/2).floor
             hpzone = 2 if @pokemon.hp<=(@pokemon.totalhp/4).floor
-            hprect = Rect.new(0,hpzone*8,w,8)
-            @overlaysprite.bitmap.blt(128,52,@hpbar.bitmap,hprect)
+            hprect = Rect.new(0,hpzone*6,w,6)
+            @overlaysprite.bitmap.blt(126,54,@hpbar.bitmap,hprect)
           end
           # Draw status
           status = -1
@@ -376,29 +380,29 @@ class PokemonPartyPanel < SpriteWrapper
           status = 5 if @pokemon.hp<=0
           if status>=0
             statusrect = Rect.new(0,16*status,44,16)
-            @overlaysprite.bitmap.blt(78,68,@statuses.bitmap,statusrect)
+            @overlaysprite.bitmap.blt(95,68,@statuses.bitmap,statusrect)
           end
         end
         # Draw gender symbol
         if @pokemon.male?
-          textpos.push([_INTL("♂"),224,16,0,Color.new(0,112,248),Color.new(120,184,232)])
+          textpos.push([_INTL("♂"),224,16,0,Color.new(184,168,248),Color.new(16,32,232)])
         elsif @pokemon.female?
-          textpos.push([_INTL("♀"),224,16,0,Color.new(232,32,16),Color.new(248,168,184)])
+          textpos.push([_INTL("♀"),224,16,0,Color.new(248,168,184),Color.new(232,32,16)])
         end
         # Draw shiny icon
         if @pokemon.shiny?
           pbDrawImagePositions(@overlaysprite.bitmap,[[
-             "Graphics/Pictures/shiny",80,48,0,0,16,16]])
+             "Graphics/Pictures/shiny",75,66,0,0,18,18]])
         end
       end
       pbDrawTextPositions(@overlaysprite.bitmap,textpos)
       # Draw level text
       if !@pokemon.egg?
         pbDrawImagePositions(@overlaysprite.bitmap,[[
-           "Graphics/Pictures/Party/overlay_lv",20,70,0,0,22,14]])
+           "Graphics/Pictures/Party/overlay_lv",15,70,0,0,22,14]])
         pbSetSmallFont(@overlaysprite.bitmap)
         pbDrawTextPositions(@overlaysprite.bitmap,[
-           [@pokemon.level.to_s,42,62,0,basecolor,shadowcolor]
+           [@pokemon.level.to_s,40,63,0,basecolor,shadowcolor]
         ])
       end
       # Draw annotation text
@@ -476,7 +480,6 @@ class PokemonParty_Scene
     @sprites["messagebox"].text    = text
     @sprites["messagebox"].visible = true
     @sprites["helpwindow"].visible = false
-    pbPlayDecisionSE
     loop do
       Graphics.update
       Input.update
@@ -1130,6 +1133,7 @@ class PokemonPartyScreen
       cmdDebug   = -1
       cmdMoves   = [-1,-1,-1,-1]
       cmdSwitch  = -1
+      cmdRename  = -1
       cmdMail    = -1
       cmdItem    = -1
       # Build the commands
@@ -1139,13 +1143,15 @@ class PokemonPartyScreen
         move = pkmn.moves[i]
         # Check for hidden moves and add any that were found
         if !pkmn.egg? && (isConst?(move.id,PBMoves,:MILKDRINK) ||
-                          isConst?(move.id,PBMoves,:SOFTBOILED) ||
-                          HiddenMoveHandlers.hasHandler(move.id))
+                          isConst?(move.id,PBMoves,:SOFTBOILED))# ||
+#                          HiddenMoveHandlers.hasHandler(move.id))
           commands[cmdMoves[i] = commands.length] = [PBMoves.getName(move.id),1]
         end
       end
       commands[cmdSwitch = commands.length]       = _INTL("Switch") if @party.length>1
       if !pkmn.egg?
+        #Thundaga rename
+        commands[cmdRename = commands.length]       = _INTL("Rename")
         if pkmn.mail
           commands[cmdMail = commands.length]     = _INTL("Mail")
         else
@@ -1190,6 +1196,7 @@ class PokemonPartyScreen
             @scene.pbSelect(oldpkmnid)
             pbRefresh
             break
+=begin
           elsif pbCanUseHiddenMove?(pkmn,pkmn.moves[i].id)
             if pbConfirmUseHiddenMove(pkmn,pkmn.moves[i].id)
               @scene.pbEndScene
@@ -1207,6 +1214,7 @@ class PokemonPartyScreen
               end
               return [pkmn,pkmn.moves[i].id]
             end
+=end
           else
             break
           end
@@ -1226,6 +1234,23 @@ class PokemonPartyScreen
         if pkmnid>=0 && pkmnid!=oldpkmnid
           pbSwitch(oldpkmnid,pkmnid)
         end
+      elsif cmdRename>=0 && command==cmdRename
+        #if pkmn.isForeign?($Trainer) #checks if the pokemon isnt yours, if is that the case, shows text
+        #  @scene.pbDisplay(_INTL("This Pokémon isn't yours.\nIts in memory of it's Original Trainer."))
+        #else
+          @scene.pbDisplay(_INTL("Choose the Nickname that you want."))
+          speciesname = PBSpecies.getName(pkmn.species)
+          oldname = (pkmn.name && pkmn.name!=speciesname) ? pkmn.name : ""
+            newname = pbEnterPokemonName(_INTL("{1}'s nickname?",speciesname),
+                0,PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE,oldname,pkmn)
+            if newname && newname!=""
+              pkmn.name = newname
+              pbRefreshSingle(pkmnid)
+            elsif newname="" #if the name is null, will...
+              pkmn.name = speciesname #...change its name from the species name
+              pbRefreshSingle(pkmnid)
+            end
+        #end
       elsif cmdMail>=0 && command==cmdMail
         command = @scene.pbShowCommands(_INTL("Do what with the mail?"),
            [_INTL("Read"),_INTL("Take"),_INTL("Cancel")])

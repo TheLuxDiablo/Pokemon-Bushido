@@ -221,10 +221,12 @@ class CustomTilemap
   end
 
   def ox=(val)
-    rf = getResizeFactor
-    if rf!=1.0
-      val = (val*rf).to_i
-      val = (val/rf).to_i
+    if !mkxp?
+      rf = getResizeFactor
+      if rf!=1.0
+        val = (val*rf).to_i
+        val = (val/rf).to_i
+      end
     end
     wasshown = self.shown?
     @ox = val.floor
@@ -232,10 +234,12 @@ class CustomTilemap
   end
 
   def oy=(val)
-    rf = getResizeFactor
-    if rf!=1.0
-      val = (val*rf).to_i
-      val = (val/rf).to_i
+    if !mkxp?
+      rf = getResizeFactor
+      if rf!=1.0
+        val = (val*rf).to_i
+        val = (val/rf).to_i
+      end
     end
     wasshown = self.shown?
     @oy = val.floor

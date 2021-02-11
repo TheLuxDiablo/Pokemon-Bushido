@@ -135,6 +135,44 @@ end
 def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
   ##### VS. animation, by Luka S.J. #####
   ##### Tweaked by Maruno           #####
+  trainerid = (foe[0].trainertype rescue -1)
+  if trainerid >= 0
+    if checkIfSunMoonTransition(trainerid)
+      $PokemonTemp.smAnim[1] = Viewport.new(0,0,Graphics.width,Graphics.height)
+      $PokemonTemp.smAnim[1].z = 100000
+      $PokemonTemp.smAnim[0] = SunMoonBattleTransitions.new($PokemonTemp.smAnim[1],$PokemonTemp.smAnim[1],nil,trainerid)
+      return true
+    end
+    trainername = (foe[0].name rescue "")
+    tbargraphic = sprintf("Graphics/Transitions/vsBarSpecial%s",getConstantName(PBTrainers,trainerid)) rescue nil
+    tbargraphic = sprintf("Graphics/Transitions/vsBarSpecial%d",trainerid) if !pbResolveBitmap(tbargraphic)
+    tgraphic = sprintf("Graphics/Transitions/vsTrainerSpecial%s",getConstantName(PBTrainers,trainerid)) rescue nil
+    tgraphic = sprintf("Graphics/Transitions/vsTrainerSpecial%d",trainerid) if !pbResolveBitmap(tgraphic)
+    if pbResolveBitmap(tgraphic)
+      vsSequenceSpecial(viewport,trainername,trainerid,tbargraphic,tgraphic)
+      return true
+    end
+    tbargraphic = sprintf("Graphics/Transitions/vsBarElite%s",getConstantName(PBTrainers,trainerid)) rescue nil
+    tbargraphic = sprintf("Graphics/Transitions/vsBarElite%d",trainerid) if !pbResolveBitmap(tbargraphic)
+    tgraphic = sprintf("Graphics/Transitions/vsTrainer%s",getConstantName(PBTrainers,trainerid)) rescue nil
+    tgraphic = sprintf("Graphics/Transitions/vsTrainer%d",trainerid) if !pbResolveBitmap(tgraphic)
+    if pbResolveBitmap(tbargraphic) && pbResolveBitmap(tgraphic)
+      vsSequenceElite(viewport,trainername,trainerid,tbargraphic,tgraphic)
+      return true
+    end
+    tbargraphic = sprintf("Graphics/Transitions/vsBarNew%s",getConstantName(PBTrainers,trainerid)) rescue nil
+    tbargraphic = sprintf("Graphics/Transitions/vsBarNew%d",trainerid) if !pbResolveBitmap(tbargraphic)
+    tlogographic = sprintf("Graphics/Transitions/vsLogo%s",getConstantName(PBTrainers,trainerid)) rescue nil
+    tlogographic = sprintf("Graphics/Transitions/vsLogo%d",trainerid) if !pbResolveBitmap(tlogographic)
+    if pbResolveBitmap(tbargraphic) && pbResolveBitmap(tgraphic) && pbResolveBitmap(tlogographic)
+      vsSequenceEvil(viewport,trainername,trainerid,tbargraphic,tgraphic,tlogographic)
+      return true
+    end
+    if pbResolveBitmap(tbargraphic) && pbResolveBitmap(tgraphic)
+      vsSequenceNew(viewport,trainername,trainerid,tbargraphic,tgraphic)
+      return true
+    end
+  end
   if (battletype==1 || battletype==3) && foe.length==1   # Against single trainer
     trainerid = (foe[0].trainertype rescue -1)
     if trainerid>=0
@@ -315,45 +353,76 @@ def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
   return __over1__pbBattleAnimationOverride(viewport,battletype,foe)
 end
 
-
-
-#===============================================================================
-# Location signpost
-#===============================================================================
+################################################################################
+# Location signpost - Updated by LostSoulsDev / carmaniac & PurpleZaffre
+################################################################################
 class LocationWindow
   def initialize(name)
-    @window = Window_AdvancedTextPokemon.new(name)
-    @window.resizeToFit(name,Graphics.width)
-    @window.x        = 0
-    @window.y        = -@window.height
-    @window.viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
-    @window.viewport.z = 99999
+    @sprites = {}
+    @baseColor=Color.new(255,255,255)
+    @shadowColor=MessageConfig::LIGHTTEXTSHADOW #Color.new(148,148,165)
+    #Thundaga signposts
+    @sprites["Image"] = Sprite.new
+    mapname = $game_map.name
+    if pbResolveBitmap("Graphics/Maps/#{mapname}")
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/#{mapname}")
+    elsif $game_map.name.include?("Route")
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Route_1")
+    elsif $game_map.name.include?("Hollow")
+        @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Haunted")
+    elsif $game_map.name.include?("Cavern")
+        @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Cave_1")
+    elsif $game_map.name.include?("Lab")
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/HGSS_7")
+    elsif $game_map.name.include?("Mt.")
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Cave_1")
+    elsif $game_map.name.include?("Town")
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Town_1")
+    elsif $game_map.name.include?("Lake")
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Lake_1")
+    elsif $game_map.name.include?("Cascade")
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Lake_1")
+    elsif $game_map.name.include?("Cave")
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Cave_1")
+    elsif $game_map.name.include?("City")
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/City_1")
+    else
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/HGSS_8")
+    end
+    @sprites["Image"].x = 8
+    @sprites["Image"].y = - @sprites["Image"].bitmap.height
+    @sprites["Image"].z = 99999
+    @sprites["Image"].opacity = 255
+    @height = @sprites["Image"].bitmap.height
+    pbSetSystemFont(@sprites["Image"].bitmap)
+    pbDrawTextPositions(@sprites["Image"].bitmap,[[name,22,@sprites["Image"].bitmap.height-44,0,@baseColor,@shadowColor,true]])
     @currentmap = $game_map.map_id
     @frames = 0
   end
 
-  def disposed?
-    @window.disposed?
+  def dispose
+    @sprites["Image"].dispose
   end
 
-  def dispose
-    @window.dispose
+  def disposed?
+    return @sprites["Image"].disposed?
   end
 
   def update
-    return if @window.disposed?
-    @window.update
-    if $game_temp.message_window_showing || @currentmap!=$game_map.map_id
-      @window.dispose
+    return if @sprites["Image"].disposed?
+    if $game_temp.message_window_showing || @currentmap != $game_map.map_id
+      @sprites["Image"].dispose
       return
-    end
-    if @frames>80
-      @window.y -= 4
-      @window.dispose if @window.y+@window.height<0
+    elsif @frames > 180
+      @sprites["Image"].y-= ((@sprites["Image"].bitmap.height)/20)
+      @sprites["Image"].dispose if @sprites["Image"].y + @height < 0
+    elsif $game_temp.in_menu == true
+      @sprites["Image"].y-= ((@sprites["Image"].bitmap.height)/10)
+      @sprites["Image"].dispose if @sprites["Image"].y + @height < 5
     else
-      @window.y += 4 if @window.y<0
-      @frames += 1
+      @sprites["Image"].y+= ((@sprites["Image"].bitmap.height)/20) if @sprites["Image"].y < 5
     end
+    @frames += 1
   end
 end
 
@@ -625,11 +694,7 @@ end
 # Blacking out animation
 #===============================================================================
 def pbRxdataExists?(file)
-  if $RPGVX
-    return pbRgssExists?(file+".rvdata")
-  else
-    return pbRgssExists?(file+".rxdata")
-  end
+  return pbRgssExists?(file+".rxdata")
 end
 
 def pbStartOver(gameover=false)
@@ -640,9 +705,9 @@ def pbStartOver(gameover=false)
   pbHealAll
   if $PokemonGlobal.pokecenterMapId && $PokemonGlobal.pokecenterMapId>=0
     if gameover
-      pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]After the unfortunate defeat, you scurry back to a Pokémon Center."))
+      pbMessage(_INTL("\\w[]\\wm\\l[3]After the unfortunate defeat, you scurry back to a Pokémon Center."))
     else
-      pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]You scurry back to a Pokémon Center, protecting your exhausted Pokémon from any further harm..."))
+      pbMessage(_INTL("\\w[]\\wm\\l[3]You scurry back to a Pokémon Center, protecting your exhausted Pokémon from any further harm..."))
     end
     pbCancelVehicles
     pbRemoveDependencies
@@ -663,9 +728,9 @@ def pbStartOver(gameover=false)
       return
     end
     if gameover
-      pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]After the unfortunate defeat, you scurry back home."))
+      pbMessage(_INTL("\\w[]\\wm\\l[3]After the unfortunate defeat, you scurry back home."))
     else
-      pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]You scurry back home, protecting your exhausted Pokémon from any further harm..."))
+      pbMessage(_INTL("\\w[]\\wm\\l[3]You scurry back home, protecting your exhausted Pokémon from any further harm..."))
     end
     if homedata
       pbCancelVehicles

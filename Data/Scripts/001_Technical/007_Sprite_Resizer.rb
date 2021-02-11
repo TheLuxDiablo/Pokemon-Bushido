@@ -11,14 +11,31 @@ $ResizeOffsetY    = 0
 $ResizeFactorSet  = false
 $HaveResizeBorder = false
 
-if true   # Disables using Alt+Enter to go fullscreen
+if !mkxp?   # Disables using Alt+Enter to go fullscreen
   regHotKey = Win32API.new('user32', 'RegisterHotKey', 'LIII', 'I')
   regHotKey.call(0, 1, 1, 0x0D)
 end
 
-def pbSetResizeFactor(factor=1,norecalc=false)
-  factor = [0.5,1.0,2.0,-1][factor] if !norecalc
-  (factor<0) ? pbConfigureFullScreen : pbConfigureWindowedScreen(factor)
+if mkxp?
+  # This kinda puts most of SpriteResizer out of business
+  def pbSetResizeFactor(factor)
+    if !$ResizeInitialized
+      Graphics.resize_screen(SCREEN_WIDTH, SCREEN_HEIGHT)
+      $ResizeInitialized = true
+    end
+    if factor < 0 || factor == 4
+      Graphics.fullscreen = true if !Graphics.fullscreen
+    else
+      Graphics.fullscreen = false if Graphics.fullscreen
+      Graphics.scale = (factor + 1) * 0.5
+      Graphics.center
+    end
+  end
+else
+  def pbSetResizeFactor(factor=1,norecalc=false)
+    factor = [0.5,1.0,2.0,-1][factor] if !norecalc
+    (factor<0) ? pbConfigureFullScreen : pbConfigureWindowedScreen(factor)
+  end
 end
 
 def pbSetResizeFactor2(factor,force=false)
@@ -73,10 +90,6 @@ def pbConfigureFullScreen
   params = Win32API.fillScreen
   fullgamew = gamew = SCREEN_WIDTH
   fullgameh = gameh = SCREEN_HEIGHT
-  if !BORDER_FULLY_SHOWS && $PokemonSystem && $PokemonSystem.border==1
-    fullgamew += BORDER_WIDTH * 2
-    fullgameh += BORDER_HEIGHT * 2
-  end
 #  factor_x = ((2*params[0])/fullgamew).floor
 #  factor_y = ((2*params[1])/fullgameh).floor
 #  factor = [factor_x,factor_y].min/2.0
@@ -101,9 +114,8 @@ def pbConfigureFullScreen
 end
 
 def pbConfigureWindowedScreen(value)
-  border = $PokemonSystem ? $PokemonSystem.border : 0
-  $ResizeOffsetX = [0,BORDER_WIDTH][border]
-  $ResizeOffsetY = [0,BORDER_HEIGHT][border]
+  $ResizeOffsetX = 0
+  $ResizeOffsetY = 0
   pbSetResizeFactor2(value,true)
   Win32API.restoreScreen
 end
@@ -172,90 +184,96 @@ module Graphics
     end
   end
 
-  class << self
-    begin
-      x = @@haveresizescreen
-    rescue NameError                         # If exception is caught, the class
-      if !method_defined?(:oldresizescreen)  # variable wasn't defined yet
-        begin
-          alias oldresizescreen resize_screen
-          @@haveresizescreen = true
-        rescue
+  if mkxp?
+    @@haveresizescreen = true
+  else
+    class << self
+      begin
+        x = @@haveresizescreen
+      rescue NameError                         # If exception is caught, the class
+        if !method_defined?(:oldresizescreen)  # variable wasn't defined yet
+          begin
+            alias oldresizescreen resize_screen
+            @@haveresizescreen = true
+          rescue
+            @@haveresizescreen = false
+          end
+        else
           @@haveresizescreen = false
         end
-      else
-        @@haveresizescreen = false
+      end
+
+      def haveresizescreen
+        @@haveresizescreen
       end
     end
 
-    def haveresizescreen
-      @@haveresizescreen
+    def self.resize_screen(w,h)
+      @@width  = w
+      @@height = h
+      pbSetResizeFactor($ResizeFactor,true)
     end
-  end
-
-  def self.resize_screen(w,h)
-    @@width  = w
-    @@height = h
-    pbSetResizeFactor($ResizeFactor,true)
   end
 
   @@deletefailed = false
 
-  def self.snap_to_bitmap(resize=true)
-    tempPath = ENV["TEMP"]+"\\tempscreen.bmp"
-    if safeExists?(tempPath) && @@deletefailed
-      begin
-        File.delete(tempPath)
-        @@deletefailed = false
-      rescue Errno::EACCES
-        @@deletefailed = true
-        return nil
+  if !mkxp?
+    def self.snap_to_bitmap(resize=true)
+      tempPath = ENV["TEMP"]+"\\tempscreen.bmp"
+      if safeExists?(tempPath) && @@deletefailed
+        begin
+          File.delete(tempPath)
+          @@deletefailed = false
+        rescue Errno::EACCES
+          @@deletefailed = true
+          return nil
+        end
       end
+      if safeExists?("./rubyscreen.dll")
+        takescreen = Win32API.new("rubyscreen.dll","TakeScreenshot","p","i")
+        takescreen.call(tempPath)
+      end
+      bm = nil
+      if safeExists?(tempPath)
+        bm = Bitmap.new(tempPath)
+        begin
+          File.delete(tempPath)
+          @@deletefailed = false
+        rescue Errno::EACCES
+          @@deletefailed = true
+        end
+      end
+      bm.asOpaque if bm && bm.get_pixel(0,0).alpha==0
+      if resize
+        if bm && $ResizeOffsetX && $ResizeOffsetY && ($ResizeOffsetX!=0 || $ResizeOffsetY!=0)
+          tmpbitmap = Bitmap.new(Graphics.width*$ResizeFactor,Graphics.height*$ResizeFactor)
+          tmpbitmap.blt(0,0,bm,Rect.new(
+             $ResizeOffsetX*$ResizeFactor,$ResizeOffsetY*$ResizeFactor,tmpbitmap.width,tmpbitmap.height))
+          bm.dispose
+          bm = tmpbitmap
+        end
+        if bm && (bm.width!=Graphics.width || bm.height!=Graphics.height)
+          newbitmap = Bitmap.new(Graphics.width,Graphics.height)
+          newbitmap.stretch_blt(newbitmap.rect,bm,Rect.new(0,0,bm.width,bm.height))
+          bm.dispose
+          bm = newbitmap
+        end
+      else
+        # Thise code is used only for taking screenshots with F8.
+        # Doesn't crop out the screen border, doesn't normalise to 1x zoom.
+        # Fixes screenshots being 1 pixel too tall.
+        fullw = (Graphics.width+$ResizeOffsetX*2)*$ResizeFactor
+        fullh = (Graphics.height+$ResizeOffsetY*2)*$ResizeFactor
+        if bm && $ResizeOffsetX && $ResizeOffsetY && $ResizeFactor &&
+           (bm.width!=fullw || bm.height!=fullh)
+          tmpbitmap = Bitmap.new(fullw,fullh)
+          tmpbitmap.blt(0,0,bm,Rect.new(0,0,fullw,fullh))
+          bm.dispose
+          bm = tmpbitmap
+        end
+      end
+      return bm
     end
-    if safeExists?("./rubyscreen.dll")
-      takescreen = Win32API.new("rubyscreen.dll","TakeScreenshot","p","i")
-      takescreen.call(tempPath)
-    end
-    bm = nil
-    if safeExists?(tempPath)
-      bm = Bitmap.new(tempPath)
-      begin
-        File.delete(tempPath)
-        @@deletefailed = false
-      rescue Errno::EACCES
-        @@deletefailed = true
-      end
-    end
-    bm.asOpaque if bm && bm.get_pixel(0,0).alpha==0
-    if resize
-      if bm && $ResizeOffsetX && $ResizeOffsetY && ($ResizeOffsetX!=0 || $ResizeOffsetY!=0)
-        tmpbitmap = Bitmap.new(Graphics.width*$ResizeFactor,Graphics.height*$ResizeFactor)
-        tmpbitmap.blt(0,0,bm,Rect.new(
-           $ResizeOffsetX*$ResizeFactor,$ResizeOffsetY*$ResizeFactor,tmpbitmap.width,tmpbitmap.height))
-        bm.dispose
-        bm = tmpbitmap
-      end
-      if bm && (bm.width!=Graphics.width || bm.height!=Graphics.height)
-        newbitmap = Bitmap.new(Graphics.width,Graphics.height)
-        newbitmap.stretch_blt(newbitmap.rect,bm,Rect.new(0,0,bm.width,bm.height))
-        bm.dispose
-        bm = newbitmap
-      end
-    else
-      # Thise code is used only for taking screenshots with F8.
-      # Doesn't crop out the screen border, doesn't normalise to 1x zoom.
-      # Fixes screenshots being 1 pixel too tall.
-      fullw = (Graphics.width+$ResizeOffsetX*2)*$ResizeFactor
-      fullh = (Graphics.height+$ResizeOffsetY*2)*$ResizeFactor
-      if bm && $ResizeOffsetX && $ResizeOffsetY && $ResizeFactor &&
-         (bm.width!=fullw || bm.height!=fullh)
-        tmpbitmap = Bitmap.new(fullw,fullh)
-        tmpbitmap.blt(0,0,bm,Rect.new(0,0,fullw,fullh))
-        bm.dispose
-        bm = tmpbitmap
-      end
-    end
-    return bm
   end
 end
 
@@ -623,8 +641,6 @@ class ScreenBorder
 
   def refresh
     @sprite.z=@maximumZ
-    @sprite.x=-BORDER_WIDTH
-    @sprite.y=-BORDER_HEIGHT
     @sprite.visible=($PokemonSystem && $PokemonSystem.border==1)
     @sprite.bitmap=nil
     if @sprite.visible

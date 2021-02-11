@@ -72,6 +72,11 @@ class PokemonTrainerCard_Scene
       end
       x += 48
     end
+    value = ($PokemonTemp.begunNewGamePlus) ? ($PokemonTemp.oldNewGamePlusCount + 1) : $Trainer.newGamePlusCount
+    for i in 1..value
+      x = 472 - (i*28)
+      imagePositions.push(["Graphics/Pictures/Trainer Card/star",x,32,0,0,22,24])
+    end
     pbDrawImagePositions(overlay,imagePositions)
   end
 

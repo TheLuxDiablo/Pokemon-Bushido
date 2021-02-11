@@ -549,6 +549,12 @@ BattleHandlers::PriorityChangeAbility.add(:TRIAGE,
   }
 )
 
+BattleHandlers::PriorityChangeAbility.add(:FLASHFIST,
+  proc { |ability,battler,move,pri|
+    next pri+1 if move.punchingMove?
+  }
+)
+
 #===============================================================================
 # PriorityBracketChangeAbility handlers
 #===============================================================================
@@ -783,6 +789,14 @@ BattleHandlers::MoveBaseTypeModifierAbility.add(:REFRIGERATE,
   }
 )
 
+BattleHandlers::MoveBaseTypeModifierAbility.add(:SUBMERGED,
+  proc { |ability,user,move,type|
+    next if !isConst?(type,PBTypes,:NORMAL) || !hasConst?(PBTypes,:WATER)
+    move.powerBoost = true
+    next getConst(PBTypes,:WATER)
+  }
+)
+
 #===============================================================================
 # AccuracyCalcUserAbility handlers
 #===============================================================================
@@ -981,6 +995,12 @@ BattleHandlers::DamageCalcUserAbility.add(:IRONFIST,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:PUNKROCK,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[BASE_DMG_MULT] = (mults[BASE_DMG_MULT]*1.3).round if move.soundMove?
+  }
+)
+
 BattleHandlers::DamageCalcUserAbility.add(:MEGALAUNCHER,
   proc { |ability,user,target,move,mults,baseDmg,type|
     mults[BASE_DMG_MULT] *= 1.5 if move.pulseMove?
@@ -1084,6 +1104,12 @@ BattleHandlers::DamageCalcUserAbility.add(:STAKEOUT,
 BattleHandlers::DamageCalcUserAbility.add(:STEELWORKER,
   proc { |ability,user,target,move,mults,baseDmg,type|
     mults[ATK_MULT] *= 1.5 if isConst?(type,PBTypes,:STEEL)
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:STEAMPUNK,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[ATK_MULT] = (mults[ATK_MULT]*1.5).round if isConst?(type,PBTypes,:WATER)
   }
 )
 
@@ -1550,6 +1576,17 @@ BattleHandlers::TargetAbilityOnHit.add(:GOOEY,
 
 BattleHandlers::TargetAbilityOnHit.copy(:GOOEY,:TANGLINGHAIR)
 
+#thundaga cotton down
+BattleHandlers::TargetAbilityOnHit.add(:COTTONDOWN,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbContactMove?(user)
+    battle.eachBattler do |b|
+      next if b.index==target.index
+      b.pbLowerStatStageByAbility(PBStats::SPEED,1,target,true,true)
+    end
+  }
+)
+
 BattleHandlers::TargetAbilityOnHit.add(:ILLUSION,
   proc { |ability,user,target,move,battle|
     # NOTE: This intentionally doesn't show the ability splash.
@@ -1869,7 +1906,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:BEASTBOOST,
 
 BattleHandlers::UserAbilityEndOfMove.add(:MAGICIAN,
   proc { |ability,user,targets,move,battle|
-    next if !battle.futureSight
+    next if battle.futureSight
     next if !move.pbDamagingMove?
     next if user.item>0
     next if battle.wildBattle? && user.opposes?
@@ -2571,6 +2608,22 @@ BattleHandlers::AbilityOnSwitchIn.add(:INTIMIDATE,
       b.pbItemOnIntimidatedCheck
     end
     battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:CURIOUSMEDICINE,
+  proc { |ability,battler,battle|
+    done= false
+    battler.eachAlly do |b|
+      next if !b.hasAlteredStatStages?
+      b.pbResetStatStages
+      done = true
+    end
+    if done
+      battle.pbShowAbilitySplash(battler)
+      battle.pbDisplay(_INTL("All allies' stat changes were eliminated!"))
+      battle.pbHideAbilitySplash(battler)
+    end
   }
 )
 

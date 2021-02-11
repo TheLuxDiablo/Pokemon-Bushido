@@ -117,19 +117,10 @@ begin
     WaterSport          = 111
     WeightChange        = 112
     Yawn                = 113
-    GorillaTactics      = 114
-    BallFetch           = 115
-    LashOut             = 118
-    BurningJealousy     = 119
-    NoRetreat           = 120
-    Obstruct            = 121
-    JawLock             = 122
-    JawLockUser         = 123
-    TarShot             = 124
-    Octolock            = 125
-    OctolockUser        = 126
-    BlunderPolicy       = 127
-    SwitchedAlly        = 128
+    QuickParry          = 114
+    JawLock             = 115
+    JawLockUser         = 116
+    Reconfigure         = 117
 
     #===========================================================================
     # These effects apply to a battler position
@@ -169,8 +160,6 @@ begin
     Tailwind           = 19
     ToxicSpikes        = 20
     WideGuard          = 21
-	StickyWebUser      = 22
-
 
     #===========================================================================
     # These effects apply to the battle (i.e. both sides)
@@ -188,7 +177,6 @@ begin
     TrickRoom       = 10
     WaterSportField = 11
     WonderRoom      = 12
-    NeutralizingGas = 13
   end
 
 rescue Exception

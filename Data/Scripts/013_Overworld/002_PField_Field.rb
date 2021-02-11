@@ -336,18 +336,35 @@ Events.onStepTakenFieldMovement += proc { |_sender,e|
 }
 
 # Show grass rustle animation, and auto-move the player over waterfalls and ice
-Events.onStepTakenFieldMovement += proc { |_sender,e|
+Events.onStepTakenFieldMovement += proc { |sender,e|
   event = e[0] # Get the event affected by field movement
   if $scene.is_a?(Scene_Map)
     currentTag = pbGetTerrainTag(event)
     if PBTerrain.isJustGrass?(pbGetTerrainTag(event,true))  # Won't show if under bridge
       $scene.spriteset.addUserAnimation(GRASS_ANIMATION_ID,event.x,event.y,true,1)
+      if event==$game_player
+        $game_variables[54]=0
+      end
     elsif event==$game_player
       if currentTag==PBTerrain::WaterfallCrest
         # Descend waterfall, but only if this event is the player
         pbDescendWaterfall(event)
+        $game_variables[54]=0
       elsif PBTerrain.isIce?(currentTag) && !$PokemonGlobal.sliding
         pbSlideOnIce(event)
+        $game_variables[54]=0
+      elsif PBTerrain.isBog?(currentTag) #Thundaga bog
+        pbPoisonBog(event)
+      elsif PBTerrain.isUpArrow?(currentTag) #Thundaga arrows
+        pbMoveArrow(event, 1)
+      elsif PBTerrain.isDownArrow?(currentTag) #Thundaga arrows
+        pbMoveArrow(event, 2)
+      elsif PBTerrain.isLeftArrow?(currentTag) #Thundaga arrows
+        pbMoveArrow(event, 3)
+      elsif PBTerrain.isRightArrow?(currentTag) #Thundaga arrows
+        pbMoveArrow(event, 4)
+      else
+        $game_variables[54]=0
       end
     end
   end
@@ -529,7 +546,7 @@ end
 Events.onMapChanging += proc { |_sender,e|
   newMapID = e[0]
   if newMapID>0
-    mapinfos = ($RPGVX) ? load_data("Data/MapInfos.rvdata") : load_data("Data/MapInfos.rxdata")
+    mapinfos = load_data("Data/MapInfos.rxdata")
     oldWeather = pbGetMetadata($game_map.map_id,MetadataWeather)
     if $game_map.name!=mapinfos[newMapID].name
       $game_screen.weather(0,0,0) if oldWeather
@@ -549,7 +566,7 @@ Events.onMapChange += proc { |_sender,e|
   $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
   $PokemonGlobal.visitedMaps[$game_map.map_id] = true
   if oldid!=0 && oldid!=$game_map.map_id
-    mapinfos = ($RPGVX) ? load_data("Data/MapInfos.rvdata") : load_data("Data/MapInfos.rxdata")
+    mapinfos = load_data("Data/MapInfos.rxdata")
     weather = pbGetMetadata($game_map.map_id,MetadataWeather)
     if $game_map.name!=mapinfos[oldid].name
       $game_screen.weather(weather[0],8,20) if weather && rand(100)<weather[1]
@@ -603,7 +620,7 @@ Events.onMapSceneChange += proc { |_sender,e|
           nosignpost = true if NO_SIGNPOSTS[2*i+1]==$PokemonGlobal.mapTrail[1] && NO_SIGNPOSTS[2*i]==$game_map.map_id
           break if nosignpost
         end
-        mapinfos = $RPGVX ? load_data("Data/MapInfos.rvdata") : load_data("Data/MapInfos.rxdata")
+        mapinfos = load_data("Data/MapInfos.rxdata")
         oldmapname = mapinfos[$PokemonGlobal.mapTrail[1]].name
         nosignpost = true if $game_map.name==oldmapname
       end
@@ -1175,6 +1192,66 @@ def pbSlideOnIce(event=nil)
   event.straighten
   event.walk_anime = oldwalkanime
   $PokemonGlobal.sliding = false
+end
+
+#thundaga
+def pbPoisonBog(event=nil)
+  $game_variables[54] +=1
+  poisoned=false
+  if $game_variables[54] >= 10
+     # Poison every pokemon in the party
+     for pkmn in $Trainer.ablePokemonParty
+       next if pkmn.hasType?(:POISON)  || pkmn.hasType?(:STEEL) ||
+          pkmn.hasAbility?(:COMATOSE)  || pkmn.hasAbility?(:SHIELDSDOWN) ||
+          pkmn.status!=0
+       pkmn.status = 2
+       pkmn.statusCount = 2
+       poisoned=true
+       #pkmn.statusCount = 1 # Remove this if you don't want toxic poison
+     end
+     if poisoned
+       $scene.spriteset.addUserAnimation(14,event.x,event.y-1,true,1)
+       pbMessage(_INTL("All of your Pokémon became badly poisoned!"))
+     end
+  end
+end
+
+#thundaga
+def pbMoveArrow(event=nil, int=1)
+  pbMoveRoute($game_player, [PBMoveRoute::ChangeSpeed, 4, PBMoveRoute::DirectionFixOn, PBMoveRoute::WalkAnimeOff])
+  case int
+  when 2
+    pbMoveRoute($game_player, [PBMoveRoute::Down])
+  when 3
+    pbMoveRoute($game_player, [PBMoveRoute::Left])
+  when 4
+    pbMoveRoute($game_player, [PBMoveRoute::Right])
+  else
+    pbMoveRoute($game_player, [PBMoveRoute::Up])
+  end
+  pbMoveRoute($game_player, [PBMoveRoute::WalkAnimeOn, PBMoveRoute::DirectionFixOff, PBMoveRoute::ChangeSpeed, 3])
+  pbSEPlay("GUI naming tab swap start")
+end
+
+#thundaga
+def poisonAllPokemon(event=nil)
+    for pkmn in $Trainer.ablePokemonParty
+       next if pkmn.hasType?(:POISON)  || pkmn.hasType?(:STEEL) ||
+          pkmn.hasAbility?(:COMATOSE)  || pkmn.hasAbility?(:SHIELDSDOWN) ||
+          pkmn.status!=0
+       pkmn.status = 2
+       pkmn.statusCount = 2
+     end
+end
+
+#thundaga
+def paralyzeAllPokemon(event=nil)
+    for pkmn in $Trainer.ablePokemonParty
+       next if pkmn.hasType?(:ELECTRIC) ||
+          pkmn.hasAbility?(:COMATOSE)  || pkmn.hasAbility?(:SHIELDSDOWN) ||
+          pkmn.status!=0
+       pkmn.status = 4
+     end
 end
 
 def pbTurnTowardEvent(event,otherEvent)

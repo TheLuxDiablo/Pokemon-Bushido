@@ -1309,7 +1309,8 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "05E"
       if isConst?(user.ability,PBAbilities,:MULTITYPE) ||
-         isConst?(user.ability,PBAbilities,:RKSSYSTEM)
+         isConst?(user.ability,PBAbilities,:RKSSYSTEM) ||
+         isConst?(user.ability,PBAbilities,:SPLICE)
         score -= 90
       else
         types = []
@@ -1324,7 +1325,8 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "05F"
       if isConst?(user.ability,PBAbilities,:MULTITYPE) ||
-         isConst?(user.ability,PBAbilities,:RKSSYSTEM)
+         isConst?(user.ability,PBAbilities,:RKSSYSTEM) ||
+         isConst?(user.ability,PBAbilities,:SPLICE)
         score -= 90
       elsif target.lastMoveUsed<=0 ||
          PBTypes.isPseudoType?(pbGetMoveData(target.lastMoveUsed,MOVE_TYPE))
@@ -1350,7 +1352,8 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "060"
       if isConst?(user.ability,PBAbilities,:MULTITYPE) ||
-         isConst?(user.ability,PBAbilities,:RKSSYSTEM)
+         isConst?(user.ability,PBAbilities,:RKSSYSTEM) ||
+         isConst?(user.ability,PBAbilities,:SPLICE)
         score -= 90
       elsif skill>=PBTrainerAI.mediumSkill
         envtypes = [
@@ -1371,7 +1374,8 @@ class PokeBattle_AI
     when "061"
       if target.effects[PBEffects::Substitute]>0 ||
          isConst?(target.ability,PBAbilities,:MULTITYPE) ||
-         isConst?(target.ability,PBAbilities,:RKSSYSTEM)
+         isConst?(target.ability,PBAbilities,:RKSSYSTEM) ||
+         isConst?(target.ability,PBAbilities,:SPLICE)
         score -= 90
       elsif target.pbHasType?(:WATER)
         score -= 90
@@ -1379,7 +1383,8 @@ class PokeBattle_AI
     #---------------------------------------------------------------------------
     when "062"
       if isConst?(user.ability,PBAbilities,:MULTITYPE) ||
-         isConst?(user.ability,PBAbilities,:RKSSYSTEM)
+         isConst?(user.ability,PBAbilities,:RKSSYSTEM) ||
+         isConst?(user.ability,PBAbilities,:SPLICE)
         score -= 90
       elsif user.pbHasType?(target.type1) &&
          user.pbHasType?(target.type2) &&
@@ -1394,6 +1399,7 @@ class PokeBattle_AI
       elsif skill>=PBTrainerAI.mediumSkill
         if isConst?(target.ability,PBAbilities,:MULTITYPE) ||
            isConst?(target.ability,PBAbilities,:RKSSYSTEM) ||
+           isConst?(target.ability,PBAbilities,:SPLICE) ||
            isConst?(target.ability,PBAbilities,:SIMPLE) ||
            isConst?(target.ability,PBAbilities,:TRUANT)
           score -= 90
@@ -1407,6 +1413,7 @@ class PokeBattle_AI
         if isConst?(target.ability,PBAbilities,:INSOMNIA) ||
            isConst?(target.ability,PBAbilities,:MULTITYPE) ||
            isConst?(target.ability,PBAbilities,:RKSSYSTEM) ||
+           isConst?(target.ability,PBAbilities,:SPLICE) ||
            isConst?(target.ability,PBAbilities,:TRUANT)
           score -= 90
         end
@@ -1418,18 +1425,17 @@ class PokeBattle_AI
         if target.ability==0 || user.ability==target.ability ||
            isConst?(user.ability,PBAbilities,:MULTITYPE) ||
            isConst?(user.ability,PBAbilities,:RKSSYSTEM) ||
+           isConst?(user.ability,PBAbilities,:SPLICE) ||
            isConst?(target.ability,PBAbilities,:FLOWERGIFT) ||
            isConst?(target.ability,PBAbilities,:FORECAST) ||
            isConst?(target.ability,PBAbilities,:ILLUSION) ||
            isConst?(target.ability,PBAbilities,:IMPOSTER) ||
            isConst?(target.ability,PBAbilities,:MULTITYPE) ||
            isConst?(target.ability,PBAbilities,:RKSSYSTEM) ||
+           isConst?(target.ability,PBAbilities,:SPLICE) ||
            isConst?(target.ability,PBAbilities,:TRACE) ||
            isConst?(target.ability,PBAbilities,:WONDERGUARD) ||
-           isConst?(target.ability,PBAbilities,:ZENMODE) ||
-           isConst?(target.ability,PBAbilities,:ICEFACE) ||
-           isConst?(target.ability,PBAbilities,:GULPMISSILE) ||
-           isConst?(target.ability,PBAbilities,:NEUTRALIZINGGAS)
+           isConst?(target.ability,PBAbilities,:ZENMODE)
           score -= 90
         end
       end
@@ -1451,6 +1457,7 @@ class PokeBattle_AI
         if user.ability==0 || user.ability==target.ability ||
            isConst?(target.ability,PBAbilities,:MULTITYPE) ||
            isConst?(target.ability,PBAbilities,:RKSSYSTEM) ||
+           isConst?(target.ability,PBAbilities,:SPLICE) ||
            isConst?(target.ability,PBAbilities,:TRUANT) ||
            isConst?(user.ability,PBAbilities,:FLOWERGIFT) ||
            isConst?(user.ability,PBAbilities,:FORECAST) ||
@@ -1458,11 +1465,9 @@ class PokeBattle_AI
            isConst?(user.ability,PBAbilities,:IMPOSTER) ||
            isConst?(user.ability,PBAbilities,:MULTITYPE) ||
            isConst?(user.ability,PBAbilities,:RKSSYSTEM) ||
+           isConst?(user.ability,PBAbilities,:SPLICE) ||
            isConst?(user.ability,PBAbilities,:TRACE) ||
-           isConst?(user.ability,PBAbilities,:ZENMODE) ||
-           isConst?(user.ability,PBAbilities,:ICEFACE) ||
-           isConst?(user.ability,PBAbilities,:GULPMISSILE) ||
-           isConst?(user.ability,PBAbilities,:NEUTRALIZINGGAS)
+           isConst?(user.ability,PBAbilities,:ZENMODE)
           score -= 90
         end
         if skill>=PBTrainerAI.highSkill
@@ -1484,14 +1489,13 @@ class PokeBattle_AI
            isConst?(user.ability,PBAbilities,:ILLUSION) ||
            isConst?(user.ability,PBAbilities,:MULTITYPE) ||
            isConst?(user.ability,PBAbilities,:RKSSYSTEM) ||
+           isConst?(user.ability,PBAbilities,:SPLICE) ||
            isConst?(user.ability,PBAbilities,:WONDERGUARD) ||
            isConst?(target.ability,PBAbilities,:ILLUSION) ||
            isConst?(target.ability,PBAbilities,:MULTITYPE) ||
            isConst?(target.ability,PBAbilities,:RKSSYSTEM) ||
-           isConst?(target.ability,PBAbilities,:WONDERGUARD) ||
-           isConst?(target.ability,PBAbilities,:ICEFACE) ||
-           isConst?(target.ability,PBAbilities,:GULPMISSILE) ||
-           isConst?(target.ability,PBAbilities,:NEUTRALIZINGGAS)
+           isConst?(target.ability,PBAbilities,:SPLICE) ||
+           isConst?(target.ability,PBAbilities,:WONDERGUARD)
           score -= 90
         end
       end
@@ -1512,6 +1516,7 @@ class PokeBattle_AI
       elsif skill>=PBTrainerAI.highSkill
         score -= 90 if isConst?(target.ability,PBAbilities,:MULTITYPE)
         score -= 90 if isConst?(target.ability,PBAbilities,:RKSSYSTEM)
+        score -= 90 if isConst?(target.ability,PBAbilities,:SPLICE)
         score -= 90 if isConst?(target.ability,PBAbilities,:SLOWSTART)
         score -= 90 if isConst?(target.ability,PBAbilities,:TRUANT)
       end
@@ -2218,14 +2223,6 @@ class PokeBattle_AI
         score -= 90
       elsif @battle.pbWeather==PBWeather::Sandstorm
         score -= 90
-      end
-      if skill>=PBTrainerAI.highSkill
-        user.eachOpposing do |b|
-          score -= 40 if b.hasActiveAbility?(:ICEFACE) && b.form==0
-        end
-        user.eachAlly do |b|
-          score += 40 if b.hasActiveAbility?(:ICEFACE) && b.form==0
-        end
       end
     #---------------------------------------------------------------------------
     when "102"
@@ -3081,7 +3078,7 @@ class PokeBattle_AI
     when "173"
     #---------------------------------------------------------------------------
     when "174"
-      score -= 90 if user.turnCount>0 || user.lastRoundMoved>=0
+      score -= 90 if user.turnCount > 0
     #---------------------------------------------------------------------------
     when "175"
       score += 30 if target.effects[PBEffects::Minimize]

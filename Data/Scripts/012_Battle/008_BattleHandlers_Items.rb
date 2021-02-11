@@ -148,7 +148,11 @@ BattleHandlers::HPHealItem.add(:ORANBERRY,
     next false if !forced && !battler.canConsumeBerry?
     next false if !forced && battler.hp>battler.totalhp/2
     battle.pbCommonAnimation("EatBerry",battler) if !forced
-    battler.pbRecoverHP((battler.hasActiveAbility?(:RIPEN))? 20 : 10)
+    if battler.hasWorkingAbility(:RIPEN)
+      battler.pbRecoverHP(20)
+    else
+      battler.pbRecoverHP(10)
+    end
     itemName = PBItems.getName(item)
     if forced
       PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
@@ -178,7 +182,11 @@ BattleHandlers::HPHealItem.add(:SITRUSBERRY,
     next false if !forced && !battler.canConsumeBerry?
     next false if !forced && battler.hp>battler.totalhp/2
     battle.pbCommonAnimation("EatBerry",battler) if !forced
-    battler.pbRecoverHP?(battler.totalhp/((battler.hasActiveAbility?(:RIPEN))? 2 : 4))
+    if battler.hasWorkingAbility(:RIPEN)
+      battler.pbRecoverHP(battler.totalhp/2)
+    else
+      battler.pbRecoverHP(battler.totalhp/4)
+    end
     itemName = PBItems.getName(item)
     if forced
       PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
@@ -196,8 +204,7 @@ BattleHandlers::HPHealItem.add(:STARFBERRY,
     PBStats.eachMainBattleStat { |s| stats.push(s) if battler.pbCanRaiseStatStage?(s,battler) }
     next false if stats.length==0
     stat = stats[battle.pbRandom(stats.length)]
-    increment = ((battler.hasActiveAbility?(:RIPEN))? 4 : 2)
-    next pbBattleStatIncreasingBerry(battler,battle,item,forced,stat,increment)
+    next pbBattleStatIncreasingBerry(battler,battle,item,forced,stat,2)
   }
 )
 
@@ -460,7 +467,7 @@ BattleHandlers::DamageCalcUserItem.add(:BLACKBELT,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:BLACKBELT,:FISTPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:BLACKBELT,:FISTPLATE,:FIGHTCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:BLACKGLASSES,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -468,7 +475,7 @@ BattleHandlers::DamageCalcUserItem.add(:BLACKGLASSES,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:BLACKGLASSES,:DREADPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:BLACKGLASSES,:DREADPLATE,:DARKCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:BUGGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -482,7 +489,7 @@ BattleHandlers::DamageCalcUserItem.add(:CHARCOAL,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:CHARCOAL,:FLAMEPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:CHARCOAL,:FLAMEPLATE,:FIRECELL)
 
 BattleHandlers::DamageCalcUserItem.add(:CHOICEBAND,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -516,7 +523,7 @@ BattleHandlers::DamageCalcUserItem.add(:DRAGONFANG,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:DRAGONFANG,:DRACOPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:DRAGONFANG,:DRACOPLATE,:DRAGONCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:DRAGONGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -595,7 +602,7 @@ BattleHandlers::DamageCalcUserItem.add(:HARDSTONE,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:HARDSTONE,:STONEPLATE,:ROCKINCENSE)
+BattleHandlers::DamageCalcUserItem.copy(:HARDSTONE,:STONEPLATE,:ROCKINCENSE,:ROCKCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:ICEGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -634,7 +641,7 @@ BattleHandlers::DamageCalcUserItem.add(:MAGNET,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:MAGNET,:ZAPPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:MAGNET,:ZAPPLATE,:ELECCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:METALCOAT,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -642,7 +649,7 @@ BattleHandlers::DamageCalcUserItem.add(:METALCOAT,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:METALCOAT,:IRONPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:METALCOAT,:IRONPLATE,:STEELCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:METRONOME,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -657,7 +664,7 @@ BattleHandlers::DamageCalcUserItem.add(:MIRACLESEED,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:MIRACLESEED,:MEADOWPLATE,:ROSEINCENSE)
+BattleHandlers::DamageCalcUserItem.copy(:MIRACLESEED,:MEADOWPLATE,:ROSEINCENSE,:GRASSCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:MUSCLEBAND,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -671,7 +678,7 @@ BattleHandlers::DamageCalcUserItem.add(:MYSTICWATER,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:MYSTICWATER,:SPLASHPLATE,:SEAINCENSE,:WAVEINCENSE)
+BattleHandlers::DamageCalcUserItem.copy(:MYSTICWATER,:SPLASHPLATE,:SEAINCENSE,:WAVEINCENSE,:WATERCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:NEVERMELTICE,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -679,7 +686,7 @@ BattleHandlers::DamageCalcUserItem.add(:NEVERMELTICE,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:NEVERMELTICE,:ICICLEPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:NEVERMELTICE,:ICICLEPLATE,:ICECELL)
 
 BattleHandlers::DamageCalcUserItem.add(:NORMALGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -693,13 +700,15 @@ BattleHandlers::DamageCalcUserItem.add(:PIXIEPLATE,
   }
 )
 
+BattleHandlers::DamageCalcUserItem.copy(:PIXIEPLATE,:FAIRYCELL)
+
 BattleHandlers::DamageCalcUserItem.add(:POISONBARB,
   proc { |item,user,target,move,mults,baseDmg,type|
     mults[BASE_DMG_MULT] *= 1.2 if isConst?(type,PBTypes,:POISON)
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:POISONBARB,:TOXICPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:POISONBARB,:TOXICPLATE,:POISONCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:POISONGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -725,7 +734,7 @@ BattleHandlers::DamageCalcUserItem.add(:SHARPBEAK,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:SHARPBEAK,:SKYPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:SHARPBEAK,:SKYPLATE,:FLYCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:SILKSCARF,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -739,7 +748,7 @@ BattleHandlers::DamageCalcUserItem.add(:SILVERPOWDER,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:SILVERPOWDER,:INSECTPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:SILVERPOWDER,:INSECTPLATE,:BUGCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:SOFTSAND,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -747,7 +756,7 @@ BattleHandlers::DamageCalcUserItem.add(:SOFTSAND,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:SOFTSAND,:EARTHPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:SOFTSAND,:EARTHPLATE,:GROUNDCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:SOULDEW,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -770,7 +779,7 @@ BattleHandlers::DamageCalcUserItem.add(:SPELLTAG,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:SPELLTAG,:SPOOKYPLATE)
+BattleHandlers::DamageCalcUserItem.copy(:SPELLTAG,:SPOOKYPLATE,:GHOSTCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:STEELGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -792,7 +801,7 @@ BattleHandlers::DamageCalcUserItem.add(:TWISTEDSPOON,
   }
 )
 
-BattleHandlers::DamageCalcUserItem.copy(:TWISTEDSPOON,:MINDPLATE,:ODDINCENSE)
+BattleHandlers::DamageCalcUserItem.copy(:TWISTEDSPOON,:MINDPLATE,:ODDINCENSE,:PSYCELL)
 
 BattleHandlers::DamageCalcUserItem.add(:WATERGEM,
   proc { |item,user,target,move,mults,baseDmg,type|
@@ -984,11 +993,9 @@ BattleHandlers::CriticalCalcUserItem.copy(:RAZORCLAW,:SCOPELENS)
 
 BattleHandlers::CriticalCalcUserItem.add(:STICK,
   proc { |item,user,target,c|
-    next c+2 if user.isSpecies?(:FARFETCHD) || user.isSpecies?(:SIRFETCHD)
+    next c+2 if user.isSpecies?(:FARFETCHD)
   }
 )
-
-BattleHandlers::CriticalCalcUserItem.copy(:STICK,:LEEK)
 
 #===============================================================================
 # CriticalCalcTargetItem handlers
@@ -1030,7 +1037,7 @@ BattleHandlers::TargetItemOnHit.add(:CELLBATTERY,
 
 BattleHandlers::TargetItemOnHit.add(:ENIGMABERRY,
   proc { |item,user,target,move,battle|
-    next if target.damageState.substitute || target.damageState.disguise || target.damageState.iceface
+    next if target.damageState.substitute || target.damageState.disguise
     next if !PBTypes.superEffective?(target.damageState.typeMod)
     if BattleHandlers.triggerTargetItemOnHitPositiveBerry(item,target,battle,false)
       target.pbHeldItemTriggered(item)
@@ -1045,7 +1052,7 @@ BattleHandlers::TargetItemOnHit.add(:JABOCABERRY,
     next if !user.takesIndirectDamage?
     battle.pbCommonAnimation("EatBerry",target)
     battle.scene.pbDamageAnimation(user)
-    user.pbReduceHP((user.totalhp)/(target.hasActiveAbility?(:RIPEN)? 4 : 8),false)
+    user.pbReduceHP(user.totalhp/8,false)
     battle.pbDisplay(_INTL("{1} consumed its {2} and hurt {3}!",target.pbThis,
        target.itemName,user.pbThis(true)))
     target.pbHeldItemTriggered(item)
@@ -1107,7 +1114,7 @@ BattleHandlers::TargetItemOnHit.add(:ROWAPBERRY,
     next if !user.takesIndirectDamage?
     battle.pbCommonAnimation("EatBerry",target)
     battle.scene.pbDamageAnimation(user)
-    user.pbReduceHP((user.totalhp)/(target.hasActiveAbility?(:RIPEN)? 4 : 8),false)
+    user.pbReduceHP(user.totalhp/8,false)
     battle.pbDisplay(_INTL("{1} consumed its {2} and hurt {3}!",target.pbThis,
        target.itemName,user.pbThis(true)))
     target.pbHeldItemTriggered(item)
@@ -1144,7 +1151,7 @@ BattleHandlers::TargetItemOnHit.add(:STICKYBARB,
 
 BattleHandlers::TargetItemOnHit.add(:WEAKNESSPOLICY,
   proc { |item,user,target,move,battle|
-    next if target.damageState.disguise || target.damageState.iceface
+    next if target.damageState.disguise
     next if !PBTypes.superEffective?(target.damageState.typeMod)
     next if !target.pbCanRaiseStatStage?(PBStats::ATTACK,target) &&
             !target.pbCanRaiseStatStage?(PBStats::SPATK,target)
@@ -1174,7 +1181,7 @@ BattleHandlers::TargetItemOnHitPositiveBerry.add(:ENIGMABERRY,
     itemName = PBItems.getName(item)
     PBDebug.log("[Item triggered] #{battler.pbThis}'s #{itemName}") if forced
     battle.pbCommonAnimation("EatBerry",battler) if !forced
-    user.pbReduceHP((user.totalhp)/(target.hasActiveAbility?(:RIPEN)? 2 : 4),false)
+    battler.pbRecoverHP(battler.totalhp/4)
     if forced
       battle.pbDisplay(_INTL("{1}'s HP was restored.",battler.pbThis))
     else
@@ -1189,14 +1196,13 @@ BattleHandlers::TargetItemOnHitPositiveBerry.add(:KEEBERRY,
   proc { |item,battler,battle,forced|
     next false if !forced && !battler.canConsumeBerry?
     next false if !battler.pbCanRaiseStatStage?(PBStats::DEFENSE,battler)
-    increment = ((battler.hasActiveAbility?(:RIPEN))? 2 : 1)
     itemName = PBItems.getName(item)
     if !forced
       battle.pbCommonAnimation("EatBerry",battler)
-      next battler.pbRaiseStatStageByCause(PBStats::DEFENSE,increment,battler,itemName)
+      next battler.pbRaiseStatStageByCause(PBStats::DEFENSE,1,battler,itemName)
     end
     PBDebug.log("[Item triggered] #{battler.pbThis}'s #{itemName}")
-    next battler.pbRaiseStatStage(PBStats::DEFENSE,increment,battler)
+    next battler.pbRaiseStatStage(PBStats::DEFENSE,1,battler)
   }
 )
 
@@ -1204,14 +1210,13 @@ BattleHandlers::TargetItemOnHitPositiveBerry.add(:MARANGABERRY,
   proc { |item,battler,battle,forced|
     next false if !forced && !battler.canConsumeBerry?
     next false if !battler.pbCanRaiseStatStage?(PBStats::SPDEF,battler)
-    increment = ((battler.hasActiveAbility?(:RIPEN))? 2 : 1)
     itemName = PBItems.getName(item)
     if !forced
       battle.pbCommonAnimation("EatBerry",battler)
-      next battler.pbRaiseStatStageByCause(PBStats::SPDEF,increment,battler,itemName)
+      next battler.pbRaiseStatStageByCause(PBStats::SPDEF,1,battler,itemName)
     end
     PBDebug.log("[Item triggered] #{battler.pbThis}'s #{itemName}")
-    next battler.pbRaiseStatStage(PBStats::SPDEF,increment,battler)
+    next battler.pbRaiseStatStage(PBStats::SPDEF,1,battler)
   }
 )
 
@@ -1281,17 +1286,6 @@ BattleHandlers::UserItemAfterMoveUse.add(:SHELLBELL,
     user.pbRecoverHP(totalDamage/8)
     battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
        user.pbThis,user.itemName))
-  }
-)
-
-BattleHandlers::UserItemAfterMoveUse.add(:THROATSPRAY,
-  proc { |item,user,targets,move,numHits,battle|
-    next if !move.soundMove? || numHits==0
-    next if !user.pbCanRaiseStatStage?(PBStats::SPATK,user)
-    battle.pbCommonAnimation("UseItem",user)
-    showAnim = true
-    user.pbRaiseStatStageByCause(PBStats::SPATK,1,user,user.itemName,showAnim)
-    user.pbConsumeItem
   }
 )
 
@@ -1586,15 +1580,6 @@ BattleHandlers::ItemOnSwitchIn.add(:AIRBALLOON,
   }
 )
 
-BattleHandlers::ItemOnSwitchIn.add(:ROOMSERVICE,
-  proc { |item,battler,battle|
-    next if battle.field.effects[PBEffects::TrickRoom] == 0
-    next if !battler.pbCanLowerStatStage?(PBStats::SPEED,battler)
-    battler.pbLowerStatStageByCause(PBStats::SPEED,1,battler,battler.itemName)
-    battler.pbConsumeItem
-  }
-)
-
 #===============================================================================
 # ItemOnIntimidated handlers
 #===============================================================================
@@ -1615,26 +1600,5 @@ BattleHandlers::ItemOnIntimidated.add(:ADRENALINEORB,
 BattleHandlers::RunFromBattleItem.add(:SMOKEBALL,
   proc { |item,battler|
     next true
-  }
-)
-
-#===============================================================================
-# ItemOnStatLoss handlers
-#===============================================================================
-
-BattleHandlers::ItemOnStatLoss.add(:EJECTPACK,
-  proc { |item,battler,user,move,switched,battle|
-    next if battle.pbAllFainted?(battler.idxOpposingSide)
-    next if !battle.pbCanChooseNonActive?(battler.index)
-	next if move.function=="0EE" # U-Turn, Volt-Switch, Flip Turn
-	next if move.function=="151" # Parting Shot
-    battle.pbCommonAnimation("UseItem",battler)
-    battle.pbDisplay(_INTL("{1} is switched out with the {2}!",battler.pbThis,battler.itemName))
-    battler.pbConsumeItem(true,false)
-    newPkmn = battle.pbGetReplacementPokemonIndex(battler.index)   # Owner chooses
-    next if newPkmn<0
-    battle.pbRecallAndReplace(battler.index,newPkmn)
-    battle.pbClearChoice(battler.index)   # Replacement Pokémon does nothing this round
-    switched.push(battler.index)
   }
 )

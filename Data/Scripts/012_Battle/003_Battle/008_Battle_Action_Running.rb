@@ -9,6 +9,11 @@ class PokeBattle_Battle
     return true if battler.pbHasType?(:GHOST) && NEWEST_BATTLE_MECHANICS
     return true if battler.abilityActive? &&
                    BattleHandlers.triggerRunFromBattleAbility(battler.ability,battler)
+    if battler.effects[PBEffects::JawLock]
+      eachBattler.each do |b|
+        return false if b.pokemonIndex==battlers.effects[PBEffects::JawLockUser] && !b.fainted?
+      end
+    end
     return true if battler.itemActive? &&
                    BattleHandlers.triggerRunFromBattleItem(battler.item,battler)
     return false if battler.effects[PBEffects::Trapping]>0 ||
@@ -141,7 +146,7 @@ class PokeBattle_Battle
     if speedPlayer>speedEnemy
       rate = 256
     else
-      rate = (speedPlayer*128)/speedEnemy
+      rate = (speedPlayer*768)/speedEnemy
       rate += @runCommand*30
     end
     if rate>=256 || @battleAI.pbAIRandom(256)<rate

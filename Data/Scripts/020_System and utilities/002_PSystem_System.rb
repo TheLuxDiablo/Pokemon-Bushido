@@ -9,11 +9,7 @@ def pbSafeLoad(file)
 end
 
 def pbLoadRxData(file) # :nodoc:
-  if $RPGVX
-    return load_data(file+".rvdata")
-  else
-    return load_data(file+".rxdata")
-  end
+  return load_data(file+".rxdata")
 end
 
 def pbChooseLanguage
@@ -69,7 +65,7 @@ def pbSetUpSystem
   if !$INEDITOR
     $game_system   = game_system
     $PokemonSystem = pokemonSystem
-    pbSetResizeFactor([$PokemonSystem.screensize,3].min)
+    pbSetResizeFactor([$PokemonSystem.screensize,(mkxp? ? 4 : 3)].min)
   else
     pbSetResizeFactor(1.0)
   end
@@ -90,14 +86,25 @@ def pbSetUpSystem
   end
 end
 
-def pbScreenCapture
-  t = pbGetTimeNow
-  filestart = t.strftime("[%Y-%m-%d] %H_%M_%S")
-  filestart = sprintf("%s.%03d",filestart,(t.to_f-t.to_i)*1000)   # milliseconds
-  capturefile = RTP.getSaveFileName(sprintf("%s.png",filestart))
-  if capturefile && safeExists?("rubyscreen.dll")
-    Graphics.snap_to_bitmap(false).saveToPng(capturefile)
+if mkxp?
+  def pbScreenCapture
+    t = pbGetTimeNow
+    filestart = t.strftime("[%Y-%m-%d] %H_%M_%S")
+    filestart = sprintf("%s.%03d", filestart, (t.to_f - t.to_i) * 1000)   # milliseconds
+    capturefile = RTP.getSaveFileName(sprintf("%s.png", filestart))
+    Graphics.snap_to_bitmap.save_to_png(capturefile)
     pbSEPlay("Pkmn exp full") if FileTest.audio_exist?("Audio/SE/Pkmn exp full")
+  end
+else
+  def pbScreenCapture
+    t = pbGetTimeNow
+    filestart = t.strftime("[%Y-%m-%d] %H_%M_%S")
+    filestart = sprintf("%s.%03d",filestart,(t.to_f-t.to_i)*1000)   # milliseconds
+    capturefile = RTP.getSaveFileName(sprintf("%s.png",filestart))
+    if capturefile && safeExists?("rubyscreen.dll")
+      Graphics.snap_to_bitmap(false).saveToPng(capturefile)
+      pbSEPlay("Pkmn exp full") if FileTest.audio_exist?("Audio/SE/Pkmn exp full")
+    end
   end
 end
 

@@ -174,6 +174,8 @@ def pbIsUnlosableItem?(item,species,ability)
                   !isConst?(ability,PBAbilities,:MULTITYPE)
   return false if isConst?(species,PBSpecies,:SILVALLY) &&
                   !isConst?(ability,PBAbilities,:RKSSYSTEM)
+  return false if (isConst?(species,PBSpecies,:ARENAY) || isConst?(species,PBSpecies,:DRAGAIA) || isConst?(species,PBSpecies,:PRISMATRIX)) &&
+                  !isConst?(ability,PBAbilities,:SPLICE)
   combos = {
      :ARCEUS   => [:FISTPLATE,:FIGHTINIUMZ,
                    :SKYPLATE,:FLYINIUMZ,
@@ -209,6 +211,33 @@ def pbIsUnlosableItem?(item,species,ability)
                    :DRAGONMEMORY,
                    :DARKMEMORY,
                    :FAIRYMEMORY],
+     :ARENAY   => [:FIRECELL,:WATERCELL,
+                   :GRASSCELL,:ELECCELL,
+                   :FLYCELL,:DARKCELL,
+                   :PSYCELL,:FAIRYCELL,
+                   :DRAGONCELL,:ROCKCELL,
+                   :GROUNDCELL,:STEELCELL,
+                   :ICECELL,:GHOSTCELL,
+                   :FIGHTCELL,:BUGCELL,
+                   :POISONCELL],
+     :PRISMATRIX => [:FIRECELL,:WATERCELL,
+                   :GRASSCELL,:ELECCELL,
+                   :FLYCELL,:DARKCELL,
+                   :PSYCELL,:FAIRYCELL,
+                   :DRAGONCELL,:ROCKCELL,
+                   :GROUNDCELL,:STEELCELL,
+                   :ICECELL,:GHOSTCELL,
+                   :FIGHTCELL,:BUGCELL,
+                   :POISONCELL],
+     :ARENAY   => [:FIRECELL,:WATERCELL,
+                   :GRASSCELL,:ELECCELL,
+                   :FLYCELL,:DARKCELL,
+                   :PSYCELL,:FAIRYCELL,
+                   :DRAGONCELL,:ROCKCELL,
+                   :GROUNDCELL,:STEELCELL,
+                   :ICECELL,:GHOSTCELL,
+                   :FIGHTCELL,:BUGCELL,
+                   :POISONCELL],
      :GIRATINA => [:GRISEOUSORB],
      :GENESECT => [:BURNDRIVE,:CHILLDRIVE,:DOUSEDRIVE,:SHOCKDRIVE],
      :KYOGRE   => [:BLUEORB],
@@ -369,6 +398,7 @@ def pbChangeLevel(pkmn,newlevel,scene)
     spatkdiff   = pkmn.spatk
     spdefdiff   = pkmn.spdef
     totalhpdiff = pkmn.totalhp
+    oldlevel = pkmn.level
     pkmn.level = newlevel
     pkmn.changeHappiness("vitamin")
     pkmn.calcStats
@@ -391,9 +421,14 @@ def pbChangeLevel(pkmn,newlevel,scene)
     # Learn new moves upon level up
     movelist = pkmn.getMoveList
     for i in movelist
-      next if i[0]!=pkmn.level
-      pbLearnMove(pkmn,i[1],true) { scene.pbUpdate }
+      if i[0]>=oldlevel && i[0]<=pkmn.level  # Learned a new move THUNDAGA
+        pbLearnMove(pkmn,i[1],true)
+      end
     end
+    #thundaga excluding some pokes from rare candy evo
+    return if (isConst?(pkmn.species,PBSpecies,:FARFETCHD) && pkmn.form==1) ||
+              (isConst?(pkmn.species,PBSpecies,:YAMASK) && pkmn.form==1) ||
+               isConst?(pkmn.species,PBSpecies,:MILCERY)
     # Check for evolution
     newspecies = pbCheckEvolution(pkmn)
     if newspecies>0
@@ -414,7 +449,6 @@ def pbTopRightWindow(text, scene = nil)
   window.x     = Graphics.width-window.width
   window.y     = 0
   window.z     = 99999
-  pbPlayDecisionSE
   loop do
     Graphics.update
     Input.update
@@ -640,6 +674,9 @@ def pbLearnMove(pkmn,move,ignoreifknown=false,bymachine=false,&block)
   if pkmn.numMoves<4
     pkmn.pbLearnMove(move)
     pbMessage(_INTL("\\se[]{1} learned {2}!\\se[Pkmn move learnt]",pkmnname,movename),&block)
+    if bymachine && (pkmn.isSpecies?(:ARENAY) || pkmn.isSpecies?(:DRAGAIA) || pkmn.isSpecies?(:PRISMATRIX))
+      pkmn.tmMoves.push(move)
+    end
     return true
   end
   loop do
@@ -652,6 +689,9 @@ def pbLearnMove(pkmn,move,ignoreifknown=false,bymachine=false,&block)
       pkmn.moves[forgetmove] = PBMove.new(move)   # Replaces current/total PP
       if bymachine && !NEWEST_BATTLE_MECHANICS
         pkmn.moves[forgetmove].pp = [oldmovepp,pkmn.moves[forgetmove].totalpp].min
+      end
+      if bymachine && (pkmn.isSpecies?(:ARENAY) || pkmn.isSpecies?(:DRAGAIA) || pkmn.isSpecies?(:PRISMATRIX))
+        pkmn.tmMoves.push(move)
       end
       pbMessage(_INTL("1,\\wt[16] 2, and\\wt[16]...\\wt[16] ...\\wt[16] ... Ta-da!\\se[Battle ball drop]\1"),&block)
       pbMessage(_INTL("{1} forgot how to use {2}.\\nAnd...\1",pkmnname,oldmovename),&block)

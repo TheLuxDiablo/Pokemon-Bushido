@@ -360,7 +360,7 @@ class SpritePositioner
       name = _INTL("{1} (form {2})",name,s[1]) if s[1]>0
       allspecies.push([i,s[0],name]) if name!=""
     end
-    allspecies.sort! { |a,b| a[1]==b[1] ? a[0]<=>b[0] : a[2]<=>b[2] }
+  #  allspecies.sort! { |a,b| a[1]==b[1] ? a[0]<=>b[0] : a[2]<=>b[2] }
     for s in allspecies
       commands.push(_INTL("{1} - {2}",s[1],s[2]))
     end

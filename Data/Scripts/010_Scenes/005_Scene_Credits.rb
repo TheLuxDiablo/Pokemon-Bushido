@@ -1,8 +1,12 @@
 # Backgrounds to show in credits. Found in Graphics/Titles/ folder
-CreditsBackgroundList = ["credits1","credits2","credits3","credits4","credits5"]
+CreditsBackgroundList = ["credits12","credits6","credits9",
+  "credits8","credits26","credits14","credits27","credits23",
+  "credits28","credits25","credits20","credits29","credits13",
+  "credits7","credits15","credits17","credits18","credits16",
+  "credits19","credits10","credits21","credits11","credits22","credits24"]
 CreditsMusic          = "Credits"
 CreditsScrollSpeed    = 2
-CreditsFrequency      = 9   # Number of seconds per credits slide
+CreditsFrequency      = 3   # Number of seconds per credits slide
 CREDITS_OUTLINE       = Color.new(0,0,128, 255)
 CREDITS_SHADOW        = Color.new(0,0,0, 100)
 CREDITS_FILL          = Color.new(255,255,255, 255)
@@ -48,16 +52,39 @@ class Scene_Credits
 # This next piece of code is the credits.
 #Start Editing
 CREDIT=<<_END_
+A game by Thundaga (Cameron R)
 
-Your credits go here.
+Artists
+Voltseon
+Tristantine The Great
+Kristiano100
+TabletPillowLamp
+P-Plum
 
-Your credits go here.
+Programmers
+GolisopodUser
+Seyuna
+Voltseon
 
-Your credits go here.
+Shoutouts to the Thundaga Twitch Chat
+Aka the Thundagang
+Aka the Camfam
+Aka the Bolt Cult
 
-Your credits go here.
 
-Your credits go here.
+Additional Amazing Art
+P-Plum
+ShadowPhil
+Design3D
+ShashuGreninja
+Dedbed
+Carlin
+
+Pokemon Splice Wiki
+ENLS
+
+A HUGE thank you to the resource creators
+of the Pokemon fangame community
 
 {INSERTS_PLUGIN_CREDITS_DO_NOT_REMOVE}
 "Pokémon Essentials" was created by:
@@ -79,7 +106,9 @@ Lisa Anthony<s>Wachunga
 Luka S.J.<s>
 and everyone else who helped out
 
-
+"mkxp-z" by:
+Roza
+Based on MKXP by Ancurio et al.
 
 "RPG Maker XP" by:
 Enterbrain
@@ -112,7 +141,7 @@ _END_
     plugin_credits = ""
     PluginManager.plugins.each do |plugin|
       pcred = PluginManager.credits(plugin)
-      plugin_credits << "\"#{plugin}\" version #{PluginManager.version(plugin)}\n"
+      plugin_credits << "\"#{plugin}\"\n"
       if pcred.size >= 5
         plugin_credits << pcred[0] + "\n"
         i = 1
@@ -135,14 +164,14 @@ _END_
       line = line.split("<s>")
       # LINE ADDED: If you use in your own game, you should remove this line
       pbSetSystemFont(credit_bitmap) # <--- This line was added
-      xpos = 0
-      align = 1 # Centre align
+      xpos = -30
+      align = 2 # Centre align
       linewidth = Graphics.width
       for j in 0...line.length
         if line.length>1
-          xpos = (j==0) ? 0 : 20 + Graphics.width/2
-          align = (j==0) ? 2 : 0 # Right align : left align
-          linewidth = Graphics.width/2 - 20
+          xpos = (j==0) ? -30 : -30 + Graphics.width/2
+          align = (j==0) ? 2 : 2 # Right align : left align
+          linewidth = Graphics.width/2 - 10
         end
         credit_bitmap.font.color = CREDITS_SHADOW
         credit_bitmap.draw_text(xpos,i * 32 + 8,linewidth,32,line[j],align)
@@ -180,23 +209,31 @@ _END_
     pbBGMFade(2.0)
     pbBGMPlay(CreditsMusic)
     Graphics.transition(20)
+  #  @sprite.opacity = 0
+  #  @credit_sprite.opacity = 0
     loop do
       Graphics.update
       Input.update
-      update
-      break if $scene != self
+      break if update
+    #  break if $scene != self
     end
-    Graphics.freeze
+#    Graphics.freeze
+    (Graphics.frame_rate/2).times do
+      @sprite.opacity -= 255/(Graphics.frame_rate/2)
+      @credit_sprite.opacity -= 255/(Graphics.frame_rate/2)
+      Graphics.update
+    end
     @sprite.dispose
     @credit_sprite.dispose
     $PokemonGlobal.creditsPlayed = true
-    pbBGMPlay(previousBGM)
+  #  pbBGMPlay(previousBGM)
+    return
   end
 
   # Check if the credits should be cancelled
   def cancel?
-    if Input.trigger?(Input::C) && $PokemonGlobal.creditsPlayed
-      $scene = Scene_Map.new
+    if Input.trigger?(Input::C) && ($PokemonGlobal.creditsPlayed || $DEBUG)
+    #  $scene = Scene_Map.new
       pbBGMFade(1.0)
       return true
     end
@@ -206,7 +243,7 @@ _END_
   # Checks if credits bitmap has reached its ending point
   def last?
     if @realOY > @credit_sprite.bitmap.height + @trim
-      $scene = ($game_map) ? Scene_Map.new : nil
+    #  $scene = ($game_map) ? Scene_Map.new : nil
       pbBGMFade(2.0)
       return true
     end
@@ -222,9 +259,10 @@ _END_
       @bg_index = 0 if @bg_index >= @backgroundList.length
       @sprite.setBitmap("Graphics/Titles/"+@backgroundList[@bg_index])
     end
-    return if cancel?
-    return if last?
+    return true if cancel?
+    return true if last?
     @realOY += @oyChangePerFrame
     @credit_sprite.oy = @realOY
+    return false
   end
 end

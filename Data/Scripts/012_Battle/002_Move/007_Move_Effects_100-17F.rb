@@ -1222,6 +1222,7 @@ class PokeBattle_Move_13B < PokeBattle_StatDownMove
     target.effects[PBEffects::KingsShield]            = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::QuickParry]             = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false
@@ -1560,7 +1561,7 @@ end
 #===============================================================================
 class PokeBattle_Move_149 < PokeBattle_Move
   def pbMoveFailed?(user,targets)
-    if user.turnCount>1 || user.lastRoundMoved>=0
+    if user.turnCount > 1
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -2580,7 +2581,7 @@ end
 #===============================================================================
 class PokeBattle_Move_174 < PokeBattle_Move
   def pbMoveFailed?(user,targets)
-    if user.turnCount>1 || user.lastRoundMoved>=0
+    if user.turnCount > 1
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end

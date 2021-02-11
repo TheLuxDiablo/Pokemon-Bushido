@@ -34,8 +34,6 @@ ItemHandlers::UseFromBag.add(:ESCAPEROPE,proc { |item|
   next 0
 })
 
-ItemHandlers::UseFromBag.copy(:ESCAPEROPE,:INFINITEROPE)
-
 ItemHandlers::UseFromBag.add(:BICYCLE,proc { |item|
   next (pbBikeCheck) ? 2 : 0
 })
@@ -81,8 +79,6 @@ ItemHandlers::ConfirmUseInField.add(:ESCAPEROPE,proc { |item|
   mapname = pbGetMapNameFromId(escape[0])
   next pbConfirmMessage(_INTL("Want to escape from here and return to {1}?",mapname))
 })
-
-ItemHandlers::ConfirmUseInField.copy(:ESCAPEROPE,:INFINITEROPE)
 
 #===============================================================================
 # UseInField handlers
@@ -191,8 +187,6 @@ ItemHandlers::UseInField.add(:ESCAPEROPE,proc { |item|
   pbEraseEscapePoint
   next 3
 })
-
-ItemHandlers::UseInField.copy(:ESCAPEROPE,:INFINITEROPE)
 
 ItemHandlers::UseInField.add(:SACREDASH,proc { |item|
   if $Trainer.pokemonCount==0
@@ -341,6 +335,12 @@ ItemHandlers::UseInField.add(:EXPALL,proc { |item|
 ItemHandlers::UseInField.add(:EXPALLOFF,proc { |item|
   $PokemonBag.pbChangeItem(:EXPALLOFF,:EXPALL)
   pbMessage(_INTL("The Exp Share was turned on."))
+  next 1
+})
+
+ItemHandlers::UseInField.add(:OUTFITCASE,proc { |item|
+  pbMessage(_INTL("You opened the outfit case."))
+  pbSelectOutfit
   next 1
 })
 
@@ -542,7 +542,7 @@ ItemHandlers::UseOnPokemon.add(:MAXREVIVE,proc { |item,pkmn,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:ENERGYPOWDER,proc { |item,pkmn,scene|
-  if pbHPItem(pkmn,60,scene)
+  if pbHPItem(pkmn,50,scene)
     pkmn.changeHappiness("powder")
     next true
   end
@@ -660,6 +660,26 @@ ItemHandlers::UseOnPokemon.add(:PPMAX,proc { |item,pkmn,scene|
     next true
   end
   next false
+})
+
+ItemHandlers::UseOnPokemon.add(:EVRESET,proc{|item,pkmn,scene|
+   if pkmn.ev[0]==0 && pkmn.ev[1]==0 && pkmn.ev[2]==0 &&
+      pkmn.ev[3]==0 && pkmn.ev[4]==0 && pkmn.ev[5]==0
+     scene.pbDisplay(_INTL("It won't have any effect."))
+     next false
+   else
+     pkmn.ev[0]=0
+     pkmn.ev[1]=0
+     pkmn.ev[2]=0
+     pkmn.ev[3]=0
+     pkmn.ev[4]=0
+     pkmn.ev[5]=0
+     scene.pbRefresh
+     pbMEPlay("HGSSGetItem")
+     scene.pbDisplay(_INTL("{1}'s EVs were reset.",pkmn.name))
+     pkmn.changeHappiness("vitamin")
+     next true
+   end
 })
 
 ItemHandlers::UseOnPokemon.add(:HPUP,proc { |item,pkmn,scene|
@@ -786,20 +806,20 @@ ItemHandlers::UseOnPokemon.add(:SWIFTWING,proc { |item,pkmn,scene|
 
 ItemHandlers::UseOnPokemon.add(:RARECANDY,proc { |item,pkmn,scene|
   if pkmn.level>=PBExperience.maxLevel || pkmn.shadowPokemon?
-    ret = pbCheckEvolution(pkmn,0)
-    if ret>0
-      pbFadeOutIn(99999){
-      evo = PokemonEvolutionScene.new
-      evo.pbStartScreen(pkmn,ret)
-      evo.pbEvolution(true)
-      evo.pbEndScreen
-    }
-    else
-      scene.pbDisplay(_INTL("It won't have any effect."))
-      next false
-    end
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    next false
   end
   pbChangeLevel(pkmn,pkmn.level+1,scene)
+  scene.pbHardRefresh
+  next true
+})
+
+ItemHandlers::UseOnPokemon.add(:SUPERRARECANDY,proc { |item,pkmn,scene|
+  if pkmn.level>=PBExperience.maxLevel || pkmn.shadowPokemon?
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    next false
+  end
+  pbChangeLevel(pkmn,pkmn.level+5,scene)
   scene.pbHardRefresh
   next true
 })
@@ -1122,7 +1142,15 @@ ItemHandlers::UseOnPokemon.add(:ABILITYCAPSULE,proc { |item,pkmn,scene|
     abil1 = i[0] if i[1]==0
     abil2 = i[0] if i[1]==1
   end
-  if abil1<=0 || abil2<=0 || pkmn.hasHiddenAbility? || pkmn.isSpecies?(:ZYGARDE)
+  if pkmn.hasHiddenAbility?
+    if scene.pbConfirm(_INTL("Would you like to change {1}'s Ability to its Regular Ability?",pkmn.name))
+      pkmn.abilityflag = nil
+      scene.pbDisplay(_INTL("{1}'s Ability changed to {2}!",pkmn.name,PBAbilities.getName(pkmn.ability)))
+      next true
+    end
+    next false
+  end
+  if abil1<=0 || abil2<=0 || pkmn.isSpecies?(:ZYGARDE)
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
   end
@@ -1138,114 +1166,6 @@ ItemHandlers::UseOnPokemon.add(:ABILITYCAPSULE,proc { |item,pkmn,scene|
   end
   next false
 })
-
-ItemHandlers::UseOnPokemon.add(:EXPCANDYXS,proc { |item,pkmn,scene|
-   if pkmn.level>=PBExperience::maxLevel || (pokemon.isShadow? rescue false)
-     scene.pbDisplay(_INTL("It won't have any effect."))
-     next false
-   else
-     experience=100   if isConst?(item,PBItems,:EXPCANDYXS)
-     experience=800   if isConst?(item,PBItems,:EXPCANDYS)
-     experience=3000  if isConst?(item,PBItems,:EXPCANDYM)
-     experience=10000 if isConst?(item,PBItems,:EXPCANDYL)
-     experience=30000 if isConst?(item,PBItems,:EXPCANDYXL)
-     newexp=PBExperience.pbAddExperience(pkmn.exp,experience,pkmn.growthrate)
-     newlevel=PBExperience.pbGetLevelFromExperience(newexp,pkmn.growthrate)
-     curlevel=pkmn.level
-     leveldif = newlevel - curlevel
-     if PBExperience.pbGetMaxExperience(pkmn.growthrate) < (pkmn.exp + experience)
-       scene.pbDisplay(_INTL("Your Pokémon gained {1} Exp. Points!",(PBExperience.pbGetMaxExperience(pkmn.growthrate)-pkmn.exp)))
-     else
-       scene.pbDisplay(_INTL("Your Pokémon gained {1} Exp. Points!",experience))
-     end
-     if newlevel==curlevel
-       pkmn.exp=newexp
-       pkmn.calcStats
-       scene.pbRefresh
-     else
-       leveldif.times do
-         pbChangeLevel(pkmn,pkmn.level+1,scene)
-         scene.pbHardRefresh
-       end
-       next true
-     end
-   end
-})
-
-ItemHandlers::UseOnPokemon.add(:ROTOMCATALOG,proc{|item,pkmn,scene|
-  if (isConst?(pkmn.species,PBSpecies,:ROTOM))
-    if pkmn.hp>0
-      scene.pbDisplay(_INTL("The Catalogue contains a list of appliances for {1} to possess!",pkmn.name))
-      cmd=0
-      msg = _INTL("Which appliance would you like to order?")
-      cmd = scene.pbShowCommands(msg,[
-        _INTL("Light Bulb"),
-        _INTL("Microwave Oven"),
-        _INTL("Washing Machine"),
-        _INTL("Refrigerator"),
-        _INTL("Electric Fan"),
-        _INTL("Lawn Mower"),
-        _INTL("Cancel")],cmd)
-      if cmd>=0 && cmd<6
-        scene.pbDisplay(_INTL("{1} transformed!",pkmn.name))
-        scene.pbRefresh
-        pkmn.form = cmd
-        scene.pbRefresh
-      else
-        scene.pbDisplay(_INTL("No appliance was ordered"))
-      end
-      scene.pbRefresh
-      next true
-    else
-      scene.pbDisplay(_INTL("This can't be used on the fainted Pokémon."))
-    end
-  else
-    scene.pbDisplay(_INTL("It had no effect."))
-    next false
-  end
-})
-
-ItemHandlers::UseOnPokemon.copy(:EXPCANDYXS,:EXPCANDYS,:EXPCANDYM,:EXPCANDYL,:EXPCANDYXL)
-
-ItemHandlers::UseOnPokemon.add(:LONELYMINT,proc { |item,pkmn,scene|
-   a = PBNatures::LONELY     if isConst?(item,PBItems,:LONELYMINT)
-   a = PBNatures::ADAMANT    if isConst?(item,PBItems,:ADAMANTMINT)
-   a = PBNatures::NAUGHTY    if isConst?(item,PBItems,:NAUGHTYMINT)
-   a = PBNatures::BRAVE      if isConst?(item,PBItems,:BRAVEMINT)
-   a = PBNatures::BOLD       if isConst?(item,PBItems,:BOLDMINT)
-   a = PBNatures::IMPISH     if isConst?(item,PBItems,:IMPISHMINT)
-   a = PBNatures::LAX        if isConst?(item,PBItems,:LAXMINT)
-   a = PBNatures::RELAXED    if isConst?(item,PBItems,:RELAXEDMINT)
-   a = PBNatures::MODEST     if isConst?(item,PBItems,:MODESTMINT)
-   a = PBNatures::MILD       if isConst?(item,PBItems,:MILDMINT)
-   a = PBNatures::RASH       if isConst?(item,PBItems,:RASHMINT)
-   a = PBNatures::QUIET      if isConst?(item,PBItems,:QUIETMINT)
-   a = PBNatures::CALM       if isConst?(item,PBItems,:CALMMINT)
-   a = PBNatures::GENTLE     if isConst?(item,PBItems,:GENTLEMINT)
-   a = PBNatures::CAREFUL    if isConst?(item,PBItems,:CAREFULMINT)
-   a = PBNatures::SASSY      if isConst?(item,PBItems,:SASSYMINT)
-   a = PBNatures::TIMID      if isConst?(item,PBItems,:TIMIDMINT)
-   a = PBNatures::HASTY      if isConst?(item,PBItems,:HASTYMINT)
-   a = PBNatures::JOLLY      if isConst?(item,PBItems,:JOLLYMINT)
-   a = PBNatures::NAIVE      if isConst?(item,PBItems,:NAIVEMINT)
-   a = PBNatures::SERIOUS    if isConst?(item,PBItems,:SERIOUSMINT)
- b = pkmn.nature
- b = 12 if pkmn.nature == 0 || pkmn.nature == 6 || pkmn.nature == 18 || pkmn.nature == 24
- if pkmn.natureOverride == a || b == a
-   scene.pbDisplay(_INTL("It won't have any effect."))
-   next false
- else
-   if scene.pbConfirm(_INTL("It might affect {1}'s stats.\nAre you sure you want to use it?",pkmn.name))
-     scene.pbDisplay(_INTL("{1}'s stats may have changed due to the effects of the {2}!",pkmn.name,PBItems.getName(item)))
-     pkmn.natureOverride = a
-     pkmn.calcStats
-     next true
-   end
- end
- next false
-})
-
-ItemHandlers::UseOnPokemon.copy(:LONELYMINT,:ADAMANTMINT,:NAUGHTYMINT,:BRAVEMINT,:BOLDMINT,:IMPISHMINT,:LAXMINT,:RELAXEDMINT,:MODESTMIND,:MILDMINT,:RASHMINT,:QUIETMINT,:CALMMINT,:GENTLEMINT,:CAREFULMINT,:SASSYMINT,:TIMIDMINT,:HASTYMINT,:JOLLYMINT,:NAIVEMINT,:SERIOUSMINT)
 
 ItemHandlers::UseOnPokemon.add(:ABILITYPATCH,proc { |item,pkmn,scene|
   abils = pkmn.getAbilityList
@@ -1268,108 +1188,70 @@ ItemHandlers::UseOnPokemon.add(:ABILITYPATCH,proc { |item,pkmn,scene|
   next false
 })
 
-ItemHandlers::UseOnPokemon.add(:REINSOFUNITY,proc { |item,pkmn,scene|
-  if !pkmn.isSpecies?(:CALYREX)
-    scene.pbDisplay(_INTL("It had no effect."))
-    next false
-  end
-  if pkmn.fainted?
-    scene.pbDisplay(_INTL("This can't be used on the fainted Pokémon."))
-    next false
-  end
-  # Fusing
-  if pkmn.fused==nil
-    chosen = scene.pbChoosePokemon(_INTL("Fuse with which Pokémon?"))
-    next false if chosen<0
-    poke2 = $Trainer.party[chosen]
-    if pkmn==poke2
-      scene.pbDisplay(_INTL("It cannot be fused with itself."))
-      next false
-    elsif poke2.egg?
-      scene.pbDisplay(_INTL("It cannot be fused with an Egg."))
-      next false
-    elsif poke2.fainted?
-      scene.pbDisplay(_INTL("It cannot be fused with that fainted Pokémon."))
-      next false
-    elsif !poke2.isSpecies?(:GLASTRIER) &&
-          !poke2.isSpecies?(:SPECTRIER)
-      scene.pbDisplay(_INTL("It cannot be fused with that Pokémon."))
-      next false
+# Voltseon
+# Vial item
+# At pokecenter put: $game_variables[50] = 3
+# At pokecenter put: $PokemonBag.pbChangeItem(:EMPTYVIAL,:VIAL)
+ItemHandlers::UseInField.add(:VIAL,proc{|item|
+   if $game_variables[52] == 0 #Thundaga, making it so the vial can always be used initially.
+     $game_variables[50] = 1
+     $game_variables[50] = 1
+   end
+   case $game_variables[50]
+   when 0
+     pbMessage(_INTL("You do not have any charges left..."))
+     $PokemonBag.pbChangeItem(:VIAL,:EMPTYVIAL) #this should never happen btw
+   when 1
+     pbMessage("You have 1 charge left.")
+     if pbConfirmMessage("Would you like to heal your Pokémon?")
+       $game_variables[50] -= 1
+       pbHealAll
+       pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed!"))
+       pbMessage(_INTL("You have no more charges left."))
+       $PokemonBag.pbChangeItem(:VIAL,:EMPTYVIAL)
+      end
+   else
+     pbMessage(_INTL("You have {1} charge(s) left.",$game_variables[50]))
+     if pbConfirmMessage("Would you like to heal your Pokémon?")
+       $game_variables[50] -= 1
+       pbHealAll
+       pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed!"))
+       pbMessage(_INTL("{1} charge(s) remain.",$game_variables[50]))
+      end
     end
-    newForm = 0
-    newForm = 1 if poke2.isSpecies?(:GLASTRIER)
-    newForm = 2 if poke2.isSpecies?(:SPECTRIER)
-    pkmn.setForm(newForm) {
-      pkmn.fused = poke2
-      pbRemovePokemonAt(chosen)
-      scene.pbHardRefresh
-      scene.pbDisplay(_INTL("{1} changed Forme!",pkmn.name))
-    }
-    next true
-  end
-  # Unfusing
-  if $Trainer.party.length>=6
-    scene.pbDisplay(_INTL("You have no room to separate the Pokémon."))
-    next false
-  end
-  pkmn.setForm(0) {
-    $Trainer.party[$Trainer.party.length] = pkmn.fused
-    pkmn.fused = nil
-    scene.pbHardRefresh
-    scene.pbDisplay(_INTL("{1} changed Forme!",pkmn.name))
-  }
-  next true
+   next 1
 })
 
-ItemHandlers::UseFromBag.add(:ZYGARDECUBE,proc {|item|
-  pbChooseAblePokemon(1,3)
-  pkmn = $Trainer.party[$game_variables[1]]
-  next 2 if pkmn.isSpecies?(:ZYGARDE)
-  Kernel.pbMessage(_INTL("It won't have any effect."))
-  next 0
-})
-
-ItemHandlers::UseInField.add(:ZYGARDECUBE,proc{|item|
-  poke = $Trainer.party[$game_variables[1]]
-  loop do
-    cmd = pbMessage(_INTL("What would you like to do?"), ["Check Cells","Teach Move", "Change Forms","Cancel"],3)
-    case cmd
-    when 0
-      value = $game_variables[69].is_a?(Numeric)? $game_variables[69] : 69 # A Variable to store nymber of Cells
-      pbMessage(_INTL("You have collected {1}/100 Zygarde Cores and Zygarde Cells.",value))
-    when 1
-      choices = [:EXTREMESPEED,:THOUSANDARROWS,:DRAGONDANCE,:THOUSANDWAVES,:COREENFORCER] # A variable which is an array of moves unlocked
-      displayChoices = []
-      choices.each{|ch| displayChoices.push(ch)};
-      displayChoices.map!{ |name| PBMoves.getName(getID(PBMoves,name))}
-      displayChoices.push("Cancel")
-      if displayChoices.length>1
-        cmd2 = pbMessage(_INTL("What would you like to teach the Zygarde?"),displayChoices)
-        if cmd2 < (displayChoices.length - 1)
-          pbLearnMove(poke,getConst(PBMoves,choices[cmd2]))
-        end
-      else
-        pbMessage(_INTL("No Cores have been found"))
+ItemHandlers::UseFromBag.add(:VIAL,proc{|item|
+   if $game_variables[52] == 0 #Thundaga, making it so the vial can always be used initially.
+     $game_variables[50] = 1
+     $game_variables[50] = 1
+   end
+   case $game_variables[50]
+   when 0
+     pbMessage(_INTL("You do not have any charges left..."))
+     $PokemonBag.pbChangeItem(:VIAL,:EMPTYVIAL) #this should never happen btw
+   when 1
+     pbMessage("You have 1 charge left.")
+     if pbConfirmMessage("Would you like to heal your Pokémon?")
+       $game_variables[50] -= 1
+       for i in $Trainer.party
+        i.heal
+       end
+       pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed!"))
+       pbMessage(_INTL("You have no more charges left."))
+       $PokemonBag.pbChangeItem(:VIAL,:EMPTYVIAL)
       end
-    when 2
-      if poke.form == 0
-        pbMessage(_INTL("Only a Zygarde with the Power Construct Ability can change its Form."))
-        next
+   else
+     pbMessage(_INTL("You have {1} charge(s) left.",$game_variables[50]))
+     if pbConfirmMessage("Would you like to heal your Pokémon?")
+       $game_variables[50] -= 1
+       for i in $Trainer.party
+        i.heal
+       end
+       pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed!"))
+       pbMessage(_INTL("{1} charge(s) remain.",$game_variables[50]))
       end
-      oldForm = poke.form
-      cmd2 = Kernel.pbMessage(_INTL("What form would you like to change to?"),["10%","50%","Cancel"])
-      poke.form = 1 if cmd2 == 0
-      poke.form = 3 if cmd2 == 1
-      next if cmd2 == 2
-      if poke.form != oldForm
-        Kernel.pbMessage(_INTL("{1} changed Form!",poke.name))
-        next 1
-      else
-        Kernel.pbMessage(_INTL("It's already in it's {1} form!",(oldForm==3? "50%":"10%")))
-      end
-    when 3
-      break
     end
-  end
-  next 2
+   next 1
 })

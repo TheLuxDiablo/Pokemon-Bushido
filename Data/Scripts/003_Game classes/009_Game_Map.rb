@@ -31,8 +31,8 @@ class Game_Map
 
   TILE_WIDTH  = 32
   TILE_HEIGHT = 32
-  X_SUBPIXELS = ($RPGVX) ? 8 : 4
-  Y_SUBPIXELS = ($RPGVX) ? 8 : 4
+  X_SUBPIXELS = 4
+  Y_SUBPIXELS = 4
   REAL_RES_X  = TILE_WIDTH * X_SUBPIXELS
   REAL_RES_Y  = TILE_HEIGHT * Y_SUBPIXELS
 
@@ -274,7 +274,8 @@ class Game_Map
   def bush?(x,y)
     for i in [2, 1, 0]
       tile_id = data[x, y, i]
-      return false if PBTerrain.isBridge?(@terrain_tags[tile_id]) && $PokemonGlobal.bridge>0
+      return false if !tile_id
+      return false if @terrain_tags && @terrain_tags[tile_id] && PBTerrain.isBridge?(@terrain_tags[tile_id]) && $PokemonGlobal.bridge>0
       return true if @passages[tile_id] & 0x40 == 0x40
     end
     return false

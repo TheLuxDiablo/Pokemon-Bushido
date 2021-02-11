@@ -109,20 +109,6 @@ class PokeBattle_Battler
     @battle.scene.pbRefreshOne(@index)
   end
 
-  attr_reader :criticalHits
-
-  def criticalHits=(value)
-    @criticalHits=value
-    @pokemon.criticalHits=value if @pokemon
-  end
-
-  attr_reader :yamaskhp
-
-  def yamaskhp=(value)
-    @yamaskhp=value
-    @pokemon.yamaskhp=value if @pokemon
-  end
-
   #=============================================================================
   # Properties from Pokémon
   #=============================================================================
@@ -335,7 +321,6 @@ class PokeBattle_Battler
   #       the item - the code existing is enough to cause the loop).
   def abilityActive?(ignoreFainted=false)
     return false if fainted? && !ignoreFainted
-    return false if @battle.field.effects[PBEffects::NeutralizingGas]
     return false if @effects[PBEffects::GastroAcid]
     return true
   end
@@ -370,13 +355,10 @@ class PokeBattle_Battler
       :SHIELDSDOWN,
       :STANCECHANGE,
       :ZENMODE,
-      :ICEFACE,
       # Abilities intended to be inherent properties of a certain species
       :COMATOSE,
       :RKSSYSTEM,
-      :GULPMISSILE,
-      :ASONEICE,
-      :ASONEGHOST
+      :SPLICE
     ]
     abilityBlacklist.each do |a|
       return true if isConst?(abil, PBAbilities, a)
@@ -405,10 +387,7 @@ class PokeBattle_Battler
       # Abilities intended to be inherent properties of a certain species
       :COMATOSE,
       :RKSSYSTEM,
-      :ASONEICE,
-      :ASONEGHOST,
-	  :NEUTRALIZINGGAS,
-	  :HUNGERSWITCH
+      :SPLICE
     ]
     abilityBlacklist.each do |a|
       return true if isConst?(abil, PBAbilities, a)
@@ -484,7 +463,8 @@ class PokeBattle_Battler
 
   def canChangeType?
     return false if isConst?(@ability,PBAbilities,:MULTITYPE) ||
-                    isConst?(@ability,PBAbilities,:RKSSYSTEM)
+                    isConst?(@ability,PBAbilities,:RKSSYSTEM) ||
+                    isConst?(@ability,PBAbilities,:SPLICE)
     return true
   end
 
@@ -505,11 +485,6 @@ class PokeBattle_Battler
     return false if airborne?
     return false if semiInvulnerable?
     return true
-  end
-
-  def hasUtilityUmbrella?
-    return true if hasActiveItem?(:UTILITYUMBRELLA)
-    return false
   end
 
   def takesIndirectDamage?(showMsg=false)
@@ -585,11 +560,6 @@ class PokeBattle_Battler
     return false if fainted? || @hp>=@totalhp
     return false if @effects[PBEffects::HealBlock]>0
     return true
-  end
-
-  def canTakeHealingWish?
-	# Also works with Lunar Dance.
-	return canHeal? || pbHasAnyStatus?
   end
 
   def affectedByContactEffect?(showMsg=false)

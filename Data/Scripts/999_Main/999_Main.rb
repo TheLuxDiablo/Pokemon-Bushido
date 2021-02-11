@@ -16,7 +16,7 @@ def pbCallTitle
   # directory without a file extension, to show before the
   # actual title screen.  Second parameter is the actual
   # title screen filename, also in Titles with no extension.
-  return Scene_Intro.new(['intro1'], 'splash')
+  return Scene_Intro.new(['intro1','intro2','intro3'], 'splash')
 end
 
 def mainFunction
@@ -30,15 +30,16 @@ end
 
 def mainFunctionDebug
   begin
-    getCurrentProcess = Win32API.new("kernel32.dll", "GetCurrentProcess", "", "l")
-    setPriorityClass  = Win32API.new("kernel32.dll", "SetPriorityClass", %w(l i), "")
-    setPriorityClass.call(getCurrentProcess.call(), 32768)   # "Above normal" priority class
+    if !mkxp?
+      getCurrentProcess = Win32API.new("kernel32.dll", "GetCurrentProcess", "", "l")
+      setPriorityClass  = Win32API.new("kernel32.dll", "SetPriorityClass", %w(l i), "")
+      setPriorityClass.call(getCurrentProcess.call(), 32768)   # "Above normal" priority class
+    end
     $data_animations    = pbLoadRxData("Data/Animations")
     $data_tilesets      = pbLoadRxData("Data/Tilesets")
     $data_common_events = pbLoadRxData("Data/CommonEvents")
     $data_system        = pbLoadRxData("Data/System")
     $game_system        = Game_System.new
-    setScreenBorderName("border")   # Sets image file for the border
     Graphics.update
     Graphics.freeze
     $scene = pbCallTitle

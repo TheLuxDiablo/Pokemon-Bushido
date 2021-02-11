@@ -199,6 +199,7 @@ module RTP
     # XXX: Use "." instead of Dir.pwd because of problems retrieving files if
     # the current directory contains an accent mark
     yield ".".gsub(/[\/\\]/,"/").gsub(/[\/\\]$/,"")+"/"
+    return if !System.platform[/Windows/]
     if !@rtpPaths
       tmp = Sprite.new
       isRgss2 = tmp.respond_to?("wave_amp")
@@ -243,6 +244,7 @@ module RTP
 
   def self.isDirWritable(dir)
     return false if !dir || dir==""
+    return true if (!System.platform[/Windows/] && dir == System.data_directory)
     loop do
       name = dir.gsub(/[\/\\]$/,"")+"/writetest"
       12.times do
@@ -263,6 +265,7 @@ module RTP
   end
 
   def self.ensureGameDir(dir)
+    return dir if !System.platform[/Windows/]
     title = RTP.getGameIniValue("Game","Title")
     title = "RGSS Game" if title==""
     title = title.gsub(/[^\w ]/,"_")
@@ -284,8 +287,16 @@ module RTP
       # the current directory contains an accent mark
       pwd = "."
       # Get the known folder path for saved games
-      savedGames = getKnownFolder([
-         0x4c5c32ff,0xbb9d,0x43b0,0xb5,0xb4,0x2d,0x72,0xe5,0x4e,0xaa,0xa4])
+      if System.platform[/Windows/] # ~Zoro
+        # Get the known folder path for saved games
+        savedGames = getKnownFolder([
+          0x4c5c32ff,0xbb9d,0x43b0,0xb5,0xb4,0x2d,0x72,0xe5,0x4e,0xaa,0xa4])
+      else
+        # Windows: AppData/Local (iirc, might be Roaming)
+        # macOS  : $HOME/Library/Application Support
+        # Linux  : $HOME/.local/share
+        savedGames=System.data_directory
+      end
       if savedGames && savedGames!="" && isDirWritable(savedGames)
         pwd = ensureGameDir(savedGames)
       end

@@ -32,7 +32,8 @@ class AnimatedBitmap
             "If you see this error in the Continue/New Game screen, you may be loading another game's save file. "+
             "Check your project's title (\"Game > Change Title...\" in RMXP).\r\n"
     end
-    if file.split(/[\\\/]/)[-1][/^\[\d+(?:,\d+)?]/]   # Starts with 1 or more digits in square brackets
+    value = file.split(/[\\\/]/)[-1]
+    if value.is_a?(Array) && value[/^\[\d+(?:,\d+)?]/]    # Starts with 1 or more digits in square brackets
       @bitmap = PngAnimatedBitmap.new(file,hue)
     else
       @bitmap = GifBitmap.new(file,hue)
@@ -64,7 +65,8 @@ class PngAnimatedBitmap
     @currentFrame=0
     @framecount=0
     panorama=BitmapCache.load_bitmap(file,hue)
-    if file.split(/[\\\/]/)[-1][/^\[(\d+)(?:,(\d+))?]/]   # Starts with 1 or more digits in brackets
+    value = file.split(/[\\\/]/)[-1]
+    if value.is_a?(Array) && value[/^\[\d+(?:,\d+)?]/]   # Starts with 1 or more digits in brackets
       # File has a frame count
       numFrames = $1.to_i
       delay = $2.to_i
@@ -219,6 +221,7 @@ class GifBitmap
     else
       tmpBase=File.basename(file)+"_tmp_"
       filestring=pbGetFileString(filestrName) if filestring
+=begin
       Dir.chdir(ENV["TEMP"]) { # navigate to temp folder since game might be on a CD-ROM
         if filestring && filestring[0]==0x47 && GifLibrary::PngDll
           result=GifLibrary::GifToPngFilesInMemory.call(filestring,
@@ -246,6 +249,7 @@ class GifBitmap
           end
         end
       }
+=end
       if @gifbitmaps.length==0
         @gifbitmaps=[BitmapWrapper.new(32,32)]
         @gifdelays=[1]
@@ -268,6 +272,12 @@ class GifBitmap
     @currentIndex=0
     return @gifbitmaps[0]
   end
+
+  def width; self.bitmap.width; end
+
+  def height; self.bitmap.height; end
+
+
 
   def bitmap
     @gifbitmaps[@currentIndex]

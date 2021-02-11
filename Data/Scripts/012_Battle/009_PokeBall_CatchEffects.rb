@@ -23,8 +23,10 @@ $BallTypes = {
   21 => :FRIENDBALL,
   22 => :MOONBALL,
   23 => :SPORTBALL,
-  24 => :DREAMBALL,
-  25 => :BEASTBALL
+  24 => :BIOBALL,
+  25 => :MECHBALL,
+  26 => :DREAMBALL,
+  27 => :BEASTBALL
 }
 
 def pbBallTypeToItem(balltype)
@@ -102,6 +104,20 @@ BallHandlers::ModifyCatchRate.add(:ULTRABALL,proc { |ball,catchRate,battle,battl
 
 BallHandlers::ModifyCatchRate.add(:SAFARIBALL,proc { |ball,catchRate,battle,battler,ultraBeast|
   next catchRate*1.5
+})
+
+BallHandlers::ModifyCatchRate.add(:BIOBALL,proc { |ball,catchRate,battle,battler,ultraBeast|
+  multiplier = (NEWEST_BATTLE_MECHANICS) ? 3.5 : 3
+  catchRate *= multiplier if battler.pbHasType?(:BUG) || battler.pbHasType?(:WATER) || battler.pbHasType?(:FLYING) ||
+                             battler.pbHasType?(:GRASS) || battler.pbHasType?(:PSYCHIC)
+  next catchRate
+})
+
+BallHandlers::ModifyCatchRate.add(:MECHBALL,proc { |ball,catchRate,battle,battler,ultraBeast|
+  multiplier = (NEWEST_BATTLE_MECHANICS) ? 3.5 : 3
+  catchRate *= multiplier if battler.pbHasType?(:STEEL) || battler.pbHasType?(:ELECTRIC) || battler.pbHasType?(:ROCK) ||
+                             battler.pbHasType?(:FIRE) || battler.pbHasType?(:GROUND)
+  next catchRate
 })
 
 BallHandlers::ModifyCatchRate.add(:NETBALL,proc { |ball,catchRate,battle,battler,ultraBeast|
