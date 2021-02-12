@@ -1,15 +1,21 @@
 module MessageConfig
-  FontName        = "Power Red and Green"
+  FontName        = "Power Clear"
   # in Graphics/Windowskins/ (specify empty string to use the default windowskin)
-  TextSkinName    = "speech frlg"
-  ChoiceSkinName  = "choice 1"
+  TextSkinName    = "speech hgss 14"
+  ChoiceSkinName  = "choice 5"
   WindowOpacity   = 255
   TextSpeed       = nil   # can be positive to wait frames or negative to
                           # show multiple characters in a single frame
-  LIGHTTEXTBASE   = Color.new(248,248,248)
-  LIGHTTEXTSHADOW = Color.new(72,80,88)
+  #LIGHTTEXTBASE   = Color.new(248,248,248)
+  #LIGHTTEXTSHADOW = Color.new(72,80,88)
+  #DARKTEXTBASE    = Color.new(96,96,96)
+  #DARKTEXTSHADOW  = Color.new(208,208,200)
+
+  LIGHTTEXTBASE   = Color.new(30,20,20)
+  LIGHTTEXTSHADOW = Color.new(90,80,80)
   DARKTEXTBASE    = Color.new(96,96,96)
   DARKTEXTSHADOW  = Color.new(208,208,200)
+
   # 0 = Pause cursor is displayed at end of text
   # 1 = Pause cursor is displayed at bottom right
   # 2 = Pause cursor is displayed at lower middle side
@@ -295,8 +301,8 @@ def getSkinColor(windowskin,color,isDarkSkin)
      windowskin.width!=128 || windowskin.height!=128
     # Base color, shadow color (these are reversed on dark windowskins)
     textcolors = [
-       "0070F8","78B8E8",   # 1  Blue
-       "E82010","F8A8B8",   # 2  Red
+       "3774bd","a5cbf9",   # 1  Blue
+       "eb6c91","fdc2d3",   # 2  Red
        "60B048","B0D090",   # 3  Green
        "48D8D8","A8E0E0",   # 4  Cyan
        "D038B8","E8A0E0",   # 5  Magenta
@@ -306,9 +312,9 @@ def getSkinColor(windowskin,color,isDarkSkin)
        "9040E8","B8A8E0",   # 9  Purple
        "F89818","F8C898",   # 10 Orange
        colorToRgb32(MessageConfig::DARKTEXTBASE),
-          colorToRgb32(MessageConfig::DARKTEXTSHADOW),   # 11 Dark default
+          colorToRgb32(MessageConfig::DARKTEXTSHADOW),   # 11 Dark gray text
        colorToRgb32(MessageConfig::LIGHTTEXTBASE),
-          colorToRgb32(MessageConfig::LIGHTTEXTSHADOW)   # 12 Light default
+          colorToRgb32(MessageConfig::LIGHTTEXTSHADOW)   # 12 White text
     ]
     if color==0 || color>textcolors.length/2   # No special colour, use default
       if isDarkSkin   # Dark background, light text
@@ -318,7 +324,7 @@ def getSkinColor(windowskin,color,isDarkSkin)
       return shadowc3tag(MessageConfig::DARKTEXTBASE,MessageConfig::DARKTEXTSHADOW)
     end
     # Special colour as listed above
-    if isDarkSkin && color!=12   # Dark background, light text
+    if isDarkSkin   # Dark background, light text
       return sprintf("<c3=%s,%s>",textcolors[2*(color-1)+1],textcolors[2*(color-1)])
     end
     # Light background, dark text
