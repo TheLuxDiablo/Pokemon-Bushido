@@ -1,33 +1,47 @@
 Things to do:
-add in spotted ME for types
-add shadow icon for enemy battlers in the UI
-set up our Aisho Journal, pokedex for the region. Let's keep it around 200-300
-FINALIZE OUR STARTERS
+- add in spotted ME for types
+- add shadow icon for enemy battlers in the UI
+- set up our Aisho Journal, pokedex for the region. Let's keep it around 200-300
+- FINALIZE OUR STARTERS
 	- Fighting (Treecko), Steel (Oshawatt), Fairy (based on Sakura trees)
-add party screen script
-add menu screen script
+- change grass autotile to be less outlined/fit more with the trees
+- Purge old splice scripting!!!!!!!!!!!
+- make some orange trees for an Autumn path
+- make some pink trees for a Sakura Path map, could update battle bgs too
+- make mid battle dialogue for our Clan enemies
+	- Nensho, raise attack, make sunny
+		- burn your first pokemon with a breath of fire
+	- Shimizu, raise special attack/spdef, make rainy
+		- ???
+	- Komorei, raise def/speed, grass terrain
+		- Plant leech seeds at the start of battle sometimes
+- change TMs to scrolls
+- Add the healing vial, it's just too good not to add!
+- new battle and summary UI, to reflect the japanese aesthetic with watercolor inspiration, maybe red trees
+- Revise battler backs, they're using the full back instead of FRLG back... hmm
+
+	
+Plugins: 
+- Following pokemon EX
+WIP - Add party screen script
+Add menu screen script
 	- Remove gym badges
 	- Change font
 	- Add Katana progression (?)
-change grass autotile to be less outlined/fit more with the trees
-- Purge old splice scripting
-
+	
 
 
 Things done:
-
 2/10/21
-- MKXP Port
+- MKXP Port!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	- lots of bugfixing, more to come too
-- Enabled shadow pokemon stealing and tested it
+- Enabled shadow pokemon stealing and tested it, just enable snagMachine in intro
 - Set up Gen 4 trainertypes and battler sprites
 - FRLG battle UI
-	- UPDATE THIS MORE LATER! More japanese with watercolor inspiration, maybe red trees
+	- UPDATE THIS MORE LATER!
 - add always on bush script
 - work on setting up a basic bridge
 - plug in some pog battlebacks
-
-
 
 2/9/21
 - installed mid battle dialogue
