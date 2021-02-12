@@ -2,7 +2,7 @@ module MessageConfig
   FontName        = "Power Clear"
   # in Graphics/Windowskins/ (specify empty string to use the default windowskin)
   TextSkinName    = "speech hgss 14"
-  ChoiceSkinName  = "choice 5"
+  ChoiceSkinName  = "speechbushido"
   WindowOpacity   = 255
   TextSpeed       = nil   # can be positive to wait frames or negative to
                           # show multiple characters in a single frame
@@ -19,7 +19,7 @@ module MessageConfig
   # 0 = Pause cursor is displayed at end of text
   # 1 = Pause cursor is displayed at bottom right
   # 2 = Pause cursor is displayed at lower middle side
-  CURSORMODE      = 0
+  CURSORMODE      = 2
   FontSubstitutes = {
      "Power Red and Blue"  => "Pokemon RS",
      "Power Red and Green" => "Pokemon FireLeaf",
