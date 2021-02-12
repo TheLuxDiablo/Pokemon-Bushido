@@ -20,6 +20,11 @@ Things to do:
 - new battle and summary UI, to reflect the japanese aesthetic with watercolor inspiration, maybe red trees
 - Revise battler backs, they're using the full back instead of FRLG back... hmm
 
+
+
+
+
+
 	
 Plugins: 
 - Following pokemon EX
