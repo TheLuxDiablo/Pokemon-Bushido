@@ -12,16 +12,13 @@ class PokemonDataBox < SpriteWrapper
   # Maximum time in seconds to make a change to the HP bar.
   HP_BAR_CHANGE_TIME = 1.0
   STATUS_ICON_HEIGHT = 16
-  NAME_BASE_COLOR         = Color.new(64,64,64)
-  NAME_SHADOW_COLOR       = Color.new(216,208,176)
-  LEVEL_BASE_COLOR        = NAME_BASE_COLOR
-  LEVEL_SHADOW_COLOR      = NAME_SHADOW_COLOR
-  HP_NUMBERS_BASE_COLOR   = NAME_BASE_COLOR
-  HP_NUMBERS_SHADOW_COLOR = NAME_SHADOW_COLOR
-  MALE_BASE_COLOR         = Color.new(48,96,216)
-  MALE_SHADOW_COLOR       = NAME_SHADOW_COLOR
-  FEMALE_BASE_COLOR       = Color.new(248,88,40)
-  FEMALE_SHADOW_COLOR     = NAME_SHADOW_COLOR
+  NAME_BASE_COLOR = Color.new(255,255,255)
+  NAME_SHADOW_COLOR = Color.new(107,107,107)
+  MALE_BASE_COLOR = Color.new(0,198,255)
+  MALE_SHADOW_COLOR = NAME_SHADOW_COLOR
+  FEMALE_BASE_COLOR = Color.new(248,88,40)
+  FEMALE_SHADOW_COLOR = NAME_SHADOW_COLOR
+
 
   def initialize(battler,sideSize,viewport=nil)
     super(viewport)
@@ -52,31 +49,28 @@ class PokemonDataBox < SpriteWrapper
         @showHP  = true
         @showExp = true
       end
-    elsif sideSize==2    # Multiple Pokémon on side, use the thin dara box BG
+    else   # Multiple Pokémon on side, use the thin dara box BG
       bgFilename = ["Graphics/Pictures/Battle/databox_thin",
                     "Graphics/Pictures/Battle/databox_thin_foe"][@battler.index%2]
-    else #Side size is 3, use more transparent databoxes
-      bgFilename = ["Graphics/Pictures/Battle/databox_thin_3",
-                    "Graphics/Pictures/Battle/databox_thin_foe_3"][@battler.index%2]
     end
     @databoxBitmap  = AnimatedBitmap.new(bgFilename)
     # Determine the co-ordinates of the data box and the left edge padding width
     if onPlayerSide
-      @spriteX = Graphics.width - 274
-      @spriteY = Graphics.height - 176
+      @spriteX = Graphics.width - 256
+      @spriteY = Graphics.height - 192
       @spriteBaseX = 34
     else
-      @spriteX = -8
+      @spriteX = -16
       @spriteY = 36
       @spriteBaseX = 16
     end
     case sideSize
     when 2
-      @spriteX += [8,  -22,  8, -22][@battler.index]
-      @spriteY += [-26, -34, 24, 18][@battler.index]
+      @spriteX += [-12,  12,  0,  0][@battler.index]
+      @spriteY += [-20, -34, 34, 20][@battler.index]
     when 3
-      @spriteX += [8, -22, 8, -22, 8, -22][@battler.index]
-      @spriteY += [-48, -34, -10, 16, 26, 68][@battler.index]
+      @spriteX += [-12,  12, -6,  6,  0,  0][@battler.index]
+      @spriteY += [-42, -46,  4,  0, 50, 46][@battler.index]
     end
   end
 
@@ -116,18 +110,18 @@ class PokemonDataBox < SpriteWrapper
     super
   end
 
-  def x=(value)
+ def x=(value)
     super
-    @hpBar.x     = value+148
-    @expBar.x    = value+@spriteBaseX+82
-    @hpNumbers.x = value+@spriteBaseX+110
+    @hpBar.x     = value+@spriteBaseX+102
+    @expBar.x    = value+@spriteBaseX+6
+    @hpNumbers.x = value+@spriteBaseX+80
   end
 
   def y=(value)
     super
-    @hpBar.y     = value+38
-    @expBar.y    = value+70
-    @hpNumbers.y = value+48
+    @hpBar.y     = value+40
+    @expBar.y    = value+74
+    @hpNumbers.y = value+51
   end
 
   def z=(value)
@@ -219,53 +213,43 @@ class PokemonDataBox < SpriteWrapper
     nameWidth = self.bitmap.text_size(@battler.name).width
     nameOffset = 0
     nameOffset = nameWidth-116 if nameWidth>116
-    textPos.push([@battler.name,50-nameOffset,4,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
+    textPos.push([@battler.name,@spriteBaseX+11-nameOffset,5,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
     # Draw Pokémon's gender symbol
     case @battler.displayGender
     when 0   # Male
-      #textPos.push([_INTL("♂"),@spriteBaseX+nameWidth+14,6,false,MALE_BASE_COLOR,MALE_SHADOW_COLOR])
-      imagePos.push(["Graphics/Pictures/Battle/MaleIcon",52-nameOffset+nameWidth,12])
+      textPos.push([_INTL("♂"),@spriteBaseX+125,6,false,MALE_BASE_COLOR,MALE_SHADOW_COLOR])
     when 1   # Female
-      #textPos.push([_INTL("♀"),@spriteBaseX+nameWidth+14,6,false,FEMALE_BASE_COLOR,FEMALE_SHADOW_COLOR])
-      imagePos.push(["Graphics/Pictures/Battle/FemaleIcon",52-nameOffset+nameWidth,12])
+      textPos.push([_INTL("♀"),@spriteBaseX+125,6,false,FEMALE_BASE_COLOR,FEMALE_SHADOW_COLOR])
     end
     pbDrawTextPositions(self.bitmap,textPos)
     # Draw Pokémon's level
-    if @battler.level >= 100
-      imagePos.push(["Graphics/Pictures/Battle/overlay_lv",198,10])
-      pbDrawNumber(@battler.level,self.bitmap,216,10)
-    elsif @battler.level < 10
-      imagePos.push(["Graphics/Pictures/Battle/overlay_lv",218,10])
-      pbDrawNumber(@battler.level,self.bitmap,236,10)
-    else
-      imagePos.push(["Graphics/Pictures/Battle/overlay_lv",208,10])
-      pbDrawNumber(@battler.level,self.bitmap,226,10)
-    end
+    imagePos.push(["Graphics/Pictures/Battle/overlay_lv",@spriteBaseX+140,16])
+    pbDrawNumber(@battler.level,self.bitmap,@spriteBaseX+162,16)
     # Draw shiny icon
     if @battler.shiny?
-      #shinyX = (@battler.opposes?(0)) ? 206 : -6   # Foe's/player's
-      imagePos.push(["Graphics/Pictures/shiny",44,32])
+      shinyX = (@battler.opposes?(0)) ? 206 : -6   # Foe's/player's
+      imagePos.push(["Graphics/Pictures/shiny",@spriteBaseX+shinyX,36])
     end
     # Draw Mega Evolution/Primal Reversion icon
     if @battler.mega?
       imagePos.push(["Graphics/Pictures/Battle/icon_mega",@spriteBaseX+8,34])
     elsif @battler.primal?
       primalX = (@battler.opposes?) ? 208 : -28   # Foe's/player's
-      if isConst?(@battler.pokemon.species,PBSpecies,:KYOGRE)
+      if @battler.isSpecies?(:KYOGRE)
         imagePos.push(["Graphics/Pictures/Battle/icon_primal_Kyogre",@spriteBaseX+primalX,4])
-      elsif isConst?(@battler.pokemon.species,PBSpecies,:GROUDON)
+      elsif @battler.isSpecies?(:GROUDON)
         imagePos.push(["Graphics/Pictures/Battle/icon_primal_Groudon",@spriteBaseX+primalX,4])
       end
     end
     # Draw owned icon (foe Pokémon only)
-    if @battler.owned? && @battler.opposes?(0) && @battler.status==0 #Dont draw if they have a status
-      imagePos.push(["Graphics/Pictures/Battle/icon_own",@spriteBaseX+80,34])
+    if @battler.owned? && @battler.opposes?(0)
+      imagePos.push(["Graphics/Pictures/Battle/icon_own",@spriteBaseX+8,36])
     end
     # Draw status icon
     if @battler.status>0
       s = @battler.status
       s = 6 if s==PBStatuses::POISON && @battler.statusCount>0   # Badly poisoned
-      imagePos.push(["Graphics/Pictures/Battle/icon_statuses",66,34,
+      imagePos.push(["Graphics/Pictures/Battle/icon_statuses",@spriteBaseX+24,36,
          0,(s-1)*STATUS_ICON_HEIGHT,-1,STATUS_ICON_HEIGHT])
     end
     pbDrawImagePositions(self.bitmap,imagePos)
@@ -280,7 +264,7 @@ class PokemonDataBox < SpriteWrapper
     if @showHP
       pbDrawNumber(self.hp,@hpNumbers.bitmap,54,2,1)
       pbDrawNumber(-1,@hpNumbers.bitmap,54,2)   # / char
-      pbDrawNumber(@battler.totalhp,@hpNumbers.bitmap,68,2)
+      pbDrawNumber(@battler.totalhp,@hpNumbers.bitmap,70,2)
     end
     # Resize HP bar
     w = 0
@@ -365,13 +349,12 @@ class PokemonDataBox < SpriteWrapper
     self.x = @spriteX
     self.y = @spriteY
     # Data box bobbing while Pokémon is selected
-    #thundaga remove box bobbing
-    #if @selected==1 || @selected==2   # Choosing commands/targeted or damaged
-    #  case (frameCounter/QUARTER_ANIM_PERIOD).floor
-    #  when 1; self.y = @spriteY-2
-    #  when 3; self.y = @spriteY+2
-    #  end
-    #end
+    if @selected==1 || @selected==2   # Choosing commands/targeted or damaged
+      case (frameCounter/QUARTER_ANIM_PERIOD).floor
+      when 1; self.y = @spriteY-2
+      when 3; self.y = @spriteY+2
+      end
+    end
   end
 
   def update(frameCounter=0)
@@ -393,14 +376,16 @@ end
 #===============================================================================
 class AbilitySplashBar < SpriteWrapper
   attr_reader :battler
+  attr_accessor :ability
 
-  TEXT_BASE_COLOR   = Color.new(64,64,64)
-  TEXT_SHADOW_COLOR = Color.new(216,208,176)
+  TEXT_BASE_COLOR   = Color.new(0,0,0)
+  TEXT_SHADOW_COLOR = Color.new(248,248,248)
 
   def initialize(side,viewport=nil)
     super(viewport)
     @side    = side
     @battler = nil
+    @ability = ability
     # Create sprite wrapper that displays background graphic
     @bgBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/ability_bar"))
     @bgSprite = SpriteWrapper.new(viewport)
@@ -410,10 +395,10 @@ class AbilitySplashBar < SpriteWrapper
     # Create bitmap that displays the text
     @contents = BitmapWrapper.new(@bgBitmap.width,@bgBitmap.height/2)
     self.bitmap = @contents
-    pbSetSmallFont(self.bitmap)
+    pbSetSystemFont(self.bitmap)
     # Position the bar
     self.x       = (side==0) ? -Graphics.width/2 : Graphics.width
-    self.y       = (side==0) ? 180 : 80 #abilityheight thundaga
+    self.y       = (side==0) ? 180 : 80
     self.z       = 120
     self.visible = false
   end
@@ -469,13 +454,13 @@ class AbilitySplashBar < SpriteWrapper
     self.bitmap.clear
     return if !@battler
     textPos = []
-    textX = (@side==0) ? 15 : self.bitmap.width-12
+    textX = (@side==0) ? 10 : self.bitmap.width-8
     # Draw Pokémon's name
-    textPos.push([_INTL("{1}'s",@battler.name),textX,3,@side==1,
-       Color.new(248,248,248),Color.new(123,115,131)])
+    textPos.push([_INTL("{1}'s",@battler.name),textX,2,@side==1,
+       TEXT_BASE_COLOR,TEXT_SHADOW_COLOR,true])
     # Draw Pokémon's ability
-    textPos.push([@battler.abilityName,textX,31,@side==1,
-       TEXT_BASE_COLOR,TEXT_SHADOW_COLOR])
+    textPos.push([(@ability.is_a?(String))? @ability : @battler.abilityName,textX,32,@side==1,
+       TEXT_BASE_COLOR,TEXT_SHADOW_COLOR,true])
     pbDrawTextPositions(self.bitmap,textPos)
   end
 
