@@ -12,13 +12,14 @@ class PokemonDataBox < SpriteWrapper
   # Maximum time in seconds to make a change to the HP bar.
   HP_BAR_CHANGE_TIME = 1.0
   STATUS_ICON_HEIGHT = 16
-  NAME_BASE_COLOR = Color.new(255,255,255)
-  NAME_SHADOW_COLOR = Color.new(107,107,107)
-  MALE_BASE_COLOR = Color.new(0,198,255)
-  MALE_SHADOW_COLOR = NAME_SHADOW_COLOR
-  FEMALE_BASE_COLOR = Color.new(248,88,40)
-  FEMALE_SHADOW_COLOR = NAME_SHADOW_COLOR
-
+  #NAME_BASE_COLOR         = Color.new(72,72,72)
+  #NAME_SHADOW_COLOR       = Color.new(184,184,184)
+  NAME_BASE_COLOR         = Color.new(250,250,250)
+  NAME_SHADOW_COLOR       = Color.new(184,184,184)
+  MALE_BASE_COLOR         = Color.new(48,96,216)
+  MALE_SHADOW_COLOR       = NAME_SHADOW_COLOR
+  FEMALE_BASE_COLOR       = Color.new(248,88,40)
+  FEMALE_SHADOW_COLOR     = NAME_SHADOW_COLOR
 
   def initialize(battler,sideSize,viewport=nil)
     super(viewport)
@@ -56,7 +57,7 @@ class PokemonDataBox < SpriteWrapper
     @databoxBitmap  = AnimatedBitmap.new(bgFilename)
     # Determine the co-ordinates of the data box and the left edge padding width
     if onPlayerSide
-      @spriteX = Graphics.width - 256
+      @spriteX = Graphics.width - 244
       @spriteY = Graphics.height - 192
       @spriteBaseX = 34
     else
@@ -110,7 +111,7 @@ class PokemonDataBox < SpriteWrapper
     super
   end
 
- def x=(value)
+  def x=(value)
     super
     @hpBar.x     = value+@spriteBaseX+102
     @expBar.x    = value+@spriteBaseX+6
@@ -121,7 +122,7 @@ class PokemonDataBox < SpriteWrapper
     super
     @hpBar.y     = value+40
     @expBar.y    = value+74
-    @hpNumbers.y = value+51
+    @hpNumbers.y = value+52
   end
 
   def z=(value)
@@ -213,13 +214,13 @@ class PokemonDataBox < SpriteWrapper
     nameWidth = self.bitmap.text_size(@battler.name).width
     nameOffset = 0
     nameOffset = nameWidth-116 if nameWidth>116
-    textPos.push([@battler.name,@spriteBaseX+11-nameOffset,5,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
+    textPos.push([@battler.name,@spriteBaseX+8-nameOffset,6,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
     # Draw Pokémon's gender symbol
     case @battler.displayGender
     when 0   # Male
-      textPos.push([_INTL("♂"),@spriteBaseX+125,6,false,MALE_BASE_COLOR,MALE_SHADOW_COLOR])
+      textPos.push([_INTL("♂"),@spriteBaseX+126,6,false,MALE_BASE_COLOR,MALE_SHADOW_COLOR])
     when 1   # Female
-      textPos.push([_INTL("♀"),@spriteBaseX+125,6,false,FEMALE_BASE_COLOR,FEMALE_SHADOW_COLOR])
+      textPos.push([_INTL("♀"),@spriteBaseX+126,6,false,FEMALE_BASE_COLOR,FEMALE_SHADOW_COLOR])
     end
     pbDrawTextPositions(self.bitmap,textPos)
     # Draw Pokémon's level
@@ -376,7 +377,6 @@ end
 #===============================================================================
 class AbilitySplashBar < SpriteWrapper
   attr_reader :battler
-  attr_accessor :ability
 
   TEXT_BASE_COLOR   = Color.new(0,0,0)
   TEXT_SHADOW_COLOR = Color.new(248,248,248)
@@ -385,7 +385,6 @@ class AbilitySplashBar < SpriteWrapper
     super(viewport)
     @side    = side
     @battler = nil
-    @ability = ability
     # Create sprite wrapper that displays background graphic
     @bgBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/ability_bar"))
     @bgSprite = SpriteWrapper.new(viewport)
@@ -445,11 +444,6 @@ class AbilitySplashBar < SpriteWrapper
     refresh
   end
 
-  def ability=(value)
-    @ability = value
-    refresh
-  end
-
   def refresh
     self.bitmap.clear
     return if !@battler
@@ -459,7 +453,7 @@ class AbilitySplashBar < SpriteWrapper
     textPos.push([_INTL("{1}'s",@battler.name),textX,2,@side==1,
        TEXT_BASE_COLOR,TEXT_SHADOW_COLOR,true])
     # Draw Pokémon's ability
-    textPos.push([(@ability.is_a?(String))? @ability : @battler.abilityName,textX,32,@side==1,
+    textPos.push([@battler.abilityName,textX,32,@side==1,
        TEXT_BASE_COLOR,TEXT_SHADOW_COLOR,true])
     pbDrawTextPositions(self.bitmap,textPos)
   end

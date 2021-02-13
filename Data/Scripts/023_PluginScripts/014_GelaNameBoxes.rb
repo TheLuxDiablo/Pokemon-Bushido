@@ -22,12 +22,12 @@ DEFAULT_ALIGNMENT=1
 # ENSURES A MIN. WIDTH OF THE WINDOW
 MIN_WIDTH=200
 # DEFAULT FONT
-DEFAULT_FONT="Power Green Narrow" # "Power Clear", etc.
+DEFAULT_FONT="Power Clear" # "Power Clear", etc.
 # DEFAULT FONT SIZE
 DEFAULT_FONT_SIZE=nil
 # DEFAULT WINDOWSKIN (nil = based on the currently displayed message windowskin)
 # (File inside Graphics/Windowskins/)
-DEFAULT_WINDOWSKIN="speech em"
+DEFAULT_WINDOWSKIN="speechbushido"
 #===============================================================================
 # END CONFIGURATION / Don't touch anything below this point or you'll get a bonk
 #===============================================================================

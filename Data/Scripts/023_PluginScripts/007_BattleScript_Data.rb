@@ -413,6 +413,13 @@ module DialogueModule
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                     battle.scene.pbHideOpponent
                   }
+      RivalFirstIntro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\pogPrepare to be burned by the fury of my passion!")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                  }
 
 
 

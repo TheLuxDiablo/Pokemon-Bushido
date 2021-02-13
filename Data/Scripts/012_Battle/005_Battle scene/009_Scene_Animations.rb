@@ -7,7 +7,7 @@ class PokeBattle_Scene
     introAnim = BattleIntroAnimation.new(@sprites,@viewport,@battle)
     loop do
       introAnim.update
-      pbUpdate if !$smAnim
+      pbUpdate
       break if introAnim.animDone?
     end
     introAnim.dispose
@@ -101,18 +101,12 @@ class PokeBattle_Scene
       pbRefresh
       if @battle.opposes?(b[0])
         sendOutAnim = PokeballTrainerSendOutAnimation.new(@sprites,@viewport,
-          @battle.pbGetOwnerIndexFromBattlerIndex(b[0])+1,
-          @battle.battlers[b[0]],startBattle,i)
+           @battle.pbGetOwnerIndexFromBattlerIndex(b[0])+1,
+           @battle.battlers[b[0]],startBattle,i)
       else
-        if @battle.battlers[b[0]].index == 0 && @battle.battlers[b[0]].isSpecies?(:ARENAY)
-          sendOutAnim = FollowerPlayerSendOutAnimation.new(@sprites,@viewport,
-            @battle.pbGetOwnerIndexFromBattlerIndex(b[0])+1,
-            @battle.battlers[b[0]],startBattle,i)
-        else
-          sendOutAnim = PokeballPlayerSendOutAnimation.new(@sprites,@viewport,
-            @battle.pbGetOwnerIndexFromBattlerIndex(b[0])+1,
-            @battle.battlers[b[0]],startBattle,i)
-        end
+        sendOutAnim = PokeballPlayerSendOutAnimation.new(@sprites,@viewport,
+           @battle.pbGetOwnerIndexFromBattlerIndex(b[0])+1,
+           @battle.battlers[b[0]],startBattle,i)
       end
       dataBoxAnim = DataBoxAppearAnimation.new(@sprites,@viewport,b[0])
       sendOutAnims.push([sendOutAnim,dataBoxAnim,false])
@@ -146,11 +140,7 @@ class PokeBattle_Scene
   def pbRecall(idxBattler)
     @briefMessage = false
     # Recall animation
-    if @battle.battlers[idxBattler].isSpecies?(:ARENAY)
-      recallAnim = FollowerRecallAnimation.new(@sprites,@viewport,idxBattler)
-    else
-      recallAnim = BattlerRecallAnimation.new(@sprites,@viewport,idxBattler)
-    end
+    recallAnim = BattlerRecallAnimation.new(@sprites,@viewport,idxBattler)
     loop do
       recallAnim.update if recallAnim
       pbUpdate
@@ -170,15 +160,13 @@ class PokeBattle_Scene
   #=============================================================================
   # Ability splash bar animations
   #=============================================================================
-  def pbShowAbilitySplash(battler,ability=nil)
+  def pbShowAbilitySplash(battler)
     return if !PokeBattle_SceneConstants::USE_ABILITY_SPLASH
     side = battler.index%2
     pbHideAbilitySplash(battler) if @sprites["abilityBar_#{side}"].visible
     @sprites["abilityBar_#{side}"].battler = battler
-    @sprites["abilityBar_#{side}"].ability = ability
     abilitySplashAnim = AbilitySplashAppearAnimation.new(@sprites,@viewport,side)
     loop do
-    #  @sprites["abilityBar_#{side}"].ability = ability
       abilitySplashAnim.update
       pbUpdate
       break if abilitySplashAnim.animDone?
@@ -197,7 +185,6 @@ class PokeBattle_Scene
       break if abilitySplashAnim.animDone?
     end
     abilitySplashAnim.dispose
-    @sprites["abilityBar_#{side}"].ability = nil
   end
 
   def pbReplaceAbilitySplash(battler)
@@ -422,33 +409,13 @@ class PokeBattle_Scene
       # Actual animation not found, get the default animation for the move's type
       moveData = pbGetMoveData(moveID)
       moveType = moveData[MOVE_TYPE]
-      moveDmg  = moveData[MOVE_BASE_DAMAGE]
       moveKind = moveData[MOVE_CATEGORY]
-      moveTarg = moveData[MOVE_TARGET]
-      moveKind += 3 if PBTargets.multipleTargets?(moveTarg) ||
-                       PBTargets.targetsFoeSide?(moveTarg)
-      moveKind += 3 if moveKind==2 && moveTarg != PBTargets::User &&
-                       moveTarg != PBTargets::UserSide
+      moveKind += 3 if PBTargets.multipleTargets?(moveData[MOVE_TARGET]) ||
+                       PBTargets.targetsFoeSide?(moveData[MOVE_TARGET])
+      moveKind += 3 if moveKind==2 && moveData[MOVE_TARGET]!=PBTargets::User &&
+                       moveData[MOVE_TARGET]!=PBTargets::UserSide
       # [one target physical, one target special, user status,
       #  multiple targets physical, multiple targets special, non-user status]
-=begin
-      moveKind = moveData[MOVE_CATEGORY] * 2
-      if moveData[MOVE_CATEGORY] == 2
-        moveKind += 6 if moveTarg != PBTargets::User && moveTarg != PBTargets::UserSide
-        moveKind += 1 if moveTarg == PBTargets::UserSide || !PBTargets.targetsFoeSide?(moveTarg)
-      else
-        moveKind += 6 if PBTargets.multipleTargets?(moveTarg) || PBTargets.targetsFoeSide?(moveTarg)
-        moveKind += 1 if moveDmg > 90
-      end
-      [
-        one target physical low dmg, one target physical high dmg ,
-        one target special low dmg, one target special high damage,
-        user status, user side status,
-        multiple targets physical low dmg, multiple targets physical high dmg,
-        multiple targets special low dmg, multiple targets special high dmg,
-        non-user status, non-user status
-      ]
-=end
       typeDefaultAnim = {
          :NORMAL   => [:TACKLE,:SONICBOOM,:DEFENSECURL,:EXPLOSION,:SWIFT,:TAILWHIP],
          :FIGHTING => [:MACHPUNCH,:AURASPHERE,:DETECT,nil,nil,nil],
@@ -535,14 +502,8 @@ class PokeBattle_Scene
     # Remember the original positions of Pokémon sprites
     oldUserX = (userSprite) ? userSprite.x : 0
     oldUserY = (userSprite) ? userSprite.y : 0
-    oldUserColor = (userSprite) ? userSprite.color.clone : Color.new(0,0,0,0)
-    oldUserTone  = (userSprite) ? userSprite.tone.clone  : Tone.new(0,0,0,0)
-    oldUserOpacity = (userSprite) ? userSprite.opacity : 255
     oldTargetX = (targetSprite) ? targetSprite.x : oldUserX
     oldTargetY = (targetSprite) ? targetSprite.y : oldUserY
-    oldTargetColor = (targetSprite) ? targetSprite.color.clone : Color.new(0,0,0,0)
-    oldTargetTone  = (targetSprite) ? targetSprite.tone.clone  : Tone.new(0,0,0,0)
-    oldTargetOpacity = (targetSprite) ? targetSprite.opacity : 255
     # Create the animation player
     animPlayer = PBAnimationPlayerX.new(animation,user,target,self,oppMove)
     # Apply a transformation to the animation based on where the user and target
@@ -571,17 +532,11 @@ class PokeBattle_Scene
       userSprite.x = oldUserX
       userSprite.y = oldUserY
       userSprite.pbSetOrigin
-      userSprite.color = oldTargetColor
-      userSprite.tone  = oldUserTone
-      userSprite.opacity = oldUserOpacity
     end
     if targetSprite
       targetSprite.x = oldTargetX
       targetSprite.y = oldTargetY
       targetSprite.pbSetOrigin
-      targetSprite.color = oldTargetColor
-      targetSprite.tone  = oldTargetTone
-      targetSprite.opacity = oldTargetOpacity
     end
   end
 end

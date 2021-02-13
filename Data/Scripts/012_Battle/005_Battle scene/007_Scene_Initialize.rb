@@ -19,10 +19,6 @@ class PokeBattle_Scene
     @lastCmd  = Array.new(@battle.battlers.length,0)
     @lastMove = Array.new(@battle.battlers.length,0)
     pbInitSprites
-    if $smAnim
-      $PokemonTemp.smAnim[0].scene = self
-      $PokemonTemp.smAnim[0].start
-    end
     pbBattleIntroAnimation
   end
 
@@ -71,17 +67,17 @@ class PokeBattle_Scene
     @battle.player.each_with_index do |p,i|
       pbCreateTrainerBackSprite(i,p.trainertype,@battle.player.length)
     end
-    # Data boxes and Pokémon sprites
-    @battle.battlers.each_with_index do |b,i|
-      next if !b
-      @sprites["dataBox_#{i}"] = PokemonDataBox.new(b,@battle.pbSideSize(i),@viewport)
-      pbCreatePokemonSprite(i)
-    end
     # Opposing trainer(s) sprites
     if @battle.trainerBattle?
       @battle.opponent.each_with_index do |p,i|
         pbCreateTrainerFrontSprite(i,p.trainertype,@battle.opponent.length)
       end
+    end
+    # Data boxes and Pokémon sprites
+    @battle.battlers.each_with_index do |b,i|
+      next if !b
+      @sprites["dataBox_#{i}"] = PokemonDataBox.new(b,@battle.pbSideSize(i),@viewport)
+      pbCreatePokemonSprite(i)
     end
     # Wild battle, so set up the Pokémon sprite(s) accordingly
     if @battle.wildBattle?
@@ -164,7 +160,7 @@ class PokeBattle_Scene
     trainer = pbAddSprite("player_#{idxTrainer+1}",spriteX,spriteY,trainerFile,@viewport)
     return if !trainer.bitmap
     # Alter position of sprite
-    trainer.z  = 50 + idxTrainer
+    trainer.z  = 30+idxTrainer
     if trainer.bitmap.width>trainer.bitmap.height*2
       trainer.src_rect.x     = 0
       trainer.src_rect.width = trainer.bitmap.width/5

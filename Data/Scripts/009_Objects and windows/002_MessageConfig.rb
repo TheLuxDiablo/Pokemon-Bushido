@@ -1,7 +1,7 @@
 module MessageConfig
   FontName        = "Power Clear"
   # in Graphics/Windowskins/ (specify empty string to use the default windowskin)
-  TextSkinName    = "speech hgss 14"
+  TextSkinName    = "speechbushido"
   ChoiceSkinName  = "speechbushido"
   WindowOpacity   = 255
   TextSpeed       = nil   # can be positive to wait frames or negative to
