@@ -134,6 +134,10 @@ Pokemon = ELECTABUZZ,5
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = DARUMAKA,5
 #-------------------------------
+[RIVALBUSHIDO_F,Akane]
+LoseText = "What! There's no way someone like you could beat me!"
+Pokemon = DARUMAKA,5
+#-------------------------------
 [NENSHO_M,Grunta]
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = TORCHIC,5
