@@ -61,10 +61,10 @@ class PokemonLoadPanel < SpriteWrapper
       if @isContinue
         shadowColor = (@selected) ? TEXTSHADOWCOLOR : Color.new(136,136,136)
         textpos.push([@title,16*2,5*2,0,TEXTCOLOR,shadowColor])
-        textpos.push([_INTL("Chapter:"),16*2,56*2,0,TEXTCOLOR,shadowColor])
-        textpos.push([@trainer.numbadges.to_s,103*2,56*2,1,TEXTCOLOR,shadowColor])
-        textpos.push([_INTL("Pokédex:"),16*2,72*2,0,TEXTCOLOR,shadowColor])
+        textpos.push([_INTL("Poké Journal:"),16*2,72*2,0,TEXTCOLOR,shadowColor])
         textpos.push([@trainer.pokedexSeen.to_s,103*2,72*2,1,TEXTCOLOR,shadowColor])
+        textpos.push([_INTL("Katanas:"),16*2,56*2,0,TEXTCOLOR,shadowColor])
+        textpos.push([@trainer.numbadges.to_s,103*2,56*2,1,TEXTCOLOR,shadowColor])
         textpos.push([_INTL("Time:"),16*2,88*2,0,TEXTCOLOR,shadowColor])
         hour = @totalsec / 60 / 60
         min  = @totalsec / 60 % 60
