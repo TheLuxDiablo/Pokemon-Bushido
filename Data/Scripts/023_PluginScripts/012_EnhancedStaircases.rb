@@ -36,7 +36,6 @@
 #------------------------------------------------------------------------------#
 #                    Please give credit when using this.                       #
 #==============================================================================#
-
 PluginManager.register({
   :name => "Enhanced Staircases",
   :version => "1.7",
@@ -46,7 +45,7 @@ PluginManager.register({
 
 # If true, overwrites default scrolling behaviour to make stair movement smooth
 # and to reduce improper scrolling offsets after walking on stairs wider than 1.
-SMOOTH_SCROLLING = true
+SMOOTH_SCROLLING = false
 
 $DisableScrollCounter = 0
 
@@ -470,12 +469,12 @@ class Game_Character
     end
     stair_update
     if on_middle_of_stair?
-      @old_move_speed ||= @move_speed
+      @old_move_speed ||= self.move_speed
       ptgrs = Math.sqrt((@stair_end_x - @stair_start_x) ** 2 + (@stair_end_y - @stair_start_y) ** 2)
       fraction = (@stair_end_x - @stair_start_x).abs / ptgrs * 0.85
-      @move_speed = fraction * @old_move_speed
+      self.move_speed = fraction * @old_move_speed
     else
-      @move_speed = @old_move_speed if @old_move_speed
+      self.move_speed = @old_move_speed if @old_move_speed
       @old_move_speed = nil
     end
   end
@@ -573,9 +572,13 @@ class Game_Character
         clear_stair_data
       end
     elsif jumping?
-      n = (@jump_count - @jump_peak).abs
-      return (real_y - self.map.display_y + 3) / 4 + Game_Map::TILE_HEIGHT -
-          (@jump_peak * @jump_peak - n * n) / 2
+      if @jump_distance == 0
+        jump_fraction = 0.5   # 0.5 to 0 to 0.5
+      else
+        jump_fraction = ((@jump_distance_left / @jump_distance) - 0.5).abs   # 0.5 to 0 to 0.5
+      end
+      n = @jump_peak * (4 * jump_fraction**2 - 1)
+      return (real_y - self.map.display_y + 3) / 4 + Game_Map::TILE_HEIGHT + n
     end
     return (real_y - self.map.display_y + 3) / 4 + (Game_Map::TILE_HEIGHT)
   end
