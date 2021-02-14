@@ -1,42 +1,42 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 [000]
-WildVictoryME = Battle victory wild.ogg
-TrainerVictoryME = Battle victory trainer.ogg
-TrainerBattleBGM = Battle trainer.mid
-Home = 3,7,5,8
-BicycleBGM = Bicycle.mid
+SurfBGM = Surfing.mid
 WildBattleBGM = Conquest-BattleNormal.ogg
+TrainerBattleBGM = Battle trainer.mid
+TrainerVictoryME = Battle victory trainer.ogg
+Home = 3,7,5,8
 PlayerB = POKEMONTRAINER_PLAYERF,trchar001,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,girl_fish_offset
 PlayerA = POKEMONTRAINER_PLAYERM,trchar000,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,boy_fish_offset
-SurfBGM = Surfing.mid
+WildVictoryME = Battle victory wild.ogg
+BicycleBGM = Bicycle.mid
 #-------------------------------
 [001]
 # Intro
 #-------------------------------
 [002]
 # Lappet Town
-MapPosition = 0,13,12
 ShowArea = true
-BattleBack = field
 Outdoor = true
+MapPosition = 0,13,12
+BattleBack = field
 #-------------------------------
 [003]
 # \PN's house
-HealingSpot = 2,8,8
 MapPosition = 0,13,12
+HealingSpot = 2,8,8
 #-------------------------------
 [004]
 # Pokémon Lab
-MapPosition = 0,13,12
 ShowArea = false
+MapPosition = 0,13,12
 #-------------------------------
 [005]
 # Route 1
-MapPosition = 0,13,11
 ShowArea = true
-BattleBack = field
 Outdoor = true
+MapPosition = 0,13,11
+BattleBack = field
 #-------------------------------
 [006]
 # Kurt's house
@@ -44,10 +44,10 @@ MapPosition = 0,13,11
 #-------------------------------
 [007]
 # Cedolan City
-MapPosition = 0,13,10
 ShowArea = true
-MapSize = 2,11
 Outdoor = true
+MapSize = 2,11
+MapPosition = 0,13,10
 #-------------------------------
 [008]
 # Daisy's house
@@ -55,8 +55,8 @@ MapPosition = 0,13,12
 #-------------------------------
 [009]
 # Cedolan City Poké Center
-HealingSpot = 8,17,11
 MapPosition = 0,14,10
+HealingSpot = 8,17,11
 #-------------------------------
 [010]
 # Cedolan Gym
@@ -107,22 +107,22 @@ MapPosition = 0,13,10
 [021]
 # Route 2
 Weather = Rain,100
-MapPosition = 0,14,8
 ShowArea = true
-MapSize = 1,11
-BattleBack = field
 Outdoor = true
+MapSize = 1,11
+MapPosition = 0,14,8
+BattleBack = field
 #-------------------------------
 [023]
 # Lerucean Town
-MapPosition = 0,15,8
 ShowArea = true
 Outdoor = true
+MapPosition = 0,15,8
 #-------------------------------
 [024]
 # Lerucean Town Poké Center
-HealingSpot = 23,11,15
 MapPosition = 0,15,8
+HealingSpot = 23,11,15
 #-------------------------------
 [025]
 # Lerucean Town Mart
@@ -138,15 +138,15 @@ MapPosition = 0,15,8
 #-------------------------------
 [028]
 # Natural Park
-MapPosition = 0,16,8
 ShowArea = true
-BattleBack = field
 Outdoor = true
+MapPosition = 0,16,8
+BattleBack = field
 #-------------------------------
 [029]
 # Natural Park Entrance
-Bicycle = true
 MapPosition = 0,16,8
+Bicycle = true
 #-------------------------------
 [030]
 # Natural Park Pavillion
@@ -154,29 +154,29 @@ MapPosition = 0,16,8
 #-------------------------------
 [031]
 # Route 3
-MapPosition = 0,14,6
 ShowArea = true
-MapSize = 2,1101
-BattleBack = field
 Outdoor = true
+MapSize = 2,1101
+MapPosition = 0,14,6
+BattleBack = field
 #-------------------------------
 [034]
 # Ice Cave
-Bicycle = true
 MapPosition = 0,15,6
 Environment = Cave
 BattleBack = cave1
+Bicycle = true
 #-------------------------------
 [035]
 # Ingido Plateau
-MapPosition = 0,13,6
 ShowArea = true
 Outdoor = true
+MapPosition = 0,13,6
 #-------------------------------
 [036]
 # Pokémon League
-HealingSpot = 35,17,7
 MapPosition = 0,13,6
+HealingSpot = 35,17,7
 #-------------------------------
 [037]
 # Pokémon League
@@ -189,56 +189,56 @@ MapPosition = 0,13,6
 #-------------------------------
 [039]
 # Route 4
-MapPosition = 0,11,6
 ShowArea = true
-MapSize = 2,11
-BattleBack = field
 Outdoor = true
+MapSize = 2,11
+MapPosition = 0,11,6
+BattleBack = field
 #-------------------------------
 [040]
 # Route 4
-BicycleAlways = true
-MapPosition = 0,11,6
 ShowArea = true
 Outdoor = true
+BicycleAlways = true
+MapPosition = 0,11,6
 #-------------------------------
 [041]
 # Route 5
-BicycleAlways = true
-MapPosition = 0,11,7
 ShowArea = true
-MapSize = 1,111
 Outdoor = true
+BicycleAlways = true
+MapSize = 1,111
+MapPosition = 0,11,7
 #-------------------------------
 [044]
 # Route 6
-MapPosition = 0,11,10
 ShowArea = true
-MapSize = 2,11
-BattleBack = field
 Outdoor = true
+MapSize = 2,11
+MapPosition = 0,11,10
+BattleBack = field
 #-------------------------------
 [045]
 # Route 6
-BicycleAlways = true
-MapPosition = 0,11,10
 ShowArea = true
 Outdoor = true
+BicycleAlways = true
+MapPosition = 0,11,10
 #-------------------------------
 [046]
 # Cycling Road gate
-Bicycle = true
 MapPosition = 0,12,6
+Bicycle = true
 #-------------------------------
 [047]
 # Route 7
 Weather = Rain,0
-MapPosition = 0,15,10
 ShowArea = true
-Environment = Rock
-MapSize = 2,11
-BattleBack = rocky
 Outdoor = true
+MapSize = 2,11
+MapPosition = 0,15,10
+Environment = Rock
+BattleBack = rocky
 #-------------------------------
 [048]
 # CamTest
@@ -247,37 +247,37 @@ Outdoor = true
 #-------------------------------
 [049]
 # Rock Cave
-Bicycle = true
 MapPosition = 0,16,10
 Environment = Cave
 BattleBack = cave1
+Bicycle = true
 #-------------------------------
 [050]
 # Rock Cave
-DarkMap = true
-Bicycle = true
 MapPosition = 0,16,10
 Environment = Cave
+DarkMap = true
 BattleBack = cave3
+Bicycle = true
 #-------------------------------
 [051]
 # Dungeon
-Bicycle = true
+Dungeon = true
 MapPosition = 0,16,10
 Environment = Cave
-Dungeon = true
 BattleBack = cave2
+Bicycle = true
 #-------------------------------
 [052]
 # Battle Frontier
-MapPosition = 0,17,10
 ShowArea = true
 Outdoor = true
+MapPosition = 0,17,10
 #-------------------------------
 [053]
 # Battle Frontier Poké Center
-HealingSpot = 52,17,14
 MapPosition = 0,17,10
+HealingSpot = 52,17,14
 #-------------------------------
 [054]
 # Battle Frontier Mart
@@ -285,8 +285,8 @@ MapPosition = 0,17,10
 #-------------------------------
 [055]
 # Battle Tower
-HealingSpot = 52,30,10
 MapPosition = 0,17,10
+HealingSpot = 52,30,10
 #-------------------------------
 [056]
 # Battle Tower arena
@@ -334,10 +334,10 @@ MapPosition = 0,17,10
 #-------------------------------
 [066]
 # Safari Zone
-MapPosition = 0,12,12
 ShowArea = true
-BattleBack = field
 Outdoor = true
+MapPosition = 0,12,12
+BattleBack = field
 #-------------------------------
 [067]
 # Safari Zone gate
@@ -345,20 +345,20 @@ MapPosition = 0,12,12
 #-------------------------------
 [068]
 # Safari Zone
-SafariMap = true
-MapPosition = 0,12,12
 ShowArea = true
+Outdoor = true
+MapPosition = 0,12,12
 Environment = Forest
 BattleBack = forest
-Outdoor = true
+SafariMap = true
 #-------------------------------
 [069]
 # Route 8
 DiveMap = 70
-MapPosition = 0,13,13
 ShowArea = true
-BattleBack = field
 Outdoor = true
+MapPosition = 0,13,13
+BattleBack = field
 #-------------------------------
 [070]
 # Underwater
@@ -373,28 +373,28 @@ MapPosition = 0,13,13
 [072]
 # Berth Island
 Weather = Storm,50
-MapPosition = 0,18,17
 ShowArea = true
-BattleBack = field
 Outdoor = true
+MapPosition = 0,18,17
+BattleBack = field
 #-------------------------------
 [073]
 # Faraday Island
-MapPosition = 0,22,16
 ShowArea = true
-BattleBack = field
 Outdoor = true
+MapPosition = 0,22,16
+BattleBack = field
 #-------------------------------
 [074]
 # Cycling Road gate
-Bicycle = true
 MapPosition = 0,12,10
+Bicycle = true
 #-------------------------------
 [075]
 # Tiall Region
+Outdoor = true
 MapPosition = 1,13,16
 BattleBack = city
-Outdoor = true
 #-------------------------------
 [076]
 # CamTest2
@@ -409,5 +409,15 @@ Outdoor = false
 [079]
 # Ezo Village
 ShowArea = true
+Outdoor = true
 BattleBack = FRLGGrass
+#-------------------------------
+[081]
+# Nagina Bay
+ShowArea = true
+Outdoor = true
+#-------------------------------
+[082]
+# Sakura Pass
+ShowArea = true
 Outdoor = true
