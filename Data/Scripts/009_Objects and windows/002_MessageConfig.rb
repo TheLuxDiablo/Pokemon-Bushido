@@ -2,7 +2,7 @@ module MessageConfig
   FontName        = "Power Clear"
   # in Graphics/Windowskins/ (specify empty string to use the default windowskin)
   TextSkinName    = "speechbushido"
-  ChoiceSkinName  = "speechbushido"
+  ChoiceSkinName  = "choice 3"
   WindowOpacity   = 255
   TextSpeed       = nil   # can be positive to wait frames or negative to
                           # show multiple characters in a single frame
