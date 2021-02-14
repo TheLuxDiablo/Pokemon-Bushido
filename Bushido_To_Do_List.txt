@@ -1,13 +1,14 @@
+
 Things to do:
+- Add an outline to the well tiles
+- Remove outline from the pink flower tiles
+- Add an outline to the arch thing
+- Fix up outlines on house tiles
 - add in spotted ME for types
 - add shadow icon for enemy battlers in the UI
 - set up our Aisho Journal, pokedex for the region. Let's keep it around 200-300
-- FINALIZE OUR STARTERS
-	- Fighting (Treecko), Steel (Oshawatt), Fairy (based on Sakura trees)
-- change grass autotile to be less outlined/fit more with the trees
 - Purge old splice scripting!!!!!!!!!!!
 - make some orange trees for an Autumn path
-- make some pink trees for a Sakura Path map, could update battle bgs too
 - make mid battle dialogue for our Clan enemies
 	- Nensho, raise attack, make sunny
 		- burn your first pokemon with a breath of fire
@@ -20,12 +21,6 @@ Things to do:
 - new battle and summary UI, to reflect the japanese aesthetic with watercolor inspiration, maybe red trees
 - Revise battler backs, they're using the full back instead of FRLG back... hmm
 
-
-
-
-
-
-	
 Plugins: 
 - Following pokemon EX
 WIP - Add party screen script
@@ -33,7 +28,7 @@ Add menu screen script
 	- Remove gym badges
 	- Change font
 	- Add Katana progression (?)
-	
+
 
 
 Things done:
