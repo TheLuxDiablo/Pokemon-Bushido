@@ -37,12 +37,16 @@ Add menu screen script
 
 
 Things done:
-2/13/21
+
 - make our placeholder clan trainertypes (set up music and mid battle dialogue)
 - Make Sakura Pass
+- Make Ezo Town
 - Add Hot Springs tiles and make layout
+
+
+2/13/21
 DONE - Add Mario Odyssey music for the Akui clan cutscenes
-DONEISH - Plan map layout
+DONEISH - Plan map layout and enemy levels
 WE LOCKED IN HOW MANY REGIONAL FORMS WE WANT. JUST 12 (9 starters + Cobalion, Virizion, and Terrakion)
 
 
