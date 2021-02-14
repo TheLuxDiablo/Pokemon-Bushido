@@ -19,6 +19,7 @@ Events.onWildPokemonCreate+=proc {|sender,e|
 # and other such details.  Of course, you don't HAVE to use this code.
 # Thundaga scaling level scaling
 
+=begin
 # Hidden Ability in Wild Pokemon and Ability Charm Code
 Events.onWildPokemonCreate+=proc {|sender,e|
    pokemon=e[0]
@@ -34,10 +35,12 @@ Events.onWildPokemonCreate+=proc {|sender,e|
    end
 }
 
+
 Events.onWildPokemonCreate+=proc {|sender,e|
    evolvePokemonSilent(pokemon)
    evolvePokemonSilent(pokemon)
 }
+
 
 # Make enemy trainer pokemon evolve automatically if their level is high enough
 Events.onTrainerPartyLoad+=proc {|sender,e|

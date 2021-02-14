@@ -420,6 +420,16 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
+      NenshoIntro1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I'm with Nensho Clan! Prepare to feel our burning passion for battle!")
+                    battle.scene.disappearBar
+                    #battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
+                    #battle.pbDisplay(_INTL("The weather became sunny!",battle.battlers[0].pbThis(true)))
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                    battle.scene.pbHideOpponent
+                  }
 
 
 

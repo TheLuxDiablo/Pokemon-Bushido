@@ -37,6 +37,13 @@ Add menu screen script
 
 
 Things done:
+2/13/21
+- make our placeholder clan trainertypes (set up music and mid battle dialogue)
+- Make Sakura Pass
+- Add Hot Springs tiles and make layout
+DONE - Add Mario Odyssey music for the Akui clan cutscenes
+
+
 2/10/21
 - MKXP Port!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	- lots of bugfixing, more to come too
