@@ -426,6 +426,7 @@ module DialogueModule
                     pbMessage("I'm with Nensho Clan! Prepare to feel our burning passion for battle!")
                     pbMessage("We yell to raise our attack! Rahhh!")
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    The Kenshi's fire affinity boosted the power of their Pokemon
                     battle.scene.disappearBar
                     #battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
                     #battle.pbDisplay(_INTL("The weather became sunny!",battle.battlers[0].pbThis(true)))
