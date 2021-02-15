@@ -45,6 +45,6 @@
 # MAP032 (32) - CamTest2 (76)
 32,West,0,76,East,3
 # Ezo Village (79) - Sakura Pass (82)
-79,West,0,82,East,10
+79,West,0,82,East,11
 # Nagina Bay (81) - Ezo Village (79)
 81,West,0,79,East,6
