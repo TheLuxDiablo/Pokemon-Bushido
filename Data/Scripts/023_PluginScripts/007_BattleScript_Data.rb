@@ -426,15 +426,99 @@ module DialogueModule
                     pbMessage("I'm with Nensho Clan! Prepare to feel our burning passion for battle!")
                     pbMessage("We yell to raise our attack! Rahhh!")
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    The Kenshi's fire affinity boosted the power of their Pokemon
+                    pbMessage("The Kenshi's fire affinity boosted the power of their Pokemon!")
                     battle.scene.disappearBar
                     #battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
                     #battle.pbDisplay(_INTL("The weather became sunny!",battle.battlers[0].pbThis(true)))
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
                     battle.scene.pbHideOpponent
                   }
+    # Sukiro quiz
+       Sukiro1 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("Question time, \\PN!")
+                      # Choice Box Stuff
+                      cmd=0
+                      cmd= pbMessage("What is a Samurai's most important moral code?",["The Code of Honor","The Code of Power","The Code of Intelligence"],0,nil,0)
+                      if cmd == 0
+                        pbMessage("\\se[SwShCorrect]As expected of my student! Brilliant!")
+                        battle.scene.pbHideOpponent
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[0])
+                      else
+                        pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
+                        pbMessage("The correct answer is the \"Code of Honor,\" which all Samurai are expected to follow.")
+                        battle.scene.pbHideOpponent
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
+                      end
+                    }
 
+       Sukiro2 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("Prepare yourself for another question \\PN!")
+                      cmd=0
+                      cmd= pbMessage("What is a Samurai's main weapon?",["Spear","Axe","Katana"],0,nil,0)
+                      if cmd == 2
+                        pbMessage("\\se[SwShCorrect]Well done! You have been paying attention!")
+                        battle.scene.pbHideOpponent
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[0])
+                      else
+                        pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
+                        battle.scene.pbHideOpponent
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[0])
+                      end
+                    }
 
+       Sukiro3 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("You're doing well \\PN. But are you prepared for another question?")
+                      pbMessage("Answer me this...")
+                      cmd=0
+                      cmd= pbMessage("What determines the clan that a Kenshi will join?",["Affinity","Money","Family"],0,nil,0)
+                      if cmd == 0
+                        pbMessage("\\se[SwShCorrect]Well done, \\PN!")
+                        battle.scene.pbHideOpponent
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[0])
+                      elsif cmd == 1
+                        pbMessage("\\se[SwShIncorrect]That is incorrect!")
+                        pbMessage("It would be incredibly shameful for a Kenshi to attempt to buy their way into a clan!")
+                        battle.scene.pbHideOpponent
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbLowerStatStage(PBStats::SPATK,1,battle.battlers[0])
+                      else
+                        pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
+                        battle.scene.pbHideOpponent
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbLowerStatStage(PBStats::SPATK,1,battle.battlers[0])
+                      end
+                    }
+        Sukiro4 = Proc.new{|battle|
+                       battle.scene.appearBar
+                       battle.scene.pbShowOpponent(0)
+                       pbMessage("Alright \\PN! Prepare yourself for my hardest question yet!")
+                       cmd=0
+                       cmd= pbMessage("What type of Pokémon is strongest against the Shimizu Clan?",["Rock","Electric","Fire"],0,nil,0)
+                       if cmd == 1
+                         pbMessage("\\se[SwShCorrect]Haha! That is correct! Excellent work, \\PN!")
+                         pbMessage("Shimizu Clan members have a water affinity, so Electric is the correct answer!")
+                         battle.scene.pbHideOpponent
+                         battle.scene.disappearBar
+                         battle.battlers[0].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[0])
+                       else
+                         pbMessage("\\se[SwShIncorrect]Hmm... that is incorrect.")
+                         pbMessage("Shimizu Clan members have a water affinity, so Electric would be the correct answer.")
+                         battle.scene.pbHideOpponent
+                         battle.scene.disappearBar
+                         battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[0])
+                       end
+                     }
 
 # DONT DELETE THIS END
 end

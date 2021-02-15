@@ -138,6 +138,12 @@ Pokemon = DARUMAKA,5
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = DARUMAKA,5
 #-------------------------------
+[SENSEI,Sukiro]
+LoseText = "Well done! You are an excellent student."
+Pokemon = ROCKRUFF,5
+Pokemon = SLUGMA,5
+Pokemon = FARFETCHD,5
+#-------------------------------
 [NENSHO_M,Grunta]
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = TORCHIC,5

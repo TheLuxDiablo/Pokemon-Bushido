@@ -4,7 +4,7 @@ Things to do:
 - Remove outline from the pink flower tiles
 - Add an outline to the arch thing
 - Fix up outlines on house tiles
-- add in spotted ME for types
+- add in spotted ME for trainertypes
 - add shadow icon for enemy battlers in the UI
 - set up our Aisho Journal, pokedex for the region. Let's keep it around 200-300
 - Purge old splice scripting!!!!!!!!!!!
@@ -31,12 +31,17 @@ Add menu screen script
 
 
 
-Things done:
-
+Things I wanna do tonight:
 - make our placeholder clan trainertypes (set up music and mid battle dialogue)
 - Make Sakura Pass
 - Make Ezo Town
 - Add Hot Springs tiles and make layout
+- Follower Pokemon EX
+- Add the vial and recharge it at shrines or hot springs?
+
+Things done:
+2/13/21
+- battle quiz with Sensei
 
 
 2/13/21
