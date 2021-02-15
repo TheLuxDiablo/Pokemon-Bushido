@@ -32,6 +32,7 @@ Add menu screen script
 
 
 Things I wanna do tonight:
+- EV/IV Screen
 - make our placeholder clan trainertypes (set up music and mid battle dialogue)
 - Make Sakura Pass
 - Make Ezo Town
@@ -42,6 +43,7 @@ Things I wanna do tonight:
 Things done:
 2/13/21
 - battle quiz with Sensei
+- started setting up Jikan Shrine
 
 
 2/13/21
