@@ -1,14 +1,14 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 [000]
-TrainerVictoryME = Battle victory trainer.ogg
-WildVictoryME = Battle victory wild.ogg
-TrainerBattleBGM = Battle trainer.mid
+TrainerVictoryME = HGSSBattleVictoryTrainer.ogg
+WildVictoryME = HGSSBattleVictoryWild.ogg
+TrainerBattleBGM = Conquest-BattleFighting.ogg
 PlayerB = POKEMONTRAINER_PLAYERF,trchar001,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,girl_fish_offset
 PlayerA = POKEMONTRAINER_PLAYERM,trchar000,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,boy_fish_offset
-BicycleBGM = Bicycle.mid
+BicycleBGM = HGSS-155-Bike.ogg
 Home = 3,7,5,8
-SurfBGM = Surfing.mid
+SurfBGM = HGSS-170-Surf.ogg
 WildBattleBGM = Conquest-BattleNormal.ogg
 #-------------------------------
 [001]

@@ -1255,3 +1255,45 @@ ItemHandlers::UseFromBag.add(:VIAL,proc{|item|
     end
    next 1
 })
+
+ItemHandlers::UseFromBag.add(:KATANALIGHT,proc{|item|
+  cmd=0
+  cmd= pbMessage("It's the Katana of Light.\nIt appears quite weak...",["Heal Pokémon","Open Map","Put Away"],0,nil,0)
+  if cmd == 0
+    if $game_variables[52] == 0 #Thundaga, making it so the healing can always be used initially.
+      $game_variables[50] = 1
+      $game_variables[52] = 1
+    end
+    case $game_variables[50]
+    when 0
+      pbMessage(_INTL("\\se[SwShIncorrect]You do not have any healing energy left..."))
+    when 1
+      pbMessage("You have 1 charge of healing energy left.")
+      if pbConfirmMessage("Would you like to heal your Pokémon?")
+        $game_variables[50] -= 1
+        for i in $Trainer.party
+         i.heal
+        end
+        pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+        pbMessage(_INTL("You have no more healing energy left."))
+       end
+    else
+      pbMessage(_INTL("You have {1} charges of healing energy left.",$game_variables[50]))
+      if pbConfirmMessage("Would you like to heal your Pokémon?")
+        $game_variables[50] -= 1
+        for i in $Trainer.party
+         i.heal
+        end
+        pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+        pbMessage(_INTL("{1} charge(s) remain.",$game_variables[50]))
+       end
+     end
+    next 1
+  elsif cmd == 1
+      pbShowMap(-1,false)
+      next 1
+  else
+    pbMessage(_INTL("You put the Katana of Light back into its sheath."))
+    next 1
+  end
+})

@@ -131,7 +131,7 @@ end
   Graphics.update
   @sprites["item"].angle-=15/2 if @sprites["item"].angle!=0
   @sprites["item"].angle=0 if @sprites["item"].angle<0
-  pbMEPlay("Key item get") if frametome==7  # Updated ME to Essentials Default
+  pbMEPlay("Conquest-LevelUpWarlord") if frametome==7  # Updated ME to Essentials Default
   @sprites["bg"].zoom_y+=0.1/2 if @sprites["bg"].zoom_y<1.75
   @sprites["bg"].zoom_x+=0.1/2 if @sprites["bg"].zoom_x<1.75
   @sprites["bg"].opacity+=14.16
