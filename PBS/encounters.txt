@@ -11,3 +11,63 @@ Land
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
+#-------------------------------
+081 # Nagisa Bay
+25,10,10
+Land
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+Water
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+OldRod
+    BULBASAUR,5
+    BULBASAUR,5
+#-------------------------------
+082 # Sakura Pass
+25,10,10
+Land
+    CHERUBI,2,4
+    PANCHAM,3,5
+    PIKIPEK,2,5
+    PURRLOIN,2,5
+    FOMANTIS,2,4
+    BUNEARY,2,5
+    VULPIX,3,4
+    PICHU,3,5
+Water
+    MAGIKARP,2,5
+    SEEL,2,4
+    FINNEON,3,5
+    FEEBAS,2,3
+    FEEBAS,2,3
+#-------------------------------
+084 # Jikan Shrine
+25,10,10
+Land
+    MEDITITE,2,4
+	MEDITITE,3,5
+	SCATTERBUG,2,5
+	FARFETCHD,2,5
+	SURSKIT,3,4
+	SURSKIT,2,5
+	TOGEPI,2,4
+	TOGEPI,3,5
+Water
+	SLOWPOKE,2,4
+	SLOWPOKE,3,5
+	GOLDEEN,2,4
+	GOLDEEN,3,5
+	CLAMPERL,2,5
+OldRod
+	SLOWPOKE,2,5
+	GOLDEEN,2,5

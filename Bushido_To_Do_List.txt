@@ -34,16 +34,17 @@ Add menu screen script
 Things I wanna do tonight:
 - EV/IV Screen
 - make our placeholder clan trainertypes (set up music and mid battle dialogue)
-- Make Sakura Pass
-- Make Ezo Town
 - Add Hot Springs tiles and make layout
 - Follower Pokemon EX
 - Add the vial and recharge it at shrines or hot springs?
 
+
 Things done:
-2/13/21
+2/14/21
 - battle quiz with Sensei
 - started setting up Jikan Shrine
+- Make Sakura Pass
+- Make Ezo Town
 
 
 2/13/21

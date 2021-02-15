@@ -1,8 +1,10 @@
 class PokemonLoadPanel < SpriteWrapper
   attr_reader :selected
 
-  TEXTCOLOR             = Color.new(96,96,96)
-  TEXTSHADOWCOLOR       = Color.new(208,208,208)
+  #TEXTCOLOR             = Color.new(232,232,232)
+  #TEXTSHADOWCOLOR       = Color.new(136,136,136)
+  TEXTCOLOR             = Color.new(80,80,88)
+  TEXTSHADOWCOLOR       = Color.new(160,160,168)
   MALETEXTCOLOR         = Color.new(56,160,248)
   MALETEXTSHADOWCOLOR   = Color.new(56,104,168)
   FEMALETEXTCOLOR       = Color.new(240,72,88)
@@ -59,32 +61,31 @@ class PokemonLoadPanel < SpriteWrapper
       end
       textpos = []
       if @isContinue
-        shadowColor = (@selected) ? TEXTSHADOWCOLOR : Color.new(136,136,136)
-        textpos.push([@title,16*2,5*2,0,TEXTCOLOR,shadowColor])
-        textpos.push([_INTL("Poké Journal:"),16*2,72*2,0,TEXTCOLOR,shadowColor])
-        textpos.push([@trainer.pokedexSeen.to_s,103*2,72*2,1,TEXTCOLOR,shadowColor])
-        textpos.push([_INTL("Katanas:"),16*2,56*2,0,TEXTCOLOR,shadowColor])
-        textpos.push([@trainer.numbadges.to_s,103*2,56*2,1,TEXTCOLOR,shadowColor])
-        textpos.push([_INTL("Time:"),16*2,88*2,0,TEXTCOLOR,shadowColor])
+        textpos.push([@title,16*2,5*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
+        textpos.push([_INTL("Badges:"),16*2,56*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
+        textpos.push([@trainer.numbadges.to_s,103*2,56*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
+        textpos.push([_INTL("Pokédex:"),16*2,72*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
+        textpos.push([@trainer.pokedexSeen.to_s,103*2,72*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
+        textpos.push([_INTL("Time:"),16*2,88*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
         hour = @totalsec / 60 / 60
         min  = @totalsec / 60 % 60
         if hour>0
-          textpos.push([_INTL("{1}h {2}m",hour,min),103*2,88*2,1,TEXTCOLOR,shadowColor])
+          textpos.push([_INTL("{1}h {2}m",hour,min),103*2,88*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
         else
-          textpos.push([_INTL("{1}m",min),103*2,88*2,1,TEXTCOLOR,shadowColor])
+          textpos.push([_INTL("{1}m",min),103*2,88*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
         end
         if @trainer.male?
           textpos.push([@trainer.name,56*2,32*2,0,MALETEXTCOLOR,MALETEXTSHADOWCOLOR])
         elsif @trainer.female?
           textpos.push([@trainer.name,56*2,32*2,0,FEMALETEXTCOLOR,FEMALETEXTSHADOWCOLOR])
         else
-          textpos.push([@trainer.name,56*2,32*2,0,TEXTCOLOR,shadowColor])
+          textpos.push([@trainer.name,56*2,32*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
         end
         mapname = pbGetMapNameFromId(@mapid)
         mapname.gsub!(/\\PN/,@trainer.name)
-        textpos.push([mapname,193*2,5*2,1,TEXTCOLOR,shadowColor])
+        textpos.push([mapname,193*2,5*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
       else
-        textpos.push([@title,16*2,4*2,0,TEXTCOLOR,(@selected) ? TEXTSHADOWCOLOR : Color.new(136,136,136)])
+        textpos.push([@title,16*2,4*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
       end
       pbDrawTextPositions(self.bitmap,textpos)
     end
@@ -258,9 +259,10 @@ class PokemonLoadScreen
     $game_system   = Game_System.new
     $PokemonSystem = PokemonSystem.new if !$PokemonSystem
     savefile = RTP.getSaveFileName("Game.rxdata")
-    FontInstaller.install if !mkxp?
+    FontInstaller.install
     data_system = pbLoadRxData("Data/System")
-    mapfile = sprintf("Data/Map%03d.rxdata",data_system.start_map_id)
+    mapfile = ($RPGVX) ? sprintf("Data/Map%03d.rvdata",data_system.start_map_id) :
+                         sprintf("Data/Map%03d.rxdata",data_system.start_map_id)
     if data_system.start_map_id==0 || !pbRgssExists?(mapfile)
       pbMessage(_INTL("No starting position was set in the map editor.\1"))
       pbMessage(_INTL("The game cannot continue."))
@@ -357,7 +359,7 @@ class PokemonLoadScreen
           $PokemonBag          = Marshal.load(f)
           $PokemonStorage      = Marshal.load(f)
           $SaveVersion         = Marshal.load(f) unless f.eof?
-          pbRefreshResizeFactor if !mkxp?  # To fix Game_Screen pictures
+          pbRefreshResizeFactor   # To fix Game_Screen pictures
           magicNumberMatches = false
           if $data_system.respond_to?("magic_number")
             magicNumberMatches = ($game_system.magic_number==$data_system.magic_number)
@@ -429,7 +431,7 @@ class PokemonLoadScreen
         $PokemonStorage      = PokemonStorage.new
         $PokemonEncounters   = PokemonEncounters.new
         $PokemonTemp.begunNewGame = true
-        pbRefreshResizeFactor if !mkxp?  # To fix Game_Screen pictures
+        pbRefreshResizeFactor   # To fix Game_Screen pictures
         $data_system         = pbLoadRxData("Data/System")
         $MapFactory          = PokemonMapFactory.new($data_system.start_map_id)   # calls setMapChanged
         $game_player.moveto($data_system.start_x, $data_system.start_y)
@@ -487,7 +489,6 @@ end
 ################################################################################
 # Font installer
 ################################################################################
-if !mkxp?
 module FontInstaller
   # filenames of fonts to be installed
   Filenames = [
@@ -624,5 +625,4 @@ module FontInstaller
       pbMessage(_INTL("To install the necessary fonts, copy the files in this game's Fonts folder to the Fonts folder in Control Panel."))
     end
   end
-end
 end
