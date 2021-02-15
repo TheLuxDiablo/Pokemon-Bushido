@@ -42,7 +42,8 @@ add placeholder kenshi with MBD to sakura pass
 - start hagane city
 - add fat npc variation to look like blacksmit headband
 - reborn animations
-- 
+- make shadow meter show in battle instead of XP when shadow
+	- Can also add shadow icon for battlers when doing this... or shadow HP bars????
 
 
 
