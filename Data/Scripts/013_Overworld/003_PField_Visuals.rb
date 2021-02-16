@@ -387,7 +387,7 @@ class LocationWindow
     elsif $game_map.name.include?("City")
       @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/City_1")
     else
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/HGSS_8")
+      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/HGSS_3")
     end
     @sprites["Image"].x = 8
     @sprites["Image"].y = - @sprites["Image"].bitmap.height
