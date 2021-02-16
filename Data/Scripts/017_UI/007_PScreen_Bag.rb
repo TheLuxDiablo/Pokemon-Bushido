@@ -475,7 +475,7 @@ class PokemonBagScreen
       commands[cmdGive = commands.length]       = _INTL("Give") if $Trainer.pokemonParty.length>0 && pbCanHoldItem?(item)
       commands[cmdToss = commands.length]       = _INTL("Toss") if !pbIsImportantItem?(item) || $DEBUG
       if @bag.pbIsRegistered?(item)
-        commands[cmdRegister = commands.length] = _INTL("Deselect")
+        commands[cmdRegister = commands.length] = _INTL("Unregister")
       elsif pbCanRegisterItem?(item)
         commands[cmdRegister = commands.length] = _INTL("Register")
       end

@@ -32,25 +32,47 @@ Add menu screen script
 
 
 Things I wanna do tonight:
-- EV/IV Screen
 - make our placeholder clan trainertypes (set up music and mid battle dialogue)
-- Add Hot Springs tiles and make layout
 - Follower Pokemon EX
-- Add the vial and recharge it at shrines or hot springs?
-katanas to replace hms
-add placeholder kenshi with MBD to sakura pass
 - start hagane city
-- add fat npc variation to look like blacksmit headband
-- reborn animations
+- Shadow nickit and shadow poochyena
+- add fat npc guy who likes technology variation to look like blacksmit headband
+- reborn animations!?
 - make shadow meter show in battle instead of XP when shadow
 	- Can also add shadow icon for battlers when doing this... or shadow HP bars????
-- name location signposts from splice
+	- Make our EXP bar show shadow meter when we're shadow
+- Add Hot Springs tiles and make layout
+- add hot springs healing events
+- compile the RGSS tileset info or something to make it load our tileset data better, like what goli sent
+- update naming screen
+- update battle ui text colors
+- katana revision notes
+	- add an unawakened katana version
+	- maybe separate fly and cut
+	- Maybe just make cut the first function, cuz its a sword. We could cut to the south, to learn solid strikes, and then go north
+	- make the katana's healing energy only revive pokemon when it's in its final form
+		- Form 0 = unawakened, only useful for cutting down trees
+		- Form 1 = awakened, can now steal shadow pokemon and heal pokemon in our team. REMOVE THE MAP ABILITY
+		- Form 2 = solid strike learned, can now cut through rocks
+		- Form 3 = wind blade learned, can now fly
+		- Form 4 = water walking technique, can now run on water
+		- Form 5 = light blade!!!! Final form!!! Can purify on the go, illuminate caves, and banish fog!	
+- Add samurai vs kenshi distinction in the Sukiro quizzes
 
+
+
+- play voltseons game
 
 
 Things done:
 2/15/21
-- play voltseons game
+- Add katana of light as a vial and recharge it at shrines or hot springs
+- add placeholder kenshi with MBD to sakura pass
+- region map
+- setting up katana of light code
+- Nagisa Bay
+- EV/IV Screen
+- Set up Shadow moves, and shadow type, and more shadow stuff on top of that
 
 
 2/14/21

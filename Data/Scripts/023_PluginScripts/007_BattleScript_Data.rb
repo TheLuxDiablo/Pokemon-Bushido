@@ -398,28 +398,24 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\rShow me your honorable battle style!")
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
-                    pbMessage("#{battle.battlers[1].pokemon.speciesName}'s defense increased!")
                     battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       KenshiF2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\rPrepare to feel our anger! Hiyaah!")
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
-                    pbMessage("#{battle.battlers[1].pokemon.speciesName}'s attack and special attack increased!")
                     battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       KenshiM1 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\bCome on, let's see what you've got!")
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
-                    pbMessage("#{battle.battlers[1].pokemon.speciesName}'s speed increased!")
                     battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       # Rival intros
@@ -427,14 +423,13 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\pogPrepare to face the full force of my Pokémon!")
+                    battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                     if $Trainer.gender==0
                       pbMessage("Akane's fiery passion whipped #{battle.battlers[1].pokemon.speciesName} into a frenzy!")
                     else
                       pbMessage("Yakeru's fiery passion whipped #{battle.battlers[1].pokemon.speciesName} into a frenzy!")
                     end
-                    pbMessage("#{battle.battlers[1].pokemon.speciesName}'s attack increased sharply!")
-                    battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
       # Clan intros
@@ -443,9 +438,9 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("I'm with Nensho Clan! Prepare to feel our burning passion for battle!")
                     pbMessage("We yell to raise our attack! Rahhh!")
+                    battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                     pbMessage("The Kenshi's fire affinity boosted the power of their Pokemon!")
-                    battle.scene.disappearBar
                     #battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
                     #battle.pbDisplay(_INTL("The weather became sunny!",battle.battlers[0].pbThis(true)))
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)

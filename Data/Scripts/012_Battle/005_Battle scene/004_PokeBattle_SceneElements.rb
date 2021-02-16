@@ -12,10 +12,8 @@ class PokemonDataBox < SpriteWrapper
   # Maximum time in seconds to make a change to the HP bar.
   HP_BAR_CHANGE_TIME = 1.0
   STATUS_ICON_HEIGHT = 16
-  #NAME_BASE_COLOR         = Color.new(72,72,72)
-  #NAME_SHADOW_COLOR       = Color.new(184,184,184)
-  NAME_BASE_COLOR         = Color.new(250,250,250)
-  NAME_SHADOW_COLOR       = Color.new(120,120,120)
+  NAME_BASE_COLOR         = Color.new(72,72,72)
+  NAME_SHADOW_COLOR       = Color.new(184,184,184)
   MALE_BASE_COLOR         = Color.new(48,96,216)
   MALE_SHADOW_COLOR       = NAME_SHADOW_COLOR
   FEMALE_BASE_COLOR       = Color.new(248,88,40)
@@ -212,9 +210,9 @@ class PokemonDataBox < SpriteWrapper
     self.bitmap.blt(0,0,@databoxBitmap.bitmap,Rect.new(0,0,@databoxBitmap.width,@databoxBitmap.height))
     # Draw Pokémon's name
     nameWidth = self.bitmap.text_size(@battler.name).width
-    nameOffset = -6
+    nameOffset = 0
     nameOffset = nameWidth-116 if nameWidth>116
-    textPos.push([@battler.name,@spriteBaseX+8-nameOffset,4,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
+    textPos.push([@battler.name,@spriteBaseX+8-nameOffset,6,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
     # Draw Pokémon's gender symbol
     case @battler.displayGender
     when 0   # Male
@@ -377,6 +375,7 @@ end
 #===============================================================================
 class AbilitySplashBar < SpriteWrapper
   attr_reader :battler
+  attr_accessor :ability
 
   TEXT_BASE_COLOR   = Color.new(0,0,0)
   TEXT_SHADOW_COLOR = Color.new(248,248,248)
@@ -385,6 +384,7 @@ class AbilitySplashBar < SpriteWrapper
     super(viewport)
     @side    = side
     @battler = nil
+    @ability = ability
     # Create sprite wrapper that displays background graphic
     @bgBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/ability_bar"))
     @bgSprite = SpriteWrapper.new(viewport)
@@ -444,6 +444,11 @@ class AbilitySplashBar < SpriteWrapper
     refresh
   end
 
+  def ability=(value)
+    @ability = value
+    refresh
+  end
+
   def refresh
     self.bitmap.clear
     return if !@battler
@@ -453,7 +458,7 @@ class AbilitySplashBar < SpriteWrapper
     textPos.push([_INTL("{1}'s",@battler.name),textX,2,@side==1,
        TEXT_BASE_COLOR,TEXT_SHADOW_COLOR,true])
     # Draw Pokémon's ability
-    textPos.push([@battler.abilityName,textX,32,@side==1,
+    textPos.push([(@ability.is_a?(String))? @ability : @battler.abilityName,textX,32,@side==1,
        TEXT_BASE_COLOR,TEXT_SHADOW_COLOR,true])
     pbDrawTextPositions(self.bitmap,textPos)
   end

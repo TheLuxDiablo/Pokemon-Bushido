@@ -24,6 +24,7 @@ module PBTerrain
   LeftArrow       = 20
   RightArrow      = 21
   FallHole        = 22
+  HotSpring       = 23
 
   def self.isSurfable?(tag)
     return PBTerrain.isWater?(tag)
@@ -77,6 +78,10 @@ module PBTerrain
 
   def self.isIce?(tag)
     return tag==PBTerrain::Ice
+  end
+
+  def self.isHotSpring?(tag)
+    return tag==PBTerrain::HotSpring
   end
 
   def self.isBog?(tag)

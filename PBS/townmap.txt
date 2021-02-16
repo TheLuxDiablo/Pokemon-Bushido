@@ -1,7 +1,7 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 [0]
-Name=
+Name= Essen
 Filename=mapRegion0.png
 Point=13,12,Lappet Town,Oak's Lab,2,8,8,
 Point=13,11,Route 1,,,,,
@@ -31,25 +31,24 @@ Point=18,17,Berth Island,,,,,51
 Point=22,16,Faraday Island,,,,,52
 #-------------------------------
 [1]
-Name=
+Name= Tiall
 Filename=mapRegion1.png
 Point=13,16,Here,,,,,
 #-------------------------------
 [2]
-Name=
+Name= Aisho
 Filename=mapRegion2.png
-Point=13,12,Lappet Town,Oak's Lab,2,8,8,
 Point=17,10,Sakura Pass,,,,,
 Point=18,10,Sakura Pass,,,,,
-Point=19,10,Ezo Village,,,,,
+Point=19,10,Ezo Village,,79,15,13,
 Point=19,11,Nagisa Bay,,,,,
 Point=20,11,Nagisa Bay,,,,,
 Point=21,11,Nagisa Bay,,,,,
 Point=22,11,Nagisa Bay,,,,,
 Point=26,7,Akui Island,,,,,
-Point=17,9,Jikan Shrine,,,,,
+Point=17,9,Jikan Shrine,,84,19,20,
 Point=16,10,Sakura Pass,,,,,
-Point=15,10,Hagane City,,,,,
+Point=15,10,Hagane City,,85,63,31,
 Point=14,15,Komorei Village,,,,,
 Point=12,5,Nensho Village,,,,,
 Point=7,7,Shimizu Village,,,,,

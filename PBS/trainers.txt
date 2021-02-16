@@ -158,16 +158,27 @@ Pokemon = SNIVY,5
 #-------------------------------
 [KENSHI_F,Saki]
 LoseText = "You fight with great honor. Well done!"
-Pokemon = CHERUBI,5
-Pokemon = SNIVY,6
+Pokemon = CHERUBI,4
+Pokemon = SNIVY,5
 #-------------------------------
 [KENSHI_M,Tojiro]
 LoseText = "Impressive! You're quite a strong Kenshi!"
-Pokemon = FARFETCHD,6
-Pokemon = PURRLOIN,7
+Pokemon = FARFETCHD,5
+Pokemon = PURRLOIN,6
 #-------------------------------
 [KENSHI_F,Akeno]
 LoseText = "Whaaa! Now I'm seeing red!"
-Pokemon = FOMANTIS,9
-Pokemon = BUNEARY,9
-Pokemon = PANCHAM,10
+Pokemon = FOMANTIS,8
+Pokemon = BUNEARY,8
+Pokemon = PANCHAM,9
+#-------------------------------
+[AKUICLAN_M,Taki]
+LoseText = "Hmph. You can't the stop the great Akui Clan!"
+Pokemon = POOCHYENA,7
+    Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Kumiko]
+LoseText = "Tch. The boss isn't gonna be pleased with this."
+Pokemon = TOXEL,8
+Pokemon = NICKIT,8
+    Shadow = yes

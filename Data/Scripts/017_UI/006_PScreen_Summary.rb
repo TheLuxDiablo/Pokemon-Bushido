@@ -811,6 +811,7 @@ class PokemonSummary_Scene
     end
   end
 
+=begin
   def drawPageFive
     overlay = @sprites["overlay"].bitmap
     @sprites["uparrow"].visible   = false
@@ -838,6 +839,85 @@ class PokemonSummary_Scene
     # Draw all images
     pbDrawImagePositions(overlay,imagepos)
   end
+=end
+
+def drawPageFive
+   overlay = @sprites["overlay"].bitmap
+   overlay.clear
+    base   = Color.new(248,248,248)
+    shadow = Color.new(104,104,104)
+    @sprites["background"].setBitmap("Graphics/Pictures/Summary/bg_5")
+    imagepos=[]
+    if @pokemon.pokerusStage==1 || @pokemon.hp==0 || @pokemon.status>0
+      status=6 if @pokemon.pokerusStage==1
+      status=@pokemon.status-1 if @pokemon.status>0
+      status=5 if @pokemon.hp==0
+      imagepos.push(["Graphics/Pictures/statuses",124,100,0,16*status,44,16])
+    end
+    if @pokemon.isShiny?
+      imagepos.push([sprintf("Graphics/Pictures/shiny"),2,134,0,0,-1,-1])
+    end
+    if @pokemon.pokerusStage==2
+      imagepos.push([sprintf("Graphics/Pictures/summaryPokerus"),176,100,0,0,-1,-1])
+    end
+    # Show the Poké Ball containing the Pokémon
+    ballimage = sprintf("Graphics/Pictures/Summary/icon_ball_%02d",@pokemon.ballused)
+    imagepos.push([ballimage,14,60])
+    pbDrawImagePositions(overlay,imagepos)
+    statshadows = []
+    for i in 0...5; statshadows[i] = shadow; end
+    if !(@pokemon.isShadow? && @pokemon.heartStage<=3 rescue false)
+      natup = (@pokemon.nature/5).floor
+      natdn = (@pokemon.nature%5).floor
+      statshadows[natup] = Color.new(200,96,72) if natup!=natdn
+      statshadows[natdn] = Color.new(64,120,200) if natup!=natdn
+    end
+    textColumn=300
+    evColumn=390
+    ivColumn=455
+    abilitydesc=pbGetMessage(MessageTypes::AbilityDescs,@pokemon.ability)
+    textpos = [
+       [_INTL("EV/IV"),26,16,0,base,shadow],
+       [@pokemon.name,46,62,0,base,shadow],
+       [@pokemon.level.to_s,46,92,0,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Item"),66,318,0,base,shadow],
+       [_INTL("EV"),evColumn,60,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("IV"),ivColumn,60,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("HP"),textColumn,90,2,base,shadow],
+       [sprintf("%d",@pokemon.ev[0]),evColumn,90,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[0]),ivColumn,90,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Attack"),textColumn,122,2,base,statshadows[0]],
+       [sprintf("%d",@pokemon.ev[1]),evColumn,122,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[1]),ivColumn,122,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Defense"),textColumn,154,2,base,statshadows[1]],
+       [sprintf("%d",@pokemon.ev[2]),evColumn,154,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[2]),ivColumn,154,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Speed"),textColumn,186,2,base,statshadows[3]],
+       [sprintf("%d",@pokemon.ev[3]),evColumn,186,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[3]),ivColumn,186,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Sp. Atk"),textColumn,218,2,base,statshadows[4]],
+       [sprintf("%d",@pokemon.ev[4]),evColumn,218,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[4]),ivColumn,218,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Sp. Def"),textColumn,250,2,base,statshadows[2]],
+       [sprintf("%d",@pokemon.ev[5]),evColumn,250,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[5]),ivColumn,250,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Ability"),224,284,0,base,shadow],
+       [PBAbilities.getName(@pokemon.ability),362,284,0,Color.new(64,64,64),Color.new(176,176,176)],
+    ]
+    if @pokemon.hasItem?
+      textpos.push([PBItems.getName(@pokemon.item),16,352,0,Color.new(64,64,64),Color.new(176,176,176)])
+    else
+      textpos.push([_INTL("None"),16,352,0,Color.new(192,200,208),Color.new(208,216,224)])
+    end
+    if @pokemon.isMale?
+      textpos.push([_INTL("♂"),178,62,0,Color.new(24,112,216),Color.new(136,168,208)])
+    elsif @pokemon.isFemale?
+      textpos.push([_INTL("♀"),178,62,0,Color.new(248,56,32),Color.new(224,152,144)])
+    end
+    pbDrawTextPositions(overlay,textpos)
+    drawTextEx(overlay,224,316,282,2,abilitydesc,Color.new(64,64,64),Color.new(176,176,176))
+    drawMarkings(overlay,84,292)
+   end
 
   def drawSelectedRibbon(ribbonid)
     # Draw all of page five

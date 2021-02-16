@@ -49,7 +49,8 @@ class Sprite_ShadowOverworld
     end
     if nil_or_empty?(event.character_name) || event.character_name == "nil" ||
     (PBTerrain.isGrass?(pbGetTerrainTag(event)) || PBTerrain.hasReflections?(pbGetTerrainTag(event)) ||
-     PBTerrain.isSurfable?(pbGetTerrainTag(event)) || PBTerrain.isIce?(pbGetTerrainTag(event))) ||
+     PBTerrain.isSurfable?(pbGetTerrainTag(event)) || PBTerrain.isIce?(pbGetTerrainTag(event)) || 
+     PBTerrain.isHotSpring?(pbGetTerrainTag(event))) ||
      event.transparent || remove
       # Just-in-time disposal of sprite
       if @sprite; @sprite.dispose; @sprite = nil; end; return

@@ -319,7 +319,7 @@ class PokeBattle_Battle
   #=============================================================================
   # Called at the start of battle only.
   def pbOnActiveAll
-    # Neutralizing Gas activates before anything. 
+    # Neutralizing Gas activates before anything.
 	pbPriorityNeutralizingGas
     # Weather-inducing abilities, Trace, Imposter, etc.
     pbCalculatePriority(true)
@@ -328,19 +328,19 @@ class PokeBattle_Battle
     # Check forms are correct
     eachBattler { |b| b.pbCheckForm }
   end
-  
-  # Called at the start of battle only; Neutralizing Gas activates before anything. 
+
+  # Called at the start of battle only; Neutralizing Gas activates before anything.
   def pbPriorityNeutralizingGas
     eachBattler {|b|
       next if !b || b.fainted?
       # neutralizing gas can be blocked with gastro acid, ending the effect.
       if isConst?(b.ability,PBAbilities,:NEUTRALIZINGGAS) && !b.effects[PBEffects::GastroAcid]
         BattleHandlers.triggerAbilityOnSwitchIn(:NEUTRALIZINGGAS,b,self)
-		return 
+		return
       end
     }
   end
-  
+
   # Called when a Pokémon switches in + after using Ally Switch (Gen 8 mechanics)
   def pbActivateHealingWish(battler)
 	return if !battler.canTakeHealingWish?
@@ -361,16 +361,20 @@ class PokeBattle_Battle
       battler.eachMove { |m| m.pp = m.totalpp }
       @positions[battler.index].effects[PBEffects::LunarDance] = false
     end
-  end 
-  
-  
+  end
+
+
   # Called when a Pokémon switches in (entry effects, entry hazards).
   def pbOnActiveOne(battler)
     return false if battler.fainted?
     # Introduce Shadow Pokémon
     if battler.opposes? && battler.shadowPokemon?
       pbCommonAnimation("Shadow",battler)
-      pbDisplay(_INTL("Oh!\nA Shadow Pokémon!"))
+      if $game_switches[62]
+        pbDisplay(_INTL("A Shadow Pokémon!\nThe Katana of Light is reacting to it!"))
+      else
+        pbDisplay(_INTL("It's a strange Pokémon enveloped in darkness!"))
+      end
     end
     # Record money-doubling effect of Amulet Coin/Luck Incense
     if !battler.opposes? && (isConst?(battler.item,PBItems,:AMULETCOIN) ||
@@ -430,7 +434,7 @@ class PokeBattle_Battle
        !battler.airborne? && !battler.hasActiveItem?(:HEAVYDUTYBOOTS)
       pbDisplay(_INTL("{1} was caught in a sticky web!",battler.pbThis))
       if battler.pbCanLowerStatStage?(PBStats::SPEED)
-	    stickyuser = (battler.pbOwnSide.effects[PBEffects::StickyWebUser] > -1 ? 
+	    stickyuser = (battler.pbOwnSide.effects[PBEffects::StickyWebUser] > -1 ?
 		  battlers[battler.pbOwnSide.effects[PBEffects::StickyWebUser]] : nil)
         battler.pbLowerStatStage(PBStats::SPEED,1,stickyuser)
         battler.pbItemStatRestoreCheck
