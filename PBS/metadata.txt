@@ -1,15 +1,15 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 [000]
-TrainerVictoryME = HGSSBattleVictoryTrainer.ogg
-WildVictoryME = HGSSBattleVictoryWild.ogg
-TrainerBattleBGM = Conquest-BattleFighting.ogg
+WildBattleBGM = Conquest-BattleNormal.ogg
+TrainerBattleBGM = Conquest-BattleFighting-FasterVersion.ogg
+BicycleBGM = HGSS-155-Bike.ogg
+SurfBGM = HGSS-170-Surf.ogg
 PlayerB = POKEMONTRAINER_PLAYERF,trchar001,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,girl_fish_offset
 PlayerA = POKEMONTRAINER_PLAYERM,trchar000,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,boy_fish_offset
-BicycleBGM = HGSS-155-Bike.ogg
+WildVictoryME = HGSSBattleVictoryWild.ogg
 Home = 3,7,5,8
-SurfBGM = HGSS-170-Surf.ogg
-WildBattleBGM = Conquest-BattleNormal.ogg
+TrainerVictoryME = HGSSBattleVictoryTrainer.ogg
 #-------------------------------
 [001]
 # Intro
@@ -18,8 +18,8 @@ WildBattleBGM = Conquest-BattleNormal.ogg
 # Lappet Town
 Outdoor = true
 MapPosition = 0,13,12
-BattleBack = field
 ShowArea = true
+BattleBack = field
 #-------------------------------
 [003]
 # \PN's house
@@ -35,8 +35,8 @@ ShowArea = false
 # Route 1
 Outdoor = true
 MapPosition = 0,13,11
-BattleBack = field
 ShowArea = true
+BattleBack = field
 #-------------------------------
 [006]
 # Kurt's house
@@ -45,8 +45,8 @@ MapPosition = 0,13,11
 [007]
 # Cedolan City
 Outdoor = true
-MapSize = 2,11
 MapPosition = 0,13,10
+MapSize = 2,11
 ShowArea = true
 #-------------------------------
 [008]
@@ -106,12 +106,12 @@ MapPosition = 0,13,10
 #-------------------------------
 [021]
 # Route 2
-Outdoor = true
-MapSize = 1,11
-MapPosition = 0,14,8
-BattleBack = field
-ShowArea = true
 Weather = Rain,100
+Outdoor = true
+MapPosition = 0,14,8
+MapSize = 1,11
+ShowArea = true
+BattleBack = field
 #-------------------------------
 [023]
 # Lerucean Town
@@ -140,13 +140,13 @@ MapPosition = 0,15,8
 # Natural Park
 Outdoor = true
 MapPosition = 0,16,8
-BattleBack = field
 ShowArea = true
+BattleBack = field
 #-------------------------------
 [029]
 # Natural Park Entrance
-Bicycle = true
 MapPosition = 0,16,8
+Bicycle = true
 #-------------------------------
 [030]
 # Natural Park Pavillion
@@ -155,16 +155,16 @@ MapPosition = 0,16,8
 [031]
 # Route 3
 Outdoor = true
-MapSize = 2,1101
 MapPosition = 0,14,6
-BattleBack = field
+MapSize = 2,1101
 ShowArea = true
+BattleBack = field
 #-------------------------------
 [034]
 # Ice Cave
 Environment = Cave
-Bicycle = true
 MapPosition = 0,15,6
+Bicycle = true
 BattleBack = cave1
 #-------------------------------
 [035]
@@ -190,55 +190,55 @@ MapPosition = 0,13,6
 [039]
 # Route 4
 Outdoor = true
-MapSize = 2,11
 MapPosition = 0,11,6
-BattleBack = field
+MapSize = 2,11
 ShowArea = true
+BattleBack = field
 #-------------------------------
 [040]
 # Route 4
 Outdoor = true
 MapPosition = 0,11,6
-ShowArea = true
 BicycleAlways = true
+ShowArea = true
 #-------------------------------
 [041]
 # Route 5
 Outdoor = true
-MapSize = 1,111
 MapPosition = 0,11,7
-ShowArea = true
+MapSize = 1,111
 BicycleAlways = true
+ShowArea = true
 #-------------------------------
 [044]
 # Route 6
 Outdoor = true
-MapSize = 2,11
 MapPosition = 0,11,10
-BattleBack = field
+MapSize = 2,11
 ShowArea = true
+BattleBack = field
 #-------------------------------
 [045]
 # Route 6
 Outdoor = true
 MapPosition = 0,11,10
-ShowArea = true
 BicycleAlways = true
+ShowArea = true
 #-------------------------------
 [046]
 # Cycling Road gate
-Bicycle = true
 MapPosition = 0,12,6
+Bicycle = true
 #-------------------------------
 [047]
 # Route 7
-Environment = Rock
-Outdoor = true
-MapSize = 2,11
-MapPosition = 0,15,10
-BattleBack = rocky
-ShowArea = true
 Weather = Rain,0
+Outdoor = true
+Environment = Rock
+MapPosition = 0,15,10
+MapSize = 2,11
+ShowArea = true
+BattleBack = rocky
 #-------------------------------
 [048]
 # CamTest
@@ -248,24 +248,24 @@ ShowArea = true
 [049]
 # Rock Cave
 Environment = Cave
-Bicycle = true
 MapPosition = 0,16,10
+Bicycle = true
 BattleBack = cave1
 #-------------------------------
 [050]
 # Rock Cave
 Environment = Cave
-Bicycle = true
-MapPosition = 0,16,10
-BattleBack = cave3
 DarkMap = true
+MapPosition = 0,16,10
+Bicycle = true
+BattleBack = cave3
 #-------------------------------
 [051]
 # Dungeon
 Environment = Cave
+MapPosition = 0,16,10
 Dungeon = true
 Bicycle = true
-MapPosition = 0,16,10
 BattleBack = cave2
 #-------------------------------
 [052]
@@ -336,8 +336,8 @@ MapPosition = 0,17,10
 # Safari Zone
 Outdoor = true
 MapPosition = 0,12,12
-BattleBack = field
 ShowArea = true
+BattleBack = field
 #-------------------------------
 [067]
 # Safari Zone gate
@@ -345,20 +345,20 @@ MapPosition = 0,12,12
 #-------------------------------
 [068]
 # Safari Zone
-Environment = Forest
 Outdoor = true
-MapPosition = 0,12,12
-BattleBack = forest
-ShowArea = true
 SafariMap = true
+Environment = Forest
+MapPosition = 0,12,12
+ShowArea = true
+BattleBack = forest
 #-------------------------------
 [069]
 # Route 8
 Outdoor = true
-MapPosition = 0,13,13
-BattleBack = field
-ShowArea = true
 DiveMap = 70
+MapPosition = 0,13,13
+ShowArea = true
+BattleBack = field
 #-------------------------------
 [070]
 # Underwater
@@ -372,23 +372,23 @@ MapPosition = 0,13,13
 #-------------------------------
 [072]
 # Berth Island
+Weather = Storm,50
 Outdoor = true
 MapPosition = 0,18,17
-BattleBack = field
 ShowArea = true
-Weather = Storm,50
+BattleBack = field
 #-------------------------------
 [073]
 # Faraday Island
 Outdoor = true
 MapPosition = 0,22,16
-BattleBack = field
 ShowArea = true
+BattleBack = field
 #-------------------------------
 [074]
 # Cycling Road gate
-Bicycle = true
 MapPosition = 0,12,10
+Bicycle = true
 #-------------------------------
 [075]
 # Tiall Region
@@ -409,23 +409,31 @@ ShowArea = true
 [079]
 # Ezo Village
 Outdoor = true
-BattleBack = FRLGGrass
+MapPosition = 2,19,10
 ShowArea = true
+BattleBack = FRLGGrass
 #-------------------------------
 [081]
 # Nagisa Bay
 Outdoor = true
+MapPosition = 2,20,11
 ShowArea = true
 BattleBack = Beach
 #-------------------------------
 [082]
 # Sakura Pass
 Outdoor = true
-BattleBack = Sakura
+MapPosition = 2,17,10
 ShowArea = true
+BattleBack = Sakura
+#-------------------------------
+[083]
+# Ezo Village
+MapPosition = 2,19,10
 #-------------------------------
 [084]
 # Jikan Shrine
 Outdoor = true
+MapPosition = 2,17,9
 ShowArea = true
 BattleBack = Waterfall

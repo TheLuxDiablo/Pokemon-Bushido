@@ -44,6 +44,7 @@ add placeholder kenshi with MBD to sakura pass
 - reborn animations
 - make shadow meter show in battle instead of XP when shadow
 	- Can also add shadow icon for battlers when doing this... or shadow HP bars????
+- name location signposts from splice
 
 
 

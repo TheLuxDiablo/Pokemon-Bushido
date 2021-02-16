@@ -155,3 +155,19 @@ Pokemon = PIPLUP,5
 [KOMOREI_F,Gruntc]
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = SNIVY,5
+#-------------------------------
+[KENSHI_F,Saki]
+LoseText = "You fight with great honor. Well done!"
+Pokemon = CHERUBI,5
+Pokemon = SNIVY,6
+#-------------------------------
+[KENSHI_M,Tojiro]
+LoseText = "Impressive! You're quite a strong Kenshi!"
+Pokemon = FARFETCHD,6
+Pokemon = PURRLOIN,7
+#-------------------------------
+[KENSHI_F,Akeno]
+LoseText = "Whaaa! Now I'm seeing red!"
+Pokemon = FOMANTIS,9
+Pokemon = BUNEARY,9
+Pokemon = PANCHAM,10
