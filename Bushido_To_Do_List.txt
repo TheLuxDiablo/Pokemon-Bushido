@@ -58,7 +58,7 @@ Things I wanna do tonight:
 		- Form 4 = water walking technique, can now run on water
 		- Form 5 = light blade!!!! Final form!!! Can purify on the go, illuminate caves, and banish fog!	
 - Add samurai vs kenshi distinction in the Sukiro quizzes
-
+- OPTIONS SCREEN CRASHES
 
 
 - Go through dialogue doc  for storyboard ideas
