@@ -59,7 +59,7 @@ Things I wanna do tonight:
 		- Form 5 = light blade!!!! Final form!!! Can purify on the go, illuminate caves, and banish fog!	
 - Add samurai vs kenshi distinction in the Sukiro quizzes
 - OPTIONS SCREEN CRASHES
-
+- UPDATE SUKIRO QUIZ QUESTIONS A LITTLE
 
 - Go through dialogue doc  for storyboard ideas
 
@@ -69,6 +69,8 @@ Things done:
 2/16/21
 update interior tileset
 Make dojo
+started intro
+worked on hotsprings healing
 
 2/15/21
 - Add katana of light as a vial and recharge it at shrines or hot springs

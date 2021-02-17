@@ -826,3 +826,8 @@
 799,KATANALIGHT4,Katana of Light,Katanas of Light,8,0,"The Katana of Light. Using Water Weave, it allows the user to swim with ease.",2,0,6,
 800,KATANALIGHT5,Katana of Light,Katanas of Light,8,0,"The true Katana of Light. It can banish the darkness and open the hearts of Pokémon.",2,0,6,
 801,KATANADARK,Katana of Shadows,Katanas of Shadows,8,0,"The ancient Katana of Shadows. It can close the hearts of Pokémon to darkness.",2,0,6,
+802,KATANABASIC,Ancient Katana,Ancient Katanas,8,0,"An old katana, that was handed down by the Royal Samurai Ryo.",2,0,6,
+803,SUKIROLETTER,Sukiro's Letter,Sukiro's Letters,8,0,"A letter from Sensei Sukiro, granting you a recommendation to the Kenshi Tournament.",0,0,6,
+804,KOMOREILEAF,Komorei Leaf,Komorei Leaves,8,0,"Leaves that fall around the Komorei Clan. Collect these to earn their trust.",0,0,6,
+805,NENSHOLEAF,Nensho Leaf,Nensho Leaves,8,0,"Leaves that fall around the Nensho Clan. Collect these to earn their trust.",0,0,6,
+806,SHIMIZULEAF,Shimizu Leaf,Shimizu Leaves,8,0,"Leaves that fall around the Shimizu Clan. Collect these to earn their trust.",0,0,6,

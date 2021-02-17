@@ -1569,9 +1569,13 @@ def pbReceiveItem(item,quantity=1)
   return false if !item || item<=0 || quantity<1
   itemname = (quantity>1) ? PBItems.getNamePlural(item) : PBItems.getName(item)
   pocket = pbGetPocket(item)
-  meName = (pbIsKeyItem?(item)) ? "Key item get" : "Item get"
+  meName = (pbIsKeyItem?(item)) ? "placeholder" : "Item get"
   if isConst?(item,PBItems,:LEFTOVERS)
     pbMessage(_INTL("\\me[{1}]You obtained some \\c[1]{2}\\c[0]!\\wtnp[30]",meName,itemname))
+  elsif isConst?(item,PBItems,:KATANABASIC)
+    pbMessage(_INTL("You obtained the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+  elsif isConst?(item,PBItems,:SUKIROLETTER)
+    pbMessage(_INTL("You obtained \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
   elsif isConst?(item,PBItems,:KATANALIGHT)
     pbMessage(_INTL("You obtained the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
     pbMessage(_INTL("In its weakest form, the \\c[1]{1}\\c[0] can heal Pokémon and show an overview of the Aisho Region.",itemname))
@@ -1599,8 +1603,13 @@ def pbReceiveItem(item,quantity=1)
     pbMessage(_INTL("\\me[{1}]You obtained a \\c[1]{2}\\c[0]!\\wtnp[30]",meName,itemname))
   end
   if $PokemonBag.pbStoreItem(item,quantity)   # If item can be added
-    pbMessage(_INTL("You put the {1} away\\nin the <icon=bagPocket{2}>\\c[1]{3} Pocket\\c[0].",
-       itemname,pocket,PokemonBag.pocketNames()[pocket]))
+    if pbIsKeyItem?(item)
+      pbMessage(_INTL("You put {1} away\\nin the <icon=bagPocket{2}>\\c[1]{3} Pocket\\c[0].",
+         itemname,pocket,PokemonBag.pocketNames()[pocket]))
+    else
+      pbMessage(_INTL("You put the {1} away\\nin the <icon=bagPocket{2}>\\c[1]{3} Pocket\\c[0].",
+         itemname,pocket,PokemonBag.pocketNames()[pocket]))
+    end
     return true
   end
   return false   # Can't add the item

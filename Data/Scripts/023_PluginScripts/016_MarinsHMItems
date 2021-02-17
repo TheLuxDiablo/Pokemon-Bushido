@@ -30,7 +30,7 @@ FLY_ITEM = :KATANALIGHT3
 STRENGTH_ITEM = :STRENGTHITEM
 
 # The internal name of the item that will trigger Cut
-CUT_ITEM = :KATANALIGHT3
+CUT_ITEM = :KATANABASIC
 
 # The internal name of the item that will trigger Flash
 FLASH_ITEM = :KATANALIGHT5
