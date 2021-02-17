@@ -61,10 +61,15 @@ Things I wanna do tonight:
 
 
 
-- play voltseons game
+- Go through dialogue doc  for storyboard ideas
 
 
 Things done:
+
+2/16/21
+update interior tileset
+Make dojo
+
 2/15/21
 - Add katana of light as a vial and recharge it at shrines or hot springs
 - add placeholder kenshi with MBD to sakura pass
