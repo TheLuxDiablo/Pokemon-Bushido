@@ -831,3 +831,7 @@
 804,KOMOREILEAF,Komorei Leaf,Komorei Leaves,8,0,"Leaves that fall around the Komorei Clan. Collect these to earn their trust.",0,0,6,
 805,NENSHOLEAF,Nensho Leaf,Nensho Leaves,8,0,"Leaves that fall around the Nensho Clan. Collect these to earn their trust.",0,0,6,
 806,SHIMIZULEAF,Shimizu Leaf,Shimizu Leaves,8,0,"Leaves that fall around the Shimizu Clan. Collect these to earn their trust.",0,0,6,
+807,JOYSCENT,Joy Scent,Joy Scents,2,200,"A scent that slightly pleases Pokémon. Opens the hearts of Shadow Pokémon a little.",1,1,0,
+808,EXCITESCENT,Excite Scent,Excite Scents,2,200,"A scent that pleases Pokémon. Opens the hearts of Shadow Pokémon a bit.",1,1,0,
+809,VIVIDSCENT,Vivid Scent,Vivid Scents,2,200,"A scent that greatly pleases Pokémon. Opens the hearts of Shadow Pokémon a lot.",1,1,0,
+810,TIMEFLUTE,Time Flute,Time Flutes,2,200,"A mystical flute that can completely open the heart of a Shadow Pokémon.",1,1,0,

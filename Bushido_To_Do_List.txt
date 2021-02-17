@@ -41,8 +41,6 @@ Things I wanna do tonight:
 - make shadow meter show in battle instead of XP when shadow
 	- Can also add shadow icon for battlers when doing this... or shadow HP bars????
 	- Make our EXP bar show shadow meter when we're shadow
-- Add Hot Springs tiles and make layout
-- add hot springs healing events
 - compile the RGSS tileset info or something to make it load our tileset data better, like what goli sent
 - update naming screen
 - update battle ui text colors
@@ -59,12 +57,17 @@ Things I wanna do tonight:
 		- Form 5 = light blade!!!! Final form!!! Can purify on the go, illuminate caves, and banish fog!	
 - Add samurai vs kenshi distinction in the Sukiro quizzes
 - OPTIONS SCREEN CRASHES
+- add leaf collection at towns
 - UPDATE SUKIRO QUIZ QUESTIONS A LITTLE
+
 
 - Go through dialogue doc  for storyboard ideas
 
 
 Things done:
+
+2/17
+
 
 2/16/21
 update interior tileset

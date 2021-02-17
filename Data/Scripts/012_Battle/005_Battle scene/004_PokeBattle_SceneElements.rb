@@ -12,8 +12,10 @@ class PokemonDataBox < SpriteWrapper
   # Maximum time in seconds to make a change to the HP bar.
   HP_BAR_CHANGE_TIME = 1.0
   STATUS_ICON_HEIGHT = 16
-  NAME_BASE_COLOR         = Color.new(72,72,72)
-  NAME_SHADOW_COLOR       = Color.new(184,184,184)
+  #NAME_BASE_COLOR         = Color.new(72,72,72)
+  #NAME_SHADOW_COLOR       = Color.new(184,184,184)
+  NAME_BASE_COLOR         = Color.new(255,255,255)
+  NAME_SHADOW_COLOR       = Color.new(100,100,100)
   MALE_BASE_COLOR         = Color.new(48,96,216)
   MALE_SHADOW_COLOR       = NAME_SHADOW_COLOR
   FEMALE_BASE_COLOR       = Color.new(248,88,40)
@@ -162,7 +164,11 @@ class PokemonDataBox < SpriteWrapper
   end
 
   def expFraction
-    return (@animatingExp) ? @currentExp.to_f/@rangeExp : @battler.pokemon.expFraction
+    if @battler.isShadow?
+      return (@animatingExp) ? @battler.pokemon.heartgauge*1.0/3840 : @battler.pokemon.heartgauge*1.0/3840
+    else
+      return (@animatingExp) ? @currentExp.to_f/@rangeExp : @battler.pokemon.expFraction
+    end
   end
 
   def animateHP(oldHP,newHP,rangeHP)
@@ -288,6 +294,9 @@ class PokemonDataBox < SpriteWrapper
     #       fit in with the rest of the graphics which are doubled in size.
     w = ((w/2).round)*2
     @expBar.src_rect.width = w
+    xpColor = 0                       # Blue bar
+    xpColor = 1 if @battler.pokemon.isShadow?     # Purple bar
+    @expBar.src_rect.y = xpColor*@expBarBitmap.height/2
   end
 
   def updateHPAnimation
@@ -348,6 +357,7 @@ class PokemonDataBox < SpriteWrapper
     self.x = @spriteX
     self.y = @spriteY
     # Data box bobbing while Pokémon is selected
+    refreshExp
     if @selected==1 || @selected==2   # Choosing commands/targeted or damaged
       case (frameCounter/QUARTER_ANIM_PERIOD).floor
       when 1; self.y = @spriteY-2
