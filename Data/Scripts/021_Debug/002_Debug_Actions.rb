@@ -633,7 +633,7 @@ class PokemonDataWrapper
     @file     = file
     if pbRgssExists?(@savefile)
       @ts = load_data(@savefile)
-      if !@ts.changed? || prompt.call==true
+      if (!@ts.changed? && !mkxp?) || prompt.call==true
         @data = Marshal.load(StringInput.new(@ts.data))
       else
         @ts = PokemonDataCopy.new(@file,@savefile)
