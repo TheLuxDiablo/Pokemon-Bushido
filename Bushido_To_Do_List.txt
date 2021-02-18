@@ -38,10 +38,7 @@ Things I wanna do tonight:
 - Shadow nickit and shadow poochyena
 - add fat npc guy who likes technology variation to look like blacksmit headband
 - reborn animations!?
-- make shadow meter show in battle instead of XP when shadow
-	- Can also add shadow icon for battlers when doing this... or shadow HP bars????
-	- Make our EXP bar show shadow meter when we're shadow
-- compile the RGSS tileset info or something to make it load our tileset data better, like what goli sent
+
 - update naming screen
 - update battle ui text colors
 - katana revision notes
@@ -74,6 +71,7 @@ update interior tileset
 Make dojo
 started intro
 worked on hotsprings healing
+Make our EXP bar show shadow meter when we're shadow
 
 2/15/21
 - Add katana of light as a vial and recharge it at shrines or hot springs
