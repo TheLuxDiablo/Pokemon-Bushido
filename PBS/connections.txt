@@ -46,7 +46,11 @@
 32,West,0,76,East,3
 # Ezo Village (79) - Sakura Pass (82)
 79,West,0,82,East,11
+# Shizen Trail (90) - Sakura Pass (82)
+90,East,0,82,West,50
 # Hagane City (85) - Sakura Pass (82)
 85,East,4,82,West,0
 # Nagisa Bay (81) - Ezo Village (79)
 81,West,0,79,East,6
+# Hagane City (85) - Shizen Trail (90)
+85,South,0,90,North,0
