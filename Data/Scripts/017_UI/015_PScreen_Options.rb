@@ -14,7 +14,7 @@ class PokemonSystem
   attr_writer   :textinput
 
   def initialize
-    @textspeed   = 1     # Text speed (0=slow, 1=normal, 2=fast)
+    @textspeed   = 2     # Text speed (0=slow, 1=normal, 2=fast)
     @battlescene = 0     # Battle effects (animations) (0=on, 1=off)
     @battlestyle = 0     # Battle style (0=switch, 1=set)
     @frame       = 0     # Default window frame (see also $TextFrames)
@@ -27,10 +27,10 @@ class PokemonSystem
     end
     @border      = 0     # Screen border (0=off, 1=on)
     @language    = 0     # Language (see also LANGUAGES in script PokemonSystem)
-    @runstyle    = 0     # Run key functionality (0=hold to run, 1=toggle auto-run)
+    @runstyle    = 1     # Run key functionality (0=hold to run, 1=toggle auto-run)
     @bgmvolume   = 100   # Volume of background music and ME
     @sevolume    = 100   # Volume of sound effects
-    @textinput   = 0     # Text input mode (0=cursor, 1=keyboard)
+    @textinput   = 1     # Text input mode (0=cursor, 1=keyboard)
   end
 
   def textskin;  return @textskin || 0;    end
