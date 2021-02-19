@@ -474,7 +474,7 @@ module DialogueModule
                     pbMessage("Question time, \\PN!")
                     # Choice Box Stuff
                     cmd=0
-                    cmd= pbMessage("What is a Samurai's most important moral code?",["The Code of Honor","The Code of Power","The Code of Intelligence"],0,nil,0)
+                    cmd= pbMessage("What is a Kenshi's most important moral code?",["The Code of Honor","The Code of Power","The Code of Intelligence"],0,nil,0)
                     if cmd == 0
                       pbMessage("\\se[SwShCorrect]As expected of my student! Brilliant!")
                       battle.scene.pbHideOpponent
@@ -482,7 +482,7 @@ module DialogueModule
                       battle.battlers[0].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[0])
                     else
                       pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
-                      pbMessage("The correct answer is the \"Code of Honor,\" which all Samurai are expected to follow.")
+                      pbMessage("The correct answer is the \"Code of Honor,\" which all Kenshi are expected to follow.")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
                       battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
@@ -494,14 +494,17 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Prepare yourself for another question \\PN!")
                     cmd=0
-                    cmd= pbMessage("What is a Samurai's main weapon?",["Spear","Axe","Katana"],0,nil,0)
-                    if cmd == 2
+                    cmd= pbMessage("What is a Kenshi's source of power?",["Spear","Pokémon","Katana"],0,nil,0)
+                    if cmd == 1
                       pbMessage("\\se[SwShCorrect]Well done! You have been paying attention!")
+                      pbMessage("A Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
                       battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[0])
                     else
                       pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
+                      pbMessage("While Katanas and Spears are effective weapons in their own right...")
+                      pbMessage("A Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
                       battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[0])

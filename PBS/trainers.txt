@@ -142,7 +142,8 @@ Pokemon = DARUMAKA,5
 LoseText = "Well done! You are an excellent student."
 Pokemon = ROCKRUFF,15
 Pokemon = SLUGMA,15
-Pokemon = FARFETCHD_1,15
+Pokemon = FARFETCHD,15
+    Form = 1
 #-------------------------------
 [NENSHO_M,Grunta]
 LoseText = "What! There's no way someone like you could beat me!"

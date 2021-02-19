@@ -4,16 +4,16 @@ class PokeBattle_Scene
   # Return values: -1=Cancel, 0=Fight, 1=Bag, 2=Pokémon, 3=Run, 4=Call
   #=============================================================================
   def pbCommandMenu(idxBattler,firstAction)
-    shadowTrainer = (hasConst?(PBTypes,:SHADOW) && @battle.trainerBattle?)
+    shadowTrainer = (@battle.battlers[idxBattler].shadowPokemon? && @battle.trainerBattle?)
     cmds = [
        _INTL("What will\n{1} do?",@battle.battlers[idxBattler].name),
        _INTL("Fight"),
        _INTL("Bag"),
        _INTL("Pokémon"),
-       (shadowTrainer) ? _INTL("Call") : (firstAction) ? _INTL("Run") : _INTL("Cancel")
+       (@battle.battlers[idxBattler].shadowPokemon?) ? _INTL("Call") : (firstAction) ? _INTL("Run") : _INTL("Cancel")
     ]
     ret = pbCommandMenuEx(idxBattler,cmds,(shadowTrainer) ? 2 : (firstAction) ? 0 : 1)
-    ret = 4 if ret==3 && shadowTrainer   # Convert "Run" to "Call"
+    ret = 4 if ret==3 && shadowTrainer  # Convert "Run" to "Call"
     ret = -1 if ret==3 && !firstAction   # Convert "Run" to "Cancel"
     return ret
   end

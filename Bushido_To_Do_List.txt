@@ -52,9 +52,23 @@ Things I wanna do tonight:
 - OPTIONS SCREEN CRASHES
 - add leaf collection at towns
 - UPDATE SUKIRO QUIZ QUESTIONS A LITTLE
+- add more battlebgs
 
 - Go through dialogue doc  for storyboard ideas
 - add gen 4 ows to credits
+
+
+intro notes-----------------------------------------------------
+there's an extra linebreak in first line of dialogue "clans that protect us"
+- colored text for the clan intros??
+another extra linebreak in the Ryo Masayoshi line
+extra space in front of first name
+- akane emotes, wait a little longer
+- add dojo battle background
+- make player not turn left
+- Change mentions of Samurai to Kenshi in the sensei quiz
+- make "Call" command not appear if our battler is not shadow
+- galarian farfetch'd
 
 
 make the pokedex

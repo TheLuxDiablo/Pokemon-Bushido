@@ -11,8 +11,8 @@ class BattleIntroAnimation < PokeBattle_Animation
     appearTime = 20   # This is in 1/20 seconds
     # Background
     if @sprites["battle_bg2"]
-      makeSlideSprite("battle_bg",0.5,appearTime)
-      makeSlideSprite("battle_bg2",0.5,appearTime)
+      makeSlideSprite("battle_bg",0.5,0)
+      makeSlideSprite("battle_bg2",0.5,0)
     end
     # Bases
     makeSlideSprite("base_0",1,appearTime,PictureOrigin::Bottom)
