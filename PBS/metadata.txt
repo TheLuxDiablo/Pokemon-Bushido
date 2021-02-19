@@ -437,7 +437,7 @@ MapPosition = 2,19,10
 ShowArea = true
 Outdoor = true
 MapPosition = 2,17,9
-BattleBack = Waterfall
+BattleBack = Lush
 #-------------------------------
 [085]
 # Hagane City
@@ -445,6 +445,7 @@ ShowArea = true
 Outdoor = true
 MapPosition = 2,15,10
 HealingSpot = 85,63,31
+BattleBack = Village
 #-------------------------------
 [086]
 # Hagane Springs
