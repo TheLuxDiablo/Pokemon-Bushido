@@ -34,13 +34,9 @@ Add menu screen script
 Things I wanna do tonight:
 - make our placeholder clan trainertypes (set up music and mid battle dialogue)
 - Follower Pokemon EX
-- start hagane city
 - Shadow nickit and shadow poochyena
 - add fat npc guy who likes technology variation to look like blacksmit headband
 - reborn animations!?
-
-- update naming screen
-- update battle ui text colors
 - katana revision notes
 	- add an unawakened katana version
 	- maybe separate fly and cut
@@ -57,14 +53,22 @@ Things I wanna do tonight:
 - add leaf collection at towns
 - UPDATE SUKIRO QUIZ QUESTIONS A LITTLE
 
-
 - Go through dialogue doc  for storyboard ideas
+- add gen 4 ows to credits
+
+
+make the pokedex
+decide on our dex for the region
+make all shadow pokemon and OWs
 
 
 Things done:
+2/18
+
 
 2/17
-
+Hagane City
+Intro and revisions
 
 2/16/21
 update interior tileset
@@ -72,6 +76,7 @@ Make dojo
 started intro
 worked on hotsprings healing
 Make our EXP bar show shadow meter when we're shadow
+
 
 2/15/21
 - Add katana of light as a vial and recharge it at shrines or hot springs
