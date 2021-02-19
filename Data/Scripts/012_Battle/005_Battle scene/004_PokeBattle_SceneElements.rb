@@ -92,6 +92,7 @@ class PokemonDataBox < SpriteWrapper
     # Create sprite wrapper that displays Exp bar
     @expBar = SpriteWrapper.new(viewport)
     @expBar.bitmap = @expBarBitmap.bitmap
+    @expBar.src_rect.height = @expBarBitmap.height/2
     @sprites["expBar"] = @expBar
     # Create sprite wrapper that displays everything except the above
     @contents = BitmapWrapper.new(@databoxBitmap.width,@databoxBitmap.height)
