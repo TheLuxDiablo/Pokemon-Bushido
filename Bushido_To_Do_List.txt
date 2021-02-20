@@ -67,6 +67,7 @@ make all shadow pokemon and OWs
 
 
 making the rest of the intro sequence!
+fix bug where intro hangs when going too fast
 
 
 Things done:
