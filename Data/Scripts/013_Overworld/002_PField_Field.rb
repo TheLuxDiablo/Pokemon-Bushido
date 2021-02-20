@@ -1593,6 +1593,9 @@ def pbReceiveItem(item,quantity=1)
     pbMessage(_INTL("You learned the final technique for the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
     pbMessage(_INTL("The Light Blade can open the hearts of Shadow Pokémon!"))
     pbMessage(_INTL("It can also illuminate dark maps, and banish the shadow fog in Nagisa Bay!"))
+  elsif isConst?(item,PBItems,:KOMOREILEAF) || isConst?(item,PBItems,:NENSHOLEAF) ||
+        isConst?(item,PBItems,:SHIMIZULEAF) || isConst?(item,PBItems,:MAPLELEAF)
+    pbMessage(_INTL("You found a \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
   elsif pbIsMachine?(item)   # TM or HM
     pbMessage(_INTL("\\me[{1}]You obtained \\c[1]{2} {3}\\c[0]!\\wtnp[30]",meName,itemname,PBMoves.getName(pbGetMachine(item))))
   elsif quantity>1

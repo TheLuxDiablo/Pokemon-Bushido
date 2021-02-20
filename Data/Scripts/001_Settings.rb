@@ -172,13 +172,13 @@ def pbPocketNames; return ["",
   _INTL("Poké Balls"),
   _INTL("TMs & HMs"),
   _INTL("Berries"),
-  _INTL("Cellulose"),
+  _INTL("Leaves"),
   _INTL("Battle Items"),
   _INTL("Key Items")
 ]; end
 BAG_MAX_POCKET_SIZE  = [0, -1, -1, -1, -1, -1, -1, -1, -1]
 BAG_MAX_PER_SLOT     = 999
-BAG_POCKET_AUTO_SORT = [0, false, false, false, true, true, false, false, false]
+BAG_POCKET_AUTO_SORT = [0, false, false, false, true, true, true, false, false]
 
 #===============================================================================
 # * A set of arrays each containing details of a graphic to be shown on the
