@@ -826,3 +826,25 @@ MultipleForms.register(:KOFFING,{
 })
 
 MultipleForms.copy(:KOFFING,:MIMEJR)
+
+MultipleForms.register(:SLOWPOKE,{
+  "getForm" => proc { |pkmn|
+    maps = [1]   # Map IDs
+    if maps.include?($game_map.map_id)
+      next 0
+    end
+    next 1
+  }
+})
+
+MultipleForms.copy(:SLOWPOKE,:SLOWBRO,:SLOWKING)
+
+MultipleForms.register(:FARFETCHD,{
+  "getForm" => proc { |pkmn|
+    maps = [1]   # Map IDs
+    if maps.include?($game_map.map_id)
+      next 0
+    end
+    next 1
+  }
+})

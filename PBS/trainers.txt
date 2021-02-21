@@ -181,5 +181,6 @@ Pokemon = POOCHYENA,7
 [AKUICLAN_F,Kumiko]
 LoseText = "Tch. The boss isn't gonna be pleased with this."
 Pokemon = TOXEL,8
+    Shadow = yes
 Pokemon = NICKIT,8
     Shadow = yes

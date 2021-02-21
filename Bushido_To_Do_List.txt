@@ -71,13 +71,9 @@ fix bug where intro hangs when going too fast
 
 
 set up komorei grunts with placeholder sprites for battles
-change studiousness to diligence
-animation and then talk about sculptor family
-make bars fade away when starters appear
-give aisho journal when sensei gives us potions
-use pokeball animations for darumaka appear and disappear
-make bars disappear at the end of the starter cinematic
-kenshi with a lowercase K in one part
+
+add sfx to ball anims
+add move route for follower turn up after get starter
 
 Things done:
 2/20
