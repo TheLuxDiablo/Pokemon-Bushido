@@ -308,7 +308,7 @@ class PokemonPokedexInfo_Scene
       end
     end
     if @brief
-      textpos.push([_INTL("Pokedex Registration Completed"),256,3,2,Color.new(248,248,248),Color.new(0,0,0)])
+      textpos.push([_INTL("Journal Registration Completed"),256,3,2,Color.new(248,248,248),Color.new(0,0,0)])
     end
     # Draw all text
     pbDrawTextPositions(@sprites["overlay"].bitmap,textpos)

@@ -70,8 +70,26 @@ making the rest of the intro sequence!
 fix bug where intro hangs when going too fast
 
 
+set up komorei grunts with placeholder sprites for battles
+change studiousness to diligence
+animation and then talk about sculptor family
+make bars fade away when starters appear
+give aisho journal when sensei gives us potions
+use pokeball animations for darumaka appear and disappear
+make bars disappear at the end of the starter cinematic
+kenshi with a lowercase K in one part
+
 Things done:
+2/20
+forest and tsuchi town and shrine
+komorei dojo
+pokedex
+
+2/19
+night off
+
 2/18
+a lot i think
 
 
 2/17

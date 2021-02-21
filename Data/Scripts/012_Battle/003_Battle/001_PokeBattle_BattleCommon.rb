@@ -47,7 +47,7 @@ module PokeBattle_BattleCommon
       if !pbPlayer.hasOwned?(pkmn.species)
         pbPlayer.setOwned(pkmn.species)
         if $Trainer.pokedex
-          pbDisplayPaused(_INTL("{1}'s data was added to the Pokédex.",pkmn.name))
+          pbDisplayPaused(_INTL("{1}'s data was added to the Aisho Journal.",pkmn.name))
           @scene.pbShowPokedex(pkmn.species)
         end
       end
