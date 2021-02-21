@@ -111,7 +111,7 @@ class PokemonPauseMenu
     cmdDebug    = -1
     cmdQuit     = -1
     cmdEndGame  = -1
-    commands[cmdPokedex = commands.length]  = _INTL("Pokédex") if $Trainer.pokedex && $PokemonGlobal.pokedexViable.length>0
+    commands[cmdPokedex = commands.length]  = _INTL("Journal") if $Trainer.pokedex && $PokemonGlobal.pokedexViable.length>0
     commands[cmdPokemon = commands.length]  = _INTL("Pokémon") if $Trainer.party.length>0
     commands[cmdBag = commands.length]      = _INTL("Bag") if !pbInBugContest?
     commands[cmdPokegear = commands.length] = _INTL("Pokégear") if $Trainer.pokegear

@@ -200,7 +200,7 @@ REGION_MAP_EXTRAS = [
 # * The number of boxes in Pokémon storage.
 #===============================================================================
 def pbStorageCreator
-  return _INTL("Theo")
+  return _INTL("Sukiro")
 end
 NUM_STORAGE_BOXES = 30
 
@@ -232,7 +232,7 @@ USE_CURRENT_REGION_DEX = false
 def pbDexNames; return [
   [_INTL("Kanto Pokédex"), 0],
   [_INTL("Johto Pokédex"), 1],
-  [_INTL("Stacona Pokédex"),2],
+  [_INTL("Aisho Journal"),2],
   _INTL("National Pokédex")
 ]; end
 DEX_SHOWS_ALL_FORMS = false

@@ -388,7 +388,7 @@ class PokemonPokedex_Scene
     iconspecies = @sprites["pokedex"].species
     iconspecies = 0 if !$Trainer.seen[iconspecies]
     # Write various bits of text
-    dexname = _INTL("Pokédex")
+    dexname = _INTL("Journal")
     if $PokemonGlobal.pokedexUnlocked.length>1
       thisdex = pbDexNames[pbGetSavePositionIndex]
       if thisdex!=nil

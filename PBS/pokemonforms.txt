@@ -9,8 +9,11 @@ HiddenAbility = THICKFAT
 Height = 2.4
 Weight = 155.5
 Pokedex = In order to support its flower, which has grown larger due to Mega Evolution, its back and legs have become stronger.
+BattlerPlayerX = 0
 BattlerPlayerY = 62
+BattlerEnemyX = 0
 BattlerEnemyY = 15
+BattlerShadowSize = 2
 #-------------------------------
 [CHARIZARD,1]
 FormName = Mega Charizard X
@@ -103,79 +106,119 @@ BattlerEnemyY = 25
 FormName = Cosplay Pikachu
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
+BattlerEnemyY = 30
 #-------------------------------
 [PIKACHU,4]
 FormName = Cosplay Pikachu - Belle
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
+BattlerEnemyY = 30
 #-------------------------------
 [PIKACHU,5]
 FormName = Cosplay Pikachu - Libre
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
+BattlerEnemyY = 30
 #-------------------------------
 [PIKACHU,6]
 FormName = Cosplay Pikachu - Ph.D.
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
+BattlerEnemyY = 30
 #-------------------------------
 [PIKACHU,7]
 FormName = Cosplay Pikachu - Pop Star
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
+BattlerEnemyY = 30
 #-------------------------------
 [PIKACHU,8]
 FormName = Cosplay Pikachu - Rock Star
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
+BattlerEnemyY = 30
 #-------------------------------
 [PIKACHU,9]
 FormName = Original Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through many different regions.
-BattlerEnemyY = 29
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
 #-------------------------------
 [PIKACHU,10]
 FormName = Hoenn Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Hoenn region.
-BattlerEnemyY = 29
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
 #-------------------------------
 [PIKACHU,11]
 FormName = Sinnoh Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Sinnoh region.
-BattlerEnemyY = 29
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
 #-------------------------------
 [PIKACHU,12]
 FormName = Unova Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Unova region.
-BattlerEnemyY = 29
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
 #-------------------------------
 [PIKACHU,13]
 FormName = Kalos Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Kalos region.
-BattlerEnemyY = 29
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
 #-------------------------------
 [PIKACHU,14]
 FormName = Alola Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Alola region.
-BattlerEnemyY = 29
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
 #-------------------------------
 [PIKACHU,15]
 FormName = Partner Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of when they first met.
-BattlerEnemyY = 29
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
 #-------------------------------
 [PIKACHU,16]
 FormName = World Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu is wearing its Trainer's cap. The cap is a precious symbol that travels across different regions with Pikachu.
-BattlerEnemyY = 29
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
 #-------------------------------
 [RAICHU,1]
 FormName = Alolan
@@ -190,6 +233,7 @@ Weight = 21.0
 Color = Brown
 Pokedex = It uses psychokinesis to control electricity. It hops aboard its own tail, using psychic power to lift the tail and move about while riding it.
 BattlerPlayerY = 64
+BattlerEnemyX = 0
 BattlerEnemyY = 18
 #-------------------------------
 [SANDSHREW,1]
@@ -235,6 +279,7 @@ Color = White
 Pokedex = In hot weather, this Pokémon makes ice shards with its six tails and sprays them around to cool itself off.
 WildItemUncommon = SNOWBALL
 BattlerPlayerY = 71
+BattlerEnemyX = 0
 BattlerEnemyY = 28
 Evolutions = NINETALES,Item,ICESTONE
 #-------------------------------
@@ -250,8 +295,10 @@ Moves = 0,DAZZLINGGLEAM,1,DAZZLINGGLEAM,1,NASTYPLOT,1,SPITE,1,ICYWIND,1,CONFUSER
 Color = Blue
 Pokedex = It lives on mountains perpetually covered in snow and is revered as a deity incarnate. It appears draped in a blizzard.
 WildItemUncommon = SNOWBALL
+BattlerPlayerX = 0
 BattlerPlayerY = 66
-BattlerEnemyY = 20
+BattlerEnemyX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [DIGLETT,1]
 FormName = Alolan
@@ -406,7 +453,9 @@ Moves = 1,TACKLE,1,CURSE,3,GROWL,6,ACID,9,YAWN,12,CONFUSION,15,DISABLE,18,WATERP
 EggMoves = BELCH,BELLYDRUM,BLOCK,STOMP
 Pokedex = Because Galarian Slowpoke eat the seeds of a plant that grows only in Galar, their tails have developed a spicy flavor.
 BattlerPlayerY = 70
+BattlerEnemyX = 0
 BattlerEnemyY = 38
+BattlerShadowSize = 2
 Evolutions = SLOWKING,Item,GALARICAWREATH,SLOWKING,Item,GALARICAWREATH
 #-------------------------------
 [SLOWBRO,1]
@@ -420,7 +469,9 @@ Weight = 70.5
 Shape = 4
 Pokedex = If this Pokémon squeezes the tongue of the Shellder biting it, the Shellder will launch a toxic liquid from the tip of its shell.
 BattlerPlayerY = 68
+BattlerEnemyX = 0
 BattlerEnemyY = 22
+BattlerShadowSize = 2
 #-------------------------------
 [SLOWBRO,2]
 FormName = Mega Slowbro
@@ -433,7 +484,9 @@ Weight = 120.0
 Shape = 4
 Pokedex = Having been swallowed whole by Shellder, Slowbro now has an iron defense. It's pretty comfortable in there, too.
 BattlerPlayerY = 56
+BattlerEnemyX = 0
 BattlerEnemyY = 15
+BattlerShadowSize = 2
 #-------------------------------
 [FARFETCHD,1]
 FormName = Galarian
@@ -447,6 +500,7 @@ Weight = 42.0
 Pokedex = The stalks of leeks are thicker and longer in the Galar region. Farfetch'd that adapted to these stalks took on a unique form.
 WildItemCommon = LEEK
 BattlerPlayerY = 58
+BattlerEnemyX = 0
 BattlerEnemyY = 28
 Evolutions = SIRFETCHD,CriticalHits,3
 #-------------------------------
@@ -880,7 +934,9 @@ Height = 2.5
 Weight = 255.0
 Pokedex = Due to the colossal power poured into it, this Pokémon's back split right open. Its destructive instincts are the only thing keeping it moving.
 BattlerPlayerY = 60
+BattlerEnemyX = 0
 BattlerEnemyY = 12
+BattlerShadowSize = 2
 #-------------------------------
 [SCEPTILE,1]
 FormName = Mega Sceptile
@@ -892,8 +948,9 @@ Abilities = LIGHTNINGROD
 HiddenAbility = LIGHTNINGROD
 Height = 1.9
 Weight = 55.2
-BattlerPlayerY = 51
+BattlerEnemyX = 0
 BattlerEnemyY = 12
+BattlerShadowSize = 2
 #-------------------------------
 [BLAZIKEN,1]
 FormName = Mega Blaziken
@@ -2380,15 +2437,18 @@ Pokedex = The hair on its head connects to the surface of its brain. When this P
 [SINISTEA,1]
 FormName = Antique Form
 Pokedex = It absorbs the life-force of those who drink it. It waits patiently, but opportunities are fleeting—it tastes so bad that it gets spat out immediately.
-BattlerPlayerY = 71
-BattlerEnemyY = 27
+BattlerPlayerX = 2
+BattlerPlayerY = 49
+BattlerEnemyX = 2
+BattlerEnemyY = 26
 Evolutions = POLTEAGEIST,Item,CHIPPEDPOT
 #-------------------------------
 [POLTEAGEIST,1]
 FormName = Antique Form
 Pokedex = Trainers Polteageist trusts will be allowed to experience its distinctive flavor and aroma firsthand by sampling just a tiny bit of its tea.
-BattlerPlayerY = 55
-BattlerEnemyY = 14
+BattlerPlayerY = 45
+BattlerEnemyX = 2
+BattlerEnemyY = 12
 #-------------------------------
 [INDEEDEE,1]
 FormName = Female
