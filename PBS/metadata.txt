@@ -3,7 +3,7 @@
 [000]
 WildVictoryME = HGSSBattleVictoryWild.ogg
 WildBattleBGM = Conquest-BattleNormal.ogg
-Home = 83,31,7,8
+Home = 87,13,12,8
 SurfBGM = HGSS-170-Surf.ogg
 TrainerVictoryME = HGSSBattleVictoryTrainer.ogg
 BicycleBGM = HGSS-155-Bike.ogg

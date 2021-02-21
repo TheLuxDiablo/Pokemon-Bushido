@@ -848,3 +848,36 @@ MultipleForms.register(:FARFETCHD,{
     next 1
   }
 })
+
+MultipleForms.register(:TREECKO,{
+  "getForm" => proc { |pkmn|
+    maps = [1]   # Map IDs
+    if maps.include?($game_map.map_id)
+      next 0
+    end
+    next 1
+  }
+})
+MultipleForms.copy(:TREECKO,:GROVYLE,:SCEPTILE)
+
+MultipleForms.register(:OSHAWOTT,{
+  "getForm" => proc { |pkmn|
+    maps = [1]   # Map IDs
+    if maps.include?($game_map.map_id)
+      next 0
+    end
+    next 1
+  }
+})
+MultipleForms.copy(:OSHAWOTT,:DEWOTT,:SAMUROTT)
+
+MultipleForms.register(:FENNEKIN,{
+  "getForm" => proc { |pkmn|
+    maps = [1]   # Map IDs
+    if maps.include?($game_map.map_id)
+      next 0
+    end
+    next 1
+  }
+})
+MultipleForms.copy(:FENNEKIN,:BRAXIEN,:DELPHOX)

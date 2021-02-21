@@ -938,20 +938,6 @@ BattlerEnemyX = 0
 BattlerEnemyY = 12
 BattlerShadowSize = 2
 #-------------------------------
-[SCEPTILE,1]
-FormName = Mega Sceptile
-MegaStone = SCEPTILITE
-Type1 = GRASS
-Type2 = DRAGON
-BaseStats = 70,110,75,145,145,85
-Abilities = LIGHTNINGROD
-HiddenAbility = LIGHTNINGROD
-Height = 1.9
-Weight = 55.2
-BattlerEnemyX = 0
-BattlerEnemyY = 12
-BattlerShadowSize = 2
-#-------------------------------
 [BLAZIKEN,1]
 FormName = Mega Blaziken
 MegaStone = BLAZIKENITE
@@ -2514,3 +2500,15 @@ Moves = 1,ASTRALBARRAGE,1,TACKLE,1,TAILWHIP,1,DOUBLEKICK,1,HEX,1,STOMP,1,CONFUSE
 Kind = High King
 BattlerPlayerY = 52
 BattlerEnemyY = 9
+#-------------------------------
+[TREECKO,1]
+FormName = Aisho Form
+Type1 = FIGHTING
+#-------------------------------
+[GROVYLE,1]
+FormName = Aisho Form
+Type1 = FIGHTING
+#-------------------------------
+[SCEPTILE,1]
+FormName = Aisho Form
+Type1 = FIGHTING
