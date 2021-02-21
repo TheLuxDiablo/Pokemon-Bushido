@@ -118,7 +118,7 @@ if USING_SURF_ITEM
       return false
     end
     if pbConfirmMessage(_INTL("The water is a deep blue...\nWould you like to surf on it?"))
-      pbMessage(_INTL("{1} used the {2}!", $Trainer.name, PBItems.getName(getConst(PBItems,SURF_ITEM))))
+      pbMessage(_INTL("{1} used the {2}, Water Walking Style!", $Trainer.name, PBItems.getName(getConst(PBItems,SURF_ITEM))))
       pbKatanaMoveAnimation(4)
       pbCancelVehicles
       surfbgm = pbGetMetadata(0,MetadataSurfBGM)
