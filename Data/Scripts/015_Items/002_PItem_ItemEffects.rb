@@ -380,20 +380,26 @@ ItemHandlers::UseOnPokemon.add(:POTION,proc { |item,pkmn,scene|
   next pbHPItem(pkmn,20,scene)
 })
 
-ItemHandlers::UseOnPokemon.copy(:POTION,:BERRYJUICE,:SWEETHEART)
+ItemHandlers::UseOnPokemon.copy(:POTION,:BERRYJUICE,:SWEETHEART,:JAM1)
 ItemHandlers::UseOnPokemon.copy(:POTION,:RAGECANDYBAR) if !NEWEST_BATTLE_MECHANICS
 
 ItemHandlers::UseOnPokemon.add(:SUPERPOTION,proc { |item,pkmn,scene|
   next pbHPItem(pkmn,50,scene)
 })
 
+ItemHandlers::UseOnPokemon.copy(:SUPERPOTION,:JAM2)
+
 ItemHandlers::UseOnPokemon.add(:HYPERPOTION,proc { |item,pkmn,scene|
   next pbHPItem(pkmn,200,scene)
 })
 
+ItemHandlers::UseOnPokemon.copy(:HYPERPOTION,:JAM3)
+
 ItemHandlers::UseOnPokemon.add(:MAXPOTION,proc { |item,pkmn,scene|
   next pbHPItem(pkmn,pkmn.totalhp-pkmn.hp,scene)
 })
+
+ItemHandlers::UseOnPokemon.copy(:MAXPOTION,:JAM4)
 
 ItemHandlers::UseOnPokemon.add(:FRESHWATER,proc { |item,pkmn,scene|
   next pbHPItem(pkmn,50,scene)

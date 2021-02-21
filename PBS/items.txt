@@ -516,7 +516,7 @@
 507,ITEMFINDER,Itemfinder,Itemfinders,8,0,"A device used for finding items. If there is a hidden item nearby when it is used, it emits a signal.",2,0,6,
 508,DOWSINGMACHINE,Dowsing Machine,Dowsing Machines,8,0,"It checks for unseen items in the area and makes noise and lights when it finds something.",2,0,6,
 509,POKERADAR,Poké Radar,Poké Radars,8,0,"A tool that can search out Pokémon that are hiding in grass. Its battery is recharged as you walk.",2,0,6,
-510,TOWNMAP,Town Map,Town Maps,8,0,"A very convenient map that can be viewed anytime. It even shows your present location.",2,0,6,
+510,TOWNMAP,Aisho Map,Aisho Maps,8,0,"A map of the Aisho Region. It shows your present location.",2,0,6,
 511,POKEFLUTE,Poké Flute,Poké Flutes,8,0,"A flute that is said to instantly awaken any Pokémon. It has a lovely tone.",5,10,6,
 512,COINCASE,Coin Case,Coin Cases,8,0,"A case for holding coins obtained at the Game Corner. It holds up to 50,000 coins.",2,0,6,
 513,SOOTSACK,Soot Sack,Soot Sacks,8,0,"A sack used to gather and hold volcanic ash.",0,0,6,
@@ -817,9 +817,9 @@
 # Bushido Items
 #-----------------------------------------------------------------------------------------------
 792,POTION,Potion,Potions,2,200,"A spray-type medicine for wounds. It restores the HP of one Pokémon by just 20 points.",1,1,0,
-793,JAM1,Healing Jam,Healing Jams,2,200,"A spray-type medicine for wounds. It restores the HP of one Pokémon by just 20 points.",1,1,0,
-794,JAM2,Super Jam,Super Jams,2,200,"A spray-type medicine for wounds. It restores the HP of one Pokémon by just 20 points.",1,1,0,
-795,JAM3,Ultra Jam,Ultra Jams,2,200,"A spray-type medicine for wounds. It restores the HP of one Pokémon by just 20 points.",1,1,0,
+793,JAM1,Healing Jam,Healing Jams,2,200,"A tasty recovery jam. It restores the HP of one Pokémon by 20 points.",1,1,0,
+794,JAM2,Super Jam,Super Jams,2,200,"A delicious recovery jam. It restores the HP of one Pokémon by 50 points.",1,1,0,
+795,JAM3,Ultra Jam,Ultra Jams,2,200,"An amazing recovery jam. It restores the HP of one Pokémon by 200 points.",1,1,0,
 796,KATANALIGHT,Katana of Light,Katanas of Light,8,0,"The ancient Katana of Light. Though still powerful, it is mostly drained of its energy.",2,0,6,
 797,KATANALIGHT2,Katana of Light,Katanas of Light,8,0,"The Katana of Light. Using Solid Strike, it can now cut through stone.",2,0,6,
 798,KATANALIGHT3,Katana of Light,Katanas of Light,8,0,"The Katana of Light. Using Wind Blade, it can now slice down trees and create vortexes.",2,0,6,
@@ -836,3 +836,4 @@
 809,VIVIDSCENT,Vivid Scent,Vivid Scents,2,200,"A scent that greatly pleases Pokémon. Opens the hearts of Shadow Pokémon a lot.",1,1,0,
 810,TIMEFLUTE,Time Flute,Time Flutes,2,200,"A mystical flute that can completely open the heart of a Shadow Pokémon.",1,1,0,
 811,MAPLELEAF,Maple Leaf,Maple Leaves,6,0,"Special leaves that fall around the Aisho Region. Collect these to unlock secrets.",0,0,8,
+812,JAM4,Max Jam,Max Jams,2,200,"The perfect recovery jam. It completely restores the HP of one Pokémon.",1,1,0,
