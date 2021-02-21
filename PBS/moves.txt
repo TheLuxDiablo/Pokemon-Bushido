@@ -777,3 +777,4 @@
 757,SHADOWPANIC,Shadow Panic,12A,0,SHADOW,Status,90,0,0,04,0,bk,,"A shadowy aura emanates to confuse the foe."
 758,SHADOWSHED,Shadow Shed,132,0,SHADOW,Status,100,0,0,20,0,b,,"A shadowy aura eliminates Reflect and similar moves."
 759,SHADOWSKY,Shadow Sky,131,0,SHADOW,Status,100,0,0,20,0,b,,"Darkness hurts all but Shadow Pokémon for 5 turns."
+760,SHADOWSHURIKEN,Shadow Shuriken,126,80,SHADOW,Physical,100,0,0,00,0,abf,,"The user throws shuriken coated with a shadowy aura."
