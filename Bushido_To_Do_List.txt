@@ -61,21 +61,24 @@ Things I wanna do tonight:
 
 - ensure shadow moves arent just 4x effective against pokemon with dual types
 
-make the pokedex
+
 decide on our dex for the region
 make all shadow pokemon and OWs
 
 
-making the rest of the intro sequence!
-fix bug where intro hangs when going too fast
-
 
 set up komorei grunts with placeholder sprites for battles
+fix issue where follower doesnt update when changing pokemon
+fix bridgeOn and bridgeOff for followers on bridges
+fix issue where i cant use items on pokemon in battle
 
-add sfx to ball anims
-add move route for follower turn up after get starter
 
 Things done:
+
+2/21
+Jikan shrine ambush event
+Early Yami Island setup
+
 2/20
 forest and tsuchi town and shrine
 komorei dojo

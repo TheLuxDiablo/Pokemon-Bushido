@@ -183,7 +183,7 @@ Events.OnTalkToFollower += proc {|pkmn,x,y,randomVal|
 
 Events.OnTalkToFollower += proc {|pkmn,x,y,randomVal|
   if $PokemonGlobal.followerHoldItem
-    items=[:POTION,:SUPERPOTION,:FULLRESTORE,:REVIVE,:PPUP,
+    items=[:JAM1,:JAM2,:FULLRESTORE,:REVIVE,:PPUP,
          :PPMAX,:RARECANDY,:REPEL,:MAXREPEL,:ESCAPEROPE,
          :HONEY,:TINYMUSHROOM,:PEARL,:NUGGET,:GREATBALL,
          :ULTRABALL,:THUNDERSTONE,:MOONSTONE,:SUNSTONE,:DUSKSTONE,

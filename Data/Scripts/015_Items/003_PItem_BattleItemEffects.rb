@@ -65,7 +65,7 @@ ItemHandlers::CanUseInBattle.add(:POTION,proc { |item,pokemon,battler,move,first
 ItemHandlers::CanUseInBattle.copy(:POTION,
    :SUPERPOTION,:HYPERPOTION,:MAXPOTION,:BERRYJUICE,:SWEETHEART,:FRESHWATER,
    :SODAPOP,:LEMONADE,:MOOMOOMILK,:ORANBERRY,:SITRUSBERRY,:ENERGYPOWDER,
-   :ENERGYROOT)
+   :ENERGYROOT,:JAM1,:JAM2,:JAM3,:JAM4)
 ItemHandlers::CanUseInBattle.copy(:POTION,:RAGECANDYBAR) if !NEWEST_BATTLE_MECHANICS
 
 ItemHandlers::CanUseInBattle.add(:AWAKENING,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
@@ -316,20 +316,23 @@ ItemHandlers::BattleUseOnPokemon.add(:POTION,proc { |item,pokemon,battler,choice
   pbBattleHPItem(pokemon,battler,20,scene)
 })
 
-ItemHandlers::BattleUseOnPokemon.copy(:POTION,:BERRYJUICE,:SWEETHEART)
+ItemHandlers::BattleUseOnPokemon.copy(:POTION,:BERRYJUICE,:SWEETHEART,:JAM1)
 ItemHandlers::BattleUseOnPokemon.copy(:POTION,:RAGECANDYBAR) if !NEWEST_BATTLE_MECHANICS
 
 ItemHandlers::BattleUseOnPokemon.add(:SUPERPOTION,proc { |item,pokemon,battler,choices,scene|
   pbBattleHPItem(pokemon,battler,50,scene)
 })
+ItemHandlers::BattleUseOnPokemon.copy(:SUPERPOTION,:JAM2)
 
 ItemHandlers::BattleUseOnPokemon.add(:HYPERPOTION,proc { |item,pokemon,battler,choices,scene|
   pbBattleHPItem(pokemon,battler,200,scene)
 })
+ItemHandlers::BattleUseOnPokemon.copy(:HYPERPOTION,:JAM3)
 
 ItemHandlers::BattleUseOnPokemon.add(:MAXPOTION,proc { |item,pokemon,battler,choices,scene|
   pbBattleHPItem(pokemon,battler,pokemon.totalhp-pokemon.hp,scene)
 })
+ItemHandlers::BattleUseOnPokemon.copy(:MAXPOTION,:JAM4)
 
 ItemHandlers::BattleUseOnPokemon.add(:FRESHWATER,proc { |item,pokemon,battler,choices,scene|
   pbBattleHPItem(pokemon,battler,50,scene)

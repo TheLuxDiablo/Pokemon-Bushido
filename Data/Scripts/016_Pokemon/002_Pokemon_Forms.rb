@@ -884,4 +884,4 @@ MultipleForms.register(:FENNEKIN,{
    end
 }
 })
-MultipleForms.copy(:FENNEKIN,:BRAXIEN,:DELPHOX)
+MultipleForms.copy(:FENNEKIN,:BRAIXEN,:DELPHOX)

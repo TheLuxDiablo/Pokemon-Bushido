@@ -2512,3 +2512,27 @@ Type1 = FIGHTING
 [SCEPTILE,1]
 FormName = Aisho Form
 Type1 = FIGHTING
+#-------------------------------
+[OSHAWOTT,1]
+FormName = Aisho Form
+Type1 = STEEL
+#-------------------------------
+[DEWOTT,1]
+FormName = Aisho Form
+Type1 = STEEL
+#-------------------------------
+[SAMUROTT,1]
+FormName = Aisho Form
+Type1 = STEEL
+#-------------------------------
+[FENNEKIN,1]
+FormName = Aisho Form
+Type1 = FAIRY
+#-------------------------------
+[BRAIXEN,1]
+FormName = Aisho Form
+Type1 = FAIRY
+#-------------------------------
+[DELPHOX,1]
+FormName = Aisho Form
+Type1 = FAIRY

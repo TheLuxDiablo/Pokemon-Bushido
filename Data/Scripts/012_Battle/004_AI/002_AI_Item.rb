@@ -30,9 +30,13 @@ class PokeBattle_AI
     # Item categories
     hpItems = {
        :POTION       => 20,
+       :JAM1       => 20,
        :SUPERPOTION  => 50,
+       :JAM2  => 50,
        :HYPERPOTION  => 200,
+       :JAM3  => 200,
        :MAXPOTION    => 999,
+       :JAM4    => 999,
        :BERRYJUICE   => 20,
        :SWEETHEART   => 20,
        :FRESHWATER   => 50,

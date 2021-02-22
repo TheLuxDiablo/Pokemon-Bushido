@@ -816,7 +816,7 @@
 #----------------------------------------------------------------------------------------------
 # Bushido Items
 #-----------------------------------------------------------------------------------------------
-792,POTION,Potion,Potions,2,200,"A spray-type medicine for wounds. It restores the HP of one Pokémon by just 20 points.",1,1,0,
+792,TM95,TM95,TM95s,4,10000,"BITE BRUH.",3,0,0,BITE,
 793,JAM1,Healing Jam,Healing Jams,2,200,"A tasty recovery jam. It restores the HP of one Pokémon by 20 points.",1,1,0,
 794,JAM2,Super Jam,Super Jams,2,200,"A delicious recovery jam. It restores the HP of one Pokémon by 50 points.",1,1,0,
 795,JAM3,Ultra Jam,Ultra Jams,2,200,"An amazing recovery jam. It restores the HP of one Pokémon by 200 points.",1,1,0,

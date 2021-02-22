@@ -252,7 +252,7 @@ class PCItemStorage
   def initialize
     @items = []
     # Start storage with a Potion
-    pbStoreItem(getConst(PBItems,:POTION)) if hasConst?(PBItems,:POTION)
+    pbStoreItem(getConst(PBItems,:JAM1)) if hasConst?(PBItems,:JAM1)
   end
 
   def [](i)
