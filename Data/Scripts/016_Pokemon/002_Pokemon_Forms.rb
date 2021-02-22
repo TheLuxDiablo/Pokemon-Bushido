@@ -828,56 +828,60 @@ MultipleForms.register(:KOFFING,{
 MultipleForms.copy(:KOFFING,:MIMEJR)
 
 MultipleForms.register(:SLOWPOKE,{
-  "getForm" => proc { |pkmn|
-    maps = [1]   # Map IDs
-    if maps.include?($game_map.map_id)
-      next 0
-    end
-    next 1
-  }
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[1]
+   if $game_map && maps.include?($game_map.map_id)
+     next 0
+   else
+     next 1
+   end
+}
 })
-
 MultipleForms.copy(:SLOWPOKE,:SLOWBRO,:SLOWKING)
 
 MultipleForms.register(:FARFETCHD,{
-  "getForm" => proc { |pkmn|
-    maps = [1]   # Map IDs
-    if maps.include?($game_map.map_id)
-      next 0
-    end
-    next 1
-  }
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[1]
+   if $game_map && maps.include?($game_map.map_id)
+     next 0
+   else
+     next 1
+   end
+}
 })
 
 MultipleForms.register(:TREECKO,{
-  "getForm" => proc { |pkmn|
-    maps = [1]   # Map IDs
-    if maps.include?($game_map.map_id)
-      next 0
-    end
-    next 1
-  }
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[1]
+   if $game_map && maps.include?($game_map.map_id)
+     next 0
+   else
+     next 1
+   end
+}
 })
 MultipleForms.copy(:TREECKO,:GROVYLE,:SCEPTILE)
 
 MultipleForms.register(:OSHAWOTT,{
-  "getForm" => proc { |pkmn|
-    maps = [1]   # Map IDs
-    if maps.include?($game_map.map_id)
-      next 0
-    end
-    next 1
-  }
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[1]
+   if $game_map && maps.include?($game_map.map_id)
+     next 0
+   else
+     next 1
+   end
+}
 })
 MultipleForms.copy(:OSHAWOTT,:DEWOTT,:SAMUROTT)
 
 MultipleForms.register(:FENNEKIN,{
-  "getForm" => proc { |pkmn|
-    maps = [1]   # Map IDs
-    if maps.include?($game_map.map_id)
-      next 0
-    end
-    next 1
-  }
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[1]
+   if $game_map && maps.include?($game_map.map_id)
+     next 0
+   else
+     next 1
+   end
+}
 })
 MultipleForms.copy(:FENNEKIN,:BRAXIEN,:DELPHOX)
