@@ -2516,14 +2516,26 @@ Type1 = FIGHTING
 [OSHAWOTT,1]
 FormName = Aisho Form
 Type1 = STEEL
+BattlerPlayerX = 0
+BattlerPlayerY = 65
+BattlerEnemyX = 0
+BattlerEnemyY = 34
 #-------------------------------
 [DEWOTT,1]
 FormName = Aisho Form
 Type1 = STEEL
+BattlerPlayerX = 0
+BattlerPlayerY = 69
+BattlerEnemyX = 0
+BattlerEnemyY = 24
 #-------------------------------
 [SAMUROTT,1]
 FormName = Aisho Form
 Type1 = STEEL
+BattlerPlayerX = 0
+BattlerPlayerY = 57
+BattlerEnemyY = 12
+BattlerShadowSize = 2
 #-------------------------------
 [FENNEKIN,1]
 FormName = Aisho Form
