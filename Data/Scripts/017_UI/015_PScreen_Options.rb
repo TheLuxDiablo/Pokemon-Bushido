@@ -3,15 +3,15 @@ class PokemonSystem
   attr_accessor :battlescene
   attr_accessor :battlestyle
   attr_accessor :frame
-  attr_writer   :textskin
+  attr_accessor :textskin
   attr_accessor :font
   attr_accessor :screensize
-  attr_writer   :border
-  attr_writer   :language
-  attr_writer   :runstyle
-  attr_writer   :bgmvolume
-  attr_writer   :sevolume
-  attr_writer   :textinput
+  attr_accessor :border
+  attr_accessor :language
+  attr_accessor :runstyle
+  attr_accessor :bgmvolume
+  attr_accessor :sevolume
+  attr_accessor :textinput
 
   def initialize
     @textspeed   = 2     # Text speed (0=slow, 1=normal, 2=fast)
@@ -20,11 +20,7 @@ class PokemonSystem
     @frame       = 0     # Default window frame (see also $TextFrames)
     @textskin    = 0     # Speech frame
     @font        = 0     # Font (see also $VersionStyles)
-    if mkxp?
-      @screensize  = (SCREEN_SCALE * 2).floor - 1 # 0=half size, 1=full size, 2=double size
-    else
-      @screensize  = (SCREEN_SCALE.floor).to_i # 0=half size, 1=full size, 2=double size
-    end
+    @screensize  = (SCREEN_ZOOM.floor).to_i   # 0=half size, 1=full size, 2=double size
     @border      = 0     # Screen border (0=off, 1=on)
     @language    = 0     # Language (see also LANGUAGES in script PokemonSystem)
     @runstyle    = 1     # Run key functionality (0=hold to run, 1=toggle auto-run)
@@ -107,7 +103,7 @@ $TextFrames = [
 $VersionStyles = [
   [MessageConfig::FontName],   # Default font style - Power Green/"Pokemon Emerald"
   ["Power Red and Blue"],
-  ["Power Green"],
+  ["Power Red and Green"],
   ["Power Clear"]
 ]
 
@@ -331,13 +327,13 @@ class Window_PokemonOption < Window_DrawableCommand
     return @options.length+1
   end
 
-  def drawItem(index,_count,rect)
+  def drawItem(index,count,rect)
     rect = drawCursor(index,rect)
     optionname = (index==@options.length) ? _INTL("Cancel") : @options[index].name
     optionwidth = rect.width*9/20
-    text_y = rect.y + (mkxp? ? 6 : 0)
-    pbDrawShadowText(self.contents,rect.x,text_y,optionwidth,rect.height,optionname,
+    pbDrawShadowText(self.contents,rect.x,rect.y,optionwidth,rect.height,optionname,
        @nameBaseColor,@nameShadowColor)
+    self.contents.draw_text(rect.x,rect.y,optionwidth,rect.height,optionname)
     return if index==@options.length
     if @options[index].is_a?(EnumOption)
       if @options[index].values.length>1
@@ -350,47 +346,50 @@ class Window_PokemonOption < Window_DrawableCommand
         xpos = optionwidth+rect.x
         ivalue = 0
         for value in @options[index].values
-          pbDrawShadowText(self.contents,xpos,text_y,optionwidth,rect.height,value,
+          pbDrawShadowText(self.contents,xpos,rect.y,optionwidth,rect.height,value,
              (ivalue==self[index]) ? @selBaseColor : self.baseColor,
              (ivalue==self[index]) ? @selShadowColor : self.shadowColor
           )
+          self.contents.draw_text(xpos,rect.y,optionwidth,rect.height,value)
           xpos += self.contents.text_size(value).width
           xpos += spacing
           ivalue += 1
         end
       else
-        pbDrawShadowText(self.contents,rect.x+optionwidth,text_y,optionwidth,rect.height,
+        pbDrawShadowText(self.contents,rect.x+optionwidth,rect.y,optionwidth,rect.height,
            optionname,self.baseColor,self.shadowColor)
       end
     elsif @options[index].is_a?(NumberOption)
       value = _INTL("Type {1}/{2}",@options[index].optstart+self[index],
          @options[index].optend-@options[index].optstart+1)
       xpos = optionwidth+rect.x
-      pbDrawShadowText(self.contents,xpos,text_y,optionwidth,rect.height,value,
+      pbDrawShadowText(self.contents,xpos,rect.y,optionwidth,rect.height,value,
          @selBaseColor,@selShadowColor)
     elsif @options[index].is_a?(SliderOption)
       value = sprintf(" %d",@options[index].optend)
       sliderlength = optionwidth-self.contents.text_size(value).width
       xpos = optionwidth+rect.x
-      self.contents.fill_rect(xpos,text_y-2+rect.height/2,
+      self.contents.fill_rect(xpos,rect.y-2+rect.height/2,
          optionwidth-self.contents.text_size(value).width,4,self.baseColor)
       self.contents.fill_rect(
          xpos+(sliderlength-8)*(@options[index].optstart+self[index])/@options[index].optend,
-         text_y-8+rect.height/2,
+         rect.y-8+rect.height/2,
          8,16,@selBaseColor)
       value = sprintf("%d",@options[index].optstart+self[index])
       xpos += optionwidth-self.contents.text_size(value).width
-      pbDrawShadowText(self.contents,xpos,text_y,optionwidth,rect.height,value,
+      pbDrawShadowText(self.contents,xpos,rect.y,optionwidth,rect.height,value,
          @selBaseColor,@selShadowColor)
     else
       value = @options[index].values[self[index]]
       xpos = optionwidth+rect.x
-      pbDrawShadowText(self.contents,xpos,text_y,optionwidth,rect.height,value,
+      pbDrawShadowText(self.contents,xpos,rect.y,optionwidth,rect.height,value,
          @selBaseColor,@selShadowColor)
+      self.contents.draw_text(xpos,rect.y,optionwidth,rect.height,value)
     end
   end
 
   def update
+    dorefresh = false
     oldindex = self.index
     @mustUpdateOptions = false
     super
@@ -420,7 +419,7 @@ class PokemonOption_Scene
     pbUpdateSpriteHash(@sprites)
   end
 
-  def pbStartScene(inloadscreen=false)
+ def pbStartScene(inloadscreen=false)
     @sprites = {}
     @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z = 99999
@@ -491,17 +490,17 @@ class PokemonOption_Scene
          proc { $PokemonSystem.textskin },
          proc { |value|
            $PokemonSystem.textskin = value
-           MessageConfig.pbSetSpeechFrame("Graphics/Windowskins/" + $SpeechFrames[value])
+           MessageConfig.pbSetSpeechFrame("Graphics/Windowskins/"+$SpeechFrames[value])
          }
        ),
        NumberOption.new(_INTL("Menu Frame"),1,$TextFrames.length,
          proc { $PokemonSystem.frame },
          proc { |value|
            $PokemonSystem.frame = value
-           MessageConfig.pbSetSystemFrame("Graphics/Windowskins/" + $TextFrames[value])
+           MessageConfig.pbSetSystemFrame($TextFrames[value])
          }
        ),
-       EnumOption.new(_INTL("Font Style"),[_INTL("FRLG"),_INTL("R/S"),_INTL("Em"),_INTL("DP")],
+       EnumOption.new(_INTL("Font Style"),[_INTL("Em"),_INTL("R/S"),_INTL("FRLG"),_INTL("DP")],
          proc { $PokemonSystem.font },
          proc { |value|
            $PokemonSystem.font = value
@@ -511,20 +510,8 @@ class PokemonOption_Scene
        EnumOption.new(_INTL("Text Entry"),[_INTL("Cursor"),_INTL("Keyboard")],
          proc { $PokemonSystem.textinput },
          proc { |value| $PokemonSystem.textinput = value }
-       )
-    ]
-    if mkxp?
-      @PokemonOptions.push(EnumOption.new(_INTL("Screen Size"),[_INTL("S"),_INTL("M"),_INTL("L"),_INTL("XL"),_INTL("Full")],
-        proc { [$PokemonSystem.screensize,4].min },
-        proc { |value|
-          if $PokemonSystem.screensize != value
-             $PokemonSystem.screensize = value
-            pbSetResizeFactor($PokemonSystem.screensize)
-          end
-        }
-      ))
-    else
-      @PokemonOptions.push(EnumOption.new(_INTL("Screen Size"),[_INTL("S"),_INTL("M"),_INTL("L"),_INTL("Full")],
+       ),
+       EnumOption.new(_INTL("Screen Size"),[_INTL("S"),_INTL("M"),_INTL("L"),_INTL("Full")],
          proc { [$PokemonSystem.screensize,3].min },
          proc { |value|
            oldvalue = $PokemonSystem.screensize
@@ -534,12 +521,19 @@ class PokemonOption_Scene
              ObjectSpace.each_object(TilemapLoader) { |o| o.updateClass if !o.disposed? }
            end
          }
-       ))
-    end
-    @PokemonOptions.push(EnumOption.new(_INTL("Configure Controls"),[_INTL(""),_INTL("")],
-      proc { },
-      proc { }
-    ))
+       ),
+    #   EnumOption.new(_INTL("Screen Border"),[_INTL("Off"),_INTL("On")],
+    #     proc { $PokemonSystem.border },
+    #     proc { |value|
+    #       oldvalue = $PokemonSystem.border
+    #       $PokemonSystem.border = value
+    #       if value!=oldvalue
+    #         pbSetResizeFactor($PokemonSystem.screensize)
+    #         ObjectSpace.each_object(TilemapLoader) { |o| o.updateClass if !o.disposed? }
+    #       end
+    #     }
+    #   )
+    ]
     @PokemonOptions = pbAddOnOptions(@PokemonOptions)
     @sprites["option"] = Window_PokemonOption.new(@PokemonOptions,0,
        @sprites["title"].height,Graphics.width,
@@ -592,13 +586,7 @@ class PokemonOption_Scene
         if Input.trigger?(Input::B)
           break
         elsif Input.trigger?(Input::C)
-          if @sprites["option"].index==@PokemonOptions.length
-            break
-          elsif @sprites["option"].index == (@PokemonOptions.length - 1)
-            scene = PokemonControlsScene.new
-            screen = PokemonControls.new(scene)
-            pbFadeOutIn(99999) {screen.pbStartScreen}
-          end
+          break if @sprites["option"].index==@PokemonOptions.length
         end
       end
     }

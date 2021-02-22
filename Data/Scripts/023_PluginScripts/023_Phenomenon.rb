@@ -40,8 +40,8 @@ end
 #-------------------------------------------------------------------------------
 
 module PhenomenonConfig
-  Frequency = 600 # Chance for phenomenon to generate on step. Between 350-600.
-  Timer = 10000 # How many frames to wait before phenomenon disappears
+  Frequency = 475 # Chance for phenomenon to generate on step. Between 350-600.
+  Timer = 500 # How many frames to wait before phenomenon disappears
   Switch = 77 # Switch that when ON enables phenomena
 
   Pokemon = {
