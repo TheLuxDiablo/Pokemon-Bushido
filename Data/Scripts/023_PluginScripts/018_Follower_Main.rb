@@ -435,25 +435,6 @@ HiddenMoveHandlers::UseMove.add(:STRENGTH,proc { |move,pokemon|
   next true
 })
 
-# Update when starting Headbutt to incorporate hiddden move animation
-def pbHeadbutt(event=nil)
-  event = $game_player.pbFacingEvent(true)
-  move = getID(PBMoves,:HEADBUTT)
-  movefinder = pbCheckMove(move)
-  if !$DEBUG && !movefinder
-    pbMessage(_INTL("A Pokémon could be in this tree. Maybe a Pokémon could shake it."))
-    return false
-  end
-  if pbConfirmMessage(_INTL("A Pokémon could be in this tree. Would you like to use Headbutt?"))
-    speciesname = (movefinder) ? movefinder.name : $Trainer.name
-    pbMessage(_INTL("{1} used {2}!",speciesname,PBMoves.getName(move)))
-    pbHiddenMoveAnimation(movefinder)
-    pbHeadbuttEffect(event)
-    return true
-  end
-  return false
-end
-
 # Update follower when mounting Bike
 alias follow_pbDismountBike pbDismountBike
 def pbDismountBike
@@ -594,7 +575,7 @@ class Game_Map
   def passable?(x, y, d, self_event=nil)
     ret = follow_passable?(x,y,d,self_event)
     if !$game_temp.player_transferring && pbGetDependency("FollowerPkmn") && self_event != $game_player
-      dependent = pbGetDependency("FollowerPkmn")
+      dependent=pbGetDependency("FollowerPkmn")
       return false if self_event != dependent && dependent.x==x && dependent.y==y
     end
     return ret
@@ -637,7 +618,7 @@ def pbHiddenMoveAnimation(pokemon,followAnim = true)
     pbWait(Graphics.frame_rate/5)
   end
 end
-
+=begin
 #-------------------------------------------------------------------------------
 # New sendout animation for Followers to slide in when sent out for the 1st time in battle
 #-------------------------------------------------------------------------------
@@ -728,6 +709,7 @@ class PokeballPlayerSendOutAnimation < PokeBattle_Animation
     end
   end
 end
+=end
 
 def pbStartOver(gameover=false)
   if pbInBugContest?
@@ -1145,6 +1127,8 @@ class DependentEvents
       end
     end
     facings=[facingDirection] # Get facing from behind
+    #facings.push([0,0,4,0,8,0,2,0,6][d]) # Get right facing
+    #facings.push([0,0,6,0,2,0,8,0,4][d]) # Get left facing
     if !leaderIsTrueLeader
       facings.push(d) # Get forward facing
     end
@@ -1179,7 +1163,7 @@ class DependentEvents
           # If the tile isn't passable and the tile is a ledge,
           # get tile from further behind
           tile=$MapFactory.getFacingTileFromPos(tile[0],tile[1],tile[2],facing)
-          passable= tile && $MapFactory.isPassable?(tile[0],tile[1],tile[2],follower)
+          passable= tile && $MapFactory.isPassableStrict?(tile[0],tile[1],tile[2],follower)
           if passable && !$PokemonGlobal.surfing
             passable=!PBTerrain.isWater?($MapFactory.getTerrainTag(tile[0],tile[1],tile[2]))
           end
@@ -1207,20 +1191,6 @@ class DependentEvents
       # Follower is on same map
       newX=mapTile[1]
       newY=mapTile[2]
-      if defined?(leader.on_stair?)
-        if leader.on_stair?
-          newX = leader.x + (leader.direction == 4 ? 1 : leader.direction == 6 ? -1 : 0)
-          if leader.on_middle_of_stair?
-            newY = leader.y + (leader.direction == 8 ? 1 : leader.direction == 2 ? -1 : 0)
-          else
-            if follower.on_middle_of_stair?
-              newY = follower.stair_start_y - follower.stair_y_position
-            else
-              newY = leader.y + (leader.direction == 8 ? 1 : leader.direction == 2 ? -1 : 0)
-            end
-          end
-        end
-      end
       deltaX=(d == 6 ? -1 : d == 4 ? 1 : 0)
       deltaY=(d == 2 ? -1 : d == 8 ? 1 : 0)
       posX = newX + deltaX

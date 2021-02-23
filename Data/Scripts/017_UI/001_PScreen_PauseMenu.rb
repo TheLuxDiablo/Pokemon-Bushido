@@ -115,7 +115,7 @@ class PokemonPauseMenu
     commands[cmdPokemon = commands.length]  = _INTL("Pokémon") if $Trainer.party.length>0
     commands[cmdBag = commands.length]      = _INTL("Bag") if !pbInBugContest?
     commands[cmdPokegear = commands.length] = _INTL("Pokégear") if $Trainer.pokegear
-    commands[cmdTrainer = commands.length]  = $Trainer.name
+#    commands[cmdTrainer = commands.length]  = $Trainer.name
     if pbInSafari?
       if SAFARI_STEPS<=0
         @scene.pbShowInfo(_INTL("Balls: {1}",pbSafariState.ballcount))
@@ -206,14 +206,14 @@ class PokemonPauseMenu
           screen.pbStartScreen
           @scene.pbRefresh
         }
-      elsif cmdTrainer>=0 && command==cmdTrainer
-        pbPlayDecisionSE
-        pbFadeOutIn {
-          scene = PokemonTrainerCard_Scene.new
-          screen = PokemonTrainerCardScreen.new(scene)
-          screen.pbStartScreen
-          @scene.pbRefresh
-        }
+    #  elsif cmdTrainer>=0 && command==cmdTrainer
+    #    pbPlayDecisionSE
+    #    pbFadeOutIn {
+    #      scene = PokemonTrainerCard_Scene.new
+    #      screen = PokemonTrainerCardScreen.new(scene)
+    #      screen.pbStartScreen
+    #      @scene.pbRefresh
+    #    }
       elsif cmdQuit>=0 && command==cmdQuit
         pbPlayDecisionSE
         @scene.pbHideMenu

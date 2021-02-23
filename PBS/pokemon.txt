@@ -3805,11 +3805,11 @@ RegionalNumbers = 118,118,35
 Kind = Goldfish
 Pokedex = Its dorsal, pectoral, and tail fins wave elegantly in water. That is why it is known as the water dancer.
 WildItemUncommon = MYSTICWATER
-BattlerPlayerX = 0
-BattlerPlayerY = 60
-BattlerEnemyX = 0
-BattlerEnemyY = 34
-BattlerShadowX = 0
+BattlerPlayerX = -1
+BattlerPlayerY = 45
+BattlerEnemyX = -1
+BattlerEnemyY = 36
+BattlerShadowX = -8
 BattlerShadowSize = 2
 Evolutions = SEAKING,Level,33
 #-------------------------------
@@ -7029,10 +7029,10 @@ RegionalNumbers = 0,218
 Kind = Lava
 Pokedex = Its body is made of magma. If it doesn't keep moving, its body will cool and harden.
 BattlerPlayerX = 0
-BattlerPlayerY = 65
-BattlerEnemyX = 0
+BattlerPlayerY = 52
+BattlerEnemyX = -7
 BattlerEnemyY = 31
-BattlerShadowX = 0
+BattlerShadowX = -2
 BattlerShadowSize = 2
 Evolutions = MAGCARGO,Level,38
 #-------------------------------
@@ -12667,11 +12667,11 @@ Shape = 9
 Kind = Starling
 Pokedex = They flock around mountains and fields, chasing after bug Pokémon. Their singing is noisy and annoying.
 BattlerPlayerX = 0
-BattlerPlayerY = 63
-BattlerEnemyX = 0
+BattlerPlayerY = 47
+BattlerEnemyX = -2
 BattlerEnemyY = 33
-BattlerShadowX = 0
-BattlerShadowSize = 2
+BattlerShadowX = -4
+BattlerShadowSize = 1
 Evolutions = STARAVIA,Level,14
 #-------------------------------
 [397]
@@ -19638,12 +19638,12 @@ Shape = 6
 RegionalNumbers = 0,0,90
 Kind = Martial Arts
 Pokedex = In fights, they dominate with onslaughts of flowing, continuous attacks. With their sharp claws, they cut enemies.
-BattlerPlayerX = 0
-BattlerPlayerY = 60
-BattlerEnemyX = 0
-BattlerEnemyY = 28
-BattlerShadowX = 0
-BattlerShadowSize = 2
+BattlerPlayerX = -1
+BattlerPlayerY = 44
+BattlerEnemyX = -1
+BattlerEnemyY = 27
+BattlerShadowX = -1
+BattlerShadowSize = 1
 Evolutions = MIENSHAO,Level,50
 #-------------------------------
 [620]
@@ -23557,12 +23557,12 @@ Shape = 8
 RegionalNumbers = 0,0,82
 Kind = Puppy
 Pokedex = As they develop, their disposition grows more violent and aggressive. Many Trainers find them too much to handle and abandon them.
-BattlerPlayerX = 0
-BattlerPlayerY = 59
-BattlerEnemyX = 0
+BattlerPlayerX = -1
+BattlerPlayerY = 43
+BattlerEnemyX = -1
 BattlerEnemyY = 29
-BattlerShadowX = 0
-BattlerShadowSize = 2
+BattlerShadowX = -2
+BattlerShadowSize = 1
 Evolutions = LYCANROC,Level,25
 #-------------------------------
 [745]

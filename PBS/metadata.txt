@@ -412,7 +412,7 @@ Outdoor = true
 HealingSpot = 79,15,13
 ShowArea = true
 MapPosition = 2,19,10
-BattleBack = FRLGGrass
+BattleBack = Ezovillage
 #-------------------------------
 [081]
 # Nagisa Bay

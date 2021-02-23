@@ -40,7 +40,7 @@ Land
     PANCHAM,3,5
     PIKIPEK,2,5
     PURRLOIN,2,5
-    FOMANTIS,2,4
+    FLABEBE,2,4
     BUNEARY,2,5
     VULPIX,3,4
     PICHU,3,5

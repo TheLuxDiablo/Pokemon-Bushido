@@ -499,9 +499,11 @@ EggMoves = COUNTER,COVET,CURSE,DOUBLEEDGE,FEINT,FLAIL,NIGHTSLASH,QUICKATTACK,QUI
 Weight = 42.0
 Pokedex = The stalks of leeks are thicker and longer in the Galar region. Farfetch'd that adapted to these stalks took on a unique form.
 WildItemCommon = LEEK
-BattlerPlayerY = 58
-BattlerEnemyX = 0
+BattlerPlayerX = -13
+BattlerPlayerY = 45
+BattlerEnemyX = -1
 BattlerEnemyY = 28
+BattlerShadowX = -9
 Evolutions = SIRFETCHD,CriticalHits,3
 #-------------------------------
 [GRIMER,1]
@@ -1978,6 +1980,11 @@ BattlerEnemyY = 24
 [ROCKRUFF,2]
 Abilities = OWNTEMPO
 HiddenAbility = OWNTEMPO
+BattlerPlayerX = 0
+BattlerPlayerY = 59
+BattlerEnemyX = 0
+BattlerShadowX = 0
+BattlerShadowSize = 2
 Evolutions = LYCANROC,LevelEvening,25
 #-------------------------------
 [LYCANROC,1]
@@ -2511,9 +2518,11 @@ HiddenAbility = MOXIE
 Moves = 1,POUND,1,LEER,5,SANDATTACK,8,ARMTHRUST,10,WORKUP,13,FORCEPALM,17,PURSUIT,21,BRICKBREAK,25,CALMMIND,29,REVERSAL,33,SCARYFACE,37,UTURN,41,ENTRAINMENT,45,PARTINGSHOT,49,SKYUPPERCUT,57,FINALGAMBIT,61,AURASPHERE
 EggMoves = BULLETPUNCH,COUNTER,FEINT,HELPINGHAND
 Pokedex = They spend their time training in the wild for hours on end. The bands on their wrist represent their mastery of fighting.
-BattlerPlayerY = 58
-BattlerEnemyX = 0
-BattlerEnemyY = 28
+BattlerPlayerX = -1
+BattlerPlayerY = 45
+BattlerEnemyX = -1
+BattlerShadowX = -5
+BattlerShadowSize = 1
 #-------------------------------
 [GROVYLE,1]
 FormName = Aisho
@@ -2526,24 +2535,26 @@ HiddenAbility = MOXIE
 Moves = 0,PAYBACK,1,POUND,1,LEER,1,SANDATTACK,1,ARMTHRUST,1,KARATECHOP,5,SANDATTACK,8,ARMTHRUST,10,WORKUP,13,FORCEPALM,18,PURSUIT,23,DARKPULSE,28,CALMMIND,33,REVERSAL,38,SCARYFACE,43,UTURN,48,PARTINGSHOT,53,FINALGAMBIT,58,GIGAIMPACT,63,AURASPHERE
 EggMoves = BULLETPUNCH,COUNTER,FEINT,HELPINGHAND,KNOCKOFF,SEISMICTOSS,VITALTHROW,WAKEUPSLAP
 Pokedex = Many martial arts teachers use Grovyle as sparring partners to teach the young. Grovyle are natural leaders and teachers.
-BattlerPlayerY = 58
-BattlerEnemyX = 0
-BattlerEnemyY = 28
+BattlerPlayerY = 44
+BattlerEnemyX = -4
+BattlerEnemyY = 24
+BattlerShadowX = -3
 #-------------------------------
 [SCEPTILE,1]
 FormName = Aisho
 Type1 = FIGHTING
 Type2 = DARK
-BaseStats = 90,130,80,90,60,80
+BaseStats = 80,100,69,50,55,51
 EffortPoints = 0,2,0,0,0,0
 Abilities = STEADFAST,INNERFOCUS
 HiddenAbility = MOXIE
 Moves = 0,PAYBACK,1,POUND,1,LEER,1,SANDATTACK,1,ARMTHRUST,1,KARATECHOP,5,SANDATTACK,8,ARMTHRUST,10,WORKUP,13,FORCEPALM,18,PURSUIT,23,DARKPULSE,28,CALMMIND,33,REVERSAL,38,SCARYFACE,43,UTURN,48,PARTINGSHOT,53,FINALGAMBIT,58,GIGAIMPACT,63,AURASPHERE
 EggMoves = BULLETPUNCH,COUNTER,FEINT,HELPINGHAND,KNOCKOFF,SEISMICTOSS,VITALTHROW,WAKEUPSLAP
 Pokedex = Many martial arts teachers use Grovyle as sparring partners to teach the young. Grovyle are natural leaders and teachers.
-BattlerPlayerY = 58
-BattlerEnemyX = 0
-BattlerEnemyY = 28
+BattlerPlayerY = 35
+BattlerEnemyX = -1
+BattlerEnemyY = 18
+BattlerShadowX = -5
 #-------------------------------
 [OSHAWOTT,1]
 FormName = Aisho
@@ -2552,9 +2563,11 @@ BaseStats = 50,70,80,38,40,30
 EffortPoints = 0,0,1,0,0,0
 Abilities = STURDY,ROCKHEAD
 HiddenAbility = REGENERATOR
-Moves = 1,TACKLE,1,HARDEN,5,TAILWHIP,7,BULLETPUNCH,11,METALSOUND,13,ROCKTOMB,17,FURYATTACK,19,SWIFT,23,IRONHEAD,25,POWERGEM,29,ROCKBLAST,31,BARRIER,35,IRONTAIL,37,METALBURST,41,LOCKON,43,HEAVYSLAM
-EggMoves = SCREECH,IRONDEFENSE,STEALTHROCK,SUPERPOWER
+Moves = 1,TACKLE,1,HARDEN,5,TAILWHIP,7,BULLETPUNCH,11,METALSOUND,13,ROCKTOMB,17,FURYATTACK,19,SWIFT,23,IRONHEAD,25,POWERGEM,29,ROCKBLAST,31,AGILITY
+EggMoves = BULLETPUNCH,COUNTER,FEINT,HELPINGHAND
 Pokedex = They spend their time training in the wild for hours on end. The bands on their wrist represent their mastery of fighting.
-BattlerPlayerY = 58
-BattlerEnemyX = 0
-BattlerEnemyY = 28
+BattlerPlayerY = 50
+BattlerEnemyX = -1
+BattlerEnemyY = 31
+BattlerShadowX = -1
+BattlerShadowSize = 1
