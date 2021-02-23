@@ -69,8 +69,8 @@ make all shadow pokemon and OWs
 
 set up komorei grunts with placeholder sprites for battles
 fix issue where follower doesnt update when changing pokemon
-fix akui turn and face
 fix issue with key item SFX for katana get
+
 
 
 Things done:
