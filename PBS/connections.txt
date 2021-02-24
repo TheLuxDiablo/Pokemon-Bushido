@@ -57,6 +57,8 @@
 # Hagane City (85) - Shizen Trail (90)
 85,South,0,90,North,0
 # Nensho Pass (102) - Hagane City (85)
-102,South,17,85,North,0
+102,South,27,85,North,0
+# Nensho Village (103) - Nensho Pass (102)
+103,South,7,102,North,0
 # Yami Pass (98) - Nagisa Bay (81)
 98,West,35,81,East,0

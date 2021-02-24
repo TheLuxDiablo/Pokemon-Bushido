@@ -424,12 +424,6 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\pogPrepare to face the full force of my Pokémon!")
                     battle.scene.disappearBar
-                    #battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    #if $Trainer.gender==0
-                    #  pbMessage("Akane's fiery passion whipped #{battle.battlers[1].pokemon.speciesName} into a frenzy!")
-                    #else
-                    #  pbMessage("Yakeru's fiery passion whipped #{battle.battlers[1].pokemon.speciesName} into a frenzy!")
-                    #end
                     battle.scene.pbHideOpponent
                   }
       # Clan intros
