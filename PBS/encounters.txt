@@ -44,20 +44,20 @@ Land
     BUNEARY,2,5
     VULPIX,3,4
     PICHU,3,5
-PhenomenonGrass
-	HAPPINY,5
-	RIOLU,5
-	RIOLU,5
-	EEVEE,5
-	EEVEE,5
-	EEVEE,5
-	DRATINI,5
 Water
     MAGIKARP,2,5
     SEEL,2,4
     FINNEON,3,5
     FEEBAS,2,3
     FEEBAS,2,3
+PhenomenonGrass
+    HAPPINY,5
+    RIOLU,5
+    RIOLU,5
+    EEVEE,5
+    EEVEE,5
+    EEVEE,5
+    DRATINI,5
 #-------------------------------
 084 # Jikan Shrine
 25,10,10

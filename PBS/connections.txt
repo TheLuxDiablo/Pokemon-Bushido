@@ -44,17 +44,19 @@
 76,West,4,48,East,0
 # MAP032 (32) - CamTest2 (76)
 32,West,0,76,East,3
-# Shizen Trail (90) - Sakura Pass (82)
-90,East,0,82,West,50
 # Ezo Village (79) - Sakura Pass (82)
 79,West,0,82,East,11
+# Shizen Trail (90) - Sakura Pass (82)
+90,East,0,82,West,50
 # Hagane City (85) - Sakura Pass (82)
 85,East,4,82,West,0
 # Yami Pass (98) - Yami Island (99)
 98,East,0,99,West,12
-# Hagane City (85) - Shizen Trail (90)
-85,South,0,90,North,0
 # Nagisa Bay (81) - Ezo Village (79)
 81,West,0,79,East,6
+# Hagane City (85) - Shizen Trail (90)
+85,South,0,90,North,0
+# Nensho Pass (102) - Hagane City (85)
+102,South,17,85,North,0
 # Yami Pass (98) - Nagisa Bay (81)
 98,West,35,81,East,0
