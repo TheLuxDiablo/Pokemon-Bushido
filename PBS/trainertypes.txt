@@ -197,3 +197,5 @@
 192,KOMOREI_BOSS,Komorei Boss,100,CON-ChuninFinal,,HGSSEncounter-KimonoGirl,Male,,
 193,KENSHI_M,Young Kenshi,100,,,HGSSEncounter-KimonoGirl,Male,,
 194,KENSHI_F,Young Kenshi,100,,,HGSSEncounter-KimonoGirl,Male,,
+195,KAYOKO,Kenshi,100,,,HGSSEncounter-KimonoGirl,Female,,
+196,TSUKU,Kenshi,100,,,HGSSEncounter-KimonoGirl,Female,,
