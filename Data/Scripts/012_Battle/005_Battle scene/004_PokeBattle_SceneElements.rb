@@ -217,7 +217,7 @@ class PokemonDataBox < SpriteWrapper
     self.bitmap.blt(0,0,@databoxBitmap.bitmap,Rect.new(0,0,@databoxBitmap.width,@databoxBitmap.height))
     # Draw Pokémon's name
     nameWidth = self.bitmap.text_size(@battler.name).width
-    nameOffset = 0
+    nameOffset = -4
     nameOffset = nameWidth-116 if nameWidth>116
     textPos.push([@battler.name,@spriteBaseX+8-nameOffset,6,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
     # Draw Pokémon's gender symbol
@@ -233,8 +233,9 @@ class PokemonDataBox < SpriteWrapper
     pbDrawNumber(@battler.level,self.bitmap,@spriteBaseX+162,16)
     # Draw shiny icon
     if @battler.shiny?
-      shinyX = (@battler.opposes?(0)) ? 206 : -6   # Foe's/player's
-      imagePos.push(["Graphics/Pictures/shiny",@spriteBaseX+shinyX,36])
+      shinyX = (@battler.opposes?(0)) ? 10 : 12   # Foe's/player's
+      shinyY = (@battler.opposes?(0)) ? 36 : 48   # Foe's/player's
+      imagePos.push(["Graphics/Pictures/shiny",@spriteBaseX+shinyX,shinyY])
     end
     # Draw Mega Evolution/Primal Reversion icon
     if @battler.mega?
@@ -248,14 +249,14 @@ class PokemonDataBox < SpriteWrapper
       end
     end
     # Draw owned icon (foe Pokémon only)
-    if @battler.owned? && @battler.opposes?(0)
+    if @battler.owned? && @battler.opposes?(0) && !@battler.shiny?
       imagePos.push(["Graphics/Pictures/Battle/icon_own",@spriteBaseX+8,36])
     end
     # Draw status icon
     if @battler.status>0
       s = @battler.status
       s = 6 if s==PBStatuses::POISON && @battler.statusCount>0   # Badly poisoned
-      imagePos.push(["Graphics/Pictures/Battle/icon_statuses",@spriteBaseX+24,36,
+      imagePos.push(["Graphics/Pictures/Battle/icon_statuses",@spriteBaseX+24,34,
          0,(s-1)*STATUS_ICON_HEIGHT,-1,STATUS_ICON_HEIGHT])
     end
     pbDrawImagePositions(self.bitmap,imagePos)

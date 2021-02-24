@@ -1,8 +1,6 @@
 
 Things to do:
-- Fix Hagane City bridges passability
-- Balance the MBD for trainers (Rival is too OP)
-- Resize Shadow Nickit
+
 - Recolor Summary UI
 - Fix Fainted Pokemon showing up as Badly Poisoned
 - Add icons to the scents
@@ -47,8 +45,7 @@ Things I wanna do tonight:
 		- Form 3 = wind blade learned, can now fly
 		- Form 4 = water walking technique, can now run on water
 		- Form 5 = light blade!!!! Final form!!! Can purify on the go, illuminate caves, and banish fog!	
-- Add samurai vs kenshi distinction in the Sukiro quizzes
-- OPTIONS SCREEN CRASHES
+
 - add leaf collection at towns
 - UPDATE SUKIRO QUIZ QUESTIONS A LITTLE
 - add more battlebgs

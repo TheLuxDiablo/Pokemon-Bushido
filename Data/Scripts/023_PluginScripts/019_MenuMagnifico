@@ -237,7 +237,7 @@ class PokeSelectionSprite < SpriteWrapper
     xvalues=[0,0,0,0,0,0]
     yvalues=[24,74,124,174,224,274]
     @text=nil
-    @statuses=AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/icon_statuses"))
+    @statuses=AnimatedBitmap.new(_INTL("Graphics/Pictures/statuses"))
     @hpbar=AnimatedBitmap.new("Graphics/Pictures/Party/overlay_hp_back")
     @hp=AnimatedBitmap.new("Graphics/Pictures/Party/overlay_hp")
     @hpbarfnt=AnimatedBitmap.new("Graphics/Pictures/Party/overlay_hp_back_faint")
