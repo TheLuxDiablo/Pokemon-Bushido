@@ -177,12 +177,12 @@ Pokemon = PANCHAM,9
 #-------------------------------
 [AKUICLAN_M,Taki]
 LoseText = "Hmph. You can't the stop the great Akui Clan!"
+Pokemon = SANDILE,7
 Pokemon = POOCHYENA,7
     Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Kumiko]
 LoseText = "Tch. The boss isn't gonna be pleased with this."
 Pokemon = TOXEL,8
-    Shadow = yes
 Pokemon = NICKIT,8
     Shadow = yes
