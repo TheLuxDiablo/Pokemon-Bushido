@@ -96,10 +96,7 @@ MAX_PLAYER_NAME_SIZE = 10
 RIVAL_NAMES = [
   [:RIVAL1, 12],
   [:RIVAL2, 12],
-  [:CHAMPION, 12],
-  [:SPLICERIVAL,12],
-  [:SPLICERIVAL1,12],
-  [:SPLICERIVAL2,12]
+  [:CHAMPION, 12]
 ]
 
 #===============================================================================

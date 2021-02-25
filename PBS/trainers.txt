@@ -175,6 +175,11 @@ Pokemon = FOMANTIS,8
 Pokemon = BUNEARY,8
 Pokemon = PANCHAM,9
 #-------------------------------
+[AKUICLAN_M,Test]
+LoseText = "Hmph. You can't the stop the great Akui Clan!"
+Pokemon = POOCHYENA,7
+    Shadow = yes
+#-------------------------------
 [AKUICLAN_M,Taki]
 LoseText = "Hmph. You can't the stop the great Akui Clan!"
 Pokemon = SANDILE,7

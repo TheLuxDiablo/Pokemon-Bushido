@@ -152,14 +152,14 @@ class StorageSystemPC
 
   def name
     if $PokemonGlobal.seenStorageCreator
-      return _INTL("{1}'s PC",pbGetStorageCreator)
+      return _INTL("{1}'s Pokemon Storage",pbGetStorageCreator)
     else
       return _INTL("Someone's PC")
     end
   end
 
   def access
-    pbMessage(_INTL("\\se[PC access]The Pokémon Storage System was opened."))
+    pbMessage(_INTL("The Pokémon Storage System was opened."))
     command = 0
     loop do
       command = pbShowCommandsWithHelp(nil,
@@ -209,15 +209,15 @@ def pbTrainerPC
 end
 
 def pbPokeCenterPC
-  pbMessage(_INTL("\\se[PC open]{1} booted up the PC.",$Trainer.name))
+  #pbMessage(_INTL("{1} booted up the PC.",$Trainer.name))
   command = 0
   loop do
     commands = PokemonPCList.getCommandList
-    command = pbMessage(_INTL("Which PC should be accessed?"),commands,
+    command = pbMessage(_INTL("What do you want to do?"),commands,
        commands.length,nil,command)
     break if !PokemonPCList.callCommand(command)
   end
-  pbSEPlay("PC close")
+  #pbSEPlay("PC close")
 end
 
 
