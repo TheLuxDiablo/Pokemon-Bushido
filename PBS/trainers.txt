@@ -204,13 +204,13 @@ Pokemon = SPEWPA,9
 Pokemon = SEWADDLE,9
 Pokemon = NINCADA,10
 #-------------------------------
-[RIVALBUSHIDO_M,Yakeru]
+[RIVALBUSHIDO_M,Yakeru,1]
 LoseText = "The Hashimoto family will not lose to you!"
 Pokemon = FLETCHLING,10
 Pokemon = TOGEPI,10
 Pokemon = DARUMAKA,11
 #-------------------------------
-[RIVALBUSHIDO_F,Akane]
+[RIVALBUSHIDO_F,Akane,1]
 LoseText = "The Hashimoto family will not lose to you!"
 Pokemon = FLETCHLING,10
 Pokemon = TOGEPI,10
