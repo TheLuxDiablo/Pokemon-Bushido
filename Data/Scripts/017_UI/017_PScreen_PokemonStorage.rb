@@ -628,7 +628,7 @@ class PokemonStorageScene
       pbUpdateOverlay(@selection,@storage.party)
       pbSetMosaic(@selection)
     end
-    pbSEPlay("PC access")
+    #pbSEPlay("PC access")
     pbFadeInAndShow(@sprites)
   end
 

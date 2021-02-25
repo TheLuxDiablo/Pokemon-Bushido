@@ -126,11 +126,11 @@ class TrainerPC
   end
 
   def name
-    return _INTL("{1}'s PC",$Trainer.name)
+    return _INTL("{1}'s Item Storage",$Trainer.name)
   end
 
   def access
-    pbMessage(_INTL("\\se[PC access]Accessed {1}'s PC.",$Trainer.name))
+    pbMessage(_INTL("Accessed {1}'s item storage.",$Trainer.name))
     pbTrainerPCMenu
   end
 end
@@ -203,7 +203,7 @@ end
 
 
 def pbTrainerPC
-  pbMessage(_INTL("\\se[PC open]{1} booted up the PC.",$Trainer.name))
+  pbMessage(_INTL("{1} booted up the PC.",$Trainer.name))
   pbTrainerPCMenu
   pbSEPlay("PC close")
 end
@@ -234,7 +234,7 @@ module PokemonPCList
     for pc in @@pclist
       commands.push(pc.name) if pc.shouldShow?
     end
-    commands.push(_INTL("Log Off"))
+    commands.push(_INTL("Leave"))
     return commands
   end
 
