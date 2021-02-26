@@ -130,12 +130,12 @@ Pokemon = ELECTABUZZ,5
 Pokemon = ELECTABUZZ,5
     Shadow = yes
 #-------------------------------
-[RIVALBUSHIDO_M,Yakeru]
+[RIVALBUSHIDO_M,Yakeru,1]
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = DARUMAKA,5
 	Moves = TACKLE,EMBER
 #-------------------------------
-[RIVALBUSHIDO_F,Akane]
+[RIVALBUSHIDO_F,Akane,1]
 LoseText = "What?! There's no way someone like you could beat me!"
 Pokemon = DARUMAKA,5
 	Moves = TACKLE,EMBER
@@ -204,14 +204,21 @@ Pokemon = SPEWPA,9
 Pokemon = SEWADDLE,9
 Pokemon = NINCADA,10
 #-------------------------------
-[RIVALBUSHIDO_M,Yakeru,1]
+[RIVALBUSHIDO_M,Yakeru,2]
 LoseText = "The Hashimoto family will not lose to you!"
 Pokemon = FLETCHLING,10
 Pokemon = TOGEPI,10
 Pokemon = DARUMAKA,11
 #-------------------------------
-[RIVALBUSHIDO_F,Akane,1]
+[RIVALBUSHIDO_F,Akane,2]
 LoseText = "The Hashimoto family will not lose to you!"
 Pokemon = FLETCHLING,10
 Pokemon = TOGEPI,10
 Pokemon = DARUMAKA,11
+#-------------------------------
+[AKUICLAN_F,Kumiko,2]
+LoseText = "...Tch."
+Pokemon = TOXEL,11
+Pokemon = GIBLE,11
+Pokemon = NICKIT,12
+    Shadow = yes

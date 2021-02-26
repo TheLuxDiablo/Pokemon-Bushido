@@ -96,7 +96,9 @@ MAX_PLAYER_NAME_SIZE = 10
 RIVAL_NAMES = [
   [:RIVAL1, 12],
   [:RIVAL2, 12],
-  [:CHAMPION, 12]
+  [:CHAMPION, 12],
+  [:RIVALBUSHIDO_F, 26],
+  [:RIVALBUSHIDO_M, 26],
 ]
 
 #===============================================================================
@@ -151,7 +153,7 @@ MOVE_CATEGORY_PER_MOVE    = true
 NEWEST_BATTLE_MECHANICS   = true
 SCALED_EXP_FORMULA        = true
 SPLIT_EXP_BETWEEN_GAINERS = false
-ENABLE_CRITICAL_CAPTURES  = false
+ENABLE_CRITICAL_CAPTURES  = true
 GAIN_EXP_FOR_CAPTURE      = true
 MEGA_RINGS                = [:MEGARING, :MEGABRACELET, :MEGACUFF, :MEGACHARM]
 

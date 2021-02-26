@@ -462,6 +462,7 @@ MapPosition = 2,19,10
 #-------------------------------
 [088]
 # Shogun's Tower
+BattleBack = Shogun
 ShowArea = true
 Outdoor = false
 MapPosition = 2,15,10
