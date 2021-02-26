@@ -52,13 +52,19 @@
 85,East,4,82,West,0
 # Yami Pass (98) - Yami Island (99)
 98,East,0,99,West,12
+# Shizen Trail (90) - Shimizu Sea (106)
+90,West,0,106,East,39
+# Ground Town (107) - Shimizu Sea (106)
+107,East,17,106,West,0
+# Hagane City (85) - Shimizu Sea (106)
+85,West,15,106,East,0
 # Nagisa Bay (81) - Ezo Village (79)
 81,West,0,79,East,6
 # Hagane City (85) - Shizen Trail (90)
 85,South,0,90,North,0
-# Nensho Pass (102) - Hagane City (85)
+# Jonetsu Pass (102) - Hagane City (85)
 102,South,27,85,North,0
-# Nensho Village (103) - Nensho Pass (102)
+# Hanatsu Village (103) - Jonetsu Pass (102)
 103,South,7,102,North,0
 # Yami Pass (98) - Nagisa Bay (81)
 98,West,35,81,East,0

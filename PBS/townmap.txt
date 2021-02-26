@@ -36,7 +36,7 @@ Filename=mapRegion1.png
 Point=13,16,Here,,,,,
 #-------------------------------
 [2]
-Name= Aisho
+Name=
 Filename=mapRegion2.png
 Point=17,10,Sakura Pass,,,,,
 Point=18,10,Sakura Pass,,,,,
@@ -54,5 +54,6 @@ Point=12,5,Nensho Village,,,,,
 Point=7,7,Shimizu Village,,,,,
 Point=7,5,Shrine 4,,,,,
 Point=10,5,Shrine 2,,,,,
-Point=16,15,Shrine 3,,,,,
+Point=16,15,Tsuchi Shrine,,,,,
 Point=25,10,Yami Island,,99,12,34,
+Point=8,11,Chikyu Village,,107,44,28,
