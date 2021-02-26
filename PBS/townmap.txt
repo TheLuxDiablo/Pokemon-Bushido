@@ -36,11 +36,11 @@ Filename=mapRegion1.png
 Point=13,16,Here,,,,,
 #-------------------------------
 [2]
-Name=
+Name= Aisho
 Filename=mapRegion2.png
 Point=17,10,Sakura Pass,,,,,
 Point=18,10,Sakura Pass,,,,,
-Point=19,10,Ezo Village,,79,15,13,
+Point=19,10,Ezo Village,,79,8,15,
 Point=19,11,Nagisa Bay,,,,,
 Point=20,11,Nagisa Bay,,,,,
 Point=21,11,Nagisa Bay,,,,,
@@ -48,8 +48,8 @@ Point=22,11,Nagisa Bay,,,,,
 Point=26,7,Akui Island,,,,,
 Point=17,9,Jikan Shrine,,84,19,20,
 Point=16,10,Sakura Pass,,,,,
-Point=15,10,Hagane City,,85,63,31,
-Point=14,15,Komorei Village,,,,,
+Point=15,10,Hagane City,,85,64,26,
+Point=14,15,Tsuchi Village,,92,33,18,
 Point=12,5,Nensho Village,,,,,
 Point=7,7,Shimizu Village,,,,,
 Point=7,5,Shrine 4,,,,,

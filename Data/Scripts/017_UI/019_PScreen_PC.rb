@@ -234,6 +234,9 @@ module PokemonPCList
     for pc in @@pclist
       commands.push(pc.name) if pc.shouldShow?
     end
+    if $game_switches[81]
+      commands.push(_INTL("Fly"))
+    end
     commands.push(_INTL("Leave"))
     return commands
   end
@@ -248,6 +251,47 @@ module PokemonPCList
         return true
       end
       i += 1
+    end
+    if cmd==2
+      pbMessage(_INTL("{1} got on Talonflame...",$Trainer.name))
+      $game_temp.in_menu = false
+      if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
+       pbMessage(_INTL("Wait a second... Talonflame can't fly indoors!"))
+       return false
+      end
+      if !$PokemonTemp.flydata
+          ret = pbFadeOutIn(99999) do
+            scene = PokemonRegionMap_Scene.new(-1, false)
+            screen = PokemonRegionMapScreen.new(scene)
+            next screen.pbStartFlyScreen
+          end
+        if ret
+          $PokemonTemp.flydata = ret
+        elsif
+          pbMessage(_INTL("You decided not to fly on Talonflame."))
+          return false
+        end
+      end
+      pbMessage(_INTL("{1} and Talonflame used Fly!", $Trainer.name))
+      pbSEPlay("663Cry")
+      pbTalonflameMoveAnimation(3)
+      #pbMEPlay("flute")
+      pbWait(20)
+      pbSEPlay("wind1")
+      #pbWait(8)
+      pbFadeOutIn(99999) do
+         $game_temp.player_new_map_id    = $PokemonTemp.flydata[0]
+         $game_temp.player_new_x         = $PokemonTemp.flydata[1]
+         $game_temp.player_new_y         = $PokemonTemp.flydata[2]
+         $game_temp.player_new_direction = 2
+         pbCancelVehicles
+         $PokemonTemp.flydata = nil
+         $scene.transfer_player
+         $game_map.autoplay
+         $game_map.refresh
+      end
+      pbEraseEscapePoint
+      return false
     end
     return false
   end
