@@ -444,7 +444,7 @@ module DialogueModule
       ShadowIntroToxic = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("I'm with Shadow Clan! You're going down!")
+                    pbMessage("The Akui Clan never falters! Take this!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
                     battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
@@ -454,7 +454,7 @@ module DialogueModule
       ShadowIntroSpikes = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("I'm with Shadow Clan! You're going down!")
+                    pbMessage("Let's make this battle interesting, shall we?")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
                     battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
