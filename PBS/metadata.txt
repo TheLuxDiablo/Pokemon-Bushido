@@ -408,7 +408,6 @@ ShowArea = true
 #-------------------------------
 [079]
 # Ezo Village
-BattleBack = Ezovillage
 HealingSpot = 79,15,13
 MapPosition = 2,19,10
 Outdoor = true
