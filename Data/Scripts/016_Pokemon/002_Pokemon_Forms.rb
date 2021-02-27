@@ -850,13 +850,25 @@ MultipleForms.register(:FARFETCHD,{
 }
 })
 
-MultipleForms.register(:TREECKO,{
+MultipleForms.register(:SANDSHREW,{
 "getFormOnCreation"=>proc{|pokemon|
    maps=[1]
    if $game_map && maps.include?($game_map.map_id)
      next 0
    else
      next 1
+   end
+}
+})
+MultipleForms.copy(:SANDSHREW,:SANDSLASH)
+
+MultipleForms.register(:TREECKO,{
+"getFormOnCreation"=>proc{|pokemon|
+   maps=[1]
+   if $game_map && maps.include?($game_map.map_id)
+     next 1
+   else
+     next 0
    end
 }
 })
@@ -866,9 +878,9 @@ MultipleForms.register(:OSHAWOTT,{
 "getFormOnCreation"=>proc{|pokemon|
    maps=[1]
    if $game_map && maps.include?($game_map.map_id)
-     next 0
-   else
      next 1
+   else
+     next 0
    end
 }
 })
@@ -878,9 +890,9 @@ MultipleForms.register(:FENNEKIN,{
 "getFormOnCreation"=>proc{|pokemon|
    maps=[1]
    if $game_map && maps.include?($game_map.map_id)
-     next 0
-   else
      next 1
+   else
+     next 0
    end
 }
 })
