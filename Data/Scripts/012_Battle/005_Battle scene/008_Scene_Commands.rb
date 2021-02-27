@@ -178,6 +178,7 @@ class PokeBattle_Scene
         break if yield idxPartyRet, switchScreen
       elsif cmdSummary>=0 && command==cmdSummary   # Summary
         scene.pbSummary(idxParty,true)
+        #scene.pbSummary(idxParty,true)
       end
     end
     # Close party screen

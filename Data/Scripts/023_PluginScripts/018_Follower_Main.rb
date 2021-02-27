@@ -1136,7 +1136,8 @@ class DependentEvents
     if areConnected
       bestRelativePos=-1
       oldthrough=follower.through
-      follower.through=false
+      #Thundaga making our followers through
+      follower.through=true
       for i in 0...facings.length
         facing=facings[i]
         tile=$MapFactory.getFacingTile(facing,leader)
@@ -1181,7 +1182,8 @@ class DependentEvents
           end
         end
       end
-      follower.through=oldthrough
+      #follower.through=oldthrough
+      follower.through=true
     else
       tile=$MapFactory.getFacingTile(facings[0],leader)
       passable= tile && $MapFactory.isPassable?(tile[0],tile[1],tile[2],follower)
