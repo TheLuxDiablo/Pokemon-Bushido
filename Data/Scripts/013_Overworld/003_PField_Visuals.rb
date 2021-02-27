@@ -395,7 +395,10 @@ class LocationWindow
     @sprites["Image"].opacity = 255
     @height = @sprites["Image"].bitmap.height
     pbSetSystemFont(@sprites["Image"].bitmap)
-    pbDrawTextPositions(@sprites["Image"].bitmap,[[name,22,@sprites["Image"].bitmap.height-44,0,@baseColor,@shadowColor,true]])
+    #Thundaga custom font for signpost
+    @sprites["Image"].bitmap.font.name = "TAKOYAKI"
+    @sprites["Image"].bitmap.font.size = 34
+    pbDrawTextPositions(@sprites["Image"].bitmap,[[name,20,@sprites["Image"].bitmap.height-44,0,@baseColor,@shadowColor,true]])
     @currentmap = $game_map.map_id
     @frames = 0
   end
