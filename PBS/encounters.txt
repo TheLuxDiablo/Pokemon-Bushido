@@ -30,7 +30,7 @@ Land
     PURRLOIN,2,5
     FLABEBE,2,6
     BUNEARY,2,5
-    VULPIX,3,5
+    CUTIEFLY,3,5
     PICHU,3,6
 Water
     MAGIKARP,2,5
