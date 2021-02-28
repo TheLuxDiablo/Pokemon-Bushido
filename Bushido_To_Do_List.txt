@@ -91,6 +91,7 @@ Also make Akui grunts run a couple more to the right before disappearing, and ad
 ADD big purple slash anim when corrupt style is used
 Make Admin reference the superiority of Shadow pokemon
 shogun should say go south
+make dialogue reference needing to pray at the various shrines
 
 
 
