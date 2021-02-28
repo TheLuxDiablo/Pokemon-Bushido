@@ -1356,10 +1356,10 @@ def drawPageFive
           pbPlayDecisionSE
           pbMoveSelection
           dorefresh = true
-        elsif @page==5
-          pbPlayDecisionSE
-          pbRibbonSelection
-          dorefresh = true
+        #elsif @page==5
+        #  pbPlayDecisionSE
+        #  pbRibbonSelection
+        #  dorefresh = true
         elsif !@inbattle
           pbPlayDecisionSE
           dorefresh = pbOptions

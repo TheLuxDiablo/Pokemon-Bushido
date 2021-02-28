@@ -209,21 +209,55 @@ class PokeBattle_Battle
         # Edited
         case TrainerDialogue.eval("battleStart")
         when -1
-          pbDisplayPaused(_INTL("You are challenged by {1}!",@opponent[0].fullname))
+          if $smAnim
+            msgWindow = pbCreateMessageWindow
+           msgWindow.z = 100000
+            hideAnim = TrainerDisappearAnimation.new(@scene.sprites,@scene.viewport,1)
+            pbMessageDisplay(msgWindow,_INTL("You are challenged by {1}!",@opponent[0].fullname))  {$PokemonTemp.smAnim[0].update; hideAnim.update}
+            hideAnim.dispose
+          else
+            pbDisplayPaused(_INTL("You are challenged by {1}!",@opponent[0].fullname))
+          end
         when 0
           battleStart= TrainerDialogue.get("battleStart")
-          pbDisplayPaused(_INTL(battleStart,@opponent[0].fullname))
+          if $smAnim
+            msgWindow = pbCreateMessageWindow
+            msgWindow.z = 100000
+            hideAnim = TrainerDisappearAnimation.new(@scene.sprites,@scene.viewport,1)
+            pbMessageDisplay(msgWindow,_INTL(battleStart,@opponent[0].fullname))  {$PokemonTemp.smAnim[0].update; hideAnim.update}
+            hideAnim.dispose
+          else
+            pbDisplayPaused(_INTL(battleStart,@opponent[0].fullname))
+          end
         when 1
           battleStart= TrainerDialogue.get("battleStart")
           pbBGMPlay(battleStart["bgm"])
-          pbDisplayPaused(_INTL(battleStart["text"],@opponent[0].fullname))
+          if $smAnim
+            msgWindow = pbCreateMessageWindow
+            msgWindow.z = 100000
+            hideAnim = TrainerDisappearAnimation.new(@scene.sprites,@scene.viewport,1)
+            pbMessageDisplay(msgWindow,_INTL(battleStart["text"],@opponent[0].fullname))  {$PokemonTemp.smAnim[0].update; hideAnim.update}
+            hideAnim.dispose
+          else
+            pbDisplayPaused(_INTL(battleStart["text"],@opponent[0].fullname))
+          end
         when 2
           battleStart= TrainerDialogue.get("battleStart")
           battleStart.call(self)
         when 3
           battleStart= TrainerDialogue.get("battleStart")
-          for i in 0...battleStart.length
-            pbDisplayPaused(_INTL(battleStart[i],@opponent[0].fullname))
+          if $smAnim
+            msgWindow = pbCreateMessageWindow
+            msgWindow.z = 100000
+            hideAnim = TrainerDisappearAnimation.new(@scene.sprites,@scene.viewport,1)
+            for i in 0...battleStart.length
+              pbMessageDisplay(msgWindow,_INTL(battleStart[i],@opponent[0].fullname))  {$PokemonTemp.smAnim[0].update; hideAnim.update}
+            end
+            hideAnim.dispose
+          else
+            for i in 0...battleStart.length
+              pbDisplayPaused(_INTL(battleStart[i],@opponent[0].fullname))
+            end
           end
         end
       when 2
@@ -282,13 +316,27 @@ class PokeBattle_Battle
         sent = sendOuts[side][i]
         case sent.length
         when 1
-          msg += _INTL("{1} sent out {2}!",t.fullname,@battlers[sent[0]].name)
+          if msgWindow
+            pbMessageDisplay(msgWindow,_INTL("{1} sent out {2}!",t.fullname,@battlers[sent[0]].name))  {$PokemonTemp.smAnim[0].update}
+          else
+            msg += _INTL("{1} sent out {2}!",t.fullname,@battlers[sent[0]].name)
+          end
         when 2
-          msg += _INTL("{1} sent out {2} and {3}!",t.fullname,
-             @battlers[sent[0]].name,@battlers[sent[1]].name)
+          if msgWindow
+            pbMessageDisplay(msgWindow,_INTL("{1} sent out {2} and {3}!",t.fullname,
+               @battlers[sent[0]].name,@battlers[sent[1]].name))  {$PokemonTemp.smAnim[0].update}
+          else
+            msg += _INTL("{1} sent out {2} and {3}!",t.fullname,
+               @battlers[sent[0]].name,@battlers[sent[1]].name)
+          end
         when 3
-          msg += _INTL("{1} sent out {2}, {3} and {4}!",t.fullname,
-             @battlers[sent[0]].name,@battlers[sent[1]].name,@battlers[sent[2]].name)
+          if msgWindow
+            pbMessageDisplay(msgWindow,_INTL("{1} sent out {2}, {3} and {4}!",t.fullname,
+               @battlers[sent[0]].name,@battlers[sent[1]].name,@battlers[sent[2]].name))  {$PokemonTemp.smAnim[0].update}
+          else
+            msg += _INTL("{1} sent out {2}, {3} and {4}!",t.fullname,
+               @battlers[sent[0]].name,@battlers[sent[1]].name,@battlers[sent[2]].name)
+          end
         end
         toSendOut.concat(sent)
       end
@@ -306,6 +354,15 @@ class PokeBattle_Battle
              @battlers[sent[1]].name,@battlers[sent[2]].name)
         end
         toSendOut.concat(sent)
+      end
+      if side == 1 && $smAnim
+        pbDisposeMessageWindow(msgWindow)
+        $PokemonTemp.smAnim[0].finish
+        pbFadeOutIn(99999){
+          $PokemonTemp.smAnim[1].dispose
+          $smAnim = false
+          $PokemonTemp.smAnim = []
+        }
       end
       pbDisplayBrief(msg) if msg.length>0
       # The actual sending out of Pokémon
@@ -482,7 +539,8 @@ class PokeBattle_Battle
             idxPartyForName = idxPartyNew
             enemyParty = pbParty(idxBattler)
             if isConst?(enemyParty[idxPartyNew].ability,PBAbilities,:ILLUSION)
-              idxPartyForName = pbLastInTeam(idxBattler)
+              new_index = pbLastInTeam(idxBattler)
+              idxPartyForName = new_index if new_index >= 0
             end
             if pbDisplayConfirm(_INTL("{1} is about to send in {2}. Will you switch your Pokémon?",
                opponent.fullname,enemyParty[idxPartyForName].name))
@@ -523,6 +581,23 @@ class PokeBattle_Battle
       end
       $ShiftSwitch=false
     end
+  end
+
+  def pbSwitchInBetween(idxBattler,checkLaxOnly=false,canCancel=false)
+    return pbPartyScreen(idxBattler,checkLaxOnly,canCancel) if pbOwnedByPlayer?(idxBattler)
+    ret = @battleAI.pbDefaultChooseNewEnemy(idxBattler,pbParty(idxBattler))
+    if BattleScripting.hasOrderData?
+      orderArr = BattleScripting.getOrderOf(idxBattler)
+      len =  pbAbleCount(idxBattler)
+      len1 = (pbParty(idxBattler).length > 6) ? 6 : (pbParty(idxBattler).length)
+      len2 = len1 - len
+      return ret if orderArr.length == 0
+      sendoutID = orderArr[len2]
+      if pbParty(idxBattler).length > sendoutID && pbParty(idxBattler)[sendoutID].able?
+        ret = sendoutID
+      end
+    end
+    return ret
   end
 
 # Loss and Win Dialogue
@@ -933,6 +1008,38 @@ class PokeBattle_Scene
   end
 end
 
+class PokeBattle_AI
+  def pbChooseBestNewEnemy(idxBattler,party,enemies)
+    return -1 if !enemies || enemies.length==0
+    best    = -1
+    bestSum = 0
+    movesData = pbLoadMovesData
+    enemies.each do |i|
+      pkmn = party[i]
+      sum  = 0
+      if BattleScripting.hasAceData?
+        aceId = BattleScripting.getAceOf(idxBattler)
+        next if aceId > -1 && i == aceId && @battle.pbAbleCount(idxBattler) != 1
+      end
+      pkmn.moves.each do |m|
+        next if m.id==0
+        moveData = movesData[m.id]
+        next if moveData[MOVE_BASE_DAMAGE]==0
+        @battle.battlers[idxBattler].eachOpposing do |b|
+          bTypes = b.pbTypes(true)
+          sum += PBTypes.getCombinedEffectiveness(moveData[MOVE_TYPE],
+             bTypes[0],bTypes[1],bTypes[2])
+        end
+      end
+      if best==-1 || sum>bestSum
+        best = i
+        bestSum = sum
+      end
+    end
+    return best
+  end
+end
+
 
 #------------------------------------------------------------------------------#
 # Main Trainer Dialogue Module
@@ -960,9 +1067,10 @@ module TrainerDialogue
   end
 
   def self.resetAll
-    $PokemonTemp.dialogueData={:DIAL=>false}
-    $PokemonTemp.dialogueDone={}
-    $PokemonTemp.dialogueInstances={}
+    $PokemonTemp.dialogueData = {:DIAL=>false}
+    $PokemonTemp.dialogueDone = {}
+    $PokemonTemp.dialogueInstances = {}
+    $PokemonTemp.orderData = {}
   end
 
   def self.hasData?
@@ -1146,6 +1254,53 @@ module BattleScripting
       TrainerDialogue.set(param,value)
     end
   end
+
+  def self.hasOrderData?
+    return $PokemonTemp.orderData["hasOrder"]
+  end
+
+  def self.hasAceData?
+    return $PokemonTemp.orderData["hasAce"]
+  end
+
+  def self.getAceOf(id)
+    return $PokemonTemp.orderData["ace#{id}"] if $PokemonTemp.orderData["ace#{id}"]
+    return -1
+  end
+
+  def self.getOrderOf(id)
+    return $PokemonTemp.orderData["order#{id}"] if $PokemonTemp.orderData["order#{id}"]
+    return []
+  end
+
+  def self.setTrainerOrder(*args)
+    fail = false
+    $PokemonTemp.orderData["hasOrder"] = true
+    args.each_with_index do |a,i|
+      if !a.is_a?(Array) || a.length != 6 || $PokemonTemp.orderData["ace#{2*i + 1}"]
+        fail = true
+        break
+      end
+      $PokemonTemp.orderData["order#{2*i +1}"] = a
+    end
+    $PokemonTemp.orderData["hasOrder"] = false if fail
+    p "The script did not accept the Trainer Order Data because it's invalid." if fail
+  end
+
+  def self.setTrainerAce(*args)
+    fail = false
+    $PokemonTemp.orderData["hasAce"] = true
+    args.each_with_index do |a,i|
+      if !a.is_a?(Numeric) || $PokemonTemp.orderData["order#{2*i + 1}"]
+        fail = true
+        break
+      end
+      a = a.clamp(0,6)
+      $PokemonTemp.orderData["ace#{2*i + 1}"] = a
+    end
+    $PokemonTemp.orderData["hasAce"] = false if fail
+    p "The script did not accept the Trainer Ace Data because it's invalid." if fail
+  end
 end
 
 #------------------------------------------------------------------------------#
@@ -1169,12 +1324,22 @@ class PokeBattle_Scene
     end
   end
 
-  def pbHideOpponent(idxTrainer=1,filename=nil)
+  def pbShowOpponent(idxTrainer,priority=false)
     # Set up trainer appearing animation
-    disappearAnim = TrainerDisappearAnimation.new(@sprites,@viewport,idxTrainer,filename)
+    @sprites["trainer_#{idxTrainer+1}"].z = 200 if priority && @sprites["trainer_#{idxTrainer+1}"]
+    appearAnim = TrainerAppearAnimation.new(@sprites,@viewport,idxTrainer)
+    @animations.push(appearAnim)
+    # Play the animation
+    while inPartyAnimation?; pbUpdate; end
+  end
+
+  def pbHideOpponent(idxTrainer=1)
+    # Set up trainer disappearing animation
+    disappearAnim = TrainerDisappearAnimation.new(@sprites,@viewport,idxTrainer)
     @animations.push(disappearAnim)
     # Play the animation
     while inPartyAnimation?; pbUpdate; end
+    @sprites["trainer_#{idxTrainer+1}"].z = 7 + idxTrainer if @sprites["trainer_#{idxTrainer+1}"]
   end
 
   def disappearDatabox
@@ -1225,7 +1390,7 @@ class PokeBattle_Scene
 end
 
 class TrainerDisappearAnimation < PokeBattle_Animation
-  def initialize(sprites,viewport,idxTrainer,filename)
+  def initialize(sprites,viewport,idxTrainer)
     @idxTrainer = idxTrainer
     super(sprites,viewport)
   end
@@ -1350,6 +1515,7 @@ class PokemonTemp
   attr_accessor :dialogueData
   attr_accessor :dialogueDone
   attr_accessor :dialogueInstances
+  attr_accessor :orderData
 
   def dialogueData
     @dialogueData = {:DIAL=>false} if !@dialogueData
@@ -1364,6 +1530,11 @@ class PokemonTemp
   def dialogueInstances
     @dialogueInstances = {} if !@dialogueInstances
     return @dialogueInstances
+  end
+
+  def orderData
+    @orderData = {} if !@orderData
+    return @orderData
   end
 end
 $ShiftSwitch=false

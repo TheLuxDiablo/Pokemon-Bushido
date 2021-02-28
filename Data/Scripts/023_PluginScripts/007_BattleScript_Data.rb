@@ -426,6 +426,47 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
+      RivalBurn = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\pogWe meet in battle again, \\PN!")
+                    pbMessage("\\pogI've done a lot of growing since our last battle.")
+                    pbMessage("\\pogNow, prepare to be burned by the flames of my passion!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned!")
+                    end
+                    battle.scene.pbHideOpponent
+                  }
+      RivalLast = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\pogLooks like it's time to get serious!")
+                    pbMessage("\\pogGo #{battle.battlers[1].pokemon.speciesName}, unleash your burning passion!")
+                    pbMessage("\\pogRrraaaaaaahh!!!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+      TsukuIntro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rAlright! T-time for you to learn how strong b-bug Pokémon can really be!")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                  }
+      TsukuLast = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rW-wah! This isn't l-looking good!")
+                    pbMessage("\\rIt's time for defensive measures!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
       # Clan intros
       NenshoIntro1 = Proc.new{|battle|
                     battle.scene.appearBar
@@ -461,6 +502,95 @@ module DialogueModule
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                     battle.scene.pbHideOpponent
                   }
+      ShadowEvasion = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Looks like it's time to get serious!")
+                    pbMessage("Akui Clan Technique, Shadow Clones!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowEvasion = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You'll never be able to catch up to us!")
+                    pbMessage("Akui Clan Technique, Ninja Speed!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+    # Katana awakens
+    KatanaIntro = Proc.new{|battle|
+                  battle.scene.appearBar
+                  battle.scene.pbShowOpponent(0)
+                  pbMessage("Prepare to be destroyed, you honor-bound fool!")
+                  pbMessage("Take this!")
+                  battle.scene.disappearBar
+                  battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                  battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                  battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                  battle.scene.appearBar
+                  pbMessage("Akui Clan Technique, Ninja Speed!")
+                  battle.scene.disappearBar
+                  battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[1],battle.battlers[0])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                  battle.scene.pbHideOpponent
+                }
+    KatanaAwakens = Proc.new{|battle|
+                  battle.scene.appearBar
+                  battle.scene.pbShowOpponent(0)
+                  pbMessage("The Akui Clan shadow Pokémon are the strongest in the world!")
+                  pbMessage("Wait, what's going o-\\wtnp[20]")
+                  battle.scene.disappearBar
+                  viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
+                  viewport.z = 999999
+                  viewport.color = Color.new(243,243,99,100)
+                  pbSEPlay("shadowkatana")
+                  (Graphics.frame_rate/3).times do
+                    viewport.color.alpha += 255/(Graphics.frame_rate/3)
+                    Graphics.update
+                  end
+                  pbWait(20)
+                  (Graphics.frame_rate/3).times do
+                    viewport.color.alpha -= 255/(Graphics.frame_rate/3)
+                    Graphics.update
+                  end
+                  viewport.dispose
+                  pbMessage("You feel your father's energy flowing through the Ancient Katana...")
+                  pbMessage(".\\wtnp[18].\\wtnp[18].\\wtnp[18]")
+                  pbMessage("\\me[Conquest-LevelUpWarlord]The Ancient Katana transformed into the Katana of Light!")
+                  vRI("KATANALIGHT",1)
+                  if vHI("KATANABASIC")
+                    vDI("KATANABASIC")
+                  end
+                  pbMessage("You may now steal Shadow Pokémon from the Akui Clan!")
+                  pbMessage("\\xn[Shogun]\\PN! You must use the power of light to restore honor to the Aisho Region!")
+                  $game_switches[67]=true
+                  $game_switches[62]=true
+                  $PokemonGlobal.snagMachine=true
+                  viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
+                  viewport.z = 999999
+                  viewport.color = Color.new(243,243,99,100)
+                  pbSEPlay("shadowkatana")
+                  (Graphics.frame_rate/3).times do
+                    viewport.color.alpha += 255/(Graphics.frame_rate/3)
+                    Graphics.update
+                  end
+                  pbWait(20)
+                  (Graphics.frame_rate/3).times do
+                    viewport.color.alpha -= 255/(Graphics.frame_rate/3)
+                    Graphics.update
+                  end
+                  viewport.dispose
+                  battle.scene.appearBar
+                  pbMessage("What the heck was that flash of light!?")
+                  pbMessage("You better not be planning anything tricky! Trickery is for the Akui Clan only!")
+                  battle.scene.disappearBar
+                  battle.scene.pbHideOpponent
+                }
     # Sukiro quiz
      Sukiro1 = Proc.new{|battle|
                     battle.scene.appearBar

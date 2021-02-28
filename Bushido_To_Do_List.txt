@@ -75,26 +75,16 @@ KATANA FUNCTIONALITY
 
 raise tree priority, since rustle grass was on top
 toxic spikes animations
-add more MBD to Akui clan, maybe raise evasion with ninja skills or something
-Ditto check for shadow pokemon
 cant interact with berries on first try
 MBD for all the tournament trainers
-add Tsuku battle intro
-Add new battle music to Tsuku fight
-Make Yakeru throw out Darumaka last, and have a new line of MBD with power up
+
+
 Make Razor Shell attack anim use Cut anim, but Blue
-Update Yakeru second battle dialogue, to not just be hashimoto clan stuff
-Prepare for next battle! Dialogue at the end of the tournament. REMOVE THAT
-Have Shogun give us a few great balls
-Unlock snagmachine through Akui fight MBD
 Make Akui dialogue change if we dont catch their pokemon vs if we do
-add turn down for yakeru and player when Sukiro enters
-Also make Akui grunts run a couple more to the right before disappearing, and add SFX
 ADD big purple slash anim when corrupt style is used
 Make Admin reference the superiority of Shadow pokemon
-shogun should say go south
 make dialogue reference needing to pray at the various shrines
-
+fix pokeball icon on enemy wild
 
 
 Things done:

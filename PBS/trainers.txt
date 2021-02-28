@@ -180,6 +180,13 @@ LoseText = "Hmph. You can't the stop the great Akui Clan!"
 Pokemon = POOCHYENA,7
     Shadow = yes
 #-------------------------------
+[AKUICLAN_M,Test2]
+LoseText = "Hmph. You can't the stop the great Akui Clan!"
+Pokemon = TOXEL,14
+Pokemon = GIBLE,15
+Pokemon = NICKIT,15
+    Shadow = yes
+#-------------------------------
 [AKUICLAN_M,Taki]
 LoseText = "Hmph. You can't the stop the great Akui Clan!"
 Pokemon = SANDILE,7
@@ -193,31 +200,31 @@ Pokemon = NICKIT,8
     Shadow = yes
 #-------------------------------
 [KAYOKO,Kayoko]
-LoseText = "Thank you for this fight. I will continue to grow under my clan."
+LoseText = "Thank you for this fight. I will try continue to grow as a Kenshi."
 Pokemon = CARVANHA,11
 Pokemon = STUFFUL,12
 Pokemon = RALTS,13
 #-------------------------------
 [TSUKU,Tsuku]
-LoseText = "W- wow! You're really strong."
+LoseText = "W- wow! You're pretty g- good..."
 Pokemon = SPEWPA,13
 Pokemon = SEWADDLE,13
 Pokemon = NINCADA,14
 #-------------------------------
 [RIVALBUSHIDO_M,Yakeru,2]
-LoseText = "The Hashimoto family will not lose to you!"
+LoseText = "Wow, you really are strong! I'm glad to have a rival like you to test my strength!"
 Pokemon = FLETCHLING,14
 Pokemon = TOGEPI,14
 Pokemon = DARUMAKA,15
 #-------------------------------
 [RIVALBUSHIDO_F,Akane,2]
-LoseText = "The Hashimoto family will not lose to you!"
+LoseText = "Wow, you really are strong! I'm glad to have a rival like you to test my strength!"
 Pokemon = FLETCHLING,14
 Pokemon = TOGEPI,14
 Pokemon = DARUMAKA,15
 #-------------------------------
 [AKUICLAN_F,Kumiko,2]
-LoseText = "...Tch."
+LoseText = "What! How did you do that?"
 Pokemon = TOXEL,14
 Pokemon = GIBLE,15
 Pokemon = NICKIT,15
