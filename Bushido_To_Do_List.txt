@@ -63,9 +63,13 @@ make all shadow pokemon and OWs
 
 
 
+
+PLAYTEST UP TO THE TOURNAMENT
 set up komorei grunts with placeholder sprites for battles
-fix issue where follower doesnt update when changing pokemon
+set up komorei battle dialogue
 fix issue with key item SFX for katana get
+KATANA FUNCTIONALITY
+
 
 
 
