@@ -328,13 +328,13 @@ ItemHandlers::UseInField.add(:COINCASE,proc { |item|
 
 ItemHandlers::UseInField.add(:EXPALL,proc { |item|
   $PokemonBag.pbChangeItem(:EXPALL,:EXPALLOFF)
-  pbMessage(_INTL("The Exp Share was turned off."))
+  pbMessage(_INTL("Ryo's Charm was disabled."))
   next 1
 })
 
 ItemHandlers::UseInField.add(:EXPALLOFF,proc { |item|
   $PokemonBag.pbChangeItem(:EXPALLOFF,:EXPALL)
-  pbMessage(_INTL("The Exp Share was turned on."))
+  pbMessage(_INTL("Ryo's Charm was enabled."))
   next 1
 })
 

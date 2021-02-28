@@ -71,6 +71,9 @@ fix issue with key item SFX for katana get
 KATANA FUNCTIONALITY
 
 
+add explanation for affinity question when wrong
+
+
 
 
 Things done:
