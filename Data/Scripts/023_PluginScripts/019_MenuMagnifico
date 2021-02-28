@@ -1,3 +1,4 @@
+=begin
 class PokeSelectionPlaceholderSprite < SpriteWrapper
   attr_accessor :text
 
@@ -831,13 +832,47 @@ class PokemonPartyScreen
     return @scene.pbDisplayConfirm(text)
   end
 
-  def pbSwitch(oldid,newid)
-    if oldid!=newid
-      @scene.pbSwitchBegin(oldid,newid)
-      tmp=@party[oldid]
-      @party[oldid]=@party[newid]
-      @party[newid]=tmp
-      @scene.pbSwitchEnd(oldid,newid)
+  def pbSwitchBegin(oldid,newid)
+    pbSEPlay("GUI party switch")
+    oldsprite = @sprites["pokemon#{oldid}"]
+    newsprite = @sprites["pokemon#{newid}"]
+    timeTaken = Graphics.frame_rate*4/10
+    distancePerFrame = (Graphics.width/(2.0*timeTaken)).ceil
+    timeTaken.times do
+      oldsprite.x += (oldid&1)==0 ? -distancePerFrame : distancePerFrame
+      newsprite.x += (newid&1)==0 ? -distancePerFrame : distancePerFrame
+      Graphics.update
+      Input.update
+      self.update
+    end
+  end
+
+  def pbSwitchEnd(oldid,newid)
+    pbSEPlay("GUI party switch")
+    oldsprite = @sprites["pokemon#{oldid}"]
+    newsprite = @sprites["pokemon#{newid}"]
+    oldsprite.pokemon = @party[oldid]
+    newsprite.pokemon = @party[newid]
+    timeTaken = Graphics.frame_rate*4/10
+    distancePerFrame = (Graphics.width/(2.0*timeTaken)).ceil
+    timeTaken.times do
+      oldsprite.x -= (oldid&1)==0 ? -distancePerFrame : distancePerFrame
+      newsprite.x -= (newid&1)==0 ? -distancePerFrame : distancePerFrame
+      Graphics.update
+      Input.update
+      self.update
+    end
+    for i in 0...6
+      @sprites["pokemon#{i}"].preselected = false
+      @sprites["pokemon#{i}"].switching   = false
+    end
+    pbRefresh
+  end
+
+  def pbClearSwitching
+    for i in 0...6
+      @sprites["pokemon#{i}"].preselected = false
+      @sprites["pokemon#{i}"].switching   = false
     end
   end
 
@@ -1973,3 +2008,4 @@ end
     return nil
   end
 end
+=end
