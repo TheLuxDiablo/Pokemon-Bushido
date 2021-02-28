@@ -514,17 +514,20 @@ module DialogueModule
                     cmd= pbMessage("What determines the clan that a Kenshi will join?",["Affinity","Money","Family"],0,nil,0)
                     if cmd == 0
                       pbMessage("\\se[SwShCorrect]Well done, \\PN!")
+                      pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
                       battle.battlers[0].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[0])
                     elsif cmd == 1
                       pbMessage("\\se[SwShIncorrect]That is incorrect!")
                       pbMessage("It would be incredibly shameful for a Kenshi to attempt to buy their way into a clan!")
+                      pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
                       battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
                     else
                       pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
+                      pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
                       battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
