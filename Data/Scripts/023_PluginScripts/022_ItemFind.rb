@@ -184,16 +184,41 @@ def pbReceiveItem(item, quantity = 1)
   else
     scene = false
   end
-  if isConst?(item, PBItems, :LEFTOVERS) || pbGetPocket(item) == 6
-    pbMessage(_INTL("\\me[{1}]You obtained some "+ ((scene && scene.smallShow)? "\\n" : "") + "\\c[1]{2}!\\wtnp[30]", meName, itemname))
-  elsif pbIsMachine?(item) # TM or HM
-    pbMessage(_INTL("\\me[{1}]You obtained "+ ((scene && scene.smallShow)? "\\n" : "") + "\\c[1]{2} {3}!\\wtnp[30]", meName, itemname,  PBMoves.getName(pbGetMachine(item))))
-  elsif quantity > 1
-    pbMessage(_INTL("\\me[{1}]You obtained {2} "+ ((scene && scene.smallShow)? "\\n" : "") + "\\c[1]{3}!\\wtnp[30]", meName, quantity ,itemname))
-  elsif ["a", "e", "i", "o", "u"].include?(itemname[0, 1].downcase)
-    pbMessage(_INTL("\\me[{1}]You obtained an "+ ((scene && scene.smallShow)? "\\n" : "") + "\\c[1]{2}!\\wtnp[30]", meName, itemname))
+  if isConst?(item,PBItems,:LEFTOVERS)
+    pbMessage(_INTL("\\me[{1}]You obtained some \\c[1]{2}\\c[0]!\\wtnp[30]",meName,itemname))
+  elsif isConst?(item,PBItems,:KATANABASIC)
+    pbMessage(_INTL("You obtained the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+  elsif isConst?(item,PBItems,:SUKIROLETTER)
+    pbMessage(_INTL("You obtained \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+    pbMessage(_INTL("This letter can be used to get into the Kenshi Tournament!",itemname))
+  elsif isConst?(item,PBItems,:KATANALIGHT)
+    pbMessage(_INTL("You obtained the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+    pbMessage(_INTL("In its weakest form, the \\c[1]{1}\\c[0] can heal Pokémon and show an overview of the Aisho Region.",itemname))
+  elsif isConst?(item,PBItems,:KATANALIGHT2)
+    pbMessage(_INTL("You learned the Solid Strike style for the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+    pbMessage(_INTL("You can now slice through rocks by utlizing a strong stance and resolute slice!"))
+  elsif isConst?(item,PBItems,:KATANALIGHT3)
+    pbMessage(_INTL("You learned the Wind Blade style for the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+    pbMessage(_INTL("The \\c[1]{1}\\c[0] can now slice through small trees with the Wind Blade technique!",itemname))
+    pbMessage(_INTL("It can now also summon a small vortex of wind energy, allowing you to fly to previous locations!"))
+  elsif isConst?(item,PBItems,:KATANALIGHT4)
+    pbMessage(_INTL("You learned the Water Weave style for the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+    pbMessage(_INTL("The \\c[1]{1}\\c[0] can now control the flow of water, allowing you to easily swim!",itemname))
+  elsif isConst?(item,PBItems,:KATANALIGHT5)
+    pbMessage(_INTL("You learned the final technique for the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+    pbMessage(_INTL("The Light Blade can open the hearts of Shadow Pokémon!"))
+    pbMessage(_INTL("It can also illuminate dark maps, and banish the shadow fog in Nagisa Bay!"))
+  elsif isConst?(item,PBItems,:KOMOREILEAF) || isConst?(item,PBItems,:NENSHOLEAF) ||
+        isConst?(item,PBItems,:SHIMIZULEAF) || isConst?(item,PBItems,:MAPLELEAF)
+    pbMessage(_INTL("You found a \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+  elsif pbIsMachine?(item)   # TM or HM
+    pbMessage(_INTL("\\me[{1}]You obtained \\c[1]{2} {3}\\c[0]!\\wtnp[30]",meName,itemname,PBMoves.getName(pbGetMachine(item))))
+  elsif quantity>1
+    pbMessage(_INTL("\\me[{1}]You obtained {2} \\c[1]{3}\\c[0]!\\wtnp[30]",meName,quantity,itemname))
+  elsif itemname.starts_with_vowel?
+    pbMessage(_INTL("\\me[{1}]You obtained an \\c[1]{2}\\c[0]!\\wtnp[30]",meName,itemname))
   else
-    pbMessage(_INTL("\\me[{1}]You obtained a "+ ((scene && scene.smallShow)? "\\n" : "") + "\\c[1]{2}!\\wtnp[30]", meName, itemname))
+    pbMessage(_INTL("\\me[{1}]You obtained a \\c[1]{2}\\c[0]!\\wtnp[30]",meName,itemname))
   end
   if $PokemonBag.pbStoreItem(item, quantity) # If item can be picked up
     pbMessage(_INTL("You put the {1} away in \\nthe <icon=bagPocket{2}>\\c[1]{3} Pocket.",
