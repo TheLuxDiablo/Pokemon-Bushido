@@ -435,9 +435,9 @@ class PokemonSummary_Scene
       textpos.push([@pokemon.exp.to_s_formatted,488,272,1,Color.new(64,64,64),Color.new(176,176,176)])
       textpos.push([_INTL("To Next Lv."),238,304,0,base,shadow])
       textpos.push([(endexp-@pokemon.exp).to_s_formatted,488,336,1,Color.new(64,64,64),Color.new(176,176,176)])
-      textpos.push([_INTL("Lv."),10,92,0,base,shadow])
     end
     # Draw all text
+    textpos.push([_INTL("Lv."),10,92,0,base,shadow])
     pbDrawTextPositions(overlay,textpos)
     # Draw Pokémon type(s)
     type1rect = Rect.new(0,@pokemon.type1*28,64,28)
