@@ -837,5 +837,5 @@
 810,TIMEFLUTE,Time Flute,Time Flutes,2,200,"A mystical flute that can completely open the heart of a Shadow Pokémon.",1,1,0,
 811,MAPLELEAF,Maple Leaf,Maple Leaves,6,0,"Special leaves that fall around the Aisho Region. Collect these to unlock secrets.",0,0,8,
 812,JAM4,Max Jam,Max Jams,2,2200,"The perfect recovery jam. It completely restores the HP of one Pokémon.",1,1,0,
-813,EXPALL,Ryo's Charm,Ryo's Charms,8,0,"A special charm from the Royal Samurai Ryo. Currently ON. All Pokémon in the party gain experience from battles when On.",2,0,6,
-814,EXPALLOFF,Ryo's Charm (Off),Ryo's Charms (Off),8,0,"A special charm from the Royal Samurai Ryo. Currently OFF. All Pokémon in the party gain experience from battles when On.",2,0,6,
+813,EXPALL,Ryo's Charm,Ryo's Charms,8,0,"A special charm from the Royal Samurai. All Pokémon in the party gain experience from battles when On.",2,0,6,
+814,EXPALLOFF,Ryo's Charm (Off),Ryo's Charms (Off),8,0,"A special charm from the Royal Samurai. All Pokémon in the party gain experience from battles when On.",2,0,6,

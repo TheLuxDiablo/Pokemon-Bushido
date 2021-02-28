@@ -305,13 +305,13 @@ if USING_CUT_ITEM
 
   def pbCut
     if !$PokemonBag.pbHasItem?(CUT_ITEM) && !$DEBUG
-      pbMessage(_INTL("This tree looks like it can be cut down by a skilled warrior who has mastered the Wind Blade technique."))
+      pbMessage(_INTL("This tree looks like it can be cut down by a skilled warrior with a Katana."))
       return false
     end
-    pbMessage(_INTL("This tree looks like it can be cut down by a master of the Wind Blade technique!\1"))
+    pbMessage(_INTL("This tree looks like it can be cut down by a skilled warrior with a Katana.\1"))
     if pbConfirmMessage(_INTL("Would you like to cut it down?"))
       itemname = PBItems.getName(getConst(PBItems,CUT_ITEM))
-      pbMessage(_INTL("{1} used the {2}, Wind Blade!",$Trainer.name,itemname))
+      pbMessage(_INTL("{1} used the {2}!",$Trainer.name,itemname))
       pbKatanaMoveAnimation(2)
       pbSmashEvent($game_player.pbFacingEvent)
       return true

@@ -24,7 +24,7 @@ if defined?(PluginManager)
 else
   raise "This script is only compatible with Essentials v18.x!"
 end
-File.runScript("Data/Plugins/MODMN.rxdata")
+#File.runScript("Data/Plugins/MODMN.rxdata")
 #-------------------------------------------------------------------------------
 #  Your own entries for the pause menu
 #
