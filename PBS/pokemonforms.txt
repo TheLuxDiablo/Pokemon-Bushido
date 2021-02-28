@@ -232,9 +232,11 @@ Height = 0.7
 Weight = 21.0
 Color = Brown
 Pokedex = It uses psychokinesis to control electricity. It hops aboard its own tail, using psychic power to lift the tail and move about while riding it.
+BattlerPlayerX = 0
 BattlerPlayerY = 64
 BattlerEnemyX = 0
 BattlerEnemyY = 18
+BattlerShadowSize = 2
 #-------------------------------
 [SANDSHREW,1]
 FormName = Alolan
@@ -452,10 +454,9 @@ Abilities = GLUTTONY,OWNTEMPO
 Moves = 1,TACKLE,1,CURSE,3,GROWL,6,ACID,9,YAWN,12,CONFUSION,15,DISABLE,18,WATERPULSE,21,HEADBUTT,24,ZENHEADBUTT,27,AMNESIA,30,SURF,33,SLACKOFF,36,PSYCHIC,39,PSYCHUP,42,RAINDANCE,45,HEALPULSE
 EggMoves = BELCH,BELLYDRUM,BLOCK,STOMP
 Pokedex = Because Galarian Slowpoke eat the seeds of a plant that grows only in Galar, their tails have developed a spicy flavor.
-BattlerPlayerY = 70
+BattlerPlayerY = 57
 BattlerEnemyX = 0
-BattlerEnemyY = 38
-BattlerShadowSize = 2
+BattlerEnemyY = 40
 Evolutions = SLOWKING,Item,GALARICAWREATH,SLOWKING,Item,GALARICAWREATH
 #-------------------------------
 [SLOWBRO,1]
@@ -468,10 +469,10 @@ Moves = 0,SHELLSIDEARM,1,SHELLSIDEARM,1,WITHDRAW,1,TACKLE,1,CURSE,1,GROWL,1,ACID
 Weight = 70.5
 Shape = 4
 Pokedex = If this Pokémon squeezes the tongue of the Shellder biting it, the Shellder will launch a toxic liquid from the tip of its shell.
-BattlerPlayerY = 68
-BattlerEnemyX = 0
-BattlerEnemyY = 22
-BattlerShadowSize = 2
+BattlerPlayerY = 35
+BattlerEnemyX = 1
+BattlerEnemyY = 21
+BattlerShadowX = -1
 #-------------------------------
 [SLOWBRO,2]
 FormName = Mega Slowbro
@@ -500,7 +501,7 @@ Weight = 42.0
 Pokedex = The stalks of leeks are thicker and longer in the Galar region. Farfetch'd that adapted to these stalks took on a unique form.
 WildItemCommon = LEEK
 BattlerPlayerX = -13
-BattlerPlayerY = 45
+BattlerPlayerY = 41
 BattlerEnemyX = -1
 BattlerEnemyY = 28
 BattlerShadowX = -9
@@ -707,8 +708,12 @@ Pokedex = Despite its diminished size, its mental power has grown phenomenally. 
 #-------------------------------
 [PICHU,1]
 FormName = Spiky-Eared
+BattlerPlayerX = 0
 BattlerPlayerY = 80
+BattlerEnemyX = 0
 BattlerEnemyY = 48
+BattlerShadowX = 0
+BattlerShadowSize = 2
 Evolutions = PIKACHU,None,
 #-------------------------------
 [AMPHAROS,1]
@@ -1028,6 +1033,7 @@ MegaStone = MEDICHAMITE
 BaseStats = 60,100,85,100,80,85
 HiddenAbility = PUREPOWER
 BattlerPlayerY = 59
+BattlerEnemyX = 0
 BattlerEnemyY = 15
 #-------------------------------
 [MANECTRIC,1]
@@ -1268,6 +1274,7 @@ BattlerPlayerY = 71
 FormName = Sunshine Form
 Color = Pink
 BattlerPlayerY = 64
+BattlerEnemyX = 0
 BattlerEnemyY = 33
 #-------------------------------
 [SHELLOS,1]
@@ -1503,6 +1510,10 @@ Height = 0.7
 Weight = 40.0
 Color = White
 Pokedex = The colder they get, the more energetic they are. They freeze their breath to make snowballs, using them as ammo for playful snowball fights.
+BattlerPlayerY = 66
+BattlerEnemyX = 0
+BattlerShadowX = 0
+BattlerShadowSize = 2
 Evolutions = DARMANITAN,Item,ICESTONE
 #-------------------------------
 [DARMANITAN,1]
@@ -1515,6 +1526,11 @@ Height = 1.7
 Weight = 120.0
 Color = White
 Pokedex = Though it has a gentle disposition, it's also very strong. It will quickly freeze the snowball on its head before going for a headbutt.
+BattlerPlayerY = 71
+BattlerEnemyX = 0
+BattlerEnemyY = 22
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [DARMANITAN,2]
 FormName = Zen Mode
@@ -1525,7 +1541,10 @@ EffortPoints = 0,0,0,0,2,0
 Color = Blue
 Pokedex = When wounded, it stops moving. It goes as still as stone to meditate, sharpening its mind and spirit.
 BattlerPlayerY = 65
+BattlerEnemyX = 0
 BattlerEnemyY = 33
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [DARMANITAN,3]
 FormName = Galarian Zen Mode
@@ -1536,7 +1555,10 @@ EffortPoints = 0,0,0,0,2,0
 Color = White
 Pokedex = Darmanitan takes this form when enraged. It won't stop spewing flames until its rage has settled, even if its body starts to melt.
 BattlerPlayerY = 62
+BattlerEnemyX = 0
 BattlerEnemyY = 30
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [YAMASK,1]
 FormName = Galarian
@@ -1556,23 +1578,59 @@ Evolutions = RUNERIGUS,DamageDone,49
 [DEERLING,1]
 FormName = Summer Form
 Color = Green
+BattlerPlayerX = 2
+BattlerPlayerY = 40
+BattlerEnemyX = -6
+BattlerEnemyY = 28
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [DEERLING,2]
 FormName = Autumn Form
 Color = Red
+BattlerPlayerX = 2
+BattlerPlayerY = 40
+BattlerEnemyX = -6
+BattlerEnemyY = 28
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [DEERLING,3]
 FormName = Winter Form
 Color = Brown
+BattlerPlayerX = 2
+BattlerPlayerY = 40
+BattlerEnemyX = -6
+BattlerEnemyY = 28
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [SAWSBUCK,1]
 FormName = Summer Form
+BattlerPlayerX = 2
+BattlerPlayerY = 15
+BattlerEnemyX = -3
+BattlerEnemyY = 14
+BattlerShadowX = 0
+BattlerShadowSize = 3
 #-------------------------------
 [SAWSBUCK,2]
 FormName = Autumn Form
+BattlerPlayerX = 2
+BattlerPlayerY = 15
+BattlerEnemyX = -3
+BattlerEnemyY = 14
+BattlerShadowX = 0
+BattlerShadowSize = 3
 #-------------------------------
 [SAWSBUCK,3]
 FormName = Winter Form
+BattlerPlayerX = 2
+BattlerPlayerY = 15
+BattlerEnemyX = -3
+BattlerEnemyY = 14
+BattlerShadowX = 0
+BattlerShadowSize = 3
 #-------------------------------
 [STUNFISK,1]
 FormName = Galarian
@@ -1761,27 +1819,71 @@ FormName = Poké Ball Pattern
 #-------------------------------
 [FLABEBE,1]
 FormName = Yellow Flower
+BattlerPlayerX = 2
+BattlerPlayerY = 37
+BattlerEnemyX = -1
+BattlerEnemyY = 28
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [FLABEBE,2]
 FormName = Orange Flower
+BattlerPlayerX = 2
+BattlerPlayerY = 37
+BattlerEnemyX = -1
+BattlerEnemyY = 28
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [FLABEBE,3]
 FormName = Blue Flower
+BattlerPlayerX = 2
+BattlerPlayerY = 37
+BattlerEnemyX = -1
+BattlerEnemyY = 28
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [FLABEBE,4]
 FormName = White Flower
+BattlerPlayerX = 2
+BattlerPlayerY = 37
+BattlerEnemyX = -1
+BattlerEnemyY = 28
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [FLOETTE,1]
 FormName = Yellow Flower
+BattlerPlayerX = 1
+BattlerPlayerY = 20
+BattlerEnemyX = 1
+BattlerEnemyY = 16
+BattlerShadowX = 0
 #-------------------------------
 [FLOETTE,2]
 FormName = Orange Flower
+BattlerPlayerX = 1
+BattlerPlayerY = 20
+BattlerEnemyX = 1
+BattlerEnemyY = 16
+BattlerShadowX = 0
 #-------------------------------
 [FLOETTE,3]
 FormName = Blue Flower
+BattlerPlayerX = 1
+BattlerPlayerY = 20
+BattlerEnemyX = 1
+BattlerEnemyY = 16
+BattlerShadowX = 0
 #-------------------------------
 [FLOETTE,4]
 FormName = White Flower
+BattlerPlayerX = 1
+BattlerPlayerY = 20
+BattlerEnemyX = 1
+BattlerEnemyY = 16
+BattlerShadowX = 0
 #-------------------------------
 [FLOETTE,5]
 FormName = Eternal Flower
@@ -1790,19 +1892,34 @@ BaseEXP = 243
 Moves = 1,TACKLE,1,VINEWHIP,1,FAIRYWIND,6,FAIRYWIND,10,LUCKYCHANT,15,RAZORLEAF,20,WISH,25,MAGICALLEAF,27,GRASSYTERRAIN,33,PETALBLIZZARD,38,AROMATHERAPY,43,MISTYTERRAIN,46,MOONBLAST,50,LIGHTOFRUIN,51,PETALDANCE,58,SOLARBEAM
 Compatibility = Undiscovered
 Pokedex = The flower it's holding can no longer be found blooming anywhere. It's also thought to contain terrifying power.
+BattlerPlayerY = 67
+BattlerEnemyX = 0
+BattlerShadowX = 0
 Evolutions = FLORGES,None,
 #-------------------------------
 [FLORGES,1]
 FormName = Yellow Flower
+BattlerPlayerX = 3
+BattlerPlayerY = 14
+BattlerEnemyX = -2
 #-------------------------------
 [FLORGES,2]
 FormName = Orange Flower
+BattlerPlayerX = 3
+BattlerPlayerY = 14
+BattlerEnemyX = -2
 #-------------------------------
 [FLORGES,3]
 FormName = Blue Flower
+BattlerPlayerX = 3
+BattlerPlayerY = 14
+BattlerEnemyX = -2
 #-------------------------------
 [FLORGES,4]
 FormName = White Flower
+BattlerPlayerX = 3
+BattlerPlayerY = 14
+BattlerEnemyX = -2
 #-------------------------------
 [FURFROU,1]
 FormName = Heart Trim
@@ -2522,7 +2639,6 @@ BattlerPlayerX = -1
 BattlerPlayerY = 45
 BattlerEnemyX = -1
 BattlerShadowX = -5
-BattlerShadowSize = 1
 #-------------------------------
 [GROVYLE,1]
 FormName = Aisho
@@ -2535,9 +2651,9 @@ HiddenAbility = MOXIE
 Moves = 0,PAYBACK,1,POUND,1,LEER,1,SANDATTACK,1,ARMTHRUST,1,KARATECHOP,5,SANDATTACK,8,ARMTHRUST,10,WORKUP,13,FORCEPALM,18,PURSUIT,23,DARKPULSE,28,CALMMIND,33,REVERSAL,38,SCARYFACE,43,UTURN,48,PARTINGSHOT,53,FINALGAMBIT,58,GIGAIMPACT,63,AURASPHERE
 EggMoves = BULLETPUNCH,COUNTER,FEINT,HELPINGHAND,KNOCKOFF,SEISMICTOSS,VITALTHROW,WAKEUPSLAP
 Pokedex = Many martial arts teachers use Grovyle as sparring partners to teach the young. Grovyle are natural leaders and teachers.
+BattlerPlayerX = 0
 BattlerPlayerY = 44
 BattlerEnemyX = -4
-BattlerEnemyY = 24
 BattlerShadowX = -3
 #-------------------------------
 [SCEPTILE,1]
@@ -2567,7 +2683,5 @@ Moves = 1,TACKLE,1,HARDEN,5,TAILWHIP,7,BULLETPUNCH,11,METALSOUND,13,ROCKTOMB,17,
 EggMoves = BULLETPUNCH,COUNTER,FEINT,HELPINGHAND
 Pokedex = They spend their time training in the wild for hours on end. The bands on their wrist represent their mastery of fighting.
 BattlerPlayerY = 50
-BattlerEnemyX = -1
 BattlerEnemyY = 31
 BattlerShadowX = -1
-BattlerShadowSize = 1
