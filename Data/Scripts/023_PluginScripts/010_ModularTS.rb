@@ -76,7 +76,7 @@ MTS_MODIFIERS = [
 #-------------------------------------------------------------------------------
 #                  V V     add your modifiers in here     V V
 #-------------------------------------------------------------------------------
-"background:rainbow", "logo:sparkle", "overlay5","effect5", "bgm:title_hgss","logoX:260","logoY:286"
+"background:backgroundbushido", "overlay5", "bgm:title_hgss","logoX:260","logoY:286"
 
 ] # end of config constant
 #-------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ MTS_MODIFIERS = [
 # Config used for determining the cry of species to play, along with displaying
 # a certain Pokemon sprite if applicable. Leave it as nil in order not to play
 # a species cry, otherwise set as either a symbolic or numeric value
-MTS_SPECIES = :KELDEO
+MTS_SPECIES = :COBALION
 # Applies a form to Pokemon species
 MTS_SPECIES_FORM = 0
 # Applies female form
