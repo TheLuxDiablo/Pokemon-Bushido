@@ -161,19 +161,19 @@ Pokemon = SNIVY,5
 #-------------------------------
 [KENSHI_F,Saki]
 LoseText = "You fight with great honor. Well done!"
-Pokemon = CHERUBI,4
-Pokemon = SNIVY,5
+Pokemon = CHERUBI,5
+Pokemon = SNIVY,6
 #-------------------------------
 [KENSHI_M,Tojiro]
 LoseText = "Impressive! You're quite a strong Kenshi!"
-Pokemon = FARFETCHD,5
-Pokemon = PURRLOIN,6
+Pokemon = FARFETCHD,6
+Pokemon = PURRLOIN,7
 #-------------------------------
 [KENSHI_F,Akeno]
 LoseText = "Whaaa! Now I'm seeing red!"
-Pokemon = FOMANTIS,8
-Pokemon = BUNEARY,8
-Pokemon = PANCHAM,9
+Pokemon = FOMANTIS,9
+Pokemon = BUNEARY,9
+Pokemon = PANCHAM,10
 #-------------------------------
 [AKUICLAN_M,Test]
 LoseText = "Hmph. You can't the stop the great Akui Clan!"
@@ -183,42 +183,42 @@ Pokemon = POOCHYENA,7
 [AKUICLAN_M,Taki]
 LoseText = "Hmph. You can't the stop the great Akui Clan!"
 Pokemon = SANDILE,7
-Pokemon = POOCHYENA,7
+Pokemon = POOCHYENA,8
     Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Kumiko]
 LoseText = "Tch. The boss isn't gonna be pleased with this."
-Pokemon = TOXEL,8
+Pokemon = TOXEL,7
 Pokemon = NICKIT,8
     Shadow = yes
 #-------------------------------
 [KAYOKO,Kayoko]
 LoseText = "Thank you for this fight. I will continue to grow under my clan."
-Pokemon = CARVANHA,8
-Pokemon = STUFFUL,8
-Pokemon = RALTS,9
+Pokemon = CARVANHA,11
+Pokemon = STUFFUL,12
+Pokemon = RALTS,13
 #-------------------------------
 [TSUKU,Tsuku]
 LoseText = "W- wow! You're really strong."
-Pokemon = SPEWPA,9
-Pokemon = SEWADDLE,9
-Pokemon = NINCADA,10
+Pokemon = SPEWPA,13
+Pokemon = SEWADDLE,13
+Pokemon = NINCADA,14
 #-------------------------------
 [RIVALBUSHIDO_M,Yakeru,2]
 LoseText = "The Hashimoto family will not lose to you!"
-Pokemon = FLETCHLING,10
-Pokemon = TOGEPI,10
-Pokemon = DARUMAKA,11
+Pokemon = FLETCHLING,14
+Pokemon = TOGEPI,14
+Pokemon = DARUMAKA,15
 #-------------------------------
 [RIVALBUSHIDO_F,Akane,2]
 LoseText = "The Hashimoto family will not lose to you!"
-Pokemon = FLETCHLING,10
-Pokemon = TOGEPI,10
-Pokemon = DARUMAKA,11
+Pokemon = FLETCHLING,14
+Pokemon = TOGEPI,14
+Pokemon = DARUMAKA,15
 #-------------------------------
 [AKUICLAN_F,Kumiko,2]
 LoseText = "...Tch."
-Pokemon = TOXEL,11
-Pokemon = GIBLE,11
-Pokemon = NICKIT,12
+Pokemon = TOXEL,14
+Pokemon = GIBLE,15
+Pokemon = NICKIT,15
     Shadow = yes

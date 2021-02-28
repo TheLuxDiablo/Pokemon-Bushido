@@ -71,7 +71,7 @@ fix issue with key item SFX for katana get
 KATANA FUNCTIONALITY
 
 
-add explanation for affinity question when wrong
+raise tree priority, since rustle grass was on top
 
 
 
