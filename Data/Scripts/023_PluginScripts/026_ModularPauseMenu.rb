@@ -35,35 +35,6 @@ end
 #    # when the entry in the menu is selected
 #  },proc{ # code to check if menu entry is available })
 #-------------------------------------------------------------------------------
-# PokeDex
-MenuHandlers.addEntry(:POKEDEX,_INTL("Journal"),"menuPokedex",proc{|menu|
-  if USE_CURRENT_REGION_DEX
-    pbFadeOutIn(99999){
-      scene = PokemonPokedex_Scene.new
-      screen = PokemonPokedexScreen.new(scene)
-      screen.pbStartScreen
-      menu.refresh
-    }
-  else
-    if $PokemonGlobal.pokedexViable.length==1
-      $PokemonGlobal.pokedexDex = $PokemonGlobal.pokedexViable[0]
-      $PokemonGlobal.pokedexDex = -1 if $PokemonGlobal.pokedexDex==$PokemonGlobal.pokedexUnlocked.length-1
-      pbFadeOutIn(99999){
-        scene = PokemonPokedex_Scene.new
-        screen = PokemonPokedexScreen.new(scene)
-        screen.pbStartScreen
-        menu.refresh
-      }
-    else
-      pbFadeOutIn(99999){
-        scene = PokemonPokedexMenu_Scene.new
-        screen = PokemonPokedexMenuScreen.new(scene)
-        screen.pbStartScreen
-        menu.refresh
-      }
-    end
-  end
-},proc{ return $Trainer.pokedex && $PokemonGlobal.pokedexViable.length > 0 })
 # Party Screen
 MenuHandlers.addEntry(:POKEMON,_INTL("Pokémon"),"menuPokemon",proc{|menu|
   sscene = PokemonParty_Scene.new
@@ -128,6 +99,35 @@ MenuHandlers.addEntry(:SAVE,_INTL("Save"),"menuSave",proc{|menu|
     menu.close = false
   end
 },proc{ return !$game_system || !$game_system.save_disabled && !(pbInSafari? || pbInBugContest?)})
+# PokeDex
+MenuHandlers.addEntry(:POKEDEX,_INTL("Journal"),"menuPokedex",proc{|menu|
+  if USE_CURRENT_REGION_DEX
+    pbFadeOutIn(99999){
+      scene = PokemonPokedex_Scene.new
+      screen = PokemonPokedexScreen.new(scene)
+      screen.pbStartScreen
+      menu.refresh
+    }
+  else
+    if $PokemonGlobal.pokedexViable.length==1
+      $PokemonGlobal.pokedexDex = $PokemonGlobal.pokedexViable[0]
+      $PokemonGlobal.pokedexDex = -1 if $PokemonGlobal.pokedexDex==$PokemonGlobal.pokedexUnlocked.length-1
+      pbFadeOutIn(99999){
+        scene = PokemonPokedex_Scene.new
+        screen = PokemonPokedexScreen.new(scene)
+        screen.pbStartScreen
+        menu.refresh
+      }
+    else
+      pbFadeOutIn(99999){
+        scene = PokemonPokedexMenu_Scene.new
+        screen = PokemonPokedexMenuScreen.new(scene)
+        screen.pbStartScreen
+        menu.refresh
+      }
+    end
+  end
+},proc{ return $Trainer.pokedex && $PokemonGlobal.pokedexViable.length > 0 })
 # Quit Safari-Zone
 MenuHandlers.addEntry(:QUIT,_INTL("\\contest"),"menuQuit",proc{|menu|
   if pbInSafari?

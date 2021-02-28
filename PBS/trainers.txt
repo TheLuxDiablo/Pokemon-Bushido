@@ -229,3 +229,8 @@ Pokemon = TOXEL,14
 Pokemon = GIBLE,15
 Pokemon = NICKIT,15
     Shadow = yes
+#-------------------------------
+[KENSHI_M,Shota]
+LoseText = "Even though I challenged you, I still lost..."
+Pokemon = FLABEBE,15
+Pokemon = TAILLOW,15
