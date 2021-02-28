@@ -76,15 +76,8 @@ KATANA FUNCTIONALITY
 raise tree priority, since rustle grass was on top
 toxic spikes animations
 cant interact with berries on first try
-MBD for all the tournament trainers
-
-
 Make Razor Shell attack anim use Cut anim, but Blue
-Make Akui dialogue change if we dont catch their pokemon vs if we do
-ADD big purple slash anim when corrupt style is used
-Make Admin reference the superiority of Shadow pokemon
-make dialogue reference needing to pray at the various shrines
-fix pokeball icon on enemy wild
+
 
 
 Things done:

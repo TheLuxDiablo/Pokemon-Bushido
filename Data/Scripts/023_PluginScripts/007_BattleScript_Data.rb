@@ -433,9 +433,9 @@ module DialogueModule
                     pbMessage("\\pogI've done a lot of growing since our last battle.")
                     pbMessage("\\pogNow, prepare to be burned by the flames of my passion!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
                     if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned!")
+                      battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by \\v[26]'s raw passion!")
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -465,6 +465,22 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+      KayokoIntro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rPrepare yourself. I'll be trying my best.")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                  }
+      KayokoLast = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rLooks like it's time to focus...")
+                    pbMessage("\\rTime to show you my true inner strength!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       # Clan intros
