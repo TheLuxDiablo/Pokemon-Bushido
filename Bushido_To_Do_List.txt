@@ -70,7 +70,9 @@ set up komorei battle dialogue
 fix issue with key item SFX for katana get
 KATANA FUNCTIONALITY
 
-split up dialogue a bit more
+
+
+
 raise tree priority, since rustle grass was on top
 toxic spikes animations
 add more MBD to Akui clan, maybe raise evasion with ninja skills or something

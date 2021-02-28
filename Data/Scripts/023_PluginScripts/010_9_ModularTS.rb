@@ -104,4 +104,4 @@ MTS_START_POS = [nil,nil]
 # Code used to run actual scripts from the .rxdata
 # DO NOT TOUCH THIS PART!!
 #===============================================================================
-File.runScript("Data/Plugins/MODTS.rxdata")
+#File.runScript("Data/Plugins/MODTS.rxdata")
