@@ -708,9 +708,9 @@ def pbStartOver(gameover=false)
   pbHealAll
   if $PokemonGlobal.pokecenterMapId && $PokemonGlobal.pokecenterMapId>=0
     if gameover
-      pbMessage(_INTL("\\w[]\\wm\\l[3]After the unfortunate defeat, you scurry back to a Pokémon Center."))
+      pbMessage(_INTL("\\w[]\\wm\\l[3]After the unfortunate defeat, you scurry back to the Hot Springs."))
     else
-      pbMessage(_INTL("\\w[]\\wm\\l[3]You scurry back to a Pokémon Center, protecting your exhausted Pokémon from any further harm..."))
+      pbMessage(_INTL("\\w[]\\wm\\l[3]You scurry back to the Hot Springs, protecting your exhausted Pokémon from any further harm..."))
     end
     pbCancelVehicles
     pbRemoveDependencies
