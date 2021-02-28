@@ -473,13 +473,13 @@ module DialogueModule
                       pbMessage("\\se[SwShCorrect]As expected of my student! Brilliant!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[0])
+                      battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[0])
                     else
                       pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
                       pbMessage("The correct answer is the \"Code of Honor,\" which all Kenshi are expected to follow.")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
+                      battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[0])
                     end
                   }
 
@@ -494,14 +494,14 @@ module DialogueModule
                       pbMessage("A Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[0])
+                      battle.battlers[0].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[0])
                     else
                       pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
                       pbMessage("While Katanas and Spears are effective weapons in their own right...")
                       pbMessage("A Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[0])
+                      battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[0])
                     end
                   }
 
@@ -516,18 +516,18 @@ module DialogueModule
                       pbMessage("\\se[SwShCorrect]Well done, \\PN!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[0])
+                      battle.battlers[0].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[0])
                     elsif cmd == 1
                       pbMessage("\\se[SwShIncorrect]That is incorrect!")
                       pbMessage("It would be incredibly shameful for a Kenshi to attempt to buy their way into a clan!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbLowerStatStage(PBStats::SPATK,1,battle.battlers[0])
+                      battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
                     else
                       pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbLowerStatStage(PBStats::SPATK,1,battle.battlers[0])
+                      battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
                     end
                   }
       Sukiro4 = Proc.new{|battle|
@@ -541,13 +541,13 @@ module DialogueModule
                        pbMessage("Shimizu Clan members have a water affinity, so Electric is the correct answer!")
                        battle.scene.pbHideOpponent
                        battle.scene.disappearBar
-                       battle.battlers[0].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[0])
+                       battle.battlers[0].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[0])
                      else
                        pbMessage("\\se[SwShIncorrect]Hmm... that is incorrect.")
                        pbMessage("Shimizu Clan members have a water affinity, so Electric would be the correct answer.")
                        battle.scene.pbHideOpponent
                        battle.scene.disappearBar
-                       battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[0])
+                       battle.battlers[0].pbLowerStatStage(PBStats::SPATK,1,battle.battlers[0])
                      end
                    }
 
