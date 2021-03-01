@@ -36,7 +36,7 @@
 31,SWIMMER_F3,Swimmer,16,,,,Female,,
 32,FISHERMAN,Fisherman,32,,,,Male,,
 33,FISHERMAN2,Fisherman,32,,,,Male,,
-34,BLACKBELT,Black Belt,24,,,,Male,,
+34,BLACKBELT,Black Belt,24,,,BWEncounter-BlackBelt,Male,,
 35,BLACKBELT2,Black Belt,24,,,BWEncounter-BlackBelt,Male,,
 36,BLACKBELT3,Black Belt,24,,,,Male,,
 37,BATTLEGIRL,Battle Girl,16,,,BWEncounter-BlackBelt,Female,,
