@@ -426,6 +426,22 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+      Shimizu1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rThe calmness of the water... My Pokemon can feel it!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+       KenshiF3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rBrace yourself, Toxel!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
       # Rival intros
       RivalFirstIntro = Proc.new{|battle|
                     battle.scene.appearBar
@@ -438,8 +454,8 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\pogWe meet in battle again, \\PN!")
-                    pbMessage("\\pogI've done a lot of growing since our last battle.")
-                    pbMessage("\\pogNow, prepare to be burned by the flames of my passion!")
+                    pbMessage("\\pogI've grown a lot since our last battle, so don't underestimate me!")
+                    pbMessage("\\pogNow, prepare to be burned to ashes!")
                     battle.scene.disappearBar
                     if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                       battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
@@ -452,7 +468,7 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\pogLooks like it's time to get serious!")
                     pbMessage("\\pogGo #{battle.battlers[1].pokemon.speciesName}, unleash your burning passion!")
-                    pbMessage("\\pogRrraaaaaaahh!!!")
+                    pbMessage("\\pogI'm all fired up! Rrrrrahhh!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
@@ -469,7 +485,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\rW-wah! This isn't l-looking good!")
-                    pbMessage("\\rIt's time for defensive measures!")
+                    pbMessage("\\rIt's time for defensive measures! Tsukutsuku...")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
@@ -485,7 +501,7 @@ module DialogueModule
       KayokoLast = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\rLooks like it's time to focus...")
+                    pbMessage("\\rI can't let my family down...")
                     pbMessage("\\rTime to show you my true inner strength!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
@@ -530,7 +546,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Looks like it's time to get serious!")
-                    pbMessage("Akui Clan Technique, Shadow Clones!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
@@ -540,7 +556,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You'll never be able to catch up to us!")
-                    pbMessage("Akui Clan Technique, Ninja Speed!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
@@ -550,14 +566,14 @@ module DialogueModule
     KatanaIntro = Proc.new{|battle|
                   battle.scene.appearBar
                   battle.scene.pbShowOpponent(0)
-                  pbMessage("Prepare to be destroyed, you honor-bound fool!")
-                  pbMessage("Take this!")
+                  pbMessage("Kenshi scum like you are worth NOTHING. I'll take you out here and now.")
+                  pbMessage("It's time to unless my full power.")
                   battle.scene.disappearBar
                   battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
                   battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
                   battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                   battle.scene.appearBar
-                  pbMessage("Akui Clan Technique, Ninja Speed!")
+                  pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
                   battle.scene.disappearBar
                   battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
                   battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
@@ -566,8 +582,8 @@ module DialogueModule
     KatanaAwakens = Proc.new{|battle|
                   battle.scene.appearBar
                   battle.scene.pbShowOpponent(0)
-                  pbMessage("The Akui Clan shadow Pokémon are the strongest in the world!")
-                  pbMessage("Wait, what's going o-\\wtnp[20]")
+                  pbMessage("Give it up! It's impossible to beat our viscious Shadow Pokemon.")
+                  pbMessage("Wait, what's that ligh-\\wtnp[20]")
                   battle.scene.disappearBar
                   viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
                   viewport.z = 999999
@@ -583,7 +599,7 @@ module DialogueModule
                     Graphics.update
                   end
                   viewport.dispose
-                  pbMessage("You feel your father's energy flowing through the Ancient Katana...")
+                  pbMessage("You feel your father's energy flowing through the Ancient Katana and into your body...")
                   pbMessage(".\\wtnp[18].\\wtnp[18].\\wtnp[18]")
                   pbMessage("\\me[Conquest-LevelUpWarlord]The Ancient Katana transformed into the Katana of Light!")
                   vRI("KATANALIGHT",1)
@@ -591,7 +607,7 @@ module DialogueModule
                     vDI("KATANABASIC")
                   end
                   pbMessage("You may now steal Shadow Pokémon from the Akui Clan!")
-                  pbMessage("\\xn[Shogun]\\PN! You must use the power of light to restore honor to the Aisho Region!")
+                  pbMessage("\\xn[Shogun]\\PN! You must use the power of light to counter these Shadow Pokemon! Capture their Pokemon and purify them for good!")
                   $game_switches[67]=true
                   $game_switches[62]=true
                   $PokemonGlobal.snagMachine=true
@@ -610,8 +626,7 @@ module DialogueModule
                   end
                   viewport.dispose
                   battle.scene.appearBar
-                  pbMessage("What the heck was that flash of light!?")
-                  pbMessage("You better not be planning anything tricky! Trickery is for the Akui Clan only!")
+                  pbMessage("Hngh- That light... what was it!?")
                   battle.scene.disappearBar
                   battle.scene.pbHideOpponent
                 }

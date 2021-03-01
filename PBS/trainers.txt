@@ -240,3 +240,16 @@ Pokemon = LUXIO,16
 LoseText = "I fight with my fists, but I must think with my head too."
 Pokemon = SAWK,16
 Pokemon = THROH,16
+#-------------------------------
+[KOMOREI_F,Aoyama]
+LoseText = "I guess I shouldn't be here either..."
+Pokemon = COTTONEE,18
+#-------------------------------
+[SHIMIZU_F,Tsukasa]
+LoseText = "The flow of water and the allure of the ocean can never be beat!"
+Pokemon = PANPOUR,17
+Pokemon = TYMPOLE,18
+#-------------------------------
+[KENSHI_F,Hiro]
+LoseText = "I would've let you through either way..."
+Pokemon = TOXEL,20
