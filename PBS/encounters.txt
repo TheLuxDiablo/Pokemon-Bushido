@@ -71,34 +71,41 @@ OldRod
 090 # Shizen Trail
 25,10,10
 Land
-    TAILLOW,15,20
-    VIVILLON,16,21
-    SHINX,15,20
-    BUDEW,16,20
-    MUNCHLAX,15,20
-    TOXEL,16,20
-    ZORUA,15,20
-    GIBLE,16,21
+    TAILLOW,15,19
+    VIVILLON,16,20
+    SHINX,15,19
+    BUDEW,16,19
+    MUNCHLAX,15,19
+    TOXEL,16,19
+    ZORUA,15,19
+    GIBLE,16,20
 PhenomenonGrass
-    HAPPINY,20
-    ZORUA,17
-    ZORUA,19
+    HAPPINY,19
+    ZORUA,16
+    ZORUA,18
+    RIOLU,16,18
     RIOLU,17,19
-    RIOLU,18,20
-    RIOLU,19,21
-    JANGMOO,21
+    RIOLU,19,20
+    JANGMOO,20
 #-------------------------------
 091 # Shizen Forest
 25,10,10
 Land
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
+    FOMANTIS,15,21
+    CORVISQUIRE,15,20
+    BELLSPROUT,18,20
+	SKIDDO,16,20
+	SHROOISH,15,21
+    PANSAGE,15,20
+    ABSOL,16,21
+PhenomenonGrass
+    HAPPINY,20
+	DEERLING,17,19
+	DEERLING,18,20
+	WIMPOD,17,18
+	WIMPOD,18,19
+	WIMPOD,19,20
+    JANGMOO,21
 #-------------------------------
 095 # Tsuchi Shrine
 25,10,10
