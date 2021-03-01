@@ -423,7 +423,6 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\bHyah! Feel the power of my fists!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       Shimizu1 = Proc.new{|battle|
@@ -440,6 +439,15 @@ module DialogueModule
                     pbMessage("\\rBrace yourself, Toxel!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        Komorei1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\bShizen Forest provides natural advantages for us in the Komorei Clan.")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
                     battle.scene.pbHideOpponent
                   }
       # Rival intros
@@ -459,7 +467,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                       battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by {1}'s raw passion!",pbGet(26))
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Fletchling!",pbGet(26))
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -468,10 +476,8 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\pogLooks like it's time to get serious!")
                     pbMessage("\\pogGo #{battle.battlers[1].pokemon.speciesName}, unleash your burning passion!")
-                    pbMessage("\\pogI'm all fired up! Rrrrrahhh!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
       TsukuIntro = Proc.new{|battle|

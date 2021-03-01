@@ -24,14 +24,14 @@ OldRod
 082 # Sakura Pass
 25,10,10
 Land
-    CHERUBI,2,5
-    PANCHAM,3,6
-    PIKIPEK,2,6
-    PURRLOIN,2,5
-    FLABEBE,2,6
-    BUNEARY,2,5
-    CUTIEFLY,3,5
-    PICHU,3,6
+    CHERUBI,2,6
+    PANCHAM,3,7
+    PIKIPEK,3,7
+    PURRLOIN,2,6
+    FLABEBE,3,7
+    BUNEARY,2,6
+    CUTIEFLY,3,6
+    PICHU,3,7
 Water
     MAGIKARP,2,5
     SEEL,2,4
@@ -39,25 +39,25 @@ Water
     FEEBAS,2,3
     FEEBAS,2,3
 PhenomenonGrass
-    HAPPINY,6
-    RIOLU,5
-    RIOLU,5
-    EEVEE,5
-    EEVEE,5
-    EEVEE,5
-    DRATINI,6
+    HAPPINY,7
+    RIOLU,6
+    RIOLU,6
+    EEVEE,6
+    EEVEE,6
+    EEVEE,6
+    DRATINI,7
 #-------------------------------
 084 # Jikan Shrine
 25,10,10
 Land
-    MEDITITE,2,4
-    MEDITITE,4,7
-    SCATTERBUG,2,6
-    FARFETCHD,2,6
-    SURSKIT,3,5
-    SURSKIT,2,7
-    TOGEPI,2,4
-    TOGEPI,3,6
+    MEDITITE,4,6
+    MEDITITE,6,9
+    SCATTERBUG,4,8
+    FARFETCHD,4,8
+    SURSKIT,5,7
+    SURSKIT,4,9
+    TOGEPI,4,6
+    TOGEPI,5,8
 Water
     SLOWPOKE,2,4
     SLOWPOKE,3,5

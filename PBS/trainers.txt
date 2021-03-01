@@ -253,3 +253,8 @@ Pokemon = TYMPOLE,18
 [KENSHI_F,Hiro]
 LoseText = "I would've let you through either way..."
 Pokemon = TOXEL,20
+#-------------------------------
+[KOMOREI_M,Okamoto]
+LoseText = "The forest is open to other Kenshi as well, of course!"
+Pokemon = BELLSPROUT,19
+Pokemon = CHERUBI,19

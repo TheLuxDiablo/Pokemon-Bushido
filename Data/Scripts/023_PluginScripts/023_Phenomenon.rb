@@ -40,7 +40,7 @@ end
 #-------------------------------------------------------------------------------
 
 module PhenomenonConfig
-  Frequency = 350 # Chance for phenomenon to generate on step. Between 350-600.
+  Frequency = 30 # Chance for phenomenon to generate on step. Between 350-600.
   Timer = 500 # How many frames to wait before phenomenon disappears
   Switch = 77 # Switch that when ON enables phenomena
 
