@@ -187,16 +187,11 @@
 182,AKUICLAN_M,Akui Clan,100,CON-EnclosedBattle,,,Male,,
 183,AKUICLAN_F,Akui Clan,100,CON-EnclosedBattle,,,Male,,
 184,NENSHO_M,Nensho Clan,100,CON-SandPlains,,HGSSEncounter-KimonoGirl,Male,,
-185,NENSHO_F,Nensho Clan,100,CON-SandPlains,,HGSSEncounter-KimonoGirl,Male,,
+185,NENSHO_F,Nensho Clan,100,CON-SandPlains,,HGSSEncounter-KimonoGirl,Female,,
 186,SHIMIZU_M,Shimizu Clan,100,CON-Tanzaku,,,Male,,
-187,SHIMIZU_F,Shimizu Clan,100,CON-Tanzaku,,,Male,,
-<<<<<<< Updated upstream
+187,SHIMIZU_F,Shimizu Clan,100,CON-Tanzaku,,,Female,,
 188,KOMOREI_M,Komorei Clan,100,CON-ForestAtNight,,,Male,,
-189,KOMOREI_F,Komorei Clan,100,CON-ForestAtNight,,,Male,,
-=======
-188,KOMOREI_M,Komorei Clan,100,,,,Male,,
-189,KOMOREI_F,Komorei Clan,100,,,,Male,,
->>>>>>> Stashed changes
+189,KOMOREI_F,Komorei Clan,100,CON-ForestAtNight,,,Female,,
 190,NENSHO_BOSS,Nensho Boss,100,CON-ChuninFinal,,HGSSEncounter-KimonoGirl,Male,,
 191,SHIMIZU_BOSS,Shimizu Boss,100,CON-ChuninFinal,,HGSSEncounter-KimonoGirl,Male,,
 192,KOMOREI_BOSS,Komorei Boss,100,CON-ChuninFinal,,HGSSEncounter-KimonoGirl,Male,,
@@ -204,12 +199,7 @@
 194,KENSHI_F,Young Kenshi,100,,,HGSSEncounter-KimonoGirl,Male,,
 195,KAYOKO,Kenshi,100,CON-KonohaGate,,HGSSEncounter-KimonoGirl,Female,,
 196,TSUKU,Kenshi,100,CON-HiddenLeafGate,,HGSSEncounter-KimonoGirl,Female,,
-<<<<<<< Updated upstream
 197,MASHIRO,Akui Admin,100,CON-Akatsuki,,,Female,,
 198,HOTOKE,Akui Admin,100,CON-Akatsuki,,,Male,,
 199,KURO,Akui Admin,100,CON-Akatsuki,,,Male,,
-=======
-197,MASHIRO,Akui Admin,100,,,,Female,,
-198,HOTOKE,Akui Admin,100,,,,Male,,
-199,KURO,Akui Admin,100,,,,Male,,
->>>>>>> Stashed changes
+

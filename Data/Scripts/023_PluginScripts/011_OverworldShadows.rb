@@ -4,7 +4,7 @@ class Game_Character; attr_reader :jump_count; end
 class Sprite_ShadowOverworld
   attr_reader :visible; attr_accessor :event
 
-  NO_SHADOW_EVENT=["door","nurse","healing balls","Mart","boulder","tree","HeadbuttTree","BerryPlant",".shadowless",".noshadow",".sl","Stairs","Item"]
+  NO_SHADOW_EVENT=["door","nurse","healing balls","Mart","boulder","HeadbuttTree","BerryPlant",".shadowless",".noshadow",".sl","Stairs","Item"]
 
   def initialize(sprite,event,viewport=nil)
     @rsprite  = sprite
@@ -49,7 +49,7 @@ class Sprite_ShadowOverworld
     end
     if nil_or_empty?(event.character_name) || event.character_name == "nil" ||
     (PBTerrain.isGrass?(pbGetTerrainTag(event)) || PBTerrain.hasReflections?(pbGetTerrainTag(event)) ||
-     PBTerrain.isSurfable?(pbGetTerrainTag(event)) || PBTerrain.isIce?(pbGetTerrainTag(event)) || 
+     PBTerrain.isSurfable?(pbGetTerrainTag(event)) || PBTerrain.isIce?(pbGetTerrainTag(event)) ||
      PBTerrain.isHotSpring?(pbGetTerrainTag(event))) ||
      event.transparent || remove
       # Just-in-time disposal of sprite

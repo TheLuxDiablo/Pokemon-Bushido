@@ -71,22 +71,22 @@ OldRod
 090 # Shizen Trail
 25,10,10
 Land
-    TAILLOW,15,19
-    VIVILLON,16,20
-    SHINX,15,19
-    BUDEW,16,19
-    MUNCHLAX,15,19
-    TOXEL,16,19
-    ZORUA,15,19
-    GIBLE,16,20
+    TAILLOW,14,17
+    VIVILLON,15,18
+    SHINX,14,17
+    BUDEW,15,17
+    MUNCHLAX,14,17
+    TOXEL,15,17
+    ZORUA,14,17
+    GIBLE,15,18
 PhenomenonGrass
-    HAPPINY,19
+    HAPPINY,17
     ZORUA,16
-    ZORUA,18
+    ZORUA,17
+    RIOLU,15,17
     RIOLU,16,18
     RIOLU,17,19
-    RIOLU,19,20
-    JANGMOO,20
+    JANGMOO,19
 #-------------------------------
 091 # Shizen Forest
 25,10,10

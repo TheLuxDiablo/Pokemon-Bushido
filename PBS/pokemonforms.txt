@@ -2380,8 +2380,11 @@ FormName = Low Key Form
 Abilities = PUNKROCK,MINUS
 Moves = 0,SPARK,1,SPARK,1,EERIEIMPULSE,1,BELCH,1,TEARFULLOOK,1,NUZZLE,1,GROWL,1,FLAIL,1,ACID,1,THUNDERSHOCK,1,ACIDSPRAY,1,LEER,1,NOBLEROAR,4,CHARGE,8,SHOCKWAVE,12,SCARYFACE,16,TAUNT,20,VENOMDRENCH,24,SCREECH,28,SWAGGER,32,TOXIC,36,DISCHARGE,40,POISONJAB,44,OVERDRIVE,48,BOOMBURST,52,MAGNETICFLUX
 Pokedex = It has an electrical organ on its chest. While generating electricity, it fills its surroundings with what sounds like the strumming of a bass guitar.
+BattlerPlayerX = 0
 BattlerPlayerY = 55
+BattlerEnemyX = 0
 BattlerEnemyY = 11
+BattlerShadowSize = 2
 #-------------------------------
 [ALCREMIE,1]
 FormName = Berry - Vanilla Cream
@@ -2608,6 +2611,10 @@ BattlerPlayerY = 71
 [MORPEKO,1]
 FormName = Hangry Mode
 Pokedex = Hunger hormones affect its temperament. Until its hunger is appeased, it gets up to all manner of evil deeds.
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
+BattlerEnemyY = 27
 #-------------------------------
 [ZACIAN,1]
 FormName = Crowned Sword
