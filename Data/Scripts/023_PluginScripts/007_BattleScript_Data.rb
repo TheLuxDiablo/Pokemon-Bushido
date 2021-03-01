@@ -536,13 +536,13 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
-      ShadowEvasion = Proc.new{|battle|
+      ShadowSpeed = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You'll never be able to catch up to us!")
                     pbMessage("Akui Clan Technique, Ninja Speed!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
@@ -559,7 +559,7 @@ module DialogueModule
                   battle.scene.appearBar
                   pbMessage("Akui Clan Technique, Ninja Speed!")
                   battle.scene.disappearBar
-                  battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[1],battle.battlers[0])
+                  battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
                   battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                   battle.scene.pbHideOpponent
                 }
