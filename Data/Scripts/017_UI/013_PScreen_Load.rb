@@ -326,10 +326,10 @@ class PokemonLoadScreen
     commands[cmdLanguage = commands.length]      = _INTL("Language") if LANGUAGES.length>=2
     commands[cmdDebug = commands.length]         = _INTL("Debug") if $DEBUG
     commands[cmdQuit = commands.length]          = _INTL("Quit Game")
+    pbLoadBattleAnimations
     @scene.pbStartScene(commands,showContinue,trainer,framecount,mapid)
     @scene.pbSetParty(trainer) if showContinue
     @scene.pbStartScene2
-    pbLoadBattleAnimations
     loop do
       command = @scene.pbChoose(commands)
       if cmdContinue>=0 && command==cmdContinue
