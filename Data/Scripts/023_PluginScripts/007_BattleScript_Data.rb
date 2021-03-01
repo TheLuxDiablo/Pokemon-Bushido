@@ -418,6 +418,14 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+      BlackBelt1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\bHyah! Feel the power of my fists!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
       # Rival intros
       RivalFirstIntro = Proc.new{|battle|
                     battle.scene.appearBar

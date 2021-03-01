@@ -234,3 +234,9 @@ Pokemon = NICKIT,15
 LoseText = "Even though I challenged you, I still lost..."
 Pokemon = FLABEBE,15
 Pokemon = TAILLOW,15
+Pokemon = LUXIO,16
+#-------------------------------
+[BLACKBELT,Junpei]
+LoseText = "I fight with my fists, but I must think with my head too."
+Pokemon = SAWK,16
+Pokemon = THROH,16
