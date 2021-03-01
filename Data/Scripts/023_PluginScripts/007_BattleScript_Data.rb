@@ -443,7 +443,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                       battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by \\v[26]'s raw passion!")
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by {1}'s raw passion!",pbGet(26))
                     end
                     battle.scene.pbHideOpponent
                   }

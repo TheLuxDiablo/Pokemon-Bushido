@@ -79,8 +79,22 @@ cant interact with berries on first try
 Make Razor Shell attack anim use Cut anim, but Blue
 
 
+run through game's intro again with Fennekin
+Maybe do encounters for northern region
+Add interiors and caves/shrine around Jonetsu
+
+remove colored towns from map in intro bg, make it more just sepia
+Rival dialogue, the "Hmmm..." clan stuff is colored red, make rest red
+INVESTIGATE WILD BUNEARY CRASH
+
+make player turn down while Shogun is talking to them before akui ambush fight
+look into Akui speed MBD, make sure agility plays on the foe
+After Sukiro appears, make Kayoko turn down
+Make Akui grunts run away before Rival dialogue about Darumaka
+investigate audio levels near end of Akui ambush scene
 
 Things done:
+Reborn anims baybeeee
 
 2/21
 Jikan shrine ambush event

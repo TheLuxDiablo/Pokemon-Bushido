@@ -45,7 +45,7 @@ module PhenomenonConfig
   Switch = 77 # Switch that when ON enables phenomena
 
   Pokemon = {
-    :shiny => false, # 4x chance of shininess
+    :shiny => true, # 4x chance of shininess
     :expBoost => true, # 1.3x Exp Boost
     # Below are 1/n chance of Pokémon being generated with these settings
     # Set to -1 to disable
