@@ -532,7 +532,7 @@ module DialogueModule
                     pbMessage("Looks like it's time to get serious!")
                     pbMessage("Akui Clan Technique, Shadow Clones!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
