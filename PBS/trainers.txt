@@ -279,7 +279,7 @@ LoseText = "Berries are amazing! Definitely worth a try."
 Pokemon = CHERUBI,21
 Pokemon = SKWOVET,21
     Ability = 2
-    Item = SITRUSBERRY
+	Item = SITRUSBERRY
 #-------------------------------
 [KOMOREI_F,Hiraoka]
 LoseText = "Everyone deserves to be showered with love!"
