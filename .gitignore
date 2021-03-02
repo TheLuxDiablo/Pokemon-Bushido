@@ -1,6 +1,7 @@
 # Files in the main project folder
 Game.ini
 RGSS*.dll
+System.rxdata
 
 # Temp files
 Data\System.rxdata
@@ -8,3 +9,4 @@ Data\System.rxdata
 ~*
 # Word files
 *.docx
+Data/System.rxdata

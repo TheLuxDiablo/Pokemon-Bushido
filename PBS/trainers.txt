@@ -256,5 +256,42 @@ Pokemon = TOXEL,20
 #-------------------------------
 [KOMOREI_M,Okamoto]
 LoseText = "The forest is open to other Kenshi as well, of course!"
-Pokemon = BELLSPROUT,19
+Pokemon = BELLSPROUT,18
 Pokemon = CHERUBI,19
+#-------------------------------
+[KENSHI_F,Sera]
+LoseText = "I would've let you through either way..."
+Pokemon = WIMPOD,19
+Pokemon = TAILLOW,19
+#-------------------------------
+[KOMOREI_F,Shima]
+LoseText = "Defeat isn't nearly as beautiful..."
+Pokemon = PANSAGE,19
+Pokemon = VENIPEDE,20
+#-------------------------------
+[NENSHO_M,Matsuo]
+LoseText = "This is probably my first loss in this forest."
+Pokemon = LITLEO,20
+Pokemon = HOUNDOUR,20
+#-------------------------------
+[KENSHI_M,Kita]
+LoseText = "Berries are amazing! Definitely worth a try."
+Pokemon = CHERUBI,21
+Pokemon = SKWOVET,21
+    Ability = 2
+    Item = SITRUSBERRY
+#-------------------------------
+[KOMOREI_F,Hiraoka]
+LoseText = "Everyone deserves to be showered with love!"
+Pokemon = MINCCINO,23
+	Ability = 0
+#-------------------------------
+[KOMOREI_M,Hagiwara]
+LoseText = "Darn, I guess I'm still on that streak..."
+Pokemon = SKIDDO,22
+Pokemon = DEERLING,22
+#-------------------------------
+[KENSHI_M,Kawata]
+LoseText = "The rush of battle never fails to excite me!"
+Pokemon = MEDITITE,22
+Pokemon = PANCHAM,23
