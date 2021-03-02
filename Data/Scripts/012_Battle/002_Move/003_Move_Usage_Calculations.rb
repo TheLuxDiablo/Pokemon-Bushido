@@ -65,6 +65,7 @@ class PokeBattle_Move
   end
 
   def pbCalcTypeMod(moveType,user,target)
+    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE*4 if isConst?(moveType,PBTypes,:SHADOW)
     return PBTypeEffectiveness::NORMAL_EFFECTIVE if moveType<0
     return PBTypeEffectiveness::NORMAL_EFFECTIVE if isConst?(moveType,PBTypes,:GROUND) &&
        target.pbHasType?(:FLYING) && target.hasActiveItem?(:IRONBALL)

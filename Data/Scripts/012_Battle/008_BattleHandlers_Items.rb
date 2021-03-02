@@ -178,7 +178,7 @@ BattleHandlers::HPHealItem.add(:SITRUSBERRY,
     next false if !forced && !battler.canConsumeBerry?
     next false if !forced && battler.hp>battler.totalhp/2
     battle.pbCommonAnimation("EatBerry",battler) if !forced
-    battler.pbRecoverHP?(battler.totalhp/((battler.hasActiveAbility?(:RIPEN))? 2 : 4))
+    battler.pbRecoverHP(battler.totalhp/((battler.hasActiveAbility?(:RIPEN))? 2 : 4))
     itemName = PBItems.getName(item)
     if forced
       PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
