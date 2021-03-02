@@ -13,6 +13,13 @@ Events.onWildPokemonCreate+=proc {|sender,e|
    end
 }
 
+Events.onWildPokemonCreate+=proc {|sender,e|
+   pokemon=e[0]
+   if $game_switches[90]
+     pokemon.makeShadow
+   end
+}
+
 # Used in the random dungeon map.  Makes the levels of all wild Pokémon in that
 # map depend on the levels of Pokémon in the player's party.
 # This is a simple method, and can/should be modified to account for evolutions

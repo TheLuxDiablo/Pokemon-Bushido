@@ -203,6 +203,10 @@ def pbHasPurifiableInParty?
   return $Trainer.party.any? { |pkmn| pbIsPurifiable?(pkmn) }
 end
 
+def pbHasShadowInParty?
+  return $Trainer.party.any? { |pkmn| pkmn.shadowPokemon? }
+end
+
 def pbRelicStone
   if !pbHasPurifiableInParty?
     pbMessage(_INTL("You have no Pokémon that can be purified."))
