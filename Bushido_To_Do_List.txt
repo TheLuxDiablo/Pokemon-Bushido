@@ -85,7 +85,8 @@ Add interiors and caves/shrine around Jonetsu
 
 remove colored towns from map in intro bg, make it more just sepia
 Rival dialogue, the "Hmmm..." clan stuff is colored red, make rest red
-INVESTIGATE WILD BUNEARY CRASH
+
+raise the run away rate to make it easier to run from wild
 
 
 

@@ -301,3 +301,24 @@ LoseText = "Wow, you have some unreal skills..."
 Pokemon = DEWOTT,26
 Pokemon = VESPIQUEN,27
 Pokemon = GENGAR,28
+#-------------------------------
+[AKUICLAN_M,Igarashi]
+LoseText = "What! How did you do that?"
+Pokemon = ROSELIA,18
+Pokemon = CROAGUNK,18
+Pokemon = CROCONAW,19
+    Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Igarashi,1]
+LoseText = "What! How did you do that?"
+Pokemon = ROSELIA,18
+Pokemon = CROAGUNK,18
+Pokemon = TORRACAT,19
+    Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Igarashi,2]
+LoseText = "What! How did you do that?"
+Pokemon = ROSELIA,18
+Pokemon = CROAGUNK,18
+Pokemon = GROTLE,19
+    Shadow = yes

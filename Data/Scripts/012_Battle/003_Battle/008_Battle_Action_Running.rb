@@ -141,7 +141,7 @@ class PokeBattle_Battle
     if speedPlayer>speedEnemy
       rate = 256
     else
-      rate = (speedPlayer*128)/speedEnemy
+      rate = (speedPlayer*256)/speedEnemy
       rate += @runCommand*30
     end
     if rate>=256 || @battleAI.pbAIRandom(256)<rate
