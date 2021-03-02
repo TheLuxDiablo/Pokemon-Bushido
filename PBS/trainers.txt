@@ -305,20 +305,20 @@ Pokemon = GENGAR,28
 [AKUICLAN_M,Igarashi]
 LoseText = "What! How did you do that?"
 Pokemon = ROSELIA,18
-Pokemon = CROAGUNK,18
-Pokemon = CROCONAW,19
+Pokemon = CROAGUNK,19
+Pokemon = CROCONAW,20
     Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Igarashi,1]
 LoseText = "What! How did you do that?"
 Pokemon = ROSELIA,18
-Pokemon = CROAGUNK,18
-Pokemon = TORRACAT,19
+Pokemon = CROAGUNK,19
+Pokemon = TORRACAT,20
     Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Igarashi,2]
 LoseText = "What! How did you do that?"
 Pokemon = ROSELIA,18
-Pokemon = CROAGUNK,18
-Pokemon = GROTLE,19
+Pokemon = CROAGUNK,19
+Pokemon = GROTLE,20
     Shadow = yes
