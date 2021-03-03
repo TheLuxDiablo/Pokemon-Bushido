@@ -80,15 +80,13 @@ Make Razor Shell attack anim use Cut anim, but Blue
 
 
 run through game's intro again with Fennekin
-Maybe do encounters for northern region
-Add interiors and caves/shrine around Jonetsu
-
 remove colored towns from map in intro bg, make it more just sepia
 Rival dialogue, the "Hmmm..." clan stuff is colored red, make rest red
 
-raise the run away rate to make it easier to run from wild
 
-
+Maybe do encounters for northern region
+Add interiors and caves/shrine around Jonetsu
+tweak nensho, shimizu, and komorei MBDs
 
 
 Things done:
