@@ -508,6 +508,7 @@ MapPosition = 2,14,15
 ShowArea = true
 Outdoor = true
 MapPosition = 2,16,15
+BattleBack = Lush
 #-------------------------------
 [098]
 # Yami Pass

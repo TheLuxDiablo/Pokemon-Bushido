@@ -322,3 +322,22 @@ Pokemon = ROSELIA,18
 Pokemon = CROAGUNK,19
 Pokemon = GROTLE,20
     Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Konda]
+LoseText = "Go ahead... If you dare!"
+Pokemon = STUNKY,23
+Pokemon = WIMPOD,23
+    Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Sayuri]
+LoseText = "Agh, I can't ever win!"
+Pokemon = ARON,22
+Pokemon = TOGETIC,24
+    Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Okumura]
+LoseText = "I let Mashiro down..."
+Pokemon = GOLDEEN,23
+	Shadow = yes
+Pokemon = GOLETT,24
+Pokemon = GLIGAR,24
