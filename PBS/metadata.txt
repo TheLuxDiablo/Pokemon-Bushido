@@ -557,3 +557,9 @@ MapPosition = 2,14,15
 ShowArea = false
 Outdoor = false
 MapPosition = 2,15,10
+#-------------------------------
+[113]
+# Tsuchi Shrine
+ShowArea = false
+Outdoor = false
+BattleBack = CaveBushido1

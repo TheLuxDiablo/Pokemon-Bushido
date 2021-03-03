@@ -732,8 +732,8 @@ module DialogueModule
                        battle.scene.appearBar
                        pbMessage("\Virizion's soul is locked away!")
                        battle.scene.disappearBar
-                       battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                       battle.battlers[1].pbLowerStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                       battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,3,battle.battlers[1])
+                       battle.battlers[1].pbLowerStatStage(PBStats::SPATK,3,battle.battlers[1],false)
                        battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
                        battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                        battle.scene.pbHideOpponent

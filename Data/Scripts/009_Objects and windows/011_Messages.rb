@@ -929,6 +929,13 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
     end
     next ""
   }
+  shout = 0
+  if text=~/\\sh/i
+    text.gsub!(/\\sh/i,"")
+    msgwindow.setSkin("Graphics/Windowskins/shout",false)
+    shout=16
+    startSE="shout"
+  end
   isDarkSkin = isDarkWindowskin(msgwindow.windowskin)
   text.gsub!(/\\[Cc]\[([0-9]+)\]/) {
     m = $1.to_i
@@ -1045,6 +1052,14 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   msgwindow.text = text
   Graphics.frame_reset if Graphics.frame_rate>40
   loop do
+    if shout != 0
+      shout=(shout*-0.9).floor
+      if atTop
+        msgwindow.y=shout
+      else
+        msgwindow.y=Graphics.height-(msgwindow.height + shout)
+      end
+    end
     if signWaitCount>0
       signWaitCount -= 1
       if atTop
