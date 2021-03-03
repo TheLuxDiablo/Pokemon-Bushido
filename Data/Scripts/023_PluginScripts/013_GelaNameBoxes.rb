@@ -196,6 +196,13 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   text.gsub!(/\\[Rr]/,"<c2=043C675A>")
   text.gsub!(/\\1/,"\1")
   colortag=""
+  shout = 0
+    if text=~/\\sh/i
+      text.gsub!(/\\sh/i,"")
+      msgwindow.setSkin("Graphics/Windowskins/shout",false)
+      shout=16
+      startSE="shout"
+    end
   isDarkSkin=isDarkWindowskin(msgwindow.windowskin)
   if ($game_message && $game_message.background>0) ||
      ($game_system && $game_system.respond_to?("message_frame") &&
@@ -304,6 +311,14 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   msgwindow.text=text
   Graphics.frame_reset if Graphics.frame_rate>40
   begin
+    if shout != 0
+      shout=(shout*-0.9).floor
+      if atTop
+        msgwindow.y=shout
+      else
+        msgwindow.y=Graphics.height-(msgwindow.height + shout)
+      end
+    end
     if signWaitCount>0
       signWaitCount-=1
       if atTop
