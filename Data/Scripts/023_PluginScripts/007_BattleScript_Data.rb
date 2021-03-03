@@ -425,14 +425,6 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
-      Shimizu1 = Proc.new{|battle|
-                    battle.scene.appearBar
-                    battle.scene.pbShowOpponent(0)
-                    pbMessage("\\rThe calmness of the water... My Pokemon can feel it!")
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
-                    battle.scene.pbHideOpponent
-                  }
        KenshiF3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
@@ -441,13 +433,91 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+        # Komorei Intros
         Komorei1 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\bShizen Forest provides natural advantages for us in the Komorei Clan.")
+                    pbMessage("Shizen Forest provides natural advantages for us in the Komorei Clan.")
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        Komorei2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I'll show you the power of the Komorei Clan!")
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        Komorei3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Alright Kenshi! I'm going to beat you, and turn my luck around!")
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        Komorei4 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You cannot hide from my love!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:CHARM),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
+                    battle.scene.pbHideOpponent
+                  }
+        KomoreiDojo1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You must be a skilled Kenshi to have made it this far!")
+                    pbMessage("Looks like the time has come for you to be fully tested by the best of the Komorei Clan!")
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        KomoreiDojo2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("If you want to reach Harumi, you'll have to go through me!")
+                    pbMessage("Secret Komorei Technique, Blazing Sunlight!")
                     battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      # Nensho intros
+      NenshoIntro1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I'm with Nensho Clan! Prepare to feel our burning passion for battle!")
+                    pbMessage("We yell to raise our attack! Rahhh!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    pbMessage("The Kenshi's fire affinity boosted the power of their Pokemon!")
+                    #battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
+                    #battle.pbDisplay(_INTL("The weather became sunny!",battle.battlers[0].pbThis(true)))
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                    battle.scene.pbHideOpponent
+                  }
+      # Shimizu Intros
+      Shimizu1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rThe calmness of the water... My Pokemon can feel it!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       # Rival intros
@@ -513,20 +583,6 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
-      # Clan intros
-      NenshoIntro1 = Proc.new{|battle|
-                    battle.scene.appearBar
-                    battle.scene.pbShowOpponent(0)
-                    pbMessage("I'm with Nensho Clan! Prepare to feel our burning passion for battle!")
-                    pbMessage("We yell to raise our attack! Rahhh!")
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    pbMessage("The Kenshi's fire affinity boosted the power of their Pokemon!")
-                    #battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
-                    #battle.pbDisplay(_INTL("The weather became sunny!",battle.battlers[0].pbThis(true)))
-                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
-                    battle.scene.pbHideOpponent
-                  }
       # Akui intros, make them cheat a lot!
       ShadowIntroToxic = Proc.new{|battle|
                     battle.scene.appearBar
@@ -566,6 +622,49 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      MashiroIntro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You're a terrible excuse for a Kenshi!")
+                    pbMessage("I'll show you true power!")
+                    pbMessage("Akui Clan Technique, Icicle Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by Mashiro's kunai!")
+                    battle.scene.appearBar
+                    pbMessage("Mwahaha! You'll never be able to defeat me!")
+                    pbMessage("I'm going to put you in your place, you miserable worm!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      Mashiro2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Gah, okay so you might be decently strong after all...")
+                    pbMessage("You're lucky that I'm all out of Ice Kunai!")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                  }
+      Mashiro3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Did you actually believe that I ran out of Ice Kunai?")
+                    pbMessage("You're even more foolish than you look if you let your guard down that easily!")
+                    pbMessage("Akui Clan Technique, Icicle Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by Mashiro's kunai!")
+                    battle.scene.appearBar
+                    pbMessage("Mwahaha! Your worthless code of Bushido will be your downfall!")
+                    battle.scene.disappearBar
+                    if battle.battlers[1].hasActiveAbility?(:CONTRARY)
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    else
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
     # Katana awakens

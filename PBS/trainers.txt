@@ -159,6 +159,14 @@ Pokemon = PIPLUP,5
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = SNIVY,5
 #-------------------------------
+[KOMOREI_M,Testo]
+LoseText = "Well played!"
+Pokemon = SNIVY,5
+#-------------------------------
+[KOMOREI_F,Testoo]
+LoseText = "Well played!"
+Pokemon = COTTONEE,5
+#-------------------------------
 [KENSHI_F,Saki]
 LoseText = "You fight with great honor. Well done!"
 Pokemon = CHERUBI,5
