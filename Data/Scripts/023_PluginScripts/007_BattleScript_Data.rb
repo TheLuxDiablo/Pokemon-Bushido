@@ -490,7 +490,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("If you want to reach Harumi, you'll have to go through me!")
-                    pbMessage("Secret Komorei Technique, Blazing Sunlight!")
+                    pbMessage("Katana of Nature, Komorei Style! Blazing Sunlight!!")
                     battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
@@ -627,14 +627,14 @@ module DialogueModule
       MashiroIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("You're a terrible excuse for a Kenshi!")
-                    pbMessage("I'll show you true power!")
+                    pbMessage("Tch. We were so close to getting Virizion's power, but you all had to come mess it up.")
+                    pbMessage("I'll show you who you're messing with!")
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
                     battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by Mashiro's kunai!")
                     battle.scene.appearBar
-                    pbMessage("Mwahaha! You'll never be able to defeat me!")
+                    pbMessage("You brats always get in my way!")
                     pbMessage("I'm going to put you in your place, you miserable worm!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
@@ -643,22 +643,22 @@ module DialogueModule
       Mashiro2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("Gah, okay so you might be decently strong after all...")
-                    pbMessage("You're lucky that I'm all out of Ice Kunai!")
+                    pbMessage("Why are you so persistent on being annoying?!")
+                    pbMessage("Ugh... I don't have any Icicle Kunai anymore...")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
       Mashiro3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("Did you actually believe that I ran out of Ice Kunai?")
-                    pbMessage("You're even more foolish than you look if you let your guard down that easily!")
+                    pbMessage("Did you actually believe that I ran out of Icicle Kunai?")
+                    pbMessage("You're even more foolish than you look!")
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
                     battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by Mashiro's kunai!")
                     battle.scene.appearBar
-                    pbMessage("Mwahaha! Your worthless code of Bushido will be your downfall!")
+                    pbMessage("Do you see now why the codes of Bushido are worthless? Without honor and respect, I can do whatever I want.")
                     battle.scene.disappearBar
                     if battle.battlers[1].hasActiveAbility?(:CONTRARY)
                       battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1])
