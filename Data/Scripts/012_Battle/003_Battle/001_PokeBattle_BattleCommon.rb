@@ -76,6 +76,12 @@ module PokeBattle_BattleCommon
   # Throw a Poké Ball
   #=============================================================================
   def pbThrowPokeBall(idxBattler,ball,rareness=nil,showPlayer=false)
+    #Thundaga uncatachable pokemon
+    if $game_switches[91]
+      @scene.pbThrowAndDeflect(ball,1)
+      pbDisplay(_INTL("The ball was knocked away! This Pokémon cannot be caught!"))
+      return
+    end
     # Determine which Pokémon you're throwing the Poké Ball at
     battler = nil
     if opposes?(idxBattler)
