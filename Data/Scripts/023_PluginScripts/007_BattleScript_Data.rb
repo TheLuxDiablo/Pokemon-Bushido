@@ -573,7 +573,7 @@ module DialogueModule
                   battle.scene.appearBar
                   battle.scene.pbShowOpponent(0)
                   pbMessage("Kenshi scum like you are worth NOTHING. I'll take you out here and now.")
-                  pbMessage("It's time to unless my full power.")
+                  pbMessage("It's time to unleash my full power.")
                   battle.scene.disappearBar
                   battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
                   battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
