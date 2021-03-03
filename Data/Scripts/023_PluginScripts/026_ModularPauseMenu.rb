@@ -78,13 +78,13 @@ MenuHandlers.addEntry(:POKEGEAR,_INTL("Pokégear"),"menuPokegear",proc{|menu|
   }
 },proc{ return $Trainer.pokegear })
 # Trainer Card
-#MenuHandlers.addEntry(:TRAINER,_INTL("\\pn"),"menuTrainer",proc{|menu|
-#  scene = PokemonTrainerCard_Scene.new
-#  screen = PokemonTrainerCardScreen.new(scene)
-#  pbFadeOutIn(99999) {
-#    screen.pbStartScreen
-#  }
-#},proc{ return true })
+MenuHandlers.addEntry(:TRAINER,_INTL("\\pn"),"menuTrainer",proc{|menu|
+  scene = PokemonTrainerCard_Scene.new
+  screen = PokemonTrainerCardScreen.new(scene)
+  pbFadeOutIn(99999) {
+    screen.pbStartScreen
+  }
+},proc{ return true })
 # Save Screen
 MenuHandlers.addEntry(:SAVE,_INTL("Save"),"menuSave",proc{|menu|
   scene = PokemonSave_Scene.new
