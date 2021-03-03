@@ -388,3 +388,11 @@ Pokemon = BRELOOM,28
 Pokemon = VICTREEBEL,29
 	Moves = WRAP,LEECHLIFE,SUCKERPUNCH,RAZORLEAF
 	Item = SITRUSBERRY
+#-------------------------------
+[TSUKU,Tsuku,1]
+LoseText = "You're still as good as always..."
+Pokemon = VIVILLON,27
+Pokemon = LEAVANNY,27
+Pokemon = SNOM,27
+Pokemon = NINJASK,28
+	Item = ORANBERRY

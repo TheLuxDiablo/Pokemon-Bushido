@@ -1012,8 +1012,11 @@ MegaStone = GARDEVOIRITE
 BaseStats = 68,85,65,100,165,135
 Abilities = PIXILATE
 HiddenAbility = PIXILATE
+BattlerPlayerX = 0
 BattlerPlayerY = 57
+BattlerEnemyX = 0
 BattlerEnemyY = 13
+BattlerShadowSize = 2
 #-------------------------------
 [SABLEYE,1]
 FormName = Mega Sableye
@@ -1387,7 +1390,11 @@ BaseStats = 68,165,95,110,65,115
 Abilities = INNERFOCUS
 HiddenAbility = INNERFOCUS
 Weight = 56.4
+BattlerPlayerX = 0
 BattlerPlayerY = 59
+BattlerEnemyX = 0
+BattlerEnemyY = 17
+BattlerShadowSize = 2
 #-------------------------------
 [ROTOM,1]
 FormName = Heat Rotom
