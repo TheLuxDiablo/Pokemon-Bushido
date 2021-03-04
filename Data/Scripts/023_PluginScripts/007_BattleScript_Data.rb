@@ -500,7 +500,7 @@ module DialogueModule
         HarumiIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("You've done well to make it to me!")
+                    pbMessage("After everything, I believE I owe you a fair fight.")
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
@@ -513,12 +513,28 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You truly are a talented Kenshi!")
-                    pbMessage("We shall end our duel in a blaze of glory!")
+                    pbMessage("Unforunately, you'll be going out in a blaze of glory!")
                     pbMessage("Katana of Nature, Komorei Style! Blazing Sunlight!!")
                     battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        TsukuShrineIntro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("L- Let's make this a fight worth remembering!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        TsukuShrineFinal = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I told myself I wouldn't lose... I won't back down now!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       # Nensho intros
