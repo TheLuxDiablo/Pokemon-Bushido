@@ -509,11 +509,11 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
-        HarumiLast = Proc.new{|battle|
+        HarumiSun = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("You truly are a talent Kenshi!")
-                    pbMessage("It's time to end our duel in a blaze of glory!")
+                    pbMessage("You truly are a talented Kenshi!")
+                    pbMessage("We shall end our duel in a blaze of glory!")
                     pbMessage("Katana of Nature, Komorei Style! Blazing Sunlight!!")
                     battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
