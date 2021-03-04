@@ -605,6 +605,7 @@ MapPosition = 2,14,15
 ShowArea = false
 Outdoor = false
 MapPosition = 2,16,15
+BattleBack = CaveBushido1
 #-------------------------------
 [114]
 # Hanatsu Village
