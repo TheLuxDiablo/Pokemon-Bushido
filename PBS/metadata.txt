@@ -549,14 +549,18 @@ MapPosition = 2,12,5
 #-------------------------------
 [104]
 # Jonetsu Caverns
-ShowArea = false
+ShowArea = true
+DarkMap = true
 Outdoor = false
+BattleBack = CaveBushido4
 MapPosition = 2,15,8
 #-------------------------------
 [105]
 # Jonetsu Caverns
-ShowArea = false
+ShowArea = true
+DarkMap = true
 Outdoor = false
+BattleBack = CaveBushido4
 MapPosition = 2,14,7
 #-------------------------------
 [106]
