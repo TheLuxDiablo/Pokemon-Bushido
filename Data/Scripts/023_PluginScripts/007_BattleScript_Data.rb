@@ -667,6 +667,27 @@ module DialogueModule
                     end
                     battle.scene.pbHideOpponent
                   }
+      MashiroLast = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Wow, you managed to bring me down to my last Pokémon...")
+                    pbMessage("Unfortunately for you, this is my strongest!")
+                    pbMessage("You're lucky that I'm actually out of Ice Kunai now...")
+                    pbMessage("...")
+                    pbMessage("Akui Clan Technique, Icicle Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by Mashiro's kunai!")
+                    battle.scene.appearBar
+                    pbMessage("Do you see now why the codes of Bushido are worthless? Without honor and respect, I can do whatever I want.")
+                    battle.scene.disappearBar
+                    if battle.battlers[1].hasActiveAbility?(:CONTRARY)
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    else
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    end
+                    battle.scene.pbHideOpponent
+                  }
     # Katana awakens
     KatanaIntro = Proc.new{|battle|
                   battle.scene.appearBar
