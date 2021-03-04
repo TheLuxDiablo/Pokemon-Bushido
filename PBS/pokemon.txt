@@ -15996,7 +15996,7 @@ BattlerEnemyX = -1
 BattlerEnemyY = 32
 BattlerShadowX = 0
 BattlerShadowSize = 1
-Evolutions = DEWOTT,Level,17
+Evolutions = DEWOTT,Level,16
 #-------------------------------
 [502]
 Name = Dewott
