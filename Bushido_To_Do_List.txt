@@ -85,7 +85,6 @@ Rival dialogue, the "Hmmm..." clan stuff is colored red, make rest red
 
 
 Maybe do encounters for northern region
-Add interiors and caves/shrine around Jonetsu
 tweak nensho, shimizu, and komorei MBDs
 
 
