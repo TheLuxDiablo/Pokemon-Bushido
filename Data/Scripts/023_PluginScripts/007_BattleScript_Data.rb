@@ -497,6 +497,30 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+        HarumiIntro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You've done well to make it to me!")
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+        HarumiLast = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You truly are a talent Kenshi!")
+                    pbMessage("It's time to end our duel in a blaze of glory!")
+                    pbMessage("Katana of Nature, Komorei Style! Blazing Sunlight!!")
+                    battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
       # Nensho intros
       NenshoIntro1 = Proc.new{|battle|
                     battle.scene.appearBar
@@ -674,17 +698,18 @@ module DialogueModule
                     pbMessage("Unfortunately for you, this is my strongest!")
                     pbMessage("You're lucky that I'm actually out of Ice Kunai now...")
                     pbMessage("...")
+                    pbMessage("Just kidding, of course I have more Kunai!")
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
                     battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by Mashiro's kunai!")
                     battle.scene.appearBar
-                    pbMessage("Do you see now why the codes of Bushido are worthless? Without honor and respect, I can do whatever I want.")
+                    pbMessage("You'll never be able to defeat me!")
                     battle.scene.disappearBar
                     if battle.battlers[1].hasActiveAbility?(:CONTRARY)
-                      battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1])
                     else
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
                     end
                     battle.scene.pbHideOpponent
                   }
