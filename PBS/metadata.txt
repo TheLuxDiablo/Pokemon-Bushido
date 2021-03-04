@@ -537,6 +537,7 @@ Outdoor = true
 [102]
 # Jonetsu Pass
 ShowArea = true
+BattleBack = Mountain
 Outdoor = true
 MapPosition = 2,15,8
 #-------------------------------
