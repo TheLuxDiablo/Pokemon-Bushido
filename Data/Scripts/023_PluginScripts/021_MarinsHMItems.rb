@@ -206,6 +206,7 @@ if USING_SURF_ITEM
          pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
        else
          pbFlash
+         return 2
       end
       next 1
     elsif cmd == 3 # ROCK SMASH
