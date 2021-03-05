@@ -500,7 +500,7 @@ module DialogueModule
         HarumiIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("After everything, I believE I owe you a fair fight.")
+                    pbMessage("After everything, I believe I owe you a fair fight.")
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
