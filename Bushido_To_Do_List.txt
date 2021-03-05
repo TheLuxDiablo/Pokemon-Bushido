@@ -91,6 +91,8 @@ tweak nensho, shimizu, and komorei MBDs
 force register the new Katana when acquired?
 Script KL3 and KL4
 Make Fubuki Bay
+Different colored robes???
+set up chapter tracking in the trainer card and save screen
 
 
 Things done:
