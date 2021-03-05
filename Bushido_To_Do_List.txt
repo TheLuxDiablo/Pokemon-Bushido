@@ -86,13 +86,12 @@ Rival dialogue, the "Hmmm..." clan stuff is colored red, make rest red
 
 Maybe do encounters for northern region
 tweak nensho, shimizu, and komorei MBDs
-
+add yells/shouts on KatanaMoveAnimation based on player gender?
 
 
 
 Script KL4
 Make Fubuki Bay
-set up return 2 for the KL1 and KL2
 Remove the stop animation ON from surfing
 
 

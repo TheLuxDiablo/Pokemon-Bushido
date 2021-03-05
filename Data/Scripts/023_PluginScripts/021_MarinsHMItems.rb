@@ -134,7 +134,7 @@ if USING_SURF_ITEM
 
   ItemHandlers::UseInField.add(SURF_ITEM,proc{|item|
     cmd=0
-    cmd= pbMessage("It's the Katana of Light.\nIt is glowing faintly.",["Heal Pokémon","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+    cmd= pbMessage("It's the Katana of Light.\nIt is glowing brightly.",["Heal Pokémon","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
     if cmd == 0 # HEAL
       pbHealingVial()
       next 1
@@ -149,7 +149,7 @@ if USING_SURF_ITEM
       next 1
     elsif cmd == 2 # FLASH
       if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-        pbMessage(_INTL("This map is already perfectly lit!"))
+        pbMessage(_INTL("This area is already perfectly lit!"))
       elsif $PokemonGlobal.flashUsed
          pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
        else
@@ -172,7 +172,6 @@ if USING_SURF_ITEM
                       pbGetMetadata($game_map.map_id,MetadataBicycleAlways) ||
                       !PBTerrain.isSurfable?(pbFacingTerrainTag) ||
                       !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction,$game_player)
-          pbMessage(_INTL("You cannot use Water Walking here."))
           next 1
       else
         pbSurf
@@ -186,35 +185,39 @@ if USING_SURF_ITEM
 
   ItemHandlers::UseFromBag.add(SURF_ITEM,proc{|item|
     cmd=0
-    cmd= pbMessage("It's the Katana of Light.\nIt is glowing faintly.",["Heal Pokémon","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+    cmd= pbMessage("It's the Katana of Light.\nIt is glowing brightly.",["Heal Pokémon","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
     if cmd == 0 # HEAL
       pbHealingVial()
       next 1
     elsif cmd == 1 # CUT
       if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
-        pbRockSmash
+        pbMessage(_INTL("You closed the bag and readied your Katana."))
+        return 2
       elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
-        pbCut
+        pbMessage(_INTL("You closed the bag and readied your Katana."))
+        return 2
       else
         pbMessage(_INTL("There is nothing to cut."))
       end
       next 1
     elsif cmd == 2 # FLASH
       if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-        pbMessage(_INTL("This map is already perfectly lit!"))
+        pbMessage(_INTL("This area is already perfectly lit!"))
       elsif $PokemonGlobal.flashUsed
          pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
        else
-         pbFlash
+         pbMessage(_INTL("You closed the bag and readied your Katana."))
          return 2
       end
       next 1
     elsif cmd == 3 # ROCK SMASH
       if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
-        pbCut
+        pbMessage(_INTL("You closed the bag and readied your Katana."))
+        return 2
       elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
         # return 2 is how to force close the menu
-        pbRockSmash
+        pbMessage(_INTL("You closed the bag and readied your Katana."))
+        return 2
       else
         pbMessage(_INTL("There are no rocks to smash with Solid Strike."))
       end
@@ -224,9 +227,9 @@ if USING_SURF_ITEM
                       pbGetMetadata($game_map.map_id,MetadataBicycleAlways) ||
                       !PBTerrain.isSurfable?(pbFacingTerrainTag) ||
                       !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction,$game_player)
-          pbMessage(_INTL("You cannot use Water Walking here."))
           return false
       else
+        pbMessage(_INTL("You closed the bag and readied your Katana."))
         return 2
       end
     else
@@ -335,34 +338,39 @@ if USING_ROCK_SMASH_ITEM
 
   ItemHandlers::UseFromBag.add(ROCK_SMASH_ITEM,proc{|item|
     cmd=0
-    cmd= pbMessage("It's the Katana of Light.\nIt is glowing faintly.",["Heal Pokémon","Cut","Flash","Rock Smash","Put Away"],0,nil,0)
+    cmd= pbMessage("It's the Katana of Light.\nIt is glowing warmly.",["Heal Pokémon","Cut","Flash","Rock Smash","Put Away"],0,nil,0)
     if cmd == 0 # HEAL
       pbHealingVial()
       next 1
     elsif cmd == 1 # CUT
       if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
-        pbRockSmash
+        pbMessage(_INTL("You closed the bag and readied your Katana."))
+        return 2
       elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
-        pbCut
+        pbMessage(_INTL("You closed the bag and readied your Katana."))
+        return 2
       else
         pbMessage(_INTL("There is nothing to cut."))
       end
       next 1
     elsif cmd == 2 # FLASH
       if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-        pbMessage(_INTL("This map is already perfectly lit!"))
+        pbMessage(_INTL("This area is already perfectly lit!"))
       elsif $PokemonGlobal.flashUsed
          pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
        else
-         pbFlash
+         pbMessage(_INTL("You closed the bag and readied your Katana."))
+         return 2
       end
       next 1
     elsif cmd == 3 # ROCK SMASH
       if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
-        pbCut
+        pbMessage(_INTL("You closed the bag and readied your Katana."))
+        return 2
       elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
         # return 2 is how to force close the menu
-        pbRockSmash
+        pbMessage(_INTL("You closed the bag and readied your Katana."))
+        return 2
       else
         pbMessage(_INTL("There are no rocks to smash with Solid Strike."))
       end
@@ -375,7 +383,7 @@ if USING_ROCK_SMASH_ITEM
 
   ItemHandlers::UseInField.add(ROCK_SMASH_ITEM,proc{|item|
     cmd=0
-    cmd= pbMessage("It's the Katana of Light.\nIt is glowing faintly.",["Heal Pokémon","Cut","Flash","Rock Smash","Put Away"],0,nil,0)
+    cmd= pbMessage("It's the Katana of Light.\nIt is glowing warmly.",["Heal Pokémon","Cut","Flash","Rock Smash","Put Away"],0,nil,0)
     if cmd == 0 # HEAL
       pbHealingVial()
       next 1
@@ -390,7 +398,7 @@ if USING_ROCK_SMASH_ITEM
       next 1
     elsif cmd == 2 # FLASH
       if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-        pbMessage(_INTL("This map is already perfectly lit!"))
+        pbMessage(_INTL("This area is already perfectly lit!"))
       elsif $PokemonGlobal.flashUsed
          pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
        else
@@ -554,18 +562,20 @@ if USING_FLASH_ITEM
       if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
         pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
       elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
-        pbCut
+        pbMessage(_INTL("You closed the bag and readied your Katana."))
+        return 2
       else
         pbMessage(_INTL("There is nothing to cut."))
       end
       next 1
     elsif cmd == 2 # FLASH
       if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-        pbMessage(_INTL("This map is already perfectly lit!"))
+        pbMessage(_INTL("This area is already perfectly lit!"))
       elsif $PokemonGlobal.flashUsed
          pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
        else
-         pbFlash
+         pbMessage(_INTL("You closed the bag and readied your Katana."))
+         return 2
       end
       next 1
     else
@@ -591,7 +601,7 @@ if USING_FLASH_ITEM
       next 1
     elsif cmd == 2 # FLASH
       if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-        pbMessage(_INTL("This map is already perfectly lit!"))
+        pbMessage(_INTL("This area is already perfectly lit!"))
       elsif $PokemonGlobal.flashUsed
          pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
        else
@@ -607,3 +617,118 @@ if USING_FLASH_ITEM
 end
 
 #=================================================================
+# Final Katana
+#=================================================================
+
+ItemHandlers::UseInField.add(FINAL_KATANA,proc{|item|
+  cmd=0
+  cmd= pbMessage("It's the Katana of Light.\nIt shines brilliantly.",["Heal Pokémon","Purify","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+  if cmd == 0 # HEAL
+    pbHealingVial()
+    next 1
+  elsif cmd == 1 # PURIFY
+    pbRelicStone
+    next 1
+  elsif cmd == 2 # CUT
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      pbRockSmash
+    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      pbCut
+    else
+      pbMessage(_INTL("There is nothing to cut."))
+    end
+    next 1
+  elsif cmd == 3 # FLASH
+    if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
+      pbMessage(_INTL("This area is already perfectly lit!"))
+    elsif $PokemonGlobal.flashUsed
+       pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
+     else
+       pbFlash
+    end
+    next 1
+  elsif cmd == 4 # ROCK SMASH
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      pbCut
+    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      # return 2 is how to force close the menu
+      pbRockSmash
+    else
+      pbMessage(_INTL("There are no rocks to smash with Solid Strike."))
+    end
+    next 1
+  elsif cmd == 5 # SURF
+    $game_temp.in_menu = false
+    if $PokemonGlobal.surfing ||
+                    pbGetMetadata($game_map.map_id,MetadataBicycleAlways) ||
+                    !PBTerrain.isSurfable?(pbFacingTerrainTag) ||
+                    !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction,$game_player)
+        pbMessage(_INTL("You cannot use Water Walking here."))
+        next 1
+    else
+      pbSurf
+      return true
+    end
+  else
+    pbMessage(_INTL("You put the Katana of Light back into its sheath."))
+    next 1
+  end
+})
+
+ItemHandlers::UseFromBag.add(FINAL_KATANA,proc{|item|
+  cmd=0
+  cmd= pbMessage("It's the Katana of Light.\nIt shines brilliantly.",["Heal Pokémon","Purify","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+  if cmd == 0 # HEAL
+    pbHealingVial()
+    next 1
+  elsif cmd == 1 # PURIFY
+    pbRelicStone
+    next 1
+  elsif cmd == 2 # CUT
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      pbMessage(_INTL("You closed the bag and readied your Katana."))
+      return 2
+    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      pbMessage(_INTL("You closed the bag and readied your Katana."))
+      return 2
+    else
+      pbMessage(_INTL("There is nothing to cut."))
+    end
+    next 1
+  elsif cmd == 3 # FLASH
+    if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
+      pbMessage(_INTL("This area is already perfectly lit!"))
+    elsif $PokemonGlobal.flashUsed
+       pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
+     else
+       pbMessage(_INTL("You closed the bag and readied your Katana."))
+       return 2
+    end
+    next 1
+  elsif cmd == 4 # ROCK SMASH
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      pbMessage(_INTL("You closed the bag and readied your Katana."))
+      return 2
+    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      # return 2 is how to force close the menu
+      pbMessage(_INTL("You closed the bag and readied your Katana."))
+      return 2
+    else
+      pbMessage(_INTL("There are no rocks to smash with Solid Strike."))
+    end
+    next 1
+  elsif cmd == 5 # SURF
+    if $PokemonGlobal.surfing ||
+                    pbGetMetadata($game_map.map_id,MetadataBicycleAlways) ||
+                    !PBTerrain.isSurfable?(pbFacingTerrainTag) ||
+                    !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction,$game_player)
+        return false
+    else
+      pbMessage(_INTL("You closed the bag and readied your Katana."))
+      return 2
+    end
+  else
+    pbMessage(_INTL("You put the Katana of Light back into its sheath."))
+    next 1
+  end
+})
