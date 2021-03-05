@@ -18,13 +18,13 @@
 
 
 # The internal name of the item that will trigger Surf
-SURF_ITEM = :KATANALIGHT4
+SURF_ITEM = :KATANALIGHT3
 
 # The internal name of the item that will trigger Rock Smash
 ROCK_SMASH_ITEM = :KATANALIGHT2
 
 # The internal name of the item that will trigger Fly
-FLY_ITEM = :KATANALIGHT3
+FLY_ITEM = :KATANALIGHT5
 
 # The internal name of the item that will trigger Strength
 STRENGTH_ITEM = :STRENGTHITEM
@@ -33,7 +33,10 @@ STRENGTH_ITEM = :STRENGTHITEM
 CUT_ITEM = :KATANABASIC
 
 # The internal name of the item that will trigger Flash
-FLASH_ITEM = :KATANALIGHT5
+FLASH_ITEM = :KATANALIGHT
+
+# The Final Katana
+FINAL_KATANA = :KATANALIGHT4
 
 
 
@@ -218,25 +221,8 @@ if USING_ROCK_SMASH_ITEM
   HiddenMoveHandlers::CanUseMove.delete(:ROCKSMASH)
   HiddenMoveHandlers::UseMove.delete(:ROCKSMASH)
 
-  ItemHandlers::UseFromBag.add(ROCK_SMASH_ITEM, proc do |item|
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
-      return 2
-    end
-    return false
-  end)
-
-  ItemHandlers::UseInField.add(ROCK_SMASH_ITEM, proc do |item|
-    if $game_player.pbFacingEvent
-      $game_player.pbFacingEvent.start
-      return true
-    else
-      pbMessage(_INTL("There are no rocks for the Katana of Light to slice!"))
-      return false
-    end
-  end)
-
   def pbRockSmash
-    if !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM)
+    if !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM) && !$PokemonBag.pbHasItem?(SURF_ITEM) && !$PokemonBag.pbHasItem?(FINAL_KATANA)
       pbMessage(_INTL("It's a rugged rock, but a skilled warrior who has mastered the Solid Strike may be able to slice through it."))
       return false
     end
@@ -244,10 +230,92 @@ if USING_ROCK_SMASH_ITEM
     if pbConfirmMessage(_INTL("This rock appears to be breakable. Would you like to use the {1}?", item))
       pbMessage(_INTL("{1} used the {2}, Solid Strike style!",$Trainer.name, item))
       pbKatanaMoveAnimation(1)
+      pbSmashEvent($game_player.pbFacingEvent)
       return true
     end
     return false
   end
+
+  ItemHandlers::UseFromBag.add(ROCK_SMASH_ITEM,proc{|item|
+    cmd=0
+    cmd= pbMessage("It's the Katana of Light.\nIt is glowing faintly.",["Heal Pokémon","Cut","Flash","Rock Smash","Put Away"],0,nil,0)
+    if cmd == 0 # HEAL
+      pbHealingVial()
+      next 1
+    elsif cmd == 1 # CUT
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+        pbRockSmash
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+        pbCut
+      else
+        pbMessage(_INTL("There is nothing to cut."))
+      end
+      next 1
+    elsif cmd == 2 # FLASH
+      if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
+        pbMessage(_INTL("This map is already perfectly lit!"))
+      elsif $PokemonGlobal.flashUsed
+         pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
+       else
+         pbFlash
+      end
+      next 1
+    elsif cmd == 3 # ROCK SMASH
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+        pbCut
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+        # return 2 is how to force close the menu
+        pbRockSmash
+      else
+        pbMessage(_INTL("There are no rocks to smash with Solid Strike."))
+      end
+      next 1
+    else
+      pbMessage(_INTL("You put the Katana of Light back into its sheath."))
+      next 1
+    end
+  })
+
+  ItemHandlers::UseInField.add(ROCK_SMASH_ITEM,proc{|item|
+    cmd=0
+    cmd= pbMessage("It's the Katana of Light.\nIt is glowing faintly.",["Heal Pokémon","Cut","Flash","Rock Smash","Put Away"],0,nil,0)
+    if cmd == 0 # HEAL
+      pbHealingVial()
+      next 1
+    elsif cmd == 1 # CUT
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+        pbRockSmash
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+        pbCut
+      else
+        pbMessage(_INTL("There is nothing to cut."))
+      end
+      next 1
+    elsif cmd == 2 # FLASH
+      if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
+        pbMessage(_INTL("This map is already perfectly lit!"))
+      elsif $PokemonGlobal.flashUsed
+         pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
+       else
+         pbFlash
+      end
+      next 1
+    elsif cmd == 3 # ROCK SMASH
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+        pbCut
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+        # return 2 is how to force close the menu
+        pbRockSmash
+      else
+        pbMessage(_INTL("There are no rocks to smash with Solid Strike."))
+      end
+      next 1
+    else
+      pbMessage(_INTL("You put the Katana of Light back into its sheath."))
+      next 1
+    end
+  })
+
 end
 
 
@@ -304,13 +372,22 @@ if USING_CUT_ITEM
   HiddenMoveHandlers::UseMove.delete(:CUT)
 
   def pbCut
-    if !$PokemonBag.pbHasItem?(CUT_ITEM) && !$DEBUG
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock" && !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM)
+      pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
+      return false
+    end
+    if !$PokemonBag.pbHasItem?(CUT_ITEM) && !$PokemonBag.pbHasItem?(FLASH_ITEM) &&
+       !$DEBUG && !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM) && !$PokemonBag.pbHasItem?(SURF_ITEM) && !$PokemonBag.pbHasItem?(FINAL_KATANA)
       pbMessage(_INTL("This tree looks like it can be cut down by a skilled warrior with a Katana."))
       return false
     end
     pbMessage(_INTL("This tree looks like it can be cut down by a skilled warrior with a Katana.\1"))
     if pbConfirmMessage(_INTL("Would you like to cut it down?"))
-      itemname = PBItems.getName(getConst(PBItems,CUT_ITEM))
+      if $game_switches[67]
+        itemname = PBItems.getName(getConst(PBItems,FLASH_ITEM))
+      else
+        itemname = PBItems.getName(getConst(PBItems,CUT_ITEM))
+      end
       pbMessage(_INTL("{1} used the {2}!",$Trainer.name,itemname))
       pbKatanaMoveAnimation(2)
       pbSmashEvent($game_player.pbFacingEvent)
@@ -327,8 +404,12 @@ if USING_CUT_ITEM
   end)
 
   ItemHandlers::UseInField.add(CUT_ITEM, proc do
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock" && !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM)
+      pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
+      return false
+    end
     if !$game_player.pbFacingEvent || !$game_player.pbFacingEvent.name == "Tree"
-      pbMessage(_INTL("There are no trees to cut with the Katana of Light!"))
+      pbMessage(_INTL("There are no trees to cut with the Ancient Katana!"))
       return false
     end
     $game_player.pbFacingEvent.start
@@ -365,19 +446,67 @@ if USING_FLASH_ITEM
    return true
   end
 
-  ItemHandlers::UseFromBag.add(FLASH_ITEM, proc do
-    if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-      pbMessage(_INTL("This map is already perfectly lit!"))
-      return false
-    elsif $PokemonGlobal.flashUsed
-       pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
-       return false
-     else
-       return 2
-    end
-  end)
 
-  ItemHandlers::UseInField.add(FLASH_ITEM, proc { pbFlash })
+  ItemHandlers::UseFromBag.add(FLASH_ITEM,proc{|item|
+    cmd=0
+    cmd= pbMessage("It's the Katana of Light.\nThough it has awakened, it appears weak.",["Heal Pokémon","Cut","Flash","Put Away"],0,nil,0)
+    if cmd == 0 # HEAL
+      pbHealingVial()
+      next 1
+    elsif cmd == 1 # CUT
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+        pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+        pbCut
+      else
+        pbMessage(_INTL("There is nothing to cut."))
+      end
+      next 1
+    elsif cmd == 2 # FLASH
+      if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
+        pbMessage(_INTL("This map is already perfectly lit!"))
+      elsif $PokemonGlobal.flashUsed
+         pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
+       else
+         pbFlash
+      end
+      next 1
+    else
+      pbMessage(_INTL("You put the Katana of Light back into its sheath."))
+      next 1
+    end
+  })
+
+  ItemHandlers::UseInField.add(FLASH_ITEM,proc{|item|
+    cmd=0
+    cmd= pbMessage("It's the Katana of Light.\nThough it has awakened, it appears weak.",["Heal Pokémon","Cut","Flash","Put Away"],0,nil,0)
+    if cmd == 0 # HEAL
+      pbHealingVial()
+      next 1
+    elsif cmd == 1 # CUT
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+        pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+        pbCut
+      else
+        pbMessage(_INTL("There is nothing to cut."))
+      end
+      next 1
+    elsif cmd == 2 # FLASH
+      if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
+        pbMessage(_INTL("This map is already perfectly lit!"))
+      elsif $PokemonGlobal.flashUsed
+         pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
+       else
+         pbFlash
+      end
+      next 1
+    else
+      pbMessage(_INTL("You put the Katana of Light back into its sheath."))
+      next 1
+    end
+  })
+
 end
 
 #=================================================================

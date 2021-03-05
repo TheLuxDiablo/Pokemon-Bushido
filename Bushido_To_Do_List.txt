@@ -88,6 +88,9 @@ Maybe do encounters for northern region
 tweak nensho, shimizu, and komorei MBDs
 
 
+force register the new Katana when acquired?
+
+
 Things done:
 Reborn anims baybeeee
 
