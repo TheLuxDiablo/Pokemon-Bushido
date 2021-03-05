@@ -88,13 +88,19 @@ Maybe do encounters for northern region
 tweak nensho, shimizu, and komorei MBDs
 
 
-force register the new Katana when acquired?
-Script KL3 and KL4
+
+
+Script KL4
 Make Fubuki Bay
 Different colored robes???
 set up return 2 for the KL1 and KL2
 Remove the stop animation ON from surfing
 
+
+outfits for the 3 clans, plus maybe a purple shadow one for beating the game
+choose to equip them or not after each dojo
+unlock the outfits, perhaps track the number in a variable
+dresser to change at Ezo Village, and option to change at Hot Springs
 
 
 Things done:

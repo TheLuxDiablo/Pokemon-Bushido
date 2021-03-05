@@ -211,8 +211,9 @@ def pbKatanaMoveAnimation(color=1)
     bg.bitmap=BitmapCache.load_bitmap("Graphics/Pictures/hiddenMovebg")
   end
   sprite = IconSprite.new(200,400,@viewport)
-  #sprite.setOffset(PictureOrigin::Center)
   sprite.setBitmap(pbPlayerSpriteFile($Trainer.trainertype))
+  sprite.ox = (sprite.bitmap.width/2)
+  sprite.oy = (sprite.bitmap.height/2)-100
   sprite.z=999999
   sprite.visible=false
   strobebitmap=AnimatedBitmap.new("Graphics/Pictures/hiddenMoveStrobes")
@@ -342,6 +343,7 @@ def pbTalonflameMoveAnimation(color=1)
   sprite = IconSprite.new(200,400,@viewport)
   #sprite.setOffset(PictureOrigin::Center)
   sprite.bitmap=BitmapCache.load_bitmap("Graphics/Pictures/663")
+  sprite.ox = (sprite.bitmap.width/2)
   sprite.z=999999
   sprite.visible=false
   strobebitmap=AnimatedBitmap.new("Graphics/Pictures/hiddenMoveStrobes")
