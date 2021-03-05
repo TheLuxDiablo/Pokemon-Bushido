@@ -170,3 +170,34 @@ def pbSaveArenayToVariable(var)
   $PokemonBag.pbStoreItem($game_variables[var].item) if $game_variables[var].hasItem?
   $game_variables[var].setItem(0)
 end
+
+def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
+  if $game_variables[maxChargeVar] == 0 #Thundaga, making it so the healing can always be used initially.
+    $game_variables[currentChargeVar] = 1
+    $game_variables[maxChargeVar] = 1
+  end
+  case $game_variables[currentChargeVar]
+  when 0
+    pbMessage(_INTL("\\se[SwShIncorrect]You do not have any healing energy left..."))
+  when 1
+    pbMessage("You have 1 charge of healing energy left.")
+    if pbConfirmMessage("Would you like to heal your Pokémon?")
+      $game_variables[currentChargeVar] -= 1
+      for i in $Trainer.party
+       i.heal
+      end
+      pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+      pbMessage(_INTL("You have no more healing energy left."))
+     end
+  else
+    pbMessage(_INTL("You have {1} charges of healing energy left.",$game_variables[currentChargeVar]))
+    if pbConfirmMessage("Would you like to heal your Pokémon?")
+      $game_variables[currentChargeVar] -= 1
+      for i in $Trainer.party
+       i.heal
+      end
+      pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+      pbMessage(_INTL("{1} charge(s) remain.",$game_variables[currentChargeVar]))
+     end
+   end
+end
