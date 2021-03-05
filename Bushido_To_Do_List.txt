@@ -89,6 +89,8 @@ tweak nensho, shimizu, and komorei MBDs
 
 
 force register the new Katana when acquired?
+Script KL3 and KL4
+Make Fubuki Bay
 
 
 Things done:
