@@ -168,7 +168,7 @@ PhenomenonCave
 	MUNCHLAX,26,30
 	TRAPINCH,26,31
 	GABITE,27,31
-    LARVITAR,26,30
+	LARVITAR,26,30
 #-------------------------------
 105 # Jonetsu Caverns
 25,10,10
