@@ -120,7 +120,7 @@ if USING_SURF_ITEM
     if !$PokemonBag.pbHasItem?(SURF_ITEM) && !$DEBUG && !$PokemonBag.pbHasItem?(FINAL_KATANA)
       return false
     end
-    if pbConfirmMessage(_INTL("The water is a deep blue...\nWould you like to surf on it?"))
+    if pbConfirmMessage(_INTL("The water is a deep blue...\nWould you like to use the Water Walk technique?"))
       pbMessage(_INTL("{1} used the {2}, Water Walking Style!", $Trainer.name, PBItems.getName(getConst(PBItems,SURF_ITEM))))
       pbKatanaMoveAnimation(4)
       pbCancelVehicles
