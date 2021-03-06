@@ -847,3 +847,4 @@
 820,CALCIUM,Calcium,Calciums,2,5000,"A nutritious drink for Pokémon. It raises the base Sp. Atk (Special Attack) stat of a single Pokémon.",1,0,0,
 821,ZINC,Zinc,Zincs,2,5000,"A nutritious drink for Pokémon. It raises the base Sp. Def (Special Defense) stat of a single Pokémon.",1,0,0,
 822,CARBOS,Carbos,Carbos,2,5000,"A nutritious drink for Pokémon. It raises the base Speed stat of a single Pokémon.",1,0,0,
+823,HANORE,Hanatsium Ore,Hanatsium Ores,1,8000,"A collection of rare Hanatsium Ore. It can be sold at a high price to shops.",0,0,0,
