@@ -460,7 +460,20 @@ Pokemon = SNORLAX,36
 #-------------------------------
 [AKUICLAN_M,Iwa]
 LoseText = "You rocked my world!"
-Pokemon = SKUNTANK,35
-Pokemon = THIEVUL,35
-Pokemon = LARVITAR,36
+Pokemon = SKUNTANK,33
+Pokemon = THIEVUL,33
+Pokemon = LARVITAR,34
     Shadow = yes
+#-------------------------------
+[RIVALBUSHIDO_F,Akane,3]
+LoseText = "I guess you're not just all talk!"
+Pokemon = TALONFLAME,35
+Pokemon = TOGEKISS,35
+	Moves = FOLLOWME,HEATWAVE,DAZZLINGGLEAM,YAWN
+	Item = BABIRIBERRY
+Pokemon = GASTRODON,35
+	Moves = SCALD,PROTECT,EARTHPOWER,YAWN
+	Item = IAPAPABERRY
+Pokemon = COALOSSAL,37
+	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
+	Item = WEAKNESSPOLICY
