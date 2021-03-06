@@ -202,4 +202,4 @@
 197,MASHIRO,Akui Admin,100,CON-Akatsuki,,,Female,,
 198,HOTOKE,Akui Admin,100,CON-Akatsuki,,,Male,,
 199,KURO,Akui Admin,100,CON-Akatsuki,,,Male,,
-
+200,GALARMAN,Galarian Man,100,,,,Male,,

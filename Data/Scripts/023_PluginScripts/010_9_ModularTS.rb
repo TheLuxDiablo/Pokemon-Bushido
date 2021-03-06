@@ -76,7 +76,7 @@ MTS_MODIFIERS = [
 #-------------------------------------------------------------------------------
 #                  V V     add your modifiers in here     V V
 #-------------------------------------------------------------------------------
-"background:backgroundbushido", "overlay5", "bgm:Conquest-MainTheme","logoX:260","logoY:286"
+"background:backgroundbushido", "overlay5", "bgm:titlebushido","logoX:260","logoY:286"
 
 ] # end of config constant
 #-------------------------------------------------------------------------------

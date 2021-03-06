@@ -398,3 +398,9 @@ Pokemon = LEAVANNY,27
 Pokemon = SNOM,27
 Pokemon = NINJASK,28
 	Item = ORANBERRY
+#-------------------------------
+[GALARMAN,Andy]
+LoseText = "Very well! You fought bravely."
+Pokemon = SNOM,30
+Pokemon = TOXTRICITY,30
+Pokemon = THIEVUL,30
