@@ -460,7 +460,7 @@ Pokemon = SNORLAX,36
 #-------------------------------
 [AKUICLAN_M,Iwa]
 LoseText = "You rocked my world!"
-Pokemon = STUNKY,35
+Pokemon = SKUNTANK,35
 Pokemon = THIEVUL,35
 Pokemon = LARVITAR,36
     Shadow = yes
