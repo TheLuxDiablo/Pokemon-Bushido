@@ -404,3 +404,56 @@ LoseText = "Very well! You fought bravely."
 Pokemon = SNOM,30
 Pokemon = TOXTRICITY,30
 Pokemon = THIEVUL,30
+#-------------------------------
+[NENSHO_F,Juba]
+LoseText = "It seems that your Pokemon thrive in the mountains as well!"
+Pokemon = TEDDIURSA,29
+Pokemon = MEDITITE,29
+#-------------------------------
+[NENSHO_M,Hirose]
+LoseText = "I couldn't even beat you with my rare Pokemon..."
+Pokemon = ARON,31
+#-------------------------------
+[KENSHI_M,Shishido]
+LoseText = "Light or dark, I still lose..."
+Pokemon = DUGTRIO,30
+Pokemon = CARKOL,30
+Pokemon = KROKOROK,31
+#-------------------------------
+[NENSHO_M,Saeki]
+LoseText = "I hate the dark!"
+Pokemon = FLETCHINDER,31
+Pokemon = PANCHAM,31
+#-------------------------------
+[KENSHI_F,Yagi]
+LoseText = "Hey, you! Yeah, you! You're pretty strong!"
+Pokemon = ORANGURU,33
+Pokemon = PASSIMIAN,33
+#-------------------------------
+[NENSHO_F,Kimi]
+LoseText = "That's why my Lycanroc is always by my side!"
+Pokemon = LYCANROC,34
+#-------------------------------
+[BLACKBELT,Oshiro]
+LoseText = "My Pokemon never pull their punches!"
+Pokemon = MIENSHAO,32
+Pokemon = PANGORO,32
+#-------------------------------
+[BATTLEGIRL,Miyata]
+LoseText = "Even when I lose, I focus on my health!"
+Pokemon = LUCARIO,34
+Pokemon = BRELOOM,34
+#-------------------------------
+[KENSHI_F,Kimoto]
+LoseText = "Even when I lose, I focus on my health!"
+Pokemon = LUXRAY,35
+#-------------------------------
+[NENSHO_M,Katsu]
+LoseText = "I shall remain brave, even in the face of defeat!"
+Pokemon = PYROAR,35
+Pokemon = GLIGAR,35
+#-------------------------------
+[NENSHO_F,Tsutsumi]
+LoseText = "My soul shines bright with the flames of my Pokemon!"
+Pokemon = HITMONCHAN,35
+Pokemon = SNORLAX,36
