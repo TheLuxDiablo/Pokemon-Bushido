@@ -442,6 +442,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                    pbMessage("The Kenshi's grass affinity boosted the power of their Pokemon!")
                     battle.scene.pbHideOpponent
                   }
         Komorei2 = Proc.new{|battle|
@@ -452,6 +453,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    pbMessage("The Kenshi's grass affinity boosted the power of their Pokemon!")
                     battle.scene.pbHideOpponent
                   }
         Komorei3 = Proc.new{|battle|
@@ -462,6 +464,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    pbMessage("The Kenshi's grass affinity boosted the power of their Pokemon!")
                     battle.scene.pbHideOpponent
                   }
         Komorei4 = Proc.new{|battle|
@@ -484,6 +487,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    pbMessage("The Kenshi's grass affinity boosted the power of their Pokemon!")
                     battle.scene.pbHideOpponent
                   }
         KomoreiDojo2 = Proc.new{|battle|
@@ -495,6 +499,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    pbMessage("The Kenshi's grass affinity boosted the power of their Pokemon!")
                     battle.scene.pbHideOpponent
                   }
         HarumiIntro = Proc.new{|battle|
@@ -507,6 +512,7 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    pbMessage("Harumi's grass affinity boosted the power of her Pokemon!")
                     battle.scene.pbHideOpponent
                   }
         HarumiSun = Proc.new{|battle|
@@ -553,13 +559,16 @@ module DialogueModule
                   }
       # Shimizu Intros
       Shimizu1 = Proc.new{|battle|
-                    battle.scene.appearBar
-                    battle.scene.pbShowOpponent(0)
-                    pbMessage("\\rThe calmness of the water... My Pokemon can feel it!")
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
-                    battle.scene.pbHideOpponent
-                  }
+                  battle.scene.appearBar
+                  battle.scene.pbShowOpponent(0)
+                  pbMessage("You cannot overcome the calmness of the Shimizu Clan.")
+                  battle.scene.disappearBar
+                  battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
+                  battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                  pbMessage("The Kenshi's water affinity boosted the power of their Pokemon!")
+                  battle.scene.pbHideOpponent
+                }
       # Rival intros
       RivalFirstIntro = Proc.new{|battle|
                     battle.scene.appearBar
@@ -662,6 +671,26 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowFreeze = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Prepare to be frozen, foolish Kenshi!")
+                    pbMessage("Akui Clan Technique, Icicle Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowShock = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Prepare to be shocked, foolish Kenshi!")
+                    pbMessage("Akui Clan Technique, Shock Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
                     battle.scene.pbHideOpponent
                   }
       MashiroIntro = Proc.new{|battle|

@@ -457,3 +457,10 @@ Pokemon = GLIGAR,35
 LoseText = "My soul shines bright with the flames of my Pokemon!"
 Pokemon = HITMONCHAN,35
 Pokemon = SNORLAX,36
+#-------------------------------
+[AKUICLAN_M,Iwa]
+LoseText = "You rocked my world!"
+Pokemon = STUNKY,35
+Pokemon = THIEVUL,35
+Pokemon = LARVITAR,36
+    Shadow = yes
