@@ -439,7 +439,7 @@ LoseText = "My Pokemon never pull their punches!"
 Pokemon = MIENSHAO,32
 Pokemon = PANGORO,32
 #-------------------------------
-[BATTLEGIRL,Miyata]
+[KIMONOGIRL,Miyata]
 LoseText = "Even when I lose, I focus on my health!"
 Pokemon = LUCARIO,34
 Pokemon = BRELOOM,34
@@ -478,11 +478,7 @@ Pokemon = COALOSSAL,37
 	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
 	Item = WEAKNESSPOLICY
 #-------------------------------
-<<<<<<< Updated upstream
-[RIVALBUSHIDO_F,Yakeru,3]
-=======
 [RIVALBUSHIDO_M,Yakeru,3]
->>>>>>> Stashed changes
 LoseText = "I guess you're not just all talk!"
 Pokemon = TALONFLAME,35
 Pokemon = TOGEKISS,35

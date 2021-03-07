@@ -76,13 +76,12 @@ Rival dialogue, the "Hmmm..." clan stuff is colored red, make rest red
 
 
 add yells/shouts on KatanaMoveAnimation based on player gender?
-Make Fubuki Bay
 Remove the stop animation ON from surfing
-
 
 
 Nensho Clan MBD and set it up for all clan trainer battles on Jonetsu Pass
 Start mapping fubuki bay
+recolor akui player robes to have dark color bands
 MAKE R A M E N  I T E M S
 
 
