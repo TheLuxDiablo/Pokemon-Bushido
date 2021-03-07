@@ -89,10 +89,11 @@ tweak nensho, shimizu, and komorei MBDs
 add yells/shouts on KatanaMoveAnimation based on player gender?
 
 
-
-Script KL4
 Make Fubuki Bay
 Remove the stop animation ON from surfing
+
+
+$game_player.x==4
 
 
 
