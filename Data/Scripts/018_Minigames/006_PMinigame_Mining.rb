@@ -134,6 +134,8 @@ end
 class MiningGameScene
   BOARDWIDTH  = 13
   BOARDHEIGHT = 10
+  stoneMode = false
+  fossilMode = false
   begin
     stoneMode = $game_switches[101]
     fossilMode = $game_switches[101]
