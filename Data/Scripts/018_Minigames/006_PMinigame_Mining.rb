@@ -134,7 +134,14 @@ end
 class MiningGameScene
   BOARDWIDTH  = 13
   BOARDHEIGHT = 10
-  if $game_switches[101] # Elemental stones
+  begin
+    stoneMode = $game_switches[101]
+    fossilMode = $game_switches[101]
+  rescue
+    stoneMode = false
+    fossilMode = false
+  end
+  if stoneMode  # Elemental stones
     ITEMS = [   # Item, probability, graphic x, graphic y, width, height, pattern
        [:FIRESTONE,130, 20,11, 3,3,[1,1,1,1,1,1,1,1,1]],
        [:WATERSTONE,130, 23,11, 3,3,[1,1,1,1,1,1,1,1,0]],
@@ -143,9 +150,8 @@ class MiningGameScene
        [:MOONSTONE,100, 25,14, 4,2,[0,1,1,1,1,1,1,0]],
        [:SUNSTONE,100, 21,17, 3,3,[0,1,0,1,1,1,1,1,1]],
        [:HANORE,120, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
-       [:HANORE,120, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]
-    ]
-  elsif $game_switches[102] # Fossils
+       [:HANORE,120, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]]
+  elsif fossilMode # Fossils
     ITEMS = [   # Item, probability, graphic x, graphic y, width, height, pattern
       [:DOMEFOSSIL,70, 0,3, 5,4,[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0]],
       [:HELIXFOSSIL,50, 5,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
@@ -165,8 +171,7 @@ class MiningGameScene
       [:CLAWFOSSIL,75, 9,12, 4,5,[0,0,1,1,0,1,1,1,1,1,1,0,1,1,1,0,1,1,0,0]],
       [:CLAWFOSSIL,75, 13,12, 5,4,[1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,0,0,0,1,1]],
       [:HANORE,130, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
-      [:HANORE,130, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]
-    ]
+      [:HANORE,130, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]]
   else
     ITEMS = [   # Item, probability, graphic x, graphic y, width, height, pattern
        [:FIRESTONE,20, 20,11, 3,3,[1,1,1,1,1,1,1,1,1]],
@@ -183,8 +188,7 @@ class MiningGameScene
        [:RAREBONE,50, 3,17, 6,3,[1,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,1]],
        [:RAREBONE,50, 3,20, 3,6,[1,1,1,0,1,0,0,1,0,0,1,0,0,1,0,1,1,1]],
        [:HANORE,160, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
-       [:HANORE,160, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]
-    ]
+       [:HANORE,160, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]]
   end
 # Backup items
 =begin
