@@ -62,14 +62,7 @@ decide on our dex for the region
 make all shadow pokemon and OWs
 
 
-
-
-PLAYTEST UP TO THE TOURNAMENT
-set up komorei grunts with placeholder sprites for battles
-set up komorei battle dialogue
 fix issue with key item SFX for katana get
-KATANA FUNCTIONALITY
-
 
 
 
@@ -77,25 +70,19 @@ raise tree priority, since rustle grass was on top
 toxic spikes animations
 cant interact with berries on first try
 Make Razor Shell attack anim use Cut anim, but Blue
-
-
-run through game's intro again with Fennekin
-remove colored towns from map in intro bg, make it more just sepia
 Rival dialogue, the "Hmmm..." clan stuff is colored red, make rest red
 
 
-Maybe do encounters for northern region
-tweak nensho, shimizu, and komorei MBDs
+
+
 add yells/shouts on KatanaMoveAnimation based on player gender?
-
-
 Make Fubuki Bay
 Remove the stop animation ON from surfing
 
 
-$game_player.x==4
 
-
+Nensho Clan MBD and set it up for all clan trainer battles on Jonetsu Pass
+Start mapping fubuki bay
 
 
 Things done:

@@ -599,6 +599,34 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+      RivalDuel2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\pogI've grown a lot since our last battle, so don't underestimate me!")
+                    pbMessage("\\pogNow, take a look at the new Katana Technique I learned!")
+                    pbMessage("\\pogKatana of Fire, Nensho Style! Fire Vortex!")
+                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                    battle.battlers[0].effects[PBEffects::Trapping] = 7
+                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                    battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+      RivalDuel2Last = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\pogLooks like it's time to get serious!")
+                    pbMessage("\\pogGo #{battle.battlers[1].pokemon.speciesName}, unleash your burning passion!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                    battle.scene.pbHideOpponent
+                  }
       TsukuIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
