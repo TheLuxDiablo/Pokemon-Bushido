@@ -478,7 +478,11 @@ Pokemon = COALOSSAL,37
 	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
 	Item = WEAKNESSPOLICY
 #-------------------------------
+<<<<<<< Updated upstream
 [RIVALBUSHIDO_F,Yakeru,3]
+=======
+[RIVALBUSHIDO_M,Yakeru,3]
+>>>>>>> Stashed changes
 LoseText = "I guess you're not just all talk!"
 Pokemon = TALONFLAME,35
 Pokemon = TOGEKISS,35
