@@ -465,7 +465,7 @@ Outdoor = false
 # Shogun's Tower
 ShowArea = true
 BattleBack = Shogun
-MapPosition = 2,15,10
+MapPosition = 2,14,9
 Outdoor = false
 #-------------------------------
 [089]
@@ -511,7 +511,7 @@ Outdoor = false
 # Tsuchi Shrine
 ShowArea = true
 BattleBack = Lush
-MapPosition = 2,16,15
+MapPosition = 2,15,14
 Outdoor = true
 #-------------------------------
 [097]
@@ -544,7 +544,7 @@ Outdoor = true
 [103]
 # Hanatsu Village
 ShowArea = true
-MapPosition = 2,12,5
+MapPosition = 2,14,5
 Outdoor = true
 #-------------------------------
 [104]
@@ -552,7 +552,7 @@ Outdoor = true
 DarkMap = true
 ShowArea = true
 BattleBack = CaveBushido4
-MapPosition = 2,15,8
+MapPosition = 2,15,7
 Outdoor = false
 #-------------------------------
 [105]
@@ -636,12 +636,15 @@ Outdoor = false
 ShowArea = false
 MapPosition = 2,14,4
 Outdoor = false
+DarkMap = true
+BattleBack = CaveBushido4
 #-------------------------------
 [118]
 # Hanatsu Shrine
 ShowArea = true
-MapPosition = 2,10,5
-Outdoor = true
+MapPosition = 2,13,3
+Outdoor = true'
+BattleBack = Lush
 #-------------------------------
 [119]
 # Tsuchi Shrine
@@ -652,7 +655,7 @@ Outdoor = false
 [120]
 # Chikyu Village
 ShowArea = false
-MapPosition = 2,8,11
+MapPosition = 2,10,10
 Outdoor = false
 #-------------------------------
 [121]
