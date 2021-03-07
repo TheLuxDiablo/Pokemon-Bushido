@@ -129,72 +129,31 @@ class MiningGameCursor < BitmapSprite
   end
 end
 
+$items = [   # Item, probability, graphic x, graphic y, width, height, pattern
+   [:FIRESTONE,20, 20,11, 3,3,[1,1,1,1,1,1,1,1,1]],
+   [:WATERSTONE,20, 23,11, 3,3,[1,1,1,1,1,1,1,1,0]],
+   [:THUNDERSTONE,20, 26,11, 3,3,[0,1,1,1,1,1,1,1,0]],
+   [:LEAFSTONE,10, 18,14, 3,4,[0,1,0,1,1,1,1,1,1,0,1,0]],
+   [:MOONSTONE,10, 25,14, 4,2,[0,1,1,1,1,1,1,0]],
+   [:SUNSTONE,20, 21,17, 3,3,[0,1,0,1,1,1,1,1,1]],
+   [:OVALSTONE,150, 24,17, 3,3,[1,1,1,1,1,1,1,1,1]],
+   [:EVERSTONE,150, 21,20, 4,2,[1,1,1,1,1,1,1,1]],
+   [:STARPIECE,100, 0,17, 3,3,[0,1,0,1,1,1,0,1,0]],
+   [:REVIVE,100, 0,20, 3,3,[0,1,0,1,1,1,0,1,0]],
+   [:MAXREVIVE,50, 0,23, 3,3,[1,1,1,1,1,1,1,1,1]],
+   [:RAREBONE,50, 3,17, 6,3,[1,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,1]],
+   [:RAREBONE,50, 3,20, 3,6,[1,1,1,0,1,0,0,1,0,0,1,0,0,1,0,1,1,1]],
+   [:HANORE,160, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
+   [:HANORE,160, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]]
 
 
 class MiningGameScene
   BOARDWIDTH  = 13
   BOARDHEIGHT = 10
-  stoneMode = false
-  fossilMode = false
-  begin
-    stoneMode = $game_switches[101]
-    fossilMode = $game_switches[101]
-  rescue
-    stoneMode = false
-    fossilMode = false
-  end
-  if stoneMode  # Elemental stones
-    ITEMS = [   # Item, probability, graphic x, graphic y, width, height, pattern
-       [:FIRESTONE,130, 20,11, 3,3,[1,1,1,1,1,1,1,1,1]],
-       [:WATERSTONE,130, 23,11, 3,3,[1,1,1,1,1,1,1,1,0]],
-       [:THUNDERSTONE,130, 26,11, 3,3,[0,1,1,1,1,1,1,1,0]],
-       [:LEAFSTONE,130, 18,14, 3,4,[0,1,0,1,1,1,1,1,1,0,1,0]],
-       [:MOONSTONE,100, 25,14, 4,2,[0,1,1,1,1,1,1,0]],
-       [:SUNSTONE,100, 21,17, 3,3,[0,1,0,1,1,1,1,1,1]],
-       [:HANORE,120, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
-       [:HANORE,120, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]]
-  elsif fossilMode # Fossils
-    ITEMS = [   # Item, probability, graphic x, graphic y, width, height, pattern
-      [:DOMEFOSSIL,70, 0,3, 5,4,[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0]],
-      [:HELIXFOSSIL,50, 5,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
-      [:HELIXFOSSIL,50, 9,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]],
-      [:HELIXFOSSIL,50, 13,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
-      [:HELIXFOSSIL,50, 17,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]],
-      [:OLDAMBER,50, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
-      [:OLDAMBER,50, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]],
-      [:ROOTFOSSIL,50, 0,7, 5,5,[1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,0,0,1,1,0,0,1,1,0]],
-      [:ROOTFOSSIL,50, 5,7, 5,5,[0,0,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,1,1,1,0,1,1,1,0]],
-      [:ROOTFOSSIL,50, 10,7, 5,5,[0,1,1,0,0,1,1,0,0,0,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1]],
-      [:ROOTFOSSIL,50, 15,7, 5,5,[0,1,1,1,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,0,0]],
-      [:SKULLFOSSIL,80, 20,7, 4,4,[1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0]],
-      [:ARMORFOSSIL,80, 24,7, 5,4,[0,1,1,1,0,0,1,1,1,0,1,1,1,1,1,0,1,1,1,0]],
-      [:CLAWFOSSIL,75, 0,12, 4,5,[0,0,1,1,0,1,1,1,0,1,1,1,1,1,1,0,1,1,0,0]],
-      [:CLAWFOSSIL,75, 4,12, 5,4,[1,1,0,0,0,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1]],
-      [:CLAWFOSSIL,75, 9,12, 4,5,[0,0,1,1,0,1,1,1,1,1,1,0,1,1,1,0,1,1,0,0]],
-      [:CLAWFOSSIL,75, 13,12, 5,4,[1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,0,0,0,1,1]],
-      [:HANORE,130, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
-      [:HANORE,130, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]]
-  else
-    ITEMS = [   # Item, probability, graphic x, graphic y, width, height, pattern
-       [:FIRESTONE,20, 20,11, 3,3,[1,1,1,1,1,1,1,1,1]],
-       [:WATERSTONE,20, 23,11, 3,3,[1,1,1,1,1,1,1,1,0]],
-       [:THUNDERSTONE,20, 26,11, 3,3,[0,1,1,1,1,1,1,1,0]],
-       [:LEAFSTONE,10, 18,14, 3,4,[0,1,0,1,1,1,1,1,1,0,1,0]],
-       [:MOONSTONE,10, 25,14, 4,2,[0,1,1,1,1,1,1,0]],
-       [:SUNSTONE,20, 21,17, 3,3,[0,1,0,1,1,1,1,1,1]],
-       [:OVALSTONE,150, 24,17, 3,3,[1,1,1,1,1,1,1,1,1]],
-       [:EVERSTONE,150, 21,20, 4,2,[1,1,1,1,1,1,1,1]],
-       [:STARPIECE,100, 0,17, 3,3,[0,1,0,1,1,1,0,1,0]],
-       [:REVIVE,100, 0,20, 3,3,[0,1,0,1,1,1,0,1,0]],
-       [:MAXREVIVE,50, 0,23, 3,3,[1,1,1,1,1,1,1,1,1]],
-       [:RAREBONE,50, 3,17, 6,3,[1,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,1]],
-       [:RAREBONE,50, 3,20, 3,6,[1,1,1,0,1,0,0,1,0,0,1,0,0,1,0,1,1,1]],
-       [:HANORE,160, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
-       [:HANORE,160, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]]
-  end
+
 # Backup items
 =begin
-  ITEMS = [   # Item, probability, graphic x, graphic y, width, height, pattern
+  $items = [   # Item, probability, graphic x, graphic y, width, height, pattern
      [:DOMEFOSSIL,20, 0,3, 5,4,[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0]],
      [:HELIXFOSSIL,5, 5,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
      [:HELIXFOSSIL,5, 9,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]],
@@ -289,6 +248,7 @@ class MiningGameScene
     @items=[]
     @itemswon=[]
     @iron=[]
+    pbChangeItems(pbGet(101))
     pbDistributeItems
     pbDistributeIron
     for i in 0...BOARDHEIGHT
@@ -306,9 +266,9 @@ class MiningGameScene
   end
 
   def pbDistributeItems
-    # Set items to be buried (index in ITEMS, x coord, y coord)
+    # Set items to be buried (index in $items, x coord, y coord)
     ptotal=0
-    for i in ITEMS
+    for i in $items
       ptotal+=i[1]
     end
     numitems=2+rand(3)
@@ -316,14 +276,14 @@ class MiningGameScene
     while numitems>0
       rnd=rand(ptotal)
       added=false
-      for i in 0...ITEMS.length
-        rnd-=ITEMS[i][1]
+      for i in 0...$items.length
+        rnd-=$items[i][1]
         if rnd<0
-          if pbNoDuplicateItems(ITEMS[i][0])
+          if pbNoDuplicateItems($items[i][0])
             while !added
-              provx=rand(BOARDWIDTH-ITEMS[i][4]+1)
-              provy=rand(BOARDHEIGHT-ITEMS[i][5]+1)
-              if pbCheckOverlaps(false,provx,provy,ITEMS[i][4],ITEMS[i][5],ITEMS[i][6])
+              provx=rand(BOARDWIDTH-$items[i][4]+1)
+              provy=rand(BOARDHEIGHT-$items[i][5]+1)
+              if pbCheckOverlaps(false,provx,provy,$items[i][4],$items[i][5],$items[i][6])
                 @items.push([i,provx,provy])
                 numitems-=1
                 added=true
@@ -341,10 +301,10 @@ class MiningGameScene
     # Draw items on item layer
     layer=@sprites["itemlayer"].bitmap
     for i in @items
-      ox=ITEMS[i[0]][2]
-      oy=ITEMS[i[0]][3]
-      rectx=ITEMS[i[0]][4]
-      recty=ITEMS[i[0]][5]
+      ox=$items[i[0]][2]
+      oy=$items[i[0]][3]
+      rectx=$items[i[0]][4]
+      recty=$items[i[0]][5]
       layer.blt(32*i[1],64+32*i[2],@itembitmap.bitmap,Rect.new(32*ox,32*oy,32*rectx,32*recty))
     end
   end
@@ -375,6 +335,57 @@ class MiningGameScene
     end
   end
 
+  def pbChangeItems(index=0)
+    case index
+    when 1 # Stones
+        $items = [   # Item, probability, graphic x, graphic y, width, height, pattern
+           [:FIRESTONE,130, 20,11, 3,3,[1,1,1,1,1,1,1,1,1]],
+           [:WATERSTONE,130, 23,11, 3,3,[1,1,1,1,1,1,1,1,0]],
+           [:THUNDERSTONE,130, 26,11, 3,3,[0,1,1,1,1,1,1,1,0]],
+           [:LEAFSTONE,130, 18,14, 3,4,[0,1,0,1,1,1,1,1,1,0,1,0]],
+           [:MOONSTONE,100, 25,14, 4,2,[0,1,1,1,1,1,1,0]],
+           [:SUNSTONE,100, 21,17, 3,3,[0,1,0,1,1,1,1,1,1]],
+           [:HANORE,120, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
+           [:HANORE,120, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]]
+    when 2 # Fossils
+        $items = [   # Item, probability, graphic x, graphic y, width, height, pattern
+          [:DOMEFOSSIL,70, 0,3, 5,4,[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0]],
+          [:HELIXFOSSIL,50, 5,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
+          [:HELIXFOSSIL,50, 9,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]],
+          [:HELIXFOSSIL,50, 13,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
+          [:HELIXFOSSIL,50, 17,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]],
+          [:ROOTFOSSIL,50, 0,7, 5,5,[1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,0,0,1,1,0,0,1,1,0]],
+          [:ROOTFOSSIL,50, 5,7, 5,5,[0,0,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,1,1,1,0,1,1,1,0]],
+          [:ROOTFOSSIL,50, 10,7, 5,5,[0,1,1,0,0,1,1,0,0,0,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1]],
+          [:ROOTFOSSIL,50, 15,7, 5,5,[0,1,1,1,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,0,0]],
+          [:SKULLFOSSIL,80, 20,7, 4,4,[1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0]],
+          [:ARMORFOSSIL,80, 24,7, 5,4,[0,1,1,1,0,0,1,1,1,0,1,1,1,1,1,0,1,1,1,0]],
+          [:CLAWFOSSIL,75, 0,12, 4,5,[0,0,1,1,0,1,1,1,0,1,1,1,1,1,1,0,1,1,0,0]],
+          [:CLAWFOSSIL,75, 4,12, 5,4,[1,1,0,0,0,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1]],
+          [:CLAWFOSSIL,75, 9,12, 4,5,[0,0,1,1,0,1,1,1,1,1,1,0,1,1,1,0,1,1,0,0]],
+          [:CLAWFOSSIL,75, 13,12, 5,4,[1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,0,0,0,1,1]],
+          [:HANORE,130, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
+          [:HANORE,130, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]]
+      else
+        $items = [   # Item, probability, graphic x, graphic y, width, height, pattern
+           [:FIRESTONE,20, 20,11, 3,3,[1,1,1,1,1,1,1,1,1]],
+           [:WATERSTONE,20, 23,11, 3,3,[1,1,1,1,1,1,1,1,0]],
+           [:THUNDERSTONE,20, 26,11, 3,3,[0,1,1,1,1,1,1,1,0]],
+           [:LEAFSTONE,10, 18,14, 3,4,[0,1,0,1,1,1,1,1,1,0,1,0]],
+           [:MOONSTONE,10, 25,14, 4,2,[0,1,1,1,1,1,1,0]],
+           [:SUNSTONE,20, 21,17, 3,3,[0,1,0,1,1,1,1,1,1]],
+           [:OVALSTONE,150, 24,17, 3,3,[1,1,1,1,1,1,1,1,1]],
+           [:EVERSTONE,70, 21,20, 4,2,[1,1,1,1,1,1,1,1]],
+           [:STARPIECE,100, 0,17, 3,3,[0,1,0,1,1,1,0,1,0]],
+           [:REVIVE,100, 0,20, 3,3,[0,1,0,1,1,1,0,1,0]],
+           [:MAXREVIVE,50, 0,23, 3,3,[1,1,1,1,1,1,1,1,1]],
+           [:RAREBONE,50, 3,17, 6,3,[1,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,1]],
+           [:RAREBONE,50, 3,20, 3,6,[1,1,1,0,1,0,0,1,0,0,1,0,0,1,0,1,1,1]],
+           [:HANORE,160, 21,3, 4,4,[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]],
+           [:HANORE,160, 25,3, 4,4,[1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1]]]
+      end
+  end
+
   def pbNoDuplicateItems(newitem)
     return true if newitem==:HEARTSCALE   # Allow multiple Heart Scales
     fossils=[:DOMEFOSSIL,:HELIXFOSSIL,:OLDAMBER,:ROOTFOSSIL,
@@ -383,7 +394,7 @@ class MiningGameScene
             :FLAMEPLATE,:MEADOWPLATE,:EARTHPLATE,:ICICLEPLATE,:TOXICPLATE,
             :MINDPLATE,:STONEPLATE,:SKYPLATE,:SPOOKYPLATE,:IRONPLATE,:SPLASHPLATE]
     for i in @items
-      preitem=ITEMS[i[0]][0]
+      preitem=$items[i[0]][0]
       return false if preitem==newitem   # No duplicate items
       return false if fossils.include?(preitem) && fossils.include?(newitem)
       return false if plates.include?(preitem) && plates.include?(newitem)
@@ -395,9 +406,9 @@ class MiningGameScene
     for i in @items
       prex=i[1]
       prey=i[2]
-      prewidth=ITEMS[i[0]][4]
-      preheight=ITEMS[i[0]][5]
-      prepattern=ITEMS[i[0]][6]
+      prewidth=$items[i[0]][4]
+      preheight=$items[i[0]][5]
+      prepattern=$items[i[0]][6]
       next if provx+provwidth<=prex || provx>=prex+prewidth ||
               provy+provheight<=prey || provy>=prey+preheight
       for j in 0...prepattern.length
@@ -484,9 +495,9 @@ class MiningGameScene
     posy=position/BOARDWIDTH
     for i in @items
       index=i[0]
-      width=ITEMS[index][4]
-      height=ITEMS[index][5]
-      pattern=ITEMS[index][6]
+      width=$items[index][4]
+      height=$items[index][5]
+      pattern=$items[index][6]
       next if posx<i[1] || posx>=(i[1]+width)
       next if posy<i[2] || posy>=(i[2]+height)
       dx=posx-i[1]
@@ -519,9 +530,9 @@ class MiningGameScene
       next if @items[i][3]
       revealed=true
       index=@items[i][0]
-      width=ITEMS[index][4]
-      height=ITEMS[index][5]
-      pattern=ITEMS[index][6]
+      width=$items[index][4]
+      height=$items[index][5]
+      pattern=$items[index][6]
       for j in 0...height
         for k in 0...width
           layer=@sprites["tile#{@items[i][1]+k+(@items[i][2]+j)*BOARDWIDTH}"].layer
@@ -545,8 +556,8 @@ class MiningGameScene
         burieditem=@items[index]
         revealeditems.bitmap.blt(32*burieditem[1],64+32*burieditem[2],
            @itembitmap.bitmap,
-           Rect.new(32*ITEMS[burieditem[0]][2],32*ITEMS[burieditem[0]][3],
-           32*ITEMS[burieditem[0]][4],32*ITEMS[burieditem[0]][5]))
+           Rect.new(32*$items[burieditem[0]][2],32*$items[burieditem[0]][3],
+           32*$items[burieditem[0]][4],32*$items[burieditem[0]][5]))
         if i>halfFlashTime
           revealeditems.color = Color.new(255,255,255,(halfFlashTime*2-i)*alphaDiff)
         else
@@ -559,7 +570,7 @@ class MiningGameScene
     revealeditems.dispose
     for index in revealed
       @items[index][3]=true
-      item=getConst(PBItems,ITEMS[@items[index][0]][0])
+      item=getConst(PBItems,$items[@items[index][0]][0])
       @itemswon.push(item)
     end
   end

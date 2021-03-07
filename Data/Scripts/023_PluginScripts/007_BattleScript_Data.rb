@@ -495,7 +495,7 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("If you want to reach Harumi, you'll have to go through me!")
                     pbMessage("Katana of Nature, Komorei Style! Blazing Sunlight!!")
-                    battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
+                    battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
@@ -521,7 +521,7 @@ module DialogueModule
                     pbMessage("You truly are a talented Kenshi!")
                     pbMessage("Unforunately, you'll be going out in a blaze of glory!")
                     pbMessage("Katana of Nature, Komorei Style! Blazing Sunlight!!")
-                    battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
+                    battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
@@ -544,17 +544,29 @@ module DialogueModule
                     battle.scene.pbHideOpponent
                   }
       # Nensho intros
-      NenshoIntro1 = Proc.new{|battle|
+      Nensho1 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("I'm with Nensho Clan! Prepare to feel our burning passion for battle!")
-                    pbMessage("We yell to raise our attack! Rahhh!")
+                    pbMessage("The way of the Nensho Clan is blazing through our opponents!")
+                    pbMessage("Katana of Fire, Nensho Style! Fire Vortex!")
+                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
+                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                    battle.battlers[0].effects[PBEffects::Trapping] = 5
+                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                    battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    pbMessage("The Kenshi's fire affinity boosted the power of their Pokemon!")
-                    #battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
-                    #battle.pbDisplay(_INTL("The weather became sunny!",battle.battlers[0].pbThis(true)))
+                    battle.scene.pbHideOpponent
+                  }
+      Nensho2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("The Nensho Clan is unstoppable! The sunlight only makes us stronger!")
+                    pbMessage("Katana of Fire, Nensho Style! Sunlight Beams!")
+                    battle.pbCommonAnimation("Sunny",nil,nil)
+                    battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       # Shimizu Intros
@@ -623,7 +635,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
-                    battle.pbAnimation(getID(PBMoves,:SUNNYDAY),battle.battlers[1],battle.battlers[0])
+                    battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
                     battle.scene.pbHideOpponent
                   }
