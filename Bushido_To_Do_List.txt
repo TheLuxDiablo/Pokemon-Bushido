@@ -81,12 +81,19 @@ Remove the stop animation ON from surfing
 
 Nensho Clan MBD and set it up for all clan trainer battles on Jonetsu Pass
 recolor akui player robes to have dark color bands
-MAKE R A M E N  I T E M S
 Kaiyo Sea trainers
 add more TMs and track them
-Sakura Cave
 Yami Island interiors and keys and trainers
 Hagane City takeover switch
+
+fix scent uses in battle
+make scents not usable if heartgauge=0
+
+MBD needed
+- Four Akui Double Battles in the mine (not all of them need MBD)
+- Double Battle against Hotoke
+- Nori in the dojo
+
 
 partner trainer move route? $PokemonTemp.dependentEvents.SetMoveRoute([PBMoveRoute::TurnRight])
 $PokemonTemp.dependentEvents.setMoveRoute([PBMoveRoute::TurnRight],false)
