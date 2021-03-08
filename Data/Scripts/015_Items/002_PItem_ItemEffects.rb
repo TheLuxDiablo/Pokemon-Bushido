@@ -376,6 +376,49 @@ ItemHandlers::UseOnPokemon.addIf(proc { |item| pbIsEvolutionStone?(item)},
   }
 )
 
+ItemHandlers::UseOnPokemon.add(:RAMEN1,proc { |item,pkmn,scene|
+  if pbHPItem(pkmn,50,scene)
+    pkmn.changeHappiness("ramen1")
+    next true
+  end
+  next false
+})
+
+ItemHandlers::UseOnPokemon.add(:RAMEN2,proc { |item,pkmn,scene|
+  if pbHPItem(pkmn,80,scene)
+    pkmn.changeHappiness("ramen2")
+    next true
+  end
+  next false
+})
+
+ItemHandlers::UseOnPokemon.add(:RAMEN3,proc { |item,pkmn,scene|
+  if pbHPItem(pkmn,120,scene)
+    pkmn.changeHappiness("ramen3")
+    next true
+  end
+  next false
+})
+
+ItemHandlers::UseOnPokemon.add(:BENTO,proc { |item,pkmn,scene|
+  if pbHPItem(pkmn,pkmn.totalhp-pkmn.hp,scene)
+    pkmn.changeHappiness("ramen3")
+    next true
+  end
+  next false
+})
+
+ItemHandlers::UseOnPokemon.add(:CURRY,proc { |item,pkmn,scene|
+  if pkmn.fainted? || (pkmn.hp==pkmn.totalhp && pkmn.status==PBStatuses::NONE)
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    next false
+  end
+  pkmn.healStatus
+  pbHPItem(pkmn,100,scene)
+  scene.pbRefresh
+  next true
+})
+
 ItemHandlers::UseOnPokemon.add(:POTION,proc { |item,pkmn,scene|
   next pbHPItem(pkmn,20,scene)
 })

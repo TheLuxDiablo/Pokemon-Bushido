@@ -460,6 +460,42 @@ ItemHandlers::UseOnPokemon.add(:VIVIDSCENT,proc { |item,pokemon,scene|
   pbRaiseHappinessAndReduceHeart(pokemon,scene,2000)
 })
 
+ItemHandlers::UseOnPokemon.add(:SUSHI1,proc { |item,pokemon,scene|
+  if pokemon.shadowPokemon?
+    pbRaiseHappinessAndReduceHeart(pokemon,scene,300)
+    next pbHPItem(pokemon,30,scene)
+  else
+    next pbHPItem(pokemon,30,scene)
+  end
+})
+
+ItemHandlers::UseOnPokemon.add(:SUSHI2,proc { |item,pokemon,scene|
+  if pokemon.shadowPokemon?
+    pbRaiseHappinessAndReduceHeart(pokemon,scene,600)
+    next pbHPItem(pokemon,60,scene)
+  else
+    next pbHPItem(pokemon,60,scene)
+  end
+})
+
+ItemHandlers::UseOnPokemon.add(:SUSHI3,proc { |item,pokemon,scene|
+  if pokemon.shadowPokemon?
+    pbRaiseHappinessAndReduceHeart(pokemon,scene,900)
+    next pbHPItem(pokemon,90,scene)
+  else
+    next pbHPItem(pokemon,90,scene)
+  end
+})
+
+ItemHandlers::UseOnPokemon.add(:SUSHI4,proc { |item,pokemon,scene|
+  if pokemon.shadowPokemon?
+    pbRaiseHappinessAndReduceHeart(pokemon,scene,1200)
+    next pbHPItem(pokemon,120,scene)
+  else
+    next pbHPItem(pokemon,120,scene)
+  end
+})
+
 ItemHandlers::UseOnPokemon.add(:TIMEFLUTE,proc { |item,pokemon,scene|
   if !pokemon.shadowPokemon?
     scene.pbDisplay(_INTL("It won't have any effect."))
@@ -470,34 +506,71 @@ ItemHandlers::UseOnPokemon.add(:TIMEFLUTE,proc { |item,pokemon,scene|
   next true
 })
 
-ItemHandlers::CanUseInBattle.add(:JOYSCENT,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
-  if !battler || !battler.shadowPokemon? || !battler.inHyperMode?
-    scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
+ItemHandlers::CanUseInBattle.add(:JOYSCENT,proc { |item,pokemon,scene|
+  if !pokemon.shadowPokemon?
+    scene.pbDisplay(_INTL("It won't have any effect."))
     next false
   end
   next true
 })
-
 ItemHandlers::CanUseInBattle.copy(:JOYSCENT,:EXCITESCENT,:VIVIDSCENT)
 
-ItemHandlers::BattleUseOnBattler.add(:JOYSCENT,proc { |item,battler,scene|
-  battler.pokemon.hypermode = false
+ItemHandlers::BattleUseOnPokemon.add(:JOYSCENT,proc { |item,pokemon,battler,choices,scene|
+  if battler.inHyperMode?
+    battler.pokemon.hypermode = false
+    scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  end
   battler.pokemon.adjustHeart(-500)
-  scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
   next true
 })
 
-ItemHandlers::BattleUseOnBattler.add(:EXCITESCENT,proc { |item,battler,scene|
-  battler.pokemon.hypermode = false
+ItemHandlers::BattleUseOnPokemon.add(:EXCITESCENT,proc { |item,pokemon,battler,choices,scene|
+  if battler.inHyperMode?
+    battler.pokemon.hypermode = false
+    scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  end
   battler.pokemon.adjustHeart(-1000)
-  scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
   next true
 })
 
-ItemHandlers::BattleUseOnBattler.add(:VIVIDSCENT,proc { |item,battler,scene|
-  battler.pokemon.hypermode = false
+ItemHandlers::BattleUseOnPokemon.add(:VIVIDSCENT,proc { |item,pokemon,battler,choices,scene|
+  if battler.inHyperMode?
+    battler.pokemon.hypermode = false
+    scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  end
   battler.pokemon.adjustHeart(-2000)
-  scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI1,proc { |item,pokemon,battler,choices,scene|
+  pbBattleHPItem(pokemon,battler,30,scene)
+  if battler.shadowPokemon?
+    battler.pokemon.adjustHeart(-300)
+  end
+  next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI2,proc { |item,pokemon,battler,choices,scene|
+  pbBattleHPItem(pokemon,battler,60,scene)
+  if battler.shadowPokemon?
+    battler.pokemon.adjustHeart(-600)
+  end
+  next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI3,proc { |item,pokemon,battler,choices,scene|
+  pbBattleHPItem(pokemon,battler,90,scene)
+  if battler.shadowPokemon?
+    battler.pokemon.adjustHeart(-900)
+  end
+  next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI4,proc { |item,pokemon,battler,choices,scene|
+  pbBattleHPItem(pokemon,battler,120,scene)
+  if battler.shadowPokemon?
+    battler.pokemon.adjustHeart(-1200)
+  end
   next true
 })
 

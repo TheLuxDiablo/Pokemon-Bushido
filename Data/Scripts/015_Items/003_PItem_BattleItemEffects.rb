@@ -54,6 +54,15 @@ ItemHandlers::CanUseInBattle.addIf(proc { |item| pbIsPokeBall?(item) },   # Pok�
   }
 )
 
+ItemHandlers::CanUseInBattle.add(:JOYSCENT,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
+  if !battler || !battler.shadowPokemon? || !battler.inHyperMode?
+    scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
+    next false
+  end
+  next true
+})
+ItemHandlers::CanUseInBattle.copy(:JOYSCENT,:EXCITESCENT,:VIVIDSCENT)
+
 ItemHandlers::CanUseInBattle.add(:POTION,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
   if !pokemon.able? || pokemon.hp==pokemon.totalhp
     scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
@@ -65,7 +74,7 @@ ItemHandlers::CanUseInBattle.add(:POTION,proc { |item,pokemon,battler,move,first
 ItemHandlers::CanUseInBattle.copy(:POTION,
    :SUPERPOTION,:HYPERPOTION,:MAXPOTION,:BERRYJUICE,:SWEETHEART,:FRESHWATER,
    :SODAPOP,:LEMONADE,:MOOMOOMILK,:ORANBERRY,:SITRUSBERRY,:ENERGYPOWDER,
-   :ENERGYROOT,:JAM1,:JAM2,:JAM3,:JAM4)
+   :ENERGYROOT,:JAM1,:JAM2,:JAM3,:JAM4,:RAMEN1,:RAMEN2,:RAMEN3,:BENTO,:CURRY,:SUSHI1,:SUSHI2,:SUSHI3,:SUSHI4)
 ItemHandlers::CanUseInBattle.copy(:POTION,:RAGECANDYBAR) if !NEWEST_BATTLE_MECHANICS
 
 ItemHandlers::CanUseInBattle.add(:AWAKENING,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
@@ -312,6 +321,36 @@ ItemHandlers::UseInBattle.addIf(proc { |item| pbIsPokeBall?(item) },   # Poké B
 # BattleUseOnPokemon handlers
 # For items used on Pokémon or on a Pokémon's move
 #===============================================================================
+ItemHandlers::BattleUseOnPokemon.add(:RAMEN1,proc { |item,pokemon,battler,choices,scene|
+  pokemon.changeHappiness("ramen1")
+  pbBattleHPItem(pokemon,battler,50,scene)
+})
+ItemHandlers::BattleUseOnPokemon.add(:RAMEN2,proc { |item,pokemon,battler,choices,scene|
+  pokemon.changeHappiness("ramen2")
+  pbBattleHPItem(pokemon,battler,80,scene)
+})
+ItemHandlers::BattleUseOnPokemon.add(:RAMEN3,proc { |item,pokemon,battler,choices,scene|
+  pokemon.changeHappiness("ramen3")
+  pbBattleHPItem(pokemon,battler,120,scene)
+})
+ItemHandlers::BattleUseOnPokemon.add(:BENTO,proc { |item,pokemon,battler,choices,scene|
+  pokemon.changeHappiness("ramen3")
+  pbBattleHPItem(pokemon,battler,pokemon.totalhp-pokemon.hp,scene)
+})
+ItemHandlers::BattleUseOnPokemon.add(:CURRY,proc { |item,pokemon,battler,choices,scene|
+  pokemon.healStatus
+  battler.pbCureStatus(false) if battler
+  battler.pbCureConfusion if battler
+  name = (battler) ? battler.pbThis : pokemon.name
+  if pokemon.hp<pokemon.totalhp
+    pbBattleHPItem(pokemon,battler,100,scene)
+  else
+    scene.pbRefresh
+    scene.pbDisplay(_INTL("{1} became healthy.",name))
+  end
+})
+
+
 ItemHandlers::BattleUseOnPokemon.add(:POTION,proc { |item,pokemon,battler,choices,scene|
   pbBattleHPItem(pokemon,battler,20,scene)
 })
@@ -333,6 +372,75 @@ ItemHandlers::BattleUseOnPokemon.add(:MAXPOTION,proc { |item,pokemon,battler,cho
   pbBattleHPItem(pokemon,battler,pokemon.totalhp-pokemon.hp,scene)
 })
 ItemHandlers::BattleUseOnPokemon.copy(:MAXPOTION,:JAM4)
+
+ItemHandlers::BattleUseOnPokemon.add(:JOYSCENT,proc { |item,battler,scene|
+  battler.pokemon.hypermode = false
+  battler.pokemon.adjustHeart(-500)
+  scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:EXCITESCENT,proc { |item,battler,scene|
+  battler.pokemon.hypermode = false
+  battler.pokemon.adjustHeart(-1000)
+  scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:VIVIDSCENT,proc { |item,battler,scene|
+  battler.pokemon.hypermode = false
+  battler.pokemon.adjustHeart(-2000)
+  scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI1,proc { |item,battler,scene|
+  pbBattleHPItem(pokemon,battler,30,scene)
+  if battler.inHyperMode?
+    battler.pokemon.hypermode = false
+    scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  end
+  if battler.shadowPokemon?
+    battler.pokemon.adjustHeart(-400)
+  end
+  next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI2,proc { |item,battler,scene|
+  pbBattleHPItem(pokemon,battler,60,scene)
+  if battler.inHyperMode?
+    battler.pokemon.hypermode = false
+    scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  end
+  if battler.shadowPokemon?
+    battler.pokemon.adjustHeart(-800)
+  end
+  next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI3,proc { |item,battler,scene|
+  pbBattleHPItem(pokemon,battler,90,scene)
+  if battler.inHyperMode?
+    battler.pokemon.hypermode = false
+    scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  end
+  if battler.shadowPokemon?
+    battler.pokemon.adjustHeart(-1600)
+  end
+  next true
+})
+
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI4,proc { |item,battler,scene|
+  pbBattleHPItem(pokemon,battler,120,scene)
+  if battler.inHyperMode?
+    battler.pokemon.hypermode = false
+    scene.pbDisplay(_INTL("{1} came to its senses from the {2}!",battler.pbThis,PBItems.getName(item)))
+  end
+  if battler.shadowPokemon?
+    battler.pokemon.adjustHeart(-2400)
+  end
+  next true
+})
 
 ItemHandlers::BattleUseOnPokemon.add(:FRESHWATER,proc { |item,pokemon,battler,choices,scene|
   pbBattleHPItem(pokemon,battler,50,scene)
