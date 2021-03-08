@@ -119,8 +119,8 @@ Pokemon = BLASTOISE,63
 [AKUICLAN_M,Kaze]
 LoseText = "No! This can't be!"
 Pokemon = MIGHTYENA,5
-    Ability = 0
     Shadow = yes
+    Ability = 0
 Pokemon = ELECTABUZZ,5
     Shadow = yes
 Pokemon = ELECTABUZZ,5
@@ -133,12 +133,12 @@ Pokemon = ELECTABUZZ,5
 [RIVALBUSHIDO_M,Yakeru,1]
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = DARUMAKA,5
-	Moves = TACKLE,EMBER
+    Moves = TACKLE,EMBER
 #-------------------------------
 [RIVALBUSHIDO_F,Akane,1]
 LoseText = "What?! There's no way someone like you could beat me!"
 Pokemon = DARUMAKA,5
-	Moves = TACKLE,EMBER
+    Moves = TACKLE,EMBER
 #-------------------------------
 [SENSEI,Sukiro]
 LoseText = "Well done! You are an excellent student."
@@ -287,12 +287,12 @@ LoseText = "Berries are amazing! Definitely worth a try."
 Pokemon = CHERUBI,21
 Pokemon = SKWOVET,21
     Ability = 2
-	Item = SITRUSBERRY
+    Item = SITRUSBERRY
 #-------------------------------
 [KOMOREI_F,Hiraoka]
 LoseText = "Everyone deserves to be showered with love!"
 Pokemon = MINCCINO,23
-	Ability = 0
+    Ability = 0
 #-------------------------------
 [KOMOREI_M,Hagiwara]
 LoseText = "Darn, I guess I'm still on that streak..."
@@ -346,10 +346,10 @@ Pokemon = TOGETIC,24
 [AKUICLAN_M,Okumura]
 LoseText = "I let Mashiro down..."
 Pokemon = GOLDEEN,23
-	Shadow = yes
+    Shadow = yes
 Pokemon = GOLETT,24
 Pokemon = GLIGAR,24
-#-------------------------------	
+#-------------------------------
 [MASHIRO,Mashiro]
 Items = JAM2
 LoseText = "You little brat!"
@@ -359,7 +359,7 @@ Pokemon = ESPEON,25
 Pokemon = LIEPARD,26
 Pokemon = STEENEE,26
 Pokemon = NINETALES,27
-	Shadow = yes
+    Shadow = yes
 #-------------------------------
 [KOMOREI_M,Shinsato]
 LoseText = "Very well! You have proven yourself worthy."
@@ -377,19 +377,19 @@ Pokemon = PASSIMIAN,27
 Items = JAM2
 LoseText = "I still have work to do before I can call myself a leader..."
 Pokemon = SERVINE,27
-	Moves = MEGADRAIN,WRAP,GROWTH,LEAFTORNADO
+    Moves = MEGADRAIN,WRAP,GROWTH,LEAFTORNADO
 Pokemon = LUDICOLO,27
-	Moves = WATERGUN,ZENHEADBUTT,GIGADRAIN,KNOCKOFF
+    Moves = WATERGUN,ZENHEADBUTT,GIGADRAIN,KNOCKOFF
 Pokemon = ROSERADE,28
-	Moves = AROMATHERAPY,SYNTHESIS,MAGICALLEAF,WORRYSEED
+    Moves = AROMATHERAPY,SYNTHESIS,MAGICALLEAF,WORRYSEED
 Pokemon = BRELOOM,28
-	Moves = MEGADRAIN,STUNSPORE,FORCEPALM,HEADBUTT
+    Moves = MEGADRAIN,STUNSPORE,FORCEPALM,HEADBUTT
 Pokemon = VICTREEBEL,29
-	Moves = WRAP,LEECHLIFE,SUCKERPUNCH,RAZORLEAF
-	Item = SITRUSBERRY
+    Moves = WRAP,LEECHLIFE,SUCKERPUNCH,RAZORLEAF
+    Item = SITRUSBERRY
 Pokemon = CHERRIM,29
-	Moves = MAGICALLEAF,MORNINGSUN,FLOWERSHIELD,GROWTH
-	Item = SITRUSBERRY
+    Moves = MAGICALLEAF,MORNINGSUN,FLOWERSHIELD,GROWTH
+    Item = SITRUSBERRY
 #-------------------------------
 [TSUKU,Tsuku,1]
 LoseText = "You're still as good as always..."
@@ -397,7 +397,7 @@ Pokemon = VIVILLON,27
 Pokemon = LEAVANNY,27
 Pokemon = SNOM,27
 Pokemon = NINJASK,28
-	Item = ORANBERRY
+    Item = ORANBERRY
 #-------------------------------
 [GALARMAN,Andy]
 LoseText = "Very well! You fought bravely."
@@ -469,24 +469,31 @@ Pokemon = LARVITAR,34
 LoseText = "I guess you're not just all talk!"
 Pokemon = TALONFLAME,35
 Pokemon = TOGEKISS,35
-	Moves = FOLLOWME,HEATWAVE,DAZZLINGGLEAM,YAWN
-	Item = BABIRIBERRY
+    Moves = FOLLOWME,HEATWAVE,DAZZLINGGLEAM,YAWN
+    Item = BABIRIBERRY
 Pokemon = GASTRODON,35
-	Moves = SCALD,PROTECT,EARTHPOWER,YAWN
-	Item = IAPAPABERRY
+    Moves = SCALD,PROTECT,EARTHPOWER,YAWN
+    Item = IAPAPABERRY
 Pokemon = COALOSSAL,37
-	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
-	Item = WEAKNESSPOLICY
+    Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
+    Item = WEAKNESSPOLICY
 #-------------------------------
 [RIVALBUSHIDO_M,Yakeru,3]
 LoseText = "I guess you're not just all talk!"
 Pokemon = TALONFLAME,35
 Pokemon = TOGEKISS,35
-	Moves = FOLLOWME,HEATWAVE,DAZZLINGGLEAM,YAWN
-	Item = BABIRIBERRY
+    Moves = FOLLOWME,HEATWAVE,DAZZLINGGLEAM,YAWN
+    Item = BABIRIBERRY
 Pokemon = GASTRODON,35
-	Moves = SCALD,PROTECT,EARTHPOWER,YAWN
-	Item = IAPAPABERRY
+    Moves = SCALD,PROTECT,EARTHPOWER,YAWN
+    Item = IAPAPABERRY
 Pokemon = COALOSSAL,37
-	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
-	Item = WEAKNESSPOLICY
+    Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
+    Item = WEAKNESSPOLICY
+#-------------------------------
+[AKUICLAN_M,Iwa,1]
+Pokemon = TYRANITAR,58
+    Shadow = yes
+Pokemon = SKUNTANK,57
+Pokemon = TOXICROAK,57
+Pokemon = THIEVUL,57

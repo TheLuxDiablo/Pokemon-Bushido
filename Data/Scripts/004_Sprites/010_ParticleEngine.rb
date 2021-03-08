@@ -11,6 +11,7 @@ class Particle_Engine
     @effects   = {
        # PinkMan's Effects
        "fire"         => Particle_Engine::Fire,
+       "fire2"         => Particle_Engine::Fire2,
        "smoke"        => Particle_Engine::Smoke,
        "teleport"     => Particle_Engine::Teleport,
        "spirit"       => Particle_Engine::Spirit,
@@ -366,10 +367,27 @@ class Particle_Engine::Fire < ParticleEffect_Event
   def initialize(event,viewport)
     super
     setParameters([0,0,1,20,40,0.5,-64,
-       Graphics.height,-64,Graphics.width,0.5,0.10,-5,-13,30,0])
+       Graphics.height,-64,Graphics.width,0.5,0.10,-5,-6,30,0])
     initParticles("particle",250)
   end
 end
+
+class Particle_Engine::Fire2 < ParticleEffect_Event
+  def initialize(event,viewport)
+    super
+    setParameters([0,0,1,20,168,0.5,-64,
+       Graphics.height,-64,Graphics.width,0.5,0.10,-5,-6,30,0])
+    initParticles("particle",250)
+  end
+end
+
+#def setParameters(params)
+#  @randomhue,@leftright,@fade,
+#  @maxparticless,@hue,@slowdown,
+#  @ytop,@ybottom,@xleft,@xright,
+#  @xgravity,@ygravity,@xoffset,@yoffset,
+#  @opacityvar,@originalopacity = params
+#end
 
 
 
