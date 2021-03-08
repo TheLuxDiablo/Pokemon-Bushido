@@ -137,7 +137,11 @@ class PokeBattle_Battle
         # Edited
         case TrainerDialogue.eval("battleStart")
         when -1
-          pbDisplayPaused(_INTL("Oh! A wild {1} appeared!",foeParty[0].name))
+          if $game_switches[90]
+            pbDisplayPaused(_INTL("{1} appeared!",foeParty[0].name))
+          else
+            pbDisplayPaused(_INTL("Oh! A wild {1} appeared!",foeParty[0].name))
+          end
         when 0
           battleStart= TrainerDialogue.get("battleStart")
           pbDisplayPaused(_INTL(battleStart,foeParty[0].name))

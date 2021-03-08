@@ -258,6 +258,31 @@ def pbKatanaMoveAnimation(color=1)
       if ptinterp.done?
         phase=3
         #pbPlayCry(pokemon)
+        # Add trainer grunt SFX
+        i = rand(4)
+        if $Trainer.gender==0 # Male grunts = Marth
+          case i
+          when 0
+            pbSEPlay("Marth0",100)
+          when 1
+            pbSEPlay("Marth1",100)
+          when 2
+            pbSEPlay("Marth2",100)
+          else
+            pbSEPlay("Marth3",100)
+          end
+        else  # Female grunts = Lucina
+          case i
+          when 0
+            pbSEPlay("Lucina0",100)
+          when 1
+            pbSEPlay("Lucina1",100)
+          when 2
+            pbSEPlay("Lucina2",100)
+          else
+            pbSEPlay("Lucina3",100)
+          end
+        end
         frames=0
       end
     when 3   # Wait
