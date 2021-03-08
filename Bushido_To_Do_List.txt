@@ -80,11 +80,16 @@ Remove the stop animation ON from surfing
 
 
 Nensho Clan MBD and set it up for all clan trainer battles on Jonetsu Pass
-Start mapping fubuki bay
 recolor akui player robes to have dark color bands
 MAKE R A M E N  I T E M S
 Kaiyo Sea trainers
 add more TMs and track them
+Sakura Cave
+Yami Island interiors and keys and trainers
+Hagane City takeover switch
+
+partner trainer move route? $PokemonTemp.dependentEvents.SetMoveRoute([PBMoveRoute::TurnRight])
+$PokemonTemp.dependentEvents.setMoveRoute([PBMoveRoute::TurnRight],false)
 
 
 Things done:
