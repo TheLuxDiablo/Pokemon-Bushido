@@ -528,3 +528,37 @@ LoseText = "Does this Hanatsium stuff even work?"
 Pokemon = VIBRAVA,36
 Pokemon = SAWK,37
 	Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Teruya]
+LoseText = "What?! There's no way!"
+Pokemon = SIMIPOUR,37
+Pokemon = SIMISEAR,38
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Keiko]
+LoseText = "Did we actually lose?"
+Pokemon = SNEASEL,37
+Pokemon = GLISCOR,38
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Kikuchi]
+LoseText = "Agh!! These Kenshi are so persistent!"
+Pokemon = TORKOAL,38
+Pokemon = PUPITAR,39
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Akira]
+LoseText = "Tch. Maybe this isn't a good idea..."
+Pokemon = MIGHTYENA,38
+Pokemon = KROKOROK,39
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Ogata]
+LoseText = "This is why I never wanted to join a clan."
+Pokemon = URSARING,39
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Masato]
+LoseText = "I... lost..."
+Pokemon = WHIMSICOTT,39
+	Shadow = yes
