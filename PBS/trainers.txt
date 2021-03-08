@@ -559,6 +559,43 @@ Pokemon = URSARING,39
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Masato]
-LoseText = "I... lost..."
+LoseText = "Ugh! So annoying."
 Pokemon = WHIMSICOTT,39
 	Shadow = yes
+#-------------------------------
+[HOTOKE,Hotoke]
+LoseText = "I... lost..."
+Pokemon = CONKELDURR,39
+Pokemon = CRABOMINABLE,39
+Pokemon = CRUSTLE,39
+Pokemon = STEELIX,40
+Pokemon = SLOWKING,40
+Pokemon = GOLISOPOD,41
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Shoji]
+LoseText = "I- I failed in front of an admin..."
+Pokemon = LIEPARD,39
+Pokemon = SALAZZLE,39
+Pokemon = GALLADE,40
+#-------------------------------
+[NENSHO_BOSS,Nori,1]
+LoseText = "Nice!"
+Pokemon = TYRANITAR,39
+	Moves = ROCKSLIDE,CRUNCH,PURSUIT,EARTHQUAKE
+	Item = ASSAULTVEST
+Pokemon = BLISSEY,39
+	Moves = SEISMICTOSS,SOFTBOILED,THUNDERWAVE,TELEPORT
+	Item = HEAVYDUTYBOOTS
+Pokemon = CENTISKORCH,39
+	Moves = FIRELASH,LEECHLIFE,KNOCKOFF,POWERWHIP
+	Item = HEAVYDUTYBOOTS
+Pokemon = SALAZZLE,40
+	Moves = NASTYPLOT,SLUDGEWAVE,FLAMETHROWER,TOXIC
+	Item = HEAVYDUTYBOOTS
+Pokemon = HAKAMOO,40
+	Moves = DRAGONDANCE,DRAINPUNCH,DRAGONCLAW,SUBSTITUTE
+	Item = EVIOLITE
+Pokemon = VOLCARONA,41
+	Moves = QUIVERDANCE,FLAMETHROWER,SAFEGUARD,ROOST
+	Item = HEAVYDUTYBOOTS
