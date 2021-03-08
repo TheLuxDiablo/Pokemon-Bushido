@@ -840,3 +840,4 @@
 813,EXPALL,Ryo's Charm,Ryo's Charms,8,0,"A special charm from the Royal Samurai. All Pokémon in the party gain experience from battles when On.",2,0,6,
 814,EXPALLOFF,Ryo's Charm (Off),Ryo's Charms (Off),8,0,"A special charm from the Royal Samurai. All Pokémon in the party gain experience from battles when On.",2,0,6,
 815,HANORE,Hanatsium Ore,Hanatsium Ores,1,4000,"A collection of rare Hanatsium Ore. It can be sold at a high price to shops.",0,0,0,
+816,AKUIKEY,Akui Key,Akui Key,1,0,"A key to the Dojo of the Akui Clan. 5 are required to open the door.",0,0,0,
