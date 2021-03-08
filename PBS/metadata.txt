@@ -689,12 +689,16 @@ Weather = Snow,100
 ShowArea = true
 Outdoor = false
 MapPosition = 2,15,3
+DarkMap = true
+BattleBack = CaveBushido4
 #-------------------------------
 [126]
 # Hanatsu Mine
 ShowArea = true
 Outdoor = false
 MapPosition = 2,15,3
+DarkMap = true
+BattleBack = CaveBushido4
 #-------------------------------
 [127]
 # Izumi Village

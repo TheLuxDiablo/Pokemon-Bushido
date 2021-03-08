@@ -490,3 +490,41 @@ Pokemon = GASTRODON,35
 Pokemon = COALOSSAL,37
 	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
 	Item = WEAKNESSPOLICY
+#-------------------------------
+[RIVALBUSHIDO_F,Akane,4]
+LoseText = "I guess you're not just all talk!"
+Pokemon = TALONFLAME,36
+Pokemon = TOGEKISS,36
+	Moves = FOLLOWME,HEATWAVE,DAZZLINGGLEAM,YAWN
+	Item = BABIRIBERRY
+Pokemon = GASTRODON,36
+	Moves = SCALD,PROTECT,EARTHPOWER,YAWN
+	Item = IAPAPABERRY
+Pokemon = COALOSSAL,38
+	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
+	Item = WEAKNESSPOLICY
+#-------------------------------
+[RIVALBUSHIDO_M,Yakeru,4]
+LoseText = "I guess you're not just all talk!"
+Pokemon = TALONFLAME,36
+Pokemon = TOGEKISS,36
+	Moves = FOLLOWME,HEATWAVE,DAZZLINGGLEAM,YAWN
+	Item = BABIRIBERRY
+Pokemon = GASTRODON,36
+	Moves = SCALD,PROTECT,EARTHPOWER,YAWN
+	Item = IAPAPABERRY
+Pokemon = COALOSSAL,38
+	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
+	Item = WEAKNESSPOLICY
+#-------------------------------
+[AKUICLAN_M,Takehiko]
+LoseText = "Ugh... Two against two isn't fair."
+Pokemon = GABITE,36
+Pokemon = THROH,37
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Tsuneo]
+LoseText = "Does this Hanatsium stuff even work?"
+Pokemon = VIBRAVA,36
+Pokemon = SAWK,37
+	Shadow = yes

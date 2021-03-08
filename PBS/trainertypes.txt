@@ -203,3 +203,4 @@
 198,HOTOKE,Akui Admin,100,CON-Akatsuki,,,Male,,
 199,KURO,Akui Admin,100,CON-Akatsuki,,,Male,,
 200,GALARMAN,Galarian Man,100,,,,Male,,
+201,AKUICLANDOUBLE,Akui Clan,100,CON-EnclosedBattle,,HGSSEncounter-TeamRocket,Male,,
