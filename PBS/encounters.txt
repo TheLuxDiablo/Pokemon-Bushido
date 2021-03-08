@@ -241,3 +241,21 @@ Water
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
+#-------------------------------
+126 # Hanatsium Mine
+25,5,5
+Cave
+    ROCKRUFF,28,33
+    DWEBBLE,28,32
+    DUGTRIO,29,31
+    TYROGUE,28,32
+    MAKUHITA,28,33
+    ONIX,29,33
+    TRAPINCH,28,33
+    GABITE,29,33
+PhenomenonCave
+    GLIGAR,29,32
+    MUNCHLAX,28,32
+    TRAPINCH,28,33
+    GABITE,29,33
+    LARVITAR,28,32
