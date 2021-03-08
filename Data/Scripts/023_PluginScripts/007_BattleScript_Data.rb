@@ -982,6 +982,16 @@ module DialogueModule
                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                        battle.scene.pbHideOpponent
                       }
+        Terrakion = Proc.new{|battle|
+                       battle.scene.appearBar
+                       pbMessage("\Terrakion's soul is locked away!")
+                       battle.scene.disappearBar
+                       battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                       battle.battlers[1].pbLowerStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                       battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                       battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                       battle.scene.pbHideOpponent
+                      }
 
 # DONT DELETE THIS END
 end
