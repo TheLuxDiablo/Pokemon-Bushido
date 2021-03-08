@@ -599,3 +599,34 @@ Pokemon = HAKAMOO,40
 Pokemon = VOLCARONA,41
 	Moves = QUIVERDANCE,FLAMETHROWER,SAFEGUARD,ROOST
 	Item = HEAVYDUTYBOOTS
+#-------------------------------
+[NENSHO_M,Katashi]
+LoseText = "I admire your fighting spirit!"
+Pokemon = SIMISEAR,40
+Pokemon = HOUNDOOM,40
+#-------------------------------
+[NENSHO_F,Yumiko]
+LoseText = "Blaze on ahead, young Kenshi!"
+Pokemon = FLAREON,41
+Pokemon = TALONFLAME,41
+#-------------------------------
+[NENSHO_BOSS,Nori,2]
+LoseText = "Now I understand. Your power is superb."
+Pokemon = TYRANITAR,40
+	Moves = ROCKSLIDE,CRUNCH,PURSUIT,EARTHQUAKE
+	Item = ASSAULTVEST
+Pokemon = BLISSEY,40
+	Moves = SEISMICTOSS,SOFTBOILED,THUNDERWAVE,TELEPORT
+	Item = HEAVYDUTYBOOTS
+Pokemon = CENTISKORCH,40
+	Moves = FIRELASH,LEECHLIFE,KNOCKOFF,POWERWHIP
+	Item = HEAVYDUTYBOOTS
+Pokemon = SALAZZLE,41
+	Moves = NASTYPLOT,SLUDGEWAVE,FLAMETHROWER,TOXIC
+	Item = HEAVYDUTYBOOTS
+Pokemon = HAKAMOO,41
+	Moves = DRAGONDANCE,DRAINPUNCH,DRAGONCLAW,SUBSTITUTE
+	Item = EVIOLITE
+Pokemon = VOLCARONA,42
+	Moves = QUIVERDANCE,FLAMETHROWER,SAFEGUARD,ROOST
+	Item = HEAVYDUTYBOOTS
