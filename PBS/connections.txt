@@ -52,11 +52,11 @@
 85,East,4,82,West,0
 # Yami Pass (98) - Yami Island (99)
 98,East,0,99,West,12
-# Shizen Trail (90) - Shimizu Sea (106)
+# Shizen Trail (90) - Kaiyo Sea (106)
 90,West,0,106,East,39
-# Ground Town (107) - Shimizu Sea (106)
+# Chikyu Village (107) - Kaiyo Sea (106)
 107,East,17,106,West,0
-# Hagane City (85) - Shimizu Sea (106)
+# Hagane City (85) - Kaiyo Sea (106)
 85,West,15,106,East,0
 # Nagisa Bay (81) - Ezo Village (79)
 81,West,0,79,East,6
@@ -68,3 +68,7 @@
 103,South,7,102,North,0
 # Yami Pass (98) - Nagisa Bay (81)
 98,West,35,81,East,0
+# Izumi Village (127) - Izumi Pass (132)
+127,West,14,132,East,0
+# Fubuki Bay (124) - Izumi Village (127)
+124,West,0,127,East,29
