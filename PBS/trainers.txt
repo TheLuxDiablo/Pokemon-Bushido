@@ -400,9 +400,9 @@ Pokemon = NINJASK,28
 #-------------------------------
 [GALARMAN,Andy]
 LoseText = "Very well! You fought bravely."
-Pokemon = SNOM,30
-Pokemon = TOXTRICITY,30
-Pokemon = THIEVUL,30
+Pokemon = SNOM,34
+Pokemon = TOXTRICITY,34
+Pokemon = THIEVUL,34
 #-------------------------------
 [NENSHO_F,Juba]
 LoseText = "It seems that your Pokemon thrive in the mountains as well!"

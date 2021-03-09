@@ -478,7 +478,7 @@ Outdoor = false
 # Shizen Trail
 MapPosition = 2,15,12
 ShowArea = true
-BattleBack = FRLGGrass
+BattleBack = ShizenTrail
 Outdoor = true
 #-------------------------------
 [091]
