@@ -583,6 +583,87 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+        Nensho4 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("The Nensho Clan is the strongest clan there is!")
+                      pbMessage("Allow me to show you why we're the best clan!")
+                      pbMessage("Katana of Fire, Nensho Style! Flame Breath!")
+                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.scene.pbHideOpponent
+                    }
+          Nensho5 = Proc.new{|battle|
+                        battle.scene.appearBar
+                        battle.scene.pbShowOpponent(0)
+                        pbMessage("The souls of Nensho Clan members burn as bright as the sun!")
+                        pbMessage("Katana of Fire, Nensho Style! Sunlight Beams!")
+                        battle.pbCommonAnimation("Sunny",nil,nil)
+                        battle.scene.disappearBar
+                        battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                        battle.scene.pbHideOpponent
+                      }
+          Nensho6 = Proc.new{|battle|
+                        battle.scene.appearBar
+                        battle.scene.pbShowOpponent(0)
+                        pbMessage("You're on the final stretch! Don't burn out on me now!")
+                        pbMessage("Katana of Fire, Nensho Style! Flame Breath!")
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                        battle.scene.pbHideOpponent
+                      }
+          Nori1 = Proc.new{|battle|
+                        battle.scene.appearBar
+                        battle.scene.pbShowOpponent(0)
+                        pbMessage("Hahaha! We finally face each other in battle!")
+                        pbMessage("I've been looking forward to this \\PN!")
+                        pbMessage("Just know, I'll be giving this battle my all.")
+                        pbMessage("I expect you'll do the same! Now, it's time to show you the true power of the Nensho Clan!")
+                        pbMessage("Katana of Fire, Nensho Style! Flame Breath!")
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                        battle.scene.appearBar
+                        pbMessage("Katana of Fire, Nensho Style! Sunlight Beams!")
+                        battle.pbCommonAnimation("Sunny",nil,nil)
+                        battle.scene.disappearBar
+                        battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                        battle.scene.appearBar
+                        pbMessage("Come at me with all you've got, \\PN! Hiyaaah!")
+                        battle.scene.disappearBar
+                        battle.scene.pbHideOpponent
+                      }
+            NoriLast = Proc.new{|battle|
+                          battle.scene.appearBar
+                          battle.scene.pbShowOpponent(0)
+                          pbMessage("Hahaha! This is so much fun!")
+                          pbMessage("You are an excellent kenshi, \\PN!")
+                          pbMessage("You've pushed me to my breaking point...")
+                          pbMessage("But the battle isn't over yet! Now it's time for me to get serious!")
+                          pbMessage("Secret Technique! Mocking Shout!")
+                          battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[1],battle.battlers[0])
+                          battle.scene.disappearBar
+                          battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
+                          battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
+                          battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                          battle.scene.appearBar
+                          pbMessage("Katana of Fire, Nensho Style! Flame Breath!")
+                          battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                          battle.scene.disappearBar
+                          battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                          battle.scene.appearBar
+                          pbMessage("Let's finish this duel in a blaze of glory, \\PN! Yaaah!")
+                          battle.scene.disappearBar
+                          battle.scene.pbHideOpponent
+                        }
       # Shimizu Intros
       Shimizu1 = Proc.new{|battle|
                   battle.scene.appearBar
@@ -612,7 +693,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     #if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                     battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Fletchling!",pbGet(26))
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
                     battle.scene.pbHideOpponent
                   }
       RivalLast = Proc.new{|battle|
