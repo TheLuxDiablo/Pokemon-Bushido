@@ -506,14 +506,11 @@ ItemHandlers::UseOnPokemon.add(:TIMEFLUTE,proc { |item,pokemon,scene|
   next true
 })
 
-ItemHandlers::CanUseInBattle.add(:JOYSCENT,proc { |item,pokemon,scene|
-  if !pokemon.shadowPokemon?
-    scene.pbDisplay(_INTL("It won't have any effect."))
+ItemHandlers::CanUseInBattle.add(:JOYSCENT,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
+    scene.pbDisplay(_INTL("This item cannot be used in battle.")) if showMessages
     next false
-  end
-  next true
 })
-ItemHandlers::CanUseInBattle.copy(:JOYSCENT,:EXCITESCENT,:VIVIDSCENT)
+ItemHandlers::CanUseInBattle.copy(:JOYSCENT,:EXCITESCENT,:VIVIDSCENT,:TIMEFLUTE)
 
 ItemHandlers::BattleUseOnPokemon.add(:JOYSCENT,proc { |item,pokemon,battler,choices,scene|
   if battler.inHyperMode?

@@ -610,10 +610,9 @@ module DialogueModule
                     pbMessage("\\pogI've grown a lot since our last battle, so don't underestimate me!")
                     pbMessage("\\pogNow, prepare to be burned to ashes!")
                     battle.scene.disappearBar
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Fletchling!",pbGet(26))
-                    end
+                    #if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                    battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Fletchling!",pbGet(26))
                     battle.scene.pbHideOpponent
                   }
       RivalLast = Proc.new{|battle|
@@ -692,7 +691,7 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("The Akui Clan never falters! Take this!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
                     battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.pbHideOpponent
@@ -746,6 +745,274 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
                     battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
                     battle.scene.pbHideOpponent
+                  }
+      ShadowDuo1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("The Akui Clan will be taking all the Hanatsium in this mine!")
+                    pbMessage("Don't even bother trying to stop us, you little brats!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Multi-Clones of Darkness!!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[3])
+                    battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3])
+                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the ground!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    battle.scene.pbHideOpponent
+                    battle.scene.appearBar
+                    pbMessage("\\xn[\\v[26]]\\pogThose Akui guys aren't the only people who can use techniques to gain the edge in battle!")
+                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Fire Vortex!")
+                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[2],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.battlers[1].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                    battle.battlers[1].effects[PBEffects::Trapping] = 5
+                    battle.battlers[1].effects[PBEffects::TrappingUser] = 1
+                    battle.pbDisplay(_INTL("The enemy {1} was trapped in a fiery vortex!",battle.battlers[1].name))
+                    battle.scene.appearBar
+                    pbMessage("\\xn[\\v[26]]\\pogCome on \\PN, let's teach these jerks not to mess with the Nensho Clan!")
+                    pbMessage("\\xn[\\v[26]]\\pogNow for my signature technique! Hashimoto Might!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                    battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                    battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                  }
+      ShadowDuo1Last = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Grr... You brats are actually pretty strong...")
+                    pbMessage("You'll pay for crossing the Akui Clan!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
+                    battle.scene.disappearBar
+                    if battle.battlers[1].fainted?
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[3])
+                    else
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                    end
+                    if !battle.battlers[1].fainted?
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    end
+                    if !battle.battlers[3].fainted?
+                      battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[3])
+                      battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[3],false)
+                    end
+                    battle.scene.pbHideOpponent
+                    battle.scene.appearBar
+                    pbMessage("\\xn[\\v[26]]\\pogOh no you don't! You're the one's who are going to pay!")
+                    pbMessage("\\xn[\\v[26]]\\pogGraaah! Katana of Fire, Nensho Style! Flame Breath!")
+                    if battle.battlers[1].fainted?
+                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[3])
+                    else
+                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
+                    end
+                    battle.scene.disappearBar
+                    if !battle.battlers[1].fainted?
+                      battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    end
+                    if !battle.battlers[3].fainted?
+                      battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    end
+                    battle.scene.appearBar
+                    pbMessage("\\xn[\\v[26]]\\pogLet's finish these jerks off \\PN!")
+                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                    battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                    battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                  }
+        ShadowDuo2 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("You'll never be able to stop the plans of the Akui Clan!")
+                      pbMessage("You're nothing but pesky thorns in our sides!")
+                      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[3])
+                      battle.scene.appearBar
+                      pbMessage("And that's not all! Get a load of this, you worthless children!")
+                      pbMessage("Akui Clan Technique, Shock Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      battle.scene.pbHideOpponent
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogThese Akui grunts will never play fair...")
+                      pbMessage("\\xn[\\v[26]]\\pogLuckily for us, I also have a few tricks up my sleeve!")
+                      pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Flame Breath!")
+                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogLet's go \\PN! We can take care of these Akui lowlifes!")
+                      pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                      battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                      battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                    }
+        ShadowDuo2Last = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("We've been given orders to stop you from going any further!")
+                      pbMessage("We will not fail! We cannot fail!")
+                      pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
+                      battle.scene.disappearBar
+                      if battle.battlers[1].fainted?
+                        battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[3])
+                      else
+                        battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                      end
+                      if !battle.battlers[1].fainted?
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                      end
+                      if !battle.battlers[3].fainted?
+                        battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[3])
+                        battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[3],false)
+                      end
+                      pbMessage("Akui Clan Technique, Shock Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      battle.scene.pbHideOpponent
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pog\\PN... I'm starting to feel pretty tired...")
+                      pbMessage("\\xn[\\v[26]]\\pogI can probably only use my katana techniques a couple more times...")
+                      pbMessage("\\xn[\\v[26]]\\pogBut, in times like these...")
+                      pbMessage("\\xn[\\v[26]]\\pogThat's when we really need to give it our all!")
+                      pbMessage("\\xn[\\v[26]]\\pogGraaaaaah! Hashimoto Might!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                      battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                      battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                    }
+      ShadowDuo3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You two brats must be skilled to have made it this far into the mine...")
+                    pbMessage("Too bad for you, this is the end of your journey!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[3])
+                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    battle.scene.pbHideOpponent
+                    battle.scene.appearBar
+                    pbMessage("\\xn[\\v[26]]\\pogHey \\PN, I managed to pick up a few shock kunai off the ground after our last battle!")
+                    pbMessage("\\xn[\\v[26]]\\pogLet's see how the Akui Clan likes the taste of their own medicine!")
+                    pbMessage("\\xn[\\v[26]]\\pogAkui Clan Technique!\\wtnp[16] .\\wtnp[16].\\wtnp[16].\\wtnp[16]Shock Kunai?\\wtnp[30]")
+                    pbMessage("\\xn[\\v[26]]\\pogForget it... I'm just going to throw these kunai as hard I can!")
+                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    battle.battlers[3].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[\\v[26]]\\pogHaha! Yes, it worked!")
+                    pbMessage("\\xn[\\v[26]]\\pogTake that you Akui scumbags!")
+                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                    battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                    battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Hey! You can't do that! That's cheating!")
+                    battle.scene.pbHideOpponent
+                    battle.scene.disappearBar
+                  }
+      ShadowDuo3Last = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Hahaha... You kids fight dirty!")
+                    pbMessage("Maybe you should join the Akui Clan after all!")
+                    pbMessage("Come by Yami Island sometime... after we finish pulverizing you!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Multi-Clones of Darkness!!")
+                    battle.scene.disappearBar
+                    if battle.battlers[1].fainted?
+                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[3])
+                    else
+                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                    end
+                    if !battle.battlers[1].fainted?
+                      battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    end
+                    if !battle.battlers[3].fainted?
+                      battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3])
+                    end
+                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    battle.scene.pbHideOpponent
+                    battle.scene.appearBar
+                    pbMessage("\\xn[\\v[26]]\\pogAlright \\PN! We're so close to the end of the mine!")
+                    pbMessage("\\xn[\\v[26]]\\pogLet's gather up all our strength...")
+                    pbMessage("\\xn[\\v[26]]\\pogAnd then let's blast through these losers!")
+                    pbMessage("\\xn[\\v[26]]\\pogGraaaah!\\wtnp[30] Hashimoto Might!\\wtnp[30]")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                    battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                    battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Flame Breath!")
+                    if battle.battlers[1].fainted?
+                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[3])
+                    else
+                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
+                    end
+                    battle.scene.disappearBar
+                    if !battle.battlers[1].fainted?
+                      battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    end
+                    if !battle.battlers[3].fainted?
+                      battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    end
+                  }
+      ShadowDuo4 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Haha! You're too late!")
+                    pbMessage("We were already able to take a piece of the Hanatsium Crystal!")
+                    pbMessage("After we smash you two intruders, we'll steal even more!")
+                    pbMessage("Here, have a sneak peek at just how strong the Hanatsium Crystal is!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Hanatsium Crystal Exposure!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,5,battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[0],battle.battlers[3])
+                    battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,5,battle.battlers[3])
+                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    battle.scene.pbHideOpponent
+                    pbMessage("\\xn[\\v[26]]\\pogHere we go \\PN! This is our final battle!")
+                    pbMessage("\\xn[\\v[26]]\\pogI'm going all out! 200% Power, here and now!")
+                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Fire Vortex!")
+                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[2],battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[2],battle.battlers[3])
+                    battle.scene.disappearBar
+                    battle.battlers[1].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                    battle.battlers[1].effects[PBEffects::Trapping] = 5
+                    battle.battlers[1].effects[PBEffects::TrappingUser] = 1
+                    battle.battlers[3].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                    battle.battlers[3].effects[PBEffects::Trapping] = 5
+                    battle.battlers[3].effects[PBEffects::TrappingUser] = 1
+                    battle.pbDisplay(_INTL("The enemies were trapped in fiery vortexes!",battle.battlers[1].name))
+                    battle.scene.appearBar
+                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! 200% Hashimoto Might!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                    battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,4,battle.battlers[2])
+                    battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,4,battle.battlers[0],false)
                   }
       MashiroIntro = Proc.new{|battle|
                     battle.scene.appearBar
