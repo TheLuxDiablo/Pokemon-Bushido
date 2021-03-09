@@ -1019,12 +1019,17 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Tch. We were so close to getting Virizion's power, but you all had to come mess it up.")
                     pbMessage("I'll show you who you're messing with!")
-                    pbMessage("Akui Clan Technique, Icicle Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Toxic Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by Mashiro's kunai!")
+                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
                     battle.scene.appearBar
-                    pbMessage("You brats always get in my way!")
+                    pbMessage("I won't let you brats get in my way!")
                     pbMessage("I'm going to put you in your place, you miserable worm!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
@@ -1034,7 +1039,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Why are you so persistent on being annoying?!")
-                    pbMessage("Ugh... I don't have any Icicle Kunai anymore...")
+                    pbMessage("Ugh... I don't have any Kunai anymore...")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
@@ -1043,10 +1048,10 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Did you actually believe that I ran out of Icicle Kunai?")
                     pbMessage("You're even more foolish than you look!")
-                    pbMessage("Akui Clan Technique, Icicle Kunai!")
+                    pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by Mashiro's kunai!")
+                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
                     battle.scene.appearBar
                     pbMessage("Do you see now why the codes of Bushido are worthless? Without honor and respect, I can do whatever I want.")
                     battle.scene.disappearBar
@@ -1062,13 +1067,13 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Wow, you managed to bring me down to my last Pokémon...")
                     pbMessage("Unfortunately for you, this is my strongest!")
-                    pbMessage("You're lucky that I'm actually out of Ice Kunai now...")
+                    pbMessage("You're lucky that I'm actually out of Kunai now...")
                     pbMessage("...")
                     pbMessage("Just kidding, of course I have more Kunai!")
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by Mashiro's kunai!")
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
                     battle.scene.appearBar
                     pbMessage("You'll never be able to defeat me!")
                     battle.scene.disappearBar

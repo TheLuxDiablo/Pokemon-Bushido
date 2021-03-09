@@ -1492,6 +1492,13 @@ def pbSetPokemonCenter
   $PokemonGlobal.pokecenterDirection = $game_player.direction
 end
 
+def pbSetPokemonCenterCustom(mapId=1,x=1,y=1,direction=8)
+  $PokemonGlobal.pokecenterMapId     = mapId
+  $PokemonGlobal.pokecenterX         = x
+  $PokemonGlobal.pokecenterY         = y
+  $PokemonGlobal.pokecenterDirection = direction
+end
+
 
 
 #===============================================================================
