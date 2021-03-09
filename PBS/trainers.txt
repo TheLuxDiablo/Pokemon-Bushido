@@ -630,3 +630,15 @@ Pokemon = HAKAMOO,41
 Pokemon = VOLCARONA,42
 	Moves = QUIVERDANCE,FLAMETHROWER,SAFEGUARD,ROOST
 	Item = HEAVYDUTYBOOTS
+#-------------------------------
+[AKUICLAN_F,Kiki]
+LoseText = "This isn't good! Yami Island is in danger!"
+Pokemon = MIGHTYENA,58
+Pokemon = KROOKODILE,59
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Idate]
+LoseText = "This isn't good! Yami Island is in danger!"
+Pokemon = GARCHOMP,58
+Pokemon = ABSOL,59
+	Shadow = yes
