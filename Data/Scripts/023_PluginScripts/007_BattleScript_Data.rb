@@ -1024,12 +1024,7 @@ module DialogueModule
                     battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Toxic Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
-                    battle.scene.appearBar
-                    pbMessage("I won't let you brats get in my way!")
+                    pbMessage("I won't let brats like you get in my way!")
                     pbMessage("I'm going to put you in your place, you miserable worm!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
@@ -1046,7 +1041,7 @@ module DialogueModule
       Mashiro3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("Did you actually believe that I ran out of Icicle Kunai?")
+                    pbMessage("Did you actually believe that I ran out of Kunai?")
                     pbMessage("You're even more foolish than you look!")
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
@@ -1088,8 +1083,8 @@ module DialogueModule
     KatanaIntro = Proc.new{|battle|
                   battle.scene.appearBar
                   battle.scene.pbShowOpponent(0)
-                  pbMessage("Kenshi scum like you are worth NOTHING. I'll take you out here and now.")
-                  pbMessage("It's time to unleash my full power.")
+                  pbMessage("Kenshi scum like you are worth nothing. I'll take you out here and now.")
+                  pbMessage("It's time to unleash my full power!")
                   battle.scene.disappearBar
                   battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
                   battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
