@@ -351,7 +351,6 @@ Pokemon = GOLETT,24
 Pokemon = GLIGAR,24
 #-------------------------------	
 [MASHIRO,Mashiro]
-Items = JAM2
 LoseText = "You little brat!"
 Pokemon = KIRLIA,25
 Pokemon = INKAY,25
