@@ -777,6 +777,22 @@ module DialogueModule
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.pbHideOpponent
                   }
+      ShadowIntroToxic2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Stay out of our Akui Library!")
+                    pbMessage("The secrets of our clan are not meant for outsiders!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
       ShadowIntroSpikes = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
@@ -785,6 +801,21 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
                     battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowIntroSpikes2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I'm guarding this key with my life! Stay away, you disgusting kenshi!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Icicle Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
                     battle.scene.pbHideOpponent
                   }
       ShadowEvasion = Proc.new{|battle|

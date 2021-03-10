@@ -464,6 +464,13 @@ Pokemon = THIEVUL,33
 Pokemon = LARVITAR,34
     Shadow = yes
 #-------------------------------
+[AKUICLAN_M,Iwa,1]
+LoseText = "You rocked my world... again!"
+Pokemon = SKUNTANK,63
+Pokemon = THIEVUL,64
+Pokemon = TYRANITAR,64
+    Shadow = yes
+#-------------------------------
 [RIVALBUSHIDO_F,Akane,3]
 LoseText = "I guess you're not just all talk!"
 Pokemon = TALONFLAME,35
@@ -645,4 +652,30 @@ LoseText = "You're cold-blooded!"
 Pokemon = CORVIKNIGHT,59
 Pokemon = WEAVILE,59
 Pokemon = TOXTRICITY,59
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Haka]
+LoseText = "No way! This is bad... this is really bad!"
+Pokemon = GRIMMSNARL,59
+Pokemon = PYUKUMUKU,60
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Ino]
+LoseText = "Oh no... At this rate you'll get to our dojo on Yami Island..."
+Pokemon = HARIYAMA,60
+Pokemon = FLYGON,61
+Pokemon = RAICHU,62
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Toshoka]
+LoseText = "Stay away from our books! There's nothing here for you!"
+Pokemon = OBSTAGOON,62
+Pokemon = SCOLIPEDE,62
+Pokemon = LUCARIO,63
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Eki]
+LoseText = "No! The key... the key!"
+Pokemon = ROSERADE,63
+Pokemon = DUNSPARCE,64
 	Shadow = yes

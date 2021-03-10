@@ -126,6 +126,24 @@ Water
     CARVANHA,22,24
     GYARADOS,22,26
 #-------------------------------
+098 # Yami Pass
+25,10,10
+Land
+    SCOLIPEDE,50,55
+    GREEDENT,50,55
+    LEAVANNY,50,55
+    LILLIGANT,50,55
+    SALAZZLE,50,55
+    PALOSSAND,50,55
+    ABSOL,50,55
+    ABSOL,50,55
+Water
+    SHARPEDO,50,55
+    CRABRAWLER,50,55
+    CLOYSTER,50,55
+    GYARADOS,50,55
+    WISHIWASHI,52,58
+#-------------------------------
 102 # Jonetsu Pass
 25,10,10
 Land
@@ -242,7 +260,7 @@ Water
     BULBASAUR,5
     BULBASAUR,5
 #-------------------------------
-126 # Hanatsium Mine
+126 # Hanatsu Mine
 25,5,5
 Cave
     ROCKRUFF,28,33

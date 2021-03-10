@@ -23493,7 +23493,7 @@ BattlerEnemyX = -5
 BattlerEnemyY = 25
 BattlerShadowX = 0
 BattlerShadowSize = 3
-Evolutions = CRABOMINABLE,Location,257
+Evolutions = CRABOMINABLE,Location,257,CRABOMINABLE,Location,124
 #-------------------------------
 [740]
 Name = Crabominable
