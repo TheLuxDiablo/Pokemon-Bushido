@@ -611,7 +611,7 @@ module DialogueModule
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)
                       pbMessage("You're on the final stretch! Don't burn out on me now!")
-                      pbMessage("Katana of Fire, Nensho Style! Flame Breath!")
+                      pbMessage("Katana of Fire, Nensho Style! Breath of Flames!")
                       battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
                       battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
@@ -622,15 +622,15 @@ module DialogueModule
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)
                       pbMessage("Hahaha! We finally face each other in battle!")
-                      pbMessage("I've been looking forward to this \\PN!")
-                      pbMessage("Just know, I'll be giving this battle my all.")
-                      pbMessage("I expect you'll do the same! Now, it's time to show you the true power of the Nensho Clan!")
-                      pbMessage("Katana of Fire, Nensho Style! Flame Breath!")
+                      pbMessage("I've been looking forward to this, \\PN!")
+                      pbMessage("Just so you know, I'll be giving this battle my all.")
+                      pbMessage("I expect you to do the same! Now, it's time to show you the true power of the Nensho Clan!")
+                      pbMessage("Katana of Fire, Nensho Style! Breath of Flames!")
                       battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
                       battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                       battle.scene.appearBar
                       pbMessage("Katana of Fire, Nensho Style! Sunlight Beams!")
                       battle.pbCommonAnimation("Sunny",nil,nil)
@@ -645,10 +645,10 @@ module DialogueModule
                         battle.scene.appearBar
                         battle.scene.pbShowOpponent(0)
                         pbMessage("Hahaha! This is so much fun!")
-                        pbMessage("You are an excellent kenshi, \\PN!")
-                        pbMessage("You've pushed me to my breaking point...")
+                        pbMessage("You are an excellent Kenshi, \\PN!")
+                        pbMessage("You've pushed me to my limits...")
                         pbMessage("But the battle isn't over yet! Now it's time for me to get serious!")
-                        pbMessage("Secret Technique! Mocking Shout!")
+                        pbMessage("Secret Technique! Mountainous Roar!")
                         battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[1],battle.battlers[0])
                         battle.scene.disappearBar
                         battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
@@ -1197,7 +1197,7 @@ module DialogueModule
                     battle.scene.pbHideOpponent
                     battle.scene.appearBar
                     pbMessage("\\xn[Nori]\\bCome on \\PN, let's show these cowards how a real Kenshi battles!")
-                    pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Flame Breath!")
+                    pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Breath of Flames!")
                     battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
@@ -1242,7 +1242,7 @@ module DialogueModule
                     battle.scene.pbHideOpponent
                     battle.scene.appearBar
                     pbMessage("\\xn[Nori]\\bIt's time to finish off these Akui clowns!")
-                    pbMessage("\\xn[Nori]\\bSecret Technique! Mocking Shout!")
+                    pbMessage("\\xn[Nori]\\bSecret Technique! Mountainous Roar!")
                     battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[2],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1])
