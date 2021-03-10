@@ -569,6 +569,7 @@ Outdoor = false
 MapPosition = 2,12,10
 ShowArea = true
 Outdoor = true
+BattleBack = Beach
 #-------------------------------
 [107]
 # Chikyu Village

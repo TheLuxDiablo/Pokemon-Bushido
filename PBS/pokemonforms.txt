@@ -995,7 +995,11 @@ Moves = 1,TACKLE,1,LEER,3,SANDATTACK,6,LICK,9,SNARL,12,HEADBUTT,15,BABYDOLLEYES,
 EggMoves = KNOCKOFF,PARTINGSHOT,QUICKGUARD
 Color = White
 Pokedex = Thought to be the oldest form of Zigzagoon, it moves in zigzags and wreaks havoc upon its surroundings.
-BattlerPlayerY = 60
+BattlerPlayerX = -3
+BattlerPlayerY = 41
+BattlerEnemyX = 1
+BattlerEnemyY = 29
+BattlerShadowX = -6
 #-------------------------------
 [LINOONE,1]
 FormName = Galarian
@@ -1003,7 +1007,9 @@ Type1 = DARK
 Type2 = NORMAL
 Moves = 1,NIGHTSLASH,1,SWITCHEROO,1,PINMISSILE,1,BABYDOLLEYES,1,TACKLE,1,LEER,1,SANDATTACK,1,LICK,9,SNARL,12,HEADBUTT,15,HONECLAWS,18,FURYSWIPES,23,REST,28,TAKEDOWN,33,SCARYFACE,38,COUNTER,43,TAUNT,48,DOUBLEEDGE
 Pokedex = This very aggressive Pokémon will recklessly challenge opponents stronger than itself.
-BattlerPlayerY = 65
+BattlerPlayerX = -4
+BattlerPlayerY = 51
+BattlerEnemyX = 7
 Evolutions = OBSTAGOON,LevelNight,35
 #-------------------------------
 [GARDEVOIR,1]
@@ -1187,8 +1193,11 @@ HiddenAbility = AERILATE
 Height = 1.8
 Weight = 112.6
 Pokedex = It puts its forelegs inside its shell to streamline itself for flight. Salamence flies at high speeds over all kinds of topographical features.
+BattlerPlayerX = 0
 BattlerPlayerY = 50
+BattlerEnemyX = 0
 BattlerEnemyY = 16
+BattlerShadowSize = 2
 #-------------------------------
 [METAGROSS,1]
 FormName = Mega Metagross
