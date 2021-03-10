@@ -304,7 +304,7 @@ LoseText = "The rush of battle never fails to excite me!"
 Pokemon = MEDITITE,22
 Pokemon = PANCHAM,23
 #-------------------------------
-[KENSHI_F,Shelby]
+[SHIMIZU_F,Shelby]
 LoseText = "Wow, you have some unreal skills..."
 Pokemon = DEWOTT,26
 Pokemon = VESPIQUEN,27
