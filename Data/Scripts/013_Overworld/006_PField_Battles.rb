@@ -129,7 +129,7 @@ def pbPrepareBattle(battle)
   elsif $PokemonGlobal.nextBattleBack
     backdrop = $PokemonGlobal.nextBattleBack
   elsif $PokemonGlobal.surfing
-    backdrop = "FRLGWater"   # This applies wherever you are, including in caves
+    backdrop = "Surf"   # This applies wherever you are, including in caves
   else
     back = pbGetMetadata($game_map.map_id,MetadataBattleBack)
     backdrop = back if back && back!=""
