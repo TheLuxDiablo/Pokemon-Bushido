@@ -306,9 +306,9 @@ Pokemon = PANCHAM,23
 #-------------------------------
 [SHIMIZU_F,Shelby]
 LoseText = "Wow, you have some unreal skills..."
-Pokemon = DEWOTT,26
-Pokemon = VESPIQUEN,27
-Pokemon = GENGAR,28
+Pokemon = CLOYSTER,39
+Pokemon = VESPIQUEN,39
+Pokemon = GENGAR,40
 #-------------------------------
 [AKUICLAN_M,Igarashi]
 LoseText = "What! How did you do that?"

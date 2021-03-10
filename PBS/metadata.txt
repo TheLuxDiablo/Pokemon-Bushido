@@ -569,6 +569,7 @@ ShowArea = true
 Outdoor = true
 MapPosition = 2,12,10
 ShowArea = true
+BattleBack = Beach
 #-------------------------------
 [107]
 # Chikyu Village
@@ -676,6 +677,8 @@ ShowArea = false
 Outdoor = false
 MapPosition = 2,10,8
 ShowArea = true
+BattleBack = CaveBushido4
+DarkMap = true
 #-------------------------------
 [124]
 # Fubuki Bay
@@ -707,6 +710,7 @@ Weather = Rain,100
 Outdoor = true
 MapPosition = 2,7,5
 ShowArea = true
+BattleBack = BeachIce
 #-------------------------------
 [128]
 # Izumi Springs
@@ -739,6 +743,7 @@ Weather = Rain,100
 Outdoor = true
 MapPosition = 2,5,5
 ShowArea = true
+BattleBack = Beach
 #-------------------------------
 [133]
 # Izumi Shrine
