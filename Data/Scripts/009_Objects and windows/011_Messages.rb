@@ -1142,7 +1142,7 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
       msgwindow.resume if msgwindow.busy?
       break if !msgwindow.busy?
     end
-    if Input.press?(Input::B)
+    if Input.press?(Input::B) && $DEBUG
       msgwindow.textspeed=-999
       msgwindow.update
       if msgwindow.busy?
