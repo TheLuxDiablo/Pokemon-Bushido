@@ -817,6 +817,18 @@ module DialogueModule
                     battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
                     battle.scene.pbHideOpponent
                   }
+      ShadowFreeze2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("To be in Akui Clan, you must have a heart as cold as ice!")
+                    pbMessage("Luckily for me, I also happen to have kunai that are as cold as ice!")
+                    pbMessage("Akui Clan Technique, Icicle Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
       ShadowShock = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)

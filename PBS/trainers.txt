@@ -637,7 +637,14 @@ Pokemon = KROOKODILE,59
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Idate]
-LoseText = "This isn't good! Yami Island is in danger!"
+LoseText = "Waah! I have to report this to our boss!"
 Pokemon = GARCHOMP,58
 Pokemon = ABSOL,59
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Tomoe]
+LoseText = "You're cold-blooded!"
+Pokemon = CORVIKNIGHT,59
+Pokemon = WEAVILE,59
+Pokemon = TOXTRICITY,59
 	Shadow = yes
