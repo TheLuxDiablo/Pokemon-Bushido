@@ -611,9 +611,7 @@ Pokemon = TALONFLAME,41
 #-------------------------------
 [NENSHO_BOSS,Nori,2]
 LoseText = "Now I understand. Your power is superb."
-Pokemon = CENTISKORCH,40
-	Moves = FIRELASH,LEECHLIFE,KNOCKOFF,POWERWHIP
-	Item = HEAVYDUTYBOOTS
+Pokemon = CENTISKORCH,39
 Pokemon = PUPITAR,40
 	Moves = ROCKSLIDE,CRUNCH,PURSUIT,EARTHQUAKE
 	Item = ASSAULTVEST

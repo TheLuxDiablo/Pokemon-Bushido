@@ -198,7 +198,7 @@
 195,KAYOKO,Kenshi,100,CON-KonohaGate,,HGSSEncounter-KimonoGirl,Female,,
 196,TSUKU,Kenshi,100,CON-HiddenLeafGate,,HGSSEncounter-KimonoGirl,Female,,
 197,MASHIRO,Akui Admin,100,CON-Akatsuki,,,Female,,
-198,HOTOKE,Akui Admin,100,CON-GamabuntaBath,,,Male,,
+198,HOTOKE,Akui Admin,100,CON-Akatsuki,,,Male,,
 199,KURO,Akui Admin,100,CON-Akatsuki,,,Male,,
 200,GALARMAN,Galarian Man,100,,,,Male,,
 201,AKUICLANDOUBLE,Akui Clan,100,CON-EnclosedBattle,,MarioBowserCastle,Male,,
