@@ -321,7 +321,7 @@ PhenomenonWater
 	DRAGONAIR,41
 #-------------------------------
 123 # Chikyu Cave
-25,10,10
+25,8,10
 Cave
 	DITTO,39,44
     GASTRODON,40,44
