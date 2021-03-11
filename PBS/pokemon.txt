@@ -3736,7 +3736,7 @@ Height = 0.4
 Weight = 8.0
 Color = Blue
 Shape = 5
-RegionalNumbers = 116,116
+RegionalNumbers = 116,116,286
 Kind = Dragon
 Pokedex = It makes its nest in the shade of corals. If it senses danger, it spits murky ink and flees.
 WildItemUncommon = DRAGONSCALE
@@ -3768,7 +3768,7 @@ Height = 1.2
 Weight = 25.0
 Color = Blue
 Shape = 5
-RegionalNumbers = 117,117
+RegionalNumbers = 117,117,287
 Kind = Dragon
 Pokedex = It is capable of swimming backwards by rapidly flapping its winglike pectoral fins and stout tail.
 WildItemUncommon = DRAGONSCALE
@@ -3778,7 +3778,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 28
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = KINGDRA,TradeItem,DRAGONSCALE
+Evolutions = KINGDRA,Item,DRAGONSCALE
 #-------------------------------
 [118]
 Name = Goldeen
@@ -7416,7 +7416,7 @@ Height = 1.8
 Weight = 152.0
 Color = Blue
 Shape = 5
-RegionalNumbers = 0,230
+RegionalNumbers = 0,230,288
 Kind = Dragon
 Pokedex = It stores energy by sleeping at underwater depths at which no other life-forms can survive.
 WildItemUncommon = DRAGONSCALE
@@ -17001,7 +17001,7 @@ BattlerEnemyX = -1
 BattlerEnemyY = 26
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = CONKELDURR,Trade,
+Evolutions = CONKELDURR,Level,38
 #-------------------------------
 [534]
 Name = Conkeldurr

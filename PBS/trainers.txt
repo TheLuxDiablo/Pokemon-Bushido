@@ -734,7 +734,7 @@ Pokemon = BRELOOM,44
 #-------------------------------
 [SHIMIZU_F,Taketa]
 LoseText = "Losing in front of my hometown is not good..."
-Pokemon = KINGDRA,43
+Pokemon = KINGDRA,44
 Pokemon = VAPOREON,44
 Pokemon = WISHIWASHI,45
 #-------------------------------
@@ -742,3 +742,34 @@ Pokemon = WISHIWASHI,45
 LoseText = "Losing in front of my hometown is not good."
 Pokemon = DUGTRIO,45
 Pokemon = SNORLAX,45
+#-------------------------------
+[YUKI_M,Sugiyama]
+LoseText = "Just because we specialize in Ice-types doesn't mean we always win them."
+Pokemon = MAMOSWINE,45
+Pokemon = WEAVILE,46
+#-------------------------------
+[YUKI_F,Koizumi]
+LoseText = "Brrr! It's so cold!"
+Pokemon = SANDSLASH,46
+Pokemon = EISCUE,46
+Pokemon = ABOMASNOW,46
+#-------------------------------
+[SHIMIZU_F,Morino]
+LoseText = "The ice-cold water isn't that bad..."
+Pokemon = CLOYSTER,47
+#-------------------------------
+[KENSHI_M,Ando]
+LoseText = "I need some variety in my team, don't I?"
+Pokemon = LOPUNNY,47
+Pokemon = BLISSEY,47
+#-------------------------------
+[YUKI_M,Uchida]
+LoseText = "Y- you make me shiver..."
+Pokemon = CRYOGONAL,47
+Pokemon = AVALUGG,48
+Pokemon = KINGDRA,48
+#-------------------------------
+[YUKI_F,Hoshino]
+LoseText = "I think you're ready to enter the village."
+Pokemon = KINGLER,48
+Pokemon = GLALIE,49
