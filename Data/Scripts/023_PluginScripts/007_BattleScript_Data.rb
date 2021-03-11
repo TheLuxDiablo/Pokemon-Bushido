@@ -784,7 +784,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Before you can get to Chikyu Village, you'll have to go through me!")
-                    pbMessage("Shimizu Clan can also turn the terrain misty, to protect our dragons!")
+                    pbMessage("Shimizu Clan can also turn the terrain misty, to protect our Pokémon!")
                     pbMessage("Katana of Water, Shimizu Style! Misty Terrain!")
                     battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
