@@ -202,3 +202,5 @@
 199,KURO,Akui Admin,100,CON-Akatsuki,,,Male,,
 200,GALARMAN,Galarian Man,100,,,,Male,,
 201,AKUICLANDOUBLE,Akui Clan,100,CON-EnclosedBattle,,MarioBowserCastle,Male,,
+202,IWA_M,Iwa Clan,100,CON-SandPlains,,HGSSEncounter-KimonoGirl,Male,,
+203,IWA_F,Iwa Clan,100,CON-SandPlains,,HGSSEncounter-KimonoGirl,Female,,
