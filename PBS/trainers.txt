@@ -680,6 +680,20 @@ Pokemon = ROSERADE,63
 Pokemon = DUNSPARCE,64
 	Shadow = yes
 #-------------------------------
+[AKUICLAN_F,Kurone]
+LoseText = "There's no way! But you're... you're not worthy!"
+Pokemon = MIENSHAO,63
+Pokemon = GOLURK,64
+Pokemon = CORVIKNIGHT,65
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Jiko]
+LoseText = "You're too strong! It can't be! I have to run away!"
+Pokemon = GARCHOMP,64
+Pokemon = MIGHTYENA,65
+Pokemon = BISHARP,66
+	Shadow = yes
+#-------------------------------
 [SHIMIZU_M,Isao]
 LoseText = "Ride the waves to victory, young Kenshi!"
 Pokemon = SEAKING,41

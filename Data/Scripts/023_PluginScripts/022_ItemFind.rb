@@ -206,9 +206,13 @@ def pbReceiveItem(item, quantity = 1)
     pbMessage(_INTL("You learned the Water Walking style for the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
     pbMessage(_INTL("The \\c[1]{1}\\c[0] can now control the flow of water, allowing you to easily run on water!",itemname))
   elsif isConst?(item,PBItems,:KATANALIGHT4)
-    pbMessage(_INTL("You learned the final technique for the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
-    pbMessage(_INTL("The Light Blade can now purify the hearts of Shadow Pokémon when their Heart Gauge is empty!"))
-    pbMessage(_INTL("It can also now banish the shadow fog in Nagisa Bay!"))
+    if $game_switches[136]
+      pbMessage(_INTL("You recovered the \\c[1]{1}\\c[0] from the Akui Clan!\\wtnp[30]",itemname))
+    else
+      pbMessage(_INTL("You learned the final technique for the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+      pbMessage(_INTL("The Light Blade can now purify the hearts of Shadow Pokémon when their Heart Gauge is empty!"))
+      pbMessage(_INTL("It can also now banish the shadow fog in Nagisa Bay!"))
+    end
   elsif isConst?(item,PBItems,:KATANALIGHT5)
     pbMessage(_INTL("You learned the final technique for the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
     pbMessage(_INTL("The Light Blade can open the hearts of Shadow Pokémon!"))
@@ -217,6 +221,9 @@ def pbReceiveItem(item, quantity = 1)
     pbMessage(_INTL("You found a \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
   elsif isConst?(item,PBItems,:SHIMIZULEAF)
     pbMessage(_INTL("You found an \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+  elsif isConst?(item,PBItems,:PRISONKEY)
+    pbMessage(_INTL("You found the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+    pbMessage(_INTL("Now Ryo, Darmanitan, and all of the other Pokémon can be freed from the Akui Prison!"))
   elsif pbIsMachine?(item)   # TM or HM
     pbMessage(_INTL("\\me[{1}]You obtained \\c[1]{2} {3}\\c[0]!\\wtnp[30]",meName,itemname,PBMoves.getName(pbGetMachine(item))))
   elsif quantity>1
