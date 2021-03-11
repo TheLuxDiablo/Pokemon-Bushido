@@ -808,6 +808,19 @@ module DialogueModule
                         battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                         battle.scene.pbHideOpponent
                       }
+          Shimizu8 = Proc.new{|battle|
+                        battle.scene.appearBar
+                        battle.scene.pbShowOpponent(0)
+                        pbMessage("The Shimizu Clan draw their strength from the ocean!")
+                        pbMessage("It is the source of all life... It heals us with its love!")
+                        pbMessage("Katana of Water, Shimizu Style! Healing Ring!")
+                        battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        battle.battlers[0].effects[PBEffects::AquaRing] = true
+                        battle.pbDisplay(_INTL("{1} surrounded itself with a veil of water!",battle.battlers[1].pbThis(true)))
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        battle.scene.pbHideOpponent
+                      }
       # Rival intros
       RivalFirstIntro = Proc.new{|battle|
                     battle.scene.appearBar
