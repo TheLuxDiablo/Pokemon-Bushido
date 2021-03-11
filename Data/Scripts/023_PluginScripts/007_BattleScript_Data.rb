@@ -543,6 +543,44 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+      # Yuki Clan intros
+      Yuki1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Even though we're a minor clan, you should take us Yuki members seriously!")
+                    pbMessage("We're well on our way to forming our own dojo soon!")
+                    pbMessage("Here, have a taste of what we can do!")
+                    pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
+                    battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      Yuki2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("The Yuki Clan controls the frozen domain!")
+                    pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
+                    battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        Yuki3 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("I hope you'll prove to be a worthy opponent!")
+                      pbMessage("Not many trainers can overcome the ice-cold Yuki Clan in battle!")
+                      pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
+                      battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                      battle.scene.pbHideOpponent
+                    }
       # Nensho intros
       Nensho1 = Proc.new{|battle|
                     battle.scene.appearBar
