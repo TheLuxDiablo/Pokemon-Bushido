@@ -680,6 +680,13 @@ Pokemon = ROSERADE,63
 Pokemon = DUNSPARCE,64
 	Shadow = yes
 #-------------------------------
+[AKUICLAN_M,Ushiron]
+LoseText = "How could you... how did you?"
+Pokemon = BISHARP,62
+Pokemon = GOLISOPOD,62
+Pokemon = SKUNTANK,63
+	Shadow = yes
+#-------------------------------
 [AKUICLAN_F,Kurone]
 LoseText = "There's no way! But you're... you're not worthy!"
 Pokemon = MIENSHAO,63
@@ -722,9 +729,11 @@ Pokemon = OBSTAGOON,43
 #-------------------------------
 [KOMOREI_M,Shuichi]
 LoseText = "Part of appreciating battles comes from defeat."
-Pokemon = VIVILLON,44
+Pokemon = VIVILLON,43
+Pokemon = BRELOOM,44
 #-------------------------------
 [SHIMIZU_F,Taketa]
-LoseText = "Losing in front of my hometown is not good."
+LoseText = "Losing in front of my hometown is not good..."
+Pokemon = KINGDRA,43
 Pokemon = VAPOREON,44
-Pokemon = WISHIWASHI,44
+Pokemon = WISHIWASHI,45

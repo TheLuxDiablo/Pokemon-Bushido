@@ -552,6 +552,7 @@ module DialogueModule
                     pbMessage("I draw my power from the earth!")
                     pbMessage("Katana of Earth, Iwa Style! Shifting Sands!")
                     battle.pbCommonAnimation("Sandstorm",nil,nil)
+                    battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
@@ -780,10 +781,11 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Before you can get to Chikyu Village, you'll have to go through me!")
-                    pbMessage("Katana of Water, Shimizu Style! Frigid Hail!")
+                    pbMessage("Shimizu Clan can also turn the terrain misty, to protect our dragons!")
+                    pbMessage("Katana of Water, Shimizu Style! Misty Terrain!")
+                    battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.pbCommonAnimation("Hail",battle.battlers[0],nil)
-                    battle.pbStartWeather(battle.battlers[1],PBWeather::Hail,true,false)
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
@@ -965,6 +967,21 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowSpeed2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Nobody sneaks up behind me and lives to the tell the tale!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Shock Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
                     battle.scene.pbHideOpponent
                   }
       ShadowFreeze = Proc.new{|battle|
