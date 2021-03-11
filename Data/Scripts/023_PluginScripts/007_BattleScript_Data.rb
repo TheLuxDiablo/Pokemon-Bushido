@@ -769,10 +769,13 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Chris and Eddie have got nothing on my skills!")
-                    pbMessage("Katana of Water, Shimizu Style! Torrential Downpour!")
+                    pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
+                    battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
-                    battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
+                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
+                    battle.battlers[0].effects[PBEffects::Trapping] = 5
+                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                    battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
@@ -791,6 +794,20 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
+          Shimizu7 = Proc.new{|battle|
+                        battle.scene.appearBar
+                        battle.scene.pbShowOpponent(0)
+                        pbMessage("Where do you think you're going?")
+                        pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
+                        battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
+                        battle.battlers[0].effects[PBEffects::Trapping] = 5
+                        battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                        battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].pbThis(true)))
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        battle.scene.pbHideOpponent
+                      }
       # Rival intros
       RivalFirstIntro = Proc.new{|battle|
                     battle.scene.appearBar

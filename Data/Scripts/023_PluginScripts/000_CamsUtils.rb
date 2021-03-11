@@ -201,3 +201,13 @@ def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
      end
    end
 end
+
+# Registers the item in the Ready Menu.
+def pbRegisterItemOutOfBag(item)
+  item = getID(PBItems,item)
+  if !item || item<1
+    raise ArgumentError.new(_INTL("Item number {1} is invalid.",item))
+  end
+  registeredlist = $PokemonBag.registeredItems
+  registeredlist.push(item) if !registeredlist.include?(item)
+end
