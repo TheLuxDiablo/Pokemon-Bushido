@@ -667,6 +667,19 @@ Pokemon = FLYGON,61
 Pokemon = RAICHU,62
 	Shadow = yes
 #-------------------------------
+[AKUICLAN_F,Hana]
+LoseText = "You won't get away with this!"
+Pokemon = MIENSHAO,61
+Pokemon = EEVEE,62
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Haijo]
+LoseText = "This can't be! My Pokémon were eliminated!"
+Pokemon = HARIYAMA,61
+Pokemon = KOMMOO,61
+Pokemon = MIGHTYENA,62
+	Shadow = yes
+#-------------------------------
 [AKUICLAN_F,Toshoka]
 LoseText = "Stay away from our books! There's nothing here for you!"
 Pokemon = OBSTAGOON,62

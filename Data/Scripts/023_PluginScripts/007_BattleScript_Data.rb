@@ -1014,6 +1014,21 @@ module DialogueModule
                     battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
                     battle.scene.pbHideOpponent
                   }
+      ShadowSpeed3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Outsiders must be eliminated! This is the way of the Akui Clan!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Icicle Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    battle.scene.pbHideOpponent
+                  }
       ShadowFreeze = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
