@@ -728,3 +728,8 @@ Pokemon = VIVILLON,44
 LoseText = "Losing in front of my hometown is not good."
 Pokemon = VAPOREON,44
 Pokemon = WISHIWASHI,44
+#-------------------------------
+[IWA_M,Nakanishi]
+LoseText = "Losing in front of my hometown is not good."
+Pokemon = DUGTRIO,45
+Pokemon = SNORLAX,45
