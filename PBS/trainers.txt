@@ -679,3 +679,38 @@ LoseText = "No! The key... the key!"
 Pokemon = ROSERADE,63
 Pokemon = DUNSPARCE,64
 	Shadow = yes
+#-------------------------------
+[SHIMIZU_M,Isao]
+LoseText = "Ride the waves to victory, young Kenshi!"
+Pokemon = SEAKING,41
+Pokemon = DEWGONG,41
+#-------------------------------
+[SHIMIZU_F,Kotone]
+LoseText = "I will not be drowned in the sorrow of defeat!"
+Pokemon = SIMIPOUR,41
+Pokemon = SLOWBRO,41
+#-------------------------------
+[SHIMIZU_M,Toru]
+LoseText = "I will learn from my mistakes."
+Pokemon = HUNTAIL,42
+Pokemon = GOREBYSS,42	
+#-------------------------------
+[KENSHI_M,Yanagi]
+LoseText = "I wish I could walk on water..."
+Pokemon = LEAVANNY,42
+Pokemon = RAICHU,43
+Pokemon = LAPRAS,43
+#-------------------------------
+[KENSHI_F,Ono]
+LoseText = "Looks like I'm the one who'll be bowing down..."
+Pokemon = SEISMITOAD,42
+Pokemon = OBSTAGOON,43
+#-------------------------------
+[KOMOREI_M,Shuichi]
+LoseText = "Part of appreciating battles comes from defeat."
+Pokemon = VIVILLON,44
+#-------------------------------
+[SHIMIZU_F,Taketa]
+LoseText = "Losing in front of my hometown is not good."
+Pokemon = VAPOREON,44
+Pokemon = WISHIWASHI,44

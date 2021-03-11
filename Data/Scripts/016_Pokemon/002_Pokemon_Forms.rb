@@ -862,7 +862,7 @@ MultipleForms.register(:SANDSHREW,{
 })
 MultipleForms.copy(:SANDSHREW,:SANDSLASH)
 
-MultipleForms.register(:TREECKO,{
+MultipleForms.register(:ZIGZAGOON,{
 "getFormOnCreation"=>proc{|pokemon|
    maps=[1]
    if $game_map && maps.include?($game_map.map_id)
@@ -872,9 +872,9 @@ MultipleForms.register(:TREECKO,{
    end
 }
 })
-MultipleForms.copy(:TREECKO,:GROVYLE,:SCEPTILE)
+MultipleForms.copy(:ZIGZAGOON,:LINOONE)
 
-MultipleForms.register(:OSHAWOTT,{
+MultipleForms.register(:MRMIME,{
 "getFormOnCreation"=>proc{|pokemon|
    maps=[1]
    if $game_map && maps.include?($game_map.map_id)
@@ -884,16 +884,3 @@ MultipleForms.register(:OSHAWOTT,{
    end
 }
 })
-MultipleForms.copy(:OSHAWOTT,:DEWOTT,:SAMUROTT)
-
-MultipleForms.register(:FENNEKIN,{
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[1]
-   if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
-     next 0
-   end
-}
-})
-MultipleForms.copy(:FENNEKIN,:BRAIXEN,:DELPHOX)
