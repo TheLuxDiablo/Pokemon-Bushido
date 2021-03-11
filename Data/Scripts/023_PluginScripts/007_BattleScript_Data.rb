@@ -543,6 +543,19 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+      # Iwa Clan intros
+      Iwa1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("The Iwa Clan mean business!")
+                    pbMessage("We may be small, but our spirit is unbreakable!")
+                    pbMessage("I draw my power from the earth!")
+                    pbMessage("Katana of Earth, Iwa Style! Shifting Sands!")
+                    battle.pbCommonAnimation("Sandstorm",nil,nil)
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
       # Yuki Clan intros
       Yuki1 = Proc.new{|battle|
                     battle.scene.appearBar
