@@ -850,3 +850,4 @@
 823,SUSHI4,Jelly Donut,Jelly Donut,2,1500,"Nothing beats a jelly filled donut! Heals 120 HP, and opens the hearts of Shadow Pokémon a huge amount.",1,1,0,
 824,CURRY,Curry,Curry,2,1800,"Savory curry, with potatos, carrots, and beef on rice! Heals 100 HP, and cures all status conditions.",1,1,0,
 825,BENTO,Bento Box,Bento Boxes,2,2600,"A complete lunch, made with love. Fully heals a Pokémon and makes it more friendly.",1,1,0,
+826,PRISONKEY,Prison Key,Prison Key,1,0,"A key to jail cells underneath the Akui Dojo.",0,0,0,
