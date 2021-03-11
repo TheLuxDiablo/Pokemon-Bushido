@@ -707,6 +707,7 @@ module DialogueModule
                   battle.scene.appearBar
                   battle.scene.pbShowOpponent(0)
                   pbMessage("You cannot overcome the calmness of the Shimizu Clan.")
+                  pbMessage("Katana of Water, Shimizu Style! Torrential Downpour!")
                   battle.scene.disappearBar
                   battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
                   battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
@@ -714,6 +715,67 @@ module DialogueModule
                   pbMessage("The Kenshi's water affinity boosted the power of their Pokemon!")
                   battle.scene.pbHideOpponent
                 }
+        Shimizu2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You have to learn to move with the motion of the ocean!")
+                    pbMessage("Katana of Water, Shimizu Style! Torrential Downpour!")
+                    battle.scene.disappearBar
+                    battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        Shimizu3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You better watch out!")
+                    pbMessage("I'm making waves over here!")
+                    pbMessage("Katana of Water, Shimizu Style! Torrential Downpour!")
+                    battle.scene.disappearBar
+                    battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        Shimizu4 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Watch this!")
+                    pbMessage("Not only can the Shimizu Clan make it rain...")
+                    pbMessage("We can also manipulate the temperature of the rainwater!")
+                    pbMessage("Katana of Water, Shimizu Style! Frigid Hail!")
+                    battle.scene.disappearBar
+                    battle.pbCommonAnimation("Hail",battle.battlers[0],nil)
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Hail,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        Shimizu5 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Chris and Eddie have got nothing on my skills!")
+                    pbMessage("Katana of Water, Shimizu Style! Torrential Downpour!")
+                    battle.scene.disappearBar
+                    battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+        Shimizu6 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Before you can get to Chikyu Village, you'll have to go through me!")
+                    pbMessage("Katana of Water, Shimizu Style! Frigid Hail!")
+                    battle.scene.disappearBar
+                    battle.pbCommonAnimation("Hail",battle.battlers[0],nil)
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Hail,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
       # Rival intros
       RivalFirstIntro = Proc.new{|battle|
                     battle.scene.appearBar
