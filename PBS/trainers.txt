@@ -359,6 +359,16 @@ Pokemon = LIEPARD,26
 Pokemon = STEENEE,26
 Pokemon = NINETALES,27
 	Shadow = yes
+#-------------------------------	
+[MASHIRO,Mashiro,1]
+LoseText = "How dare you... You dare come into our dojo and disrespect me like this!"
+Pokemon = GARDEVOIR,65
+Pokemon = MALAMAR,65
+Pokemon = ESPEON,65
+Pokemon = LIEPARD,66
+Pokemon = TSAREENA,66
+Pokemon = NINETALES,67
+	Shadow = yes
 #-------------------------------
 [KOMOREI_M,Shinsato]
 LoseText = "Very well! You have proven yourself worthy."
@@ -577,6 +587,16 @@ Pokemon = CRUSTLE,39
 Pokemon = STEELIX,40
 Pokemon = SLOWKING,40
 Pokemon = GOLISOPOD,41
+	Shadow = yes
+#-------------------------------
+[HOTOKE,Hotoke,1]
+LoseText = "No... Not again..."
+Pokemon = CONKELDURR,65
+Pokemon = CRABOMINABLE,66
+Pokemon = CRUSTLE,66
+Pokemon = STEELIX,67
+Pokemon = SLOWKING,67
+Pokemon = GOLISOPOD,68
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Shoji]
@@ -848,3 +868,23 @@ Pokemon = MRRIME,51
 LoseText = "May the shrine bless you in your future battles."
 Pokemon = LAPRAS,51
 Pokemon = MAMOSWINE,51
+#-------------------------------
+[KURO,Kuro]
+LoseText = "Ayyyy."
+Pokemon = PANGORO,53
+Pokemon = SALAMENCE,53
+Pokemon = INCINEROAR,53
+Pokemon = OBSTAGOON,54
+Pokemon = GALLADE,54
+Pokemon = HYDREIGON,55
+	Shadow = yes
+#-------------------------------
+[KURO,Kuro,1]
+LoseText = "Ayyyy."
+Pokemon = PANGORO,66
+Pokemon = SALAMENCE,66
+Pokemon = INCINEROAR,67
+Pokemon = OBSTAGOON,67
+Pokemon = GALLADE,68
+Pokemon = HYDREIGON,69
+	Shadow = yes
