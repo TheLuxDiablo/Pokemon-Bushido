@@ -1137,22 +1137,6 @@ module DialogueModule
                     battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
                     battle.scene.pbHideOpponent
                   }
-      ShadowShock2 = Proc.new{|battle|
-                    battle.scene.appearBar
-                    battle.scene.pbShowOpponent(0)
-                    pbMessage("I'll be the one to put a stop to your reign of terror!")
-                    pbMessage("The Akui Clan is counting on me to succeed! I can do this!")
-                    pbMessage("Akui Clan Technique, Shock Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility! Ultimate Speed!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
-                    battle.scene.pbHideOpponent
-                  }
       ShadowBurn = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
@@ -1183,6 +1167,22 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[1],battle.battlers[0])
                     battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,1,"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowSleep2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I'll be the one to put a stop to your reign of terror!")
+                    pbMessage("The Akui Clan is counting on me to succeed! I can do this!")
+                    pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,1,"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility! Ultimate Speed!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       ShadowDuo1 = Proc.new{|battle|
