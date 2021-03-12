@@ -831,3 +831,15 @@ Pokemon = KINGDRA,48
 LoseText = "I think you're ready to enter the village."
 Pokemon = KINGLER,48
 Pokemon = GLALIE,49
+#-------------------------------
+[SHIMIZU_M,Tamura]
+LoseText = "Healing items can change the course of any battle!"
+Pokemon = SHARPEDO,50
+	Item = SITRUSBERRY
+Pokemon = PALOSSAND,50
+	Item = SITRUSBERRY
+#-------------------------------
+[SHIMIZU_F,Otake]
+LoseText = "There's sand in my eye! Agh!"
+Pokemon = OBSTAGOON,50
+Pokemon = MRRIME,51
