@@ -687,10 +687,55 @@ Pokemon = SCOLIPEDE,62
 Pokemon = LUCARIO,63
 	Shadow = yes
 #-------------------------------
+[AKUICLAN_F,Janpa]
+LoseText = "Curses! I couldn't win, even with my rooftop ambush!"
+Pokemon = STEELIX,63
+Pokemon = THIEVUL,64
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Taka]
+LoseText = "You're even stronger than that red-haired Kenshi! How is that possible!?"
+Pokemon = GRENINJA,63
+Pokemon = BRELOOM,64
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Kusho]
+LoseText = "I'm not even safe in my own basement... I have to get out of here!"
+Pokemon = CORVIKNIGHT,63
+Pokemon = GRENINJA,64
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Roku]
+LoseText = "You can't keep getting away with it! One of us will stop you soon!"
+Pokemon = VICTREEBEL,62
+Pokemon = SANDSLASH,63
+	Form = 1
+	Shadow = yes
+#-------------------------------
 [AKUICLAN_F,Eki]
 LoseText = "No! The key... the key!"
 Pokemon = ROSERADE,63
-Pokemon = DUNSPARCE,64
+Pokemon = SIMISAGE,64
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Sutorei]
+LoseText = "I can't believe this!"
+Pokemon = DRAGONITE,64
+Pokemon = VOLCARONA,65
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Pawa]
+LoseText = "I can't believe this!"
+Pokemon = CONKELDURR,63
+Pokemon = HARIYAMA,63
+Pokemon = PASSIMIAN,64
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_F,Tenjo]
+LoseText = "My plan backfired!"
+Pokemon = PANGORO,62
+Pokemon = SIMISAGE,62
+Pokemon = LIEPARD,63
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Ushiron]
