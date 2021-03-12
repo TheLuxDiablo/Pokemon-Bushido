@@ -839,7 +839,12 @@ Pokemon = SHARPEDO,50
 Pokemon = PALOSSAND,50
 	Item = SITRUSBERRY
 #-------------------------------
-[SHIMIZU_F,Otake]
+[KENSHI_F,Otake]
 LoseText = "There's sand in my eye! Agh!"
 Pokemon = OBSTAGOON,50
 Pokemon = MRRIME,51
+#-------------------------------
+[SHIMIZU_F,Taguchi]
+LoseText = "May the shrine bless you in your future battles."
+Pokemon = LAPRAS,51
+Pokemon = MAMOSWINE,51
