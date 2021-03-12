@@ -1153,6 +1153,38 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+      ShadowBurn = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("If you try to mess with the Akui Clan, you're bound to get burned!")
+                    pbMessage("Akui Clan Technique, Flame Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowPoison = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("We Akui Clan coat all our kunai with a deadly poison.")
+                    pbMessage("Here, I'll give your Pokémon a taste!")
+                    pbMessage("Akui Clan Technique, Venom Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowSleep = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You're looking a little tired.")
+                    pbMessage("How about your Pokémon get some rest!")
+                    pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,1,"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    battle.scene.pbHideOpponent
+                  }
       ShadowDuo1 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
