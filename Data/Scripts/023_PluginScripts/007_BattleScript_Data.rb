@@ -1788,9 +1788,21 @@ module DialogueModule
                        battle.battlers[0].pbLowerStatStage(PBStats::SPATK,1,battle.battlers[0])
                      end
                    }
+       Lugia = Proc.new{|battle|
+                      battle.scene.appearBar
+                      pbMessage("Lugia's soul is completely corrupted! It's driven only by hatred!")
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      battle.scene.pbHideOpponent
+                     }
         Virizion = Proc.new{|battle|
                        battle.scene.appearBar
-                       pbMessage("\Virizion's soul is locked away!")
+                       pbMessage("Virizion's soul is locked away!")
                        battle.scene.disappearBar
                        battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
                        battle.battlers[1].pbLowerStatStage(PBStats::SPATK,2,battle.battlers[1],false)
@@ -1800,7 +1812,17 @@ module DialogueModule
                       }
         Terrakion = Proc.new{|battle|
                        battle.scene.appearBar
-                       pbMessage("\Terrakion's soul is locked away!")
+                       pbMessage("Terrakion's soul is locked away!")
+                       battle.scene.disappearBar
+                       battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                       battle.battlers[1].pbLowerStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                       battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                       battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                       battle.scene.pbHideOpponent
+                      }
+        Cobalion = Proc.new{|battle|
+                       battle.scene.appearBar
+                       pbMessage("Cobalion's soul is locked away!")
                        battle.scene.disappearBar
                        battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
                        battle.battlers[1].pbLowerStatStage(PBStats::SPATK,2,battle.battlers[1],false)
