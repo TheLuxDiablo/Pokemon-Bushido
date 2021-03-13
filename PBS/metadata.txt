@@ -788,3 +788,10 @@ BattleBack = Dojo5
 MapPosition = 2,24,8
 ShowArea = true
 Outdoor = false
+#-------------------------------
+[143]
+# Hikari Cave
+MapPosition = 2,24,8
+ShowArea = true
+Outdoor = false
+DarkMap = true
