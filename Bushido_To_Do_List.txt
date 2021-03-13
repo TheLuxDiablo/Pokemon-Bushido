@@ -90,11 +90,12 @@ Hagane City takeover switch
 
 
 make ch4 pop after beating the nensho dojo and leaving, instead of leaving the town?
-test scent and time flue use in battle
-katana awakening in Jikan shrine after talk with Shogun, then starts chapter 5
-TEST prevent teleport and escape rope while have partner in mine
+test scent and time flute use in battle
+turn switch 120 to ON after kayoko battle, so that sukiro jikan shrine is enabled
+
 add TMs to almost all maps
 
+CREDITS SCENE
 
 ch4 MBD
 Kuro
