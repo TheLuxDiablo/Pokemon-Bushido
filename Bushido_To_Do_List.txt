@@ -102,7 +102,7 @@ $PokemonTemp.dependentEvents.setMoveRoute([PBMoveRoute::TurnRight],false)
 
 
 katana awakening in Jikan shrine after talk with Shogun, then starts chapter 5
-prevent teleport and escape rope while have partner in mine
+TEST prevent teleport and escape rope while have partner in mine
 add TMs to almost all maps
 
 

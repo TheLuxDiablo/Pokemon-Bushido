@@ -577,19 +577,32 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
-        Yuki3 = Proc.new{|battle|
-                      battle.scene.appearBar
-                      battle.scene.pbShowOpponent(0)
-                      pbMessage("I hope you'll prove to be a worthy opponent!")
-                      pbMessage("Not many trainers can overcome the ice-cold Yuki Clan in battle!")
-                      pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
-                      battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
-                      battle.scene.pbHideOpponent
-                    }
+      Yuki3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I hope you'll prove to be a worthy opponent!")
+                    pbMessage("Not many trainers can overcome the ice-cold Yuki Clan in battle!")
+                    pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
+                    battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+      Yuki4 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Let us have a good duel!")
+                    pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
+                    battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
       # Nensho intros
       Nensho1 = Proc.new{|battle|
                     battle.scene.appearBar
@@ -812,7 +825,20 @@ module DialogueModule
                         battle.scene.disappearBar
                         battle.battlers[1].effects[PBEffects::AquaRing] = true
                         battle.pbDisplay(_INTL("{1} surrounded itself with a veil of water!",battle.battlers[1].pbThis(true)))
-                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                        battle.scene.pbHideOpponent
+                      }
+          Shimizu9 = Proc.new{|battle|
+                        battle.scene.appearBar
+                        battle.scene.pbShowOpponent(0)
+                        pbMessage("It's time for me to test your skills!")
+                        pbMessage("Katana of Water, Shimizu Style! Misty Terrain!")
+                        battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
                         battle.scene.pbHideOpponent
                       }
       # Rival intros
