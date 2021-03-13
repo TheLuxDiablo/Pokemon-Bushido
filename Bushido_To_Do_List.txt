@@ -103,10 +103,14 @@ $PokemonTemp.dependentEvents.setMoveRoute([PBMoveRoute::TurnRight],false)
 
 
 
+add TMs to almost all maps
 
-test losing in mines with rival following
-
-
+ch4 MBD
+Kuro
+Kayoko
+Mai
+kenshi around the fubuki and izumi
+shimizu dojo
 
 
 
