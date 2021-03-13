@@ -361,12 +361,12 @@ Pokemon = NINETALES,27
 	Shadow = yes
 #-------------------------------	
 [MASHIRO,Mashiro,1]
-LoseText = "How dare you... You dare come into our dojo and disrespect me like this!"
+LoseText = "How dare you... How dare you come into our dojo and disrespect me like this!"
+Pokemon = TSAREENA,66
 Pokemon = GARDEVOIR,65
 Pokemon = MALAMAR,65
 Pokemon = ESPEON,65
 Pokemon = LIEPARD,66
-Pokemon = TSAREENA,66
 Pokemon = NINETALES,67
 	Shadow = yes
 #-------------------------------
@@ -888,3 +888,9 @@ Pokemon = OBSTAGOON,67
 Pokemon = GALLADE,68
 Pokemon = HYDREIGON,69
 	Shadow = yes
+#-------------------------------	
+[HATTORI,Hattori]
+LoseText = "aaaaaa!"
+Pokemon = LUGIA,70
+	Shadow = yes
+Pokemon = ZOROARK,68
