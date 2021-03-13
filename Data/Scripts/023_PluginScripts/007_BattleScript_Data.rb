@@ -824,23 +824,67 @@ module DialogueModule
                         battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
                         battle.scene.disappearBar
                         battle.battlers[1].effects[PBEffects::AquaRing] = true
-                        battle.pbDisplay(_INTL("{1} surrounded itself with a veil of water!",battle.battlers[1].pbThis(true)))
+                        battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!",battle.battlers[1].name))
                         battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                         battle.scene.pbHideOpponent
                       }
-          Shimizu9 = Proc.new{|battle|
-                        battle.scene.appearBar
-                        battle.scene.pbShowOpponent(0)
-                        pbMessage("It's time for me to test your skills!")
-                        pbMessage("Katana of Water, Shimizu Style! Misty Terrain!")
-                        battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[0])
-                        battle.scene.disappearBar
-                        battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
-                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
-                        battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
-                        battle.scene.pbHideOpponent
-                      }
+        Shimizu9 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("It's time for me to test your skills!")
+                      pbMessage("Katana of Water, Shimizu Style! Misty Terrain!")
+                      battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      battle.scene.pbHideOpponent
+                    }
+        Shimizu10 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("Show me your full potential, and I'll show you mine!")
+                      pbMessage("Katana of Water, Shimizu Style! Misty Terrain!")
+                      battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
+                      battle.scene.appearBar
+                      pbMessage("Katana of Water, Shimizu Style! Healing Ring!")
+                      battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[1].effects[PBEffects::AquaRing] = true
+                      battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!",battle.battlers[1].name))
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.scene.appearBar
+                      pbMessage("Come at me!")
+                      battle.scene.disappearBar
+                      battle.scene.pbHideOpponent
+                    }
+        Shimizu11 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("Prove to me that you are worthy of facing Mai, the leader of the Shimizu Clan!")
+                      pbMessage("Katana of Water, Shimizu Style! Torrential Downpour!")
+                      battle.scene.disappearBar
+                      battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
+                      battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
+                      battle.scene.appearBar
+                      pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
+                      battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
+                      battle.battlers[0].effects[PBEffects::Trapping] = 5
+                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].name))
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      battle.scene.appearBar
+                      pbMessage("Now, the real test begins!")
+                      battle.scene.disappearBar
+                      battle.scene.pbHideOpponent
+                    }
       # Rival intros
       RivalFirstIntro = Proc.new{|battle|
                     battle.scene.appearBar

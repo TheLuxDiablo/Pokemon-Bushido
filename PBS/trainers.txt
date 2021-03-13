@@ -836,6 +836,18 @@ Pokemon = ABOMASNOW,46
 LoseText = "The ice-cold water isn't that bad..."
 Pokemon = CLOYSTER,47
 #-------------------------------
+[SHIMIZU_F,Turai]
+LoseText = "Alright, it looks you truly do have skills!"
+Pokemon = KINGDRA,50
+Pokemon = CLOYSTER,51
+#-------------------------------
+[SHIMIZU_F,Gara]
+LoseText = "You're the real deal!"
+Pokemon = SAMUROTT,51
+Pokemon = SANDSLASH,52
+	Form = 1
+Pokemon = SEISMITOAD,52
+#-------------------------------
 [KENSHI_M,Ando]
 LoseText = "I need some variety in my team, don't I?"
 Pokemon = LOPUNNY,47
