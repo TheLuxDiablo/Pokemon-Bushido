@@ -135,6 +135,27 @@ Water
     TYMPOLE,20,24
     PYUKUMUKU,20,24
 #-------------------------------
+098 # Yami Pass
+25,10,10
+Land
+    MIGHTYENA,47,53
+    THROH,47,53
+    SAWK,47,53
+    CORVIKNIGHT,47,53
+    TOXTRICITY,47,53
+    ABSOL,47,53
+    MEDICHAM,47,53
+    ZOROARK,47,53
+Water
+	SHARPEDO,46,52
+    WISHIWASHI,46,52
+    HUNTAIL,46,52
+    GOREBYSS,46,52
+    WISHIWASHI,46,52
+    GYARADOS,46,52
+    GYARADOS,46,52
+    DRAGONAIR,46,52
+#-------------------------------
 102 # Jonetsu Pass
 25,10,10
 Land
@@ -197,6 +218,43 @@ PhenomenonCave
     GABITE,27,31
     LARVITAR,26,30
 #-------------------------------
+106 # Kaiyo Sea
+25,10,10
+Land
+    SIMIPOUR,38,43
+    KINGLER,39,43
+    LUDICOLO,38,42
+    CLOYSTER,39,42
+    DEWGONG,38,43
+    PYUKUMUKU,38,42
+    RAICHU,38,43
+    SEISMITOAD,38,43
+Water
+    GYARADOS,38,43
+    FEEBAS,39,43
+    SHARPEDO,38,42
+    LAPRAS,39,42
+    SEAKING,38,43
+    HUNTAIL,38,42
+    GOREBYSS,38,43
+    SLOWKING,38,43
+PhenomenonGrass
+    CHANSEY,42
+    LEAVANNY,41
+    LEAVANNY,42
+    VAPOREON,42
+    JOLTEON,42
+    FLAREON,42
+    DRAGONAIR,41
+PhenomenonWater
+    WISHIWASHI,42
+    HUNTAIL,41
+    GOREBYSS,42
+    MILOTIC,42
+    SHARPEDO,42
+    VAPOREON,42
+    DRAGONAIR,41
+#-------------------------------
 117 # Hanatsu Cave
 25,10,10
 Cave
@@ -236,6 +294,24 @@ Water
     DEWGONG,33,36
     VAPOREON,33,36
 #-------------------------------
+123 # Chikyu Cave
+25,8,10
+Cave
+    DITTO,40,45
+    GASTRODON,41,45
+    SEISMITOAD,40,44
+    HARIYAMA,41,45
+    SNORLAX,40,45
+    GLIGAR,40,44
+    STEELIX,40,45
+    GOLURK,40,44
+PhenomenonCave
+    CHANSEY,43
+    SNORLAX,42
+    HITMONLEE,43
+    HITMONCHAN,43
+    HITMONTOP,43
+#-------------------------------
 124 # Fubuki Bay
 20,10,10
 Land
@@ -247,14 +323,6 @@ Land
     ABOMASNOW,41,45
     EISCUE,42,45
     CRYOGONAL,43,46
-PhenomenonGrass
-    SNOVER,41,45
-	MRMIME,41,46
-	PILOSWINE,41,46
-	CRYOGONAL,41,46
-	FROSMOTH,41,46
-	MAMOSWINE,41,46
-	MAMOSWINE,43,46
 Water
     CLOYSTER,41,46
     DEWGONG,41,45
@@ -264,8 +332,16 @@ Water
     SHARPEDO,41,46
     HUNTAIL,43,46
     GOREBYSS,43,46
+PhenomenonGrass
+    SNOVER,41,45
+    MRMIME,41,46
+    PILOSWINE,41,46
+    CRYOGONAL,41,46
+    FROSMOTH,41,46
+    MAMOSWINE,41,46
+    MAMOSWINE,43,46
 #-------------------------------
-126 # Hanatsium Mine
+126 # Hanatsu Mine
 25,5,5
 Cave
     ROCKRUFF,28,33
@@ -282,61 +358,6 @@ PhenomenonCave
     TRAPINCH,28,33
     GABITE,29,33
     LARVITAR,28,32
-#-------------------------------
-106 # Kaiyo Sea
-25,10,10
-Land
-	SIMIPOUR,38,43
-    KINGLER,39,43
-    LUDICOLO,38,42
-    CLOYSTER,39,42
-    DEWGONG,38,43
-    PYUKUMUKU,38,42
-	RAICHU,38,43
-	SEISMITOAD,38,43
-Water
-	GYARADOS,38,43
-    FEEBAS,39,43
-    SHARPEDO,38,42
-    LAPRAS,39,42
-    SEAKING,38,43
-    HUNTAIL,38,42
-	GOREBYSS,38,43
-	SLOWKING,38,43
-PhenomenonGrass
-    CHANSEY,42
-    LEAVANNY,41
-    LEAVANNY,42
-    VAPOREON,42
-    JOLTEON,42
-    FLAREON,42
-	DRAGONAIR,41
-PhenomenonWater
-    WISHIWASHI,42
-    HUNTAIL,41
-    GOREBYSS,42
-    MILOTIC,42
-    SHARPEDO,42
-    VAPOREON,42
-	DRAGONAIR,41
-#-------------------------------
-123 # Chikyu Cave
-25,8,10
-Cave
-	DITTO,40,45
-    GASTRODON,41,45
-	SEISMITOAD,40,44
-    HARIYAMA,41,45
-    SNORLAX,40,45
-    GLIGAR,40,44
-	STEELIX,40,45
-	GOLURK,40,44
-PhenomenonCave
-    CHANSEY,43
-    SNORLAX,42
-    HITMONLEE,43
-    HITMONCHAN,43
-    HITMONTOP,43
 #-------------------------------
 127 # Izumi Village
 25,10,10
@@ -356,7 +377,7 @@ PhenomenonWater
     MILOTIC,47
     SHARPEDO,47
     VAPOREON,47
-	DRAGONAIR,46
+    DRAGONAIR,46
 #-------------------------------
 132 # Izumi Pass
 25,10,10
@@ -370,22 +391,22 @@ Land
     TSAREENA,47,50
     PALOSSAND,48,51
 Water
-	GYARADOS,47,52
+    GYARADOS,47,52
     FEEBAS,48,52
     SHARPEDO,47,51
     LAPRAS,48,51
     SEAKING,47,52
     HUNTAIL,47,51
-	GOREBYSS,47,52
-	SLOWKING,47,52
+    GOREBYSS,47,52
+    SLOWKING,47,52
 PhenomenonGrass
     BLISSEY,47,51
-	MRRIME,47,52
-	ABOMASNOW,47,52
-	CRYOGONAL,47,52
-	FROSMOTH,47,52
-	CENTISKORCH,47,52
-	MAMOSWINE,49,52
+    MRRIME,47,52
+    ABOMASNOW,47,52
+    CRYOGONAL,47,52
+    FROSMOTH,47,52
+    CENTISKORCH,47,52
+    MAMOSWINE,49,52
 PhenomenonWater
     WISHIWASHI,48
     HUNTAIL,47
@@ -393,7 +414,7 @@ PhenomenonWater
     MILOTIC,48
     SHARPEDO,48
     VAPOREON,48
-	DRAGONAIR,47
+    DRAGONAIR,47
 #-------------------------------
 133 # Izumi Shrine
 25,10,10
@@ -407,11 +428,11 @@ Land
     MIENSHAO,49,52
     HARIYAMA,48,51
 Water
-	SEAKING,48,53
+    SEAKING,48,53
     LUDICOLO,48,52
     HUNTAIL,49,53
     GOREBYSS,49,52
     SLOWPOKE,48,51
     GOLISOPOD,49,52
     MILOTIC,49,52
-    PYUKUMUKU,48,51 
+    PYUKUMUKU,48,51
