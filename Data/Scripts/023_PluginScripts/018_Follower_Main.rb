@@ -718,13 +718,19 @@ def pbStartOver(gameover=false)
   end
   pbHealAll
   if $PokemonGlobal.pokecenterMapId && $PokemonGlobal.pokecenterMapId>=0
-    if gameover
+    if $PokemonGlobal.pokecenterMapId==99
+      pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]After the unfortunate defeat, you return to Sukiro on the beach of Yami Island."))
+    elsif $PokemonGlobal.pokecenterMapId==125
+        pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]After the unfortunate defeat, you return to the entrance of the Hanatsium Mine."))
+    elsif gameover
       pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]After the unfortunate defeat, you scurry back to the Hot Springs."))
     else
       pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]You scurry back to the Hot Springs, protecting your exhausted Pokémon from any further harm..."))
     end
     pbCancelVehicles
-    pbRemoveDependenciesExceptFollower
+    if $PokemonGlobal.pokecenterMapId!=125
+      pbRemoveDependenciesExceptFollower
+    end
     $game_switches[STARTING_OVER_SWITCH] = true
     $game_temp.player_new_map_id    = $PokemonGlobal.pokecenterMapId
     $game_temp.player_new_x         = $PokemonGlobal.pokecenterX
@@ -741,7 +747,11 @@ def pbStartOver(gameover=false)
       pbHealAll
       return
     end
-    if gameover
+    if $PokemonGlobal.pokecenterMapId==99
+      pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]After the unfortunate defeat, you return to Sukiro on the beach of Yami Island."))
+    elsif $PokemonGlobal.pokecenterMapId==125
+        pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]After the unfortunate defeat, you return to the entrance of the Hanatsium Mine."))
+    elsif gameover
       pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]After the unfortunate defeat, you scurry back home."))
     else
       pbMessage(_INTL("\\w[]\\wm\\c[8]\\l[3]You scurry back home, protecting your exhausted Pokémon from any further harm..."))

@@ -810,7 +810,7 @@ module DialogueModule
                         pbMessage("Katana of Water, Shimizu Style! Healing Ring!")
                         battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
                         battle.scene.disappearBar
-                        battle.battlers[0].effects[PBEffects::AquaRing] = true
+                        battle.battlers[1].effects[PBEffects::AquaRing] = true
                         battle.pbDisplay(_INTL("{1} surrounded itself with a veil of water!",battle.battlers[1].pbThis(true)))
                         battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                         battle.scene.pbHideOpponent
@@ -1166,7 +1166,7 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,1,"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
                     battle.scene.pbHideOpponent
                   }
       ShadowSleep2 = Proc.new{|battle|
@@ -1177,7 +1177,7 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,1,"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility! Ultimate Speed!")
                     battle.scene.disappearBar
@@ -1711,39 +1711,162 @@ module DialogueModule
                   battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
                   battle.scene.pbHideOpponent
                 }
-                HotokeRematch2 = Proc.new{|battle|
-                              battle.scene.appearBar
-                              battle.scene.pbShowOpponent(0)
-                              pbMessage("It's time to burn you again...")
-                              battle.scene.disappearBar
-                              battle.pbCommonAnimation("Sandstorm",nil,nil)
-                              battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
-                              if !battle.battlers[1].fainted?
-                                battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
-                                battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
-                              end
-                              if !battle.battlers[3].fainted?
-                                battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[3])
-                                battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[3],false)
-                              end
-                              battle.scene.appearBar
-                              pbMessage("Akui Clan Technique... Shock Kunai...")
-                              battle.scene.disappearBar
-                              if battle.battlers[1].fainted?
-                                battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[3])
-                              else
-                                battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                              end
-                              battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                              if !battle.battlers[2].fainted?
-                                battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                              end
-                              battle.scene.appearBar
-                              pbMessage("Get away...")
-                              pbMessage("Get away from me! Get away!")
-                              battle.scene.disappearBar
-                              battle.scene.pbHideOpponent
-                            }
+    HotokeRematch2 = Proc.new{|battle|
+                  battle.scene.appearBar
+                  battle.scene.pbShowOpponent(0)
+                  pbMessage("It's time to burn you again...")
+                  pbMessage("Akui Admin Technique... Nensho Style... Flame Breath...")
+                  battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                  battle.scene.disappearBar
+                  battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                  battle.scene.appearBar
+                  pbMessage("And now... Another new technique...")
+                  pbMessage("Akui Admin Technique... Nensho Style... Crimson Vortex...")
+                  battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                  battle.scene.disappearBar
+                  battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                  battle.battlers[0].effects[PBEffects::Trapping] = 5
+                  battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                  battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                  battle.scene.appearBar
+                  pbMessage("You'll never win...")
+                  pbMessage("Never...")
+                  battle.pbCommonAnimation("Sandstorm",nil,nil)
+                  battle.scene.disappearBar
+                  battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
+                  battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                  battle.scene.pbHideOpponent
+                }
+      HotokeRematchLast = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("No...")
+                    pbMessage("No! This can't happen!")
+                    pbMessage("Get away from me!!")
+                    pbMessage("Akui Admin Technique, Nensho Style! Crimson Vortex!")
+                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                    battle.battlers[0].effects[PBEffects::Trapping] = 5
+                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                    battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                    battle.scene.appearBar
+                    pbMessage("You can't win...")
+                    pbMessage("You can never win!")
+                    pbMessage("Akui Clan Technique! Shock Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    battle.pbCommonAnimation("Sandstorm",nil,nil)
+                    battle.scene.disappearBar
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+    KuroRematchIntro = Proc.new{|battle|
+                  battle.scene.appearBar
+                  battle.scene.pbShowOpponent(0)
+                  pbMessage("I had my fun toying with you before, but now playtime is over!")
+                  pbMessage("Witness the new techniques I stole from that stupid Shimizu Clan leader!")
+                  pbMessage("Akui Admin Technique, Shimizu Style! Healing Ring!")
+                  battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                  battle.scene.disappearBar
+                  battle.battlers[1].effects[PBEffects::AquaRing] = true
+                  battle.pbDisplay(_INTL("Kuro surrounded {1} with a veil of water!",battle.battlers[1].name))
+                  battle.scene.appearBar
+                  pbMessage("And now, how about I change the terrain!")
+                  pbMessage("Akui Admin Technique, Shimizu Style! Misty Terrain!")
+                  battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[0],battle.battlers[1])
+                  battle.scene.disappearBar
+                  battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
+                  battle.scene.appearBar
+                  pbMessage("And don't you dare forget about my signature move!")
+                  pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+                  battle.scene.disappearBar
+                  battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
+                  battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                  battle.scene.appearBar
+                  pbMessage("Hahaha! Now, isn't this fun?!")
+                  pbMessage("Come on now! Show me what you're made of!")
+                  battle.scene.disappearBar
+                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                  battle.scene.pbHideOpponent
+                }
+      KuroRematch2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Are you having fun yet?!")
+                    pbMessage("Because I'm having the time of my life!")
+                    pbMessage("Now, I'd hate rain on the parade, but...")
+                    pbMessage("Akui Admin Technique, Shimizu Style! Torrential Downpour!")
+                    battle.scene.disappearBar
+                    battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
+                    battle.scene.appearBar
+                    pbMessage("Now, how should I torture you next?")
+                    pbMessage("Oh! I know! How about some more kunai?")
+                    pbMessage("Akui Clan Technique, Shock Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    battle.scene.appearBar
+                    pbMessage("Actually... No, I don't think paralysis is good enough!")
+                    pbMessage("How about I burn your Pokémon instead?")
+                    pbMessage("Akui Clan Technique, Flame Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    battle.scene.appearBar
+                    pbMessage("You know, I still don't think this is good enough...")
+                    pbMessage("Plus, your Pokémon is looking tired!")
+                    pbMessage("How about I just go back to using my favorite kunai?")
+                    pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    battle.scene.appearBar
+                    pbMessage("Hahahahaha! Thank you for being such an obedient little puppet!")
+                    pbMessage("You really are my favorite plaything!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      KuroRematchLast = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("You're managing to keep up pretty well, \\PN!")
+                    pbMessage("Too bad for you, you're nothing but a worthless toy.")
+                    pbMessage("And just like an old toy, you've lost your value to me.")
+                    pbMessage("It's time for me to break you!")
+                    pbMessage("Akui Admin Technique, Shimizu Style! Healing Ring!")
+                    battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[1].effects[PBEffects::AquaRing] = true
+                    battle.pbDisplay(_INTL("Kuro surrounded {1} with a veil of water!",battle.battlers[1].name))
+                    battle.scene.appearBar
+                    pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
+                    battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
+                    battle.battlers[0].effects[PBEffects::Trapping] = 6
+                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                    battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].pbThis(true)))
+                    battle.scene.appearBar
+                    pbMessage("It's time for you to go to sleep forever!")
+                    pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    battle.scene.appearBar
+                    pbMessage("You don't stand a chance against me!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
     # Katana awakens
     KatanaIntro = Proc.new{|battle|
                   battle.scene.appearBar

@@ -99,6 +99,21 @@ partner trainer move route? $PokemonTemp.dependentEvents.SetMoveRoute([PBMoveRou
 $PokemonTemp.dependentEvents.setMoveRoute([PBMoveRoute::TurnRight],false)
 
 
+
+
+
+
+add TMs to almost all maps
+
+ch4 MBD
+Kuro
+Kayoko
+Mai
+kenshi around the fubuki and izumi
+shimizu dojo
+
+
+
 Things done:
 Reborn anims baybeeee
 
