@@ -101,9 +101,10 @@ $PokemonTemp.dependentEvents.setMoveRoute([PBMoveRoute::TurnRight],false)
 
 
 
-
-
+katana awakening in Jikan shrine after talk with Shogun, then starts chapter 5
+prevent teleport and escape rope while have partner in mine
 add TMs to almost all maps
+
 
 ch4 MBD
 Kuro
@@ -111,6 +112,8 @@ Kayoko
 Mai
 kenshi around the fubuki and izumi
 shimizu dojo
+
+add mons to dex
 
 
 
