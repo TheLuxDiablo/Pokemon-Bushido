@@ -2,27 +2,15 @@
 #-------------------------------
 081 # Nagisa Bay
 25,10,10
-Land
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
 Water
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
-OldRod
-    BULBASAUR,5
-    BULBASAUR,5
+	SHARPEDO,33,37
+    WISHIWASHI,33,37
+    HUNTAIL,33,37
+    GOREBYSS,33,37
+    WISHIWASHI,33,37
+    GYARADOS,33,37
+    GYARADOS,33,37
+    DRAGONAIR,33,37
 #-------------------------------
 082 # Sakura Pass
 25,10,10
