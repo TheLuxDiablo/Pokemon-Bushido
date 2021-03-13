@@ -99,6 +99,17 @@ partner trainer move route? $PokemonTemp.dependentEvents.SetMoveRoute([PBMoveRou
 $PokemonTemp.dependentEvents.setMoveRoute([PBMoveRoute::TurnRight],false)
 
 
+
+
+
+
+
+test losing in mines with rival following
+
+
+
+
+
 Things done:
 Reborn anims baybeeee
 
