@@ -2112,6 +2112,31 @@ module DialogueModule
                        battle.battlers[0].pbLowerStatStage(PBStats::SPATK,1,battle.battlers[0])
                      end
                    }
+       Sukiro5 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("A truly honorable Kenshi must never forget their teachings.")
+                      pbMessage("Now, answer me this, \\PN.")
+                      cmd=0
+                      cmd= pbMessage("What is the most important moral code of the Kenshi?",["The Code of Power","The Code of Honor","The Code of Wisdom"],0,nil,0)
+                      if cmd == 1
+                        pbMessage("\\se[SwShCorrect]Correct!")
+                        pbMessage("\\PN, you must never forget that the codes of honor and Bushido are what guide us.")
+                        pbMessage("Those in the Akui Clan have forgetten this message, and have lost their way.")
+                        pbMessage("It is our purpose as righteous Kenshi to bring them to justice!")
+                        battle.scene.pbHideOpponent
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[0])
+                      else
+                        pbMessage("\\se[SwShIncorrect]Hmm... that is incorrect.")
+                        pbMessage("\\PN, you must never forget that the codes of honor and Bushido are what guide us.")
+                        pbMessage("Those in the Akui Clan have forgetten this message, and have lost their way.")
+                        pbMessage("It is our purpose as righteous Kenshi to bring them to justice!")
+                        battle.scene.pbHideOpponent
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[0])
+                      end
+                    }
        Lugia = Proc.new{|battle|
                       battle.scene.appearBar
                       pbMessage("Lugia's soul is completely corrupted! It's driven only by hatred!")

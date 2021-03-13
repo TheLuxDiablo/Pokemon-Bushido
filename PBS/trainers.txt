@@ -147,6 +147,15 @@ Pokemon = SLUGMA,15
 Pokemon = FARFETCHD,15
     Form = 1
 #-------------------------------
+[SENSEI,Sukiro,1]
+LoseText = "Excellent... you may even be stronger than Ryo!"
+Pokemon = LYCANROC,57
+	Form = 2
+Pokemon = MAGCARGO,57
+Pokemon = TALONFLAME,57
+Pokemon = GOREBYSS,57
+Pokemon = SIRFETCHD,58
+#-------------------------------
 [NENSHO_M,Grunta]
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = TORCHIC,5

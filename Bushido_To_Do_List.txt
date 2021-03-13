@@ -81,26 +81,16 @@ Remove the stop animation ON from surfing
 
 Nensho Clan MBD and set it up for all clan trainer battles on Jonetsu Pass
 recolor akui player robes to have dark color bands
-Kaiyo Sea trainers
 add more TMs and track them
 Yami Island interiors and keys and trainers
 Hagane City takeover switch
 
-fix scent uses in battle
-make scents not usable if heartgauge=0
-
-MBD needed
-- Four Akui Double Battles in the mine (not all of them need MBD)
-- Double Battle against Hotoke
-- Nori in the dojo
-
-
-partner trainer move route? $PokemonTemp.dependentEvents.SetMoveRoute([PBMoveRoute::TurnRight])
-$PokemonTemp.dependentEvents.setMoveRoute([PBMoveRoute::TurnRight],false)
 
 
 
 
+make ch4 pop after beating the nensho dojo and leaving, instead of leaving the town?
+test scent and time flue use in battle
 katana awakening in Jikan shrine after talk with Shogun, then starts chapter 5
 TEST prevent teleport and escape rope while have partner in mine
 add TMs to almost all maps
@@ -110,8 +100,6 @@ ch4 MBD
 Kuro
 Kayoko
 Mai
-kenshi around the fubuki and izumi
-shimizu dojo
 
 add mons to dex
 

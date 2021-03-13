@@ -209,8 +209,8 @@ def pbReceiveItem(item, quantity = 1)
     if $game_switches[136]
       pbMessage(_INTL("You recovered the \\c[1]{1}\\c[0] from the Akui Clan!\\wtnp[30]",itemname))
     else
-      pbMessage(_INTL("You learned the final technique for the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
-      pbMessage(_INTL("The Light Blade can now purify the hearts of Shadow Pokémon when their Heart Gauge is empty!"))
+      pbMessage(_INTL("The \\c[1]{1}\\c[0] was awakened to its true form!\\wtnp[30]",itemname))
+      pbMessage(_INTL("The Katana of Light can now purify the hearts of Shadow Pokémon when their Heart Gauge is empty!"))
       pbMessage(_INTL("It can also now banish the shadow fog in Nagisa Bay!"))
     end
   elsif isConst?(item,PBItems,:KATANALIGHT5)
