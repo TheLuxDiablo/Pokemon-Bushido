@@ -207,3 +207,4 @@
 204,YUKI_M,Yuki Clan,100,CON-SandPlains,,HGSSEncounter-KimonoGirl,Male,,
 205,YUKI_F,Yuki Clan,100,CON-SandPlains,,HGSSEncounter-KimonoGirl,Female,,
 206,HATTORI,Akui Leader,100,CON-Orochimaru,,,Female,,
+207,RYO,Royal Samurai,100,CON-GamabuntaBath,,,Male,,

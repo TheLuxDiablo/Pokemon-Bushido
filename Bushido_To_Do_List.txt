@@ -94,13 +94,15 @@ test scent and time flute use in battle
 turn switch 120 to ON after kayoko battle, so that sukiro jikan shrine is enabled
 
 add TMs to almost all maps
-
+map signposts
 CREDITS SCENE
 
 ch4 MBD
 Kuro
 Kayoko
 Mai
+
+
 
 add mons to dex
 

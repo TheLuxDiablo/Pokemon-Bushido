@@ -371,12 +371,12 @@ Pokemon = NINETALES,27
 #-------------------------------	
 [MASHIRO,Mashiro,1]
 LoseText = "How dare you... How dare you come into our dojo and disrespect me like this!"
-Pokemon = TSAREENA,66
-Pokemon = GARDEVOIR,65
+Pokemon = TSAREENA,64
+Pokemon = GARDEVOIR,64
 Pokemon = MALAMAR,65
 Pokemon = ESPEON,65
-Pokemon = LIEPARD,66
-Pokemon = NINETALES,67
+Pokemon = LIEPARD,65
+Pokemon = NINETALES,66
 	Shadow = yes
 #-------------------------------
 [KOMOREI_M,Shinsato]
@@ -600,12 +600,12 @@ Pokemon = GOLISOPOD,41
 #-------------------------------
 [HOTOKE,Hotoke,1]
 LoseText = "No... Not again..."
-Pokemon = CONKELDURR,65
-Pokemon = CRABOMINABLE,66
-Pokemon = CRUSTLE,66
-Pokemon = STEELIX,67
-Pokemon = SLOWKING,67
-Pokemon = GOLISOPOD,68
+Pokemon = CONKELDURR,63
+Pokemon = CRABOMINABLE,63
+Pokemon = CRUSTLE,64
+Pokemon = STEELIX,64
+Pokemon = SLOWKING,64
+Pokemon = GOLISOPOD,65
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Shoji]
@@ -666,14 +666,14 @@ Pokemon = VOLCARONA,42
 #-------------------------------
 [AKUICLAN_F,Kiki]
 LoseText = "This isn't good! Yami Island is in danger!"
-Pokemon = MIGHTYENA,58
-Pokemon = KROOKODILE,59
+Pokemon = MIGHTYENA,56
+Pokemon = KROOKODILE,57
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Idate]
 LoseText = "Waah! I have to report this to our boss!"
-Pokemon = GARCHOMP,58
-Pokemon = ABSOL,59
+Pokemon = GARCHOMP,57
+Pokemon = ABSOL,58
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Tomoe]
@@ -685,53 +685,53 @@ Pokemon = TOXTRICITY,59
 #-------------------------------
 [AKUICLAN_M,Haka]
 LoseText = "No way! This is bad... this is really bad!"
-Pokemon = GRIMMSNARL,59
-Pokemon = PYUKUMUKU,60
+Pokemon = GRIMMSNARL,58
+Pokemon = PYUKUMUKU,59
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Ino]
 LoseText = "Oh no... At this rate you'll get to our dojo on Yami Island..."
-Pokemon = HARIYAMA,60
-Pokemon = FLYGON,61
-Pokemon = RAICHU,62
+Pokemon = HARIYAMA,58
+Pokemon = FLYGON,58
+Pokemon = RAICHU,59
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Hana]
 LoseText = "You won't get away with this!"
-Pokemon = MIENSHAO,61
-Pokemon = EEVEE,62
+Pokemon = MIENSHAO,60
+Pokemon = EEVEE,61
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Haijo]
 LoseText = "This can't be! My Pokémon were eliminated!"
-Pokemon = HARIYAMA,61
-Pokemon = KOMMOO,61
-Pokemon = MIGHTYENA,62
+Pokemon = HARIYAMA,60
+Pokemon = KOMMOO,60
+Pokemon = MIGHTYENA,61
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Toshoka]
 LoseText = "Stay away from our books! There's nothing here for you!"
-Pokemon = OBSTAGOON,62
-Pokemon = SCOLIPEDE,62
-Pokemon = LUCARIO,63
+Pokemon = OBSTAGOON,60
+Pokemon = SCOLIPEDE,60
+Pokemon = LUCARIO,61
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Janpa]
 LoseText = "Curses! I couldn't win, even with my rooftop ambush!"
-Pokemon = STEELIX,63
-Pokemon = THIEVUL,64
+Pokemon = STEELIX,61
+Pokemon = THIEVUL,62
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Taka]
 LoseText = "You're even stronger than that red-haired Kenshi! How is that possible!?"
-Pokemon = GRENINJA,63
-Pokemon = BRELOOM,64
+Pokemon = GRENINJA,60
+Pokemon = BRELOOM,61
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Kusho]
 LoseText = "I'm not even safe in my own basement... I have to get out of here!"
-Pokemon = CORVIKNIGHT,63
-Pokemon = GRENINJA,64
+Pokemon = CORVIKNIGHT,60
+Pokemon = GRENINJA,61
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Roku]
@@ -743,49 +743,49 @@ Pokemon = SANDSLASH,63
 #-------------------------------
 [AKUICLAN_F,Eki]
 LoseText = "No! The key... the key!"
-Pokemon = ROSERADE,63
-Pokemon = SIMISAGE,64
+Pokemon = ROSERADE,61
+Pokemon = SIMISAGE,62
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Sutorei]
 LoseText = "I can't believe this!"
-Pokemon = DRAGONITE,64
-Pokemon = VOLCARONA,65
+Pokemon = DRAGONITE,62
+Pokemon = VOLCARONA,63
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Pawa]
-LoseText = "I can't believe this!"
-Pokemon = CONKELDURR,63
-Pokemon = HARIYAMA,63
-Pokemon = PASSIMIAN,64
+LoseText = "You... You are one powerful Kenshi!"
+Pokemon = CONKELDURR,61
+Pokemon = HARIYAMA,62
+Pokemon = PASSIMIAN,62
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Tenjo]
 LoseText = "My plan backfired!"
-Pokemon = PANGORO,62
+Pokemon = PANGORO,61
 Pokemon = SIMISAGE,62
 Pokemon = LIEPARD,63
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Ushiron]
 LoseText = "How could you... how did you?"
-Pokemon = BISHARP,62
+Pokemon = BISHARP,61
 Pokemon = GOLISOPOD,62
-Pokemon = SKUNTANK,63
+Pokemon = SKUNTANK,62
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Kurone]
 LoseText = "There's no way! But you're... you're not worthy!"
-Pokemon = MIENSHAO,63
-Pokemon = GOLURK,64
-Pokemon = CORVIKNIGHT,65
+Pokemon = MIENSHAO,62
+Pokemon = GOLURK,63
+Pokemon = CORVIKNIGHT,64
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Jiko]
 LoseText = "You're too strong! It can't be! I have to run away!"
-Pokemon = GARCHOMP,64
-Pokemon = MIGHTYENA,65
-Pokemon = BISHARP,66
+Pokemon = GARCHOMP,62
+Pokemon = MIGHTYENA,63
+Pokemon = BISHARP,64
 	Shadow = yes
 #-------------------------------
 [SHIMIZU_M,Isao]
@@ -891,7 +891,7 @@ Pokemon = LAPRAS,51
 Pokemon = MAMOSWINE,51
 #-------------------------------
 [KURO,Kuro]
-LoseText = "Ayyyy."
+LoseText = "Tch. What a bother, to be defeated by someone like you..."
 Pokemon = PANGORO,53
 Pokemon = SALAMENCE,53
 Pokemon = INCINEROAR,53
@@ -901,17 +901,21 @@ Pokemon = HYDREIGON,55
 	Shadow = yes
 #-------------------------------
 [KURO,Kuro,1]
-LoseText = "Ayyyy."
-Pokemon = PANGORO,66
-Pokemon = SALAMENCE,66
-Pokemon = INCINEROAR,67
-Pokemon = OBSTAGOON,67
-Pokemon = GALLADE,68
-Pokemon = HYDREIGON,69
+LoseText = "How dare you disobey me!"
+Pokemon = PANGORO,64
+Pokemon = SALAMENCE,64
+Pokemon = INCINEROAR,65
+Pokemon = OBSTAGOON,65
+Pokemon = GALLADE,65
+Pokemon = HYDREIGON,66
 	Shadow = yes
 #-------------------------------	
 [HATTORI,Hattori]
-LoseText = "aaaaaa!"
+LoseText = "This is impossible! I am the strongest Kenshi in all of Aisho!"
 Pokemon = LUGIA,70
 	Shadow = yes
 Pokemon = ZOROARK,68
+#-------------------------------	
+[RYO,Ryo]
+LoseText = "Well fought... You have made me the proudest father in all of Aisho!"
+Pokemon = CELEBI,75
