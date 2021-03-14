@@ -89,7 +89,8 @@ Hagane City takeover switch
 
 
 
-make ch4 pop after beating the nensho dojo and leaving, instead of leaving the town?
+make ch4 start after beating the nensho dojo and leaving, instead of leaving the town?
+
 test scent and time flute use in battle
 turn switch 120 to ON after kayoko battle, so that sukiro jikan shrine is enabled
 
@@ -98,6 +99,8 @@ add TMs to almost all maps
 map signposts
 CREDITS SCENE
 
+maybe make MBD check types, so paralyze print a diff message of resistance for elec types? Poison resistance for psn types?
+
 ch4 MBD
 Kuro
 Kayoko
@@ -105,7 +108,9 @@ Mai
 
 
 
-add mons to dex
+
+
+
 
 
 
