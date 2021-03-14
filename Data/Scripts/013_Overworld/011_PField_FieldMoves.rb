@@ -1152,6 +1152,8 @@ HiddenMoveHandlers::CanUseMove.add(:TELEPORT,proc { |move,pkmn,showmsg|
     pbMessage(_INTL("Can't use that here.")) if showmsg
     next false
   end
+  pbMessage(_INTL("It looks like this move can't be used here...")) if showmsg
+  next false
   healing = $PokemonGlobal.healingSpot
   healing = pbGetMetadata(0,MetadataHome) if !healing   # Home
   if !healing

@@ -104,10 +104,9 @@ test scent and time flute use in battle
 
 add TMs to almost all maps
 map signposts
+Fix teleport positions for all maps
 
 ch4 MBD
-KuroLast
-
 KayokoIntro 
 KayokoLast
 

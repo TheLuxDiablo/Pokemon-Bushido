@@ -1120,15 +1120,15 @@ module DialogueModule
       TsukuIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\rAlright! T-time for you to learn how strong b-bug Pokémon can really be!")
+                    pbMessage("\\xn[Tsuku]\\rAlright! T-time for you to learn how strong b-bug Pokémon can really be!")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
       TsukuLast = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\rW-wah! This isn't l-looking good!")
-                    pbMessage("\\rIt's time for defensive measures! Tsukutsuku...")
+                    pbMessage("\\xn[Tsuku]\\rW-wah! This isn't l-looking good!")
+                    pbMessage("\\xn[Tsuku]\\rIt's time for defensive measures! Tsukutsuku...")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
@@ -1137,17 +1137,52 @@ module DialogueModule
       KayokoIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\rPrepare yourself. I'll be trying my best.")
+                    pbMessage("\\xn[Kayoko]\\rPrepare yourself. I'll be trying my best.")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
       KayokoLast = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\rI can't let my family down...")
-                    pbMessage("\\rTime to show you my true inner strength!")
+                    pbMessage("\\xn[Kayoko]\\rI can't let my family down...")
+                    pbMessage("\\xn[Kayoko]\\rTime to show you my true inner strength!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+      KayokoB2Intro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Kayoko]\\rPrepare yourself, \\PN. I'll be going all out.")
+                    pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
+                    battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[0],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Kayoko]\\rPlease, show me your true strength.")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                  }
+      KayokoB2Last = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Kayoko]\\rIt's shocking to me how powerful you've become, \\PN.")
+                    pbMessage("\\xn[Kayoko]\\rHowever, as you can see, I've done some growing as well!")
+                    pbMessage("\\xn[Kayoko]\\rSignature Technique! Shocking Terrain!")
+                    battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
+                    battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[0],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Kayoko]\\rLet's see if you truly have what it takes to defeat me.")
+                    battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
       # Akui intros, make them cheat a lot!
