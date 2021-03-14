@@ -56,21 +56,18 @@ A game by
 Thundaga<s>LuxDiablo
 Tristantine The Great<s>HauntedArtStudio
 
-LuxDiablo/Thundaga
-- Mapping
-- Eventing
-- Programming
 
-Tristantine The Great/HauntedArtStudio
-- Art
-- Sprites
 
-Public credits can be found in the readme.txt attached
-to the game's folder.
+
+Public credits can be found in the readme.txt
+in the game's folder.
+
+
 
 A HUGE thank you to the resource creators
 of the Pokemon fangame community. This project
 would not be possible without you.
+
 
 {INSERTS_PLUGIN_CREDITS_DO_NOT_REMOVE}
 "Pokémon Essentials" was created by:
@@ -108,8 +105,13 @@ This is a non-profit fan-made game.
 No copyright infringements intended.
 Please support the official games!
 
+
+
 Shoutout to the Thundaga Twitch Chat
 Aka the Thundagang
+
+
+
 
 And thank you, the player. Thank you for
 playing this game. It truly means the world.
@@ -117,7 +119,11 @@ Thank you for taking the time to experience
 an adventure created with effort, blood, sweat
 and tears. Thank you, for being you.
 
+
+
+
 You are beautiful. Do not forget that. Ever.
+
 
 _END_
 #Stop Editing
