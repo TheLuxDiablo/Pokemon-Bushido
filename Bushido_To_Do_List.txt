@@ -120,14 +120,17 @@ Hattori2
 Hattori3
 HattoriLast
 
-camintro
+
 camlast
+Ace=
 
-luxintro
-luxlast
+luxintro Katana of Demons, First Style! Berserk Inferno!" and then Fire Vortex, with attacks up
+luxlast Lux Katana! Devil's Wrath!" SCARYFACE, lower our speed by 2 levels
+Ace=
 
-tristanintro
+tristanintro They don't call me Thunderfist for nothing!" THUNDERPUNCH
 tristanlast
+Ace = Steelix
 
 hauntedintro
 hauntedlast

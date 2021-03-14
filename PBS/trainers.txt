@@ -1013,7 +1013,7 @@ Pokemon = GRENINJA,57
 	Moves = ICEBEAM,GUNKSHOT,HYDROPUMP,EXTRASENSORY
 #-------------------------------	
 [KAYOKO,Kayoko,1]
-LoseText = "Well fought... You have made me the proudest father in all of Aisho!"
+LoseText = "You truly are a special Kenshi."
 Pokemon = MASQUERAIN,56
 	Item = FOCUSSASH
 	Ability = 0
@@ -1031,3 +1031,12 @@ Pokemon = EELEKTROSS,58
 	Item = EXPERTBELT
 	Ability = 0
 	Moves = THUNDERBOLT,SUPERPOWER,GIGADRAIN,FLAMETHROWER
+#-------------------------------	
+[CAM,Cam]
+LoseText = "Well played... you truly are a Bushido master!"
+Pokemon = TYRANITAR,75
+Pokemon = DARMANITAN,75
+Pokemon = TOGEKISS,75
+Pokemon = MAMOSWINE,75
+Pokemon = VOLCARONA,75
+Pokemon = CORVIKNIGHT,75
