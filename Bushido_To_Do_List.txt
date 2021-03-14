@@ -105,7 +105,6 @@ aunt dialogue for ch6 and ch7
 
 add TMs to almost all maps
 map signposts
-fix dig animation making enemy goe invis!!!!!!!
 
 ch4 MBD
 KuroIntro
@@ -125,9 +124,7 @@ Hattori3
 HattoriLast
 
 ch7 
-Ryo1 light screen and defesne/spddef
-Ryo2 flash, lower our acc. Reapply light screen and def/spddef
-
+add rival to Hanatsu village
 
 Dev Battles
 camlast
@@ -141,9 +138,9 @@ tristanintro They don't call me Thunderfist for nothing!" THUNDERPUNCH
 tristanlast
 Ace = Steelix
 
-hauntedintro
-hauntedlast
-
+hauntedintro, spook people. Lower their speed and defenses
+hauntedlast, willowisp to burn. Spook again!
+Ace = Crobat
 
 
 
