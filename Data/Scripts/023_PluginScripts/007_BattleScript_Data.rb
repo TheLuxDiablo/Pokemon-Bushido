@@ -2057,6 +2057,67 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
+      KuroIntro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I'm so looking forward to picking you apart, stupid Kenshi!")
+                    pbMessage("Your obsession with honore and dignity will be your downfall!")
+                    pbMessage("Here, let me show you how ignoring the Bushido code is superior!")
+                    pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    battle.scene.appearBar
+                    pbMessage("Hahaha! ARe you having fun yet?!")
+                    pbMessage("\\shBecause I sure am!")
+                    pbMessage("Come on now, show me what you're made of!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+      Kuro2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I'm growing tired of playing with you, Kenshi.")
+                    pbMessage("I think it's about time I started taking this battle seriously!")
+                    pbMessage("Akui Clan Technique! Berserker Dance!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,3,battle.battlers[1],false)
+                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("You can't possibly hope to defeat me!")
+                    pbMessage("I am the Hound of Cruelty, the strongest of the Akui Admins!")
+                    pbMessage("Akui Clan Technique, Flame Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    battle.scene.pbHideOpponent
+                  }
+    KuroLast = Proc.new{|battle|
+                  battle.scene.appearBar
+                  battle.scene.pbShowOpponent(0)
+                  pbMessage("\\shHow dare you?!")
+                  pbMessage("I think it's about time I started taking this battle seriously!")
+                  pbMessage("Akui Clan Technique! Berserker Dance!")
+                  battle.scene.disappearBar
+                  battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,3,battle.battlers[1],false)
+                  battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                  battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                  battle.scene.appearBar
+                  pbMessage("You can't possibly hope to defeat me!")
+                  pbMessage("I am the Hound of Cruelty, the strongest of the Akui Admins!")
+                  pbMessage("Akui Clan Technique, Flame Kunai!")
+                  battle.scene.disappearBar
+                  battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                  battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                  battle.scene.pbHideOpponent
+                }
     KuroRematchIntro = Proc.new{|battle|
                   battle.scene.appearBar
                   battle.scene.pbShowOpponent(0)
@@ -2122,8 +2183,13 @@ module DialogueModule
                     battle.scene.appearBar
                     pbMessage("Hahahahaha! Thank you for being such an obedient little puppet!")
                     pbMessage("You really are my favorite plaything!")
+                    pbMessage("Akui Clan Technique! Berserker Dance!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,3,battle.battlers[1],false)
+                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
       KuroRematchLast = Proc.new{|battle|

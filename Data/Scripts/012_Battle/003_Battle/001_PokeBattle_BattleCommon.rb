@@ -113,10 +113,12 @@ module PokeBattle_BattleCommon
     end
     # Animation of opposing trainer blocking Poké Balls (unless it's a Snag Ball
     # at a Shadow Pokémon)
-    if trainerBattle? && !(pbIsSnagBall?(ball) && battler.shadowPokemon? && !$game_switches[80])
+    if trainerBattle? && !(pbIsSnagBall?(ball) && battler.shadowPokemon? && !$game_switches[80] && !$game_switches[152])
       @scene.pbThrowAndDeflect(ball,1)
       if $game_switches[80]
         pbDisplay(_INTL("The Akui Admin's shadow aura prevents their Pokémon from being stolen!"))
+      elsif $game_switches[152]
+          pbDisplay(_INTL("You can't steal from your friend!"))
       else
         pbDisplay(_INTL("The Kenshi blocked your Poké Ball!"))
       end

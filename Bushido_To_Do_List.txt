@@ -95,27 +95,25 @@ test scent and time flute use in battle
 
 
 
-- Akane Battle at Jikan Shrine
+
 - Audit TMs
 - Add Maple Leaves
-- Ryo Battle
 
 
-aunt dialogue for ch6 and ch7
+
 
 add TMs to almost all maps
 map signposts
 
 ch4 MBD
-KuroIntro
 Kuro1
 KuroLast
 
-KayokoIntro
+KayokoIntro 
 KayokoLast
 
-MaiIntro
-MaiLast
+MaiIntro medidate, also rain and healing ring
+MaiLast whirlpool, hail, medidate again
 
 ch6
 HattoriIntro
@@ -124,7 +122,6 @@ Hattori3
 HattoriLast
 
 ch7 
-add rival to Hanatsu village
 
 Dev Battles
 camlast
