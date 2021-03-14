@@ -101,6 +101,8 @@ CREDITS SCENE
 
 maybe make MBD check types, so paralyze print a diff message of resistance for elec types? Poison resistance for psn types?
 
+fix dig animation making enemy goe invis!!!!!!!
+
 ch4 MBD
 KuroIntro
 Kuro1
@@ -111,6 +113,9 @@ KayokoLast
 
 MaiIntro
 MaiLast
+
+ch6
+tsukuduo2
 
 HattoriIntro
 Hattori2
