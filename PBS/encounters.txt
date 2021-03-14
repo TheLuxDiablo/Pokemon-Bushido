@@ -94,7 +94,7 @@ Land
     PANSAGE,16,20
     ABSOL,17,21
 PhenomenonGrass
-    MINCINNO,21
+    MINCCINO,21
     DEERLING,18,20
     DEERLING,19,21
     WIMPOD,18,20
