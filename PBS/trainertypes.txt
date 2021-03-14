@@ -208,3 +208,7 @@
 205,YUKI_F,Yuki Clan,100,CON-SandPlains,,HGSSEncounter-KimonoGirl,Female,,
 206,HATTORI,Akui Leader,100,CON-Orochimaru,,,Female,,
 207,RYO,Royal Samurai,100,CON-GamabuntaBath,,,Male,,
+208,CAM,Developer,100,YakuzaZero-JudgementInst,,,Male,,
+209,LUX,Developer,100,Okami-CrimsonHelmBegone,,,Male,,
+210,TRISTAN,Developer,100,YakuzaZero-Kuze,,,Male,,
+211,HAUNTED,Developer,100,CON-HokageMonument,,,Male,,

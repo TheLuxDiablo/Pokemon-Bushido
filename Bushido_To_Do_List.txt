@@ -115,14 +115,22 @@ MaiIntro
 MaiLast
 
 ch6
-tsukuduo2
-
 HattoriIntro
 Hattori2
 Hattori3
 HattoriLast
 
+camintro
+camlast
 
+luxintro
+luxlast
+
+tristanintro
+tristanlast
+
+hauntedintro
+hauntedlast
 
 
 

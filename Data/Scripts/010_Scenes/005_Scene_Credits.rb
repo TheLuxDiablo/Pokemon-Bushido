@@ -53,7 +53,7 @@ Pokémon Bushido
 
 
 A game by
-LuxDiablo<s>Thundaga
+Thundaga<s>LuxDiablo
 Tristantine The Great<s>HauntedArtStudio
 
 

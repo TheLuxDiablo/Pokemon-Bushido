@@ -2303,6 +2303,24 @@ module DialogueModule
                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                        battle.scene.pbHideOpponent
                       }
+        # Dev intros
+        CamIntro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I'm excited to face you in battle!")
+                    pbMessage("Now, let me show you my signature move!")
+                    pbMessage("Thundaga Katana! Lightning Stream!")
+                    battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
+                    battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                    battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("I'm going to go all out!")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                  }
 
 # DONT DELETE THIS END
 end

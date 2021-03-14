@@ -527,6 +527,7 @@ MapPosition = 2,22,11
 # Yami Island
 ShowArea = true
 Outdoor = true
+BattleBack = YamiIsland
 MapPosition = 2,24,8
 #-------------------------------
 [100]
