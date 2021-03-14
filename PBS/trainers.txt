@@ -152,9 +152,9 @@ LoseText = "Excellent... you may even be stronger than Ryo!"
 Pokemon = LYCANROC,57
 	Form = 2
 Pokemon = MAGCARGO,57
-Pokemon = TALONFLAME,57
-Pokemon = GOREBYSS,57
-Pokemon = SIRFETCHD,58
+Pokemon = TALONFLAME,58
+Pokemon = GOREBYSS,58
+Pokemon = SIRFETCHD,59
 #-------------------------------
 [NENSHO_M,Grunta]
 LoseText = "What! There's no way someone like you could beat me!"
@@ -219,8 +219,8 @@ Pokemon = NICKIT,8
 [KAYOKO,Kayoko]
 LoseText = "Thank you for this fight. I will try continue to grow as a Kenshi."
 Pokemon = CARVANHA,11
-Pokemon = STUFFUL,12
-Pokemon = RALTS,13
+Pokemon = TIMBURR,12
+Pokemon = TYNAMO,13
 #-------------------------------
 [TSUKU,Tsuku]
 LoseText = "W- wow! You're pretty g- good..."
@@ -884,15 +884,15 @@ Pokemon = CLOYSTER,47
 #-------------------------------
 [SHIMIZU_F,Turai]
 LoseText = "Alright, it looks you truly do have skills!"
-Pokemon = KINGDRA,50
-Pokemon = CLOYSTER,51
+Pokemon = KINGDRA,54
+Pokemon = CLOYSTER,55
 #-------------------------------
-[SHIMIZU_F,Gara]
+[SHIMIZU_M,Gara]
 LoseText = "You're the real deal!"
-Pokemon = SAMUROTT,51
-Pokemon = SANDSLASH,52
+Pokemon = SAMUROTT,55
+Pokemon = SANDSLASH,55
 	Form = 1
-Pokemon = SEISMITOAD,52
+Pokemon = SEISMITOAD,56
 #-------------------------------
 [KENSHI_M,Ando]
 LoseText = "I need some variety in my team, don't I?"
@@ -984,3 +984,50 @@ Pokemon = GARCHOMP,75
 Pokemon = MIENSHAO,76
 Pokemon = SAMUROTT,76
 Pokemon = CELEBI,77
+#-------------------------------
+[SHIMIZU_BOSS,Mai]
+LoseText = "You fought well. I could not win, even with the power of the ocean."
+Pokemon = MILOTIC,55
+	Item = LEFTOVERS
+	Ability = 2
+	Moves = SCALD,ICEBEAM,HAZE,RECOVER
+Pokemon = VAPOREON,56
+	Item = LEFTOVERS
+	Ability = 0
+	Moves = HEALBELL,WISH,PROTECT,SCALD
+Pokemon = KINGDRA,56
+	Item = CHOICEBAND
+	Ability = 0
+	Moves = WATERFALL,OUTRAGE,FLAIL,IRONHEAD
+Pokemon = GYARADOS,56
+	Item = LEFTOVERS
+	Ability = 1
+	Moves = DRAGONDANCE,WATERFALL,EARTHQUAKE,ICEFANG
+Pokemon = CLOYSTER,56
+	Item = FOCUSSASH
+	Ability = 1
+	Moves = SHELLSMASH,ICICLESPEAR,SPIKES,EXPLOSION
+Pokemon = GRENINJA,57
+	Item = LIFEORB
+	Ability = 0
+	Moves = ICEBEAM,GUNKSHOT,HYDROPUMP,EXTRASENSORY
+#-------------------------------	
+[KAYOKO,Kayoko,1]
+LoseText = "Well fought... You have made me the proudest father in all of Aisho!"
+Pokemon = MASQUERAIN,56
+	Item = FOCUSSASH
+	Ability = 0
+	Moves = STICKYWEB,BUGBUZZ,HYDROPUMP,QUIVERDANCE
+Pokemon = SHARPEDO,57
+	Moves = CRUNCH,ICEFANG,EARTHQUAKE,PROTECT
+Pokemon = SYLVEON,57
+	Item = LEFTOVERS
+	Ability = 1
+	Moves = WISH,HEALBELL,BABYDOLLEYES,HYPERVOICE
+Pokemon = MEDICHAM,57
+	Ability = 0
+	Moves = PSYCHOCUT,DRAINPUNCH,THUNDERPUNCH,BULLETPUNCH
+Pokemon = EELEKTROSS,58
+	Item = EXPERTBELT
+	Ability = 0
+	Moves = THUNDERBOLT,SUPERPOWER,GIGADRAIN,FLAMETHROWER
