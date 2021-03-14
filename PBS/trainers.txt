@@ -417,6 +417,16 @@ Pokemon = SNOM,27
 Pokemon = NINJASK,28
 	Item = ORANBERRY
 #-------------------------------
+[TSUKU,Tsuku,2]
+LoseText = "Y-you're incredible! You're a-always one step ahead..."
+Pokemon = VIVILLON,65
+Pokemon = LEAVANNY,65
+Pokemon = FROSMOTH,65
+Pokemon = SCOLIPEDE,65
+Pokemon = SHEDINJA,65
+Pokemon = NINJASK,65
+	Item = SITRUSBERRY
+#-------------------------------
 [GALARMAN,Andy]
 LoseText = "Very well! You fought bravely."
 Pokemon = SNOM,34
