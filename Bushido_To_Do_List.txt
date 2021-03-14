@@ -128,9 +128,6 @@ ch7
 RyoIntro
 RyoLast
 
-RivalPG
-RivalPG2
-
 
 Dev Battles
 camlast
