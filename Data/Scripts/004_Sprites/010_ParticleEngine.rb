@@ -375,9 +375,8 @@ end
 class Particle_Engine::Fire2 < ParticleEffect_Event
   def initialize(event,viewport)
     super
-    setParameters([0,0,1,20,210,0.5,-64,
-       Graphics.height,-64,Graphics.width,0.5,0.10,-5,-6,30,0])
-    initParticles("particle",250)
+    setParameters([0,0,1,23,210,0.5,-64,Graphics.height,-64,Graphics.width,0.5,0.10,-5,-6,30,0])
+    initParticles("particle",250,0,1)
   end
 end
 

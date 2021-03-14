@@ -1077,6 +1077,46 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
+      Ryo1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Ryo]\\bI've been looking forward to testing your skills in battle, \\PN!")
+                    pbMessage("\\xn[Ryo]\\bYou may be the new master of the Katana of Light, but I can still do this!")
+                    pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Brilliant Barrier!")
+                    battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
+                    battle.pbDisplay(_INTL("Ryo created a wall of light in front of {1}!",battle.battlers[1].name))
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Ryo]\\bLet's see the true strength of the Hero of Aisho!")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                }
+      Ryo2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Ryo]\\bYou really are talented, \\PN!")
+                    pbMessage("\\xn[Ryo]\\bYou make me so proud as a father.")
+                    pbMessage("\\xn[Ryo]\\bI hope you know that'll always love you.")
+                    pbMessage("\\xn[Ryo]\\bNow, witness my ultimate technique!")
+                    pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Blinding Radiance!")
+                    battle.pbAnimation(getID(PBMoves,:FLASH),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[0])
+                    pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Brilliant Barrier!")
+                    battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
+                    battle.pbDisplay(_INTL("Ryo created a wall of light in front of {1}!",battle.battlers[1].name))
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Ryo]\\bLet's end this \\PN! Show me that you have what it takes to become the Royal Samurai!")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                }
       TsukuIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)

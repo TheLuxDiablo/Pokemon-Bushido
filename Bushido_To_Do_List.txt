@@ -125,8 +125,8 @@ Hattori3
 HattoriLast
 
 ch7 
-RyoIntro
-RyoLast
+Ryo1 light screen and defesne/spddef
+Ryo2 flash, lower our acc. Reapply light screen and def/spddef
 
 
 Dev Battles
