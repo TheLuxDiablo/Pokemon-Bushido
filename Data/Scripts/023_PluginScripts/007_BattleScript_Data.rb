@@ -438,7 +438,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Shizen Forest provides natural advantages for us in the Komorei Clan.")
-                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
@@ -448,7 +448,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("I'll show you the power of the Komorei Clan!")
-                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
@@ -458,7 +458,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Alright Kenshi! I'm going to beat you, and turn my luck around!")
-                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
@@ -471,7 +471,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:CHARM),battle.battlers[0],battle.battlers[1])
                     battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[0])
-                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.scene.pbHideOpponent
                   }
@@ -480,7 +480,7 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You must be a skilled Kenshi to have made it this far!")
                     pbMessage("Looks like the time has come for you to be fully tested by the best of the Komorei Clan!")
-                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
@@ -501,7 +501,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("After everything, I believe I owe you a fair fight.")
-                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
@@ -885,7 +885,7 @@ module DialogueModule
                     pbMessage("Before you can get to Chikyu Village, you'll have to go through me!")
                     pbMessage("Shimizu Clan can also turn the terrain misty, to protect our Pokémon!")
                     pbMessage("Katana of Water, Shimizu Style! Misty Terrain!")
-                    battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
@@ -925,7 +925,7 @@ module DialogueModule
                       battle.scene.pbShowOpponent(0)
                       pbMessage("It's time for me to test your skills!")
                       pbMessage("Katana of Water, Shimizu Style! Misty Terrain!")
-                      battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[0])
+                      battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
                       battle.scene.disappearBar
                       battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
@@ -938,7 +938,7 @@ module DialogueModule
                       battle.scene.pbShowOpponent(0)
                       pbMessage("Show me your full potential, and I'll show you mine!")
                       pbMessage("Katana of Water, Shimizu Style! Misty Terrain!")
-                      battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[0])
+                      battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
                       battle.scene.disappearBar
                       battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
                       battle.scene.appearBar
@@ -1024,7 +1024,7 @@ module DialogueModule
                     battle.pbDisplay(_INTL("Mai surrounded {1} with a veil of water!",battle.battlers[1].name))
                     battle.scene.appearBar
                     pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Misty Terrain!")
-                    battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[0],battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
                     battle.scene.appearBar
@@ -1232,7 +1232,7 @@ module DialogueModule
                     pbMessage("\\xn[Kayoko]\\rIt's shocking to me how powerful you've become, \\PN.")
                     pbMessage("\\xn[Kayoko]\\rHowever, as you can see, I've done some growing as well!")
                     pbMessage("\\xn[Kayoko]\\rSignature Technique! Shocking Terrain!")
-                    battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
                     battle.scene.appearBar
@@ -1925,7 +1925,7 @@ module DialogueModule
                     pbMessage("When we were in Tsuchi Village, I studied the katana techniques of the Komorei Clan.")
                     pbMessage("And now I've been able to perfect them as my own!")
                     pbMessage("Akui Admin Technique, Komorei Style! Lush Terrain!")
-                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
@@ -2226,7 +2226,7 @@ module DialogueModule
                   battle.scene.appearBar
                   pbMessage("And now, how about I change the terrain!")
                   pbMessage("Akui Admin Technique, Shimizu Style! Misty Terrain!")
-                  battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[0],battle.battlers[1])
+                  battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
                   battle.scene.disappearBar
                   battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
                   battle.scene.appearBar
