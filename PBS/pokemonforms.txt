@@ -2139,10 +2139,12 @@ BattlerEnemyY = 24
 [ROCKRUFF,2]
 Abilities = OWNTEMPO
 HiddenAbility = OWNTEMPO
-BattlerPlayerY = 59
-BattlerEnemyX = 0
-BattlerEnemyY = 29
-BattlerShadowX = 0
+BattlerPlayerX = 0
+BattlerPlayerY = 42
+BattlerEnemyX = -1
+BattlerEnemyY = 28
+BattlerShadowX = -2
+BattlerShadowSize = 2
 Evolutions = LYCANROC,LevelEvening,25
 #-------------------------------
 [LYCANROC,1]
@@ -2155,10 +2157,9 @@ Height = 1.1
 Color = Red
 Shape = 6
 Pokedex = It goads its enemies into attacking, withstands the hits, and in return, delivers a headbutt, crushing their bones with its rocky mane.
-BattlerPlayerY = 61
-BattlerEnemyX = 0
-BattlerEnemyY = 14
-BattlerShadowSize = 2
+BattlerPlayerY = 21
+BattlerEnemyX = -8
+BattlerEnemyY = 15
 #-------------------------------
 [LYCANROC,2]
 FormName = Dusk Form
@@ -2167,10 +2168,9 @@ Abilities = TOUGHCLAWS
 HiddenAbility = TOUGHCLAWS
 Moves = 0,THRASH,1,THRASH,1,ACCELEROCK,1,COUNTER,1,TACKLE,1,LEER,1,SANDATTACK,1,BITE,4,SANDATTACK,7,BITE,12,HOWL,15,ROCKTHROW,18,ODORSLEUTH,23,ROCKTOMB,26,ROAR,29,STEALTHROCK,34,ROCKSLIDE,37,SCARYFACE,40,CRUNCH,45,ROCKCLIMB,48,STONEEDGE
 Pokedex = Bathed in the setting sun of evening, Lycanroc has undergone a special kind of evolution. An intense fighting spirit underlies its calmness.
-BattlerPlayerY = 66
-BattlerEnemyX = 0
-BattlerEnemyY = 22
-BattlerShadowSize = 2
+BattlerPlayerY = 33
+BattlerEnemyX = -3
+BattlerEnemyY = 24
 #-------------------------------
 [WISHIWASHI,1]
 FormName = School Form
