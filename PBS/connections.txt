@@ -71,4 +71,4 @@
 # Izumi Village (127) - Izumi Pass (132)
 127,West,14,132,East,0
 # Fubuki Bay (124) - Izumi Village (127)
-124,West,0,127,East,29
+124,West,0,127,East,19
