@@ -955,7 +955,7 @@ Pokemon = LURANTIS,69
 Pokemon = MIMIKYU,69
 Pokemon = LAPRAS,69
 Pokemon = ZOROARK,70
-Pokemon = LUGIA,75
+Pokemon = LUGIA,70
 	Shadow = yes
 #-------------------------------	
 [RYO,Ryo]
@@ -1034,9 +1034,19 @@ Pokemon = EELEKTROSS,58
 #-------------------------------	
 [CAM,Cam]
 LoseText = "Well played... you truly are a Bushido master!"
-Pokemon = TYRANITAR,75
-Pokemon = DARMANITAN,75
-Pokemon = TOGEKISS,75
-Pokemon = MAMOSWINE,75
-Pokemon = VOLCARONA,75
-Pokemon = CORVIKNIGHT,75
+Pokemon = TYRANITAR,70
+Pokemon = DARMANITAN,70
+Pokemon = TOGEKISS,70
+Pokemon = MAMOSWINE,70
+Pokemon = VOLCARONA,70
+Pokemon = CORVIKNIGHT,70
+#-------------------------------	
+[LUX,Lux]
+LoseText = "You actually managed to beat me..."
+Pokemon = LUXRAY,70
+Pokemon = LYCANROC,70
+	Form = 1
+Pokemon = REUNICLUS,70
+Pokemon = SCOLIPEDE,70
+Pokemon = DECIDUEYE,70
+Pokemon = HOUNDOOM,70
