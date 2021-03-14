@@ -160,7 +160,7 @@ ItemHandlers::UseInField.add(:WHITEFLUTE,proc { |item|
 ItemHandlers::UseInField.add(:HONEY,proc { |item|
   pbUseItemMessage(item)
   pbSweetScent
-  next 3
+  next 1
 })
 
 ItemHandlers::UseInField.add(:ESCAPEROPE,proc { |item|
@@ -185,7 +185,7 @@ ItemHandlers::UseInField.add(:ESCAPEROPE,proc { |item|
     $game_map.refresh
   }
   pbEraseEscapePoint
-  next 3
+  next 1
 })
 
 ItemHandlers::UseInField.add(:SACREDASH,proc { |item|
@@ -220,7 +220,7 @@ ItemHandlers::UseInField.add(:SACREDASH,proc { |item|
     end
     screen.pbEndScene
   }
-  next (revived==0) ? 0 : 3
+  next (revived==0) ? 0 : 1
 })
 
 ItemHandlers::UseInField.add(:BICYCLE,proc { |item|

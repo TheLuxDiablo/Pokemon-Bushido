@@ -1105,7 +1105,7 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       ShadowEvasion3 = Proc.new{|battle|
@@ -1115,12 +1115,27 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
                     battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowEvasion4 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Hagane City is ours! Give up now!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Flame Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
                     battle.scene.pbHideOpponent
                   }
       ShadowSpeed = Proc.new{|battle|
@@ -1188,6 +1203,21 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
                     battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    battle.scene.pbHideOpponent
+                  }
+      ShadowPower2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("It's time for our rematch! I've been working on my strength!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.pbHideOpponent
                   }
       ShadowFreeze = Proc.new{|battle|

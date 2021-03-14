@@ -722,6 +722,13 @@ Pokemon = STEELIX,61
 Pokemon = THIEVUL,62
 	Shadow = yes
 #-------------------------------
+[AKUICLAN_F,Janpa,1]
+LoseText = "Curses! The rooftop ambush has failed me again!"
+Pokemon = STEELIX,67
+Pokemon = THIEVUL,67
+Pokemon = ORANGURU,67
+	Shadow = yes
+#-------------------------------
 [AKUICLAN_M,Taka]
 LoseText = "You're even stronger than that red-haired Kenshi! How is that possible!?"
 Pokemon = GRENINJA,60
@@ -758,6 +765,14 @@ LoseText = "You... You are one powerful Kenshi!"
 Pokemon = CONKELDURR,61
 Pokemon = HARIYAMA,62
 Pokemon = PASSIMIAN,62
+	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Pawa,1]
+LoseText = "Your power... You're unstoppable!"
+Pokemon = CONKELDURR,65
+Pokemon = HARIYAMA,66
+Pokemon = PASSIMIAN,67
+Pokemon = TOGEKISS,67
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Tenjo]
@@ -912,10 +927,38 @@ Pokemon = HYDREIGON,66
 #-------------------------------	
 [HATTORI,Hattori]
 LoseText = "This is impossible! I am the strongest Kenshi in all of Aisho!"
-Pokemon = LUGIA,70
+Pokemon = LYCANROC,68
+	Form = 1
+Pokemon = LURANTIS,69
+Pokemon = MIMIKYU,69
+Pokemon = LAPRAS,69
+Pokemon = ZOROARK,70
+Pokemon = LUGIA,75
 	Shadow = yes
-Pokemon = ZOROARK,68
 #-------------------------------	
 [RYO,Ryo]
 LoseText = "Well fought... You have made me the proudest father in all of Aisho!"
-Pokemon = CELEBI,75
+Pokemon = HELIOLISK,74
+Pokemon = DRAGONITE,75
+Pokemon = GARCHOMP,75
+Pokemon = MIENSHAO,76
+Pokemon = DELPHOX,76
+Pokemon = CELEBI,77
+#-------------------------------	
+[RYO,Ryo,1]
+LoseText = "Well fought... You have made me the proudest father in all of Aisho!"
+Pokemon = HELIOLISK,74
+Pokemon = DRAGONITE,75
+Pokemon = GARCHOMP,75
+Pokemon = MIENSHAO,76
+Pokemon = SCEPTILE,76
+Pokemon = CELEBI,77
+#-------------------------------	
+[RYO,Ryo,2]
+LoseText = "Well fought... You have made me the proudest father in all of Aisho!"
+Pokemon = HELIOLISK,74
+Pokemon = DRAGONITE,75
+Pokemon = GARCHOMP,75
+Pokemon = MIENSHAO,76
+Pokemon = SAMUROTT,76
+Pokemon = CELEBI,77
