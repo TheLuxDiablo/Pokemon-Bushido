@@ -2313,9 +2313,9 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
                     battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
-                    battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                    battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                     battle.scene.appearBar
                     pbMessage("I'm going to go all out!")
                     battle.scene.disappearBar
