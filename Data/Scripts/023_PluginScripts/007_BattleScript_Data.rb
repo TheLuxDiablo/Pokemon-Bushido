@@ -981,27 +981,35 @@ module DialogueModule
       RivalFirstIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\pogPrepare to face the full force of my Pokémon!")
+                    pbMessage("\\xn[\\v[26]]\\pogPrepare to face the full force of my Pokémon!")
+                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Signature Technique! Hashimoto Might!")
                     battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       RivalBurn = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\pogWe meet in battle again, \\PN!")
-                    pbMessage("\\pogI've grown a lot since our last battle, so don't underestimate me!")
-                    pbMessage("\\pogNow, prepare to be burned to ashes!")
+                    pbMessage("\\xn[\\v[26]]\\pogWe meet in battle again, \\PN!")
+                    pbMessage("\\xn[\\v[26]]\\pogI've grown a lot since our last battle, so don't underestimate me!")
+                    pbMessage("\\xn[\\v[26]]\\pogNow, prepare to be burned to ashes!")
                     battle.scene.disappearBar
                     #if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                     battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
                     battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Signature Technique! Hashimoto Might!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       RivalLast = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\pogLooks like it's time to get serious!")
-                    pbMessage("\\pogGo #{battle.battlers[1].pokemon.speciesName}, unleash your burning passion!")
+                    pbMessage("\\xn[\\v[26]]\\pogLooks like it's time to get serious!")
+                    pbMessage("\\xn[\\v[26]]\\pogGo #{battle.battlers[1].pokemon.speciesName}, unleash your burning passion!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
@@ -1009,9 +1017,9 @@ module DialogueModule
       RivalDuel2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\pogI've grown a lot since our last battle, so don't underestimate me!")
-                    pbMessage("\\pogNow, take a look at the new Katana Technique I learned!")
-                    pbMessage("\\pogKatana of Fire, Nensho Style! Fire Vortex!")
+                    pbMessage("\\xn[\\v[26]]\\pogI've grown a lot since our last battle, so don't underestimate me!")
+                    pbMessage("\\xn[\\v[26]]\\pogNow, take a look at the new Katana Technique I learned!")
+                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Fire Vortex!")
                     battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
                     battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
@@ -1025,13 +1033,48 @@ module DialogueModule
       RivalDuel2Last = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\pogLooks like it's time to get serious!")
-                    pbMessage("\\pogGo #{battle.battlers[1].pokemon.speciesName}, unleash your burning passion!")
+                    pbMessage("\\xn[\\v[26]]\\pogLooks like it's time to get serious!")
+                    pbMessage("\\xn[\\v[26]]\\pogGo #{battle.battlers[1].pokemon.speciesName}, unleash your burning passion!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                     battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                    battle.scene.pbHideOpponent
+                  }
+      RivalPG1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[\\v[26]]\\pogI've been waiting for this day, \\PN!")
+                    pbMessage("\\xn[\\v[26]]\\pogTo face you again... a battle against the Hero of Aisho!")
+                    pbMessage("\\xn[\\v[26]]\\pogI'm going to give it my all, to open the heart of my Darmanitan!")
+                    pbMessage("\\xn[\\v[26]]\\pogLet's go! Hiyaaaah!")
+                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Breath of Flames!")
+                    battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    battle.scene.appearBar
+                    pbMessage("Katana of Fire, Nensho Style! Sunlight Beams!")
+                    battle.pbCommonAnimation("Sunny",nil,nil)
+                    battle.scene.disappearBar
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                    battle.scene.appearBar
+                    pbMessage("Come at me with all you've got, \\PN! Hiyaaah!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                }
+      RivalPG2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[\\v[26]]\\pogWe're so close \\PN! Keep it up!")
+                    pbMessage("\\xn[\\v[26]]\\pogGo #{battle.battlers[1].pokemon.speciesName}, give it all you got in this last battle!")
+                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
       TsukuIntro = Proc.new{|battle|

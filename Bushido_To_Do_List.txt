@@ -124,6 +124,14 @@ Hattori2
 Hattori3
 HattoriLast
 
+ch7 
+RyoIntro
+RyoLast
+
+RivalPG
+RivalPG2
+
+
 Dev Battles
 camlast
 Ace=

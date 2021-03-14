@@ -131,13 +131,13 @@ Pokemon = ELECTABUZZ,5
     Shadow = yes
 #-------------------------------
 [RIVALBUSHIDO_M,Yakeru,1]
-LoseText = "What! There's no way someone like you could beat me!"
-Pokemon = DARUMAKA,5
+LoseText = "What?! There's no way you could beat me so easily!"
+Pokemon = DARUMAKA,4
 	Moves = TACKLE,EMBER
 #-------------------------------
 [RIVALBUSHIDO_F,Akane,1]
-LoseText = "What?! There's no way someone like you could beat me!"
-Pokemon = DARUMAKA,5
+LoseText = "What?! There's no way you could beat me so easily!"
+Pokemon = DARUMAKA,4
 	Moves = TACKLE,EMBER
 #-------------------------------
 [SENSEI,Sukiro]
@@ -539,6 +539,22 @@ Pokemon = COALOSSAL,38
 	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
 	Item = WEAKNESSPOLICY
 #-------------------------------
+[RIVALBUSHIDO_F,Akane,5]
+LoseText = "Thank you! That light... Darmanitan is ready to be purified!"
+Pokemon = TALONFLAME,69
+Pokemon = TOGEKISS,70
+	Moves = FOLLOWME,HEATWAVE,DAZZLINGGLEAM,YAWN
+	Item = BABIRIBERRY
+Pokemon = GASTRODON,70
+	Moves = SCALD,PROTECT,EARTHPOWER,YAWN
+	Item = IAPAPABERRY
+Pokemon = COALOSSAL,70
+	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
+	Item = WEAKNESSPOLICY
+Pokemon = DARMANITAN,71
+	Shadow = yes
+	Item = SITRUSBERRY
+#-------------------------------
 [RIVALBUSHIDO_M,Yakeru,4]
 LoseText = "I guess you're not just all talk!"
 Pokemon = TALONFLAME,36
@@ -551,6 +567,22 @@ Pokemon = GASTRODON,36
 Pokemon = COALOSSAL,38
 	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
 	Item = WEAKNESSPOLICY
+#-------------------------------
+[RIVALBUSHIDO_M,Yakeru,5]
+LoseText = "Thank you! That light... Darmanitan is ready to be purified!"
+Pokemon = TALONFLAME,69
+Pokemon = TOGEKISS,70
+	Moves = FOLLOWME,HEATWAVE,DAZZLINGGLEAM,YAWN
+	Item = BABIRIBERRY
+Pokemon = GASTRODON,70
+	Moves = SCALD,PROTECT,EARTHPOWER,YAWN
+	Item = IAPAPABERRY
+Pokemon = COALOSSAL,70
+	Moves = HEATWAVE,SOLARBEAM,ANCIENTPOWER,PROTECT
+	Item = WEAKNESSPOLICY
+Pokemon = DARMANITAN,71
+	Shadow = yes
+	Item = SITRUSBERRY
 #-------------------------------
 [AKUICLAN_M,Takehiko]
 LoseText = "Ugh... Two against two isn't fair."
