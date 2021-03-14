@@ -917,12 +917,12 @@ Pokemon = MAMOSWINE,51
 #-------------------------------
 [KURO,Kuro]
 LoseText = "Tch. What a bother, to be defeated by someone like you..."
-Pokemon = PANGORO,53
-Pokemon = SALAMENCE,53
+Pokemon = PANGORO,52
+Pokemon = SALAMENCE,52
 Pokemon = INCINEROAR,53
-Pokemon = OBSTAGOON,54
-Pokemon = GALLADE,54
-Pokemon = HYDREIGON,55
+Pokemon = OBSTAGOON,53
+Pokemon = GALLADE,53
+Pokemon = HYDREIGON,54
 	Shadow = yes
 #-------------------------------
 [KURO,Kuro,1]

@@ -1998,8 +1998,12 @@ BattlerEnemyY = 23
 FormName = Blade Forme
 BaseStats = 60,150,50,60,150,50
 EffortPoints = 0,2,0,0,1,0
+BattlerPlayerX = 0
 BattlerPlayerY = 57
+BattlerEnemyX = 0
 BattlerEnemyY = 13
+BattlerShadowX = 0
+BattlerShadowSize = 2
 #-------------------------------
 [PUMPKABOO,1]
 FormName = Average Size
@@ -2326,6 +2330,11 @@ BattlerEnemyY = 36
 [MIMIKYU,1]
 FormName = Busted Form
 Pokedex = Sad that its true identity may be exposed, Mimikyu will mercilessly seek revenge on any opponent that breaks its neck.
+BattlerPlayerX = 0
+BattlerPlayerY = 69
+BattlerEnemyX = 0
+BattlerEnemyY = 28
+BattlerShadowSize = 2
 #-------------------------------
 [NECROZMA,1]
 FormName = Dusk Mane

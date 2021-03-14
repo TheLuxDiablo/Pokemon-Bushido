@@ -794,3 +794,4 @@ MapPosition = 2,24,8
 ShowArea = true
 Outdoor = false
 DarkMap = true
+BattleBack = CaveBushido4
