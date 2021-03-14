@@ -1877,8 +1877,8 @@ BattlerShadowSize = 2
 FormName = Blue Flower
 BattlerPlayerX = 2
 BattlerPlayerY = 37
-BattlerEnemyX = -1
-BattlerEnemyY = 28
+BattlerEnemyX = -5
+BattlerEnemyY = 27
 BattlerShadowX = 0
 BattlerShadowSize = 2
 #-------------------------------
@@ -2139,12 +2139,6 @@ BattlerEnemyY = 24
 [ROCKRUFF,2]
 Abilities = OWNTEMPO
 HiddenAbility = OWNTEMPO
-BattlerPlayerX = 0
-BattlerPlayerY = 42
-BattlerEnemyX = -1
-BattlerEnemyY = 28
-BattlerShadowX = -2
-BattlerShadowSize = 2
 Evolutions = LYCANROC,LevelEvening,25
 #-------------------------------
 [LYCANROC,1]

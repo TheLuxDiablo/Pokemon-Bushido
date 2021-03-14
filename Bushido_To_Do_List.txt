@@ -90,17 +90,21 @@ Hagane City takeover switch
 
 
 make ch4 start after beating the nensho dojo and leaving, instead of leaving the town?
-
 test scent and time flute use in battle
-turn switch 120 to ON after kayoko battle, so that sukiro jikan shrine is enabled
 
+
+
+
+- Akane Battle at Jikan Shrine
+- Audit TMs
+- Add Maple Leaves
+- Ryo Battle
+
+
+aunt dialogue for ch6 and ch7
 
 add TMs to almost all maps
 map signposts
-CREDITS SCENE
-
-maybe make MBD check types, so paralyze print a diff message of resistance for elec types? Poison resistance for psn types?
-
 fix dig animation making enemy goe invis!!!!!!!
 
 ch4 MBD
@@ -120,7 +124,7 @@ Hattori2
 Hattori3
 HattoriLast
 
-
+Dev Battles
 camlast
 Ace=
 

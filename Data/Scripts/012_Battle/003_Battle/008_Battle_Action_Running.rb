@@ -130,6 +130,7 @@ class PokeBattle_Battle
     # Fleeing calculation
     # Get the speeds of the Pokémon fleeing and the fastest opponent
     # NOTE: Not pbSpeed, because using unmodified Speed.
+    # Thundaga run away rate
     @runCommand += 1 if !duringBattle   # Make it easier to flee next time
     speedPlayer = @battlers[idxBattler].speed
     speedEnemy = 1
@@ -141,7 +142,7 @@ class PokeBattle_Battle
     if speedPlayer>speedEnemy
       rate = 256
     else
-      rate = (speedPlayer*256)/speedEnemy
+      rate = (speedPlayer*768)/speedEnemy
       rate += @runCommand*30
     end
     if rate>=256 || @battleAI.pbAIRandom(256)<rate

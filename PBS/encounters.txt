@@ -18,9 +18,9 @@ Land
     CHERUBI,2,6
     PANCHAM,3,7
     PIKIPEK,3,7
-    PURRLOIN,2,6
+    PURRLOIN,3,6
     FLABEBE,3,7
-    BUNEARY,2,6
+    RALTS,3,6
     CUTIEFLY,3,6
     PICHU,3,7
 Water
