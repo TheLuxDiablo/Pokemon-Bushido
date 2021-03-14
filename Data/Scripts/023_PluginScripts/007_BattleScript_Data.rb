@@ -1253,7 +1253,7 @@ module DialogueModule
                     pbMessage("The Akui Clan never falters! Take this!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.pbHideOpponent
                   }
@@ -1264,7 +1264,7 @@ module DialogueModule
                     pbMessage("The secrets of our clan are not meant for outsiders!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
@@ -1280,7 +1280,7 @@ module DialogueModule
                       pbMessage("Get lost, and never come back, you foolish Kenshi!")
                       battle.scene.disappearBar
                       battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                       battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                       battle.scene.appearBar
                       pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness! Ultimate Evasion!")
@@ -1295,7 +1295,7 @@ module DialogueModule
                     pbMessage("You must be stopped... And I'll be the one to stop you!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
@@ -1310,7 +1310,7 @@ module DialogueModule
                     pbMessage("Let's make this battle interesting, shall we?")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                     battle.scene.pbHideOpponent
                   }
@@ -1320,7 +1320,7 @@ module DialogueModule
                     pbMessage("I'm guarding this key with my life! Stay away, you disgusting kenshi!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
@@ -1335,7 +1335,7 @@ module DialogueModule
                     pbMessage("Stay out of my basement, you villain!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Shock Kunai!")
@@ -1350,7 +1350,7 @@ module DialogueModule
                     pbMessage("Get out of here! We can't let you come and go as you please!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Flame Kunai!")
@@ -1458,7 +1458,7 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                     battle.scene.pbHideOpponent
                   }
@@ -1472,7 +1472,7 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                     battle.scene.pbHideOpponent
                   }
@@ -1487,7 +1487,7 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1],false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
                     battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.pbHideOpponent
                   }
@@ -1729,7 +1729,7 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
                     battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[3])
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                     battle.scene.pbHideOpponent
                     battle.scene.appearBar
@@ -1775,7 +1775,7 @@ module DialogueModule
                       battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3])
                     end
                     battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.pbHideOpponent
                     battle.scene.appearBar
@@ -1816,7 +1816,7 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[0],battle.battlers[3])
                     battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,5,battle.battlers[3])
                     battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.pbHideOpponent
                     pbMessage("\\xn[\\v[26]]\\pogHere we go \\PN! This is our final battle!")
@@ -1846,7 +1846,7 @@ module DialogueModule
                     pbMessage("I'll show you who you're messing with!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                   #  battle.scene.appearBar
                   #  pbMessage("Akui Clan Technique, Toxic Kunai!")
@@ -1918,7 +1918,7 @@ module DialogueModule
                     pbMessage("You'll never be able to beat me again!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.appearBar
                     pbMessage("Now, for a special surprise!")
@@ -2026,11 +2026,11 @@ module DialogueModule
                     battle.scene.disappearBar
                     if battle.battlers[1].fainted?
                       battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[3],battle.battlers[0])
-                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                       battle.battlers[3].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     else
                       battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                       battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     end
                     battle.scene.appearBar
@@ -2320,6 +2320,66 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
+    HattoriIntro = Proc.new{|battle|
+                  battle.scene.appearBar
+                  battle.scene.pbShowOpponent(0)
+                  pbMessage("\\xn[Hattori]\\rYou and Ryo will never be able stop me.")
+                  pbMessage("\\xn[Hattori]\\rYou see, I'm not afraid of the Katana of Light at all...")
+                  pbMessage("\\xn[Hattori]\\rIt's you who should fear my Katana of Shadows!")
+                  pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Nightmare Void!")
+                  battle.pbAnimation(getID(PBMoves,:DARKVOID),battle.battlers[1],battle.battlers[0])
+                  battle.scene.disappearBar
+                  battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(5,6),"Your Pokémon was put into a deep sleep by the Katana of Shadows!")
+                  battle.battlers[0].effects[PBEffects::Nightmare] = true
+                  battle.pbDisplay(_INTL("{1} began having a nightmare!",battle.battlers[0].name))
+                  battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                  battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!",battle.battlers[0].pbThis(true)))
+                  battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                  battle.scene.appearBar
+                  pbMessage("\\xn[Hattori]\\rFoolish child, witness my true power! You'll never stop our plans!")
+                  battle.scene.disappearBar
+                  battle.scene.pbHideOpponent
+                }
+    Hattori2 = Proc.new{|battle|
+                  battle.scene.appearBar
+                  battle.scene.pbShowOpponent(0)
+                  pbMessage("\\xn[Hattori]\\r\\PN, have you had enough yet?")
+                  pbMessage("\\xn[Hattori]\\rBecause I'm just getting started!")
+                  pbMessage("\\xn[Hattori]\\rYou'll never block my path to the throne!")
+                  pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Wonder Room!")
+                  battle.pbAnimation(getID(PBMoves,:WONDERROOM),battle.battlers[1],battle.battlers[1])
+                  battle.scene.disappearBar
+                  battle.field.effects[PBEffects::WonderRoom] = 6
+                  battle.pbDisplay(_INTL("Hattori created a bizarre area in which the Defense and Sp. Def stats are swapped!"))
+                  battle.scene.appearBar
+                  pbMessage("\\xn[Hattori]\\rWeaklings like you and Ryo...!")
+                  pbMessage("\\xn[Hattori]\\rYou have no place in my new world!")
+                  pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Venom Kunai!")
+                  battle.scene.disappearBar
+                  battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
+                  battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
+                  battle.scene.pbHideOpponent
+                }
+                Hattori3 = Proc.new{|battle|
+                              battle.scene.appearBar
+                              battle.scene.pbShowOpponent(0)
+                              pbMessage("\\xn[Hattori]\\r\\PN, have you had enough yet?")
+                              pbMessage("\\xn[Hattori]\\rBecause I'm just getting started!")
+                              pbMessage("\\xn[Hattori]\\rYou'll never block my path to the throne!")
+                              pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Wonder Room!")
+                              battle.pbAnimation(getID(PBMoves,:WONDERROOM),battle.battlers[1],battle.battlers[1])
+                              battle.scene.disappearBar
+                              battle.field.effects[PBEffects::WonderRoom] = 6
+                              battle.pbDisplay(_INTL("Hattori created a bizarre area in which the Defense and Sp. Def stats are swapped!"))
+                              battle.scene.appearBar
+                              pbMessage("\\xn[Hattori]\\rWeaklings like you and Ryo...!")
+                              pbMessage("\\xn[Hattori]\\rYou have no place in my new world!")
+                              pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Venom Kunai!")
+                              battle.scene.disappearBar
+                              battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
+                              battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
+                              battle.scene.pbHideOpponent
+                            }
     # Katana awakens
     KatanaIntro = Proc.new{|battle|
                   battle.scene.appearBar
@@ -2328,7 +2388,7 @@ module DialogueModule
                   pbMessage("It's time to unleash my full power.")
                   battle.scene.disappearBar
                   battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                  battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",battle.battlers[0].pbThis(true)))
+                  battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!",battle.battlers[0].pbThis(true)))
                   battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
                   battle.scene.appearBar
                   pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")

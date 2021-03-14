@@ -96,28 +96,20 @@ test scent and time flute use in battle
 
 
 
-- Audit TMs
+
+
+
 - Add Maple Leaves
 
-
-
-
-add TMs to almost all maps
 map signposts
-make chapter 4 activate after beating Nori and then elaving the dojo
 
-ch4 MBD
-MaiIntro medidate, also rain and healing ring
-MaiLast whirlpool, hail, medidate again
 
 ch6
-HattoriIntro
-Hattori2
+
 Hattori3
 HattoriLast
 
 ch7 
-
 Dev Battles
 camlast
 Ace=
