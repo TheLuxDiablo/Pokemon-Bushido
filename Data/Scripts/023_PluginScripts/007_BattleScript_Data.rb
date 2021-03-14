@@ -537,6 +537,38 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+        TsukuDuo1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("I remember you having a shadow clone weakness!")
+                    pbMessage("Here, a reminder of the time we stole your katana!")
+                    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3],false)
+                    battle.scene.appearBar
+                    pbMessage("And here, have some of these to add insult to injury!!")
+                    pbMessage("Akui Clan Technique, Venom Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
+                    battle.battlers[2].pbInflictStatus(PBStatuses::POISON,1,nil)
+                    battle.scene.pbHideOpponent
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Tsuku]\\rNow that we're f-finally fighting together, I'll do my best to make you proud!")
+                    pbMessage("\\xn[Tsuku]\\rW-we have to give it our all!")
+                    pbMessage("\\xn[Tsuku]\\rKatana of L-life, Konchu Style! B-beetle Barrier!")
+                    battle.pbAnimation(getID(PBMoves,:WIDEGUARD),battle.battlers[2],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.battlers[2].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[2])
+                    battle.battlers[2].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[2],false)
+                    battle.battlers[0].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[0])
+                    battle.battlers[0].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[0],false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Tsuku]\\rLet's show these Akui G-grunts the power of our bonds!")
+                    battle.scene.disappearBar
+                  }
       # Iwa Clan intros
       # Stealth rocks for another one?
       Iwa1 = Proc.new{|battle|

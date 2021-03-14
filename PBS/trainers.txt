@@ -419,10 +419,10 @@ Pokemon = NINJASK,28
 #-------------------------------
 [TSUKU,Tsuku,2]
 LoseText = "Y-you're incredible! You're a-always one step ahead..."
+Pokemon = SCOLIPEDE,65
 Pokemon = VIVILLON,65
 Pokemon = LEAVANNY,65
 Pokemon = FROSMOTH,65
-Pokemon = SCOLIPEDE,65
 Pokemon = SHEDINJA,65
 Pokemon = NINJASK,65
 	Item = SITRUSBERRY
@@ -806,12 +806,24 @@ Pokemon = GOLURK,63
 Pokemon = CORVIKNIGHT,64
 	Shadow = yes
 #-------------------------------
+[AKUICLAN_F,Kurone,1]
+LoseText = "But... you're just a bunch of worthless brats!"
+Pokemon = MIENSHAO,66
+Pokemon = GOLURK,67
+Pokemon = CORVIKNIGHT,68
+#-------------------------------
 [AKUICLAN_M,Jiko]
 LoseText = "You're too strong! It can't be! I have to run away!"
 Pokemon = GARCHOMP,62
 Pokemon = MIGHTYENA,63
 Pokemon = BISHARP,64
 	Shadow = yes
+#-------------------------------
+[AKUICLAN_M,Jiko,1]
+LoseText = "Not again! The humiliation is unbearable!"
+Pokemon = GARCHOMP,66
+Pokemon = MIGHTYENA,67
+Pokemon = BISHARP,68
 #-------------------------------
 [SHIMIZU_M,Isao]
 LoseText = "Ride the waves to victory, young Kenshi!"
