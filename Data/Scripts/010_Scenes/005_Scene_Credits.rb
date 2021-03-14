@@ -5,7 +5,7 @@ CreditsScrollSpeed    = 2
 CreditsFrequency      = 10   # Number of seconds per credits slide
 CREDITS_OUTLINE       = Color.new(121,39,39, 255)
 CREDITS_SHADOW        = Color.new(0,0,0, 120)
-CREDITS_FILL          = Color.new(244,205,205, 255)
+CREDITS_FILL          = Color.new(255,255,255, 255)
 
 #==============================================================================
 # * Scene_Credits
