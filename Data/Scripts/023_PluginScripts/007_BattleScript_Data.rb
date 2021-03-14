@@ -582,6 +582,24 @@ module DialogueModule
                     if !battle.battlers[2].fainted?
                       battle.battlers[2].pbInflictStatus(PBStatuses::BURN,1,nil)
                     end
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
+                    battle.scene.disappearBar
+                    if !battle.battlers[1].fainted?
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                    else
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[3])
+                    end
+                    if !battle.battlers[1].fainted?
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                    end
+                    if !battle.battlers[3].fainted?
+                      battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[3])
+                      battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3],false)
+                    end
+                    battle.scene.appearBar
+                    pbMessage("We'll squash you like the bugs you are!")
                     battle.scene.pbHideOpponent
                     battle.scene.appearBar
                     pbMessage("\\xn[\\v[26]]\\pogThese Akui grunts will never play fair...")
