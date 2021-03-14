@@ -93,6 +93,7 @@ make ch4 pop after beating the nensho dojo and leaving, instead of leaving the t
 test scent and time flute use in battle
 turn switch 120 to ON after kayoko battle, so that sukiro jikan shrine is enabled
 
+
 add TMs to almost all maps
 map signposts
 CREDITS SCENE
