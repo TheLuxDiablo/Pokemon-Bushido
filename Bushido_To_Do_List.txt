@@ -104,12 +104,9 @@ test scent and time flute use in battle
 
 add TMs to almost all maps
 map signposts
-Fix teleport positions for all maps
+make chapter 4 activate after beating Nori and then elaving the dojo
 
 ch4 MBD
-KayokoIntro 
-KayokoLast
-
 MaiIntro medidate, also rain and healing ring
 MaiLast whirlpool, hail, medidate again
 

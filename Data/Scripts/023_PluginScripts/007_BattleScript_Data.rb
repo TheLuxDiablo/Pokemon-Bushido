@@ -590,9 +590,9 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
                     battle.scene.disappearBar
                     if !battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
                     else
-                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[3])
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[3],battle.battlers[3])
                     end
                     if !battle.battlers[1].fainted?
                       battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
@@ -611,7 +611,7 @@ module DialogueModule
                     pbMessage("\\xn[Tsuku]\\rK-katana of Life, Konchu Style! Dragonfly Dance!")
                     battle.scene.disappearBar
                     if !battle.battlers[2].fainted?
-                      battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[0],battle.battlers[2])
+                      battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[2],battle.battlers[2])
                     else
                       battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[0],battle.battlers[0])
                     end
@@ -773,46 +773,46 @@ module DialogueModule
         Nori1 = Proc.new{|battle|
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)
-                      pbMessage("Hahaha! We finally face each other in battle!")
-                      pbMessage("I've been looking forward to this, \\PN!")
-                      pbMessage("Just so you know, I'll be giving this battle my all.")
-                      pbMessage("I expect you to do the same! Now, it's time to show you the true power of the Nensho Clan!")
-                      pbMessage("Katana of Fire, Nensho Style! Breath of Flames!")
+                      pbMessage("\\xn[Nori]\\bHahaha! We finally face each other in battle!")
+                      pbMessage("\\xn[Nori]\\bI've been looking forward to this, \\PN!")
+                      pbMessage("\\xn[Nori]\\bJust so you know, I'll be giving this battle my all.")
+                      pbMessage("\\xn[Nori]\\bI expect you to do the same! Now, it's time to show you the true power of the Nensho Clan!")
+                      pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Breath of Flames!")
                       battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
                       battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                       battle.scene.appearBar
-                      pbMessage("Katana of Fire, Nensho Style! Sunlight Beams!")
+                      pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Sunlight Beams!")
                       battle.pbCommonAnimation("Sunny",nil,nil)
                       battle.scene.disappearBar
                       battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
                       battle.scene.appearBar
-                      pbMessage("Come at me with all you've got, \\PN! Hiyaaah!")
+                      pbMessage("\\xn[Nori]\\bCome at me with all you've got, \\PN! Hiyaaah!")
                       battle.scene.disappearBar
                       battle.scene.pbHideOpponent
                     }
           NoriLast = Proc.new{|battle|
                         battle.scene.appearBar
                         battle.scene.pbShowOpponent(0)
-                        pbMessage("Hahaha! This is so much fun!")
-                        pbMessage("You are an excellent Kenshi, \\PN!")
-                        pbMessage("You've pushed me to my limits...")
-                        pbMessage("But the battle isn't over yet! Now it's time for me to get serious!")
-                        pbMessage("Secret Technique! Mountainous Roar!")
+                        pbMessage("\\xn[Nori]\\bHahaha! This is so much fun!")
+                        pbMessage("\\xn[Nori]\\bYou are an excellent Kenshi, \\PN!")
+                        pbMessage("\\xn[Nori]\\bYou've pushed me to my limits...")
+                        pbMessage("\\xn[Nori]\\bBut the battle isn't over yet! Now it's time for me to get serious!")
+                        pbMessage("\\xn[Nori]\\bSecret Technique! Mountainous Roar!")
                         battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[1],battle.battlers[0])
                         battle.scene.disappearBar
                         battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
                         battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
                         battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
                         battle.scene.appearBar
-                        pbMessage("Katana of Fire, Nensho Style! Flame Breath!")
+                        pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Flame Breath!")
                         battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                         battle.scene.disappearBar
                         battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
                         battle.scene.appearBar
-                        pbMessage("Let's finish this duel in a blaze of glory, \\PN! Yaaah!")
+                        pbMessage("\\xn[Nori]\\bLet's finish this duel in a blaze of glory, \\PN! Yaaah!")
                         battle.scene.disappearBar
                         battle.scene.pbHideOpponent
                       }
@@ -977,6 +977,67 @@ module DialogueModule
                       battle.scene.disappearBar
                       battle.scene.pbHideOpponent
                     }
+        Mai1 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("\\xn[Mai]\\rI'm glad to have you in my dojo, \\PN.")
+                      pbMessage("\\xn[Mai]\\rI heard about how you defeated Harumi and Nori.")
+                      pbMessage("\\xn[Mai]\\rThough they are strong clan leaders in their own right...")
+                      pbMessage("\\xn[Mai]\\rI will show you why I am considered the strongest of the three.")
+                      pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Torrential Downpour!")
+                      battle.scene.disappearBar
+                      battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
+                      battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Healing Ring!")
+                      battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[1].effects[PBEffects::AquaRing] = true
+                      battle.pbDisplay(_INTL("Mai surrounded {1} with a veil of water!",battle.battlers[1].name))
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Mai]\\rAnd now for my signature move!")
+                      pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Signature Technique! Water Meditation!")
+                      battle.pbAnimation(getID(PBMoves,:COSMICPOWER),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Mai]\\rIf you think you can defeat me, go ahead and try!")
+                      battle.scene.disappearBar
+                      battle.scene.pbHideOpponent
+                    }
+      Mai2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Mai]\\rHmm... No wonder you were able to handle the Akui Clan!")
+                    pbMessage("\\xn[Mai]\\rYou bring great honor to the Masayoshi name.")
+                    pbMessage("\\xn[Mai]\\rNow, it looks like I need to get serious, before you sweep me away!")
+                    pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Torrential Downpour!")
+                    battle.scene.disappearBar
+                    battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Healing Ring!")
+                    battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[1].effects[PBEffects::AquaRing] = true
+                    battle.pbDisplay(_INTL("Mai surrounded {1} with a veil of water!",battle.battlers[1].name))
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Misty Terrain!")
+                    battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[0],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Signature Technique! Water Meditation!")
+                    battle.pbAnimation(getID(PBMoves,:COSMICPOWER),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Mai]\\rLet's see if you can keep up with my waterfall of Shimizu techniques!")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                  }
       # Rival intros
       RivalFirstIntro = Proc.new{|battle|
                     battle.scene.appearBar
@@ -1156,7 +1217,7 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[Kayoko]\\rPrepare yourself, \\PN. I'll be going all out.")
                     pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
-                    battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[0],battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
@@ -1176,7 +1237,7 @@ module DialogueModule
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
                     battle.scene.appearBar
                     pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
-                    battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[0],battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
@@ -1407,7 +1468,7 @@ module DialogueModule
                     pbMessage("My strength is unmatched!")
                     pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
                     battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
@@ -1421,7 +1482,7 @@ module DialogueModule
                     pbMessage("It's time for our rematch! I've been working on my strength!")
                     pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1],false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
@@ -1550,9 +1611,9 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
                     battle.scene.disappearBar
                     if battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[3])
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[3],battle.battlers[3])
                     else
-                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
                     end
                     if !battle.battlers[1].fainted?
                       battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
@@ -1628,9 +1689,9 @@ module DialogueModule
                       pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
                       battle.scene.disappearBar
                       if battle.battlers[1].fainted?
-                        battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[3])
+                        battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[3],battle.battlers[3])
                       else
-                        battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                        battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
                       end
                       if !battle.battlers[1].fainted?
                         battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
@@ -1908,7 +1969,7 @@ module DialogueModule
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
@@ -2219,7 +2280,7 @@ module DialogueModule
                     pbMessage("You really are my favorite plaything!")
                     pbMessage("Akui Clan Technique! Berserker Dance!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,3,battle.battlers[1],false)
                     battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
@@ -2447,7 +2508,7 @@ module DialogueModule
        Lugia = Proc.new{|battle|
                       battle.scene.appearBar
                       pbMessage("Lugia's soul is completely corrupted! It's driven only by hatred!")
-                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
                       battle.scene.disappearBar
                       battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
