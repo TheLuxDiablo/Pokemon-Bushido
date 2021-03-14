@@ -1054,12 +1054,12 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
                     battle.scene.appearBar
-                    pbMessage("Katana of Fire, Nensho Style! Sunlight Beams!")
+                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Sunlight Beams!")
                     battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
                     battle.scene.appearBar
-                    pbMessage("Come at me with all you've got, \\PN! Hiyaaah!")
+                    pbMessage("\\xn[\\v[26]]\\pogCome at me with all you've got, \\PN! Hiyaaah!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
@@ -2061,19 +2061,19 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("I'm so looking forward to picking you apart, stupid Kenshi!")
-                    pbMessage("Your obsession with honore and dignity will be your downfall!")
-                    pbMessage("Here, let me show you how ignoring the Bushido code is superior!")
+                    pbMessage("Your obsession with honor and dignity will be your downfall!")
+                    pbMessage("Here, let me show you the benefits ignoring the Bushido code!")
                     pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
                     battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
                     battle.scene.appearBar
-                    pbMessage("Hahaha! ARe you having fun yet?!")
+                    pbMessage("Hahaha! Are you having fun yet?!")
                     pbMessage("\\shBecause I sure am!")
-                    pbMessage("Come on now, show me what you're made of!")
+                    pbMessage("Now come on, show me what you're made of!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
       Kuro2 = Proc.new{|battle|
@@ -2083,7 +2083,7 @@ module DialogueModule
                     pbMessage("I think it's about time I started taking this battle seriously!")
                     pbMessage("Akui Clan Technique! Berserker Dance!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                    battle.pbAnimation(getID(PBMoves,:CLANGOROUSSOUL),battle.battlers[0],battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,3,battle.battlers[1],false)
                     battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
@@ -2101,21 +2101,20 @@ module DialogueModule
                   battle.scene.appearBar
                   battle.scene.pbShowOpponent(0)
                   pbMessage("\\shHow dare you?!")
-                  pbMessage("I think it's about time I started taking this battle seriously!")
+                  pbMessage("Pawns of the Shogun need to be taught their place!")
+                  pbMessage("And that place... is six feet underground!")
                   pbMessage("Akui Clan Technique! Berserker Dance!")
                   battle.scene.disappearBar
-                  battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[0],battle.battlers[1])
+                  battle.pbAnimation(getID(PBMoves,:CLANGOROUSSOUL),battle.battlers[0],battle.battlers[1])
                   battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
                   battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,3,battle.battlers[1],false)
                   battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
                   battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
                   battle.scene.appearBar
-                  pbMessage("You can't possibly hope to defeat me!")
-                  pbMessage("I am the Hound of Cruelty, the strongest of the Akui Admins!")
-                  pbMessage("Akui Clan Technique, Flame Kunai!")
+                  pbMessage("Akui Clan Technique, Venom Kunai!")
                   battle.scene.disappearBar
-                  battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                  battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                  battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
+                  battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
                   battle.scene.pbHideOpponent
                 }
     KuroRematchIntro = Proc.new{|battle|

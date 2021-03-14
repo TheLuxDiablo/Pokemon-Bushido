@@ -106,7 +106,6 @@ add TMs to almost all maps
 map signposts
 
 ch4 MBD
-Kuro1
 KuroLast
 
 KayokoIntro 
@@ -135,6 +134,7 @@ tristanintro They don't call me Thunderfist for nothing!" THUNDERPUNCH
 tristanlast
 Ace = Steelix
 
+MAKE HAUNTED PLACEHOLDER OW based off of battler
 hauntedintro, spook people. Lower their speed and defenses
 hauntedlast, willowisp to burn. Spook again!
 Ace = Crobat
