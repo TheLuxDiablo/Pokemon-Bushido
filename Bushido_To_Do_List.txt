@@ -102,10 +102,20 @@ CREDITS SCENE
 maybe make MBD check types, so paralyze print a diff message of resistance for elec types? Poison resistance for psn types?
 
 ch4 MBD
-Kuro
-Kayoko
-Mai
+KuroIntro
+Kuro1
+KuroLast
 
+KayokoIntro
+KayokoLast
+
+MaiIntro
+MaiLast
+
+HattoriIntro
+Hattori2
+Hattori3
+HattoriLast
 
 
 
