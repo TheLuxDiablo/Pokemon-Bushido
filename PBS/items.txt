@@ -851,3 +851,7 @@
 824,CURRY,Curry,Curry,2,1800,"Savory curry, with potatos, carrots, and beef! Heals 100 HP, and cures all status conditions.",1,1,0,
 825,BENTO,Bento Box,Bento Boxes,2,2600,"A complete lunch, made with love. Fully heals a Pokémon and makes it more friendly.",1,1,0,
 826,PRISONKEY,Prison Key,Prison Key,8,0,"A key to jail cells underneath the Akui Dojo.",0,0,6,
+827,CAMLETTER,Cam Certificate,Cam Certificates,8,0,"A certificate proving that you have beaten of the developers of Pokemon Bushido.",0,0,6,
+828,LUXLETTER,Lux Certificate,Lux Certificates,8,0,"A certificate proving that you have beaten of the developers of Pokemon Bushido.",0,0,6,
+829,TRISTANLETTER,Tristan Certificate,Tristan Certificates,8,0,"A certificate proving that you have beaten of the developers of Pokemon Bushido.",0,0,6,
+830,HAUNTEDLETTER,Haunted Certificate,Haunted Certificates,8,0,"A certificate proving that you have beaten of the developers of Pokemon Bushido.",0,0,6,
