@@ -2399,7 +2399,7 @@ module DialogueModule
                       pbBGMFade(3)
                       pbMessage("\\xn[Hattori]\\rYou've made a grave mistake now, my child.")
                       pbMessage("\\xn[Hattori]\\rYou cannot even begin to comprehend the power of my Shadow Lugia!")
-                      pbBGMPlay("ShadowLugia")
+                      pbBGMPlay("Botw-Ganon")
                       pbMessage("\\xn[Hattori]\\rIt looks like I'll have to teach you one final lesson!")
                       pbMessage("\\sh\\xn[Hattori]\\rGo Shadow Lugia! Eliminate \\PN, and that foolish Royal Samurai Ryo!")
                       pbSEPlay("249Cry")
