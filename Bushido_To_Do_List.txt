@@ -95,10 +95,6 @@ test scent and time flute use in battle
 
 
 
-
-
-
-
 - Add Maple Leaves
 
 map signposts
