@@ -796,3 +796,18 @@ ShowArea = true
 Outdoor = false
 BattleBack = CaveBushido4
 MapPosition = 2,24,8
+#-------------------------------
+[147]
+# Kaminari Pass
+ShowArea = true
+Outdoor = true
+BattleBack = ShizenTrail
+#-------------------------------
+[148]
+# Kaminari Cave
+DarkMap = true
+ShowArea = true
+Outdoor = false
+BattleBack = CaveBushido4
+MapPosition = 2,24,8
+
