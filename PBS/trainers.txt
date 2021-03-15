@@ -427,6 +427,16 @@ Pokemon = SHEDINJA,65
 Pokemon = NINJASK,65
 	Item = SITRUSBERRY
 #-------------------------------
+[TSUKU,Tsuku,3]
+LoseText = "Y-you're incredible! You're a-always one step ahead..."
+Pokemon = SCOLIPEDE,74
+Pokemon = VOLCARONA,74
+Pokemon = LEAVANNY,74
+Pokemon = FROSMOTH,75
+Pokemon = SHEDINJA,75
+Pokemon = NINJASK,76
+	Item = SITRUSBERRY
+#-------------------------------
 [GALARMAN,Andy]
 LoseText = "Very well! You fought bravely."
 Pokemon = SNOM,34
