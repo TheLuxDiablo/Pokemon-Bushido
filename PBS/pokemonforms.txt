@@ -1578,6 +1578,7 @@ Color = White
 Pokedex = The colder they get, the more energetic they are. They freeze their breath to make snowballs, using them as ammo for playful snowball fights.
 BattlerPlayerY = 66
 BattlerEnemyX = 0
+BattlerEnemyY = 34
 BattlerShadowX = 0
 BattlerShadowSize = 2
 Evolutions = DARMANITAN,Item,ICESTONE
