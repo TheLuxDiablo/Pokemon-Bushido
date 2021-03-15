@@ -2689,12 +2689,12 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
                     battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                     battle.scene.appearBar
                     pbMessage("\\xn[Cam]\\bI'm going to go all out!")
                     battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
           CamLast = Proc.new{|battle|
@@ -2722,7 +2722,7 @@ module DialogueModule
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                       battle.scene.appearBar
                       pbMessage("\\xn[Cam]\\bLet's goooooo!")
-                      pbMessage("\\sh\\xn[Cam]\\bBUSHIDOOOOOOOO!")
+                      pbMessage("\\sh\\xn[Cam]\\bBUSHIDO BOIS!")
                       battle.scene.disappearBar
                       battle.scene.pbHideOpponent
                     }
@@ -2761,6 +2761,25 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+        TristanIntro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Tristan]\\bAre you ready, \\PN?")
+                    pbMessage("\\xn[Tristan]\\bNow, did you ever tell you why they call me \"Thunderfist\"?")
+                    pbMessage("\\xn[Tristan]\\bHere, let me show you why!")
+                    pbMessage("\\xn[Tristan]\\bFist of Tristan, Signature Style! Thunder Fist!")
+                    battle.pbAnimation(getID(PBMoves,:THUNDERPUNCH),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Tristan's epic punch!")
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Tristan]\\bHahaha! How did you like my demonstration?")
+                    pbMessage("\\xn[Tristan]\\bThere's more where that came from!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }

@@ -86,14 +86,6 @@ TEST that telport dont work anymore
 
 
 ch7 
-Dev Battles
-camlast
-Ace=
-
-luxintro Katana of Demons, First Style! Berserk Inferno!" and then Fire Vortex, with attacks up
-luxlast Lux Katana! Devil's Wrath!" SCARYFACE, lower our speed by 2 levels
-Ace=
-
 tristanintro They don't call me Thunderfist for nothing!" THUNDERPUNCH
 tristanlast
 Ace = Steelix
