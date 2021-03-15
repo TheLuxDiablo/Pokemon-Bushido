@@ -2768,7 +2768,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[Tristan]\\bAre you ready, \\PN?")
-                    pbMessage("\\xn[Tristan]\\bNow, did you ever tell you why they call me \"Thunderfist\"?")
+                    pbMessage("\\xn[Tristan]\\bNow, did I ever tell you why they call me \"Thunderfist\"?")
                     pbMessage("\\xn[Tristan]\\bHere, let me show you why!")
                     pbMessage("\\xn[Tristan]\\bFist of Tristan, Signature Style! Thunder Fist!")
                     battle.pbAnimation(getID(PBMoves,:THUNDERPUNCH),battle.battlers[1],battle.battlers[0])
@@ -2783,6 +2783,70 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
+          TristanLast = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("\\xn[Tristan]\\bWow, you're putting up quite the fight!")
+                      pbMessage("\\xn[Tristan]\\bI'm a fighter too though! Hiyaaah!")
+                      pbMessage("\\xn[Tristan]\\bFist of Tristan, Signature Style! Thunder Fist!")
+                      battle.pbAnimation(getID(PBMoves,:THUNDERPUNCH),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Tristan's epic punch!")
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Tristan]\\bAnd that's not all! I can also use my katana techniques!")
+                      pbMessage("\\xn[Tristan]\\bKatana of Thunderfist! Dimensional Rift!")
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.scene.pbHideOpponent
+                    }
+            HauntedIntro = Proc.new{|battle|
+                        battle.scene.appearBar
+                        battle.scene.pbShowOpponent(0)
+                        pbMessage("\\xn[Haunted]\\bI've been waiting for this battle with you, \\PN!")
+                        pbMessage("\\xn[Haunted]\\bNow, let me show you why they call me \"Haunted\" Art Studio!")
+                        pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Terrifying Stare!")
+                        battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
+                        battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
+                        battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                        battle.battlers[0].effects[PBEffects::MeanLook] = battle.battlers[1].index
+                        battle.pbDisplay(_INTL("{1} can no longer escape!",battle.battlers[0].name))
+                        battle.scene.appearBar
+                        pbMessage("\\xn[Haunted]\\bHahahaha! You should have seen your face!")
+                        battle.scene.disappearBar
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                        battle.scene.pbHideOpponent
+                      }
+          HauntedLast = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("\\xn[Haunted]\\bThings are going pretty well for you in this battle, \\PN!")
+                      pbMessage("\\xn[Haunted]\\bIt would be a shame if you... were haunted!")
+                      pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Terrifying Stare!")
+                      battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
+                      battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
+                      battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                      battle.battlers[0].effects[PBEffects::MeanLook] = battle.battlers[1].index
+                      battle.pbDisplay(_INTL("{1} can no longer escape!",battle.battlers[0].name))
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Haunted]\\bAnd that's not all, \\PN! Far from it!")
+                      pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Spirit Flames!")
+                      battle.pbAnimation(getID(PBMoves,:WILLOWISP),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Haunted's spirit flames!")
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Haunted]\\bCan you handle my haunting? Let's find out!")
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.scene.pbHideOpponent
+                    }
 
 # DONT DELETE THIS END
 end
