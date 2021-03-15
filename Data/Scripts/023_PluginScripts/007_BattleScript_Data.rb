@@ -1144,7 +1144,7 @@ module DialogueModule
                     pbMessage("\\xn[Ryo]\\bI've been looking forward to testing your skills in battle, \\PN!")
                     pbMessage("\\xn[Ryo]\\bYou may be the new master of the Katana of Light, but I can still do this!")
                     pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Brilliant Barrier!")
-                    battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
                     battle.pbDisplay(_INTL("Ryo created a wall of light in front of {1}!",battle.battlers[1].name))
@@ -1167,7 +1167,7 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.battlers[0].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[0])
                     pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Brilliant Barrier!")
-                    battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
                     battle.pbDisplay(_INTL("Ryo created a wall of light in front of {1}!",battle.battlers[1].name))
