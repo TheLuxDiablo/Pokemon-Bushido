@@ -2766,41 +2766,37 @@ module DialogueModule
         TristanIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\xn[Tristan]\\bAre you ready, \\PN?")
-                    pbMessage("\\xn[Tristan]\\bNow, did I ever tell you why they call me \"Thunderfist\"?")
-                    pbMessage("\\xn[Tristan]\\bHere, let me show you why!")
-                    pbMessage("\\xn[Tristan]\\bFist of Tristan, Signature Style! Thunder Fist!")
-                    battle.pbAnimation(getID(PBMoves,:THUNDERPUNCH),battle.battlers[1],battle.battlers[0])
+                    pbMessage("\\xn[Tristan]\\bYou're in for a rude awakening if you think it's going to be easy, \\PN.")
+                    pbMessage("\\xn[Tristan]\\bLet's dance!")
+                    pbMessage("\\xn[Tristan]\\bKatana of the Abyss, Signature Style! Maniacal Glare!")
+                    battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Tristan's epic punch!")
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Tristan]\\bHahaha! How did you like my demonstration?")
-                    pbMessage("\\xn[Tristan]\\bThere's more where that came from!")
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.pbDisplay(_INTL("Tristan laid a curse on {1}!",battle.battlers[0].name))
+                    battle.battlers[0].effects[PBEffects::Curse] = true
+                    battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
+                    battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Tristan]\\bHaha! How do you like that?")
+                    battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
           TristanLast = Proc.new{|battle|
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)
-                      pbMessage("\\xn[Tristan]\\bWow, you're putting up quite the fight!")
-                      pbMessage("\\xn[Tristan]\\bI'm a fighter too though! Hiyaaah!")
-                      pbMessage("\\xn[Tristan]\\bFist of Tristan, Signature Style! Thunder Fist!")
+                      pbMessage("\\xn[Tristan]\\bYou've tested the limits of my strength so far...")
+                      pbMessage("\\xn[Tristan]\\bBut now Steelix and I are going to teach you why they call me Thunderfist!")
+                      pbMessage("\\xn[Tristan]\\bFists of Tristan, Signature Style! Thunder Fist!")
                       battle.pbAnimation(getID(PBMoves,:THUNDERPUNCH),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
                       battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Tristan's epic punch!")
-                      battle.scene.appearBar
-                      pbMessage("\\xn[Tristan]\\bAnd that's not all! I can also use my katana techniques!")
-                      pbMessage("\\xn[Tristan]\\bKatana of Thunderfist! Cursing Gaze!")
-                      battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      battle.pbDisplay(_INTL("Tristan laid a curse on {1}!",battle.battlers[0].name))
-                      battle.battlers[0].effects[PBEffects::Curse] = true
-                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,3,battle.battlers[0])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Tristan]\\bCome at me, \\PN!")
+                      battle.scene.disappearBar
                       battle.scene.pbHideOpponent
                     }
             HauntedIntro = Proc.new{|battle|
