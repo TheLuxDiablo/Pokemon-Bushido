@@ -179,6 +179,19 @@ def pbReceiveItem(item, quantity = 1)
   itemname = (quantity>1) ? PBItems.getNamePlural(item) : PBItems.getName(item)
   pocket = pbGetPocket(item)
   meName = $PokemonBag.pbCanStore?(item,quantity) ? ((pbIsKeyItem?(item)) ? "HGSSGetKeyItem" : "HGSSGetItem") : ""
+  if isConst?(item,PBItems,:KATANABASIC)
+    meName = "BOTW-GetFanfare"
+  elsif isConst?(item,PBItems,:KATANALIGHT)
+    meName = "BOTW-GetFanfare"
+  elsif isConst?(item,PBItems,:KATANALIGHT2)
+    meName = "BOTW-GetFanfare"
+  elsif isConst?(item,PBItems,:KATANALIGHT3)
+    meName = "BOTW-GetFanfare"
+  elsif isConst?(item,PBItems,:KATANALIGHT4)
+    meName = "BOTW-GetFanfare"
+  elsif isConst?(item,PBItems,:KATANALIGHT5)
+    meName = "BOTW-GetFanfare"
+  end
   if $PokemonBag.pbCanStore?(item,quantity)
     scene = $game_player.addFoundItem(item)
   else
