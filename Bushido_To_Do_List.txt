@@ -81,11 +81,8 @@ Rival dialogue, the "Hmmm..." clan stuff is colored red, make rest red
 
 
 test scent and time flute use in battle
-
-
-
 audit some pokemon positions, push them down a little
-
+TEST that telport dont work anymore
 
 
 ch7 

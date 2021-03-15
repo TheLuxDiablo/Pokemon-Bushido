@@ -2683,9 +2683,9 @@ module DialogueModule
         CamIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("I'm excited to face you in battle!")
-                    pbMessage("Now, let me show you my signature move!")
-                    pbMessage("Thundaga Katana! Lightning Stream!")
+                    pbMessage("\\xn[Cam]\\bI'm excited to face you in battle!")
+                    pbMessage("\\xn[Cam]\\bNow, let me show you my signature move!")
+                    pbMessage("\\xn[Cam]\\bThundaga Katana! Lightning Stream!")
                     battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
                     battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
@@ -2693,10 +2693,39 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                     battle.scene.appearBar
-                    pbMessage("I'm going to go all out!")
+                    pbMessage("\\xn[Cam]\\bI'm going to go all out!")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
+          CamLast = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("\\xn[Cam]\\bWow, you're an amazing Kenshi, \\PN!")
+                      pbMessage("\\xn[Cam]\\bIt is an honor to have someone as skilled as you playing our game!")
+                      pbMessage("\\xn[Cam]\\bHere, have a reward for your efforts!")
+                      battle.scene.disappearBar
+                      battle.battlers[0].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[0])
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Cam]\\bDon't get too comfortable though, \\PN!")
+                      pbMessage("\\xn[Cam]\\bI'm still your opponent right now!")
+                      pbMessage("\\xn[Cam]\\bThundaga Katana! Lightning Stream!")
+                      battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Cam]\\bThundaga Katana! Electric Terrain!")
+                      battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Cam]\\bLet's goooooo!")
+                      pbMessage("\\sh\\xn[Cam]\\bBUSHIDOOOOOOOO!")
+                      battle.scene.disappearBar
+                      battle.scene.pbHideOpponent
+                    }
 
 # DONT DELETE THIS END
 end
