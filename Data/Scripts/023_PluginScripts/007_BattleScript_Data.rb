@@ -2726,6 +2726,44 @@ module DialogueModule
                       battle.scene.disappearBar
                       battle.scene.pbHideOpponent
                     }
+        LuxIntro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Lux]\\bGet ready, \\PN!")
+                    pbMessage("\\xn[Lux]\\bI won't hold back!")
+                    pbMessage("\\xn[Lux]\\bKatana of Demons, First Style! Berserk Inferno!")
+                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                    battle.battlers[0].effects[PBEffects::Trapping] = 5
+                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                    battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Lux]\\bI'll be taking this battle seriously!")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                  }
+        LuxLast = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Lux]\\bYou're doing well \\PN.")
+                    pbMessage("\\xn[Lux]\\bLets' see how you deal with this!")
+                    pbMessage("\\xn[Lux]\\bKatana of Demons, Lux's Signature Style! Devil's Wrath!")
+                    battle.pbAnimation(getID(PBMoves,:SCARYFACE),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].pbLowerStatStage(PBStats::SPEED,3,battle.battlers[0])
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Lux]\\bYou're close to the finish line, \\PN!")
+                    pbMessage("\\xn[Lux]\\bLet's see if you can make the deadline!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
 
 # DONT DELETE THIS END
 end
