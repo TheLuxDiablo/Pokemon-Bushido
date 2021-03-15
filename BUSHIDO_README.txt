@@ -9,8 +9,12 @@ Developed by:
 🌸 Info 🌸
 
 When playing the game, please use Game.exe. GameRGSS.exe is only meant to be
-used if there are issues with the existing Game.exe. If you are experiencing issues with
-Game.exe, delete the current Game.exe file and rename GameRGSS.exe to Game.exe.
+used if there are issues with the existing Game.exe.
+
+If you are experiencing issues with Game.exe, please follow these steps:
+1. Rename the current Game.exe file to "Game_Backup.exe"
+2. Rename GameRGSS.exe to "Game.exe".
+3. Run the newly renamed Game.exe!
 
 If you are experiencing bugs with the game, please join the Pokemon Bushido Discord! https://discord.gg/FAeZEKwfUh
 
