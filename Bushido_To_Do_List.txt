@@ -87,7 +87,7 @@ TEST that telport dont work anymore
 
 ch7 
 
-tristanlast
+tristanlast = Mean look anim, cursing the enemy
 Ace = Steelix
 
 MAKE HAUNTED PLACEHOLDER OW based off of battler
