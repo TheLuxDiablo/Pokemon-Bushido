@@ -20,8 +20,12 @@ class PokemonSystem
     @frame       = 0     # Default window frame (see also $TextFrames)
     @textskin    = 0     # Speech frame
     @font        = 0     # Font (see also $VersionStyles)
-    #@screensize  = (SCREEN_ZOOM.floor).to_i   # 0=half size, 1=full size, 2=double size
     @screensize  = 1
+    begin
+      @screensize  = (SCREEN_ZOOM.floor).to_i   # 0=half size, 1=full size, 2=double size
+    rescue
+      @screensize  = 1
+    end
     @border      = 0     # Screen border (0=off, 1=on)
     @language    = 0     # Language (see also LANGUAGES in script PokemonSystem)
     @runstyle    = 1     # Run key functionality (0=hold to run, 1=toggle auto-run)
