@@ -373,11 +373,11 @@ Kind = Butterfly
 Pokedex = The wings are protected by rain-repellent dust. As a result, this Pokémon can fly about even in rain.
 WildItemUncommon = SILVERPOWDER
 BattlerPlayerX = 0
-BattlerPlayerY = 71
+BattlerPlayerY = 29
 BattlerEnemyX = 0
-BattlerEnemyY = 27
+BattlerEnemyY = 17
 BattlerShadowX = 0
-BattlerShadowSize = 2
+BattlerShadowSize = 3
 Evolutions = 
 #-------------------------------
 [13]
@@ -19014,11 +19014,11 @@ Shape = 14
 Kind = EleSpider
 Pokedex = When attacked, they create an electric barrier by spitting out many electrically charged threads.
 BattlerPlayerX = 0
-BattlerPlayerY = 64
+BattlerPlayerY = 51
 BattlerEnemyX = 0
-BattlerEnemyY = 29
-BattlerShadowX = 0
-BattlerShadowSize = 2
+BattlerEnemyY = 37
+BattlerShadowX = -3
+BattlerShadowSize = 3
 Evolutions = 
 #-------------------------------
 [597]
