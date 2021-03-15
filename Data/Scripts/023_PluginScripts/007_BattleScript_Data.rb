@@ -2794,8 +2794,11 @@ module DialogueModule
                       battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Tristan's epic punch!")
                       battle.scene.appearBar
                       pbMessage("\\xn[Tristan]\\bAnd that's not all! I can also use my katana techniques!")
-                      pbMessage("\\xn[Tristan]\\bKatana of Thunderfist! Dimensional Rift!")
+                      pbMessage("\\xn[Tristan]\\bKatana of Thunderfist! Cursing Gaze!")
+                      battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
+                      battle.pbDisplay(_INTL("Tristan laid a curse on {1}!",battle.battlers[0].name))
+                      battle.battlers[0].effects[PBEffects::Curse] = true
                       battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
