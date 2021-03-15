@@ -84,8 +84,7 @@ test scent and time flute use in battle
 
 
 
-
-- Add Maple Leaves
+audit some pokemon positions, push them down a little
 
 
 
