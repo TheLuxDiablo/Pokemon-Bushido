@@ -524,7 +524,7 @@ module DialogueModule
         TsukuShrineIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("L- Let's make this a fight worth remembering!")
+                    pbMessage("Let's m-make this a fight worth remembering!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
@@ -556,9 +556,9 @@ module DialogueModule
                     battle.battlers[2].pbInflictStatus(PBStatuses::POISON,1,nil)
                     battle.scene.pbHideOpponent
                     battle.scene.appearBar
-                    pbMessage("\\xn[Tsuku]\\rNow that we're f-finally fighting together, I'll do my best to make you proud!")
-                    pbMessage("\\xn[Tsuku]\\rW-we have to give it our all!")
-                    pbMessage("\\xn[Tsuku]\\rKatana of L-life, Konchu Style! B-beetle Barrier!")
+                    pbMessage("\\xn[Tsuku]\\rNow that we're f-finally fighting together, I'll do my best to m-make you proud!")
+                    pbMessage("\\xn[Tsuku]\\rWe have to give it our all!")
+                    pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Beetle Barrier!")
                     battle.pbAnimation(getID(PBMoves,:WIDEGUARD),battle.battlers[2],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.battlers[2].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[2])
@@ -566,7 +566,7 @@ module DialogueModule
                     battle.battlers[0].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[0])
                     battle.battlers[0].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[0],false)
                     battle.scene.appearBar
-                    pbMessage("\\xn[Tsuku]\\rLet's show these Akui Grunts the p-power of our bonds!")
+                    pbMessage("\\xn[Tsuku]\\rLet's show these Akui Grunts the power of our bonds!")
                     battle.scene.disappearBar
                   }
         TsukuDuo2 = Proc.new{|battle|
@@ -608,7 +608,7 @@ module DialogueModule
                     battle.scene.appearBar
                     pbMessage("\\xn[Tsuku]\\rYou need to learn some r-respect for bugs!")
                     pbMessage("\\xn[Tsuku]\\rThey are some of the best Pokémon in the world! I'll never let you squash them!")
-                    pbMessage("\\xn[Tsuku]\\rK-katana of Life, Konchu Style! Dragonfly Dance!")
+                    pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Dragonfly Dance!")
                     battle.scene.disappearBar
                     if !battle.battlers[2].fainted?
                       battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[2],battle.battlers[2])
@@ -632,26 +632,26 @@ module DialogueModule
         TsukuPG1 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\xn[Tsuku]\\rIt f-feels like just the other d-day we both started our journies as Kenshi!")
-                    pbMessage("\\xn[Tsuku]\\rL-look at far we've come now!")
-                    pbMessage("\\xn[Tsuku]\\rWe b-both should keep getting stronger, to p-protect Aisho together!")
-                    pbMessage("\\xn[Tsuku]\\rKatana of L-life, Konchu Style! B-beetle Barrier!")
+                    pbMessage("\\xn[Tsuku]\\rIt feels like just the other day we both started our journies as Kenshi!")
+                    pbMessage("\\xn[Tsuku]\\rLook at far we've come now!")
+                    pbMessage("\\xn[Tsuku]\\rWe both should keep getting stronger, to protect Aisho together!")
+                    pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Beetle Barrier!")
                     battle.pbAnimation(getID(PBMoves,:WIDEGUARD),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[2])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[2],false)
                     battle.scene.appearBar
-                    pbMessage("\\xn[Tsuku]\\rLet's see if you have what it t-takes to overcome my new team, \\PN!")
+                    pbMessage("\\xn[Tsuku]\\rLet's see if you have what it takes to overcome my new team, \\PN!")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
           TsukuPG2 = Proc.new{|battle|
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)
-                      pbMessage("\\xn[Tsuku]\\rD-dang, I'm already down to my l-last Pokémon...")
-                      pbMessage("\\xn[Tsuku]\\rNow's the t-time for me to give it me all!")
-                      pbMessage("\\xn[Tsuku]\\rHere we come, \\PN!!")
-                      pbMessage("\\xn[Tsuku]\\rK-katana of Life, Konchu Style! Dragonfly Dance!")
+                      pbMessage("\\xn[Tsuku]\\rDang, I'm already down to my last Pokémon...")
+                      pbMessage("\\xn[Tsuku]\\rNow's the time for me to give it me all!")
+                      pbMessage("\\xn[Tsuku]\\rHere we c-come, \\PN!!")
+                      pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Dragonfly Dance!")
                       battle.scene.disappearBar
                       battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[1],battle.battlers[1])
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
@@ -1214,15 +1214,15 @@ module DialogueModule
       TsukuIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\xn[Tsuku]\\rAlright! T-time for you to learn how strong b-bug Pokémon can really be!")
+                    pbMessage("\\xn[Tsuku]\\rAlright! Time for you to learn how strong b-bug Pokémon can really be!")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
       TsukuLast = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\xn[Tsuku]\\rW-wah! This isn't l-looking good!")
-                    pbMessage("\\xn[Tsuku]\\rIt's time for defensive measures! Tsukutsuku...")
+                    pbMessage("\\xn[Tsuku]\\rW-wah! This isn't looking good!")
+                    pbMessage("\\xn[Tsuku]\\rIt's time for defensive measures...")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
