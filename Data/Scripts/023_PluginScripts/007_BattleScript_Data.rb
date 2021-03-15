@@ -629,6 +629,40 @@ module DialogueModule
                     pbMessage("\\xn[Tsuku]\\rCome on, \\PN! We'll teach them to respect b-bugs!")
                     battle.scene.disappearBar
                   }
+        TsukuPG1 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Tsuku]\\rIt f-feels like just the other d-day we both started our journies as Kenshi!")
+                    pbMessage("\\xn[Tsuku]\\rL-look at far we've come now!")
+                    pbMessage("\\xn[Tsuku]\\rWe b-both should keep getting stronger, to p-protect Aisho together!")
+                    pbMessage("\\xn[Tsuku]\\rKatana of L-life, Konchu Style! B-beetle Barrier!")
+                    battle.pbAnimation(getID(PBMoves,:WIDEGUARD),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[2])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[2],false)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Tsuku]\\rLet's see if you have what it t-takes to overcome my new team, \\PN!")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                  }
+          TsukuPG2 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("\\xn[Tsuku]\\rD-dang, I'm already down to my l-last Pokémon...")
+                      pbMessage("\\xn[Tsuku]\\rNow's the t-time for me to give it me all!")
+                      pbMessage("\\xn[Tsuku]\\rHere we come, \\PN!!")
+                      pbMessage("\\xn[Tsuku]\\rK-katana of Life, Konchu Style! Dragonfly Dance!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[1],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Tsuku]\\rI'll never give up! Just like y-you taught me!")
+                      pbMessage("\\xn[Tsuku]\\rI'm stronger now, t-thanks to our bond!")
+                      battle.scene.disappearBar
+                      battle.scene.pbHideOpponent
+                    }
       # Iwa Clan intros
       # Stealth rocks for another one?
       Iwa1 = Proc.new{|battle|

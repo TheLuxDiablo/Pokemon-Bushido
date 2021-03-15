@@ -75,21 +75,11 @@ Rival dialogue, the "Hmmm..." clan stuff is colored red, make rest red
 
 
 
-add yells/shouts on KatanaMoveAnimation based on player gender?
-Remove the stop animation ON from surfing
-
-
-Nensho Clan MBD and set it up for all clan trainer battles on Jonetsu Pass
-recolor akui player robes to have dark color bands
-add more TMs and track them
-Yami Island interiors and keys and trainers
-Hagane City takeover switch
 
 
 
 
 
-make ch4 start after beating the nensho dojo and leaving, instead of leaving the town?
 test scent and time flute use in battle
 
 
@@ -97,7 +87,6 @@ test scent and time flute use in battle
 
 - Add Maple Leaves
 
-map signposts
 
 
 ch7 
