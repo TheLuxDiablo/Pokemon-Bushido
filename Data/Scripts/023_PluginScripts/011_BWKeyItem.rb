@@ -115,7 +115,7 @@ def shakeItem
    end
 end
 
-def pbUpdate
+def pbUpdate(item)
   pbWait(1)
   10.times do
   Graphics.update
@@ -131,7 +131,12 @@ end
   Graphics.update
   @sprites["item"].angle-=15/2 if @sprites["item"].angle!=0
   @sprites["item"].angle=0 if @sprites["item"].angle<0
-  pbMEPlay("Conquest-LevelUpWarlord") if frametome==7  # Updated ME to Essentials Default
+  if isConst?(item,PBItems,:KATANALIGHT) || isConst?(item,PBItems,:KATANALIGHT2) || isConst?(item,PBItems,:KATANALIGHT3) || isConst?(item,PBItems,:KATANALIGHT4) ||
+      isConst?(item,PBItems,:KATANALIGHT5) || isConst?(item,PBItems,:KATANABASIC)
+    pbMEPlay("BOTW-GetFanfare") if frametome==7  # Updated ME to Essentials Default
+  else
+    pbMEPlay("Conquest-LevelUpWarlord") if frametome==7
+  end
   @sprites["bg"].zoom_y+=0.1/2 if @sprites["bg"].zoom_y<1.75
   @sprites["bg"].zoom_x+=0.1/2 if @sprites["bg"].zoom_x<1.75
   @sprites["bg"].opacity+=14.16
@@ -186,9 +191,9 @@ def initialize(scene)
  @scene=scene
 end
 
-def pbStartScreen
+def pbStartScreen(item)
  @scene.pbStartScene
- @scene.pbUpdate
+ @scene.pbUpdate(item)
  @scene.pbEndScene
 end
 
@@ -197,5 +202,5 @@ end
 def pbGetKeyItem(item,quantity=1,plural=nil)
   scene=GetKeyItemScene.new(item,quantity,plural)
   screen=GetKeyItem.new(scene)
-  screen.pbStartScreen
+  screen.pbStartScreen(item)
  end
