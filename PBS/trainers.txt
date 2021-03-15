@@ -1232,3 +1232,12 @@ Pokemon = BANETTE,70
 Pokemon = STEELIX,70
 	Ability = 2
 	Moves = HEAVYSLAM,THUNDERFANG,EARTHQUAKE,ROCKSLIDE
+#-------------------------------	
+[RAIKAMI_M,Rohan]
+LoseText = "That's impressive! I can see your power flashing in front of me!"
+Pokemon = AEGISLASH,70
+Pokemon = DRAPION,70
+Pokemon = SYLVEON,70
+Pokemon = EELEKTROSS,70
+Pokemon = MIENSHAO,70
+Pokemon = GASTRODON,70

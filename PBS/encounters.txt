@@ -424,3 +424,36 @@ Water
     GOLISOPOD,49,52
     MILOTIC,49,52
     PYUKUMUKU,48,51
+#-------------------------------
+147 # Kaminari Pass
+25,10,10
+Land
+    CHERRIM,68,72
+    HELIOLISK,68,72
+    LUXRAY,68,72
+    FLORGES,68,72
+    RAICHU,68,72
+    LUCARIO,68,72
+    AGGRON,68,72
+    DRAGONITE,68,72
+Water
+    SEAKING,68,72
+    LUDICOLO,68,72
+    HUNTAIL,68,72
+    GOREBYSS,68,72
+    SLOWPOKE,68,72
+    GOLISOPOD,68,72
+    MILOTIC,68,72
+    PYUKUMUKU,68,72
+#-------------------------------
+148 # Kaminari Cave
+25,10,10
+Cave
+    EELEKTROSS,68,72
+    SALAZZLE,68,72
+    RAICHU,68,72
+    MIMIKYU,68,72
+    LYCANROC,68,72
+    STEELIX,68,72
+    FLYGON,68,72
+    GARCHOMP,68,72
