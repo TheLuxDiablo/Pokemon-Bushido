@@ -74,7 +74,7 @@ ItemHandlers::CanUseInBattle.add(:POTION,proc { |item,pokemon,battler,move,first
 ItemHandlers::CanUseInBattle.copy(:POTION,
    :SUPERPOTION,:HYPERPOTION,:MAXPOTION,:BERRYJUICE,:SWEETHEART,:FRESHWATER,
    :SODAPOP,:LEMONADE,:MOOMOOMILK,:ORANBERRY,:SITRUSBERRY,:ENERGYPOWDER,
-   :ENERGYROOT,:JAM1,:JAM2,:JAM3,:JAM4,:RAMEN1,:RAMEN2,:RAMEN3,:BENTO,:CURRY,:SUSHI1,:SUSHI2,:SUSHI3,:SUSHI4)
+   :ENERGYROOT,:JAM1,:JAM2,:JAM3,:JAM4,:RAMEN1,:RAMEN2,:RAMEN3,:BENTO,:SUSHI1,:SUSHI2,:SUSHI3,:SUSHI4)
 ItemHandlers::CanUseInBattle.copy(:POTION,:RAGECANDYBAR) if !NEWEST_BATTLE_MECHANICS
 
 ItemHandlers::CanUseInBattle.add(:AWAKENING,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
@@ -139,6 +139,8 @@ ItemHandlers::CanUseInBattle.add(:FULLRESTORE,proc { |item,pokemon,battler,move,
   end
   next true
 })
+
+ItemHandlers::CanUseInBattle.copy(:FULLRESTORE,:CURRY)
 
 ItemHandlers::CanUseInBattle.add(:REVIVE,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
   if pokemon.able? || pokemon.egg?

@@ -2338,6 +2338,8 @@ module DialogueModule
                   battle.scene.appearBar
                   pbMessage("\\xn[Hattori]\\rFoolish child, witness my true power! You'll never stop our plans!")
                   battle.scene.disappearBar
+                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                   battle.scene.pbHideOpponent
                 }
     Hattori2 = Proc.new{|battle|
@@ -2352,34 +2354,71 @@ module DialogueModule
                   battle.field.effects[PBEffects::WonderRoom] = 6
                   battle.pbDisplay(_INTL("Hattori created a bizarre area in which the Defense and Sp. Def stats are swapped!"))
                   battle.scene.appearBar
-                  pbMessage("\\xn[Hattori]\\rWeaklings like you and Ryo...!")
+                  pbMessage("\\xn[Hattori]\\rWeaklings like you and Ryo...")
                   pbMessage("\\xn[Hattori]\\rYou have no place in my new world!")
                   pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Venom Kunai!")
                   battle.scene.disappearBar
                   battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
                   battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
+                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                   battle.scene.pbHideOpponent
                 }
-                Hattori3 = Proc.new{|battle|
-                              battle.scene.appearBar
-                              battle.scene.pbShowOpponent(0)
-                              pbMessage("\\xn[Hattori]\\r\\PN, have you had enough yet?")
-                              pbMessage("\\xn[Hattori]\\rBecause I'm just getting started!")
-                              pbMessage("\\xn[Hattori]\\rYou'll never block my path to the throne!")
-                              pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Wonder Room!")
-                              battle.pbAnimation(getID(PBMoves,:WONDERROOM),battle.battlers[1],battle.battlers[1])
-                              battle.scene.disappearBar
-                              battle.field.effects[PBEffects::WonderRoom] = 6
-                              battle.pbDisplay(_INTL("Hattori created a bizarre area in which the Defense and Sp. Def stats are swapped!"))
-                              battle.scene.appearBar
-                              pbMessage("\\xn[Hattori]\\rWeaklings like you and Ryo...!")
-                              pbMessage("\\xn[Hattori]\\rYou have no place in my new world!")
-                              pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Venom Kunai!")
-                              battle.scene.disappearBar
-                              battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                              battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
-                              battle.scene.pbHideOpponent
-                            }
+      Hattori3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Hattori]\\r\\PN, you're doing a decent job of keeping up.")
+                    pbMessage("\\xn[Hattori]\\rThat must be my strong blood flowing through you.")
+                    pbMessage("\\xn[Hattori]\\rYou owe all of your success to me! Your father is just a weakling!")
+                    pbMessage("\\xn[Hattori]\\rYou should have joined me in the Akui Clan, traitorous child!")
+                    pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Psychic Terrain!")
+                    battle.pbAnimation(getID(PBMoves,:PSYCHICTERRAIN),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Psychic)
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Trick Room!")
+                    battle.pbAnimation(getID(PBMoves,:TRICKROOM),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.field.effects[PBEffects::TrickRoom] = 5
+                    battle.pbDisplay(_INTL("Hattori twisted the dimensions with the Katana of Shadows!"))
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Hattori]\\rI cannot stand to look at you any longer...")
+                    pbMessage("\\xn[Hattori]\\rBegone, \\PN!")
+                    pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Flame Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    battle.scene.pbHideOpponent
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
+        HattoriLast = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbWait(14)
+                      pbBGMFade(3)
+                      pbMessage("\\xn[Hattori]\\rYou've made a grave mistake now, my child.")
+                      pbMessage("\\xn[Hattori]\\rYou cannot even begin to comprehend the power of my Shadow Lugia!")
+                      pbBGMPlay("ShadowLugia")
+                      pbMessage("\\xn[Hattori]\\rIt looks like I'll have to teach you one final lesson!")
+                      pbMessage("\\sh\\xn[Hattori]\\rGo Shadow Lugia! Eliminate \\PN, and that foolish Royal Samurai Ryo!")
+                      pbSEPlay("249Cry")
+                      pbWait(26)
+                      pbMessage("\\xn[Hattori]\\rThe codes of Bushido will be dissolved after today!")
+                      pbMessage("\\xn[Hattori]\\rAkui Secret Technique! Hanatsium Crystal Exposure!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Hattori]\\rYour journey ends here, my child!")
+                      pbMessage("\\xn[Hattori]\\rGoodbye,\\PN!")
+                      battle.scene.disappearBar
+                      battle.scene.pbHideOpponent
+                    }
     # Katana awakens
     KatanaIntro = Proc.new{|battle|
                   battle.scene.appearBar
