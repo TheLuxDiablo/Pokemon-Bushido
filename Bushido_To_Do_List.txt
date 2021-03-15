@@ -104,11 +104,6 @@ test scent and time flute use in battle
 map signposts
 
 
-ch6
-
-Hattori3
-HattoriLast
-
 ch7 
 Dev Battles
 camlast
