@@ -212,5 +212,5 @@
 209,LUX,Developer,100,Okami-CrimsonHelmBegone,,,Male,,
 210,TRISTAN,Developer,100,YakuzaZero-Kuze,,,Male,,
 211,HAUNTED,Developer,100,CON-HokageMonument,,,Male,,
-212,RAIKAMI_M,Raikami Clan,100,,,,Male,,
-213,RAIKAMI_F,Raikami Clan,100,,,,Male,,
+212,RAIKAMI_M,Raikami Clan,100,CON-HokageMonument,,,Male,,
+213,RAIKAMI_F,Raikami Clan,100,CON-HokageMonument,,,Male,,

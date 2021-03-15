@@ -682,14 +682,14 @@ module DialogueModule
       Raikami1 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("The Raikami Clan act on the will of the gods!")
-                    pbMessage("By summoning lightning, we are channeling the energy of the heavens themselves!")
-                    pbMessage("Katana of Lightning, Raikami Style! Thunderclap!")
+                    pbMessage("\\xn[Rohan]\\bThe Raikami Clan act on the will of the gods!")
+                    pbMessage("\\xn[Rohan]\\bBy summoning lightning, we are channeling the energy of the heavens themselves!")
+                    pbMessage("\\xn[Rohan]\\bKatana of Lightning, Raikami Style! Thunderclap!")
                     battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
                     battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
                     battle.scene.appearBar
-                    pbMessage("Katana of Lightning, Raikami Style! Heaven's Domain!")
+                    pbMessage("\\xn[Rohan]\\bKatana of Lightning, Raikami Style! Heaven's Domain!")
                     battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
