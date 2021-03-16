@@ -197,7 +197,11 @@ end
               x=tile[0]
               y=tile[1]
               # "next" means "return" here
-              next !(x<xStart||x>xEnd||y<yStart||y>yEnd)
+              begin
+                next !(x<xStart||x>xEnd||y<yStart||y>yEnd)
+              rescue
+                next
+              end
             }
             @priorect=[xStart,yStart,xEnd,yEnd]
           end
