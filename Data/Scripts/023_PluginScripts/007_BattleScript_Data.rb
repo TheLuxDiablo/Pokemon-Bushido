@@ -2835,7 +2835,7 @@ module DialogueModule
                         pbMessage("\\xn[Haunted]\\bI've been waiting for this battle with you, \\PN!")
                         pbMessage("\\xn[Haunted]\\bNow, let me show you why they call me \"Haunted\" Art Studio!")
                         pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Terrifying Stare!")
-                        battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
+                        battle.pbAnimation(getID(PBMoves,:SNARL),battle.battlers[1],battle.battlers[0])
                         battle.scene.disappearBar
                         battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
                         battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
@@ -2855,7 +2855,7 @@ module DialogueModule
                       pbMessage("\\xn[Haunted]\\bThings are going pretty well for you in this battle, \\PN!")
                       pbMessage("\\xn[Haunted]\\bIt would be a shame if you... were haunted!")
                       pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Terrifying Stare!")
-                      battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
+                      battle.pbAnimation(getID(PBMoves,:SNARL),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
                       battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
                       battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)

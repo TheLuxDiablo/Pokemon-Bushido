@@ -152,7 +152,7 @@ class Phenomenon
       @x = selected_tile[0]
       @y = selected_tile[1]
       @type = selected_tile[2]
-      @timer = Graphics.frame_count + PhenomenonConfig::Timer
+      @timer = Graphics.frame_count + (PhenomenonConfig::Timer*2)
       @active = true
     end
   end
