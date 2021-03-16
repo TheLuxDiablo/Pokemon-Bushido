@@ -461,39 +461,51 @@ ItemHandlers::UseOnPokemon.add(:VIVIDSCENT,proc { |item,pokemon,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:SUSHI1,proc { |item,pokemon,scene|
+  if pkmn.fainted? || pkmn.hp==pkmn.totalhp
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    next false
+  end
   if pokemon.shadowPokemon?
     pbRaiseHappinessAndReduceHeart(pokemon,scene,300)
-    next pbHPItem(pokemon,30,scene)
-  else
-    next pbHPItem(pokemon,30,scene)
   end
+  pbHPItem(pokemon,30,scene)
+  next true
 })
 
 ItemHandlers::UseOnPokemon.add(:SUSHI2,proc { |item,pokemon,scene|
+  if pkmn.fainted? || pkmn.hp==pkmn.totalhp
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    next false
+  end
   if pokemon.shadowPokemon?
     pbRaiseHappinessAndReduceHeart(pokemon,scene,600)
-    next pbHPItem(pokemon,60,scene)
-  else
-    next pbHPItem(pokemon,60,scene)
   end
+  pbHPItem(pokemon,60,scene)
+  next true
 })
 
 ItemHandlers::UseOnPokemon.add(:SUSHI3,proc { |item,pokemon,scene|
+  if pkmn.fainted? || pkmn.hp==pkmn.totalhp
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    next false
+  end
   if pokemon.shadowPokemon?
     pbRaiseHappinessAndReduceHeart(pokemon,scene,900)
-    next pbHPItem(pokemon,90,scene)
-  else
-    next pbHPItem(pokemon,90,scene)
   end
+  pbHPItem(pokemon,90,scene)
+  next true
 })
 
 ItemHandlers::UseOnPokemon.add(:SUSHI4,proc { |item,pokemon,scene|
+  if pkmn.fainted? || pkmn.hp==pkmn.totalhp
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    next false
+  end
   if pokemon.shadowPokemon?
     pbRaiseHappinessAndReduceHeart(pokemon,scene,1200)
-    next pbHPItem(pokemon,120,scene)
-  else
-    next pbHPItem(pokemon,120,scene)
   end
+  pbHPItem(pokemon,120,scene)
+  next true
 })
 
 ItemHandlers::UseOnPokemon.add(:TIMEFLUTE,proc { |item,pokemon,scene|
