@@ -6,7 +6,7 @@ PluginManager.register({
 })
 
 # Whether or not you want the custom/better errors message.
-SPECIAL_ERRORS = true
+SPECIAL_ERRORS = false
 
 
 
