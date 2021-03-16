@@ -497,7 +497,8 @@ module FontInstaller
      'pkmnems.ttf',
      'pkmnrs.ttf',
      'pkmndp.ttf',
-     'pkmnfl.ttf'
+     'pkmnfl.ttf',
+     'TAKOYAKI.ttf'
   ]
   # names (not filenames) of fonts to be installed
   Names = [
@@ -506,7 +507,8 @@ module FontInstaller
     'Power Green Small',
     'Power Red and Blue',
     'Power Clear',
-    'Power Red and Green'
+    'Power Red and Green',
+    'TAKOYAKI'
   ]
   # whether to notify player (via pop-up message) that fonts were installed
   Notify = true
@@ -566,9 +568,9 @@ module FontInstaller
         break
       end
     end
-    return if !exist # Exit if not all source fonts exist
-    pbMessage(_INTL("One or more fonts used in this game do not exist on the system.\1"))
-    pbMessage(_INTL("The game can be played, but the look of the game's text will not be optimal."))
+    #return if !exist # Exit if not all source fonts exist
+    #pbMessage(_INTL("One or more fonts used in this game do not exist on the system.\1"))
+    #pbMessage(_INTL("The game can be played, but the look of the game's text will not be optimal."))
     failed = false
     for i in 0...Filenames.size
       f = Filenames[i]
@@ -609,20 +611,21 @@ module FontInstaller
         success.each do |f|
           fonts << f << ', '
         end
-        if failed
-          pbMessage(_INTL("Some of the fonts were successfully installed.\1"))
-          pbMessage(_INTL("To install the other fonts, copy the files in this game's Fonts folder to the Fonts folder in Control Panel.\1"))
-        else
-          pbMessage(_INTL("The fonts were successfully installed.\1"))
-        end
-        if pbConfirmMessage(_INTL("Would you like to restart the game and apply the changes?"))
-          a = Thread.new { system('Game') }
-          exit
-        end
+        #if failed
+        #  pbMessage(_INTL("Some of the fonts were successfully installed.\1"))
+        #  pbMessage(_INTL("To install the other fonts, copy the files in this game's Fonts folder to the Fonts folder in Control Panel.\1"))
+        #else
+        #  pbMessage(_INTL("The fonts were successfully installed.\1"))
+        #end
+        #if pbConfirmMessage(_INTL("Would you like to restart the game and apply the changes?"))
+        #  a = Thread.new { system('Game') }
+        #  exit
+        #end
       end
     else
       # No fonts were installed.
-      pbMessage(_INTL("To install the necessary fonts, copy the files in this game's Fonts folder to the Fonts folder in Control Panel."))
+      pbMessage(_INTL("To install the necessary fonts, open the game's \"Fonts\" folder."))
+      pbMessage(_INTL("Double click each \".ttf\" file, and then select Install in the top left of the window that appears."))
     end
   end
 end
