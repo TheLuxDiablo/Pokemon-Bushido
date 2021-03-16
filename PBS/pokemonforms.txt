@@ -513,7 +513,7 @@ BattlerPlayerY = 41
 BattlerEnemyX = -1
 BattlerEnemyY = 28
 BattlerShadowX = -9
-Evolutions = SIRFETCHD,CriticalHits,3
+Evolutions = SIRFETCHD,Level,30
 #-------------------------------
 [GRIMER,1]
 FormName = Alolan
