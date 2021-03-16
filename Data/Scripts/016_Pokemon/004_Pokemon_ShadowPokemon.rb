@@ -461,7 +461,7 @@ ItemHandlers::UseOnPokemon.add(:VIVIDSCENT,proc { |item,pokemon,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:SUSHI1,proc { |item,pokemon,scene|
-  if pkmn.fainted? || pkmn.hp==pkmn.totalhp
+  if pokemon.fainted? || pokemon.hp==pokemon.totalhp
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
   end
@@ -473,7 +473,7 @@ ItemHandlers::UseOnPokemon.add(:SUSHI1,proc { |item,pokemon,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:SUSHI2,proc { |item,pokemon,scene|
-  if pkmn.fainted? || pkmn.hp==pkmn.totalhp
+  if pokemon.fainted? || pokemon.hp==pokemon.totalhp
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
   end
@@ -485,7 +485,7 @@ ItemHandlers::UseOnPokemon.add(:SUSHI2,proc { |item,pokemon,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:SUSHI3,proc { |item,pokemon,scene|
-  if pkmn.fainted? || pkmn.hp==pkmn.totalhp
+  if pokemon.fainted? || pokemon.hp==pokemon.totalhp
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
   end
@@ -497,7 +497,7 @@ ItemHandlers::UseOnPokemon.add(:SUSHI3,proc { |item,pokemon,scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:SUSHI4,proc { |item,pokemon,scene|
-  if pkmn.fainted? || pkmn.hp==pkmn.totalhp
+  if pokemon.fainted? || pokemon.hp==pokemon.totalhp
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
   end
