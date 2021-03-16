@@ -505,13 +505,13 @@ class PokemonOption_Scene
            MessageConfig.pbSetSystemFrame($TextFrames[value])
          }
        ),
-       EnumOption.new(_INTL("Font Style"),[_INTL("Em"),_INTL("R/S"),_INTL("FRLG"),_INTL("DP")],
-         proc { $PokemonSystem.font },
-         proc { |value|
-           $PokemonSystem.font = value
-           MessageConfig.pbSetSystemFontName($VersionStyles[value])
-         }
-       ),
+       #EnumOption.new(_INTL("Font Style"),[_INTL("Em"),_INTL("R/S"),_INTL("FRLG"),_INTL("DP")],
+        # proc { $PokemonSystem.font },
+         #proc { |value|
+          # $PokemonSystem.font = value
+           #MessageConfig.pbSetSystemFontName($VersionStyles[value])
+         #}
+       #),
        EnumOption.new(_INTL("Text Entry"),[_INTL("Cursor"),_INTL("Keyboard")],
          proc { $PokemonSystem.textinput },
          proc { |value| $PokemonSystem.textinput = value }
