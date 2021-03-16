@@ -18,6 +18,12 @@ If you are experiencing issues with Game.exe, please follow these steps:
 
 If you are experiencing bugs with the game, please join the Pokemon Bushido Discord! https://discord.gg/FAeZEKwfUh
 
+FOR PLAYERS USING THE GameRGSS.exe:
+Please install the fonts in the game's "Fonts" folder!
+1. Double click each .ttf file to open the font installer.
+2. Click "Install" in the top left of the window that appears.
+
+
 🌸 Public Credits 🌸
 
 POKEMON ESSENTIALS
