@@ -3117,6 +3117,10 @@ class PokeBattle_Move_0EC < PokeBattle_Move
   end
 
   def pbSwitchOutTargetsEffect(user,targets,numHits,switchedBattlers)
+    if $PokemonTemp.orderData["hasAce"] == true
+      @battle.pbDisplay(_INTL("{1} cannot be sent back during this battle!",b.pbThis))
+      return
+    end
     return if @battle.wildBattle?
     return if user.fainted? || numHits==0
     roarSwitched = []

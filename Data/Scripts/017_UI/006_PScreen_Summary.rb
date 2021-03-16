@@ -888,14 +888,18 @@ def drawPageFive
     ballimage = sprintf("Graphics/Pictures/Summary/icon_ball_%02d",@pokemon.ballused)
     imagepos.push([ballimage,14,60])
     pbDrawImagePositions(overlay,imagepos)
+    # Determine which stats are boosted and lowered by the Pokémon's nature
     statshadows = []
-    for i in 0...5; statshadows[i] = shadow; end
-    if !(@pokemon.isShadow? && @pokemon.heartStage<=3 rescue false)
-      natup = (@pokemon.nature/5).floor
-      natdn = (@pokemon.nature%5).floor
+    PBStats.eachStat { |s| statshadows[s] = shadow }
+    if !@pokemon.shadowPokemon? || @pokemon.heartStage>3
+      natup = PBNatures.getStatRaised(@pokemon.calcNature)
+      natdn = PBNatures.getStatLowered(@pokemon.calcNature)
       statshadows[natup] = Color.new(200,96,72) if natup!=natdn
       statshadows[natdn] = Color.new(64,120,200) if natup!=natdn
     end
+    statshadows[natup] = Color.new(200,96,72) if natup!=natdn
+    statshadows[natdn] = Color.new(64,120,200) if natup!=natdn
+
     textColumn=300
     evColumn=390
     ivColumn=455
@@ -910,22 +914,22 @@ def drawPageFive
        [_INTL("HP"),textColumn,92,2,base,shadow],
        [sprintf("%d",@pokemon.ev[0]),evColumn,92,2,Color.new(64,64,64),Color.new(176,176,176)],
        [sprintf("%d",@pokemon.iv[0]),ivColumn,92,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Attack"),textColumn,124,2,base,statshadows[0]],
+       [_INTL("Attack"),textColumn,124,2,base,statshadows[1]],
        [sprintf("%d",@pokemon.ev[1]),evColumn,124,2,Color.new(64,64,64),Color.new(176,176,176)],
        [sprintf("%d",@pokemon.iv[1]),ivColumn,124,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Defense"),textColumn,156,2,base,statshadows[1]],
+       [_INTL("Defense"),textColumn,156,2,base,statshadows[2]],
        [sprintf("%d",@pokemon.ev[2]),evColumn,156,2,Color.new(64,64,64),Color.new(176,176,176)],
        [sprintf("%d",@pokemon.iv[2]),ivColumn,156,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Speed"),textColumn,187,2,base,statshadows[3]],
-       [sprintf("%d",@pokemon.ev[3]),evColumn,188,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[3]),ivColumn,188,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Sp. Atk"),textColumn,219,2,base,statshadows[4]],
-       [sprintf("%d",@pokemon.ev[4]),evColumn,220,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[4]),ivColumn,220,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Sp. Def"),textColumn,251,2,base,statshadows[2]],
-       [sprintf("%d",@pokemon.ev[5]),evColumn,252,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[5]),ivColumn,252,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Ability"),224,284,0,base,shadow],
+       [_INTL("Sp. Atk"),textColumn,187,2,base,statshadows[4]],
+       [sprintf("%d",@pokemon.ev[4]),evColumn,188,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[4]),ivColumn,188,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Sp. Def"),textColumn,219,2,base,statshadows[5]],
+       [sprintf("%d",@pokemon.ev[5]),evColumn,220,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[5]),ivColumn,220,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Speed"),textColumn,251,2,base,statshadows[3]],
+       [sprintf("%d",@pokemon.ev[3]),evColumn,252,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[3]),ivColumn,252,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Ability"),224,284,0,base,shadow], # 187,188 - 219,220 - 251,252
        [PBAbilities.getName(@pokemon.ability),362,284,0,Color.new(64,64,64),Color.new(176,176,176)],
     ]
     if @pokemon.hasItem?
