@@ -124,7 +124,9 @@ class PokeBattle_Battler
   #=============================================================================
   # Return true if Pokémon continues attacking (although it may have chosen to
   # use a different move in disobedience), or false if attack stops.
+  # Return to if "Always Listen" is enabled in the game settings script.
   def pbObedienceCheck?(choice)
+    return true if ALWAYS_LISTEN
     return true if usingMultiTurnAttack?
     return true if choice[0]!=:UseMove
     return true if !@battle.internalBattle
@@ -337,8 +339,8 @@ class PokeBattle_Battler
     # Wide Guard
     if target.pbOwnSide.effects[PBEffects::WideGuard] && user.index!=target.index &&
        PBTargets.multipleTargets?(move.pbTarget(user)) && move.function != "17C" &&
-       (NEWEST_BATTLE_MECHANICS || move.damagingMove?) && !unseenfist 
-	   # move.function == 17C is Dragon Darts. 
+       (NEWEST_BATTLE_MECHANICS || move.damagingMove?) && !unseenfist
+	   # move.function == 17C is Dragon Darts.
       @battle.pbCommonAnimation("WideGuard",target)
       @battle.pbDisplay(_INTL("Wide Guard protected {1}!",target.pbThis(true)))
       target.damageState.protected = true
