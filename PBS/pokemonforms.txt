@@ -640,7 +640,9 @@ Weight = 59.0
 Shape = 13
 Pokedex = It zips around at blistering speeds, looking for an opening to skewer its opponent on its giant pincers.
 BattlerPlayerY = 60
+BattlerEnemyX = 0
 BattlerEnemyY = 15
+BattlerShadowSize = 2
 #-------------------------------
 [GYARADOS,1]
 FormName = Mega Gyarados
@@ -652,7 +654,6 @@ Abilities = MOLDBREAKER
 HiddenAbility = MOLDBREAKER
 Weight = 305.0
 Pokedex = It zooms out of the water at Mach speeds. Even large ships caught in its path are split cleanly in two!
-BattlerPlayerX = 0
 BattlerPlayerY = 52
 BattlerEnemyX = 0
 BattlerEnemyY = 8
@@ -667,6 +668,9 @@ HiddenAbility = TOUGHCLAWS
 Height = 2.1
 Weight = 79.0
 Pokedex = When it Mega Evolves, it becomes more vicious than ever before. Some say that's because its excess of power is causing it pain.
+BattlerPlayerX = 0
+BattlerPlayerY = 62
+BattlerEnemyX = 0
 BattlerEnemyY = 19
 #-------------------------------
 [ARTICUNO,1]
@@ -677,6 +681,7 @@ BaseStats = 90,85,85,95,125,100
 Abilities = COMPETITIVE
 Moves = 1,GUST,1,PSYCHOSHIFT,5,CONFUSION,10,REFLECT,15,HYPNOSIS,20,AGILITY,25,ANCIENTPOWER,30,TAILWIND,35,PSYCHOCUT,40,RECOVER,45,FREEZINGGLARE,50,DREAMEATER,55,HURRICANE,60,MINDREADER,65,FUTURESIGHT,70,TRICKROOM
 BattlerPlayerY = 64
+BattlerEnemyX = 0
 BattlerEnemyY = 20
 #-------------------------------
 [ZAPDOS,1]
@@ -686,6 +691,8 @@ Type2 = FLYING
 BaseStats = 90,125,90,100,85,90
 Abilities = DEFIANT
 Moves = 1,PECK,1,FOCUSENERGY,5,ROCKSMASH,10,LIGHTSCREEN,15,PLUCK,20,AGILITY,25,ANCIENTPOWER,30,BRICKBREAK,35,DRILLPECK,40,QUICKGUARD,45,THUNDEROUSKICK,50,BULKUP,55,COUNTER,60,DETECT,65,CLOSECOMBAT,70,REVERSAL
+BattlerPlayerY = 62
+BattlerEnemyX = 0
 BattlerEnemyY = 18
 #-------------------------------
 [MOLTRES,1]
@@ -695,6 +702,9 @@ Type2 = FLYING
 BaseStats = 90,85,90,90,100,125
 Abilities = BERSERK
 Moves = 1,GUST,1,LEER,5,PAYBACK,10,SAFEGUARD,15,WINGATTACK,20,AGILITY,25,ANCIENTPOWER,30,SUCKERPUNCH,35,AIRSLASH,40,AFTERYOU,45,FIERYWRATH,50,NASTYPLOT,55,HURRICANE,60,ENDURE,65,MEMENTO,70,SKYATTACK
+BattlerPlayerY = 65
+BattlerEnemyX = 0
+BattlerEnemyY = 17
 #-------------------------------
 [MEWTWO,1]
 FormName = Mega Mewtwo X
