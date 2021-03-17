@@ -846,6 +846,57 @@ def pbPokemonMart(stock,speech=nil,cantsell=false,gender=0)
 end
 
 
+def pbScentSeller(stock,speech=nil,cantsell=false,gender=0)
+  for i in 0...stock.length
+    stock[i] = getID(PBItems,stock[i])
+    if !stock[i] || stock[i]==0 ||
+       (pbIsImportantItem?(stock[i]) && $PokemonBag.pbHasItem?(stock[i]))
+      stock[i] = nil
+    end
+  end
+  stock.compact!
+  commands = []
+  cmdBuy  = -1
+  cmdSell = -1
+  cmdQuit = -1
+  commands[cmdBuy = commands.length]  = _INTL("Buy")
+  commands[cmdSell = commands.length] = _INTL("Sell") if !cantsell
+  commands[cmdQuit = commands.length] = _INTL("Quit")
+  if gender==1
+    speechString = _INTL("\\rHello there! I sell wonderful scents. Can I interest you in some?")
+  else
+    speechString = _INTL("\\rHello there! I sell wonderful scents. Can I interest you in some?")
+  end
+  cmd = pbMessage(speech ? speech : speechString,commands,cmdQuit+1)
+  loop do
+    if cmdBuy>=0 && cmd==cmdBuy
+      scene = PokemonMart_Scene.new
+      screen = PokemonMartScreen.new(scene,stock)
+      screen.pbBuyScreen
+    elsif cmdSell>=0 && cmd==cmdSell
+      scene = PokemonMart_Scene.new
+      screen = PokemonMartScreen.new(scene,stock)
+      screen.pbSellScreen
+    else
+      if gender==1
+        pbMessage(_INTL("\\rPlease come again!"))
+      else
+        pbMessage(_INTL("\\bPlease come again!"))
+      end
+      break
+    end
+    if gender==1
+      cmd = pbMessage(_INTL("\\rIs there anything else you're interested in?"),
+         commands,cmdQuit+1)
+    else
+      cmd = pbMessage(_INTL("\\bIs there anything else you're interested in?"),
+         commands,cmdQuit+1)
+    end
+  end
+  $game_temp.clear_mart_prices
+end
+
+
 
 class Game_Temp
   attr_writer :mart_prices
