@@ -1904,7 +1904,11 @@ module DialogueModule
                       end
                       pbMessage("Akui Clan Technique, Shock Kunai!")
                       battle.scene.disappearBar
-                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      if !battle.battlers[1].fainted?
+                        battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      else
+                        battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[3])
+                      end
                       if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
                         battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
                       else
@@ -1991,7 +1995,11 @@ module DialogueModule
                     if !battle.battlers[3].fainted?
                       battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3])
                     end
-                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                    if !battle.battlers[1].fainted?
+                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                    else
+                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[3],battle.battlers[0])
+                    end
                     battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.pbHideOpponent

@@ -2536,7 +2536,7 @@ end
 # If a Pokémon makes contact with the user before it uses this move, the
 # attacker is burned. (Beak Blast)
 #===============================================================================
-class PokeBattle_Move_172 < PokeBattle_Move
+class PokeBattle_Move_172 < PokeBattle_TwoTurnMove
   def pbDisplayChargeMessage(user)
     user.effects[PBEffects::BeakBlast] = true
     @battle.pbCommonAnimation("BeakBlast",user)
