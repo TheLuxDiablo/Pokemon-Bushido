@@ -130,7 +130,7 @@ class PokemonBag_Scene
   ITEMTEXTSHADOWCOLOR   = Color.new(0,0,0)
   POCKETNAMEBASECOLOR   = Color.new(96,96,96)
   POCKETNAMESHADOWCOLOR = Color.new(208,208,208)
-  ITEMSVISIBLE          = 7
+  ITEMSVISIBLE          = 6
 
   def pbUpdate
     pbUpdateSpriteHash(@sprites)
@@ -175,7 +175,7 @@ class PokemonBag_Scene
     @sprites["background"] = IconSprite.new(0,0,@viewport)
     @sprites["overlay"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
     pbSetSystemFont(@sprites["overlay"].bitmap)
-    @sprites["bagsprite"] = IconSprite.new(30,20,@viewport)
+    @sprites["bagsprite"] = IconSprite.new(30,40,@viewport)
     @sprites["pocketicon"] = BitmapSprite.new(186,32,@viewport)
     @sprites["pocketicon"].x = 8
     @sprites["pocketicon"].y = 226
@@ -189,7 +189,7 @@ class PokemonBag_Scene
     @sprites["rightarrow"].y       = 76
     @sprites["rightarrow"].visible = (!@choosing || numfilledpockets>1)
     @sprites["rightarrow"].play
-    @sprites["itemlist"] = Window_PokemonBag.new(@bag,@filterlist,lastpocket,192,-14,314,40+32+ITEMSVISIBLE*32)
+    @sprites["itemlist"] = Window_PokemonBag.new(@bag,@filterlist,lastpocket,192,20,314,35+35+ITEMSVISIBLE*32)
     @sprites["itemlist"].viewport    = @viewport
     @sprites["itemlist"].pocket      = lastpocket
     @sprites["itemlist"].index       = @bag.getChoice(lastpocket)

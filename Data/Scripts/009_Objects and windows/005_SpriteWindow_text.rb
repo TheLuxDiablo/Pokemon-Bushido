@@ -737,7 +737,7 @@ class SpriteWindow_Selectable < SpriteWindow_Base
     @column_max = 1
     @virtualOy=0
     @index = -1
-    @row_height = 32
+    @row_height = 36
     @column_spacing = 32
     @ignore_input = false
   end
