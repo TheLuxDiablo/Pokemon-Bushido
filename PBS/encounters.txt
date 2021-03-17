@@ -425,6 +425,18 @@ Water
     MILOTIC,49,52
     PYUKUMUKU,48,51
 #-------------------------------
+135 # Sakura Cave
+25,10,10
+Cave
+    ROCKRUFF,7,12
+    DWEBBLE,7,12
+    DIGLETT,7,12
+	PANCHAM,7,12
+    MAKUHITA,7,12
+	TYROGUE,7,12
+    RIOLU,7,12
+    GABITE,8,13
+#-------------------------------
 147 # Kaminari Pass
 25,10,10
 Land
