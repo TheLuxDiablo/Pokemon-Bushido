@@ -11,6 +11,7 @@ class Scene_DebugIntro
 end
 
 def pbCallTitle
+  pbAllowSpeedup
   return Scene_DebugIntro.new if $DEBUG
   # First parameter is an array of images in the Titles
   # directory without a file extension, to show before the
