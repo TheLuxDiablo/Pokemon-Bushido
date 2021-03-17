@@ -371,7 +371,11 @@ class PokeBattle_Battle
     if battler.opposes? && battler.shadowPokemon?
       pbCommonAnimation("Shadow",battler)
       if $game_switches[62]
-        pbDisplay(_INTL("A Shadow Pokémon!\nThe Katana of Light is reacting to it!"))
+        if !vHI("KATANALIGHT4") && $game_map.map_id==136
+          pbDisplay(_INTL("A Shadow Pokémon!"))
+        else
+          pbDisplay(_INTL("A Shadow Pokémon!\nThe Katana of Light is reacting to it!"))
+        end
       else
         pbDisplay(_INTL("It's a strange Pokémon enveloped in darkness!"))
       end
