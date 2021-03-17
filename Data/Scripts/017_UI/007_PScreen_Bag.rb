@@ -177,8 +177,8 @@ class PokemonBag_Scene
     pbSetSystemFont(@sprites["overlay"].bitmap)
     @sprites["bagsprite"] = IconSprite.new(30,20,@viewport)
     @sprites["pocketicon"] = BitmapSprite.new(186,32,@viewport)
-    @sprites["pocketicon"].x = 0
-    @sprites["pocketicon"].y = 224
+    @sprites["pocketicon"].x = 8
+    @sprites["pocketicon"].y = 226
     @sprites["leftarrow"] = AnimatedSprite.new("Graphics/Pictures/leftarrow",8,40,28,2,@viewport)
     @sprites["leftarrow"].x       = -4
     @sprites["leftarrow"].y       = 76
@@ -189,7 +189,7 @@ class PokemonBag_Scene
     @sprites["rightarrow"].y       = 76
     @sprites["rightarrow"].visible = (!@choosing || numfilledpockets>1)
     @sprites["rightarrow"].play
-    @sprites["itemlist"] = Window_PokemonBag.new(@bag,@filterlist,lastpocket,168,-8,314,40+32+ITEMSVISIBLE*32)
+    @sprites["itemlist"] = Window_PokemonBag.new(@bag,@filterlist,lastpocket,192,-14,314,40+32+ITEMSVISIBLE*32)
     @sprites["itemlist"].viewport    = @viewport
     @sprites["itemlist"].pocket      = lastpocket
     @sprites["itemlist"].index       = @bag.getChoice(lastpocket)
@@ -254,7 +254,12 @@ class PokemonBag_Scene
 
   def pbRefresh
     # Set the background image
-    @sprites["background"].setBitmap(sprintf("Graphics/Pictures/Bag/bg_#{@bag.lastpocket}"))
+
+    if $Trainer.female?
+      @sprites["background"].setBitmap(sprintf("Graphics/Pictures/Bag/bg_f"))
+    else
+      @sprites["background"].setBitmap(sprintf("Graphics/Pictures/Bag/bg_m"))
+    end
     # Set the bag sprite
     fbagexists = pbResolveBitmap(sprintf("Graphics/Pictures/Bag/bag_#{@bag.lastpocket}_f"))
     if $Trainer.female? && fbagexists
@@ -267,13 +272,11 @@ class PokemonBag_Scene
     if @choosing && @filterlist
       for i in 1...@bag.pockets.length
         if @filterlist[i].length==0
-          @sprites["pocketicon"].bitmap.blt(6+(i-1)*22,6,
-             @pocketbitmap.bitmap,Rect.new((i-1)*20,28,20,20))
+          @sprites["pocketicon"].bitmap.blt((i-1)*24,6,@pocketbitmap.bitmap,Rect.new((i-1)*24,24,20,20))
         end
       end
     end
-    @sprites["pocketicon"].bitmap.blt(2+(@sprites["itemlist"].pocket-1)*22,2,
-       @pocketbitmap.bitmap,Rect.new((@sprites["itemlist"].pocket-1)*28,0,28,28))
+    @sprites["pocketicon"].bitmap.blt((@sprites["itemlist"].pocket-1)*24-(@sprites["itemlist"].pocket*2)+2,0,@pocketbitmap.bitmap,Rect.new((@sprites["itemlist"].pocket-1)*24,0,24,28))
     # Refresh the item window
     @sprites["itemlist"].refresh
     # Refresh more things
@@ -475,7 +478,7 @@ class PokemonBagScreen
       commands[cmdGive = commands.length]       = _INTL("Give") if $Trainer.pokemonParty.length>0 && pbCanHoldItem?(item)
       commands[cmdToss = commands.length]       = _INTL("Toss") if !pbIsImportantItem?(item) || $DEBUG
       if @bag.pbIsRegistered?(item)
-        commands[cmdRegister = commands.length] = _INTL("Unregister")
+        commands[cmdRegister = commands.length] = _INTL("Deselect")
       elsif pbCanRegisterItem?(item)
         commands[cmdRegister = commands.length] = _INTL("Register")
       end
