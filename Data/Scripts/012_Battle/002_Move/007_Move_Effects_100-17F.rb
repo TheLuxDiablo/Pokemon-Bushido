@@ -174,7 +174,7 @@ class PokeBattle_Move_10A < PokeBattle_Move
   def pbEffectGeneral(user)
     if user.pbOpposingSide.effects[PBEffects::LightScreen]>0
       user.pbOpposingSide.effects[PBEffects::LightScreen] = 0
-      @battle.pbDisplayP(_INTL("{1}'s Light Screen wore off!",user.pbOpposingTeam))
+      @battle.pbDisplay(_INTL("{1}'s Light Screen wore off!",user.pbOpposingTeam))
     end
     if user.pbOpposingSide.effects[PBEffects::Reflect]>0
       user.pbOpposingSide.effects[PBEffects::Reflect] = 0

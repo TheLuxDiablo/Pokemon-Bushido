@@ -404,7 +404,7 @@ PBEvolution.register(:LevelDarkness, {
 PBEvolution.register(:LevelDarkInParty, {
   "levelUpCheck" => proc { |pkmn, parameter|
     if pkmn.level >= parameter
-      next $Trainer.pokemonParty.any? { |p| p && p.hasType(:DARK) }
+      next $Trainer.pokemonParty.any? { |p| p && p.hasType?(:DARK) }
     end
   }
 })
