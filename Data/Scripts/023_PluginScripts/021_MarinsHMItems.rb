@@ -170,8 +170,7 @@ if USING_SURF_ITEM
       $game_temp.in_menu = false
       if $PokemonGlobal.surfing ||
                       pbGetMetadata($game_map.map_id,MetadataBicycleAlways) ||
-                      !PBTerrain.isSurfable?(pbFacingTerrainTag) ||
-                      !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction,$game_player)
+                      !PBTerrain.isSurfable?(pbFacingTerrainTag) || !$game_player.passable?($game_player.x, $game_player.y, $game_player.direction)
           next 1
       else
         pbSurf
@@ -226,7 +225,7 @@ if USING_SURF_ITEM
       if $PokemonGlobal.surfing ||
                       pbGetMetadata($game_map.map_id,MetadataBicycleAlways) ||
                       !PBTerrain.isSurfable?(pbFacingTerrainTag) ||
-                      !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction,$game_player)
+                      !$game_player.passable?($game_player.x, $game_player.y, $game_player.direction)
           return false
       else
         pbMessage(_INTL("You closed the bag and readied your Katana."))

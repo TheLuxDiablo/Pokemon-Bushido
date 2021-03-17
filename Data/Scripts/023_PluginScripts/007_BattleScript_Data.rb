@@ -552,8 +552,17 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Venom Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
-                    battle.battlers[2].pbInflictStatus(PBStatuses::POISON,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
+
+                    if battle.battlers[2].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                      battle.battlers[2].pbInflictStatus(PBStatuses::POISON,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
+                    end
                     battle.scene.pbHideOpponent
                     battle.scene.appearBar
                     pbMessage("\\xn[Tsuku]\\rNow that we're f-finally fighting together, I'll do my best to m-make you proud!")
@@ -580,11 +589,15 @@ module DialogueModule
                     else
                       battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[3])
                     end
-                    if !battle.battlers[0].fainted?
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                       battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
                     end
-                    if !battle.battlers[2].fainted?
+                    if battle.battlers[2].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                       battle.battlers[2].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
                     end
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
@@ -679,6 +692,7 @@ module DialogueModule
                     battle.scene.pbHideOpponent
                   }
       # Raikami Clan intros
+      # 1 is Rohan
       Raikami1 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
@@ -687,7 +701,11 @@ module DialogueModule
                     pbMessage("\\xn[Rohan]\\bKatana of Lightning, Raikami Style! Thunderclap!")
                     battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("\\xn[Rohan]\\bKatana of Lightning, Raikami Style! Heaven's Domain!")
                     battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
@@ -704,7 +722,11 @@ module DialogueModule
                     pbMessage("Katana of Lightning, Raikami Style! Thunderclap!")
                     battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                    end
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
@@ -718,7 +740,11 @@ module DialogueModule
                     pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
                     battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                    end
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
@@ -729,7 +755,11 @@ module DialogueModule
                     pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
                     battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                    end
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
@@ -741,7 +771,11 @@ module DialogueModule
                     pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
                     battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                    end
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
@@ -753,7 +787,11 @@ module DialogueModule
                     pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
                     battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                    end
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
@@ -807,7 +845,11 @@ module DialogueModule
                       pbMessage("Katana of Fire, Nensho Style! Flame Breath!")
                       battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
                       battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                       battle.scene.pbHideOpponent
                     }
@@ -830,7 +872,11 @@ module DialogueModule
                       pbMessage("Katana of Fire, Nensho Style! Breath of Flames!")
                       battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                       battle.scene.pbHideOpponent
                     }
@@ -844,7 +890,11 @@ module DialogueModule
                       pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Breath of Flames!")
                       battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                       battle.scene.appearBar
@@ -874,7 +924,11 @@ module DialogueModule
                         pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Flame Breath!")
                         battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                         battle.scene.disappearBar
-                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                          battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                        end
                         battle.scene.appearBar
                         pbMessage("\\xn[Nori]\\bLet's finish this duel in a blaze of glory, \\PN! Yaaah!")
                         battle.scene.disappearBar
@@ -1122,7 +1176,11 @@ module DialogueModule
                     battle.scene.disappearBar
                     #if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                     battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's technique!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Signature Technique! Hashimoto Might!")
                     battle.scene.disappearBar
@@ -1177,7 +1235,11 @@ module DialogueModule
                     pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Breath of Flames!")
                     battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Sunlight Beams!")
                     battle.pbCommonAnimation("Sunny",nil,nil)
@@ -1389,7 +1451,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowIntroSpikes3 = Proc.new{|battle|
@@ -1404,7 +1470,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowIntroSpikes4 = Proc.new{|battle|
@@ -1419,7 +1489,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Flame Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowEvasion = Proc.new{|battle|
@@ -1454,7 +1528,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowEvasion4 = Proc.new{|battle|
@@ -1469,7 +1547,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Flame Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowSpeed = Proc.new{|battle|
@@ -1494,7 +1576,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowSpeed3 = Proc.new{|battle|
@@ -1509,7 +1595,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowSpeed4 = Proc.new{|battle|
@@ -1561,7 +1651,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowFreeze2 = Proc.new{|battle|
@@ -1572,7 +1666,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
@@ -1583,7 +1681,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowBurn = Proc.new{|battle|
@@ -1593,7 +1695,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Flame Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowPoison = Proc.new{|battle|
@@ -1604,7 +1710,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Venom Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowSleep = Proc.new{|battle|
@@ -1615,7 +1725,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowSleep2 = Proc.new{|battle|
@@ -1626,7 +1740,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility! Ultimate Speed!")
                     battle.scene.disappearBar
@@ -1696,11 +1814,15 @@ module DialogueModule
                       battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
                     end
                     battle.scene.disappearBar
-                    if !battle.battlers[1].fainted?
+                    if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                       battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
                     end
-                    if !battle.battlers[3].fainted?
+                    if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                       battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
                     end
                     battle.scene.appearBar
                     pbMessage("\\xn[\\v[26]]\\pogLet's finish these jerks off \\PN!")
@@ -1725,8 +1847,16 @@ module DialogueModule
                       pbMessage("Akui Clan Technique, Shock Kunai!")
                       battle.scene.disappearBar
                       battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                      battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
+                      if battle.battlers[2].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
+                      end
                       battle.scene.pbHideOpponent
                       battle.scene.appearBar
                       pbMessage("\\xn[\\v[26]]\\pogThese Akui grunts will never play fair...")
@@ -1734,8 +1864,16 @@ module DialogueModule
                       pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Flame Breath!")
                       battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
                       battle.scene.disappearBar
-                      battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
-                      battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
+                      end
+                      if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                      end
                       battle.scene.appearBar
                       pbMessage("\\xn[\\v[26]]\\pogLet's go \\PN! We can take care of these Akui lowlifes!")
                       pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
@@ -1767,8 +1905,16 @@ module DialogueModule
                       pbMessage("Akui Clan Technique, Shock Kunai!")
                       battle.scene.disappearBar
                       battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                      battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
+                      if battle.battlers[2].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
+                      end
                       battle.scene.pbHideOpponent
                       battle.scene.appearBar
                       pbMessage("\\xn[\\v[26]]\\pog\\PN... I'm starting to feel pretty tired...")
@@ -1802,8 +1948,16 @@ module DialogueModule
                     pbMessage("\\xn[\\v[26]]\\pogForget it... I'm just going to throw these kunai as hard I can!")
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.battlers[1].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                    battle.battlers[3].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    if battle.battlers[1].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[1].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
+                    end
+                    if battle.battlers[3].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[3].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("\\xn[\\v[26]]\\pogHaha! Yes, it worked!")
                     pbMessage("\\xn[\\v[26]]\\pogTake that you Akui scumbags!")
@@ -1858,11 +2012,15 @@ module DialogueModule
                       battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
                     end
                     battle.scene.disappearBar
-                    if !battle.battlers[1].fainted?
+                    if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                       battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
                     end
-                    if !battle.battlers[3].fainted?
+                    if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                       battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
                     end
                   }
       ShadowDuo4 = Proc.new{|battle|
@@ -1911,16 +2069,20 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
                     battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
-                  #  battle.scene.appearBar
-                  #  pbMessage("Akui Clan Technique, Toxic Kunai!")
-                  #  battle.scene.disappearBar
-                  #  battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                  #  battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Toxic Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[1],battle.battlers[0])
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by Mashiro's kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("I won't let you brats get in my way!")
                     pbMessage("I'm going to put you in your place, you miserable worm!")
                     battle.scene.disappearBar
-                  #  battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       Mashiro2 = Proc.new{|battle|
@@ -1939,7 +2101,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Mashiro's kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("Do you see now why the codes of Bushido are worthless? Without honor and respect, I can do whatever I want.")
                     battle.scene.disappearBar
@@ -1963,7 +2129,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen by Mashiro's kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("You'll never be able to defeat me!")
                     battle.scene.disappearBar
@@ -2004,7 +2174,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Icicle Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen by Mashiro's kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("Akui Admin Technique, Komorei Style! Blazing Sunlight!")
                     battle.pbCommonAnimation("Sunny",nil,nil)
@@ -2028,7 +2202,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Venom Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by Mashiro's kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
                     battle.scene.disappearBar
@@ -2061,8 +2239,16 @@ module DialogueModule
                     pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Breath of Flames!")
                     battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
                     battle.scene.disappearBar
-                    battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
+                    end
+                    if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                    end
                   }
       Hotoke2 = Proc.new{|battle|
                     battle.scene.appearBar
@@ -2133,9 +2319,15 @@ module DialogueModule
                     else
                       battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
                     end
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                    if !battle.battlers[2].fainted?
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Hotoke's kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Hotoke's kunai!",battle.battlers[0].name))
+                    end
+                    if battle.battlers[2].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
                       battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Hotoke's kunai!",battle.battlers[2].name))
                     end
                     battle.scene.appearBar
                     pbMessage("Get away...")
@@ -2159,7 +2351,11 @@ module DialogueModule
                   pbMessage("Akui Admin Technique... Nensho Style... Flame Breath...")
                   battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                   battle.scene.disappearBar
-                  battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                  else
+                    battle.pbDisplay(_INTL("{1} resisted Hotoke's technique!",battle.battlers[0].name))
+                  end
                   battle.scene.pbHideOpponent
                 }
     HotokeRematch2 = Proc.new{|battle|
@@ -2169,7 +2365,11 @@ module DialogueModule
                   pbMessage("Akui Admin Technique... Nensho Style... Flame Breath...")
                   battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
                   battle.scene.disappearBar
-                  battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                  else
+                    battle.pbDisplay(_INTL("{1} resisted Hotoke's technique!",battle.battlers[0].name))
+                  end
                   battle.scene.appearBar
                   pbMessage("And now... Another new technique...")
                   pbMessage("Akui Admin Technique... Nensho Style... Crimson Vortex...")
@@ -2208,7 +2408,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique! Shock Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Hotoke's kunai!",battle.battlers[0].name))
+                    end
                     battle.pbCommonAnimation("Sandstorm",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
@@ -2225,7 +2429,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("Hahaha! Are you having fun yet?!")
                     pbMessage("\\shBecause I sure am!")
@@ -2253,7 +2461,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Flame Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Kuro's Flame Kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
     KuroLast = Proc.new{|battle|
@@ -2273,7 +2485,11 @@ module DialogueModule
                   pbMessage("Akui Clan Technique, Venom Kunai!")
                   battle.scene.disappearBar
                   battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                  battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
+                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was burned by Kuro's Venom Kunai!")
+                  else
+                    battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                  end
                   battle.scene.pbHideOpponent
                 }
     KuroRematchIntro = Proc.new{|battle|
@@ -2297,7 +2513,11 @@ module DialogueModule
                   pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
                   battle.scene.disappearBar
                   battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                  battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
+                  else
+                    battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                  end
                   battle.scene.appearBar
                   pbMessage("Hahaha! Now, isn't this fun?!")
                   pbMessage("Come on now! Show me what you're made of!")
@@ -2322,22 +2542,34 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
-                    pbMessage("Actually... No, I don't think paralysis is good enough!")
+                    pbMessage("Actually... No, I don't think that's good enough!")
                     pbMessage("How about I burn your Pokémon instead?")
                     pbMessage("Akui Clan Technique, Flame Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("You know, I still don't think this is good enough...")
-                    pbMessage("Plus, your Pokémon is looking tired!")
+                    pbMessage("Hmm...")
                     pbMessage("How about I just go back to using my favorite kunai?")
                     pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("Hahahahaha! Thank you for being such an obedient little puppet!")
                     pbMessage("You really are my favorite plaything!")
@@ -2375,7 +2607,11 @@ module DialogueModule
                     pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(4,5),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("You don't stand a chance against me!")
                     battle.scene.disappearBar
@@ -2392,9 +2628,13 @@ module DialogueModule
                   pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Nightmare Void!")
                   battle.pbAnimation(getID(PBMoves,:DARKVOID),battle.battlers[1],battle.battlers[0])
                   battle.scene.disappearBar
-                  battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(5,6),"Your Pokémon was put into a deep sleep by the Katana of Shadows!")
-                  battle.battlers[0].effects[PBEffects::Nightmare] = true
-                  battle.pbDisplay(_INTL("{1} began having a nightmare!",battle.battlers[0].name))
+                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(5,6),"Your Pokémon was put into a deep sleep by the Katana of Shadows!")
+                    battle.battlers[0].effects[PBEffects::Nightmare] = true
+                    battle.pbDisplay(_INTL("{1} began having a nightmare!",battle.battlers[0].name))
+                  else
+                    battle.pbDisplay(_INTL("{1} resisted Hattori's katana technique!",battle.battlers[0].name))
+                  end
                   battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
                   battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!",battle.battlers[0].pbThis(true)))
                   battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
@@ -2422,7 +2662,11 @@ module DialogueModule
                   pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Venom Kunai!")
                   battle.scene.disappearBar
                   battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                  battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by the venom kunai!")
+                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
+                  else
+                    battle.pbDisplay(_INTL("{1} resisted Hattori's kunai!",battle.battlers[0].name))
+                  end
                   battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                   battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                   battle.scene.pbHideOpponent
@@ -2450,7 +2694,11 @@ module DialogueModule
                     pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Flame Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Hattori's kunai!",battle.battlers[0].name))
+                    end
                     battle.scene.pbHideOpponent
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
@@ -2718,7 +2966,11 @@ module DialogueModule
                     pbMessage("\\xn[Cam]\\bThundaga Katana! Lightning Stream!")
                     battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
                     battle.scene.disappearBar
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Cam's Thundaga technique!",battle.battlers[0].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("\\xn[Cam]\\bI'm going to go all out!")
                     battle.scene.disappearBar
@@ -2741,7 +2993,11 @@ module DialogueModule
                       pbMessage("\\xn[Cam]\\bThundaga Katana! Lightning Stream!")
                       battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Cam's Thundaga technique!",battle.battlers[0].name))
+                      end
                       battle.scene.appearBar
                       pbMessage("\\xn[Cam]\\bThundaga Katana! Electric Terrain!")
                       battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
@@ -2820,7 +3076,11 @@ module DialogueModule
                       pbMessage("\\xn[Tristan]\\bFists of Tristan, Signature Style! Thunder Fist!")
                       battle.pbAnimation(getID(PBMoves,:THUNDERPUNCH),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Tristan's epic punch!")
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Tristan's epic punch!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Tristan's Thunderfist!",battle.battlers[0].name))
+                      end
                       battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,3,battle.battlers[0])
                       battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
@@ -2867,7 +3127,11 @@ module DialogueModule
                       pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Spirit Flames!")
                       battle.pbAnimation(getID(PBMoves,:WILLOWISP),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Haunted's spirit flames!")
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Haunted's spirit flames!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Haunted's Spirit Flames!",battle.battlers[0].name))
+                      end
                       battle.scene.appearBar
                       pbMessage("\\xn[Haunted]\\bCan you handle my haunting? Let's find out!")
                       battle.scene.disappearBar
