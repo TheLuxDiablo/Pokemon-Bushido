@@ -2923,11 +2923,11 @@ module DialogueModule
                       pbMessage("Lugia's soul is completely corrupted! It's driven only by hatred!")
                       battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
                       battle.scene.disappearBar
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
-                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                       battle.scene.pbHideOpponent
                      }
         Virizion = Proc.new{|battle|

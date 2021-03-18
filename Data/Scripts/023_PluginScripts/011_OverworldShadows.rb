@@ -4,7 +4,7 @@ class Game_Character; attr_reader :jump_count; end
 class Sprite_ShadowOverworld
   attr_reader :visible; attr_accessor :event
 
-  NO_SHADOW_EVENT=["door","nurse","healing balls","Mart","boulder","HeadbuttTree","BerryPlant",".shadowless",".noshadow",".sl","Stairs","Item"]
+  NO_SHADOW_EVENT=["door","nurse","healing balls","Mart","boulder","HeadbuttTree","BerryPlant",".shadowless",".noshadow",".sl","Stairs","Item","Fire"]
 
   def initialize(sprite,event,viewport=nil)
     @rsprite  = sprite
