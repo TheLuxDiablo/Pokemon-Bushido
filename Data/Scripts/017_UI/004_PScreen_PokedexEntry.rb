@@ -52,8 +52,10 @@ class PokemonPokedexInfo_Scene
     @sprites["formfront"].x = 130
     @sprites["formfront"].y = 158
     @sprites["formback"] = PokemonSprite.new(@viewport)
-    @sprites["formback"].setOffset(PictureOrigin::Bottom)
-    @sprites["formback"].x = 382   # y is set below as it depends on metrics
+    #@sprites["formback"].setOffset(PictureOrigin::Center)
+    @sprites["formback"].x = 250   # y is set below as it depends on metrics
+    @sprites["formback"].zoom_x = 2/3
+    @sprites["formback"].zoom_y = 2/3
     @sprites["formicon"] = PokemonSpeciesIconSprite.new(0,@viewport)
     @sprites["formicon"].setOffset(PictureOrigin::Center)
     @sprites["formicon"].x = 82
@@ -132,6 +134,7 @@ class PokemonPokedexInfo_Scene
       intensity = (Graphics.frame_count%40)*12
       intensity = 480-intensity if intensity>240
       @sprites["areahighlight"].opacity = intensity
+      @sprites["formback"].y = 200
     end
     pbUpdateSpriteHash(@sprites)
   end
@@ -146,9 +149,9 @@ class PokemonPokedexInfo_Scene
     end
     if @sprites["formback"]
       @sprites["formback"].setSpeciesBitmap(@species,(@gender==1),@form,false,false,true)
-      @sprites["formback"].y = 256
+      #@sprites["formback"].y = 256
       fSpecies = pbGetFSpeciesFromForm(@species,@form)
-      @sprites["formback"].y += (pbLoadSpeciesMetrics[MetricBattlerPlayerY][fSpecies] || 0)*2
+      #@sprites["formback"].y += (pbLoadSpeciesMetrics[MetricBattlerPlayerY][fSpecies] || 0)*2
     end
     if @sprites["formicon"]
       @sprites["formicon"].pbSetParams(@species,@gender,@form)
