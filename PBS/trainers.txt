@@ -253,6 +253,12 @@ Pokemon = FLABEBE,15
 Pokemon = TAILLOW,15
 Pokemon = LUXIO,16
 #-------------------------------
+[KENSHI_M,Shota,1]
+LoseText = "Even though I challenged you, I still lost..."
+Pokemon = FLABEBE,12
+Pokemon = TAILLOW,12
+Pokemon = SHINX,13
+#-------------------------------
 [BLACKBELT,Junpei]
 LoseText = "I fight with my fists, but I must think with my head too."
 Pokemon = SAWK,16

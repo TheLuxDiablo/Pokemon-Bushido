@@ -2150,6 +2150,7 @@ BattlerEnemyY = 24
 [ROCKRUFF,2]
 Abilities = OWNTEMPO
 HiddenAbility = OWNTEMPO
+BattlerPlayerY = 42
 Evolutions = LYCANROC,LevelEvening,25
 #-------------------------------
 [LYCANROC,1]

@@ -134,7 +134,7 @@ class PokemonPokedexInfo_Scene
       intensity = (Graphics.frame_count%40)*12
       intensity = 480-intensity if intensity>240
       @sprites["areahighlight"].opacity = intensity
-      @sprites["formback"].y = 200
+      @sprites["formback"].y = 100
     end
     pbUpdateSpriteHash(@sprites)
   end

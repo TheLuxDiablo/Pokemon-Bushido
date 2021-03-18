@@ -248,7 +248,7 @@
 239,DRAGONASCENT,Dragon Ascent,03C,120,FLYING,Physical,100,5,0,NearOther,0,abef,"The user soars upward and drops at high speeds. Its Defense and Sp. Def stats are lowered."
 240,HURRICANE,Hurricane,015,110,FLYING,Special,70,10,30,Other,0,bef,"The user wraps its foe in a fierce wind that flies up into the sky. It may also confuse the foe."
 241,AEROBLAST,Aeroblast,000,100,FLYING,Special,95,5,0,Other,0,befh,"A vortex of air is shot at the target to inflict damage. Critical hits land more easily."
-242,BEAKBLAST,Beak Blast,172,100,FLYING,Physical,100,15,0,NearOther,0,bfn,"The user heats up its beak before attacking. Making contact in this time results in a burn."
+242,BEAKBLAST,Beak Blast,172,100,FLYING,Physical,100,15,0,NearOther,0,bfgn,"The user heats up its beak before attacking. Making contact in this time results in a burn."
 243,FLY,Fly,0C9,90,FLYING,Physical,95,15,0,Other,0,abef,"The user soars, then strikes on the second turn. It can also be used for flying to any familiar town."
 244,BOUNCE,Bounce,0CC,85,FLYING,Physical,85,5,30,Other,0,abef,"The user bounces up high, then drops on the foe on the second turn. It may also paralyze the foe."
 245,DRILLPECK,Drill Peck,000,80,FLYING,Physical,100,20,0,Other,0,abef,"A corkscrewing attack with the sharp beak acting as a drill."

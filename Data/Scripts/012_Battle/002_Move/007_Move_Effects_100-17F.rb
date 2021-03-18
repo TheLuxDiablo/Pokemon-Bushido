@@ -2537,14 +2537,17 @@ end
 # attacker is burned. (Beak Blast)
 #===============================================================================
 class PokeBattle_Move_172 < PokeBattle_TwoTurnMove
-  def pbDisplayChargeMessage(user)
-    user.effects[PBEffects::BeakBlast] = true
+  def pbChargingTurnMessage(user,targets)
     @battle.pbCommonAnimation("BeakBlast",user)
     @battle.pbDisplay(_INTL("{1} started heating up its beak!",user.pbThis))
   end
 
+  def pbChargingTurnEffect(user,target)
+    user.effects[PBEffects::BeakBlast] = true
+  end
+
   def pbMoveFailed?(user,targets)
-    if !user.effects[PBEffects::BeakBlast]
+    if !user.effects[PBEffects::BeakBlast] && user.effects[PBEffects::TwoTurnAttack]==1
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
