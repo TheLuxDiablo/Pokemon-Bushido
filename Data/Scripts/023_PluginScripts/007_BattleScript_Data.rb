@@ -2108,7 +2108,7 @@ module DialogueModule
                     pbMessage("You're even more foolish than you look!")
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
                     if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
                       battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Mashiro's kunai!")
                     else
