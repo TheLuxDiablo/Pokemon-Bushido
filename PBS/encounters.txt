@@ -1,7 +1,7 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 081 # Nagisa Bay
-25,10,10
+18,10,10
 Water
     SHARPEDO,53,57
     WISHIWASHI,53,57
@@ -13,7 +13,7 @@ Water
     DRAGONAIR,53,57
 #-------------------------------
 082 # Sakura Pass
-25,10,10
+18,10,10
 Land
     CHERUBI,2,6
     PANCHAM,3,7
@@ -42,7 +42,7 @@ PhenomenonGrass
     DRATINI,7
 #-------------------------------
 084 # Jikan Shrine
-25,10,10
+18,10,10
 Land
     MEDITITE,4,6
     MEDITITE,6,9
@@ -63,7 +63,7 @@ Water
     CARVANHA,5,8
 #-------------------------------
 090 # Shizen Trail
-25,10,10
+18,10,10
 Land
     TAILLOW,14,17
     VIVILLON,15,18
@@ -83,7 +83,7 @@ PhenomenonGrass
     JANGMOO,19
 #-------------------------------
 091 # Shizen Forest
-25,10,10
+20,10,10
 Land
     FOMANTIS,16,20
     CORVISQUIRE,16,21
@@ -103,7 +103,7 @@ PhenomenonGrass
     JANGMOO,22
 #-------------------------------
 095 # Tsuchi Shrine
-25,10,10
+18,10,10
 Land
     PASSIMIAN,20,24
     ORANGURU,21,24
@@ -124,7 +124,7 @@ Water
     PYUKUMUKU,20,24
 #-------------------------------
 098 # Yami Pass
-25,10,10
+20,10,10
 Land
     MIGHTYENA,47,53
     THROH,47,53
@@ -145,7 +145,7 @@ Water
     DRAGONAIR,46,52
 #-------------------------------
 102 # Jonetsu Pass
-25,10,10
+18,10,10
 Land
     MIENFOO,26,30
     LITLEO,27,30
@@ -171,7 +171,7 @@ PhenomenonBird
     GLIGAR,26,30
 #-------------------------------
 104 # Jonetsu Caverns
-25,10,10
+18,10,10
 Cave
     ROCKRUFF,26,31
     DWEBBLE,26,30
@@ -189,7 +189,7 @@ PhenomenonCave
     LARVITAR,26,30
 #-------------------------------
 105 # Jonetsu Caverns
-25,10,10
+18,10,10
 Cave
     ROCKRUFF,26,31
     SALANDIT,26,30
@@ -207,7 +207,7 @@ PhenomenonCave
     LARVITAR,26,30
 #-------------------------------
 106 # Kaiyo Sea
-25,10,10
+18,10,10
 Land
     SIMIPOUR,38,43
     KINGLER,39,43
@@ -244,7 +244,7 @@ PhenomenonWater
     DRAGONAIR,41
 #-------------------------------
 117 # Hanatsu Cave
-25,10,10
+18,10,10
 Cave
     ROCKRUFF,28,33
     SALANDIT,28,32
@@ -262,7 +262,7 @@ PhenomenonCave
     LARVITAR,28,32
 #-------------------------------
 118 # Hanatsu Shrine
-25,10,10
+18,10,10
 Land
     VULPIX,33,36
     URSARING,34,36
@@ -283,7 +283,7 @@ Water
     VAPOREON,33,36
 #-------------------------------
 123 # Chikyu Cave
-25,8,10
+18,8,10
 Cave
     DITTO,40,45
     GASTRODON,41,45
@@ -301,7 +301,7 @@ PhenomenonCave
     HITMONTOP,43
 #-------------------------------
 124 # Fubuki Bay
-20,10,10
+18,10,10
 Land
     WEAVILE,41,46
     AVALUGG,41,45
@@ -330,7 +330,7 @@ PhenomenonGrass
     MAMOSWINE,43,46
 #-------------------------------
 126 # Hanatsu Mine
-25,5,5
+18,7,5
 Cave
     ROCKRUFF,28,33
     SALANDIT,28,32
@@ -348,7 +348,7 @@ PhenomenonCave
     LARVITAR,28,32
 #-------------------------------
 127 # Izumi Village
-25,10,10
+18,10,10
 Water
     CLOYSTER,45,49
     DEWGONG,44,48
@@ -368,7 +368,7 @@ PhenomenonWater
     DRAGONAIR,46
 #-------------------------------
 132 # Izumi Pass
-25,10,10
+20,10,10
 Land
     SNOM,46,51
     PILOSWINE,46,50
@@ -405,7 +405,7 @@ PhenomenonWater
     DRAGONAIR,47
 #-------------------------------
 133 # Izumi Shrine
-25,10,10
+20,10,10
 Land
     PALPITOAD,48,53
     CENTISKORCH,48,52
@@ -426,7 +426,7 @@ Water
     PYUKUMUKU,48,51
 #-------------------------------
 135 # Sakura Cave
-25,10,10
+20,10,10
 Cave
     ROCKRUFF,7,12
     DWEBBLE,7,12
@@ -438,34 +438,34 @@ Cave
     GABITE,8,13
 #-------------------------------
 147 # Kaminari Pass
-25,10,10
+22,10,10
 Land
-    CHERRIM,68,72
-    HELIOLISK,68,72
-    LUXRAY,68,72
-    FLORGES,68,72
-    RAICHU,68,72
-    LUCARIO,68,72
-    AGGRON,68,72
-    DRAGONITE,68,72
+    CHERRIM,65,70
+    HELIOLISK,65,70
+    LUXRAY,65,70
+    FLORGES,65,70
+    RAICHU,65,70
+    LUCARIO,65,70
+    AGGRON,65,70
+    DRAGONITE,65,70
 Water
-    SEAKING,68,72
-    LUDICOLO,68,72
-    HUNTAIL,68,72
-    GOREBYSS,68,72
-    SLOWPOKE,68,72
-    GOLISOPOD,68,72
-    MILOTIC,68,72
-    PYUKUMUKU,68,72
+    SEAKING,65,70
+    LUDICOLO,65,70
+    HUNTAIL,65,70
+    GOREBYSS,65,70
+    SLOWPOKE,65,70
+    GOLISOPOD,65,70
+    MILOTIC,65,70
+    PYUKUMUKU,65,70
 #-------------------------------
 148 # Kaminari Cave
-25,10,10
+22,10,10
 Cave
-    EELEKTROSS,68,72
-    SALAZZLE,68,72
-    RAICHU,68,72
-    MIMIKYU,68,72
-    LYCANROC,68,72
-    STEELIX,68,72
-    FLYGON,68,72
-    GARCHOMP,68,72
+    EELEKTROSS,65,70
+    SALAZZLE,65,70
+    RAICHU,65,70
+    MIMIKYU,65,70
+    LYCANROC,65,70
+    STEELIX,65,70
+    FLYGON,65,70
+    GARCHOMP,65,70

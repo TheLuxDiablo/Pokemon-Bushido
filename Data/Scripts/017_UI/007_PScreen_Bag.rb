@@ -175,18 +175,18 @@ class PokemonBag_Scene
     @sprites["background"] = IconSprite.new(0,0,@viewport)
     @sprites["overlay"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
     pbSetSystemFont(@sprites["overlay"].bitmap)
-    @sprites["bagsprite"] = IconSprite.new(30,40,@viewport)
+    @sprites["bagsprite"] = IconSprite.new(30,80,@viewport)
     @sprites["pocketicon"] = BitmapSprite.new(186,32,@viewport)
     @sprites["pocketicon"].x = 8
     @sprites["pocketicon"].y = 226
     @sprites["leftarrow"] = AnimatedSprite.new("Graphics/Pictures/leftarrow",8,40,28,2,@viewport)
     @sprites["leftarrow"].x       = -4
-    @sprites["leftarrow"].y       = 76
+    @sprites["leftarrow"].y       = 130
     @sprites["leftarrow"].visible = (!@choosing || numfilledpockets>1)
     @sprites["leftarrow"].play
     @sprites["rightarrow"] = AnimatedSprite.new("Graphics/Pictures/rightarrow",8,40,28,2,@viewport)
     @sprites["rightarrow"].x       = 150
-    @sprites["rightarrow"].y       = 76
+    @sprites["rightarrow"].y       = 130
     @sprites["rightarrow"].visible = (!@choosing || numfilledpockets>1)
     @sprites["rightarrow"].play
     @sprites["itemlist"] = Window_PokemonBag.new(@bag,@filterlist,lastpocket,192,20,314,35+35+ITEMSVISIBLE*32)
@@ -272,11 +272,11 @@ class PokemonBag_Scene
     if @choosing && @filterlist
       for i in 1...@bag.pockets.length
         if @filterlist[i].length==0
-          @sprites["pocketicon"].bitmap.blt((i-1)*24,6,@pocketbitmap.bitmap,Rect.new((i-1)*24,24,20,20))
+          #@sprites["pocketicon"].bitmap.blt((i-1)*24,6,@pocketbitmap.bitmap,Rect.new((i-1)*26,24,24,24))
         end
       end
     end
-    @sprites["pocketicon"].bitmap.blt((@sprites["itemlist"].pocket-1)*24-(@sprites["itemlist"].pocket*2)+2,0,@pocketbitmap.bitmap,Rect.new((@sprites["itemlist"].pocket-1)*24,0,24,28))
+    @sprites["pocketicon"].bitmap.blt((@sprites["itemlist"].pocket-1)*24-(@sprites["itemlist"].pocket*2)+2,0,@pocketbitmap.bitmap,Rect.new((@sprites["itemlist"].pocket-1)*24,0,24,26))
     # Refresh the item window
     @sprites["itemlist"].refresh
     # Refresh more things
@@ -289,7 +289,7 @@ class PokemonBag_Scene
     overlay.clear
     # Draw the pocket name
     pbDrawTextPositions(overlay,[
-       [PokemonBag.pocketNames[@bag.lastpocket],94,180,2,POCKETNAMEBASECOLOR,POCKETNAMESHADOWCOLOR]
+       [PokemonBag.pocketNames[@bag.lastpocket],94,4,2,POCKETNAMEBASECOLOR,POCKETNAMESHADOWCOLOR]
     ])
     # Draw slider arrows
     showslider = false
