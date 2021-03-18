@@ -53,9 +53,7 @@ class PokemonPokedexInfo_Scene
     @sprites["formfront"].y = 158
     @sprites["formback"] = PokemonSprite.new(@viewport)
     #@sprites["formback"].setOffset(PictureOrigin::Center)
-    @sprites["formback"].x = 250   # y is set below as it depends on metrics
-    @sprites["formback"].zoom_x = 2/3
-    @sprites["formback"].zoom_y = 2/3
+    @sprites["formback"].x = 200
     @sprites["formicon"] = PokemonSpeciesIconSprite.new(0,@viewport)
     @sprites["formicon"].setOffset(PictureOrigin::Center)
     @sprites["formicon"].x = 82
@@ -134,7 +132,6 @@ class PokemonPokedexInfo_Scene
       intensity = (Graphics.frame_count%40)*12
       intensity = 480-intensity if intensity>240
       @sprites["areahighlight"].opacity = intensity
-      @sprites["formback"].y = 100
     end
     pbUpdateSpriteHash(@sprites)
   end
