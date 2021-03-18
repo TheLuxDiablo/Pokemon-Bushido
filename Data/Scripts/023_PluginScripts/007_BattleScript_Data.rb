@@ -2930,6 +2930,16 @@ module DialogueModule
                       battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                       battle.scene.pbHideOpponent
                      }
+       Hooh = Proc.new{|battle|
+                      battle.scene.appearBar
+                      pbMessage("Ho-Oh's pure soul blazes forward!")
+                      battle.pbAnimation(getID(PBMoves,:FOCUSENERGY),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                      battle.scene.pbHideOpponent
+                     }
         Virizion = Proc.new{|battle|
                        battle.scene.appearBar
                        pbMessage("Virizion's soul is locked away!")

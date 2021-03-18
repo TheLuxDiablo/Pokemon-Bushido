@@ -150,6 +150,8 @@ def pbItemBall(item, quantity = 1)
   end
   if isConst?(item, PBItems, :LEFTOVERS) || pbGetPocket(item) == 6
     pbMessage(_INTL("\\me[{1}]You found some "+ ((scene && scene.smallShow)? "\\n" : "") + "\\c[1]{2}!\\wtnp[30]", meName, itemname))
+  elsif isConst?(item,PBItems,:SHINYCHARM) || isConst?(item,PBItems,:RAINBOWFEATHER)
+    pbMessage(_INTL("You were given the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
   elsif pbIsMachine?(item) # TM or HM
     pbMessage(_INTL("\\me[{1}]You found "+ ((scene && scene.smallShow)? "\\n" : "") + "\\c[1]{2} {3}!\\wtnp[30]", meName, itemname,  PBMoves.getName(pbGetMachine(item))))
   elsif quantity > 1
@@ -205,6 +207,8 @@ def pbReceiveItem(item, quantity = 1)
   elsif isConst?(item,PBItems,:SUKIROLETTER)
     pbMessage(_INTL("You obtained \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
     pbMessage(_INTL("This letter can be used to get into the Kenshi Tournament.",itemname))
+  elsif isConst?(item,PBItems,:SHINYCHARM) || isConst?(item,PBItems,:RAINBOWFEATHER)
+    pbMessage(_INTL("You were given the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
   elsif isConst?(item,PBItems,:EXPALL)
     pbMessage(_INTL("You obtained \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
     pbMessage(_INTL("This special charm belonged to your father, Ryo.",itemname))

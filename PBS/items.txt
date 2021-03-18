@@ -855,3 +855,4 @@
 828,LUXLETTER,Lux Certificate,Lux Certificates,8,0,"A certificate proving that you have beaten of the developers of Pokemon Bushido.",0,0,6,
 829,TRISTANLETTER,Tristan Certificate,Tristan Certificates,8,0,"A certificate proving that you have beaten of the developers of Pokemon Bushido.",0,0,6,
 830,HAUNTEDLETTER,Haunted Certificate,Haunted Certificates,8,0,"A certificate proving that you have beaten of the developers of Pokemon Bushido.",0,0,6,
+831,RAINBOWFEATHER,Rainbow Feather,Rainbow Feathers,8,0,"A special feather, given to those who are pure of heart.",0,0,6,
