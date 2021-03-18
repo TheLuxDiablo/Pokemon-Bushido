@@ -22,13 +22,17 @@ def pbPurify(pokemon,scene)
   pokemon.shadow = false
   pokemon.giveRibbon(PBRibbons::NATIONAL)
   scene.pbDisplay(_INTL("{1} opened the door to its heart!",pokemon.name))
+  if $game_variables[94]==0
+    # loop through all pokemon and see if they've been purified, check if has NATIONAL ribbon?
+  end
+  $game_variables[94]+=1
+  scene.pbDisplay(_INTL("You have now purified {1} Pokémon!",pbGet(94)))
   oldmoves = []
   for i in 0...4; oldmoves.push(pokemon.moves[i].id); end
   pokemon.pbUpdateShadowMoves
   for i in 0...4
     next if pokemon.moves[i].id<=0 || pokemon.moves[i].id==oldmoves[i]
-    scene.pbDisplay(_INTL("{1} regained the move \n{2}!",
-       pokemon.name,PBMoves.getName(pokemon.moves[i].id)))
+    scene.pbDisplay(_INTL("{1} regained the move \n{2}!",pokemon.name,PBMoves.getName(pokemon.moves[i].id)))
   end
   pokemon.pbRecordFirstMoves
   if pokemon.savedev
@@ -57,6 +61,15 @@ def pbPurify(pokemon,scene)
        0,PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE,"",pokemon)
     pokemon.name = newname if newname!=""
   end
+  #Thundaga teach a new move to all shadows
+  #scene.pbDisplay(_INTL("{1} can now learn Luminescence after being purified!",pokemon.name))
+  #if scene.pbConfirm(_INTL("Would you like to teach {1} the new attack, Luminescence?",pokemon.name))
+  #  move = pbChooseMoveList
+  #  if move!=0
+  #    pbLearnMove(pokemon,move)
+  #    pbRefreshSingle(pokemon.id)
+  #  end
+  #end
 end
 
 def pbApplyEVGain(pokemon,ev,evgain)
