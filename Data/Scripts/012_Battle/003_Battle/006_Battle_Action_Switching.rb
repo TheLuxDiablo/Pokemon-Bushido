@@ -408,8 +408,8 @@ class PokeBattle_Battle
       end
     end
     # Spikes
-    if battler.pbOwnSide.effects[PBEffects::Spikes]>0 && battler.takesIndirectDamage? &&
-       !battler.airborne? && !battler.hasActiveItem?(:HEAVYDUTYBOOTS)
+    if battler.pbOwnSide.effects[PBEffects::Spikes]>0 && battler.takesIndirectDamage? && !battler.airborne? && !battler.hasActiveItem?(:HEAVYDUTYBOOTS) &&
+       !isConst?(battler.ability,PBAbilities,:LEVITATE) && !isConst?(battler.ability,PBAbilities,:MAGICGUARD)
       spikesDiv = [8,6,4][battler.pbOwnSide.effects[PBEffects::Spikes]-1]
       oldHP = battler.hp
       battler.pbReduceHP(battler.totalhp/spikesDiv,false)
@@ -425,6 +425,9 @@ class PokeBattle_Battle
       if battler.pbHasType?(:POISON)
         battler.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
         pbDisplay(_INTL("{1} absorbed the poison spikes!",battler.pbThis))
+      elsif (isConst?(battler.ability,PBAbilities,:LEAFGUARD) && (battler.battle.pbWeather==PBWeather::Sun || battler.battle.pbWeather==PBWeather::HarshSun)) ||
+         isConst?(battler.ability,PBAbilities,:LEVITATE) || isConst?(battler.ability,PBAbilities,:IMMUNITY) || isConst?(battler.ability,PBAbilities,:MAGICGUARD)
+            pbDisplay(_INTL("{1} is unaffected by the poison spikes!",battler.name)) #Thundaga toxic spike immunity fix
       elsif battler.pbCanPoison?(nil,false) && !battler.hasActiveItem?(:HEAVYDUTYBOOTS)
         if battler.pbOwnSide.effects[PBEffects::ToxicSpikes]==2
           battler.pbPoison(nil,_INTL("{1} was badly poisoned by the poison spikes!",battler.pbThis),true)

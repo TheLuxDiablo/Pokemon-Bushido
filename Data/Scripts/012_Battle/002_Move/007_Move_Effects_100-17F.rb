@@ -2536,18 +2536,15 @@ end
 # If a Pokémon makes contact with the user before it uses this move, the
 # attacker is burned. (Beak Blast)
 #===============================================================================
-class PokeBattle_Move_172 < PokeBattle_TwoTurnMove
-  def pbChargingTurnMessage(user,targets)
+class PokeBattle_Move_172 < PokeBattle_Move
+  def pbDisplayChargeMessage(user)
+    user.effects[PBEffects::BeakBlast] = true
     @battle.pbCommonAnimation("BeakBlast",user)
     @battle.pbDisplay(_INTL("{1} started heating up its beak!",user.pbThis))
   end
 
-  def pbChargingTurnEffect(user,target)
-    user.effects[PBEffects::BeakBlast] = true
-  end
-
   def pbMoveFailed?(user,targets)
-    if !user.effects[PBEffects::BeakBlast] && user.effects[PBEffects::TwoTurnAttack]==1
+    if !user.effects[PBEffects::BeakBlast]
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end

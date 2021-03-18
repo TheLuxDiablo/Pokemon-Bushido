@@ -70,13 +70,11 @@ class PokeBattle_Battler
   #=============================================================================
   def pbBeginTurn(_choice)
     # Cancel some lingering effects which only apply until the user next moves
-    @effects[PBEffects::BeakBlast]           = false
     @effects[PBEffects::DestinyBondPrevious] = @effects[PBEffects::DestinyBond]
     @effects[PBEffects::DestinyBond]         = false
     @effects[PBEffects::Grudge]              = false
     @effects[PBEffects::MoveNext]            = false
     @effects[PBEffects::Quash]               = 0
-    @effects[PBEffects::ShellTrap]           = false
     # Encore's effect ends if the encored move is no longer available
     if @effects[PBEffects::Encore]>0 && pbEncoredMoveIndex<0
       @effects[PBEffects::Encore]     = 0
@@ -258,7 +256,7 @@ class PokeBattle_Battler
       @lastRegularMoveTarget = choice[3]   # For Instruct (remembering original target is fine)
       @movesUsed.push(move.id) if !@movesUsed.include?(move.id)   # For Last Resort
     end
-    @battle.lastMoveUsed = move.id 
+    @battle.lastMoveUsed = move.id
     @battle.lastMoveUser = @index   # For "self KO" battle clause to avoid draws
     @battle.successStates[@index].useState = 1   # Battle Arena - assume failure
     # Find the default user (self or Snatcher) and target(s)

@@ -645,6 +645,8 @@ class PokeBattle_Battle
       b.effects[PBEffects::PriorityAbility]  = false
       b.effects[PBEffects::PriorityItem]     = false
       b.effects[PBEffects::Protect]          = false
+      b.effects[PBEffects::ShellTrap]        = false
+      b.effects[PBEffects::BeakBlast]        = false
       b.effects[PBEffects::RagePowder]       = false
       b.effects[PBEffects::Roost]            = false
       b.effects[PBEffects::Snatch]           = 0
