@@ -2447,8 +2447,6 @@ module DialogueModule
                     pbMessage("\\shBecause I sure am!")
                     pbMessage("Now come on, show me what you're made of!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
       Kuro2 = Proc.new{|battle|
@@ -2459,10 +2457,10 @@ module DialogueModule
                     pbMessage("Akui Clan Technique! Berserker Dance!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:CLANGOROUSSOUL),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,3,battle.battlers[1],false)
-                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                     battle.scene.appearBar
                     pbMessage("You can't possibly hope to defeat me!")
                     pbMessage("I am the Hound of Cruelty, the strongest of the Akui Admins!")
@@ -2485,10 +2483,10 @@ module DialogueModule
                   pbMessage("Akui Clan Technique! Berserker Dance!")
                   battle.scene.disappearBar
                   battle.pbAnimation(getID(PBMoves,:CLANGOROUSSOUL),battle.battlers[0],battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,3,battle.battlers[1],false)
-                  battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                  battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                  battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                  battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                   battle.scene.appearBar
                   pbMessage("Akui Clan Technique, Venom Kunai!")
                   battle.scene.disappearBar
@@ -2530,8 +2528,6 @@ module DialogueModule
                   pbMessage("Hahaha! Now, isn't this fun?!")
                   pbMessage("Come on now! Show me what you're made of!")
                   battle.scene.disappearBar
-                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                   battle.scene.pbHideOpponent
                 }
       KuroRematch2 = Proc.new{|battle|
@@ -2584,8 +2580,8 @@ module DialogueModule
                     pbMessage("Akui Clan Technique! Berserker Dance!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,3,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                     battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
                     battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
@@ -2624,7 +2620,6 @@ module DialogueModule
                     pbMessage("You don't stand a chance against me!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
     HattoriIntro = Proc.new{|battle|
@@ -2728,8 +2723,8 @@ module DialogueModule
                       pbMessage("\\xn[Hattori]\\rAkui Secret Technique! Hanatsium Crystal Exposure!")
                       battle.scene.disappearBar
                       battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                       battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
                       battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                       battle.scene.appearBar
