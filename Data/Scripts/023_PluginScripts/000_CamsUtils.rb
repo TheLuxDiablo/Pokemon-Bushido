@@ -171,6 +171,25 @@ def pbSaveArenayToVariable(var)
   $game_variables[var].setItem(0)
 end
 
+def pbGetTotalPurified
+  totalPurified = 0
+  $Trainer.party.each_with_index do |pkmn,i|
+    if pkmn && pkmn.hasRibbon?(PBRibbons::NATIONAL)
+      totalPurified += 1
+    end
+  end
+  $Trainer.party.compact!
+  for i in 0...$PokemonStorage.maxBoxes
+    for j in 0...$PokemonStorage.maxPokemon(i)
+      pkmn = $PokemonStorage[i,j]
+      if pkmn && pkmn.hasRibbon?(PBRibbons::NATIONAL)
+        totalPurified += 1
+      end
+    end
+  end
+  return totalPurified
+end
+
 def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
   if $game_variables[maxChargeVar] == 0 #Thundaga, making it so the healing can always be used initially.
     $game_variables[currentChargeVar] = 1

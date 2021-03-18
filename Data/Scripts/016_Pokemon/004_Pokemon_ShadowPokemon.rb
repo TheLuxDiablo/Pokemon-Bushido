@@ -24,6 +24,7 @@ def pbPurify(pokemon,scene)
   scene.pbDisplay(_INTL("{1} opened the door to its heart!",pokemon.name))
   if $game_variables[94]==0
     # loop through all pokemon and see if they've been purified, check if has NATIONAL ribbon?
+    $game_variables[94]=pbGetTotalPurified
   end
   $game_variables[94]+=1
   scene.pbDisplay(_INTL("You have now purified {1} Pokémon!",pbGet(94)))

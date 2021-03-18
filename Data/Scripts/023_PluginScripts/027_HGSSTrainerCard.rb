@@ -242,6 +242,10 @@ class PokemonTrainerCard_Scene
        pbGetAbbrevMonthName($PokemonGlobal.startTime.mon),
        $PokemonGlobal.startTime.day,
        $PokemonGlobal.startTime.year)
+     if $game_variables[94]==0
+       # loop through all pokemon and see if they've been purified, check if has NATIONAL ribbon?
+       $game_variables[94]=pbGetTotalPurified
+     end
     if $game_switches[67]
       textPositions = [
          [_INTL("NAME"),332-60,64-16,0,baseColor,shadowColor],
@@ -255,8 +259,8 @@ class PokemonTrainerCard_Scene
          [sprintf("%d",$game_variables[99]),302+2,112+32,1,baseColor,shadowColor],
          [_INTL("Katana Level"),32,112+64,0,baseColor,shadowColor],
          [sprintf("%d",$game_variables[100]),302+2,112+64,1,baseColor,shadowColor],
-         [_INTL("Shadows Purified"),32,112+96,0,baseColor,shadowColor],
-         [sprintf("%d",$game_variables[94]),302+2,112+96,1,baseColor,shadowColor],
+         [_INTL("Shadows Purified"),32,112+98,0,baseColor,shadowColor],
+         [sprintf("%d",$game_variables[94]),302+2,112+98,1,baseColor,shadowColor],
          [_INTL("TIME"),32,208+48,0,baseColor,shadowColor],
          [time,302+88*2,208+48,1,baseColor,shadowColor],
          [_INTL("ADVENTURE STARTED"),32,256+32,0,baseColor,shadowColor],
@@ -275,8 +279,8 @@ class PokemonTrainerCard_Scene
          [sprintf("%d",$game_variables[99]),302+2,112+32,1,baseColor,shadowColor],
          [_INTL("Katana Level"),32,112+64,0,baseColor,shadowColor],
          [sprintf("%d",$game_variables[100]),302+2,112+64,1,baseColor,shadowColor],
-         [_INTL("---"),32,112+96,0,baseColor,shadowColor],
-         [sprintf("-"),302+2,112+96,1,baseColor,shadowColor],
+         [_INTL("---"),32,112+98,0,baseColor,shadowColor],
+         [sprintf("-"),302+2,112+98,1,baseColor,shadowColor],
          [_INTL("TIME"),32,208+48,0,baseColor,shadowColor],
          [time,302+88*2,208+48,1,baseColor,shadowColor],
          [_INTL("ADVENTURE STARTED"),32,256+32,0,baseColor,shadowColor],
@@ -295,8 +299,8 @@ class PokemonTrainerCard_Scene
          [sprintf("%d",$game_variables[99]),302+2,112+32,1,baseColor,shadowColor],
          [_INTL("---"),32,112+64,0,baseColor,shadowColor],
          [sprintf("-"),302+2,112+64,1,baseColor,shadowColor],
-         [_INTL("---"),32,112+96,0,baseColor,shadowColor],
-         [sprintf("-"),302+2,112+96,1,baseColor,shadowColor],
+         [_INTL("---"),32,112+98,0,baseColor,shadowColor],
+         [sprintf("-"),302+2,112+98,1,baseColor,shadowColor],
          [_INTL("TIME"),32,208+48,0,baseColor,shadowColor],
          [time,302+88*2,208+48,1,baseColor,shadowColor],
          [_INTL("ADVENTURE STARTED"),32,256+32,0,baseColor,shadowColor],
