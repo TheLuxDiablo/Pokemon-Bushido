@@ -2104,7 +2104,7 @@ module DialogueModule
       Mashiro3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("Did you actually believe that I ran out of Icicle Kunai?")
+                    pbMessage("Did you actually believe that I ran out of Kunai?")
                     pbMessage("You're even more foolish than you look!")
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar

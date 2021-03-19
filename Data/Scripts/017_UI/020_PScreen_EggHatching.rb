@@ -39,7 +39,7 @@ class PokemonEggHatch_Scene
     # Create egg cracks sprite
     @sprites["hatch"]=SpriteWrapper.new(@viewport)
     @sprites["hatch"].x = @sprites["pokemon"].x
-    @sprites["hatch"].y = @sprites["pokemon"].y
+    @sprites["hatch"].y = @sprites["pokemon"].y*1.33
     @sprites["hatch"].ox = @sprites["pokemon"].ox
     @sprites["hatch"].oy = @sprites["pokemon"].oy
     @sprites["hatch"].bitmap = @hatchSheet.bitmap
@@ -141,13 +141,13 @@ class PokemonEggHatch_Scene
         break if i%2==0 && @sprites["pokemon"].x>=target
         break if i%2==1 && @sprites["pokemon"].x<=target
         @sprites["pokemon"].x += speed
-        @sprites["hatch"].x    = @sprites["pokemon"].x
+        @sprites["hatch"].x    = @sprites["pokemon"].x*1.33
         updateScene
       end
       speed *= -1
     end
     @sprites["pokemon"].x = targets[targets.length-1]
-    @sprites["hatch"].x   = @sprites["pokemon"].x
+    @sprites["hatch"].x   = @sprites["pokemon"].x*1.33
   end
 
   def updateScene(frames=1)   # Can be used for "wait" effect
