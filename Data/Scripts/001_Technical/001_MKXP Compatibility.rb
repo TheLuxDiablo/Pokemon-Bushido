@@ -31,7 +31,7 @@ end
 if mkxp?
   alias old_load_data load_data
   def load_data(filename)
-    return old_load_data(filename) if filename["Data/PkmnAnimations.rxdata"] || filename["Data/Tilesets.rxdata"]
+    return old_load_data(filename) if filename["Data/PkmnAnimations.rxdata"]
     File.open(filename, 'rb'){|f| return Marshal.load(f.read)}
   end
 end
