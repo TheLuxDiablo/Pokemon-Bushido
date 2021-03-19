@@ -152,9 +152,9 @@ class StorageSystemPC
 
   def name
     if $PokemonGlobal.seenStorageCreator
-      return _INTL("{1}'s Pokemon Storage",pbGetStorageCreator)
+      return _INTL("{1}'s Storage Island",pbGetStorageCreator)
     else
-      return _INTL("Someone's PC")
+      return _INTL("Someone's Storage")
     end
   end
 
@@ -163,13 +163,13 @@ class StorageSystemPC
     command = 0
     loop do
       command = pbShowCommandsWithHelp(nil,
-         [_INTL("Organize Boxes"),
+         [_INTL("Organize Islands"),
          _INTL("Withdraw Pokémon"),
          _INTL("Deposit Pokémon"),
          _INTL("See ya!")],
-         [_INTL("Organize the Pokémon in Boxes and in your party."),
-         _INTL("Move Pokémon stored in Boxes to your party."),
-         _INTL("Store Pokémon in your party in Boxes."),
+         [_INTL("Organize the Pokémon in Islands and in your party."),
+         _INTL("Move Pokémon stored in Islands to your party."),
+         _INTL("Store Pokémon in your party in Islands."),
          _INTL("Return to the previous menu.")],-1,command
       )
       if command>=0 && command<3
@@ -203,7 +203,7 @@ end
 
 
 def pbTrainerPC
-  pbMessage(_INTL("{1} booted up the PC.",$Trainer.name))
+  pbMessage(_INTL("{1} accessed the storage.",$Trainer.name))
   pbTrainerPCMenu
   pbSEPlay("PC close")
 end
