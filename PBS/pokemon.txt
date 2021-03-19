@@ -3072,7 +3072,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 14
 BattlerShadowX = 0
 BattlerShadowSize = 3
-Evolutions = STEELIX,TradeItem,METALCOAT
+Evolutions = STEELIX,HoldItem,METALCOAT
 #-------------------------------
 [96]
 Name = Drowzee
