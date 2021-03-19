@@ -1,0 +1,104 @@
+1.0.10 ===============================================================================================================
+Added patcnotes (Hello if you're reading these!)
+Added Ho-Oh to the regional dex
+Fixed an issue where the Rival could repeatedly lock eyes with the player in Ezo Village
+Fix egg cracking FX on the hatching screen
+Made it impossible for shadow wild pokemon to be shiny
+Fixed an issue where Onix could not evolve when holding a Metal Coat
+
+1.0.9 ================================================================================================================
+Major Fixes
+Fixed a crash with an NPC in the Chikyu Market
+
+Minor Fixes
+Fixed an issue where the Fossil Reviver would accept leaves
+Enabled the ability to toggle following Pokemon with the CTRL key
+More adjustments to the Bag Screen
+The number of Shadow Pokemon purified is now tracked and appears in the Trainer Card
+Added an NPC that gifts a couple items as rewards for purifying Pokemon
+And other various small bugfixes
+
+1.0.8 ================================================================================================================
+Minor Fixes
+Fixed the Fossil Reviver not properly reviving fossils
+Fixed an issue where backsprites would not appear in the Aisho Journal
+Fixed an issue where some yellow lights were incorrectly appear on maps
+Fixed an issue where Galarica Cuffs/Wreaths could not be acquired again (Chikyu Market)
+Added Galarian Slowking/Slowbro OW sprites
+Fixed the Beak Blast attack
+Updated thawing logic for some attacks
+Added encounters to Sakura Cave
+Adjusted the Bag/Mart/Options screens
+And other various small bugfixes
+
+1.0.7 ================================================================================================================
+Minor Fixes
+Updated Mid-Battle Dialogue to allow some status condition applications to be resisted
+Fixed an issue where Pokémon granted in the intro were counted as caught in the Aisho Journal
+Fixed a global surfing issue where players could initiate Water Walking on some rocks
+Fix Slowking's Eerie Spell learning upon evolution
+And other various small bugfixes
+
+1.0.6 ================================================================================================================
+Major Fixes
+Fixed a traceback for some users when attempting to leave the Ezo Dojo
+Fixed a crash related to evolving Pancham
+
+Minor Fixes
+Tile passability fixes
+Fixed the usability of the Galarica Cuff and Wreath
+Lowered the speedup rate of the speed toggle (500% -> 300%)
+
+1.0.5 ================================================================================================================
+Major Fixes
+Resolved a progression blocker at the start of Chapter 4
+Resolved a progression blocker after losing to the Akui Grunt ambush in Jonetsu Pass
+Resolved a crash that would occur sometimes after wild battles (Please reach out directly if this occurs again)
+Resolved a crash for some users when leaving the Ezo Dojo
+Resolved an issue where some players could get stuck in the Hanatsium Mines
+
+Minor Fixes
+Resolved an issue where follower pokemon would disappear at the start of Chapter 3
+Disabled obedience checks in battle, so pokemon always obey
+Resolved an issue where wild pokemon would appear as shadows after a postgame battle
+
+New Feature
+Added a Speed Up toggle (Press Alt to toggle On/Off. The game will run at 500% speed when on)
+
+1.0.4 ================================================================================================================
+Major Fixes:
+Another fix for the crash that randomly occurs after some wild battles
+Additional fix to properly remove Celebi from Jikan Shrine after the first event there
+Fixed an issue with some Komorei Clan members not disappearing from Tsuchi Shrine
+Fixed an issue where our rival would not move after beating the Nensho Dojo
+Fixed moves like Circle Throw breaking enemy Pokemon order in some scripted battles
+
+Minor Fixes:
+Fixed stat display in the EV/IV screen
+Properly updating follower pokemon sprites after healing
+Remove font switching from the options menu
+Fixed an issue where Sushi items could be used on full HP shadow Pokemon
+Sirfetchd OW sprite now properly appears
+
+1.0.3 ================================================================================================================
+Potential fix for an issue where defeating/running from wild Pokemon would cause the game to close
+Fixed an issue where players could get stuck in Tsuchi Shrine
+Fixed a crash before the Yakeru fight in Jonetsu Pass
+Fixed an issue of incorrect trainer setup in Jonetsu Cave
+Fixed an issue where RGSS executable users could not see Location Window text
+- RGSS users must install the "TAKOYAKI" font in the Fonts folder
+Galarian Farfetchd now evolves at level 30
+Slightly increased the rate of shiny Pokemon (120->140)
+Various text and passability fixes
+
+1.0.2 ================================================================================================================
+Addressed passability issues in Ch1
+Resolved persisting Celebi in Jikan Shrine
+Ramen stand has been upgraded
+Rohan event logic slightly updated
+
+1.0.1 ================================================================================================================
+Fixed a crash when booting for users with new save data
+
+1.0 ================================================================================================================
+The game is initially released!
