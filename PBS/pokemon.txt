@@ -11222,7 +11222,7 @@ BattlerEnemyX = -2
 BattlerEnemyY = 26
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = MILOTIC,Beauty,170,MILOTIC,TradeItem,PRISMSCALE
+Evolutions = MILOTIC,Beauty,170,MILOTIC,Item,PRISMSCALE
 #-------------------------------
 [350]
 Name = Milotic
