@@ -1,5 +1,5 @@
 1.0.10 ===============================================================================================================
-Added patcnotes (Hello if you're reading these!)
+Added patchnotes (Hello if you're reading these!)
 Added Ho-Oh to the regional dex
 Fixed an issue where the Rival could repeatedly lock eyes with the player in Ezo Village
 Fix egg cracking FX on the hatching screen
