@@ -438,6 +438,24 @@ class PokemonLoadScreen
         $game_player.refresh
         $game_map.autoplay
         $game_map.update
+        #Thundaga force fog onto map in chapter 6
+        if $game_variables[99]==6 && ($game_map.id==85 || $game_map.id==88)
+          $game_map.fog_name = 'clouds3'
+          $game_map.fog_hue = 0
+          $game_map.fog_opacity = 170
+          $game_map.fog_blend_type = 0
+          $game_map.fog_zoom = 150
+          $game_map.fog_sx = 8
+          $game_map.fog_sy = 2
+          if($game_map.id==88 and $game_player.x>55)
+            pbBGMPlay('PKMNMovie15-TruePower')
+          elsif $game_map.id==88
+            pbBGMPlay('Conquest-EventTheme05')
+          else
+            pbBGMPlay('Conquest-EventTheme03')
+          end
+          $game_map.update
+        end
         return
       elsif cmdMysteryGift>=0 && command==cmdMysteryGift
         pbPlayDecisionSE
