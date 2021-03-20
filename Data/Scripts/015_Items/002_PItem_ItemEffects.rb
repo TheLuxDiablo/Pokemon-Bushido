@@ -19,7 +19,7 @@ ItemHandlers::UseText.copy(:BICYCLE,:MACHBIKE,:ACROBIKE)
 #===============================================================================
 
 ItemHandlers::UseFromBag.add(:HONEY,proc { |item|
-  next 4
+  next 2
 })
 
 ItemHandlers::UseFromBag.add(:ESCAPEROPE,proc { |item|
@@ -28,7 +28,7 @@ ItemHandlers::UseFromBag.add(:ESCAPEROPE,proc { |item|
     next 0
   end
   if ($PokemonGlobal.escapePoint rescue false) && $PokemonGlobal.escapePoint.length>0
-    next 4   # End screen and consume item
+    next 2   # End screen and consume item
   end
   pbMessage(_INTL("Can't use that here."))
   next 0
@@ -67,6 +67,11 @@ ItemHandlers::UseFromBag.copy(:ITEMFINDER,:DOWSINGMCHN,:DOWSINGMACHINE)
 #===============================================================================
 
 ItemHandlers::ConfirmUseInField.add(:ESCAPEROPE,proc { |item|
+  if $game_map.map_id==91
+    pbEraseEscapePoint
+    pbMessage(_INTL("Can't use that here."))
+    next false
+  end
   escape = ($PokemonGlobal.escapePoint rescue nil)
   if !escape || escape==[]
     pbMessage(_INTL("Can't use that here."))
@@ -164,6 +169,11 @@ ItemHandlers::UseInField.add(:HONEY,proc { |item|
 })
 
 ItemHandlers::UseInField.add(:ESCAPEROPE,proc { |item|
+  if $game_map.map_id==91
+    pbEraseEscapePoint
+    pbMessage(_INTL("Can't use that here."))
+    next 0
+  end
   escape = ($PokemonGlobal.escapePoint rescue nil)
   if !escape || escape==[]
     pbMessage(_INTL("Can't use that here."))

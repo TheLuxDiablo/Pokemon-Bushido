@@ -443,7 +443,7 @@ Cave
     MAKUHITA,7,12
 	TYROGUE,7,12
     RIOLU,7,12
-    GABITE,8,13
+    GIBLE,8,13
 #-------------------------------
 147 # Kaminari Pass
 22,10,10
