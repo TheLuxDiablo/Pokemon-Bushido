@@ -1462,6 +1462,7 @@ BattleHandlers::TargetAbilityOnHit.add(:CUTECHARM,
     next if target.fainted?
     next if !move.pbContactMove?(user)
     next if battle.pbRandom(100)>=30
+    next if user.gender == target.gender
     battle.pbShowAbilitySplash(target)
     if user.pbCanAttract?(target,PokeBattle_SceneConstants::USE_ABILITY_SPLASH) &&
        user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)

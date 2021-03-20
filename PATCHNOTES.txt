@@ -1,3 +1,15 @@
+1.0.11 ===============================================================================================================
+Fixed an issue where users got stuck in Hanatus after losing to Hotoke
+Drastically lowered lag during the events of Chapter 6
+Fixed a blocker with a disguised Akui Grunt on Yami Island
+More MKXP performance optimizations
+Slowbro evolution fix
+Added numpad support
+Resolved an issue with Zoroark during a climactic battle
+Resolved postgame darmanitan continuity
+Updated bag UI slightly further
+Fixed cute charm ability to count for genders
+
 1.0.10 ===============================================================================================================
 Added patchnotes (Hello if you're reading these!)
 Added Ho-Oh to the regional dex
