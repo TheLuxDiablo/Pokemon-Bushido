@@ -1,3 +1,8 @@
+1.0.15 ===============================================================================================================
+Took further meaasures to fix an issue where players remained stuck in Hanatsu Village after losing to Hotoke. I hate this bug
+Fix for getting stuck in Kaminari Cave
+Fix for black bars appearing on screen after losing some scripted battles
+
 1.0.14 ===============================================================================================================
 Took additional meaasures to fix an issue where players remained stuck in Hanatsu Village after losing to Hotoke
 
