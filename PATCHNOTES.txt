@@ -1,5 +1,5 @@
 1.0.11 ===============================================================================================================
-Fixed an issue where users got stuck in Hanatus after losing to Hotoke
+Fixed an issue where users got stuck in Hanatsu after losing to Hotoke
 Drastically lowered lag during the events of Chapter 6
 Fixed a blocker with a disguised Akui Grunt on Yami Island
 More MKXP performance optimizations
