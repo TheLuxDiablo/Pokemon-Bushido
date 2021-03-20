@@ -136,7 +136,7 @@ BallHandlers::ModifyCatchRate.add(:TIMERBALL,proc { |ball,catchRate,battle,battl
 
 BallHandlers::ModifyCatchRate.add(:DUSKBALL,proc { |ball,catchRate,battle,battler,ultraBeast|
   multiplier = (NEWEST_BATTLE_MECHANICS) ? 3 : 3.5
-  catchRate *= multiplier if battle.time==2
+  catchRate *= multiplier if (battle.time==2 || battle.environment == PBEnvironment::Cave)
   next catchRate
 })
 

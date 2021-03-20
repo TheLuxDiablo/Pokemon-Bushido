@@ -420,13 +420,24 @@ class PokemonSummary_Scene
     end
     # Write Exp text OR heart gauge message (if a Shadow Pokémon)
     if @pokemon.shadowPokemon?
-      textpos.push([_INTL("Heart Gauge"),238,240,0,base,shadow])
-      heartmessage = [_INTL("The door to its heart is open! Undo the final lock!"),
-                      _INTL("The door to its heart is almost fully open."),
-                      _INTL("The door to its heart is nearly open."),
-                      _INTL("The door to its heart is opening wider."),
-                      _INTL("The door to its heart is opening up."),
-                      _INTL("The door to its heart is tightly shut.")][@pokemon.heartStage]
+      #thundaga add new messaging for shadow lugia here
+      if @pokemon.species==LUGIA
+        textpos.push([_INTL("Heart Gauge"),238,240,0,base,shadow])
+        heartmessage = [_INTL("The door to its heart will never open..."),
+                        _INTL("The door to its heart will never open..."),
+                        _INTL("The door to its heart will never open..."),
+                        _INTL("The door to its heart will never open..."),
+                        _INTL("The door to its heart will never open..."),
+                        _INTL("The door to its heart will never open...")][@pokemon.heartStage]
+      else
+        textpos.push([_INTL("Heart Gauge"),238,240,0,base,shadow])
+        heartmessage = [_INTL("The door to its heart is open! Undo the final lock!"),
+                        _INTL("The door to its heart is almost fully open."),
+                        _INTL("The door to its heart is nearly open."),
+                        _INTL("The door to its heart is opening wider."),
+                        _INTL("The door to its heart is opening up."),
+                        _INTL("The door to its heart is tightly shut.")][@pokemon.heartStage]
+      end
       memo = sprintf("<c3=404040,B0B0B0>%s\n",heartmessage)
       drawFormattedTextEx(overlay,234,304,264,memo)
     else
