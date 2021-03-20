@@ -421,7 +421,8 @@ class PokemonSummary_Scene
     # Write Exp text OR heart gauge message (if a Shadow Pokémon)
     if @pokemon.shadowPokemon?
       #thundaga add new messaging for shadow lugia here
-      if @pokemon.species==LUGIA
+      if @pokemon.isSpecies?(:LUGIA)
+        #@pokemon.heartgauge=3840
         textpos.push([_INTL("Heart Gauge"),238,240,0,base,shadow])
         heartmessage = [_INTL("The door to its heart will never open..."),
                         _INTL("The door to its heart will never open..."),

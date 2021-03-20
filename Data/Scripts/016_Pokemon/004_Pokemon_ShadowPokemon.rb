@@ -17,6 +17,10 @@ critical hit.
 # Purify a Shadow Pokémon.
 #===============================================================================
 def pbPurify(pokemon,scene)
+  if pokemon.isSpecies?(:LUGIA)
+    scene.pbDisplay(_INTL("Shadow Lugia refuses to be purified."))
+    return
+  end
   return if pokemon.heartgauge!=0 || !pokemon.shadow
   return if !pokemon.savedev && !pokemon.savedexp
   pokemon.shadow = false
@@ -229,7 +233,7 @@ def pbRelicStone
   pbMessage(_INTL("There's a Pokémon that may open the door to its heart!"))
   # Choose a purifiable Pokemon
   pbChoosePokemon(1,2,proc { |pkmn|
-    !pkmn.egg? && pkmn.hp>0 && pkmn.shadowPokemon? && pkmn.heartgauge==0
+    !pkmn.egg? && pkmn.hp>0 && pkmn.shadowPokemon? && pkmn.heartgauge==0 && !pkmn.isSpecies?(:LUGIA)
   })
   if $game_variables[1]>=0
     pbRelicStoneScreen($Trainer.party[$game_variables[1]])
@@ -239,7 +243,7 @@ end
 def pbReadyToPurify(pkmn)
   return unless pkmn && pkmn.shadowPokemon?
   pkmn.pbUpdateShadowMoves
-  if pkmn.heartgauge==0
+  if pkmn.heartgauge==0 && !pkmn.isSpecies?(:LUGIA)
     pbMessage(_INTL("{1} can now be purified!",pkmn.name))
   end
 end
