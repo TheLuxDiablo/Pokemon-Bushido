@@ -1032,16 +1032,16 @@ Pokemon = HYDREIGON,66
 #-------------------------------	
 [HATTORI,Hattori]
 LoseText = "This is impossible! I am the strongest Kenshi in all of Aisho!"
-Pokemon = LYCANROC,68
-	Form = 1
-	Item = CHOICESCARF
-	Moves = STONEEDGE,FIREPUNCH,STOMPINGTANTRUM,TOXIC
-Pokemon = MIMIKYU,68
-	Item = LIFEORB
-	Moves = SWORDSDANCE,SHADOWSNEAK,SHADOWCLAW,PLAYROUGH
 Pokemon = ZOROARK,69
 	Item = LIFEORB
 	Moves = NASTYPLOT,DARKPULSE,FLAMETHROWER,SLUDGEBOMB
+Pokemon = LYCANROC,69
+	Form = 1
+	Item = CHOICESCARF
+	Moves = STONEEDGE,FIREPUNCH,STOMPINGTANTRUM,TOXIC
+Pokemon = MIMIKYU,69
+	Item = LIFEORB
+	Moves = SWORDSDANCE,SHADOWSNEAK,SHADOWCLAW,PLAYROUGH
 Pokemon = LAPRAS,69
 	Item = CHOICESPECS
 	Moves = FREEZEDRY,HYDROPUMP,ICEBEAM,HIDDENPOWER
@@ -1253,3 +1253,9 @@ Pokemon = SYLVEON,70
 Pokemon = EELEKTROSS,70
 Pokemon = MIENSHAO,70
 Pokemon = GASTRODON,70
+#-------------------------------	
+[RAIKAMI_M,Test1]
+LoseText = "That's impressive! I can see your power flashing in front of me!"
+Pokemon = WURMPLE,1
+Pokemon = ZOROARK,30
+Pokemon = LUGIA,30
