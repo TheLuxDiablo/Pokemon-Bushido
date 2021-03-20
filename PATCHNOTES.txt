@@ -1,3 +1,10 @@
+1.0.14 ===============================================================================================================
+Took additional meaasures to fix an issue where players remained stuck in Hanatsu Village after losing to Hotoke
+
+1.0.13 ===============================================================================================================
+Fixed an issue where players remained stuck in Hanatsu Village after losing to Hotoke
+Fixed an issue where a special shadow pokemon could be purified
+
 1.0.12 ===============================================================================================================
 Fixed an issue where players would get stuck after the Shogun's Tournament
 Fixed an issue where players could get stuck in Shizen Trail after using an Escape Rope
