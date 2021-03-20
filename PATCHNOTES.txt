@@ -1,3 +1,10 @@
+1.0.12 ===============================================================================================================
+Fixed an issue where players would get stuck after the Shogun's Tournament
+Fixed an issue where players could get stuck in Shizen Trail after using an Escape Rope
+Prevent escape ropes to be used in Shizen Trail
+Fixed an issue where 2 Escape Ropes were consumed on usage
+Adjusted tile passability in Kaminari Cave
+
 1.0.11 ===============================================================================================================
 Fixed an issue where users got stuck in Hanatsu after losing to Hotoke
 Drastically lowered lag during the events of Chapter 6
