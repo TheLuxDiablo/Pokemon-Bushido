@@ -231,22 +231,34 @@ def pbRegisterItemOutOfBag(item)
   registeredlist.push(item) if !registeredlist.include?(item)
 end
 
+# Main game char data
+#$TrainerMainGame=$Trainer.clone
+#$PokemonBagMainGame=$PokemonBag.clone
+#$PokemonStorageMainGame=$PokemonStorage.clone
+#$PokemonGlobalMainGame=$PokemonGlobal.clone
+
+# Hattori Char data
+#$TrainerHattori=$Trainer.clone
+#$PokemonBagHattori=$PokemonBag.clone
+#$PokemonStorageHattori=$PokemonStorage.clone
+#$PokemonGlobalHattori=$PokemonGlobal.clone
 
 # Changing players
 def saveCharDataToVariables()
-    $game_variables[200]=$Trainer
-    $game_variables[201]=$PokemonBag
-    $game_variables[202]=$PokemonStorage
-    $game_variables[203]=$PokemonGlobal
+    $TrainerMainGame=$Trainer.clone
+    $PokemonBagMainGame=$PokemonBag.clone
+    $PokemonStorageMainGame=$PokemonStorage.clone
+    $PokemonGlobalMainGame=$PokemonGlobal.clone
 end
 
 def saveHattoriDataToVariables()
-  $game_variables[210]=$Trainer
-  $game_variables[211]=$PokemonBag
-  $game_variables[212]=$PokemonStorage
-  $game_variables[213]=$PokemonGlobal
+  $TrainerHattori=$Trainer.clone
+  $PokemonBagHattori=$PokemonBag.clone
+  $PokemonStorageHattori=$PokemonStorage.clone
+  $PokemonGlobalHattori=$PokemonGlobal.clone
 end
 
+# Resetting character data
 def resetCharData()
   $Trainer.send :initialize2
   $PokemonBag.send :initialize
@@ -254,6 +266,7 @@ def resetCharData()
   $PokemonGlobal.send :initialize
 end
 
+#switch characters
 def switchToCharacter(char=0)
   if char==2
     saveCharDataToVariables()
@@ -269,20 +282,19 @@ def switchToCharacter(char=0)
       vAPS("ZORUA",20)
       $game_switches[160]=!$game_switches[160]
     else
-      $Trainer=$game_variables[210]
-      $PokemonBag=$game_variables[211]
-      $PokemonStorage=$game_variables[212]
-      $PokemonGlobal=$game_variables[213]
+      $Trainer=$TrainerHattori
+      $PokemonBag=$PokemonBagHattori
+      $PokemonStorage=$PokemonStorageHattori
+      $PokemonGlobal=$PokemonGlobalHattori
     end
   else
     saveHattoriDataToVariables()
     resetCharData()
     pbChangePlayer($game_variables[28])
-    #pbChangePlayer($game_variables[200].gender)
-    $Trainer=$game_variables[200]
-    $PokemonBag=$game_variables[201]
-    $PokemonStorage=$game_variables[202]
-    $PokemonGlobal=$game_variables[203]
+    $Trainer=$TrainerMainGame
+    $PokemonBag=$PokemonBagHattori
+    $PokemonStorage=$PokemonStorageHattori
+    $PokemonGlobal=$PokemonGlobalHattori
     $game_variables[99]=7
   end
 end
