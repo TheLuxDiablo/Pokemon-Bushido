@@ -238,7 +238,6 @@ def saveCharDataToVariables()
     $game_variables[201]=$PokemonBag
     $game_variables[202]=$PokemonStorage
     $game_variables[203]=$PokemonGlobal
-    $game_variables[99]=$game_variables[204]
 end
 
 def saveHattoriDataToVariables()
@@ -246,7 +245,6 @@ def saveHattoriDataToVariables()
   $game_variables[211]=$PokemonBag
   $game_variables[212]=$PokemonStorage
   $game_variables[213]=$PokemonGlobal
-  $game_variables[99]=$game_variables[204]
 end
 
 def resetCharData()
@@ -279,7 +277,8 @@ def switchToCharacter(char=0)
   else
     saveHattoriDataToVariables()
     resetCharData()
-    pbChangePlayer($game_variables[200].gender)
+    pbChangePlayer($game_variables[28])
+    #pbChangePlayer($game_variables[200].gender)
     $Trainer=$game_variables[200]
     $PokemonBag=$game_variables[201]
     $PokemonStorage=$game_variables[202]
