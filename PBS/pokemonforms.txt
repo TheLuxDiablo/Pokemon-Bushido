@@ -1902,6 +1902,15 @@ BattlerEnemyY = 28
 BattlerShadowX = 0
 BattlerShadowSize = 2
 #-------------------------------
+[FLABEBE,5]
+FormName = Sakura Petal
+BattlerPlayerX = 2
+BattlerPlayerY = 37
+BattlerEnemyX = -1
+BattlerEnemyY = 28
+BattlerShadowX = 0
+BattlerShadowSize = 2
+#-------------------------------
 [FLOETTE,1]
 FormName = Yellow Flower
 BattlerPlayerX = 1
@@ -1946,6 +1955,14 @@ BattlerEnemyX = 0
 BattlerShadowX = 0
 Evolutions = FLORGES,None,
 #-------------------------------
+[FLOETTE,6]
+FormName = Sakura Petal
+BattlerPlayerX = 1
+BattlerPlayerY = 20
+BattlerEnemyX = 1
+BattlerEnemyY = 16
+BattlerShadowX = 0
+#-------------------------------
 [FLORGES,1]
 FormName = Yellow Flower
 BattlerPlayerX = 3
@@ -1966,6 +1983,12 @@ BattlerEnemyX = -2
 #-------------------------------
 [FLORGES,4]
 FormName = White Flower
+BattlerPlayerX = 3
+BattlerPlayerY = 14
+BattlerEnemyX = -2
+#-------------------------------
+[FLORGES,5]
+FormName = Sakura Petal
 BattlerPlayerX = 3
 BattlerPlayerY = 14
 BattlerEnemyX = -2
