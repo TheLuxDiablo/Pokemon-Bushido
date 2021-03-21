@@ -231,81 +231,59 @@ def pbRegisterItemOutOfBag(item)
   registeredlist.push(item) if !registeredlist.include?(item)
 end
 
+
+# Changing players
 def saveCharDataToVariables()
-    $game_variables[200]=$Trainer.party
-    $game_variables[201]=$Trainer.seen
-    $game_variables[202]=$Trainer.owned
-    $game_variables[203]=$Trainer.outfit
-    $game_variables[204]=$Trainer.money
-    $game_variables[205]=$Trainer.name
-    $game_variables[206]=$Trainer.id
-    $game_variables[207]=$PokemonBag
-    $game_variables[208]=$Trainer.gender
-    $game_variables[209]=$game_variables[99]
+    $game_variables[200]=$Trainer
+    $game_variables[201]=$PokemonBag
+    $game_variables[202]=$PokemonStorage
+    $game_variables[203]=$PokemonGlobal
+    $game_variables[99]=$game_variables[204]
 end
 
 def saveHattoriDataToVariables()
-  $game_variables[210]=$Trainer.party
-  $game_variables[211]=$Trainer.seen
-  $game_variables[212]=$Trainer.owned
-  $game_variables[213]=$Trainer.outfit
-  $game_variables[214]=$Trainer.money
-  $game_variables[215]=$Trainer.name
-  $game_variables[216]=$Trainer.id
-  $game_variables[217]=$PokemonBag
-  $game_variables[218]=$Trainer.gender
-  $game_variables[219]=$game_variables[99]
-end
-
-def loadCharData()
-  $Trainer.party=$game_variables[200]
-  $Trainer.seen=$game_variables[201]
-  $Trainer.owned=$game_variables[202]
-  $Trainer.outfit=$game_variables[203]
-  $Trainer.money=$game_variables[204]
-  $Trainer.name=$game_variables[205]
-  $Trainer.id=$game_variables[206]
-  $PokemonBag=$game_variables[207]
-  pbChangePlayer($game_variables[208])
-  $game_variables[99]=$game_variables[209]
-end
-
-def loadHattoriData()
-  $Trainer.party=$game_variables[210]
-  $Trainer.seen=$game_variables[211]
-  $Trainer.owned=$game_variables[212]
-  $Trainer.outfit=$game_variables[213]
-  $Trainer.money=$game_variables[214]
-  $Trainer.name=$game_variables[215]
-  $Trainer.id=$game_variables[216]
-  $PokemonBag=$game_variables[217]
-  pbChangePlayer(2)
-  $game_variables[99]=$game_variables[219]
+  $game_variables[210]=$Trainer
+  $game_variables[211]=$PokemonBag
+  $game_variables[212]=$PokemonStorage
+  $game_variables[213]=$PokemonGlobal
+  $game_variables[99]=$game_variables[204]
 end
 
 def resetCharData()
-  $Trainer.party=[]
-  $Trainer.party.compact!
-  $Trainer.seen=[]
-  $Trainer.owned=[]
-  $Trainer.outfit=0
-  $Trainer.money=0
-  $game_variables[99]=$game_variables[209]
-  #$PokemonBag.bag=[]
+  $Trainer.send :initialize2
+  $PokemonBag.send :initialize
+  $PokemonStorage.send :initialize
+  $PokemonGlobal.send :initialize
 end
 
-def changeToHattori()
-  saveCharDataToVariables()
-  resetCharData()
-  pbChangePlayer(2)
-  $Trainer.name="Hattori"
-  $game_variables[99]="Hattori"
-  if !$game_switches[160]
-    $Trainer.money=5000
-    vAI("JAM1",10)
-    vAI("JAM2",5)
-    vAI("REVIVE",3)
-    vAPS("ZORUA",20)
-    $game_switches[160]=!$game_switches[160]
+def switchToCharacter(char=0)
+  if char==2
+    saveCharDataToVariables()
+    resetCharData()
+    pbChangePlayer(char)
+    $game_variables[99]="Hattori"
+    if !$game_switches[160]
+      $Trainer.name="Hattori"
+      $Trainer.money=5000
+      vAI("JAM1",10)
+      vAI("JAM2",5)
+      vAI("REVIVE",3)
+      vAPS("ZORUA",20)
+      $game_switches[160]=!$game_switches[160]
+    else
+      $Trainer=$game_variables[210]
+      $PokemonBag=$game_variables[211]
+      $PokemonStorage=$game_variables[212]
+      $PokemonGlobal=$game_variables[213]
+    end
+  else
+    saveHattoriDataToVariables()
+    resetCharData()
+    pbChangePlayer($game_variables[200].gender)
+    $Trainer=$game_variables[200]
+    $PokemonBag=$game_variables[201]
+    $PokemonStorage=$game_variables[202]
+    $PokemonGlobal=$game_variables[203]
+    $game_variables[99]=7
   end
 end

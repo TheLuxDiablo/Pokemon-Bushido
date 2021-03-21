@@ -283,4 +283,29 @@ class PokeBattle_Trainer
     @money             = INITIAL_MONEY
     @party             = []
   end
+
+  def initialize2
+    @name              = "AAA"
+    @language          = pbGetLanguage
+    @trainertype       = "POKEMONTRAINER_PLAYERM"
+    @id                = rand(256)
+    @id                |= rand(256)<<8
+    @id                |= rand(256)<<16
+    @id                |= rand(256)<<24
+    @metaID            = 0
+    @outfit            = 0
+    @pokegear          = false
+    @pokedex           = false
+    clearPokedex
+    @shadowcaught      = []
+    for i in 1..PBSpecies.maxValue
+      @shadowcaught[i] = false
+    end
+    @badges            = []
+    for i in 0...8
+      @badges[i]       = false
+    end
+    @money             = INITIAL_MONEY
+    @party             = []
+  end
 end
