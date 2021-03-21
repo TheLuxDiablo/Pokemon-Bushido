@@ -292,9 +292,9 @@ def switchToCharacter(char=0)
     resetCharData()
     pbChangePlayer($game_variables[28])
     $Trainer=$TrainerMainGame
-    $PokemonBag=$PokemonBagHattori
-    $PokemonStorage=$PokemonStorageHattori
-    $PokemonGlobal=$PokemonGlobalHattori
+    $PokemonBag=$PokemonBagMainGame
+    $PokemonStorage=$PokemonStorageMainGame
+    $PokemonGlobal=$PokemonGlobalMainGame
     $game_variables[99]=7
   end
 end

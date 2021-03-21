@@ -2080,7 +2080,7 @@ module DialogueModule
                     battle.scene.appearBar
                     pbMessage("Akui Clan Technique, Toxic Kunai!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[1],battle.battlers[0])
+                    battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
                     if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
                       battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by Mashiro's kunai!")
                     else
