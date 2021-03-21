@@ -143,9 +143,17 @@ class PokemonTrainerCard_Scene
     @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z = 99999
     @sprites = {}
-    addBackgroundPlane(@sprites,"bg","Trainer Card/bg",@viewport)
+    if $game_variables[99]=="Hattori"
+      addBackgroundPlane(@sprites,"bg","Trainer Card/bg_H",@viewport)
+    else
+      addBackgroundPlane(@sprites,"bg","Trainer Card/bg",@viewport)
+    end
     @sprites["card"] = IconSprite.new(128*2,96*2,@viewport)
-    @sprites["card"].setBitmap("Graphics/Pictures/Trainer Card/card_#{$Trainer.stars}")
+    if $game_variables[99]=="Hattori"
+      @sprites["card"].setBitmap("Graphics/Pictures/Trainer Card/card_H")
+    else
+      @sprites["card"].setBitmap("Graphics/Pictures/Trainer Card/card_#{$Trainer.stars}")
+    end
     @sprites["card"].zoom_x=2 ; @sprites["card"].zoom_y=2
 
     @sprites["card"].ox=@sprites["card"].bitmap.width/2
@@ -220,7 +228,11 @@ class PokemonTrainerCard_Scene
     flip1 if @flip==true
     @front=true
     @sprites["trainer"].visible=true
-    @sprites["card"].setBitmap("Graphics/Pictures/Trainer Card/card_#{$Trainer.stars}")
+    if $game_variables[99]=="Hattori"
+      @sprites["card"].setBitmap("Graphics/Pictures/Trainer Card/card_H")
+    else
+      @sprites["card"].setBitmap("Graphics/Pictures/Trainer Card/card_#{$Trainer.stars}")
+    end
     @overlay  = @sprites["overlay"].bitmap
     @overlay2 = @sprites["overlay2"].bitmap
     @overlay.clear
@@ -246,7 +258,25 @@ class PokemonTrainerCard_Scene
        # loop through all pokemon and see if they've been purified, check if has NATIONAL ribbon?
        $game_variables[94]=pbGetTotalPurified
      end
-    if $game_switches[67]
+     if $game_variables[99]=="Hattori"
+       textPositions = [
+          [_INTL("NAME"),332-60,64-16,0,baseColor,shadowColor],
+          [$Trainer.name,302+89*2,64-16,1,baseColor,shadowColor],
+          [_INTL("Kenshi Card"),32,12,0,baseColor,shadowColor],
+          [_INTL("ID No."),32,64-16,0,baseColor,shadowColor],
+          [sprintf("%05d",$Trainer.publicID($Trainer.id)),468-122*2,64-16,1,baseColor,shadowColor],
+          [_INTL("MONEY"),32,112-16,0,baseColor,shadowColor],
+          [_INTL("${1}",$Trainer.money.to_s_formatted),302+2,112-16,1,baseColor,shadowColor],
+          [_INTL("Chapter: Hattori's Story"),32,112+32,0,baseColor,shadowColor],
+          #[sprintf("%d",$game_variables[99]),302+2,112+32,1,baseColor,shadowColor],
+          [_INTL("Pokémon Corrupted"),32,112+64,0,baseColor,shadowColor],
+          [sprintf("%d",$game_variables[199]),302+2,112+64,1,baseColor,shadowColor],
+          [_INTL("TIME"),32,256+32,0,baseColor,shadowColor],
+          [time,302+89*2,256+32,1,baseColor,shadowColor]
+          #[_INTL("ADVENTURE STARTED"),32,256+32,0,baseColor,shadowColor],
+          #[starttime,302+89*2,256+32,1,baseColor,shadowColor]
+       ]
+    elsif $game_switches[67]
       textPositions = [
          [_INTL("NAME"),332-60,64-16,0,baseColor,shadowColor],
          [$Trainer.name,302+89*2,64-16,1,baseColor,shadowColor],

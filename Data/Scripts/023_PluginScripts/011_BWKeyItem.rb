@@ -132,7 +132,7 @@ end
   @sprites["item"].angle-=15/2 if @sprites["item"].angle!=0
   @sprites["item"].angle=0 if @sprites["item"].angle<0
   if isConst?(item,PBItems,:KATANALIGHT) || isConst?(item,PBItems,:KATANALIGHT2) || isConst?(item,PBItems,:KATANALIGHT3) || isConst?(item,PBItems,:KATANALIGHT4) ||
-      isConst?(item,PBItems,:KATANALIGHT5) || isConst?(item,PBItems,:KATANABASIC)
+      isConst?(item,PBItems,:KATANALIGHT5) || isConst?(item,PBItems,:KATANABASIC) || isConst?(item,PBItems,:KATANADARK)
     pbMEPlay("BOTW-GetFanfare") if frametome==7  # Updated ME to Essentials Default
   else
     pbMEPlay("Conquest-LevelUpWarlord") if frametome==7

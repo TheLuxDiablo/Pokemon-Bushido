@@ -5,6 +5,7 @@ Home = 83,31,7,8
 SurfBGM = HGSS-170-Surf.ogg
 PlayerB = POKEMONTRAINER_PLAYERF,trchar001,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,girl_fish_offset
 PlayerA = POKEMONTRAINER_PLAYERM,trchar000,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,boy_fish_offset
+PlayerC = POKEMONTRAINER_PLAYERF,trHattoriFB,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,girl_fish_offset
 TrainerBattleBGM = CON-LeafVillageDay.ogg
 WildVictoryME = HGSSBattleVictoryWild.ogg
 WildBattleBGM = Conquest-BattleNormal.ogg

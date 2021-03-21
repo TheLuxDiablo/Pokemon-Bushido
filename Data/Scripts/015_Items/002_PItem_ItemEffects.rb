@@ -491,6 +491,19 @@ ItemHandlers::UseOnPokemon.add(:AWAKENING,proc { |item,pkmn,scene|
 
 ItemHandlers::UseOnPokemon.copy(:AWAKENING,:CHESTOBERRY,:BLUEFLUTE,:POKEFLUTE)
 
+ItemHandlers::UseOnPokemon.add(:KATANADARK,proc { |item,pkmn,scene|
+  if pkmn.isShadow?
+    scene.pbDisplay(_INTL("This Pokémon is already a Shadow Pokémon."))
+    next false
+  end
+  pkmn.makeShadow
+  pbSEPlay("shadowkatana")
+  scene.pbRefresh
+  scene.pbDisplay(_INTL("{1} was corrupted by the Katana of Shadows.",pkmn.name))
+  $game_variables[199]+=1
+  next true
+})
+
 ItemHandlers::UseOnPokemon.add(:ANTIDOTE,proc { |item,pkmn,scene|
   if pkmn.fainted? || pkmn.status!=PBStatuses::POISON
     scene.pbDisplay(_INTL("It won't have any effect."))
@@ -1391,4 +1404,4 @@ ItemHandlers::UseOnPokemon.add(:LONELYMINT,proc { |item,pkmn,scene|
  next false
 })
 
-ItemHandlers::UseOnPokemon.copy(:LONELYMINT,:ADAMANTMINT,:NAUGHTYMINT,:BRAVEMINT,:BOLDMINT,:IMPISHMINT,:LAXMINT,:RELAXEDMINT,:MODESTMIND,:MILDMINT,:RASHMINT,:QUIETMINT,:CALMMINT,:GENTLEMINT,:CAREFULMINT,:SASSYMINT,:TIMIDMINT,:HASTYMINT,:JOLLYMINT,:NAIVEMINT,:SERIOUSMINT)
+ItemHandlers::UseOnPokemon.copy(:LONELYMINT,:ADAMANTMINT,:NAUGHTYMINT,:BRAVEMINT,:BOLDMINT,:IMPISHMINT,:LAXMINT,:RELAXEDMINT,:MODESTMINT,:MILDMINT,:RASHMINT,:QUIETMINT,:CALMMINT,:GENTLEMINT,:CAREFULMINT,:SASSYMINT,:TIMIDMINT,:HASTYMINT,:JOLLYMINT,:NAIVEMINT,:SERIOUSMINT)
