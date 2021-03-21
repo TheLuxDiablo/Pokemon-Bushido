@@ -402,7 +402,7 @@ PhenomenonGrass
     CRYOGONAL,47,52
     FROSMOTH,47,52
     CENTISKORCH,47,52
-    MAMOSWINE,49,52
+    DEINO,45,49
 PhenomenonWater
     WISHIWASHI,48
     HUNTAIL,47
