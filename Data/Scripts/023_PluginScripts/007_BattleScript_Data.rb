@@ -2096,7 +2096,7 @@ module DialogueModule
       Mashiro2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("Why are you so persistent on being annoying?!")
+                    pbMessage("Why are you so insistent on being annoying?!")
                     pbMessage("Ugh... I don't have any Kunai anymore...")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
