@@ -438,9 +438,6 @@ Events.onStepTaken += proc { |_sender,_e|
         compatval = [0,40,80,88][pbDayCareGetCompat]
       end
       $PokemonGlobal.daycareEgg = 1 if rand(100)<compatval
-      if $PokemonGlobal.daycareEgg == 1
-        $game_variables[39] = 1
-      end
     end
   end
   # Day Care Pokémon gain Exp/moves

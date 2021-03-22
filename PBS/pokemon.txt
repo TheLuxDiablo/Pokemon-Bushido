@@ -3943,7 +3943,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 26
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = 
+Evolutions = MRRIME,Item,BICYCLE
 #-------------------------------
 [123]
 Name = Scyther
@@ -8514,7 +8514,7 @@ BattlerEnemyX = 8
 BattlerEnemyY = 35
 BattlerShadowX = 0
 BattlerShadowSize = 3
-Evolutions = 
+Evolutions = OBSTAGOON,Item,BICYCLE
 #-------------------------------
 [265]
 Name = Wurmple
