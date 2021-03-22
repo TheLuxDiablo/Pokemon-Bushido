@@ -465,7 +465,7 @@ Pokedex = Because Galarian Slowpoke eat the seeds of a plant that grows only in 
 BattlerPlayerY = 57
 BattlerEnemyX = 0
 BattlerEnemyY = 40
-Evolutions = SLOWBRO,Item,GALARICACUFF,SLOWKING,Item,GALARICAWREATH
+Evolutions = SLOWKING,Item,GALARICAWREATH,SLOWKING,Item,GALARICAWREATH
 #-------------------------------
 [SLOWBRO,1]
 FormName = Galarian
@@ -626,7 +626,6 @@ BattlerPlayerY = 40
 BattlerEnemyY = 24
 BattlerShadowSize = 3
 Evolutions = MRRIME,Level,42
-Incense = GALARCHARM
 #-------------------------------
 [PINSIR,1]
 FormName = Mega Pinsir
@@ -1011,7 +1010,6 @@ BattlerPlayerY = 41
 BattlerEnemyX = 1
 BattlerEnemyY = 29
 BattlerShadowX = -6
-Incense = GALARCHARM
 #-------------------------------
 [LINOONE,1]
 FormName = Galarian
