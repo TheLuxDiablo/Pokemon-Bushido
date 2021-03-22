@@ -1,3 +1,6 @@
+1.1.1 ===============================================================================================================
+Addressed a crash that occurs when opening the Aisho Journal
+
 1.1 =================================================================================================================
 Added some important evolution items to the Chikyu Market
 Updated the Bag graphic
