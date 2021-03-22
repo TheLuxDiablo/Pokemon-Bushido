@@ -38,7 +38,7 @@ PhenomenonGrass
     FARFETCHD,6
     EEVEE,6
     EEVEE,6
-    EEVEE,6
+    FROAKIE,6
     DRATINI,7
 #-------------------------------
 084 # Jikan Shrine
@@ -70,9 +70,9 @@ Land
     SHINX,9,13
     BUDEW,9,13
     MUNCHLAX,9,13
-    TOXEL,9,13
+    NICKIT,9,13
     FLETCHLING,9,13
-    GIBLE,9,13
+    TOXEL,9,13
 PhenomenonGrass
     HAPPINY,13
     HELIOPTILE,13
@@ -113,6 +113,14 @@ Land
     WIMPOD,20,24
     SOLOSIS,20,24
     GIBLE,20,24
+PhenomenonGrass
+    STUNKY,20
+    PAWNIARD,21
+    NICKIT,21
+    WIMPOD,21
+    WIMPOD,21
+    WIMPOD,21
+    DEINO,21
 Water
     GOLDEEN,20,24
     LOMBRE,21,24
@@ -451,14 +459,14 @@ Land
     CHERRIM,65,70
     HELIOLISK,65,70
     LUXRAY,65,70
-    FLORGES,65,70
-    RAICHU,65,70
-    LUCARIO,65,70
-    AGGRON,65,70
+    FERALIGATR,65,70
+    TORTERRA,65,70
+    INCINEROAR,65,70
+    ARCHEOPS,65,70
     DRAGONITE,65,70
 Water
     SEAKING,65,70
-    LUDICOLO,65,70
+    CARRACOSTA,65,70
     HUNTAIL,65,70
     GOREBYSS,65,70
     SLOWPOKE,65,70
