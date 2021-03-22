@@ -412,6 +412,7 @@ class PokemonSummary_Scene
       ownerbase = Color.new(64,64,64)
       ownershadow = Color.new(176,176,176)
       #case @pokemon.otgender
+      #thundaga change OT message to always match our characters gender
       case (pbGetTrainerTypeGender(pbGetPlayerTrainerType))
       when 0; ownerbase = Color.new(24,112,216); ownershadow = Color.new(136,168,208)
       when 1; ownerbase = Color.new(248,56,32);  ownershadow = Color.new(224,152,144)
