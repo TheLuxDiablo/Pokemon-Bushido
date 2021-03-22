@@ -217,20 +217,20 @@ class PokemonDataBox < SpriteWrapper
     self.bitmap.blt(0,0,@databoxBitmap.bitmap,Rect.new(0,0,@databoxBitmap.width,@databoxBitmap.height))
     # Draw Pokémon's name
     nameWidth = self.bitmap.text_size(@battler.name).width
-    nameOffset = -4
-    nameOffset = nameWidth-116 if nameWidth>116
-    textPos.push([@battler.name,@spriteBaseX+8-nameOffset,6,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
+    nameOffset = 0
+    #nameOffset = nameWidth-116 if nameWidth>116
+    textPos.push([@battler.name,@spriteBaseX+10-nameOffset,6,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
     # Draw Pokémon's gender symbol
     case @battler.displayGender
     when 0   # Male
-      textPos.push([_INTL("♂"),@spriteBaseX+126,6,false,MALE_BASE_COLOR,MALE_SHADOW_COLOR])
+      textPos.push([_INTL("♂"),@spriteBaseX+128,6,false,MALE_BASE_COLOR,MALE_SHADOW_COLOR])
     when 1   # Female
-      textPos.push([_INTL("♀"),@spriteBaseX+126,6,false,FEMALE_BASE_COLOR,FEMALE_SHADOW_COLOR])
+      textPos.push([_INTL("♀"),@spriteBaseX+128,6,false,FEMALE_BASE_COLOR,FEMALE_SHADOW_COLOR])
     end
     pbDrawTextPositions(self.bitmap,textPos)
     # Draw Pokémon's level
-    imagePos.push(["Graphics/Pictures/Battle/overlay_lv",@spriteBaseX+140,16])
-    pbDrawNumber(@battler.level,self.bitmap,@spriteBaseX+162,16)
+    imagePos.push(["Graphics/Pictures/Battle/overlay_lv",@spriteBaseX+142,16])
+    pbDrawNumber(@battler.level,self.bitmap,@spriteBaseX+164,16)
     # Draw shiny icon
     if @battler.shiny?
       shinyX = (@battler.opposes?(0)) ? 10 : 12   # Foe's/player's
