@@ -1,3 +1,13 @@
+1.1 =================================================================================================================
+Added some important evolution items to the Chikyu Market
+Updated the Bag graphic
+Slightly updated event logic that determines the order of events in Hanatsu Village
+Added rewards for completing the Aisho Journal to an NPC in Hagane
+Slightly adjusted pokemon name alignment in the Battle UI
+OT names in summary are always set to player gender color
+Added a "Sakura" Flabebe form
+Various passability fixes
+
 1.0.15 ===============================================================================================================
 Took further meaasures to fix an issue where players remained stuck in Hanatsu Village after losing to Hotoke. I hate this bug
 Fix for getting stuck in Kaminari Cave
