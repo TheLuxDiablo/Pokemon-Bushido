@@ -626,6 +626,7 @@ BattlerPlayerY = 40
 BattlerEnemyY = 24
 BattlerShadowSize = 3
 Evolutions = MRRIME,Level,42
+Incense = GALARCHARM
 #-------------------------------
 [PINSIR,1]
 FormName = Mega Pinsir
@@ -1010,6 +1011,7 @@ BattlerPlayerY = 41
 BattlerEnemyX = 1
 BattlerEnemyY = 29
 BattlerShadowX = -6
+Incense = GALARCHARM
 #-------------------------------
 [LINOONE,1]
 FormName = Galarian

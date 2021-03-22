@@ -223,7 +223,7 @@ def pbDayCareGenerateEgg
     newForm = 0 if mother.isSpecies?(:MOTHIM)
     egg.form = newForm
   end
-  
+
   # Inheriting Regional Forms
      # Alola
   if isConst?(babyspecies,PBSpecies,:RATTATA) ||
@@ -437,7 +437,10 @@ Events.onStepTaken += proc { |_sender,_e|
       if hasConst?(PBItems,:OVALCHARM) && $PokemonBag.pbHasItem?(:OVALCHARM)
         compatval = [0,40,80,88][pbDayCareGetCompat]
       end
-      $PokemonGlobal.daycareEgg = 1 if rand(100)<compatval   # Egg is generated
+      $PokemonGlobal.daycareEgg = 1 if rand(100)<compatval
+      if $PokemonGlobal.daycareEgg == 1
+        $game_variables[39] = 1
+      end
     end
   end
   # Day Care Pokémon gain Exp/moves

@@ -856,3 +856,4 @@
 829,TRISTANLETTER,Tristan Certificate,Tristan Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
 830,HAUNTEDLETTER,Haunted Certificate,Haunted Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
 831,RAINBOWFEATHER,Rainbow Feather,Rainbow Feathers,8,0,"A special feather, given to those who are pure of heart.",0,0,6,
+832,GALARCHARM,Galarian Charm,Galarian Charms,1,2000,"An item to be held by a Pokémon. It allows Obstagoon and Mr. Rime to breed properly.",0,0,0,
