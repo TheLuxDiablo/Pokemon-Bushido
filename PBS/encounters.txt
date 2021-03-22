@@ -49,7 +49,7 @@ Land
     SCATTERBUG,4,8
     FARFETCHD,4,8
     SURSKIT,5,7
-    SURSKIT,4,9
+    COTTONEE,4,9
     TOGEPI,4,6
     TOGEPI,5,8
 Water
