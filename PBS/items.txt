@@ -857,3 +857,5 @@
 830,HAUNTEDLETTER,Haunted Certificate,Haunted Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
 831,RAINBOWFEATHER,Rainbow Feather,Rainbow Feathers,8,0,"A special feather, given to those who are pure of heart.",0,0,6,
 832,GALARCHARM,Galarian Charm,Galarian Charms,1,2000,"An item to be held by a Pokémon. It allows Obstagoon and Mr. Rime to breed properly.",0,0,0,
+833,ILEXLEAF,Ilex Leaf,Ilex Leaves,6,0,"Leaves that fall in a serene forest in a distant land.",0,0,6,
+834,DEXCERT,Journal Certificate,Journal Certificates,8,0,"A certificate proving the completion of the Aisho Journal. Only given to true masters.",0,0,6,

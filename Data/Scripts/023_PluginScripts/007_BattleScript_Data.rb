@@ -2940,6 +2940,16 @@ module DialogueModule
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                       battle.scene.pbHideOpponent
                      }
+       Celebi = Proc.new{|battle|
+                      battle.scene.appearBar
+                      pbMessage("Celebi's pure soul grants it resolve!")
+                      battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      battle.scene.pbHideOpponent
+                     }
         Virizion = Proc.new{|battle|
                        battle.scene.appearBar
                        pbMessage("Virizion's soul is locked away!")
