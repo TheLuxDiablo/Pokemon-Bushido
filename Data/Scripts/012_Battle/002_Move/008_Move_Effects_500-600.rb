@@ -366,12 +366,17 @@ class PokeBattle_Move_518 < PokeBattle_Move_005
   def pbOnStartUse(user,targets)
     stageMul = [2,2,2,2,2,2, 2, 3,4,5,6,7,8]
     stageDiv = [8,7,6,5,4,3, 2, 2,2,2,2,2,2]
-    defense      = targets[0].defense
-    defenseStage = targets[0].stages[PBStats::DEFENSE]+6
-    realDefense  = (defense.to_f*stageMul[defenseStage]/stageDiv[defenseStage]).floor
-    spdef        = targets[0].spdef
-    spdefStage   = targets[0].stages[PBStats::SPDEF]+6
-    realSpdef    = (spdef.to_f*stageMul[spdefStage]/stageDiv[spdefStage]).floor
+    begin
+      defense      = targets[0].defense
+      defenseStage = targets[0].stages[PBStats::DEFENSE]+6
+      realDefense  = (defense.to_f*stageMul[defenseStage]/stageDiv[defenseStage]).floor
+      spdef        = targets[0].spdef
+      spdefStage   = targets[0].stages[PBStats::SPDEF]+6
+      realSpdef    = (spdef.to_f*stageMul[spdefStage]/stageDiv[spdefStage]).floor
+    rescue
+      realDefense=2
+      realSpdef=3
+    end
     # Determine move's category
     return @calcCategory = 0 if realDefense<realSpdef
     return @calcCategory = 1 if realDefense>=realSpdef
