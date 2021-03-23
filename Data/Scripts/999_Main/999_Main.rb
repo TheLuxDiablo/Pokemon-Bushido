@@ -1,4 +1,7 @@
 pbCompiler
+if mkxp? && Bitmap.max_size < 0x4000
+  raise("\nWeakHardwareError:\nYour GPU's is too old to run the MKXP version of this game.\nRead the BUSHIDO_README to run the Backup RGSS version of the game.\n\nMax Texture size: #{Bitmap.max_size}")
+end
 
 class Scene_DebugIntro
   def main
