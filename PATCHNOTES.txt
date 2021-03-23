@@ -1,3 +1,8 @@
+1.1.2 ===============================================================================================================
+Resolved an issue where some events could not be triggered in Chikyu while an egg was ready
+Added a new crash message for users playing the MKXP version on older hardware
+Disabled critical captures, as they caused graphical issues
+
 1.1.1 ===============================================================================================================
 Addressed a crash that occurs when opening the Aisho Journal
 
