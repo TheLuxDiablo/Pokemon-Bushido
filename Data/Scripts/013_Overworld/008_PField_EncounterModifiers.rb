@@ -21,28 +21,17 @@ Events.onWildPokemonCreate+=proc {|sender,e|
    end
 }
 
-
-# Used in the random dungeon map.  Makes the levels of all wild Pokémon in that
-# map depend on the levels of Pokémon in the player's party.
-# This is a simple method, and can/should be modified to account for evolutions
-# and other such details.  Of course, you don't HAVE to use this code.
-# Thundaga scaling level scaling
-
-=begin
-# Hidden Ability in Wild Pokemon and Ability Charm Code
-Events.onWildPokemonCreate+=proc {|sender,e|
-   pokemon=e[0]
-   value = $PokemonBag.pbHasItem?(:ABILITYCHARM) ? 80 : 120
-   value = (value * (1 - NewGamePlusData.hiddenAbilChance)).floor
-   if rand(value)<1
-     abils=pokemon.getAbilityList
-     abilIndex=[]
-     for i in abils
-       abilIndex.push(i[1]) if i[0]>0 && i[1]>1
+  Events.onWildPokemonCreate+=proc {|sender,e|
+     pokemon=e[0]
+     if rand(value)<1
+       abils=pokemon.getAbilityList
+       abilIndex=[]
+       for i in abils
+         abilIndex.push(i[1]) if i[0]>0 && i[1]>1
+       end
+       pokemon.setAbility(abilIndex[rand(abilIndex.length)])
      end
-     pokemon.setAbility(abilIndex[rand(abilIndex.length)])
-   end
-}
+  }
 
 
 Events.onWildPokemonCreate+=proc {|sender,e|
@@ -52,6 +41,7 @@ Events.onWildPokemonCreate+=proc {|sender,e|
 
 
 # Make enemy trainer pokemon evolve automatically if their level is high enough
+  =begin
 Events.onTrainerPartyLoad+=proc {|sender,e|
    if e[0] # Trainer data should exist to be loaded, but may not exist somehow
      trainer=e[0][0] # A PokeBattle_Trainer object of the loaded trainer
