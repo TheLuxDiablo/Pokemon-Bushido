@@ -100,7 +100,7 @@ PhenomenonGrass
     WIMPOD,18
     WIMPOD,19
     WIMPOD,20
-    JANGMOO,20
+    HONEDGE,20
 #-------------------------------
 095 # Tsuchi Shrine
 18,10,10
@@ -112,7 +112,7 @@ Land
     DEERLING,21,23
     WIMPOD,20,24
     SOLOSIS,20,24
-    GIBLE,20,24
+    SAWSBUCK,20,24
 PhenomenonGrass
     STUNKY,20
     PAWNIARD,21
@@ -137,10 +137,10 @@ Land
     MIGHTYENA,47,53
     THROH,47,53
     SAWK,47,53
-    CORVIKNIGHT,47,53
+    MEDICHAM,47,53
     TOXICROAK,47,53
     ABSOL,47,53
-    MEDICHAM,47,53
+    KOMMOO,47,53
     ZOROARK,47,53
 Water
     SHARPEDO,46,52
@@ -269,12 +269,12 @@ Cave
     GURDURR,28,33
     ONIX,29,33
     TRAPINCH,28,33
-    GABITE,29,33
+    SALAZZLE,29,33
 PhenomenonCave
     GLIGAR,29,32
     MUNCHLAX,28,32
     TRAPINCH,28,33
-    GABITE,29,33
+    SALAZZLE,29,33
     LARVITAR,28,32
 #-------------------------------
 118 # Hanatsu Shrine
@@ -355,12 +355,12 @@ Cave
     MAKUHITA,28,33
     ONIX,29,33
     TRAPINCH,28,33
-    GABITE,29,33
+    SALAZZLE,29,33
 PhenomenonCave
     GLIGAR,29,32
     MUNCHLAX,28,32
     TRAPINCH,28,33
-    GABITE,29,33
+    SALAZZLE,29,33
     LARVITAR,28,32
 #-------------------------------
 127 # Izumi Village
@@ -450,8 +450,8 @@ Cave
 	PANCHAM,7,12
     MAKUHITA,7,12
 	TYROGUE,7,12
-    RIOLU,7,12
-    GIBLE,8,13
+    LITLEO,7,12
+    RIOLU,8,13
 #-------------------------------
 147 # Kaminari Pass
 22,10,10
