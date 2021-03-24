@@ -23,7 +23,7 @@ Events.onWildPokemonCreate+=proc {|sender,e|
 
   Events.onWildPokemonCreate+=proc {|sender,e|
      pokemon=e[0]
-     if rand(value)<1
+     if rand(69)<1
        abils=pokemon.getAbilityList
        abilIndex=[]
        for i in abils
