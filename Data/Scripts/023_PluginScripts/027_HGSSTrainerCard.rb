@@ -254,10 +254,8 @@ class PokemonTrainerCard_Scene
        pbGetAbbrevMonthName($PokemonGlobal.startTime.mon),
        $PokemonGlobal.startTime.day,
        $PokemonGlobal.startTime.year)
-     if $game_variables[94]==0
-       # loop through all pokemon and see if they've been purified, check if has NATIONAL ribbon?
-       $game_variables[94]=pbGetTotalPurified
-     end
+    # loop through all pokemon and see if they've been purified, check if has NATIONAL ribbon?
+    $game_variables[94]=pbGetTotalPurified
      if $game_variables[99]=="Hattori"
        textPositions = [
           [_INTL("NAME"),332-60,64-16,0,baseColor,shadowColor],
