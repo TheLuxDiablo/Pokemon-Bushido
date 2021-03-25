@@ -4299,7 +4299,7 @@ BattlerEnemyX = 3
 BattlerEnemyY = 31
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = VAPOREON,Item,WATERSTONE,JOLTEON,Item,THUNDERSTONE,FLAREON,Item,FIRESTONE,LEAFEON,Item,LEAFSTONE,GLACEON,Item,ICESTONE,LEAFEON,Location,95,GLACEON,Location,124,SYLVEON,HappinessMoveType,FAIRY,ESPEON,HappinessDay,,UMBREON,HappinessNight,
+Evolutions = SYLVEON,HappinessMoveType,FAIRY,VAPOREON,Item,WATERSTONE,JOLTEON,Item,THUNDERSTONE,FLAREON,Item,FIRESTONE,LEAFEON,Item,LEAFSTONE,GLACEON,Item,ICESTONE,LEAFEON,Location,95,GLACEON,Location,124,ESPEON,HappinessDay,,UMBREON,HappinessNight,
 #-------------------------------
 [134]
 Name = Vaporeon
