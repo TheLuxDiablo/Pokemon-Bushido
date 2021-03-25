@@ -22,7 +22,10 @@ class PokemonMartAdapter
     itemname = PBItems.getName(item)
     if pbIsMachine?(item)
       machine = pbGetMachine(item)
-      itemname = _INTL("{1} {2}",itemname,PBMoves.getName(machine))
+      itemname = _INTL("{1} Scroll",PBMoves.getName(machine))
+      if itemname.length >= 19
+        itemname = _INTL("{1} S.",PBMoves.getName(machine))
+      end
     end
     return itemname
   end
