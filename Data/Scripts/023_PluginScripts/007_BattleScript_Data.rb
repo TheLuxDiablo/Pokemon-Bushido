@@ -2546,22 +2546,14 @@ module DialogueModule
                     pbMessage("Akui Clan Technique, Shock Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
-                    end
+                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
                     battle.scene.appearBar
                     pbMessage("Actually... No, I don't think that's good enough!")
                     pbMessage("How about I burn your Pokémon instead?")
                     pbMessage("Akui Clan Technique, Flame Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
-                    end
+                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
                     battle.scene.appearBar
                     pbMessage("You know, I still don't think this is good enough...")
                     pbMessage("Hmm...")
@@ -2569,11 +2561,7 @@ module DialogueModule
                     pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
-                    end
+                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
                     battle.scene.appearBar
                     pbMessage("Hahahahaha! Thank you for being such an obedient little puppet!")
                     pbMessage("You really are my favorite plaything!")
@@ -2710,6 +2698,11 @@ module DialogueModule
         HattoriLast = Proc.new{|battle|
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)
+                      pbMessage("\\xn[Hattori]\\rThis is the end for you!")
+                      pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Cleansing Haze!")
+                      battle.pbAnimation(getID(PBMoves,:HAZE),battle.battlers[1],battle.battlers[0])
+                      battle.eachBattler { |b| b.pbResetStatStages }
+                      battle.pbDisplay(_INTL("All stat changes were eliminated!"))
                       pbWait(14)
                       pbBGMFade(3)
                       pbMessage("\\xn[Hattori]\\rYou've made a grave mistake now, my child.")
