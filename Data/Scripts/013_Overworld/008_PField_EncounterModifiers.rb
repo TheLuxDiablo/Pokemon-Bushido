@@ -21,27 +21,29 @@ Events.onWildPokemonCreate+=proc {|sender,e|
    end
 }
 
-  Events.onWildPokemonCreate+=proc {|sender,e|
-     pokemon=e[0]
-     if rand(69)<1
-       abils=pokemon.getAbilityList
-       abilIndex=[]
-       for i in abils
-         abilIndex.push(i[1]) if i[0]>0 && i[1]>1
-       end
-       pokemon.setAbility(abilIndex[rand(abilIndex.length)])
+=begin
+Events.onWildPokemonCreate+=proc {|sender,e|
+   pokemon=e[0]
+   if rand(69)<1
+     abils=pokemon.getAbilityList
+     abilIndex=[]
+     for i in abils
+       abilIndex.push(i[1]) if i[0]>0 && i[1]>1
      end
-  }
+     pokemon.setAbility(abilIndex[rand(abilIndex.length)])
+   end
+}
 
 
 Events.onWildPokemonCreate+=proc {|sender,e|
    evolvePokemonSilent(pokemon)
    evolvePokemonSilent(pokemon)
 }
+=end
 
 
 # Make enemy trainer pokemon evolve automatically if their level is high enough
-  =begin
+=begin
 Events.onTrainerPartyLoad+=proc {|sender,e|
    if e[0] # Trainer data should exist to be loaded, but may not exist somehow
      trainer=e[0][0] # A PokeBattle_Trainer object of the loaded trainer
