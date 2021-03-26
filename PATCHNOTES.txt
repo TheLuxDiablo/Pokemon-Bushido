@@ -1,3 +1,17 @@
+1.1.4 ===============================================================================================================
+Adjusted some locations where players could get stuck
+Resolved an issue where Galarica Cuffs could not be used on Slowpoke
+Adjusted some Pokemon OW sprites
+Fixed the tracking of purified shadow pokemon count
+Fixed an issue with Hotoke's double battle logic
+Fixed an issue where wild pokemon could not have Hidden Abilities
+Slightly lowered encounter rates for rare Pokemon
+TMs are now "Scrolls"
+Added TM shops in Hagane and Chikyu
+Gave dialogue to the silent spectator in Shogun's Tower
+Fix for stationary NPCs moving in place in Izumi Village
+Updated Poke Ball prices
+
 1.1.3 ===============================================================================================================
 Resolved an issue where the character would get stuck in a move route during a postgame mission
 
