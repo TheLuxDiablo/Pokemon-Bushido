@@ -1,3 +1,6 @@
+1.1.5 ===============================================================================================================
+Fix for some Hidden Ability wild encounters not triggering properly
+
 1.1.4 ===============================================================================================================
 Adjusted some locations where players could get stuck
 Resolved an issue where Galarica Cuffs could not be used on Slowpoke
