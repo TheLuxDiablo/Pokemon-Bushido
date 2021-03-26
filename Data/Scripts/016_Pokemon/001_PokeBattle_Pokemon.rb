@@ -764,12 +764,6 @@ class PokeBattle_Pokemon
       gain = 3
       gain = 4 if @happiness<200
       gain = 5 if @happiness<100
-    when "ramen1"
-      gain = 20
-    when "ramen2"
-      gain = 40
-    when "ramen3"
-      gain = 60
     when "groom"
       gain = 4
       gain = 10 if @happiness<200
