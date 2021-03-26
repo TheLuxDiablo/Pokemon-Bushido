@@ -10,7 +10,7 @@ Water
     WISHIWASHI,53,57
     GYARADOS,53,57
     GYARADOS,53,57
-    DRAGONAIR,53,57
+    EELEKTROSS,53,57
 #-------------------------------
 082 # Sakura Pass
 18,10,10
@@ -39,7 +39,7 @@ PhenomenonGrass
     EEVEE,6
     EEVEE,6
     FROAKIE,6
-    DRATINI,7
+    FROAKIE,7
 #-------------------------------
 084 # Jikan Shrine
 18,10,10
@@ -150,7 +150,7 @@ Water
     WISHIWASHI,46,52
     GYARADOS,46,52
     GYARADOS,46,52
-    DRAGONAIR,46,52
+    EELEKTROSS,46,52
 PhenomenonGrass
     BLISSEY,47,51
     MIGHTYENA,47,52
@@ -249,7 +249,7 @@ PhenomenonGrass
     VAPOREON,42
     JOLTEON,42
     FLAREON,42
-    DRAGONAIR,41
+    SERPERIOR,41
 PhenomenonWater
     WISHIWASHI,42
     HUNTAIL,41
@@ -381,7 +381,7 @@ PhenomenonWater
     MILOTIC,47
     SHARPEDO,47
     VAPOREON,47
-    DRAGONAIR,46
+    EELEKTROSS,46
 #-------------------------------
 132 # Izumi Pass
 20,10,10
