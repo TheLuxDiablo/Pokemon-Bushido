@@ -878,9 +878,9 @@ MultipleForms.register(:MRMIME,{
 "getFormOnCreation"=>proc{|pokemon|
    maps=[1]
    if $game_map && maps.include?($game_map.map_id)
-     next 1
-   else
      next 0
+   else
+     next 1
    end
 }
 })
