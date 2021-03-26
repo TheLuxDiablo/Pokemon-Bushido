@@ -13,13 +13,21 @@ Events.onWildPokemonCreate += proc { |_sender, e|
   end
 }
 
+Events.onWildPokemonCreate+=proc {|sender,e|
+   pokemon=e[0]
+   if $game_switches[90]
+     pokemon.makeNotShiny
+     pokemon.makeShadow
+   end
+}
+
 # Used in the random dungeon map.  Makes the levels of all wild Pokémon in that
 # map depend on the levels of Pokémon in the player's party.
 # This is a simple method, and can/should be modified to account for evolutions
 # and other such details.  Of course, you don't HAVE to use this code.
 Events.onWildPokemonCreate += proc { |_sender, e|
   pokemon = e[0]
-  if $game_map.map_id == 300
+  if $game_map.map_id == 0
     max_level = PBExperience.maxLevel
     new_level = pbBalancedLevel($Trainer.party) - 4 + rand(5)   # For variety
     new_level = 1 if new_level < 1
