@@ -21,6 +21,21 @@ Events.onWildPokemonCreate+=proc {|sender,e|
    end
 }
 
+
+# Hidden Ability in Wild Pokemon and Ability Charm Code
+Events.onWildPokemonCreate+=proc {|sender,e|
+   pokemon=e[0]
+   value = $PokemonBag.pbHasItem?(:ABILITYCHARM) ? 10 : 20
+   if rand(value)<1
+     abils=pokemon.getAbilityList
+     abilIndex=[]
+     for i in abils
+       abilIndex.push(i[1]) if i[0]>0 && i[1]>1
+     end
+     pokemon.setAbility(abilIndex[rand(abilIndex.length)])
+   end
+}
+
 # Used in the random dungeon map.  Makes the levels of all wild Pokémon in that
 # map depend on the levels of Pokémon in the player's party.
 # This is a simple method, and can/should be modified to account for evolutions
