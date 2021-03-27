@@ -298,7 +298,7 @@ class DependentEvents
     return if !$PokemonGlobal.followerToggled
     firstPkmn = $Trainer.firstAblePokemon
     return if !firstPkmn
-    remove_sprite(false)
+    remove_sprite(anim)
     ret = refresh_sprite(anim)
     change_sprite([firstPkmn.species, firstPkmn.female?,
           firstPkmn.shiny?, firstPkmn.form,
@@ -349,10 +349,9 @@ end
 # Update after surfing
 alias follow_pbEndSurf pbEndSurf
 def pbEndSurf(xOffset,yOffset)
+  isHidden = $PokemonTemp.dependentEvents.refresh_sprite(false,true)
   ret = follow_pbEndSurf(xOffset,yOffset)
-  if ret
-    $PokemonGlobal.callRefresh = [true,([0,false].include?($PokemonTemp.dependentEvents.refresh_sprite(false,true)))]
-  end
+  $PokemonGlobal.callRefresh = [true,(!isHidden)] if ret
 end
 
 # Update when starting diving to incorporate hiddden move animation
