@@ -1,3 +1,15 @@
+1.1.8 ===============================================================================================================
+Slugma and Celebi no longer share the same dex number
+Journal guy now checks for 308 to be a full journal
+Wild Hidden Abilities (5% chance)
+Fix for followers appearing when water walking
+Fix for various attack animations
+Only plays the rock smash SFX when using Katana to break rocks
+Added Skwovet to encounters (Shizen Forest)
+Added some evo stones as purchasable in Hagane Market
+Fix for Kaiyo Sea Seaking not disappearing
+Fix for Impidimp's abilities being defined incorrectly
+
 1.1.7 ===============================================================================================================
 Fix for wild shadow pokemon encounter modifiers
 
