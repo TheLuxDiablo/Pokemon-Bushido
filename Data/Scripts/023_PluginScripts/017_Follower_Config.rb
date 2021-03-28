@@ -118,7 +118,8 @@ Events.FollowerRefresh += proc{|pkmn|
   if pbGetMetadata($game_map.map_id,MetadataOutdoor) != true
 # The Pokemon disappears if it's height is greater than 2.5 meters and there are no encounters ie a building or something
     height =  pbGetSpeciesData(pkmn.species,pkmn.form)[SpeciesHeight]
-    next false if (height/10.0) > 2.5 && !$PokemonEncounters.isEncounterPossibleHere?
+    #next false if (height/10.0) > 2.5 && !$PokemonEncounters.isEncounterPossibleHere?
+    next false if (height/10.0) > 9999999.0 && !$PokemonEncounters.isEncounterPossibleHere? # Thundaga making pokemon always appear inside
   end
 }
 
