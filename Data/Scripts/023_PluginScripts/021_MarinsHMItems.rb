@@ -86,8 +86,6 @@ def pbSmashEvent(event)
   if event.name == "Tree"
     pbSEPlay("Cut", 80)
   elsif event.name == "Rock"
-    pbSEPlay("Cut", 90)
-    pbWait(2)
     pbSEPlay("Rock Smash", 70)
   end
   pbMoveRoute(event,[
