@@ -523,7 +523,7 @@ MultipleForms.register(:GRENINJA,{
 
 MultipleForms.register(:SCATTERBUG,{
   "getFormOnCreation" => proc { |pkmn|
-    next $Trainer.secretID%18
+    next rand(18)
   }
 })
 
