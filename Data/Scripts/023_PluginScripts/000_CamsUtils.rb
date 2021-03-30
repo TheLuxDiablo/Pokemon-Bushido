@@ -221,6 +221,25 @@ def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
    end
 end
 
+# More like GolisopodUser's utilities am i right? He's great, to be honest though
+def getTrainerPartyLength(trainerid,trainername,partyid=0)
+  if trainerid.is_a?(String) || trainerid.is_a?(Symbol)
+    if !hasConst?(PBTrainers,trainerid)
+      raise _INTL("Trainer type does not exist ({1}, {2}, ID {3})",trainerid,trainername,partyid)
+    end
+    trainerid = getID(PBTrainers,trainerid)
+  end
+  trainers  = pbLoadTrainersData
+  for trainer in trainers
+    thistrainerid = trainer[0]
+    name          = trainer[1]
+    thispartyid   = trainer[4]
+    next if thistrainerid!=trainerid || name!=trainername || thispartyid!=partyid
+    return trainer[3].length
+  end
+  return 0
+end
+
 # Registers the item in the Ready Menu.
 def pbRegisterItemOutOfBag(item)
   item = getID(PBItems,item)
