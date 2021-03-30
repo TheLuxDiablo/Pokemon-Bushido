@@ -736,7 +736,7 @@ def pbUseItem(bag,item,bagscene=nil)
     machine = pbGetMachine(item)
     return 0 if machine==nil
     movename = PBMoves.getName(machine)
-    pbMessage(_INTL("\\se[PC access]You booted up {1}.\1",PBItems.getName(item)))
+    pbMessage(_INTL("\\se[GUI party switch]You opened the scroll.\1",PBItems.getName(item)))
     if !pbConfirmMessage(_INTL("Do you want to teach {1} to a Pokémon?",movename))
       return 0
     elsif mon=pbMoveTutorChoose(machine,nil,true)
@@ -818,7 +818,7 @@ def pbUseItemOnPokemon(item,pkmn,scene)
     elsif !pkmn.compatibleWithMove?(machine)
       pbMessage(_INTL("{1} can't learn {2}.",pkmn.name,movename)) { scene.pbUpdate }
     else
-      pbMessage(_INTL("\\se[PC access]You booted up {1}.\1",PBItems.getName(item))) { scene.pbUpdate }
+      pbMessage(_INTL("\\se[GUI party switch]You opened the scroll.\1",PBItems.getName(item))) { scene.pbUpdate }
       if pbConfirmMessage(_INTL("Do you want to teach {1} to {2}?",movename,pkmn.name)) { scene.pbUpdate }
         if pbLearnMove(pkmn,machine,false,true) { scene.pbUpdate }
           $PokemonBag.pbDeleteItem(item) if pbIsTechnicalMachine?(item) && !INFINITE_TMS
