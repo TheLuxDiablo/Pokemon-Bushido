@@ -26,6 +26,12 @@ class PokemonMartAdapter
       if itemname.length >= 19
         itemname = _INTL("{1} S.",PBMoves.getName(machine))
       end
+      if pbIsTechnicalRecord?(item)
+        itemname = _INTL("{1} Notes",PBMoves.getName(machine))
+        if itemname.length >= 17
+          itemname = _INTL("{1} N.",PBMoves.getName(machine))
+        end
+      end
     end
     return itemname
   end
