@@ -25,6 +25,13 @@ def pbPurify(pokemon,scene)
   return if !pokemon.savedev && !pokemon.savedexp
   pokemon.shadow = false
   pokemon.giveRibbon(PBRibbons::NATIONAL)
+  # Thundaga, make purified pokemon perfect IVs
+  pokemon.iv[0] = 31
+  pokemon.iv[1] = 31
+  pokemon.iv[2] = 31
+  pokemon.iv[3] = 31
+  pokemon.iv[4] = 31
+  pokemon.iv[5] = 31
   scene.pbDisplay(_INTL("{1} opened the door to its heart!",pokemon.name))
   # loop through all pokemon and see if they've been purified, check if has NATIONAL ribbon?
   $game_variables[94]=pbGetTotalPurified
