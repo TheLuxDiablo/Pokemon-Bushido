@@ -1,3 +1,21 @@
+1.1.9 ===============================================================================================================
+Added all available fossils to the Aisho Journal
+Fix for pokedex journal checker guy (326 in the Aisho Journal)
+Fix for Hagane Evo Rock seller not appearing properly in later chapters
+Fix for toxtricity form icons
+Made follower pokemon always appear inside, regardless of their height
+Resolved an issue where players could water walk to the edge of the world in Yami Pass
+All Scatterbug forms can now be encountered
+Made resting at home refill Katana energy
+Fixed shadow lugia battle background in Postgame
+Fix message "transferred to Sukiro's PC" to say storage instead
+Made purified pokemon have perfect IVs
+Added a hint drop to talk with Tsuku after the Postgame Rival fight
+Resolved awkward Sukiro fight positioning at Jikan Shrine
+Set shadows as Ace Pokemon for trainers on Yami Island and Yami Pass
+Added a TR Seller in Izumi
+Resolved an issue where the man in front of the dojo in Hanatsu would appear invisible
+
 1.1.8 ===============================================================================================================
 Slugma and Celebi no longer share the same dex number
 Journal guy now checks for 308 to be a full journal
