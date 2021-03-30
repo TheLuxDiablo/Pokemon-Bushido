@@ -235,7 +235,7 @@ def getTrainerPartyLength(trainerid,trainername,partyid=0)
     name          = trainer[1]
     thispartyid   = trainer[4]
     next if thistrainerid!=trainerid || name!=trainername || thispartyid!=partyid
-    return trainer[3].length
+    return (trainer[3]. length - 1)
   end
   return 0
 end
