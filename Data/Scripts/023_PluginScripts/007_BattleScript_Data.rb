@@ -2509,12 +2509,6 @@ module DialogueModule
                   battle.battlers[1].effects[PBEffects::AquaRing] = true
                   battle.pbDisplay(_INTL("Kuro surrounded {1} with a veil of water!",battle.battlers[1].name))
                   battle.scene.appearBar
-                  pbMessage("And now, how about I change the terrain!")
-                  pbMessage("Akui Admin Technique, Shimizu Style! Misty Terrain!")
-                  battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
-                  battle.scene.disappearBar
-                  battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
-                  battle.scene.appearBar
                   pbMessage("And don't you dare forget about my signature move!")
                   pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
                   battle.scene.disappearBar
@@ -2526,6 +2520,12 @@ module DialogueModule
                   end
                   battle.scene.appearBar
                   pbMessage("Hahaha! Now, isn't this fun?!")
+                  pbMessage("And now, how about I change the terrain!")
+                  pbMessage("Akui Admin Technique, Shimizu Style! Misty Terrain!")
+                  battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
+                  battle.scene.disappearBar
+                  battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
+                  battle.scene.appearBar
                   pbMessage("Come on now! Show me what you're made of!")
                   battle.scene.disappearBar
                   battle.scene.pbHideOpponent
