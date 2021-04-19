@@ -373,6 +373,13 @@ class PokeBattle_Battle
       if $game_switches[62]
         if !vHI("KATANALIGHT4") && $game_map.map_id==136
           pbDisplay(_INTL("A Shadow Pokémon!"))
+        elsif $game_switches[152] #Switch 152 for uncatchable shadow rival message (CantStealFromRival)
+            pbDisplay(_INTL("Shadow Darumaka! It is protected by a thin veil of darkness..."))
+            pbDisplay(_INTL("Time to defeat it, and help purify it once and for all!"))
+            pbDisplay(_INTL("This Shadow Pokémon cannot be caught!"))
+        elsif $game_switches[80] #Switch 80 for uncatchable shadow message (CantStealFromAdmin)
+            pbDisplay(_INTL("A Shadow Pokémon! It is protected by a veil of darkness..."))
+            pbDisplay(_INTL("This Shadow Pokémon cannot be caught!"))
         else
           pbDisplay(_INTL("A Shadow Pokémon!\nThe Katana of Light is reacting to it!"))
         end
