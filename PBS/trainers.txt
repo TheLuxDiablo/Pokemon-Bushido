@@ -1033,7 +1033,7 @@ Pokemon = HYDREIGON,66
 [HATTORI,Hattori]
 LoseText = "This is impossible! I am the strongest Kenshi in all of Aisho!"
 Pokemon = ZOROARK,69
-	Item = LIFEORB
+	Item = LEFTOVERS
 	Moves = NASTYPLOT,DARKPULSE,FLAMETHROWER,SLUDGEBOMB
 Pokemon = LYCANROC,69
 	Form = 1
