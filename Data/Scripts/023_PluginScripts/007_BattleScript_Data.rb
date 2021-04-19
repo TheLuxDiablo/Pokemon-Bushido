@@ -2159,7 +2159,7 @@ module DialogueModule
                     pbMessage("You'll never be able to beat me again!")
                     battle.scene.disappearBar
                     battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!"))
                     battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
                     battle.scene.appearBar
                     pbMessage("Now, for a special surprise!")
