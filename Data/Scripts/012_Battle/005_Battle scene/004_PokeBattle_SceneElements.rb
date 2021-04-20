@@ -294,9 +294,10 @@ class PokemonDataBox < SpriteWrapper
     w = self.expFraction*@expBarBitmap.width
     # NOTE: The line below snaps the bar's width to the nearest 2 pixels, to
     #       fit in with the rest of the graphics which are doubled in size.
-    w = 0
     begin
       w = ((w/2).round)*2
+    rescue
+      w = 0
     end
     @expBar.src_rect.width = w
     xpColor = 0                       # Blue bar
