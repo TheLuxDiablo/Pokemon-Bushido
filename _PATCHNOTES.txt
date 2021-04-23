@@ -1,3 +1,22 @@
+1.1.11 ===============================================================================================================
+Added 1/200 chance to become shiny after being purified
+Fix for SR crash for some users
+Fix for EXP bar animations
+Fix for Akui Trainer shadow repeat stealing exploit
+Fix for Tsuchi item seller logic
+Galarian Farfetchd evolution fix
+Fix for shiny Passimian OW sprites
+Fix for ignoresSubstitute? on Beak Blast burning
+
+1.1.10 ===============================================================================================================
+Fix crash for Pokemon hitting level 100
+Fix for Protean Frogadier getting Torrent after evolving
+Fix crash on start for some users with ID being nil
+Fix Kuro's misty terrain blocking his kunai
+Fix color alpha for move selection UI, to make it easier to see
+Removed the "reacted to the katana of light" message for some uncatchable shadows
+Fix galarian slowbro tm compatability
+
 1.1.9 ===============================================================================================================
 Added all available fossils to the Aisho Journal
 Fix for pokedex journal checker guy (326 in the Aisho Journal)
