@@ -534,6 +534,7 @@ end
 
 
 
+end
 end # !Object.const_defined?(:Socket)
 
 
@@ -697,5 +698,4 @@ def pbPostToFile(url, postdata, file)
     pbPostData(url, postdata,file)
   rescue
   end
-end
 end

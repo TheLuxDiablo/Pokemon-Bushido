@@ -6,7 +6,7 @@
 # You should change it to your file's url once you upload it.
 # NOTE: Essentials cannot handle https addresses. You must use a http address.
 #===============================================================================
-MYSTERY_GIFT_URL = "http://images1.wikia.nocookie.net/pokemonessentials/images/e/e7/MysteryGift.txt"
+MYSTERY_GIFT_URL = "https://pastebin.com/raw/CZvL7t9r"
 # MYSTERY_GIFT_URL = "http://pastebin.com/raw/w6BqqUsm"
 
 
@@ -32,6 +32,7 @@ end
 # type: 0=Pokémon; 1 or higher=item (is the item's quantity).
 # item: The thing being turned into a Mystery Gift (Pokémon object or item ID).
 def pbEditMysteryGift(type,item,id=0,giftname="")
+  pbBGMPlay("cinnabar")
   begin
     if type==0   # Pokémon
       commands=[_INTL("Mystery Gift"),
@@ -108,6 +109,7 @@ def pbEditMysteryGift(type,item,id=0,giftname="")
     pbMessage(_INTL("Couldn't edit the gift."))
     return nil
   end
+  pbBGMPlay("title_vh")
 end
 
 def pbCreateMysteryGift(type,item)
@@ -151,7 +153,7 @@ def pbManageMysteryGifts
   # Download all gifts from online
   msgwindow=pbCreateMessageWindow
   pbMessageDisplay(msgwindow,_INTL("Searching for online gifts...\\wtnp[0]"))
-  online=pbDownloadToString(MYSTERY_GIFT_URL)
+  online=Downloader.toString(MYSTERY_GIFT_URL)
   pbDisposeMessageWindow(msgwindow)
   if online==""
     pbMessage(_INTL("No online Mystery Gifts found.\\wtnp[20]"))
@@ -252,6 +254,7 @@ end
 #===============================================================================
 # Called from the Continue/New Game screen.
 def pbDownloadMysteryGift(trainer)
+  pbBGMPlay("MysteryGift")
   sprites={}
   viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
   viewport.z=99999
@@ -259,7 +262,7 @@ def pbDownloadMysteryGift(trainer)
   pbFadeInAndShow(sprites)
   sprites["msgwindow"]=pbCreateMessageWindow
   pbMessageDisplay(sprites["msgwindow"],_INTL("Searching for a gift.\nPlease wait...\\wtnp[0]"))
-  string=pbDownloadToString(MYSTERY_GIFT_URL)
+  string=Downloader.toString(MYSTERY_GIFT_URL)
   if string==""
     pbMessageDisplay(sprites["msgwindow"],_INTL("No new gifts are available."))
   else
@@ -305,7 +308,7 @@ def pbDownloadMysteryGift(trainer)
             sprite.y+=distanceDiff
             break if sprite.y>=Graphics.height/2
           end
-          pbMEPlay("Battle capture success")
+          pbMEPlay("Conquest-BattleWon")
           (Graphics.frame_rate*3).times do
             Graphics.update
             Input.update
@@ -314,7 +317,7 @@ def pbDownloadMysteryGift(trainer)
           end
           sprites["msgwindow"].visible=true
           pbMessageDisplay(sprites["msgwindow"],_INTL("The gift has been received!")) { sprite.update }
-          pbMessageDisplay(sprites["msgwindow"],_INTL("Please pick up your gift from the deliveryman in any Poké Mart.")) { sprite.update }
+          pbMessageDisplay(sprites["msgwindow"],_INTL("Please pick up your gift from any of the Fletchlings in each village.")) { sprite.update }
           trainer.mysterygift.push(gift)
           pending[command]=nil; pending.compact!
           opacityDiff = 16*20/Graphics.frame_rate
@@ -334,11 +337,13 @@ def pbDownloadMysteryGift(trainer)
       end
     end
   end
+  pbBGMPlay(nil)
   pbFadeOutAndHide(sprites)
   pbDisposeMessageWindow(sprites["msgwindow"])
   pbDisposeSpriteHash(sprites)
   viewport.dispose
   return trainer
+  pbBGMPlay("title_vh")
 end
 
 #===============================================================================
