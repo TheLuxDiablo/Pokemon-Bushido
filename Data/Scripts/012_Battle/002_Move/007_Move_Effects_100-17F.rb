@@ -2537,6 +2537,8 @@ end
 # attacker is burned. (Beak Blast)
 #===============================================================================
 class PokeBattle_Move_172 < PokeBattle_Move
+  def ignoresSubstitute?(user); return true; end
+  
   def pbDisplayChargeMessage(user)
     user.effects[PBEffects::BeakBlast] = true
     @battle.pbCommonAnimation("BeakBlast",user)
