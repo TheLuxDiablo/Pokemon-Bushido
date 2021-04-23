@@ -66,3 +66,17 @@ Events.onWildPokemonCreate += proc { |_sender, e|
 #    YOUR CODE HERE
 #  end
 #}
+
+# Make enemy team pokemon not shadow if shadow form is already owned
+Events.onTrainerPartyLoad += proc { |_sender, e|
+  if e[0] # Trainer data should exist to be loaded, but may not exist somehow
+    trainer = e[0][0] # A PokeBattle_Trainer object of the loaded trainer
+    items = e[0][1]   # An array of the trainer's items they can use
+    party = e[0][2]   # An array of the trainer's Pokémon
+    for x in party
+      if $Trainer.shadowcaught[x.species] == true
+        x.shadow=false
+      end
+    end
+  end
+}

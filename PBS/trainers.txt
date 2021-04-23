@@ -194,7 +194,7 @@ Pokemon = PANCHAM,10
 #-------------------------------
 [AKUICLAN_M,Test]
 LoseText = "Hmph. You can't the stop the great Akui Clan!"
-Pokemon = POOCHYENA,7
+Pokemon = SANDILE,7
     Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Test2]
