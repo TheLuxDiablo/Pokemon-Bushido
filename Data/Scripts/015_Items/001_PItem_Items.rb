@@ -426,8 +426,7 @@ def pbChangeLevel(pkmn,newlevel,scene)
       end
     end
     #thundaga excluding some pokes from rare candy evo
-    return if (isConst?(pkmn.species,PBSpecies,:FARFETCHD) && pkmn.form==1) ||
-              (isConst?(pkmn.species,PBSpecies,:YAMASK) && pkmn.form==1) ||
+    return if (isConst?(pkmn.species,PBSpecies,:YAMASK) && pkmn.form==1) ||
                isConst?(pkmn.species,PBSpecies,:MILCERY)
     # Check for evolution
     newspecies = pbCheckEvolution(pkmn)
