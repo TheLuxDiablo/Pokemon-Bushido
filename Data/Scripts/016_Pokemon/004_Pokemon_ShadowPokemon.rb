@@ -583,32 +583,32 @@ ItemHandlers::BattleUseOnPokemon.add(:VIVIDSCENT,proc { |item,pokemon,battler,ch
 
 ItemHandlers::BattleUseOnPokemon.add(:SUSHI1,proc { |item,pokemon,battler,choices,scene|
   pbBattleHPItem(pokemon,battler,30,scene)
-  if battler.shadowPokemon?
-    battler.pokemon.adjustHeart(-300)
+  if pokemon.shadowPokemon?
+    pokemon.adjustHeart(-300)
   end
   next true
 })
 
 ItemHandlers::BattleUseOnPokemon.add(:SUSHI2,proc { |item,pokemon,battler,choices,scene|
   pbBattleHPItem(pokemon,battler,60,scene)
-  if battler.shadowPokemon?
-    battler.pokemon.adjustHeart(-600)
+  if pokemon.shadowPokemon?
+    pokemon.adjustHeart(-600)
   end
   next true
 })
 
 ItemHandlers::BattleUseOnPokemon.add(:SUSHI3,proc { |item,pokemon,battler,choices,scene|
   pbBattleHPItem(pokemon,battler,90,scene)
-  if battler.shadowPokemon?
-    battler.pokemon.adjustHeart(-900)
+  if pokemon.shadowPokemon?
+    pokemon.adjustHeart(-900)
   end
   next true
 })
 
 ItemHandlers::BattleUseOnPokemon.add(:SUSHI4,proc { |item,pokemon,battler,choices,scene|
   pbBattleHPItem(pokemon,battler,120,scene)
-  if battler.shadowPokemon?
-    battler.pokemon.adjustHeart(-1200)
+  if pokemon.shadowPokemon?
+    pokemon.adjustHeart(-1200)
   end
   next true
 })

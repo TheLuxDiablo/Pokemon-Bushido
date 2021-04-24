@@ -2946,6 +2946,7 @@ module DialogueModule
         Virizion = Proc.new{|battle|
                        battle.scene.appearBar
                        pbMessage("Virizion's soul is locked away!")
+                       pbMessage("It cannot be caught!")
                        battle.scene.disappearBar
                        battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
                        battle.battlers[1].pbLowerStatStage(PBStats::SPATK,2,battle.battlers[1],false)
@@ -2956,6 +2957,7 @@ module DialogueModule
         Terrakion = Proc.new{|battle|
                        battle.scene.appearBar
                        pbMessage("Terrakion's soul is locked away!")
+                       pbMessage("It cannot be caught!")
                        battle.scene.disappearBar
                        battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
                        battle.battlers[1].pbLowerStatStage(PBStats::SPATK,2,battle.battlers[1],false)
@@ -2966,6 +2968,7 @@ module DialogueModule
         Cobalion = Proc.new{|battle|
                        battle.scene.appearBar
                        pbMessage("Cobalion's soul is locked away!")
+                       pbMessage("It cannot be caught!")
                        battle.scene.disappearBar
                        battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
                        battle.battlers[1].pbLowerStatStage(PBStats::SPATK,2,battle.battlers[1],false)
