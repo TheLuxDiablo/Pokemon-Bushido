@@ -179,7 +179,9 @@ module Keys
       ControlConfig.new(_INTL("Run/Sort"),_INTL("Z")),
       ControlConfig.new(_INTL("Scroll down"),_INTL("Page Down")),
       ControlConfig.new(_INTL("Scroll up"),_INTL("Page Up")),
-      ControlConfig.new(_INTL("Registered"),_INTL("F"))
+      ControlConfig.new(_INTL("Registered"),_INTL("F")),
+      ControlConfig.new(_INTL("Speedup"),_INTL("Alt")),
+      ControlConfig.new(_INTL("Quicksave"),_INTL("S"))
     ]
   end
 
@@ -247,6 +249,10 @@ module Input
           return $PokemonSystem.getGameControlCodes(_INTL("Scroll down"))
         when Input::F5 # F, F5, Tab
           return $PokemonSystem.getGameControlCodes(_INTL("Registered"))
+        when Input::SAVE # S
+          return $PokemonSystem.getGameControlCodes(_INTL("Quicksave"))
+        when Input::SPEEDUP # S
+          return $PokemonSystem.getGameControlCodes(_INTL("Speedup"))
         else
           return buttonToKeyOldFL(button)
       end
@@ -415,6 +421,10 @@ class PokemonSystem
   attr_accessor :gameControls
   def gameControls
     @gameControls = Keys.defaultControls if !@gameControls
+    if @gameControls.length < 14
+      @gameControls.push(ControlConfig.new(_INTL("Speedup"),_INTL("Alt")))
+      @gameControls.push(ControlConfig.new(_INTL("Quicksave"),_INTL("S")))
+    end
     return @gameControls
   end
 

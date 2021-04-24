@@ -39,6 +39,8 @@ module Input
   F7        = 31
   F8        = 32
   F9        = 33
+  SAVE      = 50
+  SPEEDUP   = 51
   LeftMouseKey  = 1
   RightMouseKey = 2
   # GetAsyncKeyState or GetKeyState will work here

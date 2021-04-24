@@ -50,7 +50,7 @@ module Graphics
   end
 
   def self.update
-    if $CanToggle && Input.trigger?(Input::F)
+    if $CanToggle && Input.trigger?(Input::SPEEDUP)
       $GameSpeed += 1
       $GameSpeed = 0 if $GameSpeed >= SPEEDUP_STAGES.size
     end
@@ -58,18 +58,5 @@ module Graphics
     return unless $frame % SPEEDUP_STAGES[$GameSpeed] == 0
     fast_forward_update
     $frame = 0
-  end
-end
-
-module Input
-  class << Input
-    alias fast_forward_button_to_key buttonToKey
-  end
-
-  F = 50
-
-  def self.buttonToKey(btn)
-    return [0x12] if btn == Input::F # THUNDAGA ALT KEY
-    fast_forward_button_to_key(btn)
   end
 end
