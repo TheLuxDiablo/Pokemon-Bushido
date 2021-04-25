@@ -12,7 +12,7 @@ When playing the game, please use Game.exe. GameRGSS.exe is only meant to be
 used if there are issues with the existing Game.exe.
 
 If you are experiencing issues with Game.exe, please follow these steps:
-1. Rename the current Game.exe file to "Game_Backup"
+1. Rename the current Game file to "Game_Backup"
 2. Rename GameRGSS to "Game".
 3. Run the newly renamed Game!
 
