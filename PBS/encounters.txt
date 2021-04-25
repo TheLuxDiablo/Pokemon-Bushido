@@ -179,12 +179,6 @@ PhenomenonGrass
     LARVITAR,26,30
     LARVITAR,26,30
     LARVITAR,26,30
-PhenomenonBird
-    FLETCHINDER,26,30
-    TRUMBEAK,26,29
-    CORVISQUIRE,26,29
-    SWELLOW,26,30
-    GLIGAR,26,30
 #-------------------------------
 104 # Jonetsu Caverns
 18,10,10
@@ -485,3 +479,12 @@ Cave
     STEELIX,65,70
     FLYGON,65,70
     GARCHOMP,65,70
+#-------------------------------
+155 # Kaminari Cave
+22,10,10
+PhenomenonCave
+    GLIGAR,27,30
+    MUNCHLAX,26,30
+    TRAPINCH,26,31
+    GABITE,27,31
+    LARVITAR,26,30

@@ -40,7 +40,7 @@ end
 #-------------------------------------------------------------------------------
 
 module PhenomenonConfig
-  Frequency = 400 # Chance for phenomenon to generate on step. Between 350-600.
+  Frequency = 600 # Chance for phenomenon to generate on step. Between 350-600.
   Timer = 800 # How many frames to wait before phenomenon disappears
   Switch = 77 # Switch that when ON enables phenomena
 
@@ -63,7 +63,7 @@ module PhenomenonConfig
   }
 
   BattleMusic = "" # Custom music to play during Phenomenon
-  BirdTerrainTag = 18 # Terrain tag for Bird encounters. Important! This is
+  BirdTerrainTag = 19 # Terrain tag for Bird encounters. Important! This is
                       # to prevent encounters appearing in inaccessible spots
   Items = {
     # 80% chance of appearing in dust

@@ -137,7 +137,7 @@ def pbPrepareBattle(battle)
 
   if !pbGetMetadata($game_map.map_id,MetadataOutdoor) && !backdrop
     if $PokemonEncounters.isCave?
-      backdrop = "FRLGCave"
+      backdrop = "CaveBushido1"
     else
       backdrop = "FRLGLab"
     end
