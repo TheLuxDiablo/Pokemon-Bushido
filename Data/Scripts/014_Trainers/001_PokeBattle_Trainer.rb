@@ -106,10 +106,6 @@ class PokeBattle_Trainer
   end
 
   def chapter
-    @chapter=0 if !@chapter
-    if $game_variables
-      @chapter=$game_variables[35]
-    end
     return @chapter
   end
 

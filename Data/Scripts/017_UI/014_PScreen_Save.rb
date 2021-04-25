@@ -1,6 +1,7 @@
 def pbSave(safesave=false)
   begin
     $Trainer.metaID=$PokemonGlobal.playerID
+    $Trainer.chapter=$game_variables[99]
   rescue
     return false
   end
