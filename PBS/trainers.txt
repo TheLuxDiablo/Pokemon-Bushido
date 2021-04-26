@@ -197,6 +197,11 @@ LoseText = "Hmph. You can't the stop the great Akui Clan!"
 Pokemon = SANDILE,7
     Shadow = yes
 #-------------------------------
+[AKUICLAN_M,Test3]
+LoseText = "Hmph. You can't the stop the great Akui Clan!"
+Pokemon = SANDILE,7
+	Moves = DRAGONDANCE
+#-------------------------------
 [AKUICLAN_M,Test2]
 LoseText = "Hmph. You can't the stop the great Akui Clan!"
 Pokemon = TOXEL,14

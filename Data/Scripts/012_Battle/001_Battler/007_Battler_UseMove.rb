@@ -650,7 +650,10 @@ class PokeBattle_Battler
       end
     end
     # Show move animation (for this hit)
-    move.pbShowAnimation(move.id,user,targets,hitNum)
+    #move.pbShowAnimation(move.id,user,targets,hitNum)
+    tgts = targets.clone
+    pbAddTarget(tgts,user,user,move,true,true) if tgts.length < 1
+    move.pbShowAnimation(move.id,user,tgts,hitNum)
     # Type-boosting Gem consume animation/message
     if user.effects[PBEffects::GemConsumed]>0 && hitNum==0
       # NOTE: The consume animation and message for Gems are shown now, but the
