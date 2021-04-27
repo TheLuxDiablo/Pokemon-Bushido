@@ -1,3 +1,19 @@
+1.1.12 ===============================================================================================================
+Fix for Soft Resest (F12) on the RGSS exe
+Global animation fix for moves that were appearing in the top left corner
+Fix for Jelly Donut in battle error message
+Ability to change controls in the Options menu
+Added Chapter to Load Screen
+Added Cave Phenomenon encounters
+Added some missing shiny icon sprites (Zeroara, Slowbro)
+Added missing OW sprite for Shadow Greninja
+Added a Rockruff giver for Dusk Form in Jontesu Pass
+Added Destiny Knot in Chikyu Market
+Made certain Shadow encounters reference that they cannot be caught in the Mid-Battle Dialogue
+Fix for players getting stuck on Shelby Island (Kaiyo Sea)
+Fix for Tsuchi Village bridge passability when surfing
+Made all HM moves forgetable
+
 1.1.11 ===============================================================================================================
 Added 1/200 chance to become shiny after being purified
 Fix for SR crash for some users
