@@ -211,7 +211,8 @@ module Graphics
     def self.resize_screen(w,h)
       @@width  = w
       @@height = h
-      pbSetResizeFactor($ResizeFactor,true)
+      #pbSetResizeFactor($ResizeFactor,true)
+      pbSetResizeFactor($ResizeFactor)
     end
   end
 
