@@ -466,12 +466,12 @@ Pokemon = THIEVUL,34
 #-------------------------------
 [NENSHO_F,Juba]
 LoseText = "It seems that your Pokemon thrive in the mountains as well!"
-Pokemon = TEDDIURSA,29
-Pokemon = MEDITITE,29
+Pokemon = FLETCHINDER,29
+Pokemon = ARON,29
 #-------------------------------
 [NENSHO_M,Hirose]
 LoseText = "I couldn't even beat you with my rare Pokemon..."
-Pokemon = ARON,31
+Pokemon = SIMISEAR,31
 #-------------------------------
 [KENSHI_M,Shishido]
 LoseText = "Light or dark, I still lose..."
@@ -496,7 +496,7 @@ Pokemon = LYCANROC,34
 [BLACKBELT,Oshiro]
 LoseText = "My Pokemon never pull their punches!"
 Pokemon = MIENSHAO,32
-Pokemon = PANGORO,32
+Pokemon = PANGORO,33
 #-------------------------------
 [KIMONOGIRL,Miyata]
 LoseText = "Even when I lose, I focus on my health!"
