@@ -2279,7 +2279,7 @@ class PokeBattle_Move_069 < PokeBattle_Move
 
   def pbFailsAgainstTarget?(user,target)
     if target.effects[PBEffects::Transform] ||
-       target.effects[PBEffects::Illusion]
+       target.effects[PBEffects::Illusion] || target.shadowPokemon?
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
