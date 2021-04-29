@@ -348,10 +348,18 @@ end
 # Also has a chance to poison
 # (Shell Side Arm - Galarian Slowbro)
 #===============================================================================
-class PokeBattle_Move_518 < PokeBattle_Move_005
+class PokeBattle_Move_518 < PokeBattle_Move
   def initialize(battle,move)
     super
     @calcCategory = 1
+  end
+
+  def pbFailsAgainstTarget?(user,target)
+    if target.fainted?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
   end
 
   def pbEffectAgainstTarget(user,target)
