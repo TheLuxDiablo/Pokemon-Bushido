@@ -11766,7 +11766,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 31
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = HUNTAIL,TradeItem,DEEPSEATOOTH,GOREBYSS,TradeItem,DEEPSEASCALE
+Evolutions = HUNTAIL,HoldItem,DEEPSEATOOTH,GOREBYSS,HoldItem,DEEPSEASCALE
 #-------------------------------
 [367]
 Name = Huntail
