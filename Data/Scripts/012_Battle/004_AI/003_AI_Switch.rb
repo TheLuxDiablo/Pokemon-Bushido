@@ -7,6 +7,7 @@ class PokeBattle_AI
   end
 
   def pbEnemyShouldWithdrawEx?(idxBattler,forceSwitch)
+    return false #Thundaga, make enemies NEVER try to switch
     return false if @battle.wildBattle?
     shouldSwitch = forceSwitch
     batonPass = -1
