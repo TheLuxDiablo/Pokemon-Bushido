@@ -1138,9 +1138,8 @@ class PokemonPartyScreen
       for i in 0...pkmn.moves.length
         move = pkmn.moves[i]
         # Check for hidden moves and add any that were found
-        if !pkmn.egg? && (isConst?(move.id,PBMoves,:MILKDRINK) ||
-                          isConst?(move.id,PBMoves,:SOFTBOILED) ||
-                          HiddenMoveHandlers.hasHandler(move.id))
+        # Thundaga, excluding HMS from appering in the pokemon party screen
+        if !pkmn.egg? && (isConst?(move.id,PBMoves,:MILKDRINK) || isConst?(move.id,PBMoves,:SOFTBOILED))
           commands[cmdMoves[i] = commands.length] = [PBMoves.getName(move.id),1]
         end
       end
@@ -1190,23 +1189,6 @@ class PokemonPartyScreen
             @scene.pbSelect(oldpkmnid)
             pbRefresh
             break
-          elsif pbCanUseHiddenMove?(pkmn,pkmn.moves[i].id)
-            if pbConfirmUseHiddenMove(pkmn,pkmn.moves[i].id)
-              @scene.pbEndScene
-              if isConst?(pkmn.moves[i].id,PBMoves,:FLY)
-                scene = PokemonRegionMap_Scene.new(-1,false)
-                screen = PokemonRegionMapScreen.new(scene)
-                ret = screen.pbStartFlyScreen
-                if ret
-                  $PokemonTemp.flydata=ret
-                  return [pkmn,pkmn.moves[i].id]
-                end
-                @scene.pbStartScene(@party,
-                   (@party.length>1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."))
-                break
-              end
-              return [pkmn,pkmn.moves[i].id]
-            end
           else
             break
           end
