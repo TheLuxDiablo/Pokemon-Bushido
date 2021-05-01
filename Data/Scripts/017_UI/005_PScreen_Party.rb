@@ -348,8 +348,8 @@ class PokemonPartyPanel < SpriteWrapper
     if @refreshBitmap
       @refreshBitmap = false
       @overlaysprite.bitmap.clear if @overlaysprite.bitmap
-      basecolor   = Color.new(88,88,88)
-      shadowcolor = Color.new(168,168,168)
+      basecolor   = Color.new(80,80,80)
+      shadowcolor = Color.new(160,160,160)
       pbSetSystemFont(@overlaysprite.bitmap)
       textpos = []
       # Draw Pokémon name
