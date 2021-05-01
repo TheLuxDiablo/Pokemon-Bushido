@@ -42,7 +42,11 @@ def pbPurify(pokemon,scene)
     pokemon.makeShiny
   end
   # loop through all pokemon and see if they've been purified, check if has NATIONAL ribbon?
-  $game_variables[94]=pbGetTotalPurified
+  if $game_variables[94]==0
+    $game_variables[94]=pbGetTotalPurified
+  else
+    $game_variables[94]+=1
+  end
   scene.pbDisplay(_INTL("You have now purified {1} Pokémon!",pbGet(94)))
   oldmoves = []
   for i in 0...4; oldmoves.push(pokemon.moves[i].id); end
