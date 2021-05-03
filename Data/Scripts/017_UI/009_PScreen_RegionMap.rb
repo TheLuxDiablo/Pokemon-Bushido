@@ -278,7 +278,11 @@ class PokemonRegionMap_Scene
         @sprites["cursor"].y = newY-yOffset
         next
       end
-      @sprites["mapbottom"].maplocation = pbGetMapLocation(@mapX,@mapY)
+      if (pbGetMapLocation(@mapX,@mapY).include? "Yami") && ($game_switches[155] == false)
+        @sprites["mapbottom"].maplocation = " "
+      else
+        @sprites["mapbottom"].maplocation = pbGetMapLocation(@mapX,@mapY)
+      end
       @sprites["mapbottom"].mapdetails  = pbGetMapDetails(@mapX,@mapY)
       ox = 0
       oy = 0

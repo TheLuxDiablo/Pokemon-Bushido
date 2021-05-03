@@ -113,14 +113,6 @@ Land
     WIMPOD,20,24
     SOLOSIS,20,24
     SAWSBUCK,20,24
-PhenomenonGrass
-    STUNKY,20
-    PAWNIARD,21
-    NICKIT,21
-    WIMPOD,21
-    WIMPOD,21
-    WIMPOD,21
-    DEINO,21
 Water
     GOLDEEN,20,24
     LOMBRE,21,24
@@ -130,6 +122,14 @@ Water
     WIMPOD,20,24
     TYMPOLE,20,24
     PYUKUMUKU,20,24
+PhenomenonGrass
+    STUNKY,20
+    PAWNIARD,21
+    NICKIT,21
+    WIMPOD,21
+    WIMPOD,21
+    WIMPOD,21
+    DEINO,21
 #-------------------------------
 098 # Yami Pass
 20,10,10
@@ -144,7 +144,7 @@ Land
     ZOROARK,47,53
 Water
     SHARPEDO,46,52
-	KINGDRA,46,52
+    KINGDRA,46,52
     HUNTAIL,46,52
     GOREBYSS,46,52
     WISHIWASHI,46,52
@@ -317,7 +317,7 @@ Land
     AVALUGG,41,45
     GLALIE,42,45
     FROSLASS,42,45
-    SANDSLASH,41,46	
+    SANDSLASH,41,46
     ABOMASNOW,41,45
     EISCUE,42,45
     CRYOGONAL,43,46
@@ -441,9 +441,9 @@ Cave
     ROCKRUFF,7,12
     DWEBBLE,7,12
     DIGLETT,7,12
-	PANCHAM,7,12
+    PANCHAM,7,12
     MAKUHITA,7,12
-	TYROGUE,7,12
+    TYROGUE,7,12
     LITLEO,7,12
     RIOLU,8,13
 #-------------------------------
@@ -480,7 +480,7 @@ Cave
     FLYGON,65,70
     GARCHOMP,65,70
 #-------------------------------
-155 # Kaminari Cave
+155 # MAP155
 22,10,10
 PhenomenonCave
     GLIGAR,27,30

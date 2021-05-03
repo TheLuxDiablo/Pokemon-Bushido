@@ -191,7 +191,8 @@ BAG_POCKET_AUTO_SORT = [0, false, false, false, true, true, true, false, false]
 #===============================================================================
 REGION_MAP_EXTRAS = [
   [0, 51, 16, 15, "mapHiddenBerth", false],
-  [0, 52, 20, 14, "mapHiddenFaraday", false]
+  [0, 52, 20, 14, "mapHiddenFaraday", false],
+  [2, 155, 21, 6, "MapHiddenYami", false]
 ]
 
 #===============================================================================

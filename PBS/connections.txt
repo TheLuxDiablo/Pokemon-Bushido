@@ -44,6 +44,10 @@
 76,West,4,48,East,0
 # MAP032 (32) - CamTest2 (76)
 32,West,0,76,East,3
+# Izumi Village (127) - Izumi Pass (132)
+127,West,14,132,East,0
+# Fubuki Bay (124) - Izumi Village (127)
+124,West,0,127,East,19
 # Ezo Village (79) - Sakura Pass (82)
 79,West,0,82,East,11
 # Shizen Trail (90) - Sakura Pass (82)
@@ -54,10 +58,12 @@
 98,East,0,99,West,12
 # Shizen Trail (90) - Kaiyo Sea (106)
 90,West,0,106,East,39
-# Chikyu Village (107) - Kaiyo Sea (106)
-107,East,17,106,West,0
 # Hagane City (85) - Kaiyo Sea (106)
 85,West,15,106,East,0
+# Chikyu Village (107) - Kaiyo Sea (106)
+107,East,17,106,West,0
+# Chikyu Village (107) - Kowai Pass (156)
+107,West,22,156,East,0
 # Nagisa Bay (81) - Ezo Village (79)
 81,West,0,79,East,6
 # Hagane City (85) - Shizen Trail (90)
@@ -68,7 +74,3 @@
 103,South,7,102,North,0
 # Yami Pass (98) - Nagisa Bay (81)
 98,West,35,81,East,0
-# Izumi Village (127) - Izumi Pass (132)
-127,West,14,132,East,0
-# Fubuki Bay (124) - Izumi Village (127)
-124,West,0,127,East,19
