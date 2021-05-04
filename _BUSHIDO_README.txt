@@ -23,6 +23,16 @@ Please install the fonts in the game's "Fonts" folder!
 1. Double click each .ttf file to open the font installer.
 2. Click "Install" in the top left of the window that appears.
 
+🌸 Mac Installation Guide 🌸
+
+Step 1: Download and install two applications, WinZip and Wine Stable. Make sure you download the most recent version of Wine (which is currently 6.0)
+
+Step 2: Download Pokemon Bushido using the links provided on Relic Castle. Use WinZip to extract the .rar file. 
+
+Step 3: Navigate into your newly extracted Pokemon Bushido folder. Rename the Game.exe file to Game_Backup.exe. Rename the GameRGSS.exe file to Game.exe. 
+
+Step 4: Right click the newly renamed Game.exe folder and open it with your Wine Stable program. The game should now run!
+
 
 🌸 Public Credits 🌸
 
