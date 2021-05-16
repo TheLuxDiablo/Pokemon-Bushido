@@ -452,8 +452,8 @@ end
 
 def pbSmashEvent(event)
   return if !event
-  if event.name.downcase=="tree";    pbSEPlay("Cut",80)
-  elsif event.name.downcase=="rock"; pbSEPlay("Rock Smash",80)
+  if event.name[/CutTree/i];    pbSEPlay("Cut",80)
+  elsif event.name[/SmashRock/i]; pbSEPlay("Rock Smash",80)
   end
   pbMoveRoute(event,[
      PBMoveRoute::Wait,2,

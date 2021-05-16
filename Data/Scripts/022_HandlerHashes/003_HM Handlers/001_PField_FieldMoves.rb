@@ -48,7 +48,7 @@ end
 HiddenMoveHandlers::CanUseMove.add(:CUT,proc { |move,pkmn,showmsg|
   next false if !pbCheckHiddenMoveBadge(BADGE_FOR_CUT,showmsg)
   facingEvent = $game_player.pbFacingEvent
-  if !facingEvent || facingEvent.name.downcase!="tree"
+  if !facingEvent || !facingEvent.name[/CutTree/i]
     pbMessage(_INTL("Can't use that here.")) if showmsg
     next false
   end
@@ -281,7 +281,7 @@ HiddenMoveHandlers::UseMove.add(:FLY,proc { |move,pokemon|
 
 HiddenMoveHandlers::CanUseMove.add(:HEADBUTT,proc { |move,pkmn,showmsg|
   facingEvent = $game_player.pbFacingEvent
-  if !facingEvent || facingEvent.name.downcase!="headbutttree"
+  if !facingEvent || !facingEvent.name[/HeadbuttTree/i]
     pbMessage(_INTL("Can't use that here.")) if showmsg
     next false
   end
@@ -305,7 +305,7 @@ HiddenMoveHandlers::UseMove.add(:HEADBUTT,proc { |move,pokemon|
 HiddenMoveHandlers::CanUseMove.add(:ROCKSMASH,proc { |move,pkmn,showmsg|
   next false if !pbCheckHiddenMoveBadge(BADGE_FOR_ROCKSMASH,showmsg)
   facingEvent = $game_player.pbFacingEvent
-  if !facingEvent || facingEvent.name.downcase!="rock"
+  if !facingEvent || !facingEvent.name[/SmashRock/i]
     pbMessage(_INTL("Can't use that here.")) if showmsg
     next false
   end
@@ -332,7 +332,7 @@ HiddenMoveHandlers::UseMove.add(:ROCKSMASH,proc { |move,pokemon|
 
 Events.onAction += proc { |_sender,_e|
   facingEvent = $game_player.pbFacingEvent
-  pbStrength if facingEvent && facingEvent.name.downcase=="boulder"
+  pbStrength if facingEvent && facingEvent.name[/StrengthBoulder/i]
 }
 
 HiddenMoveHandlers::CanUseMove.add(:STRENGTH,proc { |move,pkmn,showmsg|

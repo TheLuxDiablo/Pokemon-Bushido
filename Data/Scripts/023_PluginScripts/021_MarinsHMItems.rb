@@ -83,9 +83,9 @@ end
 
 def pbSmashEvent(event)
   return unless event
-  if event.name == "Tree"
+  if event.name[/CutTree/i]
     pbSEPlay("Cut", 80)
-  elsif event.name == "Rock"
+  elsif event.name[/SmashRock/i]
     pbSEPlay("Rock Smash", 70)
   end
   pbMoveRoute(event,[
@@ -138,9 +138,9 @@ if USING_SURF_ITEM
       pbHealingVial()
       next 1
     elsif cmd == 1 # CUT
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
         pbRockSmash
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
         pbCut
       else
         pbMessage(_INTL("There is nothing to cut."))
@@ -156,9 +156,9 @@ if USING_SURF_ITEM
       end
       next 1
     elsif cmd == 3 # ROCK SMASH
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
         pbCut
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
         # return 2 is how to force close the menu
         pbRockSmash
       else
@@ -188,10 +188,10 @@ if USING_SURF_ITEM
       pbHealingVial()
       next 1
     elsif cmd == 1 # CUT
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
         pbMessage(_INTL("You closed the bag and readied your Katana."))
         return 2
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
         pbMessage(_INTL("You closed the bag and readied your Katana."))
         return 2
       else
@@ -209,10 +209,10 @@ if USING_SURF_ITEM
       end
       next 1
     elsif cmd == 3 # ROCK SMASH
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
         pbMessage(_INTL("You closed the bag and readied your Katana."))
         return 2
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
         # return 2 is how to force close the menu
         pbMessage(_INTL("You closed the bag and readied your Katana."))
         return 2
@@ -341,10 +341,10 @@ if USING_ROCK_SMASH_ITEM
       pbHealingVial()
       next 1
     elsif cmd == 1 # CUT
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
         pbMessage(_INTL("You closed the bag and readied your Katana."))
         return 2
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
         pbMessage(_INTL("You closed the bag and readied your Katana."))
         return 2
       else
@@ -362,10 +362,10 @@ if USING_ROCK_SMASH_ITEM
       end
       next 1
     elsif cmd == 3 # ROCK SMASH
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
         pbMessage(_INTL("You closed the bag and readied your Katana."))
         return 2
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
         # return 2 is how to force close the menu
         pbMessage(_INTL("You closed the bag and readied your Katana."))
         return 2
@@ -386,9 +386,9 @@ if USING_ROCK_SMASH_ITEM
       pbHealingVial()
       next 1
     elsif cmd == 1 # CUT
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
         pbRockSmash
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
         pbCut
       else
         pbMessage(_INTL("There is nothing to cut."))
@@ -404,9 +404,9 @@ if USING_ROCK_SMASH_ITEM
       end
       next 1
     elsif cmd == 3 # ROCK SMASH
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
         pbCut
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
         # return 2 is how to force close the menu
         pbRockSmash
       else
@@ -440,7 +440,7 @@ if USING_STRENGTH_ITEM
       return false
     end
     itemname = PBItems.getName(getConst(PBItems,STRENGTH_ITEM))
-    if !$game_player.pbFacingEvent || !$game_player.pbFacingEvent.name == "Boulder"
+    if !$game_player.pbFacingEvent || !$game_player.pbFacingEvent.name[/StrengthBoulder/i]
       pbMessage(_INTL("The strength gloves cannot be used here!"))
       return false
     end
@@ -456,7 +456,7 @@ if USING_STRENGTH_ITEM
   end
 
   ItemHandlers::UseFromBag.add(STRENGTH_ITEM, proc do
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Boulder"
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/StrengthBoulder/i]
       return 2
     end
     return false
@@ -475,7 +475,7 @@ if USING_CUT_ITEM
   HiddenMoveHandlers::UseMove.delete(:CUT)
 
   def pbCut
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock" && !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM)
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i] && !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM)
       pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
       return false
     end
@@ -500,18 +500,18 @@ if USING_CUT_ITEM
   end
 
   ItemHandlers::UseFromBag.add(CUT_ITEM, proc do
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
       return 2
     end
     return false
   end)
 
   ItemHandlers::UseInField.add(CUT_ITEM, proc do
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock" && !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM)
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i] && !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM)
       pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
       return false
     end
-    if !$game_player.pbFacingEvent || !$game_player.pbFacingEvent.name == "Tree"
+    if !$game_player.pbFacingEvent || !$game_player.pbFacingEvent.name[/CutTree/i]
       pbMessage(_INTL("There are no trees to cut with the Ancient Katana!"))
       return false
     end
@@ -557,9 +557,9 @@ if USING_FLASH_ITEM
       pbHealingVial()
       next 1
     elsif cmd == 1 # CUT
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
         pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
         pbMessage(_INTL("You closed the bag and readied your Katana."))
         return 2
       else
@@ -589,9 +589,9 @@ if USING_FLASH_ITEM
       pbHealingVial()
       next 1
     elsif cmd == 1 # CUT
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
         pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
         pbCut
       else
         pbMessage(_INTL("There is nothing to cut."))
@@ -628,9 +628,9 @@ ItemHandlers::UseInField.add(FINAL_KATANA,proc{|item|
     pbRelicStone
     next 1
   elsif cmd == 2 # CUT
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
       pbRockSmash
-    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
       pbCut
     else
       pbMessage(_INTL("There is nothing to cut."))
@@ -646,9 +646,9 @@ ItemHandlers::UseInField.add(FINAL_KATANA,proc{|item|
     end
     next 1
   elsif cmd == 4 # ROCK SMASH
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
       pbCut
-    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
       # return 2 is how to force close the menu
       pbRockSmash
     else
@@ -683,10 +683,10 @@ ItemHandlers::UseFromBag.add(FINAL_KATANA,proc{|item|
     pbRelicStone
     next 1
   elsif cmd == 2 # CUT
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
       pbMessage(_INTL("You closed the bag and readied your Katana."))
       return 2
-    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
       pbMessage(_INTL("You closed the bag and readied your Katana."))
       return 2
     else
@@ -704,10 +704,10 @@ ItemHandlers::UseFromBag.add(FINAL_KATANA,proc{|item|
     end
     next 1
   elsif cmd == 4 # ROCK SMASH
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
       pbMessage(_INTL("You closed the bag and readied your Katana."))
       return 2
-    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Rock"
+    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
       # return 2 is how to force close the menu
       pbMessage(_INTL("You closed the bag and readied your Katana."))
       return 2

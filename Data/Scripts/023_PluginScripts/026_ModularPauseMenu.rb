@@ -164,3 +164,24 @@ MenuHandlers.addEntry(:DEBUG,_INTL("Debug"),"menuDebug",proc{|menu|
     menu.refresh
   }
 },proc{ next $DEBUG })
+
+# Debug Mystery Gift
+MenuHandlers.addEntry(:MGIFT,_INTL("Mystery Gift"),"menuDebug",proc{|menu|
+  pbFadeOutIn(99999) {
+    pbDownloadMysteryGift($Trainer)
+  }
+},proc{ next $DEBUG })
+
+# Quit Game
+MenuHandlers.addEntry(:QUITGAME,_INTL("Quit"),"menuDebug",proc{|menu|
+  if pbConfirmMessage(_INTL("Are you sure you want to quit the game?"))
+    menu.pbHideMenu
+    scene = PokemonSave_Scene.new
+    screen = PokemonSaveScreen.new(scene)
+    menu.close=true
+    screen.pbSaveScreen
+    $scene=nil
+  else
+    menu.close = false
+  end
+},proc{ next !(pbInSafari? || pbInBugContest?) })

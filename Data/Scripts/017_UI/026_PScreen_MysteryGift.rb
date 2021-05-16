@@ -153,7 +153,7 @@ def pbManageMysteryGifts
   # Download all gifts from online
   msgwindow=pbCreateMessageWindow
   pbMessageDisplay(msgwindow,_INTL("Searching for online gifts...\\wtnp[0]"))
-  online=Downloader.toString(MYSTERY_GIFT_URL)
+  online=pbDownloadToString(MYSTERY_GIFT_URL)
   pbDisposeMessageWindow(msgwindow)
   if online==""
     pbMessage(_INTL("No online Mystery Gifts found.\\wtnp[20]"))
@@ -262,11 +262,11 @@ def pbDownloadMysteryGift(trainer)
   pbFadeInAndShow(sprites)
   sprites["msgwindow"]=pbCreateMessageWindow
   pbMessageDisplay(sprites["msgwindow"],_INTL("Searching for a gift.\nPlease wait...\\wtnp[0]"))
-  string=Downloader.toString(MYSTERY_GIFT_URL)
+  string = pbDownloadToString(MYSTERY_GIFT_URL)
   if string==""
     pbMessageDisplay(sprites["msgwindow"],_INTL("No new gifts are available."))
   else
-    online=pbMysteryGiftDecrypt(string)
+    online = pbMysteryGiftDecrypt(string)
     pending=[]
     for gift in online
       notgot=true

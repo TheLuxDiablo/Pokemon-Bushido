@@ -1231,7 +1231,7 @@ ItemHandlers::UseFromBag.add(:KATANALIGHT,proc{|item|
     pbHealingVial()
     next 1
   elsif cmd == 1
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
       pbCut
     else
       pbMessage(_INTL("There is nothing to cut."))
@@ -1250,7 +1250,7 @@ ItemHandlers::UseInField.add(:KATANALIGHT,proc{|item|
     pbHealingVial()
     next 1
   elsif cmd == 1
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name == "Tree"
+    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
       pbCut
     else
       pbMessage(_INTL("There is nothing to cut."))
