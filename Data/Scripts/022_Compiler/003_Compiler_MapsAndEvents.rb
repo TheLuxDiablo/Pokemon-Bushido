@@ -382,7 +382,7 @@ class MapData
   end
 
   def saveTilesets
-    save_data(@system, "Data/Tilesets.rxdata")
+    save_data(@tilesets, "Data/Tilesets.rxdata")
     save_data(@system, "Data/System.rxdata")
   end
 end
