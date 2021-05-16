@@ -382,8 +382,8 @@ class MapData
   end
 
   def saveTilesets
-    filename = "Data/Tilesets.rxdata.rxdata"
-    save_data(@system,filename)
+    save_data(@system, "Data/Tilesets.rxdata")
+    save_data(@system, "Data/System.rxdata")
   end
 end
 
