@@ -61,17 +61,17 @@ class Window_UnformattedTextPokemon < SpriteWindow_Base
     self.text=text
   end
 
-  def resizeToFit(text,maxwidth=-1) # maxwidth is maximum acceptable window width
-    dims=resizeToFitInternal(text,maxwidth)
-    self.width=dims[0]+self.borderX+SpriteWindow_Base::TEXTPADDING
-    self.height=dims[1]+self.borderY
+  def resizeToFit(text, maxwidth = -1)   # maxwidth is maximum acceptable window width
+    dims = resizeToFitInternal(text,maxwidth)
+    self.width = dims[0] + self.borderX + SpriteWindow_Base::TEXTPADDING
+    self.height = dims[1] + self.borderY - 4
     refresh
   end
 
   def resizeHeightToFit(text,width=-1)   # width is current window width
     dims=resizeToFitInternal(text,width)
     self.width=width<0 ? Graphics.width : width
-    self.height = dims[1] + self.borderY - (mkxp? ? 4 : 0)
+    self.height = dims[1] + self.borderY - 4
     refresh
   end
 
@@ -215,7 +215,7 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
     oldstarting = @starting
     @starting = true
     self.width  = dims[0]+self.borderX+SpriteWindow_Base::TEXTPADDING
-    self.height = dims[1]+self.borderY
+    self.height = dims[1]+self.borderY - 4
     @starting = oldstarting
     redrawText
   end
@@ -225,7 +225,7 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
     oldstarting = @starting
     @starting = true
     self.width  = [dims[0]+self.borderX+SpriteWindow_Base::TEXTPADDING,maxwidth].min
-    self.height = [dims[1]+self.borderY,maxheight].min
+    self.height = [dims[1]+self.borderY - 4,maxheight].min
     @starting = oldstarting
     redrawText
   end
@@ -246,8 +246,8 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
     dims = resizeToFitInternal(text,width)
     oldstarting = @starting
     @starting = true
-    self.width  = (width<0) ? Graphics.width : width
-    self.height = dims[1]+self.borderY
+    self.width  = (width < 0) ? Graphics.width : width
+    self.height = dims[1] + self.borderY - 4
     @starting = oldstarting
     redrawText
   end
@@ -714,8 +714,8 @@ class Window_InputNumberPokemon < SpriteWindow_Base
   private
 
   def textHelper(x,y,text,i)
-    textwidth=self.contents.text_size(text).width
-    pbDrawShadowText(self.contents,x+(12-textwidth/2),y + 2, textwidth+4 , 32, text, @baseColor, @shadowColor)
+    textwidth = self.contents.text_size(text).width
+    pbDrawShadowText(self.contents,x+(12-textwidth/2),y, textwidth+4 , 32, text, @baseColor, @shadowColor)
     if @index==i && @active && @frame/15==0
       colors=getDefaultTextColors(self.windowskin)
       self.contents.fill_rect(x+(12-textwidth/2),y+30,textwidth,2,colors[0])
@@ -737,7 +737,7 @@ class SpriteWindow_Selectable < SpriteWindow_Base
     @column_max = 1
     @virtualOy=0
     @index = -1
-    @row_height = 36
+    @row_height = 32
     @column_spacing = 32
     @ignore_input = false
   end
@@ -881,7 +881,7 @@ class SpriteWindow_Selectable < SpriteWindow_Base
             update_cursor_rect
           end
         end
-      elsif Input.repeat?(Input::L)
+      elsif Input.repeat?(Input::Y)
         if @index > 0
           oldindex = @index
           @index = [self.index-self.page_item_max, 0].max
@@ -891,7 +891,7 @@ class SpriteWindow_Selectable < SpriteWindow_Base
             update_cursor_rect
           end
         end
-      elsif Input.repeat?(Input::R)
+      elsif Input.repeat?(Input::Z)
         if @index < @item_max-1
           oldindex = @index
           @index = [self.index+self.page_item_max, @item_max-1].min
@@ -963,6 +963,8 @@ module UpDownArrowMixin
   def initUpDownArrow
     @uparrow   = AnimatedSprite.create("Graphics/Pictures/uparrow",8,2,self.viewport)
     @downarrow = AnimatedSprite.create("Graphics/Pictures/downarrow",8,2,self.viewport)
+    RPG::Cache.retain("Graphics/Pictures/uparrow")
+    RPG::Cache.retain("Graphics/Pictures/downarrow")
     @uparrow.z   = 99998
     @downarrow.z = 99998
     @uparrow.visible   = false
@@ -1045,8 +1047,10 @@ class Window_DrawableCommand < SpriteWindow_SelectableEx
     self.viewport = viewport if viewport
     if isDarkWindowskin(self.windowskin)
       @selarrow = AnimatedBitmap.new("Graphics/Pictures/selarrow_white")
+      RPG::Cache.retain("Graphics/Pictures/selarrow_white")
     else
       @selarrow = AnimatedBitmap.new("Graphics/Pictures/selarrow")
+      RPG::Cache.retain("Graphics/Pictures/selarrow")
     end
     @index = 0
     colors = getDefaultTextColors(self.windowskin)
@@ -1106,7 +1110,7 @@ class Window_DrawableCommand < SpriteWindow_SelectableEx
 
   def drawCursor(index,rect)
     if self.index==index
-      pbCopyBitmap(self.contents,@selarrow.bitmap,rect.x,rect.y + ((mkxp? && $PokemonSystem.font == 0) ? -3 : 0))
+      pbCopyBitmap(self.contents,@selarrow.bitmap,rect.x,rect.y - (($PokemonSystem.font == 2)? 3 : 0))
     end
     return Rect.new(rect.x+16,rect.y,rect.width-16,rect.height)
   end
@@ -1223,8 +1227,8 @@ class Window_CommandPokemon < Window_DrawableCommand
 
   def drawItem(index,_count,rect)
     pbSetSystemFont(self.contents) if @starting
-    rect=drawCursor(index,rect)
-    pbDrawShadowText(self.contents,rect.x,rect.y + (mkxp? ? 6 : 0),rect.width,rect.height,
+    rect = drawCursor(index,rect)
+    pbDrawShadowText(self.contents,rect.x,rect.y + 6,rect.width,rect.height,
        @commands[index],self.baseColor,self.shadowColor)
   end
 end
@@ -1328,7 +1332,7 @@ class Window_AdvancedCommandPokemon < Window_DrawableCommand
     dims=[]
     getAutoDims(commands,dims,width)
     self.width=dims[0]
-    self.height=dims[1] - (mkxp? ? 6 : 0)
+    self.height=dims[1] - 6
   end
 
   def itemCount
@@ -1340,7 +1344,7 @@ class Window_AdvancedCommandPokemon < Window_DrawableCommand
     rect=drawCursor(index,rect)
     if toUnformattedText(@commands[index]).gsub(/\n/,"")==@commands[index]
       # Use faster alternative for unformatted text without line breaks
-      pbDrawShadowText(self.contents,rect.x,rect.y + (mkxp? ? 6 : 0),rect.width,rect.height,
+      pbDrawShadowText(self.contents,rect.x,rect.y + 6,rect.width,rect.height,
          @commands[index],self.baseColor,self.shadowColor)
     else
       chars=getFormattedText(

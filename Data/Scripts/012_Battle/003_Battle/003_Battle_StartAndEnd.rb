@@ -239,9 +239,6 @@ class PokeBattle_Battle
   # Start a battle
   #=============================================================================
   def pbStartBattle
-    # Set spinning to false if a battle is started. Prevents evolution by illegal means
-    $PokemonTemp.clockwiseSpin = false
-    $PokemonTemp.antiClockwiseSpin = false
     PBDebug.log("")
     PBDebug.log("******************************************")
     logMsg = "[Started battle] "

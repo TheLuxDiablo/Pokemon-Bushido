@@ -1650,7 +1650,7 @@ Pokedex = It's said that this Pokémon was formed when an ancient clay tablet wa
 WildItemRare = SPELLTAG
 BattlerPlayerY = 62
 BattlerEnemyY = 30
-Evolutions = RUNERIGUS,DamageDone,49
+Evolutions = RUNERIGUS,None,
 #-------------------------------
 [DEERLING,1]
 FormName = Summer Form

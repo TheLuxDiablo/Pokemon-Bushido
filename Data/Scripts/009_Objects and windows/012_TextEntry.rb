@@ -46,19 +46,19 @@ class Window_CharacterEntry < Window_DrawableCommand
     return @charset.length+3
   end
 
-  def drawItem(index,count,rect)
+  def drawItem(index,_count,rect)
     rect=drawCursor(index,rect)
     if index==@charset.length # -1
-      pbDrawShadowText(self.contents,rect.x,rect.y,rect.width,rect.height,"[ ]",
+      pbDrawShadowText(self.contents,rect.x,rect.y + 6,rect.width,rect.height,"[ ]",
          self.baseColor,self.shadowColor)
     elsif index==@charset.length+1 # -2
-      pbDrawShadowText(self.contents,rect.x,rect.y,rect.width,rect.height,@othercharset,
+      pbDrawShadowText(self.contents,rect.x,rect.y + 6,rect.width,rect.height,@othercharset,
          self.baseColor,self.shadowColor)
     elsif index==@charset.length+2 # -3
-      pbDrawShadowText(self.contents,rect.x,rect.y,rect.width,rect.height,_INTL("OK"),
+      pbDrawShadowText(self.contents,rect.x,rect.y + 6,rect.width,rect.height,_INTL("OK"),
          self.baseColor,self.shadowColor)
     else
-      pbDrawShadowText(self.contents,rect.x,rect.y,rect.width,rect.height,@charset[index],
+      pbDrawShadowText(self.contents,rect.x,rect.y + 6,rect.width,rect.height,@charset[index],
          self.baseColor,self.shadowColor)
     end
   end
@@ -70,9 +70,9 @@ end
 #
 #===============================================================================
 class CharacterEntryHelper
-  attr_reader :text
-  attr_reader :maxlength
-  attr_reader :passwordChar
+  attr_reader   :text
+  attr_accessor :maxlength
+  attr_reader   :passwordChar
   attr_accessor :cursor
 
   def initialize(text)
@@ -80,12 +80,10 @@ class CharacterEntryHelper
     @text=text
     @passwordChar=""
     @cursor=text.scan(/./m).length
-    ensure
   end
 
   def text=(value)
     @text=value
-    ensure
   end
 
   def textChars
@@ -98,11 +96,6 @@ class CharacterEntryHelper
 
   def passwordChar=(value)
     @passwordChar=value ? value : ""
-  end
-
-  def maxlength=(value)
-    @maxlength=value
-    ensure
   end
 
   def length
@@ -233,19 +226,20 @@ class Window_TextEntry < SpriteWindow_Base
     self.refresh if (@frame%10)==0
     return if !self.active
     # Moving cursor
-    if Input.repeat?(Input::LEFT) && Input.press?(Input::A)
+    if Input.repeat?(Input::LEFT)# && Input.pressex?(Input::A)
       if @helper.cursor > 0
         @helper.cursor -= 1
         @frame = 0
         self.refresh
       end
-    elsif Input.repeat?(Input::RIGHT) && Input.press?(Input::A)
+    elsif Input.repeat?(Input::RIGHT)# && Input.pressex?(Input::A)
       if @helper.cursor < self.text.scan(/./m).length
         @helper.cursor += 1
         @frame = 0
         self.refresh
       end
-    elsif Input.repeat?(Input::B)   # Backspace
+    elsif Input.pressex?(0x08) || Input.pressex?(0x2E) # Backspace
+      5.times do; Graphics.update; end
       self.delete if @helper.cursor > 0
     end
   end
@@ -256,7 +250,7 @@ class Window_TextEntry < SpriteWindow_Base
     bitmap=self.contents
     bitmap.clear
     x=0
-    y=0
+    y=6
     if @heading
       textwidth=bitmap.text_size(@heading).width
       pbDrawShadowText(bitmap,x,y, textwidth+4, 32, @heading,@baseColor,@shadowColor)
@@ -264,7 +258,6 @@ class Window_TextEntry < SpriteWindow_Base
     end
     x+=4
     width=self.width-self.borderX
-    height=self.height-self.borderY
     cursorcolor=Color.new(16,24,32)
     textscan=self.text.scan(/./m)
     scanlength=textscan.length
@@ -316,8 +309,6 @@ def getLineBrokenText(bitmap,value,width,dims)
   column=0
   return ret if !bitmap || bitmap.disposed? || width<=0
   textmsg=value.clone
-  lines=0
-  color=Font.default_color
   ret.push(["",0,0,0,bitmap.text_size("X").height,0,0,0,0])
   while ((c = textmsg.slice!(/\n|(\S*([ \r\t\f]?))/)) != nil)
     break if c==""
@@ -334,7 +325,6 @@ def getLineBrokenText(bitmap,value,width,dims)
       ret.push(["",x,y,0,textheight,line,position,column,0])
       next
     end
-    textcols=[]
     words=[ccheck]
     for i in 0...words.length
       word=words[i]
@@ -355,7 +345,6 @@ def getLineBrokenText(bitmap,value,width,dims)
         x+=textwidth
         dims[0]=x if dims && dims[0]<x
       end
-      color=textcols[i] if textcols[i]
     end
     position+=length
     column+=length
@@ -451,87 +440,72 @@ class Window_MultilineTextEntry < SpriteWindow_Base
 
   def getTotalLines
     textchars=getTextChars
-    if textchars.length==0
-      return 1
-    else
-      tchar=textchars[textchars.length-1]
-      return tchar[5]+1
-    end
+    return 1 if textchars.length==0
+    tchar=textchars[textchars.length-1]
+    return tchar[5]+1
   end
 
   def getLineY(line)
     textchars=getTextChars
-    if textchars.length==0
-      return 0
-    else
-      totallines=getTotalLines()
-      line=0 if line<0
-      line=totallines-1 if line>=totallines
-      maximumY=0
-      for i in 0...textchars.length
-        thisline=textchars[i][5]
-        y=textchars[i][2]
-        return y if thisline==line
-        maximumY=y if maximumY<y
-      end
-      return maximumY
+    return 0 if textchars.length==0
+    totallines=getTotalLines()
+    line=0 if line<0
+    line=totallines-1 if line>=totallines
+    maximumY=0
+    for i in 0...textchars.length
+      thisline=textchars[i][5]
+      y=textchars[i][2]
+      return y if thisline==line
+      maximumY=y if maximumY<y
     end
+    return maximumY
   end
 
   def getColumnsInLine(line)
     textchars=getTextChars
-    if textchars.length==0
-      return 0
-    else
-      totallines=getTotalLines()
-      line=0 if line<0
-      line=totallines-1 if line>=totallines
-      endpos=0
-      for i in 0...textchars.length
-        thisline=textchars[i][5]
-        thispos=textchars[i][6]
-        thislength=textchars[i][8]
-        if thisline==line
-          endpos+=thislength
-        end
-      end
-      return endpos
+    return 0 if textchars.length==0
+    totallines=getTotalLines()
+    line=0 if line<0
+    line=totallines-1 if line>=totallines
+    endpos=0
+    for i in 0...textchars.length
+      thisline=textchars[i][5]
+      thislength=textchars[i][8]
+      endpos+=thislength if thisline==line
     end
+    return endpos
   end
 
   def getPosFromLineAndColumn(line,column)
     textchars=getTextChars
-    if textchars.length==0
-      return 0
-    else
-      totallines=getTotalLines()
-      line=0 if line<0
-      line=totallines-1 if line>=totallines
-      endpos=0
-      for i in 0...textchars.length
-        thisline=textchars[i][5]
-        thispos=textchars[i][6]
-        thiscolumn=textchars[i][7]
-        thislength=textchars[i][8]
-        if thisline==line
-          endpos=thispos+thislength
-#         echoln [endpos,thispos+(column-thiscolumn),textchars[i]]
-          if column>=thiscolumn && column<=thiscolumn+thislength && thislength>0
-            return thispos+(column-thiscolumn)
-          end
+    return 0 if textchars.length==0
+    totallines=getTotalLines()
+    line=0 if line<0
+    line=totallines-1 if line>=totallines
+    endpos=0
+    for i in 0...textchars.length
+      thisline=textchars[i][5]
+      thispos=textchars[i][6]
+      thiscolumn=textchars[i][7]
+      thislength=textchars[i][8]
+      if thisline==line
+        endpos=thispos+thislength
+#        echoln [endpos,thispos+(column-thiscolumn),textchars[i]]
+        if column>=thiscolumn && column<=thiscolumn+thislength && thislength>0
+          return thispos+(column-thiscolumn)
         end
       end
-      if endpos==0
-#       echoln [totallines,line,column]
-#       echoln textchars
-      end
-#     echoln "endpos=#{endpos}"
-      return endpos
     end
+#    if endpos==0
+#      echoln [totallines,line,column]
+#      echoln textchars
+#    end
+#    echoln "endpos=#{endpos}"
+    return endpos
   end
 
   def getLastVisibleLine
-    textchars=getTextChars()
+    getTextChars()
     textheight=[1,self.contents.text_size("X").height].max
     lastVisible=@firstline+((self.height-self.borderY)/textheight)-1
     return lastVisible
@@ -544,13 +518,9 @@ class Window_MultilineTextEntry < SpriteWindow_Base
       @frame=0
       self.refresh
     end
-    if @cursorLine<@firstline
-      @firstline=@cursorLine
-    end
+    @firstline=@cursorLine if @cursorLine<@firstline
     lastVisible=getLastVisibleLine()
-    if @cursorLine>lastVisible
-      @firstline+=(@cursorLine-lastVisible)
-    end
+    @firstline+=(@cursorLine-lastVisible) if @cursorLine>lastVisible
   end
 
   def moveCursor(lineOffset, columnOffset)
@@ -570,7 +540,6 @@ class Window_MultilineTextEntry < SpriteWindow_Base
       # Will happen if cursor is moved right from the end of a line
       @cursorLine+=1
       @cursorColumn=0
-      updateColumns=true
     end
     # Ensure column bounds
     totalColumns=getColumnsInLine(@cursorLine)
@@ -610,75 +579,27 @@ class Window_MultilineTextEntry < SpriteWindow_Base
       moveCursor(0,1)
       return
     end
-    if !@peekMessage
-      @peekMessage = Win32API.new("user32.dll","PeekMessage","pliii","i") rescue nil
-    end
-    if @peekMessage
-      msg=[0,0,0,0,0,0,0].pack("V*")
-      retval=@peekMessage.call(msg,0,0x102,0x102,1)
-      if retval!=0
-        p "WM_CHAR #{msg[2]}"
-      end
-    end
-    if Input.press?(Input::CTRL) && Input.trigger?(Input::HOME)
+    if Input.press?(Input::CTRL) && Input.triggerex?(0x24)
       # Move cursor to beginning
       @cursorLine=0
       @cursorColumn=0
       updateCursorPos(true)
       return
-    elsif Input.press?(Input::CTRL) && Input.trigger?(Input::ENDKEY)
+    elsif Input.press?(Input::CTRL) && Input.triggerex?(0x23)
       # Move cursor to end
       @cursorLine=getTotalLines()-1
       @cursorColumn=getColumnsInLine(@cursorLine)
       updateCursorPos(true)
       return
-    elsif Input.repeat?(Input::ENTER)
+    elsif Input.repeatex?(0x0D)
       self.insert("\n")
       return
-    elsif Input.repeat?(Input::BACKSPACE)   # Backspace
+    elsif Input.pressex?(0x08)  || Input.pressex?(0x2E)   # Backspace
+      5.times do; Graphics.update; end
       self.delete
       return
     end
-    # Letter keys
-    for i in 65..90
-      if Input.repeatex?(i)
-        shift=(Input.press?(Input::SHIFT)) ? 0x41 : 0x61
-        insert((shift+i-65).chr)
-        return
-      end
-    end
-    # Number keys
-    shifted=")!@\#$%^&*("
-    unshifted="0123456789"
-    for i in 48..57
-      if Input.repeatex?(i)
-        insert((Input.press?(Input::SHIFT)) ? shifted[i-48].chr : unshifted[i-48].chr)
-        return
-      end
-    end
-    keys=[
-       [32," "," "],
-       [106,"*","*"],
-       [107,"+","+"],
-       [109,"-","-"],
-       [111,"/","/"],
-       [186,";",":"],
-       [187,"=","+"],
-       [188,",","<"],
-       [189,"-","_"],
-       [190,".",">"],
-       [191,"/","?"],
-       [219,"[","{"],
-       [220,"\\","|"],
-       [221,"]","}"],
-       [222,"'","\""]
-    ]
-    for i in keys
-      if Input.repeatex?(i[0])
-        insert((Input.press?(Input::SHIFT)) ? i[2] : i[1])
-        return
-      end
-    end
+    Input.gets.each_char{|c|insert(c)}
   end
 
   def refresh
@@ -688,20 +609,13 @@ class Window_MultilineTextEntry < SpriteWindow_Base
     self.contents=newContents
     bitmap=self.contents
     bitmap.clear
-    x=0
-    y=0
     getTextChars
-    x+=4
-    width=self.width-self.borderX
     height=self.height-self.borderY
     cursorcolor=Color.new(0,0,0)
     textchars=getTextChars()
-    scanlength=@helper.length
     startY=getLineY(@firstline)
-    lastheight=32
     for i in 0...textchars.length
       thisline=textchars[i][5]
-      thispos=textchars[i][6]
       thiscolumn=textchars[i][7]
       thislength=textchars[i][8]
       textY=textchars[i][2]-startY
@@ -712,11 +626,10 @@ class Window_MultilineTextEntry < SpriteWindow_Base
       c=textchars[i][0]
       # Don't draw spaces
       next if c==" "
-      textwidth=textchars[i][3]+4 # add 4 to prevent draw_text from stretching text
+      textwidth=textchars[i][3]+4   # add 4 to prevent draw_text from stretching text
       textheight=textchars[i][4]
-      lastheight=textheight
       # Draw text
-      pbDrawShadowText(bitmap,textchars[i][1],textY, textwidth, textheight, c,@baseColor,@shadowColor)
+      pbDrawShadowText(bitmap, textchars[i][1], textY, textwidth, textheight, c, @baseColor, @shadowColor)
     end
     # Draw cursor
     if ((@frame/10)&1) == 0
@@ -725,7 +638,6 @@ class Window_MultilineTextEntry < SpriteWindow_Base
       cursorX=0
       for i in 0...textchars.length
         thisline=textchars[i][5]
-        thispos=textchars[i][6]
         thiscolumn=textchars[i][7]
         thislength=textchars[i][8]
         if thisline==@cursorLine && @cursorColumn>=thiscolumn &&
@@ -774,83 +686,13 @@ class Window_TextEntry_Keyboard < Window_TextEntry
         self.refresh
       end
       return
-    elsif Input.repeat?(Input::BACKSPACE)
+    elsif Input.triggerex?(0x08) || Input.repeatex?(0x08)
       self.delete if @helper.cursor>0
       return
-    elsif Input.trigger?(Input::ENTER) || Input.trigger?(Input::ESC)
+    elsif Input.triggerex?(0x0D) || Input.triggerex?(0x1B)
       return
     end
-    if !@toUnicode
-      @toUnicode        = Win32API.new("user32.dll","ToUnicode","iippii","i") rescue nil
-      @mapVirtualKey    = Win32API.new("user32.dll","MapVirtualKey","ii","i") rescue nil
-      @getKeyboardState = Win32API.new("user32.dll","GetKeyboardState","p","i") rescue nil
-    end
-    if @getKeyboardState
-      kbs = "\0"*256
-      @getKeyboardState.call(kbs)
-      kbcount = 0
-      for i in 3...256
-        next if !Input.triggerex?(i)
-        vsc = @mapVirtualKey.call(i,0)
-        buf = "\0"*8
-        ret = @toUnicode.call(i,vsc,kbs,buf,4,0)
-        next if ret<=0
-        b = buf.unpack("v*")
-        for j in 0...ret
-          if buf[j]<=0x7F
-            insert(buf[j].chr)
-          elsif buf[j]<=0x7FF
-            insert((0xC0|((buf[j]>>6)&0x1F)).chr+(0x80|(buf[j]&0x3F)).chr)
-          else
-            str  = (0xE0|((buf[j]>>12)&0x0F)).chr
-            str += (0x80|((buf[j]>>6)&0x3F)).chr
-            str += (0x80|(buf[j]&0x3F)).chr
-            insert(str)
-          end
-          kbcount += 1
-        end
-      end
-      return if kbcount>0
-    end
-    # Letter keys
-    for i in 65..90
-      if Input.repeatex?(i)
-        shift=(Input.press?(Input::SHIFT)) ? 0x41 : 0x61
-        insert((shift+i-65).chr)
-        return
-      end
-    end
-    # Number keys
-    shifted   = ")!@\#$%^&*("
-    unshifted = "0123456789"
-    for i in 48..57
-      if Input.repeatex?(i)
-        insert((Input.press?(Input::SHIFT)) ? shifted[i-48].chr : unshifted[i-48].chr)
-        return
-      end
-    end
-    keys = [
-       [32," "," "],
-       [106,"*","*"],
-       [107,"+","+"],
-       [109,"-","-"],
-       [111,"/","/"],
-       [186,";",":"],
-       [187,"=","+"],
-       [188,",","<"],
-       [189,"-","_"],
-       [190,".",">"],
-       [191,"/","?"],
-       [219,"[","{"],
-       [221,"]","}"],
-       [222,"'","\""]
-    ]
-    for i in keys
-      if Input.repeatex?(i[0])
-        insert((Input.press?(Input::SHIFT)) ? i[2] : i[1])
-        return
-      end
-    end
+    Input.gets.each_char{|c|insert(c)}
   end
 end
 
@@ -873,7 +715,7 @@ class PokemonEntryScene
     if USEKEYBOARD
       @sprites["entry"]=Window_TextEntry_Keyboard.new(initialText,
          0,0,400-112,96,helptext,true)
-      $fullInputUpdate = true
+      Input.text_input = true
     else
       @sprites["entry"]=Window_TextEntry.new(initialText,0,0,400,96,helptext,true)
     end
@@ -973,10 +815,10 @@ class PokemonEntryScene
     loop do
       Graphics.update
       Input.update
-      if Input.trigger?(Input::ESC) && @minlength==0
+      if Input.triggerex?(0x1B) && @minlength==0
         ret=""
         break
-      elsif Input.trigger?(Input::ENTER) && @sprites["entry"].text.length>=@minlength
+      elsif Input.triggerex?(0x0D) && @sprites["entry"].text.length>=@minlength
         ret=@sprites["entry"].text
         break
       end
@@ -997,7 +839,7 @@ class PokemonEntryScene
       @sprites["entry"].update
       @sprites["entry2"].update
       @sprites["subject"].update if @sprites["subject"]
-      if Input.trigger?(Input::C)
+      if Input.triggerex?(0x0D)
         index=@sprites["entry2"].command
         if index==-3 # Confirm text
           ret=@sprites["entry"].text
@@ -1038,7 +880,7 @@ class PokemonEntryScene
   end
 
   def pbEndScene
-    $fullInputUpdate = false
+    Input.text_input = false if USEKEYBOARD
     pbFadeOutAndHide(@sprites)
     pbDisposeSpriteHash(@sprites)
     @viewport.dispose
@@ -1471,7 +1313,7 @@ class PokemonEntryScene2
       Input.update
       pbUpdate
       next if pbMoveCursor
-      if Input.trigger?(Input::F5)
+      if Input.trigger?(Input::X) || Input.triggerex?(0x46)
         pbChangeTab
       elsif Input.trigger?(Input::A)
         @cursorpos = OK
@@ -1560,7 +1402,6 @@ class Interpreter
     if $game_actors && $data_actors && $data_actors[@parameters[0]] != nil
       # Set battle abort flag
       $game_temp.battle_abort = true
-      ret=""
       pbFadeOutIn {
         sscene=PokemonEntryScene.new
         sscreen=PokemonEntry.new(sscene)
@@ -1574,36 +1415,12 @@ class Interpreter
 end
 
 
-
-class Game_Interpreter
-  def command_303
-    if $Trainer
-       $Trainer.name=pbEnterPlayerName(_INTL("Your name?"),1,@params[1],$Trainer.name)
-      return true
-    end
-    if $game_actors && $data_actors && $data_actors[@params[0]] != nil
-      # Set battle abort flag
-      ret=""
-      pbFadeOutIn {
-         sscene=PokemonEntryScene.new
-         sscreen=PokemonEntry.new(sscene)
-         $game_actors[@params[0]].name=sscreen.pbStartScreen(
-            _INTL("Enter {1}'s name.",$game_actors[@params[0]].name),
-            1,@params[1],$game_actors[@params[0]].name)
-      }
-    end
-    return true
-  end
-end
-
-
-
 #===============================================================================
 #
 #===============================================================================
 def pbEnterText(helptext,minlength,maxlength,initialText="",mode=0,pokemon=nil,nofadeout=false)
   ret=""
-  if ($PokemonSystem.textinput==1 rescue false)   # Keyboard
+  if ($PokemonSystem.textinput==1 rescue false) && !Input.joystick  # Keyboard
     pbFadeOutIn(99999,nofadeout) {
        sscene=PokemonEntryScene.new
        sscreen=PokemonEntry.new(sscene)
@@ -1644,14 +1461,14 @@ def pbFreeText(msgwindow,currenttext,passwordbox,maxlength,width=240)
   pbPositionNearMsgWindow(window,msgwindow,:right)
   window.text=currenttext
   window.passwordChar="*" if passwordbox
-  $fullInputUpdate = true
+  Input.text_input = true
   loop do
     Graphics.update
     Input.update
-    if Input.trigger?(Input::ESC)
+    if Input.triggerex?(0x1B)
       ret=currenttext
       break
-    elsif Input.trigger?(Input::ENTER)
+    elsif Input.triggerex?(0x0D)
       ret=window.text
       break
     end
@@ -1659,7 +1476,7 @@ def pbFreeText(msgwindow,currenttext,passwordbox,maxlength,width=240)
     msgwindow.update if msgwindow
     yield if block_given?
   end
-  $fullInputUpdate = false
+  Input.text_input = false
   window.dispose
   Input.update
   return ret

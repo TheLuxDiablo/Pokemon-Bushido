@@ -67,80 +67,39 @@ def pbBitmapName(x)
   return (ret) ? ret : x
 end
 
-def getUnicodeString(addr)
-  return "" if addr==0
-  rtlMoveMemory_pi = Win32API.new('kernel32', 'RtlMoveMemory', 'pii', 'i')
-  ret = ""
-  data = "xx"
-  index = (addr.is_a?(String)) ? 0 : addr
-  loop do
-    if addr.is_a?(String)
-      data = addr[index,2]
-    else
-      rtlMoveMemory_pi.call(data, index, 2)
-    end
-    codepoint = data.unpack("v")[0]
-    break if codepoint==0
-    index += 2
-    if codepoint<=0x7F
-      ret += codepoint.chr
-    elsif codepoint<=0x7FF
-      ret += (0xC0|((codepoint>>6)&0x1F)).chr
-      ret += (0x80|(codepoint   &0x3F)).chr
-    elsif codepoint<=0xFFFF
-      ret += (0xE0|((codepoint>>12)&0x0F)).chr
-      ret += (0x80|((codepoint>>6)&0x3F)).chr
-      ret += (0x80|(codepoint   &0x3F)).chr
-    elsif codepoint<=0x10FFFF
-      ret += (0xF0|((codepoint>>18)&0x07)).chr
-      ret += (0x80|((codepoint>>12)&0x3F)).chr
-      ret += (0x80|((codepoint>>6)&0x3F)).chr
-      ret += (0x80|(codepoint   &0x3F)).chr
+def strsplit(str, re)
+  ret = []
+  tstr = str
+  while re =~ tstr
+    ret[ret.length] = $~.pre_match
+    tstr = $~.post_match
+  end
+  ret[ret.length] = tstr if ret.length
+  return ret
+end
+
+def canonicalize(c)
+  csplit = strsplit(c, /[\/\\]/)
+  pos = -1
+  ret = []
+  retstr = ""
+  for x in csplit
+    if x == ".."
+      if pos >= 0
+        ret.delete_at(pos)
+        pos -= 1
+      end
+    elsif x != "."
+      ret.push(x)
+      pos += 1
     end
   end
-  return ret
-end
-
-def getUnicodeStringFromAnsi(addr)
-  return "" if addr==0
-  rtlMoveMemory_pi = Win32API.new('kernel32', 'RtlMoveMemory', 'pii', 'i')
-  ret = ""
-  data = "x"
-  index = (addr.is_a?(String)) ? 0 : addr
-  loop do
-    if addr.is_a?(String)
-      data = addr[index,1]
-    else
-      rtlMoveMemory_pi.call(data, index, 1)
-    end
-    index += 1
-    codepoint = data.unpack("C")[0]
-    break if codepoint==0 || !codepoint
-    break if codepoint==0
-    if codepoint<=0x7F
-      ret += codepoint.chr
-    else
-      ret += (0xC0|((codepoint>>6)&0x1F)).chr
-      ret += (0x80|(codepoint   &0x3F)).chr
-    end
+  for i in 0...ret.length
+    retstr += "/" if i > 0
+    retstr += ret[i]
   end
-  return ret
+  return retstr
 end
-
-def getKnownFolder(guid)
-  packedGuid = guid.pack("VvvC*")
-  shGetKnownFolderPath = Win32API.new("shell32.dll","SHGetKnownFolderPath","pllp","i") rescue nil
-  coTaskMemFree        = Win32API.new("ole32.dll","CoTaskMemFree","i","") rescue nil
-  return "" if !shGetKnownFolderPath || !coTaskMemFree
-  path = "\0"*4
-  ret = shGetKnownFolderPath.call(packedGuid,0,0,path)
-  path = path.unpack("V")[0]
-  ret = getUnicodeString(path)
-  coTaskMemFree.call(path)
-  return ret
-end
-
-
 
 module RTP
   @rtpPaths = nil
@@ -199,127 +158,16 @@ module RTP
     # XXX: Use "." instead of Dir.pwd because of problems retrieving files if
     # the current directory contains an accent mark
     yield ".".gsub(/[\/\\]/,"/").gsub(/[\/\\]$/,"")+"/"
-    return if !System.platform[/Windows/]
-    if !@rtpPaths
-      tmp = Sprite.new
-      isRgss2 = tmp.respond_to?("wave_amp")
-      tmp.dispose
-      @rtpPaths = []
-      if isRgss2
-        rtp = getGameIniValue("Game","RTP")
-        if rtp!=""
-          rtp = MiniRegistry.get(MiniRegistry::HKEY_LOCAL_MACHINE,
-             "SOFTWARE\\Enterbrain\\RGSS2\\RTP",rtp,nil)
-          if rtp && safeIsDirectory?(rtp)
-            @rtpPaths.push(rtp.sub(/[\/\\]$/,"")+"/")
-          end
-        end
-      else
-        %w( RTP1 RTP2 RTP3 ).each { |v|
-          rtp = getGameIniValue("Game",v)
-          if rtp!=""
-            rtp = MiniRegistry.get(MiniRegistry::HKEY_LOCAL_MACHINE,
-               "SOFTWARE\\Enterbrain\\RGSS\\RTP",rtp,nil)
-            if rtp && safeIsDirectory?(rtp)
-              @rtpPaths.push(rtp.sub(/[\/\\]$/,"")+"/")
-            end
-          end
-        }
-      end
-    end
-    @rtpPaths.each { |x| yield x }
   end
 
   private
 
-  @@folder = nil
-
-  def self.getGameIniValue(section,key)
-    val = "\0"*256
-    gps = Win32API.new('kernel32', 'GetPrivateProfileString',%w(p p p p l p), 'l')
-    gps.call(section, key, "", val, 256, ".\\Game.ini")
-    val.delete!("\0")
-    return val
-  end
-
-  def self.isDirWritable(dir)
-    return false if !dir || dir==""
-    return true if (!System.platform[/Windows/] && dir == System.data_directory)
-    loop do
-      name = dir.gsub(/[\/\\]$/,"")+"/writetest"
-      12.times do
-        name += sprintf("%02X",rand(256))
-      end
-      name += ".tmp"
-      if !safeExists?(name)
-        retval = false
-        begin
-          File.open(name,"wb") { retval = true }
-        rescue Errno::EINVAL, Errno::EACCES, Errno::ENOENT
-        ensure
-          File.delete(name) rescue nil
-        end
-        return retval
-      end
-    end
-  end
-
-  def self.ensureGameDir(dir)
-    return dir if !System.platform[/Windows/]
-    title = RTP.getGameIniValue("Game","Title")
-    title = "RGSS Game" if title==""
-    title = title.gsub(/[^\w ]/,"_")
-    newdir = dir.gsub(/[\/\\]$/,"")+"/"
-    # Convert to UTF-8 because of ANSI function
-    newdir += getUnicodeStringFromAnsi(title)
-    Dir.mkdir(newdir) rescue nil
-    ret = safeIsDirectory?(newdir) ? newdir : dir
-    return ret
-  end
-
   def self.getSaveFileName(fileName)
-    return getSaveFolder().gsub(/[\/\\]$/,"")+"/"+fileName
+    File.join(getSaveFolder, fileName)
   end
 
   def self.getSaveFolder
-    if !@@folder
-      # XXX: Use "." instead of Dir.pwd because of problems retrieving files if
-      # the current directory contains an accent mark
-      pwd = "."
-      # Get the known folder path for saved games
-      if System.platform[/Windows/] # ~Zoro
-        # Get the known folder path for saved games
-        savedGames = getKnownFolder([
-          0x4c5c32ff,0xbb9d,0x43b0,0xb5,0xb4,0x2d,0x72,0xe5,0x4e,0xaa,0xa4])
-      else
-        # Windows: AppData/Local (iirc, might be Roaming)
-        # macOS  : $HOME/Library/Application Support
-        # Linux  : $HOME/.local/share
-        savedGames=System.data_directory
-      end
-      if savedGames && savedGames!="" && isDirWritable(savedGames)
-        pwd = ensureGameDir(savedGames)
-      end
-      if isDirWritable(pwd)
-        @@folder = pwd
-      else
-        appdata = ENV["LOCALAPPDATA"]
-        if isDirWritable(appdata)
-          appdata = ensureGameDir(appdata)
-        else
-          appdata = ENV["APPDATA"]
-          if isDirWritable(appdata)
-            appdata = ensureGameDir(appdata)
-          elsif isDirWritable(pwd)
-            appdata = pwd
-          else
-            appdata = "."
-          end
-        end
-        @@folder = appdata
-      end
-    end
-    return @@folder
+    System.data_directory
   end
 end
 
@@ -343,10 +191,10 @@ end
 # Used to determine whether a data file exists (rather than a graphics or
 # audio file). Doesn't check RTP, but does check encrypted archives.
 def pbRgssExists?(filename)
-  filename = canonicalize(filename)
-  if safeExists?("./Game.rgssad") || safeExists?("./Game.rgss2a")
+  if safeExists?("./Game.rgssad")
     return pbGetFileChar(filename)!=nil
   else
+    filename = canonicalize(filename)
     return safeExists?(filename)
   end
 end
@@ -355,7 +203,7 @@ end
 # Doesn't check RTP for the file.
 def pbRgssOpen(file,mode=nil)
   #File.open("debug.txt","ab") { |fw| fw.write([file,mode,Time.now.to_f].inspect+"\r\n") }
-  if !safeExists?("./Game.rgssad") && !safeExists?("./Game.rgss2a")
+  if !safeExists?("./Game.rgssad")
     if block_given?
       File.open(file,mode) { |f| yield f }
       return nil
@@ -365,11 +213,7 @@ def pbRgssOpen(file,mode=nil)
   end
   file = canonicalize(file)
   Marshal.neverload = true
-  begin
-    str = load_data(file)
-  ensure
-    Marshal.neverload = false
-  end
+  str = load_data(file, true)
   if block_given?
     StringInput.open(str) { |f| yield f }
     return nil
@@ -382,19 +226,20 @@ end
 # encrypted archives.
 def pbGetFileChar(file)
   file = canonicalize(file)
-  if !safeExists?("./Game.rgssad") && !safeExists?("./Game.rgss2a")
+  if !safeExists?("./Game.rgssad")
     return nil if !safeExists?(file)
+    return nil if file.last == '/'
     begin
       File.open(file,"rb") { |f| return f.read(1) }   # read one byte
-    rescue Errno::ENOENT, Errno::EINVAL, Errno::EACCES
+    rescue Errno::ENOENT, Errno::EINVAL, Errno::EACCES, Errno::EISDIR
       return nil
     end
   end
   Marshal.neverload = true
   str = nil
   begin
-    str = load_data(file)
-  rescue Errno::ENOENT, Errno::EINVAL, Errno::EACCES, RGSSError
+    str = load_data(file,true)
+  rescue Errno::ENOENT, Errno::EINVAL, Errno::EACCES, Errno::EISDIR, RGSSError, MKXPError
     str = nil
   ensure
     Marshal.neverload = false
@@ -411,7 +256,7 @@ end
 # encrypted archives.
 def pbGetFileString(file)
   file = canonicalize(file)
-  if !(safeExists?("./Game.rgssad") || safeExists?("./Game.rgss2a"))
+  if !safeExists?("./Game.rgssad")
     return nil if !safeExists?(file)
     begin
       File.open(file,"rb") { |f| return f.read }   # read all data
@@ -422,8 +267,8 @@ def pbGetFileString(file)
   Marshal.neverload = true
   str = nil
   begin
-    str = load_data(file)
-  rescue Errno::ENOENT, Errno::EINVAL, Errno::EACCES, RGSSError
+    str = load_data(file,true)
+  rescue Errno::ENOENT, Errno::EINVAL, Errno::EACCES, RGSSError, MKXPError
     str = nil
   ensure
     Marshal.neverload = false
@@ -436,6 +281,7 @@ end
 #===============================================================================
 #
 #===============================================================================
+if System.platform[/Windows/]
 module MiniRegistry
   HKEY_CLASSES_ROOT  = 0x80000000
   HKEY_CURRENT_USER  = 0x80000001
@@ -502,7 +348,7 @@ module MiniRegistry
     end
   end
 end
-
+end
 
 
 class StringInput
@@ -624,45 +470,4 @@ class StringInput
   def read_all; read(); end
 
   alias sysread read
-end
-
-
-
-module ::Marshal
-  class << self
-    if !@oldloadAliased
-      alias oldload load
-      @oldloadAliased = true
-    end
-
-    @@neverload = false
-
-    def neverload
-      return @@neverload
-    end
-
-    def neverload=(value)
-      @@neverload = value
-    end
-
-    def load(port,*arg)
-      if @@neverload
-        if port.is_a?(IO)
-          return port.read
-        end
-        return port
-      end
-      oldpos = port.pos if port.is_a?(IO)
-      begin
-        oldload(port,*arg)
-      rescue
-        p [$!.class,$!.message,$!.backtrace]
-        if port.is_a?(IO)
-          port.pos = oldpos
-          return port.read
-        end
-        return port
-      end
-    end
-  end
 end

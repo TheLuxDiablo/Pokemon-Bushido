@@ -34,13 +34,6 @@ module Graphics
 
   def self.update
     update_KGC_SpecialTransition
-=begin
-    if Graphics.frame_count%40==0
-      count=0
-      ObjectSpace.each_object(Object) { |o| count += 1 }
-      echo("Objects: #{count}\r\n")
-    end
-=end
     @@transition.update if @@transition && !@@transition.disposed?
     @@transition = nil if @@transition && @@transition.disposed?
   end
@@ -86,7 +79,8 @@ module Graphics
     when "wavyspinball";     @@transition = WavySpinBall.new(duration)
     when "fourballburst";    @@transition = FourBallBurst.new(duration)
     # Graphic transitions
-    when "";                 @@transition = FadeTransition.new(duration)
+    when "fadetoblack";      @@transition = FadeToBlack.new(duration)
+    when "";                 @@transition = FadeFromBlack.new(duration)
     else; ret=false
     end
     Graphics.frame_reset if ret
@@ -595,7 +589,46 @@ end
 #===============================================================================
 #
 #===============================================================================
-class FadeTransition
+class FadeToBlack
+  def initialize(numframes)
+    @duration = numframes
+    @numframes = numframes
+    @disposed = false
+    if @duration<=0
+      @disposed = true
+      return
+    end
+    @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
+    @viewport.z = 99999
+    @sprite = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
+    @sprite.bitmap.fill_rect(0,0,Graphics.width,Graphics.height,Color.new(0,0,0))
+    @sprite.opacity = 0
+  end
+
+  def disposed?; @disposed; end
+
+  def dispose
+    return if disposed?
+    @sprite.dispose if @sprite
+    @viewport.dispose if @viewport
+    @disposed = true
+  end
+
+  def update
+    return if disposed?
+    if @duration==0
+      dispose
+    else
+      @sprite.opacity = (@numframes - @duration + 1) * 255 / @numframes
+      @duration -= 1
+    end
+  end
+end
+
+#=============================================================================
+#
+#=============================================================================
+class FadeFromBlack
   def initialize(numframes)
     @duration = numframes
     @numframes = numframes
@@ -641,7 +674,7 @@ class SnakeSquares
     @numframes = numframes
     @duration = numframes
     @disposed = false
-    @bitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_square")
+    @bitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_square")
     if !@bitmap
       @disposed = true
       return
@@ -723,7 +756,7 @@ class DiagonalBubble
     @numframes = numframes
     @duration = numframes
     @disposed = false
-    @bitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_square")
+    @bitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_square")
     if !@bitmap
       @disposed = true
       return
@@ -810,9 +843,9 @@ class RisingSplash
       @disposed = true
       return
     end
-    @bubblebitmap = BitmapCache.load_bitmap("Graphics/Transitions/water_1")
-    @splashbitmap = BitmapCache.load_bitmap("Graphics/Transitions/water_2")
-    @blackbitmap  = BitmapCache.load_bitmap("Graphics/Transitions/black_half")
+    @bubblebitmap = RPG::Cache.load_bitmap("Graphics/Transitions/water_1")
+    @splashbitmap = RPG::Cache.load_bitmap("Graphics/Transitions/water_2")
+    @blackbitmap  = RPG::Cache.load_bitmap("Graphics/Transitions/black_half")
     @buffer = Graphics.snap_to_bitmap
     if !@bubblebitmap || !@splashbitmap || !@blackbitmap || !@buffer
       @disposed = true
@@ -916,8 +949,8 @@ class TwoBallPass
       @disposed = true
       return
     end
-    @blackbitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_half")
-    @ballbitmap  = BitmapCache.load_bitmap("Graphics/Transitions/ball_small")
+    @blackbitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_half")
+    @ballbitmap  = RPG::Cache.load_bitmap("Graphics/Transitions/ball_small")
     @buffer = Graphics.snap_to_bitmap
     if !@blackbitmap || !@ballbitmap || !@buffer
       @disposed = true
@@ -1016,8 +1049,8 @@ class SpinBallSplit
       @disposed = true
       return
     end
-    @blackbitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_half")
-    @ballbitmap  = BitmapCache.load_bitmap("Graphics/Transitions/ball_large")
+    @blackbitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_half")
+    @ballbitmap  = RPG::Cache.load_bitmap("Graphics/Transitions/ball_large")
     @buffer = Graphics.snap_to_bitmap
     if !@blackbitmap || !@ballbitmap || !@buffer
       @disposed = true
@@ -1126,8 +1159,8 @@ class ThreeBallDown
       @disposed = true
       return
     end
-    @blackbitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_square")
-    @ballbitmap  = BitmapCache.load_bitmap("Graphics/Transitions/ball_small")
+    @blackbitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_square")
+    @ballbitmap  = RPG::Cache.load_bitmap("Graphics/Transitions/ball_small")
     @buffer = Graphics.snap_to_bitmap
     if !@blackbitmap || !@ballbitmap || !@buffer
       @disposed = true
@@ -1229,9 +1262,9 @@ class BallDown
       @disposed = true
       return
     end
-    @blackbitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_half")
-    @curvebitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_curve")
-    @ballbitmap  = BitmapCache.load_bitmap("Graphics/Transitions/ball_small")
+    @blackbitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_half")
+    @curvebitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_curve")
+    @ballbitmap  = RPG::Cache.load_bitmap("Graphics/Transitions/ball_small")
     @buffer = Graphics.snap_to_bitmap
     if !@blackbitmap || !@curvebitmap || !@ballbitmap || !@buffer
       @disposed = true
@@ -1327,8 +1360,8 @@ class WavyThreeBallUp
       @disposed = true
       return
     end
-    @blackbitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_half")
-    @ballbitmap  = BitmapCache.load_bitmap("Graphics/Transitions/ball_small")
+    @blackbitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_half")
+    @ballbitmap  = RPG::Cache.load_bitmap("Graphics/Transitions/ball_small")
     @buffer = Graphics.snap_to_bitmap
     if !@blackbitmap || !@ballbitmap || !@buffer
       @disposed = true
@@ -1431,8 +1464,8 @@ class WavySpinBall
       @disposed = true
       return
     end
-    @blackbitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_half")
-    @ballbitmap  = BitmapCache.load_bitmap("Graphics/Transitions/ball_large")
+    @blackbitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_half")
+    @ballbitmap  = RPG::Cache.load_bitmap("Graphics/Transitions/ball_large")
     @buffer = Graphics.snap_to_bitmap
     if !@blackbitmap || !@ballbitmap || !@buffer
       @disposed = true
@@ -1532,11 +1565,11 @@ class FourBallBurst
       @disposed = true
       return
     end
-    @black1bitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_wedge_1")
-    @black2bitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_wedge_2")
-    @black3bitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_wedge_3")
-    @black4bitmap = BitmapCache.load_bitmap("Graphics/Transitions/black_wedge_4")
-    @ballbitmap   = BitmapCache.load_bitmap("Graphics/Transitions/ball_small")
+    @black1bitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_wedge_1")
+    @black2bitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_wedge_2")
+    @black3bitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_wedge_3")
+    @black4bitmap = RPG::Cache.load_bitmap("Graphics/Transitions/black_wedge_4")
+    @ballbitmap   = RPG::Cache.load_bitmap("Graphics/Transitions/ball_small")
     if !@black1bitmap || !@black2bitmap || !@black3bitmap || !@black4bitmap || !@ballbitmap
       @disposed = true
       return

@@ -10,6 +10,8 @@ class Sprite_SurfBase
     @disposed = false
     @surfbitmap = AnimatedBitmap.new("Graphics/Characters/base_surf")
     @divebitmap = AnimatedBitmap.new("Graphics/Characters/base_dive")
+    RPG::Cache.retain("Graphics/Characters/base_surf")
+    RPG::Cache.retain("Graphics/Characters/base_dive")
     @cws = @surfbitmap.width/4
     @chs = @surfbitmap.height/4
     @cwd = @divebitmap.width/4

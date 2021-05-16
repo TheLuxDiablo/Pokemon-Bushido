@@ -128,7 +128,6 @@ BADGE_FOR_FLY            = 5
 BADGE_FOR_STRENGTH       = 6
 BADGE_FOR_DIVE           = 7
 BADGE_FOR_WATERFALL      = 8
-ALWAYS_LISTEN            = true
 
 #===============================================================================
 # * Whether a move's physical/special category depends on the move itself as in

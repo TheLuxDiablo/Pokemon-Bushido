@@ -111,11 +111,11 @@ class PokemonPauseMenu
     cmdDebug    = -1
     cmdQuit     = -1
     cmdEndGame  = -1
-    commands[cmdPokedex = commands.length]  = _INTL("Journal") if $Trainer.pokedex && $PokemonGlobal.pokedexViable.length>0
+    commands[cmdPokedex = commands.length]  = _INTL("Pokédex") if $Trainer.pokedex && $PokemonGlobal.pokedexViable.length>0
     commands[cmdPokemon = commands.length]  = _INTL("Pokémon") if $Trainer.party.length>0
     commands[cmdBag = commands.length]      = _INTL("Bag") if !pbInBugContest?
     commands[cmdPokegear = commands.length] = _INTL("Pokégear") if $Trainer.pokegear
-#    commands[cmdTrainer = commands.length]  = $Trainer.name
+    commands[cmdTrainer = commands.length]  = $Trainer.name
     if pbInSafari?
       if SAFARI_STEPS<=0
         @scene.pbShowInfo(_INTL("Balls: {1}",pbSafariState.ballcount))
@@ -152,6 +152,7 @@ class PokemonPauseMenu
             @scene.pbRefresh
           }
         else
+          pbPlayDecisionSE
           if $PokemonGlobal.pokedexViable.length==1
             $PokemonGlobal.pokedexDex = $PokemonGlobal.pokedexViable[0]
             $PokemonGlobal.pokedexDex = -1 if $PokemonGlobal.pokedexDex==$PokemonGlobal.pokedexUnlocked.length-1
@@ -206,14 +207,14 @@ class PokemonPauseMenu
           screen.pbStartScreen
           @scene.pbRefresh
         }
-    #  elsif cmdTrainer>=0 && command==cmdTrainer
-    #    pbPlayDecisionSE
-    #    pbFadeOutIn {
-    #      scene = PokemonTrainerCard_Scene.new
-    #      screen = PokemonTrainerCardScreen.new(scene)
-    #      screen.pbStartScreen
-    #      @scene.pbRefresh
-    #    }
+      elsif cmdTrainer>=0 && command==cmdTrainer
+        pbPlayDecisionSE
+        pbFadeOutIn {
+          scene = PokemonTrainerCard_Scene.new
+          screen = PokemonTrainerCardScreen.new(scene)
+          screen.pbStartScreen
+          @scene.pbRefresh
+        }
       elsif cmdQuit>=0 && command==cmdQuit
         pbPlayDecisionSE
         @scene.pbHideMenu
@@ -262,7 +263,6 @@ class PokemonPauseMenu
           @scene.pbRefresh
         }
       elsif cmdEndGame>=0 && command==cmdEndGame
-        pbPlayDecisionSE
         @scene.pbHideMenu
         if pbConfirmMessage(_INTL("Are you sure you want to quit the game?"))
           scene = PokemonSave_Scene.new

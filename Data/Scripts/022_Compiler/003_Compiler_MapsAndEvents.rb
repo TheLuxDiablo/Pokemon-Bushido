@@ -6,16 +6,12 @@ def pbImportNewMaps
   mapfiles = {}
   # Get IDs of all maps in the Data folder
   Dir.chdir("Data") {
-    mapData = sprintf("Map*.%s",$RPGVX ? "rvdata" : "rxdata")
+    mapData = sprintf("Map*.%s","rxdata")
     for map in Dir.glob(mapData)
-      if $RPGVX
-        mapfiles[$1.to_i(10)] = true if map[/map(\d+)\.rvdata/i]
-      else
-        mapfiles[$1.to_i(10)] = true if map[/map(\d+)\.rxdata/i]
-      end
+      mapfiles[$1.to_i(10)] = true if map[/map(\d+)\.rxdata/i]
     end
   }
-  mapinfos = pbLoadRxData("Data/MapInfos")
+  mapinfos = pbLoadMapInfos
   maxOrder = 0
   # Exclude maps found in mapinfos
   for id in mapinfos.keys
@@ -38,11 +34,8 @@ def pbImportNewMaps
     count += 1
   end
   if imported
-    if $RPGVX
-      save_data(mapinfos,"Data/MapInfos.rvdata")
-    else
-      save_data(mapinfos,"Data/MapInfos.rxdata")
-    end
+    save_data(mapinfos,"Data/MapInfos.rxdata")
+    $PokemonTemp.mapInfos = nil
     pbMessage(_INTL("{1} new map(s) copied to the Data folder were successfully imported.",count))
   end
   return imported
@@ -250,9 +243,9 @@ class MapData
   attr_reader :mapinfos
 
   def initialize
-    @mapinfos = pbLoadRxData("Data/MapInfos")
-    @system   = pbLoadRxData("Data/System")
-    @tilesets = pbLoadRxData("Data/Tilesets")
+    @mapinfos = pbLoadMapInfos
+    @system   = load_data("Data/System.rxdata")
+    @tilesets = load_data("Data/Tilesets.rxdata")
     @mapxy      = []
     @mapWidths  = []
     @mapHeights = []
@@ -265,8 +258,7 @@ class MapData
   end
 
   def mapFilename(mapID)
-    filename = sprintf("Data/map%03d",mapID)
-    filename += ($RPGVX) ? ".rvdata" : ".rxdata"
+    filename = sprintf("Data/Map%03d.rxdata",mapID)
     return filename
   end
 
@@ -390,11 +382,7 @@ class MapData
   end
 
   def saveTilesets
-    filename = "Data/Tilesets"
-    filename += ($RPGVX) ? ".rvdata" : ".rxdata"
-    save_data(@tilesets,filename)
-    filename = "Data/System"
-    filename += ($RPGVX) ? ".rvdata" : ".rxdata"
+    filename = "Data/Tilesets.rxdata.rxdata"
     save_data(@system,filename)
   end
 end
@@ -495,7 +483,7 @@ def pbConvertToTrainerEvent(event,trainerChecker)
   if isFirstCommand
     if !event.name[/trainer/i]
       ret.name = "Trainer(3)"
-    elsif event.name[/^\s*trainer\s+\((\d+)\)\s*$/i]
+    elsif event.name[/^\s*trainer\s*\((\d+)\)\s*$/i]
       ret.name = "Trainer(#{$1})"
     end
   end
@@ -730,12 +718,12 @@ def pbConvertToItemEvent(event)
   ret.pages = []
   itemName = ""
   hidden = false
-  if name[/^HiddenItem\:\s*(\w+)\s*$/]
+  if name[/^hiddenitem\:\s*(\w+)\s*$/i]
     itemName = $1
     return nil if !hasConst?(PBItems,itemName)
     ret.name = "HiddenItem"
     hidden = true
-  elsif name[/^Item\:\s*(\w+)\s*$/]
+  elsif name[/^item\:\s*(\w+)\s*$/i]
     itemName = $1
     return nil if !hasConst?(PBItems,itemName)
     ret.name = "Item"
@@ -882,6 +870,21 @@ def pbChangeScripts(script)
   changed |= pbChangeScript(script,/\$game_variables\[(\d+)\](?!\s*(?:\=|\!|<|>))/) { |m| "pbGet("+m[1]+")" }
   changed |= pbChangeScript(script,/\$Trainer\.party\[\s*pbGet\((\d+)\)\s*\]/) { |m| "pbGetPokemon("+m[1]+")" }
   return changed
+end
+
+def pbFixEventNames(event)
+  return false if !event
+  case event.name.downcase
+  when "tree"
+    event.name = "CutTree"
+  when "rock"
+    event.name = "SmashRock"
+  when "boulder"
+    event.name = "StrengthBoulder"
+  else
+    return false
+  end
+  return true
 end
 
 def pbFixEventUse(event,_mapID,mapData)
@@ -1430,6 +1433,7 @@ def pbCompileTrainerEvents(_mustcompile)
       if newevent
         map.events[key] = newevent; changed = true
       end
+      changed = true if pbFixEventNames(map.events[key])
       newevent = pbFixEventUse(map.events[key],id,mapData)
       if newevent
         map.events[key] = newevent; changed = true
@@ -1447,7 +1451,7 @@ def pbCompileTrainerEvents(_mustcompile)
   end
   changed = false
   Graphics.update
-  commonEvents = pbLoadRxData("Data/CommonEvents")
+  commonEvents = load_data("Data/CommonEvents.rxdata")
   pbSetWindowText(_INTL("Processing common events"))
   for key in 0...commonEvents.length
     newevent = pbFixEventUse(commonEvents[key],0,mapData)
@@ -1455,11 +1459,5 @@ def pbCompileTrainerEvents(_mustcompile)
       commonEvents[key] = newevent; changed = true
     end
   end
-  if changed
-    if $RPGVX
-      save_data(commonEvents,"Data/CommonEvents.rvdata")
-    else
-      save_data(commonEvents,"Data/CommonEvents.rxdata")
-    end
-  end
+  save_data(commonEvents,"Data/CommonEvents.rxdata") if changed
 end

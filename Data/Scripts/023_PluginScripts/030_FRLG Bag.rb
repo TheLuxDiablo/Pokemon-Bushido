@@ -55,7 +55,7 @@ class Window_PokemonBag < Window_DrawableCommand
   def drawCursor(index,rect)
     if self.index==index
       bmp = (@sorting) ? @swaparrow.bitmap : @selarrow.bitmap
-      pbCopyBitmap(self.contents,bmp,rect.x,rect.y+2 + ((mkxp? && $PokemonSystem.font == 0) ? -3 : 0))
+      pbCopyBitmap(self.contents,bmp,rect.x,rect.y+2 + (($PokemonSystem.font == 2) ? 3 : 0))
     end
   end
 

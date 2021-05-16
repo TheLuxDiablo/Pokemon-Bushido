@@ -3,17 +3,6 @@
 #===============================================================================
 begin
 
-def pbTilesetWrapper
-  return PokemonDataWrapper.new(
-     "Data/Tilesets.rxdata",
-     "Data/TilesetsTemp.rxdata",
-     Proc.new{
-        pbMessage(_INTL("The editor has detected that the tileset data was recently edited in RPG Maker XP."))
-        next !pbConfirmMessage(_INTL("Do you want to load those recent edits?"))
-     }
-  )
-end
-
 
 
 class PokemonTilesetScene
@@ -59,12 +48,12 @@ class PokemonTilesetScene
 
   def pbChooseTileset
     commands = []
-    for i in 1...@tilesetwrapper.data.length
-      commands.push(sprintf("%03d %s",i,@tilesetwrapper.data[i].name))
+    for i in 1...@tilesets_data.length
+      commands.push(sprintf("%03d %s", i, @tilesets_data[i].name))
     end
     ret = pbShowCommands(nil,commands,-1)
     if ret>=0
-      @tileset = @tilesetwrapper.data[ret+1]
+      @tileset = @tilesets_data[ret + 1]
       @tilehelper.dispose
       @tilehelper = TileDrawingHelper.fromTileset(@tileset)
       @sprites["tileset"].setBitmap("Graphics/Tilesets/#{@tileset.tileset_name}")
@@ -78,8 +67,8 @@ class PokemonTilesetScene
   def pbStartScene
     @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z = 99999
-    @tilesetwrapper = pbTilesetWrapper
-    @tileset = @tilesetwrapper.data[1]
+    @tilesets_data = load_data("Data/Tilesets.rxdata")
+    @tileset = @tilesets_data[1]
     @tilehelper = TileDrawingHelper.fromTileset(@tileset)
     @sprites = {}
     @sprites["title"] = Window_UnformattedTextPokemon.new(_INTL("Tileset Editor\r\nPgUp/PgDn: SCROLL\r\nZ: MENU"))
@@ -126,14 +115,14 @@ class PokemonTilesetScene
         @x += TILE_SIZE
         @x = TILESET_WIDTH-TILE_SIZE if @x>=TILESET_WIDTH-TILE_SIZE
         pbUpdateTileset
-      elsif Input.repeat?(Input::L)
+      elsif Input.repeat?(Input::Y)
         @y -= (Graphics.height/TILE_SIZE)*TILE_SIZE
         @topy -= (Graphics.height/TILE_SIZE)*TILE_SIZE
         @y = -TILE_SIZE if @y<-TILE_SIZE
         @topy = @y if @y<@topy
         @topy = -TILE_SIZE if @topy<-TILE_SIZE
         pbUpdateTileset
-      elsif Input.repeat?(Input::R)
+      elsif Input.repeat?(Input::Z)
         @y += (Graphics.height/TILE_SIZE)*TILE_SIZE
         @topy += (Graphics.height/TILE_SIZE)*TILE_SIZE
         @y = height-TILE_SIZE if @y>=height-TILE_SIZE
@@ -165,8 +154,8 @@ class PokemonTilesetScene
         end
       elsif Input.trigger?(Input::B)
         if pbConfirmMessage(_INTL("Save changes?"))
-          @tilesetwrapper.save
-          $data_tilesets = @tilesetwrapper.data
+          save_data(@tilesets_data,"Data/Tilesets.rxdata")
+          $data_tilesets = @tilesets_data
           if $game_map && $MapFactory
             $MapFactory.setup($game_map.map_id)
             $game_player.center($game_player.x,$game_player.y)

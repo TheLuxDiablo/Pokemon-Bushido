@@ -119,24 +119,6 @@ def pbFade(reverse=false)
   return bmp
 end
 
-ItemHandlers::UseText.add(:OUTFITCASE,proc { |item|
-  next _INTL("Change Outfit")
-})
-
-ItemHandlers::UseFromBag.add(:OUTFITCASE,proc { |item|
-#  if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
-    next 2
-#  end
-#  pbMessage(_INTL("Can't use that here."))
-#  next 0
-})
-
-ItemHandlers::UseInField.add(:OUTFITCASE,proc { |item|
-  pbMessage(_INTL("You opened the outfit case."))
-  pbSelectOutfit
-  next 1
-})
-
 def pbSetArenayCharacterName(event,form=nil,shiny=false)
   return false if !event
   return false if !$game_map.events[event]

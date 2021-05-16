@@ -28,6 +28,7 @@ module PokemonDebugMixin
       commands.add("moves","setmovepp",_INTL("Set move PP"))
       commands.add("moves","setinitialmoves",_INTL("Reset initial moves"))
 
+    commands.add("main","setitems",_INTL("Set item"))
     commands.add("main","setability",_INTL("Set ability"))
     commands.add("main","setnature",_INTL("Set nature"))
     commands.add("main","setgender",_INTL("Set gender"))
@@ -425,6 +426,32 @@ module PokemonDebugMixin
       pkmn.pbRecordFirstMoves
       pbDisplay(_INTL("{1}'s moves were set as its first-known moves.",pkmn.name))
       pbRefreshSingle(pkmnid)
+    when "setitems"
+      loop do
+      cmd = 0
+      commands = [
+        _INTL("Change item"),
+        _INTL("Remove item")
+      ]
+      msg = (pkmn.hasItem?) ? _INTL("Item is {1}.", PBItems.getName(pkmn.item)) : _INTL("No item.")
+      cmd = pbShowCommands(msg, commands, cmd)
+      break if cmd < 0
+      case cmd
+      when 0   # Change item
+        item = pbChooseItemList(pkmn.item)
+        if item && item != pkmn.item
+          pkmn.item = item
+          pbRefreshSingle(pkmnid)
+        end
+      when 1   # Remove item
+        if pkmn.hasItem?
+          pkmn.item = 0
+          pbRefreshSingle(pkmnid)
+        end
+      else
+        break
+      end
+    end
     #===========================================================================
     when "setability"
       cmd = 0

@@ -17,7 +17,7 @@ PluginManager.register({
   :name => "Marin's Map Exporter",
   :version => "1.4",
   :credits => "Marin",
-  :dependencies => "Marin's Scripting Utilities",
+  :dependencies => ["Marin's Scripting Utilities"],
   :link => "https://reliccastle.com/resources/184/"
 })
 
@@ -105,9 +105,9 @@ class MarinMapExporter
     @result = Bitmap.new(32 * @tiles.xsize, 32 * @tiles.ysize)
     @tilesetdata = load_data("Data/Tilesets.rxdata")
     tilesetname = @tilesetdata[@data.tileset_id].name
-    @tileset = BitmapCache.load_bitmap("Graphics/Tilesets/#{tilesetname}")
+    @tileset = RPG::Cache.load_bitmap("Graphics/Tilesets/#{tilesetname}")
     @autotiles = @tilesetdata[@data.tileset_id].autotile_names.map do |e|
-      BitmapCache.load_bitmap("Graphics/Autotiles/#{e}")
+      RPG::Cache.load_bitmap("Graphics/Autotiles/#{e}")
     end
     for z in 0..2
       for y in 0...@tiles.ysize
@@ -129,7 +129,7 @@ class MarinMapExporter
         event = @data.events[id]
         page = pbGetActiveEventPage(event, @id)
         if page && page.graphic && page.graphic.character_name
-          bmp = BitmapCache.load_bitmap("Graphics/Characters/#{page.graphic.character_name}")
+          bmp = RPG::Cache.load_bitmap("Graphics/Characters/#{page.graphic.character_name}")
           if bmp
             bmp = bmp.clone
             bmp.hue_change(page.graphic.character_hue) unless page.graphic.character_hue == 0
@@ -143,7 +143,7 @@ class MarinMapExporter
       end
     end
     if @options.include?(:player) && $game_map.map_id == @id
-      bmp = BitmapCache.load_bitmap("Graphics/Characters/#{$game_player.character_name}")
+      bmp = RPG::Cache.load_bitmap("Graphics/Characters/#{$game_player.character_name}")
       dir = $game_player.direction
       @result.blt($game_player.x * 32 + 16 - bmp.width / 8, ($game_player.y + 1) * 32 - bmp.height / 4,
           bmp, Rect.new(0, bmp.height / 4 * (dir / 2 - 1), bmp.width / 4, bmp.height / 4))

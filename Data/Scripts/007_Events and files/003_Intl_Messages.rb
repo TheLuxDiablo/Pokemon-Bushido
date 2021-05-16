@@ -34,7 +34,7 @@ def pbSetTextMessages
     end
     # Must add messages because this code is used by both game system and Editor
     MessageTypes.addMessagesAsHash(MessageTypes::ScriptTexts,texts)
-    commonevents=pbLoadRxData("Data/CommonEvents")
+    commonevents=load_data("Data/CommonEvents.rxdata")
     items=[]
     choices=[]
     for event in commonevents.compact
@@ -96,7 +96,7 @@ def pbSetTextMessages
     choices|=[]
     items.concat(choices)
     MessageTypes.setMapMessagesAsHash(0,items)
-    mapinfos = pbLoadRxData("Data/MapInfos")
+    mapinfos = pbLoadMapInfos
     mapnames=[]
     for id in mapinfos.keys
       mapnames[id]=mapinfos[id].name
@@ -190,7 +190,7 @@ def pbEachIntlSection(file)
   sectionname=nil
   lastsection=[]
   file.each_line { |line|
-    if lineno==1 && line[0]==0xEF && line[1]==0xBB && line[2]==0xBF
+    if lineno==1 && line[0].ord==0xEF && line[1].ord==0xBB && line[2].ord==0xBF
       line=line[3,line.length-3]
     end
     if !line[/^\#/] && !line[/^\s*$/]

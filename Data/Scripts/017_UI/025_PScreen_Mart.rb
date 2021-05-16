@@ -22,16 +22,7 @@ class PokemonMartAdapter
     itemname = PBItems.getName(item)
     if pbIsMachine?(item)
       machine = pbGetMachine(item)
-      itemname = _INTL("{1} Scroll",PBMoves.getName(machine))
-      if itemname.length >= 19
-        itemname = _INTL("{1} S.",PBMoves.getName(machine))
-      end
-      if pbIsTechnicalRecord?(item)
-        itemname = _INTL("{1} Notes",PBMoves.getName(machine))
-        if itemname.length >= 17
-          itemname = _INTL("{1} N.",PBMoves.getName(machine))
-        end
-      end
+      itemname = _INTL("{1} {2}",itemname,PBMoves.getName(machine))
     end
     return itemname
   end
@@ -488,7 +479,6 @@ class PokemonMart_Scene
     pbBottomLeftLines(cw,2)
     cw.visible=true
     i=0
-    pbPlayDecisionSE()
     loop do
       Graphics.update
       Input.update
@@ -512,7 +502,6 @@ class PokemonMart_Scene
     pbBottomLeftLines(cw,2)
     cw.visible=true
     yielded = false
-    pbPlayDecisionSE()
     loop do
       Graphics.update
       Input.update
@@ -542,7 +531,6 @@ class PokemonMart_Scene
     pbBottomRight(cw)
     cw.y-=dw.height
     cw.index=0
-    pbPlayDecisionSE()
     loop do
       cw.visible=!dw.busy?
       Graphics.update
@@ -618,6 +606,7 @@ class PokemonMart_Scene
             curnumber=maximum if curnumber<1
             numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
           elsif Input.trigger?(Input::C)
+            pbPlayDecisionSE()
             ret=curnumber
             break
           elsif Input.trigger?(Input::B)

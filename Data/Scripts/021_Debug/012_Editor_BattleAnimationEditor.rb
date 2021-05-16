@@ -50,7 +50,7 @@ module ShadowText
     elsif align==1
       x+=(w/2)-(width/2)
     end
-    pbDrawShadowText(bitmap,x,y + (mkxp? ? 6 : 0),w,h,t,
+    pbDrawShadowText(bitmap,x,y + 6,w,h,t,
        disabled ? Color.new(26*8,26*8,25*8) : Color.new(12*8,12*8,12*8),
        Color.new(26*8,26*8,25*8))
   end
@@ -169,12 +169,12 @@ class Button < UIControl
     return if !mousepos
     rect=Rect.new(self.x+1,self.y+1,self.width-2,self.height-2)
     rect=toAbsoluteRect(rect)
-    if Input.triggerex?(Input::LeftMouseKey) &&
+    if Input.trigger?(Input::MOUSELEFT) &&
        rect.contains(mousepos[0],mousepos[1]) && !@captured
       @captured=true
       self.invalidate
     end
-    if Input.releaseex?(Input::LeftMouseKey) && @captured
+    if Input.release?(Input::MOUSELEFT) && @captured
       self.changed=true if rect.contains(mousepos[0],mousepos[1])
       @captured=false
       self.invalidate
@@ -324,7 +324,8 @@ class TextField < UIControl
       return
     end
     # Backspace
-    if Input.repeat?(Input::BACKSPACE) || Input.repeat?(Input::DELETE)
+    if Input.pressex?(0x08) || Input.pressex?(0x2E)
+      5.times do; Graphics.update; end
       self.delete if @cursor > 0
       return
     end
@@ -466,23 +467,23 @@ class Slider < UIControl
   end
 
   def update
-    mousepos=Mouse::getMousePos
+    mousepos = Mouse::getMousePos
     self.changed=false
     if self.minvalue<self.maxvalue && self.curvalue<self.minvalue
       self.curvalue=self.minvalue
     end
     return false if self.disabled
-    return false if !Input.repeatex?(Input::LeftMouseKey)
+    return false if !Input.repeat?(Input::MOUSELEFT)
     return false if !mousepos
     left=toAbsoluteRect(@leftarrow)
     right=toAbsoluteRect(@rightarrow)
     oldvalue=self.curvalue
     # Left arrow
     if left.contains(mousepos[0],mousepos[1])
-      if Input.repeatcount(Input::LeftMouseKey)>100
+      if Input.count(Input::MOUSELEFT)>100
         self.curvalue-=10
         self.curvalue=self.curvalue.floor
-      elsif Input.repeatcount(Input::LeftMouseKey)>50
+      elsif Input.count(Input::MOUSELEFT)>50
         self.curvalue-=5
         self.curvalue=self.curvalue.floor
       else
@@ -494,10 +495,10 @@ class Slider < UIControl
     end
     #Right arrow
     if right.contains(mousepos[0],mousepos[1])
-      if Input.repeatcount(Input::LeftMouseKey)>100
+      if Input.count(Input::MOUSELEFT)>100
         self.curvalue+=10
         self.curvalue=self.curvalue.floor
-      elsif Input.repeatcount(Input::LeftMouseKey)>50
+      elsif Input.count(Input::MOUSELEFT)>50
         self.curvalue+=5
         self.curvalue=self.curvalue.floor
       else
@@ -720,16 +721,16 @@ class TextSlider < UIControl
       self.curvalue=self.minvalue
     end
     return false if self.disabled
-    return false if !Input.repeatex?(Input::LeftMouseKey)
+    return false if !Input.repeat?(Input::MOUSELEFT)
     return false if !mousepos
     left=toAbsoluteRect(@leftarrow)
     right=toAbsoluteRect(@rightarrow)
     oldvalue=self.curvalue
     # Left arrow
     if left.contains(mousepos[0],mousepos[1])
-      if Input.repeatcount(Input::LeftMouseKey)>100
+      if Input.count(Input::MOUSELEFT)>100
         self.curvalue-=10
-      elsif Input.repeatcount(Input::LeftMouseKey)>50
+      elsif Input.count(Input::MOUSELEFT)>50
         self.curvalue-=5
       else
         self.curvalue-=1
@@ -739,9 +740,9 @@ class TextSlider < UIControl
     end
     # Right arrow
     if right.contains(mousepos[0],mousepos[1])
-      if Input.repeatcount(Input::LeftMouseKey)>100
+      if Input.count(Input::MOUSELEFT)>100
         self.curvalue+=10
-      elsif Input.repeatcount(Input::LeftMouseKey)>50
+      elsif Input.count(Input::MOUSELEFT)>50
         self.curvalue+=5
       else
         self.curvalue+=1
@@ -1090,7 +1091,7 @@ def pbTrackPopupMenu(commands)
     menuwindow.update
     hit=menuwindow.hittest
     menuwindow.index=hit if hit>=0
-    if Input.triggerex?(Input::LeftMouseKey) || Input.triggerex?(Input::RightMouseKey) # Left or right button
+    if Input.trigger?(Input::MOUSELEFT) || Input.trigger?(Input::MOUSERIGHT) # Left or right button
       menuwindow.dispose
       return hit
     end
@@ -1200,7 +1201,7 @@ class AnimationWindow < SpriteWrapper
   def update
     mousepos=Mouse::getMousePos
     @changed=false
-    return if !Input.repeatex?(Input::LeftMouseKey)
+    return if !Input.repeat?(Input::MOUSELEFT)
     return if !mousepos
     return if !self.animbitmap
     arrowwidth=@arrows.bitmap.width/2
@@ -1225,9 +1226,7 @@ class AnimationWindow < SpriteWrapper
     end
     # Left arrow
     if left.contains(mousepos[0],mousepos[1])
-      if Input.repeatcount(Input::LeftMouseKey)>30
-        @start-=3
-      else
+      if Input.count(Input::MOUSELEFT)>30
         @start-=1
       end
       @start=0 if @start<0
@@ -1235,9 +1234,7 @@ class AnimationWindow < SpriteWrapper
     end
     # Right arrow
     if right.contains(mousepos[0],mousepos[1])
-      if Input.repeatcount(Input::LeftMouseKey)>30
-        @start+=3
-      else
+      if Input.count(Input::MOUSELEFT)>30
         @start+=1
       end
       @start=maxindex if @start>=maxindex
@@ -1772,7 +1769,7 @@ class AnimationCanvas < Sprite
     cel=currentCel
     mousepos=Mouse::getMousePos
     if mousepos && pbSpriteHitTest(self,mousepos[0],mousepos[1],false,true)
-      if Input.triggerex?(Input::LeftMouseKey)   # Left mouse button
+      if Input.trigger?(Input::MOUSELEFT)  # Left mouse button
         selectedcel=-1
         usealpha=(Input.press?(Input::ALT)) ? true : false
         for j in 0...PBAnimation::MAX_SPRITES
@@ -1799,7 +1796,7 @@ class AnimationCanvas < Sprite
       end
     end
     currentFrame=getCurrentFrame
-    if currentFrame && !@selecting && Input.repeat?(Input::TAB)
+    if currentFrame && !@selecting && Input.repeatex?(0x09)
       currentFrame.length.times {
          @currentcel+=1
          @currentcel=0 if @currentcel>=currentFrame.length
@@ -1813,11 +1810,11 @@ class AnimationCanvas < Sprite
       cel[AnimFrame::Y]=mousepos[1]-BORDERSIZE+@selectOffsetY
       @dirty[@currentcel]=true
     end
-    if !Input.getstate(Input::LeftMouseKey) && @selecting
+    if !Input.press?(Input::MOUSELEFT) && @selecting
       @selecting=false
     end
     if cel
-      if Input.repeat?(Input::DELETE) && self.deletable?(@currentcel)
+      if Input.repeatex?(0x2E) && self.deletable?(@currentcel)
         @animation[@currentframe][@currentcel]=nil
         @dirty[@currentcel]=true
         return
@@ -2178,7 +2175,7 @@ def pbTimingList(canvas)
         next
       end
     end
-    if (Input.trigger?(Input::C) || (cmdwin.doubleclick? rescue false))
+    if Input.trigger?(Input::C)
       redrawcmds=false
       if cmdwin.index==cmdNewSound # Add new sound
         newaudio=PBAnimTiming.new(0)
@@ -2257,11 +2254,11 @@ def pbSelectSE(canvas,audio)
   displayname=(filename!="") ? filename : _INTL("<user's cry>")
   animfiles=[]
   ret=false
-  pbRgssChdir(".\\Audio\\SE\\Anim\\") {
-     animfiles.concat(Dir.glob("*.wav"))
-     animfiles.concat(Dir.glob("*.mp3"))
-     animfiles.concat(Dir.glob("*.ogg"))
-     animfiles.concat(Dir.glob("*.wma"))
+  pbRgssChdir(File.join("Audio", "SE", "Anim")) {
+    animfiles.concat(Dir.glob("*.wav"))
+    animfiles.concat(Dir.glob("*.mp3"))
+    animfiles.concat(Dir.glob("*.ogg"))
+    animfiles.concat(Dir.glob("*.wma"))
   }
   animfiles.sort! { |a,b| a.upcase<=>b.upcase }
   animfiles=[_INTL("[Play user's cry]")]+animfiles
@@ -2305,7 +2302,7 @@ def pbSelectSE(canvas,audio)
     if maxsizewindow.changed?(6) # Cancel
       break
     end
-    if (Input.trigger?(Input::C) || (cmdwin.doubleclick? rescue false)) && animfiles.length>0
+    if Input.trigger?(Input::C) && animfiles.length>0
       filename=(cmdwin.index==0) ? "" : cmdwin.commands[cmdwin.index]
       displayname=(filename!="") ? filename : _INTL("<user's cry>")
       maxsizewindow.controls[0].text=_INTL("File: \"{1}\"",displayname)
@@ -2324,12 +2321,12 @@ def pbSelectBG(canvas,timing)
   animfiles=[]
   animfiles[cmdErase=animfiles.length]=_INTL("[Erase background graphic]")
   ret=false
-  pbRgssChdir(".\\Graphics\\Animations\\") {
-     animfiles.concat(Dir.glob("*.bmp"))
-     animfiles.concat(Dir.glob("*.png"))
-     animfiles.concat(Dir.glob("*.jpg"))
-     animfiles.concat(Dir.glob("*.jpeg"))
-     animfiles.concat(Dir.glob("*.gif"))
+  pbRgssChdir(File.join("Graphics", "Animations")) {
+    animfiles.concat(Dir.glob("*.bmp"))
+    animfiles.concat(Dir.glob("*.png"))
+    animfiles.concat(Dir.glob("*.jpg"))
+    animfiles.concat(Dir.glob("*.jpeg"))
+    animfiles.concat(Dir.glob("*.gif"))
   }
   cmdwin=pbListWindow(animfiles,320)
   cmdwin.height=480
@@ -2368,7 +2365,7 @@ def pbSelectBG(canvas,timing)
     if maxsizewindow.changed?(9) # Cancel
       break
     end
-    if (Input.trigger?(Input::C) || (cmdwin.doubleclick? rescue false)) && animfiles.length>0
+    if Input.trigger?(Input::C) && animfiles.length>0
       filename=(cmdwin.index==cmdErase) ? "" : cmdwin.commands[cmdwin.index]
       maxsizewindow.controls[0].text=_INTL("File: \"{1}\"",filename)
     elsif Input.trigger?(Input::B)
@@ -2715,7 +2712,7 @@ end
 ################################################################################
 def pbSelectAnim(canvas,animwin)
   animfiles=[]
-  pbRgssChdir(".\\Graphics\\Animations\\") {
+  pbRgssChdir(File.join("Graphics", "Animations")) {
      animfiles.concat(Dir.glob("*.png"))
   }
   cmdwin=pbListWindow(animfiles,320)
@@ -2735,7 +2732,7 @@ def pbSelectAnim(canvas,animwin)
     bmpwin.update
     ctlwin.update
     bmpwin.hue=ctlwin.value(0) if ctlwin.changed?(0)
-    if (Input.trigger?(Input::C) || (cmdwin.doubleclick? rescue false)) && animfiles.length>0
+    if Input.trigger?(Input::C) && animfiles.length>0
       bitmap=AnimatedBitmap.new("Graphics/Animations/"+cmdwin.commands[cmdwin.index],ctlwin.value(0)).deanimate
       canvas.animation.graphic=cmdwin.commands[cmdwin.index]
       canvas.animation.hue=ctlwin.value(0)
@@ -2780,6 +2777,7 @@ def pbAnimName(animation,cmdwin)
   window=ControlWindow.new(320,128,320,32*4)
   window.z=99999
   window.addControl(TextField.new(_INTL("New Name:"),animation.name))
+  Input.text_input = true
   okbutton=window.addButton(_INTL("OK"))
   cancelbutton=window.addButton(_INTL("Cancel"))
   window.opacity=224
@@ -2787,12 +2785,12 @@ def pbAnimName(animation,cmdwin)
     Graphics.update
     Input.update
     window.update
-    if window.changed?(okbutton) || Input.trigger?(Input::ENTER)
+    if window.changed?(okbutton) || Input.triggerex?(0x0D)
       cmdwin.commands[cmdwin.index]=_INTL("{1} {2}",cmdwin.index,window.controls[0].text)
       animation.name=window.controls[0].text
       break
     end
-    if window.changed?(cancelbutton) || Input.trigger?(Input::ESC)
+    if window.changed?(cancelbutton) || Input.triggerex?(0x1B)
       break
     end
   end
@@ -2836,7 +2834,7 @@ def pbAnimList(animations,canvas,animwin)
       cmdwin.index=animations.selected
       next
     end
-    if (Input.trigger?(Input::C) || (cmdwin.doubleclick? rescue false)) && animations.length>0
+    if Input.trigger?(Input::C) && animations.length>0
       cmd2=pbShowCommands(helpwindow,[
          _INTL("Load Animation"),
          _INTL("Rename"),
@@ -2923,7 +2921,7 @@ def pbImportAnim(animations,canvas,animwin)
     Graphics.update
     Input.update
     cmdwin.update
-    if (Input.trigger?(Input::C) || (cmdwin.doubleclick? rescue false)) && animfiles.length>0
+    if Input.trigger?(Input::C) && animfiles.length>0
       begin
         textdata=loadBase64Anim(IO.read(animfiles[cmdwin.index]))
         throw "Bad data" if !textdata.is_a?(PBAnimation)
@@ -2975,7 +2973,7 @@ class ControlPointSprite < SpriteWrapper
   end
 
   def mouseover
-    if Input.repeatcount(Input::LeftMouseKey)==0 || !@dragging
+    if Input.count(Input::MOUSELEFT)==0 || !@dragging
       @dragging=false
       return
     end
@@ -3251,7 +3249,7 @@ def pbDefinePath(canvas)
         if Input.trigger?(Input::B)
           break
         end
-        if Input.triggerex?(Input::LeftMouseKey)
+        if Input.trigger?(Input::MOUSELEFT)
           for j in 0...4
             next if !curve[j].hittest?
             if j==1||j==2
@@ -3329,11 +3327,11 @@ def pbDefinePath(canvas)
       loop do
         Graphics.update
         Input.update
-        if Input.trigger?(Input::ESC)
+        if Input.triggerex?(0x1B)
           canceled=true
           break
         end
-        if Input.triggerex?(Input::LeftMouseKey)
+        if Input.trigger?(Input::MOUSELEFT)
           break
         end
         mousepos=Mouse::getMousePos(true)
@@ -3348,7 +3346,7 @@ def pbDefinePath(canvas)
         window.text = (mousepos) ? sprintf("(%d,%d)",mousepos[0],mousepos[1]) : "(??,??)"
         Graphics.update
         Input.update
-        if Input.trigger?(Input::ESC) || Input.repeatcount(Input::LeftMouseKey)==0
+        if Input.trigger?(0x1B) || Input.count(Input::MOUSELEFT)==0
           break
         end
       end
@@ -3485,11 +3483,7 @@ end
 # Main
 ################################################################################
 def animationEditorMain(animation)
-  if mkxp?
-    viewport=Viewport.new(0, 0, SCREEN_WIDTH + 288, SCREEN_HEIGHT + 288)
-  else
-    viewport=Viewport.new(0,0,(512+288)*$ResizeFactor,(384+288)*$ResizeFactor)
-  end
+  viewport=Viewport.new(0, 0, SCREEN_WIDTH + 288, SCREEN_HEIGHT + 288)
   viewport.z=99999
   # Canvas
   canvas=AnimationCanvas.new(animation[animation.selected],viewport)
@@ -3542,10 +3536,10 @@ def animationEditorMain(animation)
         break
       end
     end
-    if Input.trigger?(Input::ONLYF5)
+    if Input.triggerex?(0x74)
       pbHelpWindow
       next
-    elsif Input.triggerex?(Input::RightMouseKey) && sliderwin.hittest?(0)   # Right mouse button
+    elsif Input.trigger?(Input::MOUSERIGHT) && sliderwin.hittest?(0)   # Right mouse button
       commands=[
          _INTL("Copy Frame"),
          _INTL("Paste Frame"),
@@ -3580,7 +3574,7 @@ def animationEditorMain(animation)
         sliderwin.invalidate
       end
       next
-    elsif Input.triggerex?(Input::RightMouseKey)  # Right mouse button
+    elsif Input.trigger?(Input::MOUSERIGHT)  # Right mouse button
       mousepos=Mouse::getMousePos
       mousepos=[0,0] if !mousepos
       commands=[
@@ -3723,23 +3717,11 @@ def pbAnimationEditor
     animation=PBAnimations.new
     animation[0].graphic=""
   end
-  if mkxp?
-    Graphics.resize_screen(SCREEN_WIDTH + 288, SCREEN_HEIGHT + 288)
-    pbSetResizeFactor(1)
-  else
-    oldsize=Win32API.client_size
-    oldzoom = $PokemonSystem.screensize
-    pbSetResizeFactor
-    Win32API.SetWindowPos((512+288)*$ResizeFactor,(384+288)*$ResizeFactor)
-  end
+  Graphics.resize_screen(SCREEN_WIDTH + 288, SCREEN_HEIGHT + 288)
+  pbSetResizeFactor(1)
   animationEditorMain(animation)
-  if mkxp?
-    Graphics.resize_screen(SCREEN_WIDTH, SCREEN_HEIGHT)
-    pbSetResizeFactor($PokemonSystem.screensize)
-  else
-    pbSetResizeFactor(oldzoom)
-    Win32API.SetWindowPos(oldsize[0],oldsize[1])
-  end
+  Graphics.resize_screen(SCREEN_WIDTH, SCREEN_HEIGHT)
+  pbSetResizeFactor($PokemonSystem.screensize)
   $game_map.autoplay if $game_map
 end
 

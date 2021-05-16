@@ -1210,11 +1210,11 @@ class PurifyChamberScene
           pbPlayCursorSE()
           @sprites["setview"].moveCursor(btn)
         end
-        if Input.repeat?(Input::L)
+        if Input.repeat?(Input::Y)
           nextset=(@sprites["setview"].set==0) ? PurifyChamber::NUMSETS-1 : @sprites["setview"].set-1
           pbPlayCursorSE()
           return [1,nextset]
-        elsif Input.repeat?(Input::R)
+        elsif Input.repeat?(Input::Z)
           nextset=(@sprites["setview"].set==PurifyChamber::NUMSETS-1) ? 0 : @sprites["setview"].set+1
           pbPlayCursorSE()
           return [1,nextset]

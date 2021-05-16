@@ -19,7 +19,7 @@ class MapSprite
   end
 
   def getXY
-    return nil if !Input.triggerex?(Input::LeftMouseKey)
+    return nil if !Input.trigger?(Input::MOUSELEFT)
     mouse = Mouse::getMousePos(true)
     return nil if !mouse
     if mouse[0]<@sprite.x || mouse[0]>=@sprite.x+@sprite.bitmap.width
@@ -102,7 +102,7 @@ class RegionMapSprite
   end
 
   def getXY
-    return nil if !Input.triggerex?(Input::LeftMouseKey)
+    return nil if !Input.trigger?(Input::MOUSELEFT)
     mouse=Mouse::getMousePos(true)
     return nil if !mouse
     if mouse[0]<@sprite.x||mouse[0]>=@sprite.x+@sprite.bitmap.width
@@ -151,7 +151,7 @@ def createMinimap2(mapid)
   bitmap=BitmapWrapper.new(map.width*4,map.height*4)
   black=Color.new(0,0,0)
   bigmap=(map.width>40 && map.height>40)
-  tilesets=load_data("Data/Tilesets.rxdata")
+  tilesets=$data_tilesets
   tileset=tilesets[map.tileset_id]
   return bitmap if !tileset
   helper=TileDrawingHelper.fromTileset(tileset)
@@ -179,7 +179,7 @@ def createMinimap(mapid)
   return BitmapWrapper.new(32,32) if !map
   bitmap=BitmapWrapper.new(map.width*4,map.height*4)
   black=Color.new(0,0,0)
-  tilesets=load_data("Data/Tilesets.rxdata")
+  tilesets=$data_tilesets
   tileset=tilesets[map.tileset_id]
   return bitmap if !tileset
   helper=TileDrawingHelper.fromTileset(tileset)
@@ -493,7 +493,7 @@ class MapScreenScene
     @sprites={}
     @mapsprites={}
     @mapspritepos={}
-    @viewport=Viewport.new(0,0,800,600)
+    @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z=99999
     @lasthitmap=-1
     @lastclick=-1
@@ -504,21 +504,25 @@ class MapScreenScene
     @dragOffsetX=0
     @dragOffsetY=0
     @selmapid=-1
-    addBackgroundPlane(@sprites,"background","Trainer Card/bg",@viewport)
+    @sprites["background"] = ColoredPlane.new(Color.new(160, 208, 240), @viewport)
     @sprites["selsprite"]=SelectionSprite.new(@viewport)
-    @sprites["title"]=Window_UnformattedTextPokemon.new(_INTL("F: Help"))
+    @sprites["title"] = Window_UnformattedTextPokemon.newWithSize(_INTL("D: Help"),
+       0, Graphics.height - 64, Graphics.width, 64, @viewport)
     @sprites["title"].x=0
     @sprites["title"].y=600-64
     @sprites["title"].width=800
     @sprites["title"].height=64
     @sprites["title"].viewport=@viewport
     @sprites["title"].z=2
-    @mapinfos=load_data("Data/MapInfos.rxdata")
+    @mapinfos = pbLoadMapInfos
     @encdata=pbLoadEncountersData
     conns=MapFactoryHelper.getMapConnections
     @mapconns=[]
-    for c in conns
-      @mapconns.push(c.clone)
+    for map_conns in conns
+      next if !map_conns
+      map_conns.each do |c|
+        @mapconns.push(c.clone) if !@mapconns.any? { |x| x[0] == c[0] && x[3] == c[3] }
+      end
     end
     @metadata=pbLoadMetadata
     if $game_map
@@ -562,12 +566,8 @@ class MapScreenScene
     helptext+=_INTL("E: Edit map's encounters\r\n")
     helptext+=_INTL("Drag map to move it\r\n")
     helptext+=_INTL("Arrow keys/drag canvas: Move around canvas")
-    title=Window_UnformattedTextPokemon.new(helptext)
-    title.x=0
-    title.y=0
-    title.width=800*8/10
-    title.height=600
-    title.viewport=@viewport
+    title = Window_UnformattedTextPokemon.newWithSize(helptext,
+       0, 0, Graphics.width * 8 / 10, Graphics.height, @viewport)
     title.z=2
     loop do
       Graphics.update
@@ -579,7 +579,7 @@ class MapScreenScene
   end
 
   def propertyList(map,properties)
-    infos=load_data("Data/MapInfos.rxdata")
+    infos= pbLoadMapInfos
     mapname=(map==0) ? _INTL("Global Metadata") : infos[map].name
     data=[]
     for i in 0...properties.length
@@ -666,7 +666,7 @@ class MapScreenScene
         y=y+@dragOffsetY
         sprite.x=x&~3
         sprite.y=y&~3
-        @sprites["title"].text=_ISPRINTF("F: Help [{1:03d}: {2:s}]",mapid,@mapinfos[@dragmapid].name)
+        @sprites["title"].text=_ISPRINTF("D: Help [{1:03d}: {2:s}]",mapid,@mapinfos[@dragmapid].name)
       else
         xpos=x-@dragOffsetX
         ypos=y-@dragOffsetY
@@ -675,13 +675,13 @@ class MapScreenScene
           sprite.x=(@mapspritepos[i][0]+xpos)&~3
           sprite.y=(@mapspritepos[i][1]+ypos)&~3
         end
-        @sprites["title"].text=_INTL("F: Help")
+        @sprites["title"].text=_INTL("D: Help")
       end
     else
       if mapid>=0
-        @sprites["title"].text=_ISPRINTF("F: Help [{1:03d}: {2:s}]",mapid,@mapinfos[mapid].name)
+        @sprites["title"].text=_ISPRINTF("D: Help [{1:03d}: {2:s}]",mapid,@mapinfos[mapid].name)
       else
-        @sprites["title"].text=_INTL("F: Help")
+        @sprites["title"].text=_INTL("D: Help")
       end
     end
   end
@@ -705,13 +705,13 @@ class MapScreenScene
     mousepos=Mouse::getMousePos
     if mousepos
       hitmap=hittest(mousepos[0],mousepos[1])
-      if Input.triggerex?(Input::LeftMouseKey)
+      if Input.trigger?(Input::MOUSELEFT)
         onClick(hitmap,mousepos[0],mousepos[1])
-      elsif Input.triggerex?(Input::RightMouseKey)
+      elsif Input.trigger?(Input::MOUSERIGHT)
         onRightClick(hitmap,mousepos[0],mousepos[1])
-      elsif Input.releaseex?(Input::LeftMouseKey)
+      elsif Input.release?(Input::MOUSELEFT)
         onMouseUp(hitmap)
-      elsif Input.releaseex?(Input::RightMouseKey)
+      elsif Input.release?(Input::MOUSERIGHT)
         onRightMouseUp(hitmap)
       else
         if @lasthitmap!=hitmap
@@ -749,14 +749,14 @@ class MapScreenScene
         i[1].x-=4
       end
     end
-    if Input.triggerex?("A"[0])
+    if Input.triggerex?(:A)
       id=chooseMapScreen(_INTL("Add Map"),@currentmap)
       if id>0
         addSprite(id)
         setTopSprite(id)
         @mapconns=generateConnectionData
       end
-    elsif Input.triggerex?("S"[0])
+    elsif Input.triggerex?(:S)
       id=chooseMapScreen(_INTL("Go to Map"),@currentmap)
       if id>0
         @mapconns=generateConnectionData
@@ -767,7 +767,7 @@ class MapScreenScene
         putSprite(id)
         @currentmap=id
       end
-    elsif Input.trigger?(Input::DELETE)
+    elsif Input.triggerex?(0x2E)
       if @mapsprites.keys.length>1 && @selmapid>=0
         @mapsprites[@selmapid].bitmap.dispose
         @mapsprites[@selmapid].dispose
@@ -775,9 +775,9 @@ class MapScreenScene
         @sprites["selsprite"].othersprite=nil
         @selmapid=-1
       end
-    elsif Input.triggerex?("E"[0])
+    elsif Input.triggerex?(:E)
       pbEncounterEditorMap(@encdata,@selmapid) if @selmapid>=0
-    elsif Input.trigger?(Input::F5)
+    elsif Input.trigger?(Input::X)
       helpWindow
     end
     pbUpdateSpriteHash(@sprites)
@@ -806,9 +806,9 @@ end
 
 def pbConnectionsEditor
   pbCriticalCode {
-     mapscreen = MapScreenScene.new
-     mapscreen.mapScreen
-     mapscreen.pbMapScreenLoop
-     mapscreen.close
+   mapscreen = MapScreenScene.new
+   mapscreen.mapScreen
+   mapscreen.pbMapScreenLoop
+   mapscreen.close
   }
 end

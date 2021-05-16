@@ -48,7 +48,7 @@ class Scene_Map
     playingBGM = $game_system.playing_bgm
     playingBGS = $game_system.playing_bgs
     return if !playingBGM && !playingBGS
-    map = pbLoadRxData(sprintf("Data/Map%03d",mapid))
+    map = load_data(sprintf("Data/Map%03d.rxdata",mapid))
     if playingBGM && map.autoplay_bgm
       if (PBDayNight.isNight? rescue false)
         pbBGMFade(0.8) if playingBGM.name!=map.bgm.name && playingBGM.name!=map.bgm.name+"_n"
@@ -184,20 +184,16 @@ class Scene_Map
     if !pbMapInterpreterRunning?
       if Input.trigger?(Input::C)
         $PokemonTemp.hiddenMoveEventCalling = true
-      elsif Input.trigger?(Input::B)
-        unless $game_system.menu_disabled or $game_player.moving?
+      elsif (Input.trigger?(Input::B) && $PokemonSystem.controlScheme == 0) || (Input.trigger?(Input::A) && $PokemonSystem.controlScheme == 1)
+        unless $game_system.menu_disabled or ($game_player.moving? && $PokemonSystem.controlScheme == 0)
           $game_temp.menu_calling = true
           $game_temp.menu_beep = true
         end
-      elsif Input.trigger?(Input::F5)
+      elsif Input.trigger?(Input::X)
         unless $game_player.moving?
           $PokemonTemp.keyItemCalling = true
         end
-      elsif Input.trigger?(Input::A)
-        if $PokemonSystem.runstyle==1
-          $PokemonGlobal.runtoggle = !$PokemonGlobal.runtoggle
-        end
-      elsif Input.press?(Input::F9)
+      elsif Input.triggerex?(0x78)
         $game_temp.debug_calling = true if $DEBUG
       end
     end

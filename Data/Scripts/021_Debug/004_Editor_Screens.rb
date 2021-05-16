@@ -54,7 +54,7 @@ def pbEncounterEditorTypes(enc,enccmd)
     elsif Input.trigger?(Input::B)
       command = -1
       break
-    elsif Input.trigger?(Input::C) || (enccmd.doubleclick? rescue false)
+    elsif Input.trigger?(Input::C)
       command = enccmd.index
       break
     end
@@ -180,7 +180,7 @@ def pbEncounterEditorMap(encdata,map)
   enchelp.width  = Graphics.width/2 - 32
   enchelp.height = 96
   enchelp.z      = 99999
-  mapinfos = load_data("Data/MapInfos.rxdata")
+  mapinfos = pbLoadMapInfos
   mapname = mapinfos[map].name
   loop do
     enc = encdata[map]
@@ -553,7 +553,7 @@ end
 #===============================================================================
 def pbMetadataScreen(defaultMapId=nil)
   metadata = nil
-  mapinfos = pbLoadRxData("Data/MapInfos")
+  mapinfos = pbLoadMapInfos
   metadata = pbLoadMetadata
   map = defaultMapId ? defaultMapId : 0
   loop do

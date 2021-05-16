@@ -201,7 +201,6 @@ class PokemonSummary_Scene
   def pbDisplay(text)
     @sprites["messagebox"].text = text
     @sprites["messagebox"].visible = true
-    pbPlayDecisionSE()
     loop do
       Graphics.update
       Input.update
@@ -325,7 +324,7 @@ class PokemonSummary_Scene
     textpos = [
        [pagename,26,16,0,base,shadow],
        [@pokemon.name,46,62,0,base,shadow],
-       [@pokemon.level.to_s,46,92,0,Color.new(64,64,64),Color.new(176,176,176)],
+       ["Lv. #{@pokemon.level}",46,92,0,Color.new(64,64,64),Color.new(176,176,176)],
        [_INTL("Item"),66,318,0,base,shadow]
     ]
     # Write the held item's name
@@ -356,8 +355,6 @@ class PokemonSummary_Scene
 
   def drawPageOne
     overlay = @sprites["overlay"].bitmap
-    #base   = Color.new(196,168,108)
-    #shadow = Color.new(51,39,12)
     base = Color.new(64,64,64)
     shadow = Color.new(176,176,176)
     dexNumBase   = (@pokemon.shiny?) ? Color.new(248,56,32) : Color.new(64,64,64)
@@ -407,11 +404,8 @@ class PokemonSummary_Scene
       textpos.push([_INTL("RENTAL"),435,176,2,Color.new(64,64,64),Color.new(176,176,176)])
       textpos.push(["?????",435,208,2,Color.new(64,64,64),Color.new(176,176,176)])
     else
-      #ownerbase   = Color.new(64,64,64)
-      #ownershadow = Color.new(176,176,176)
       ownerbase = Color.new(64,64,64)
       ownershadow = Color.new(176,176,176)
-      #case @pokemon.otgender
       #thundaga change OT message to always match our characters gender
       case (pbGetTrainerTypeGender(pbGetPlayerTrainerType))
       when 0; ownerbase = Color.new(24,112,216); ownershadow = Color.new(136,168,208)
@@ -424,7 +418,6 @@ class PokemonSummary_Scene
     if @pokemon.shadowPokemon?
       #thundaga add new messaging for shadow lugia here
       if @pokemon.isSpecies?(:LUGIA)
-        #@pokemon.heartgauge=3840
         textpos.push([_INTL("Heart Gauge"),238,240,0,base,shadow])
         heartmessage = [_INTL("The door to its heart will never open..."),
                         _INTL("The door to its heart will never open..."),
@@ -451,7 +444,6 @@ class PokemonSummary_Scene
       textpos.push([(endexp-@pokemon.exp).to_s_formatted,488,336,1,Color.new(64,64,64),Color.new(176,176,176)])
     end
     # Draw all text
-    textpos.push([_INTL("Lv."),10,92,0,base,shadow])
     pbDrawTextPositions(overlay,textpos)
     # Draw Pokémon type(s)
     type1rect = Rect.new(0,@pokemon.type1*28,64,28)
@@ -476,10 +468,8 @@ class PokemonSummary_Scene
     @sprites["itemicon"].item = @pokemon.item
     overlay = @sprites["overlay"].bitmap
     overlay.clear
-    #base   = Color.new(248,248,248)
-    #shadow = Color.new(104,104,104)
-    base = Color.new(64,64,64)
-    shadow = Color.new(176,176,176)
+    base   = Color.new(248,248,248)
+    shadow = Color.new(104,104,104)
     # Set background image
     @sprites["background"].setBitmap("Graphics/Pictures/Summary/bg_egg")
     imagepos = []
@@ -625,28 +615,21 @@ class PokemonSummary_Scene
       memo += sprintf("<c3=404040,B0B0B0>%s\n",characteristic)
     end
     # Write all text
-    base = Color.new(64,64,64)
-    shadow = Color.new(176,176,176)
-    textpos=[]
-    textpos.push([_INTL("Lv."),10,92,0,base,shadow])
-    pbDrawTextPositions(overlay,textpos)
     drawFormattedTextEx(overlay,232,78,268,memo)
   end
 
   def drawPageThree
     overlay = @sprites["overlay"].bitmap
-    #base   = Color.new(248,248,248)
-    #shadow = Color.new(104,104,104)
-    base = Color.new(64,64,64)
-    shadow = Color.new(176,176,176)
+    base   = Color.new(248,248,248)
+    shadow = Color.new(104,104,104)
     # Determine which stats are boosted and lowered by the Pokémon's nature
     statshadows = []
     PBStats.eachStat { |s| statshadows[s] = shadow }
     if !@pokemon.shadowPokemon? || @pokemon.heartStage>3
       natup = PBNatures.getStatRaised(@pokemon.calcNature)
       natdn = PBNatures.getStatLowered(@pokemon.calcNature)
-      statshadows[natup] = Color.new(200,96,72) if natup!=natdn
-      statshadows[natdn] = Color.new(64,120,200) if natup!=natdn
+      statshadows[natup] = Color.new(136,96,72) if natup!=natdn
+      statshadows[natdn] = Color.new(64,120,152) if natup!=natdn
     end
     # Write various bits of text
     textpos = [
@@ -666,7 +649,6 @@ class PokemonSummary_Scene
        [PBAbilities.getName(@pokemon.ability),362,284,0,Color.new(64,64,64),Color.new(176,176,176)],
     ]
     # Draw all text
-    textpos.push([_INTL("Lv."),10,92,0,base,shadow])
     pbDrawTextPositions(overlay,textpos)
     # Draw ability description
     abilitydesc = pbGetMessage(MessageTypes::AbilityDescs,@pokemon.ability)
@@ -688,9 +670,7 @@ class PokemonSummary_Scene
 
   def drawPageFour
     overlay = @sprites["overlay"].bitmap
-    #moveBase   = Color.new(64,64,64)
-    #moveShadow = Color.new(176,176,176)
-    moveBase = Color.new(64,64,64)
+    moveBase   = Color.new(64,64,64)
     moveShadow = Color.new(176,176,176)
     ppBase   = [moveBase,                # More than 1/2 of total PP
                 Color.new(248,192,0),    # 1/2 of total PP or less
@@ -728,7 +708,6 @@ class PokemonSummary_Scene
       yPos += 64
     end
     # Draw all text and images
-    textpos.push([_INTL("Lv."),10,92,0,moveBase,moveShadow])
     pbDrawTextPositions(overlay,textpos)
     pbDrawImagePositions(overlay,imagepos)
   end
@@ -738,9 +717,7 @@ class PokemonSummary_Scene
     drawMoveSelection(moveToLearn)
     # Set various values
     overlay = @sprites["overlay"].bitmap
-    #base   = Color.new(64,64,64)
-    #shadow = Color.new(176,176,176)
-    base = Color.new(64,64,64)
+    base   = Color.new(64,64,64)
     shadow = Color.new(176,176,176)
     @sprites["pokemon"].visible = false if @sprites["pokemon"]
     @sprites["pokeicon"].pokemon  = @pokemon
@@ -763,7 +740,7 @@ class PokemonSummary_Scene
     if accuracy==0
       textpos.push(["---",216,186,1,base,shadow])
     else
-      textpos.push([sprintf("%d%",accuracy),216+overlay.text_size("%").width,186,1,base,shadow])
+      textpos.push(["#{accuracy}%",216 - overlay.text_size("%").width,186,2,base,shadow])
     end
     # Draw all text
     pbDrawTextPositions(overlay,textpos)
@@ -778,10 +755,8 @@ class PokemonSummary_Scene
   def drawMoveSelection(moveToLearn)
     overlay = @sprites["overlay"].bitmap
     overlay.clear
-    #base   = Color.new(248,248,248)
-    #shadow = Color.new(104,104,104)
-    base = Color.new(64,64,64)
-    shadow = Color.new(176,176,176)
+    base   = Color.new(248,248,248)
+    shadow = Color.new(104,104,104)
     moveBase   = Color.new(64,64,64)
     moveShadow = Color.new(176,176,176)
     ppBase   = [moveBase,                # More than 1/2 of total PP
@@ -847,7 +822,6 @@ class PokemonSummary_Scene
     end
   end
 
-=begin
   def drawPageFive
     overlay = @sprites["overlay"].bitmap
     @sprites["uparrow"].visible   = false
@@ -875,102 +849,14 @@ class PokemonSummary_Scene
     # Draw all images
     pbDrawImagePositions(overlay,imagepos)
   end
-=end
-
-def drawPageFive
-   overlay = @sprites["overlay"].bitmap
-   overlay.clear
-    #base   = Color.new(248,248,248)
-    #shadow = Color.new(104,104,104)
-    base = Color.new(64,64,64)
-    shadow = Color.new(176,176,176)
-    @sprites["background"].setBitmap("Graphics/Pictures/Summary/bg_5")
-    imagepos=[]
-    if @pokemon.pokerusStage==1 || @pokemon.hp==0 || @pokemon.status>0
-      status=6 if @pokemon.pokerusStage==1
-      status=@pokemon.status-1 if @pokemon.status>0
-      status=5 if @pokemon.hp==0
-      imagepos.push(["Graphics/Pictures/statuses",124,100,0,16*status,44,16])
-    end
-    if @pokemon.isShiny?
-      imagepos.push([sprintf("Graphics/Pictures/shiny"),2,134,0,0,-1,-1])
-    end
-    if @pokemon.pokerusStage==2
-      imagepos.push([sprintf("Graphics/Pictures/summaryPokerus"),176,100,0,0,-1,-1])
-    end
-    # Show the Poké Ball containing the Pokémon
-    ballimage = sprintf("Graphics/Pictures/Summary/icon_ball_%02d",@pokemon.ballused)
-    imagepos.push([ballimage,14,60])
-    pbDrawImagePositions(overlay,imagepos)
-    # Determine which stats are boosted and lowered by the Pokémon's nature
-    statshadows = []
-    PBStats.eachStat { |s| statshadows[s] = shadow }
-    if !@pokemon.shadowPokemon? || @pokemon.heartStage>3
-      natup = PBNatures.getStatRaised(@pokemon.calcNature)
-      natdn = PBNatures.getStatLowered(@pokemon.calcNature)
-      statshadows[natup] = Color.new(200,96,72) if natup!=natdn
-      statshadows[natdn] = Color.new(64,120,200) if natup!=natdn
-    end
-    statshadows[natup] = Color.new(200,96,72) if natup!=natdn
-    statshadows[natdn] = Color.new(64,120,200) if natup!=natdn
-
-    textColumn=300
-    evColumn=390
-    ivColumn=455
-    abilitydesc=pbGetMessage(MessageTypes::AbilityDescs,@pokemon.ability)
-    textpos = [
-       [_INTL("EV/IV"),26,16,0,base,shadow],
-       [@pokemon.name,46,62,0,base,shadow],
-       [@pokemon.level.to_s,46,92,0,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Item"),66,318,0,base,shadow],
-       [_INTL("EV"),evColumn,60,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("IV"),ivColumn,60,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("HP"),textColumn,92,2,base,shadow],
-       [sprintf("%d",@pokemon.ev[0]),evColumn,92,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[0]),ivColumn,92,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Attack"),textColumn,124,2,base,statshadows[1]],
-       [sprintf("%d",@pokemon.ev[1]),evColumn,124,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[1]),ivColumn,124,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Defense"),textColumn,156,2,base,statshadows[2]],
-       [sprintf("%d",@pokemon.ev[2]),evColumn,156,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[2]),ivColumn,156,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Sp. Atk"),textColumn,187,2,base,statshadows[4]],
-       [sprintf("%d",@pokemon.ev[4]),evColumn,188,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[4]),ivColumn,188,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Sp. Def"),textColumn,219,2,base,statshadows[5]],
-       [sprintf("%d",@pokemon.ev[5]),evColumn,220,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[5]),ivColumn,220,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Speed"),textColumn,251,2,base,statshadows[3]],
-       [sprintf("%d",@pokemon.ev[3]),evColumn,252,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[3]),ivColumn,252,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Ability"),224,284,0,base,shadow], # 187,188 - 219,220 - 251,252
-       [PBAbilities.getName(@pokemon.ability),362,284,0,Color.new(64,64,64),Color.new(176,176,176)],
-    ]
-    if @pokemon.hasItem?
-      textpos.push([PBItems.getName(@pokemon.item),16,352,0,Color.new(64,64,64),Color.new(176,176,176)])
-    else
-      textpos.push([_INTL("None"),16,352,0,Color.new(192,200,208),Color.new(208,216,224)])
-    end
-    if @pokemon.isMale?
-      textpos.push([_INTL("♂"),178,62,0,Color.new(24,112,216),Color.new(136,168,208)])
-    elsif @pokemon.isFemale?
-      textpos.push([_INTL("♀"),178,62,0,Color.new(248,56,32),Color.new(224,152,144)])
-    end
-    textpos.push([_INTL("Lv."),10,92,0,base,shadow])
-    pbDrawTextPositions(overlay,textpos)
-    drawTextEx(overlay,224,316,282,2,abilitydesc,Color.new(64,64,64),Color.new(176,176,176))
-    drawMarkings(overlay,84,292)
-   end
 
   def drawSelectedRibbon(ribbonid)
     # Draw all of page five
     drawPage(5)
     # Set various values
     overlay = @sprites["overlay"].bitmap
-    #base   = Color.new(64,64,64)
-    #shadow = Color.new(176,176,176)
-    base   = Color.new(196,168,108)
-    shadow = Color.new(51,39,12)
+    base   = Color.new(64,64,64)
+    shadow = Color.new(176,176,176)
     nameBase   = Color.new(248,248,248)
     nameShadow = Color.new(104,104,104)
     # Get data for selected ribbon
@@ -1178,10 +1064,8 @@ def drawPageFive
     @sprites["markingbg"].visible      = true
     @sprites["markingoverlay"].visible = true
     @sprites["markingsel"].visible     = true
-    #base   = Color.new(248,248,248)
-    #shadow = Color.new(104,104,104)
-    base   = Color.new(196,168,108)
-    shadow = Color.new(51,39,12)
+    base   = Color.new(248,248,248)
+    shadow = Color.new(104,104,104)
     ret = pokemon.markings
     markings = pokemon.markings
     index = 0
@@ -1374,10 +1258,6 @@ def drawPageFive
           pbPlayDecisionSE
           pbMoveSelection
           dorefresh = true
-        #elsif @page==5
-        #  pbPlayDecisionSE
-        #  pbRibbonSelection
-        #  dorefresh = true
         elsif !@inbattle
           pbPlayDecisionSE
           dorefresh = pbOptions
@@ -1447,8 +1327,12 @@ class PokemonSummaryScreen
     @scene.pbStartForgetScene(party,partyindex,moveToLearn)
     loop do
       ret = @scene.pbChooseMoveToForget(moveToLearn)
+      if ret>=0 && moveToLearn!=0 && pbIsHiddenMove?(party[partyindex].moves[ret].id) && !$DEBUG
+        pbMessage(_INTL("HM moves can't be forgotten now.")) { @scene.pbUpdate }
+      else
         break
       end
+    end
     @scene.pbEndScene
     return ret
   end

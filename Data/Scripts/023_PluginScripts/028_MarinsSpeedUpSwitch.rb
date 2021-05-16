@@ -50,7 +50,7 @@ module Graphics
   end
 
   def self.update
-    if $CanToggle && Input.trigger?(Input::SPEEDUP)
+    if $CanToggle && Input.trigger?(Input::R)
       $GameSpeed += 1
       $GameSpeed = 0 if $GameSpeed >= SPEEDUP_STAGES.size
     end

@@ -105,7 +105,7 @@ class SpriteWindow_DebugVariables < Window_DrawableCommand
     idWidth     = totalWidth*15/100
     nameWidth   = totalWidth*65/100
     statusWidth = totalWidth*20/100
-    text_y = rect.y + (mkxp? ? 6 : 0)
+    text_y = rect.y + 6
     self.shadowtext(rect.x,text_y,idWidth,rect.height,id_text)
     self.shadowtext(rect.x+idWidth,text_y,nameWidth,rect.height,name,0,(codeswitch) ? 1 : 0)
     self.shadowtext(rect.x+idWidth+nameWidth,text_y,statusWidth,rect.height,status,1,colors)
@@ -422,7 +422,7 @@ class SpriteWindow_DebugRoamers < Window_DrawableCommand
           # roaming
           curmap = $PokemonGlobal.roamPosition[index]
           if curmap
-            mapinfos = load_data("Data/MapInfos.rxdata")
+            mapinfos = pbLoadMapInfos
             status = "[ROAMING][#{curmap}: #{mapinfos[curmap].name}]"
           else
             status = "[ROAMING][map not set]"
@@ -432,7 +432,7 @@ class SpriteWindow_DebugRoamers < Window_DrawableCommand
       else
         status = "[NOT ROAMING][Switch #{pkmn[2]} is off]"
       end
-      text_y = rect.y + (mkxp? ? 6 : 0)
+      text_y = rect.y + 6
       self.shadowtext(name,rect.x,text_y,nameWidth,rect.height)
       self.shadowtext(status,rect.x+nameWidth,text_y,statusWidth,rect.height,1,statuscolor)
     end
@@ -563,93 +563,6 @@ def pbCreatePokemon
     $Trainer.party[i].pbRecordFirstMoves
   end
 end
-
-
-
-#===============================================================================
-#
-#===============================================================================
-class PokemonDataCopy
-  attr_accessor :dataOldHash
-  attr_accessor :dataNewHash
-  attr_accessor :dataTime
-  attr_accessor :data
-
-  def crc32(x)
-    return Zlib::crc32(x)
-  end
-
-  def readfile(filename)
-    File.open(filename, "rb") { |f| f.read }
-  end
-
-  def writefile(str,filename)
-    File.open(filename, "wb") { |f| f.write(str) }
-  end
-
-  def filetime(filename)
-    File.open(filename, "r") { |f| f.mtime }
-  end
-
-  def initialize(data,datasave)
-    @datafile = data
-    @datasave = datasave
-    @data = readfile(@datafile)
-    @dataOldHash = crc32(@data)
-    @dataTime = filetime(@datafile)
-  end
-
-  def changed?
-    ts     = readfile(@datafile)
-    tsDate = filetime(@datafile)
-    tsHash = crc32(ts)
-    return (tsHash!=@dataNewHash && tsHash!=@dataOldHash && tsDate>@dataTime)
-  end
-
-  def save(newtilesets)
-    newdata = Marshal.dump(newtilesets)
-    if !changed?
-      @data = newdata
-      @dataNewHash = crc32(newdata)
-      writefile(newdata,@datafile)
-    else
-      @dataOldHash = crc32(@data)
-      @dataNewHash = crc32(newdata)
-      @dataTime = filetime(@datafile)
-      @data = newdata
-      writefile(newdata,@datafile)
-    end
-    save_data(self,@datasave)
-  end
-end
-
-
-
-class PokemonDataWrapper
-  attr_reader :data
-
-  def initialize(file,savefile,prompt)
-    @savefile = savefile
-    @file     = file
-    if pbRgssExists?(@savefile)
-      @ts = load_data(@savefile)
-      if (!@ts.changed? && !mkxp?) || prompt.call==true
-        @data = Marshal.load(StringInput.new(@ts.data))
-      else
-        @ts = PokemonDataCopy.new(@file,@savefile)
-        @data = load_data(@file)
-      end
-    else
-      @ts = PokemonDataCopy.new(@file,@savefile)
-      @data = load_data(@file)
-    end
-  end
-
-  def save
-    @ts.save(@data)
-  end
-end
-
 
 
 #===============================================================================
@@ -809,7 +722,7 @@ end
 def pbDebugFixInvalidTiles
   num_errors = 0
   num_error_maps = 0
-  @tilesets = pbLoadRxData("Data/Tilesets")
+  @tilesets = $data_tilesets
   mapData = MapData.new
   t = Time.now.to_i
   Graphics.update
@@ -903,7 +816,6 @@ class PokemonDebugPartyScreen
     @messageBox.text    = text
     @messageBox.visible = true
     @helpWindow.visible = false
-    pbPlayDecisionSE
     loop do
       Graphics.update
       Input.update

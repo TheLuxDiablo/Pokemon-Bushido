@@ -30,7 +30,7 @@ class EBSBitmapWrapper
       # 1 - normal speed
       # 2 - medium speed
       # 3 - slow speed
-    bmp = BitmapCache.load_bitmap(file)
+    bmp = RPG::Cache.load_bitmap(file)
     @bitmapFile=Bitmap.new(bmp.width,bmp.height); @bitmapFile.blt(0,0,bmp,Rect.new(0,0,bmp.width,bmp.height))
     bmp.dispose
     # initializes full Pokemon bitmap

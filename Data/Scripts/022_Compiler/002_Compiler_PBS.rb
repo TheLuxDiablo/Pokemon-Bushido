@@ -115,12 +115,10 @@ def pbCompileConnections
     record.push(csvInt!(thisline,lineno))
     record.push(csvEnumFieldOrInt!(thisline,hashenum,"",sprintf("(line %d)",lineno)))
     record.push(csvInt!(thisline,lineno))
-    if !pbRgssExists?(sprintf("Data/Map%03d.rxdata",record[0])) &&
-       !pbRgssExists?(sprintf("Data/Map%03d.rvdata",record[0]))
+    if !pbRgssExists?(sprintf("Data/Map%03d.rxdata",record[0]))
       print _INTL("Warning: Map {1}, as mentioned in the map connection data, was not found.\r\n{2}",record[0],FileLineData.linereport)
     end
-    if !pbRgssExists?(sprintf("Data/Map%03d.rxdata",record[3])) &&
-       !pbRgssExists?(sprintf("Data/Map%03d.rvdata",record[3]))
+    if !pbRgssExists?(sprintf("Data/Map%03d.rxdata",record[3]))
       print _INTL("Warning: Map {1}, as mentioned in the map connection data, was not found.\r\n{2}",record[3],FileLineData.linereport)
     end
     case record[1]
@@ -663,33 +661,11 @@ end
 #===============================================================================
 def pbCompileAnimations
   begin
-    if $RPGVX
-      pbanims = load_data("Data/PkmnAnimations.rvdata")
-    else
-      pbanims = load_data("Data/PkmnAnimations.rxdata")
-    end
+    pbanims = load_data("Data/PkmnAnimations.rxdata")
   rescue
     pbanims = PBAnimations.new
   end
   move2anim = [[],[]]
-=begin
-  if $RPGVX
-    anims = load_data("Data/Animations.rvdata")
-  else
-    anims = load_data("Data/Animations.rxdata")
-  end
-  for anim in anims
-    next if !anim || anim.frames.length==1
-    found = false
-    for i in 0...pbanims.length
-      if pbanims[i] && pbanims[i].id==anim.id
-        found = true if pbanims[i].array.length>1
-        break
-      end
-    end
-    pbanims[anim.id] = pbConvertRPGAnimation(anim) if !found
-  end
-=end
   for i in 0...pbanims.length
     next if !pbanims[i]
     if pbanims[i].name[/^OppMove\:\s*(.*)$/]
@@ -1265,7 +1241,7 @@ def pbCompileEncounters
   File.open("PBS/encounters.txt","rb") { |f|
     lineno = 1
     f.each_line { |line|
-      if lineno==1 && line[0]==0xEF && line[1]==0xBB && line[2]==0xBF
+      if lineno==1 && line[0].ord==0xEF && line[1].ord==0xBB && line[2].ord==0xBF
         line = line[3,line.length-3]
       end
       line = prepline(line)

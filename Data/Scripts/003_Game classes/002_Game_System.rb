@@ -43,7 +43,10 @@ class Game_System
 ################################################################################
 
   def bgm_play(bgm)
+    old_pos = @bgm_position
+    @bgm_position = 0
     bgm_play_internal(bgm,0)
+    @bgm_position = old_pos
   end
 
   def bgm_play_internal2(name,volume,pitch,position) # :nodoc:
@@ -78,7 +81,7 @@ class Game_System
   end
 
   def bgm_pause(fadetime=0.0) # :nodoc:
-    pos = Audio.bgm_position rescue 0
+    pos = Audio.bgm_pos rescue 0
     self.bgm_fade(fadetime) if fadetime>0.0
     @bgm_position = pos
     @bgm_paused   = true
@@ -274,7 +277,7 @@ class Game_System
 
   def update
     @timer -= 1 if @timer_working and @timer>0
-    if Input.trigger?(Input::F5) && pbCurrentEventCommentInput(1,"Cut Scene")
+    if Input.trigger?(Input::X) && pbCurrentEventCommentInput(1,"Cut Scene")
       event = @map_interpreter.get_character(0)
       @map_interpreter.pbSetSelfSwitch(event.id,"A",true)
       @map_interpreter.command_end

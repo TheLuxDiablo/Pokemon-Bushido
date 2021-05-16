@@ -24,7 +24,7 @@ class Game_Player < Game_Character
                     @move_route_forcing || $game_temp.message_window_showing ||
                     pbMapInterpreterRunning?
     terrain = pbGetTerrainTag
-    input = ($PokemonSystem.runstyle==1) ? $PokemonGlobal.runtoggle : Input.press?(Input::A)
+    input = ($PokemonSystem.runstyle==1) ^ (($PokemonSystem.controlScheme==1) ? Input.press?(Input::B) : Input.press?(Input::A) )
     return input && $PokemonGlobal.runningShoes && !jumping? &&
        !$PokemonGlobal.diving && !$PokemonGlobal.surfing &&
        !$PokemonGlobal.bicycle && !PBTerrain.onlyWalk?(terrain)
@@ -75,29 +75,30 @@ class Game_Player < Game_Character
       @bob_height = (p>=2) ? 2 : 0
     else
       @bob_height = 0
-      super
-    end
-  end
-end
-
-
-=begin
-class Game_Character
-  alias update_old2 update
-
-  def update
-    if self.is_a?(Game_Event)
-      if @dependentEvents
-        for i in 0...@dependentEvents.length
-          if @dependentEvents[i][0]==$game_map.map_id &&
-             @dependentEvents[i][1]==self.id
-            self.move_speed_real = $game_player.move_speed_real
-            break
-          end
-        end
+      return if @lock_pattern
+  #    return if @jump_count > 0   # Don't animate if jumping on the spot
+      # Character has stopped moving, return to original pattern
+      if @moved_last_frame && !@moved_this_frame && !@step_anime
+        @pattern = @original_pattern
+        @anime_count = 0
+        return
       end
+      # Character has started to move, change pattern immediately
+      if !@moved_last_frame && @moved_this_frame && !@step_anime
+        @pattern = (@pattern + 1) % 4 if @walk_anime
+        @anime_count = 0
+        return
+      end
+      # Calculate how many frames each pattern should display for, i.e. the time
+      # it takes to move half a tile (or a whole tile if cycling). We assume the
+      # game uses square tiles.
+      real_speed = (jumping?) ? jump_speed_real : move_speed_real
+      frames_per_pattern = Game_Map::REAL_RES_X / (real_speed * 1.3)
+      frames_per_pattern *= 2 if move_speed == 6   # Cycling/fastest speed
+      return if @anime_count < frames_per_pattern
+      # Advance to the next animation frame
+      @pattern = (@pattern + 1) % 4
+      @anime_count -= frames_per_pattern
     end
-    update_old2
   end
 end
-=end

@@ -126,7 +126,7 @@ class PokeBattle_Battler
   # use a different move in disobedience), or false if attack stops.
   # Return to if "Always Listen" is enabled in the game settings script.
   def pbObedienceCheck?(choice)
-    return true if ALWAYS_LISTEN
+    return true
     return true if usingMultiTurnAttack?
     return true if choice[0]!=:UseMove
     return true if !@battle.internalBattle

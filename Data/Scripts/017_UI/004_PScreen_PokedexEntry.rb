@@ -281,7 +281,7 @@ class PokemonPokedexInfo_Scene
 =begin
       footprintfile = pbPokemonFootprintFile(@species,@form)
       if footprintfile
-        footprint = BitmapCache.load_bitmap(footprintfile)
+        footprint = RPG::Cache.load_bitmap(footprintfile)
         overlay.blt(226,138,footprint,footprint.rect)
         footprint.dispose
       end

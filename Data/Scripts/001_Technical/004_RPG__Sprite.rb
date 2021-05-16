@@ -42,6 +42,7 @@ class SpriteAnimation
     animation_name = @_animation.animation_name
     animation_hue  = @_animation.animation_hue
     bitmap = pbGetAnimation(animation_name, animation_hue)
+    RPG::Cache.retain("Graphics/Animations/" + animation_name)
     if @@_reference_count.include?(bitmap)
       @@_reference_count[bitmap] += 1
     else

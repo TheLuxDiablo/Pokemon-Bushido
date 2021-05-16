@@ -1,12 +1,7 @@
 def pbSave(safesave=false)
+  $Trainer.metaID=$PokemonGlobal.playerID
   begin
-    $Trainer.metaID=$PokemonGlobal.playerID
-    $Trainer.chapter=$game_variables[99]
-  rescue
-    return false
-  end
-  begin
-    File.open(RTP.getSaveFileName("Game.rxdata"),"wb") { |f|
+    File.open(RTP.getSaveFileName("Game_#{$PokemonTemp.saveSlot}.rxdata"),"wb") { |f|
        Marshal.dump($Trainer,f)
        Marshal.dump(Graphics.frame_count,f)
        if $data_system.respond_to?("magic_number")
@@ -43,9 +38,9 @@ def pbEmergencySave
   $scene=nil
   pbMessage(_INTL("The script is taking too long. The game will restart."))
   return if !$Trainer
-  if safeExists?(RTP.getSaveFileName("Game.rxdata"))
-    File.open(RTP.getSaveFileName("Game.rxdata"),  'rb') { |r|
-      File.open(RTP.getSaveFileName("Game.rxdata.bak"), 'wb') { |w|
+  if safeExists?(RTP.getSaveFileName("Game_0.rxdata"))
+    File.open(RTP.getSaveFileName("Game_0.rxdata"),  'rb') { |r|
+      File.open(RTP.getSaveFileName("Game_0.rxdata.bak"), 'wb') { |w|
         while s = r.read(4096)
           w.write s
         end
@@ -73,24 +68,17 @@ class PokemonSave_Scene
     mapname=$game_map.name
     textColor = ["0070F8,78B8E8","E82010,F8A8B8","0070F8,78B8E8"][$Trainer.gender]
     locationColor = "209808,90F090"   # green
-    loctext=_INTL("<ac><c3={1}>{2}</c3></ac>",locationColor,mapname)
+    loctext = _INTL("<ac><c3={1}>{2}</c3></ac>",locationColor,mapname)
     loctext+=_INTL("Player<r><c3={1}>{2}</c3><br>",textColor,$Trainer.name)
     if hour>0
       loctext+=_INTL("Time<r><c3={1}>{2}h {3}m</c3><br>",textColor,hour,min)
     else
       loctext+=_INTL("Time<r><c3={1}>{2}m</c3><br>",textColor,min)
     end
+    loctext+=_INTL("Badges<r><c3={1}>{2}</c3><br>",textColor,$Trainer.numbadges)
     if $Trainer.pokedex
-      loctext+=_INTL("Journal<r><c3={1}>{2}/{3}</c3><br>",textColor,$Trainer.pokedexOwned,$Trainer.pokedexSeen)
+      loctext+=_INTL("Pokédex<r><c3={1}>{2}/{3}</c3>",textColor,$Trainer.pokedexOwned,$Trainer.pokedexSeen)
     end
-    loctext+=_INTL("Chapter<r><c3={1}>{2}</c3><br>",textColor,$game_variables[99])
-    if $game_variables[100]>0 && $game_variables[99]!="Hattori"
-      loctext+=_INTL("Katana Level<r><c3={1}>{2}</c3>",textColor,$game_variables[100])
-    end
-    if $game_variables[99]=="Hattori" && $game_variables[199]!=0
-      loctext+=_INTL("Corrupted<r><c3={1}>{2}</c3>",textColor,$game_variables[199])
-    end
-    #loctext+=_INTL("Techniques<r><c3={1}>{2}</c3><br>",textColor,$Trainer.numbadges.to_s)
     @sprites["locwindow"]=Window_AdvancedTextPokemon.new(loctext)
     @sprites["locwindow"].viewport=@viewport
     @sprites["locwindow"].x=0
@@ -128,7 +116,7 @@ class PokemonSaveScreen
     ret=false
     @scene.pbStartScreen
     if pbConfirmMessage(_INTL("Would you like to save the game?"))
-      if safeExists?(RTP.getSaveFileName("Game.rxdata"))
+      if safeExists?(RTP.getSaveFileName("Game_#{$PokemonTemp.saveSlot}.rxdata"))
         if $PokemonTemp.begunNewGame
           pbMessage(_INTL("WARNING!"))
           pbMessage(_INTL("There is a different game file that is already saved."))

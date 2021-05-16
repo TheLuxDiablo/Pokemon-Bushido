@@ -97,6 +97,7 @@ class Interpreter
   #-----------------------------------------------------------------------------
   def update
     # Initialize loop count
+    return if !@main && @map_id != $game_map.map_id
     @loop_count = 0
     # Loop
     loop do

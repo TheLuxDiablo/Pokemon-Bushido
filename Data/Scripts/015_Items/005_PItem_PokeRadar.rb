@@ -239,14 +239,3 @@ Events.onMapUpdate += proc { |_sender,_e|
 Events.onMapChange += proc { |_sender,_e|
   pbPokeRadarCancel
 }
-
-################################################################################
-# Item handlers
-################################################################################
-ItemHandlers::UseInField.add(:POKERADAR,proc { |item|
-  next (pbCanUsePokeRadar?) ? pbUsePokeRadar : 0
-})
-
-ItemHandlers::UseFromBag.add(:POKERADAR,proc { |item|
-  next (pbCanUsePokeRadar?) ? 2 : 0
-})

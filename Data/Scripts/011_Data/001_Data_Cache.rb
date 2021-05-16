@@ -18,6 +18,7 @@ class PokemonTemp
   attr_accessor :trainersData
   attr_accessor :moveToAnim
   attr_accessor :battleAnims
+  attr_accessor :mapInfos
 end
 
 def pbClearData
@@ -38,14 +39,12 @@ def pbClearData
     $PokemonTemp.trainersData          = nil
     $PokemonTemp.moveToAnim            = nil
     $PokemonTemp.battleAnims           = nil
+    $PokemonTemp.mapInfos              = nil
   end
   MapFactoryHelper.clear
   $PokemonEncounters.setup($game_map.map_id) if $game_map && $PokemonEncounters
   if pbRgssExists?("Data/Tilesets.rxdata")
     $data_tilesets = load_data("Data/Tilesets.rxdata")
-  end
-  if pbRgssExists?("Data/Tilesets.rvdata")
-    $data_tilesets = load_data("Data/Tilesets.rvdata")
   end
 end
 
@@ -278,4 +277,15 @@ def pbLoadBattleAnimations
     end
   end
   return $PokemonTemp.battleAnims
+end
+
+#===============================================================================
+# Method relating to map infos data.
+#===============================================================================
+def pbLoadMapInfos
+  $PokemonTemp = PokemonTemp.new if !$PokemonTemp
+  if !$PokemonTemp.mapInfos
+    $PokemonTemp.mapInfos = load_data("Data/MapInfos.rxdata")
+  end
+  return $PokemonTemp.mapInfos
 end

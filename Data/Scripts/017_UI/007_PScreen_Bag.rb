@@ -54,7 +54,7 @@ class Window_PokemonBag < Window_DrawableCommand
   def drawCursor(index,rect)
     if self.index==index
       bmp = (@sorting) ? @swaparrow.bitmap : @selarrow.bitmap
-      pbCopyBitmap(self.contents,bmp,rect.x,rect.y+2 + ((mkxp? && $PokemonSystem.font == 0) ? -3 : 0))
+      pbCopyBitmap(self.contents,bmp,rect.x,rect.y+2 - (($PokemonSystem.font == 2)? 2 : 0))
     end
   end
 
@@ -124,13 +124,13 @@ end
 # Bag visuals
 #===============================================================================
 class PokemonBag_Scene
-  ITEMLISTBASECOLOR     = Color.new(96,96,96)
-  ITEMLISTSHADOWCOLOR   = Color.new(208,208,208)
+  ITEMLISTBASECOLOR     = Color.new(88,88,80)
+  ITEMLISTSHADOWCOLOR   = Color.new(168,184,184)
   ITEMTEXTBASECOLOR     = Color.new(248,248,248)
   ITEMTEXTSHADOWCOLOR   = Color.new(0,0,0)
-  POCKETNAMEBASECOLOR   = Color.new(96,96,96)
-  POCKETNAMESHADOWCOLOR = Color.new(208,208,208)
-  ITEMSVISIBLE          = 6
+  POCKETNAMEBASECOLOR   = Color.new(88,88,80)
+  POCKETNAMESHADOWCOLOR = Color.new(168,184,184)
+  ITEMSVISIBLE          = 7
 
   def pbUpdate
     pbUpdateSpriteHash(@sprites)
@@ -175,21 +175,21 @@ class PokemonBag_Scene
     @sprites["background"] = IconSprite.new(0,0,@viewport)
     @sprites["overlay"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
     pbSetSystemFont(@sprites["overlay"].bitmap)
-    @sprites["bagsprite"] = IconSprite.new(30,80,@viewport)
+    @sprites["bagsprite"] = IconSprite.new(30,20,@viewport)
     @sprites["pocketicon"] = BitmapSprite.new(186,32,@viewport)
-    @sprites["pocketicon"].x = 8
-    @sprites["pocketicon"].y = 226
+    @sprites["pocketicon"].x = 0
+    @sprites["pocketicon"].y = 224
     @sprites["leftarrow"] = AnimatedSprite.new("Graphics/Pictures/leftarrow",8,40,28,2,@viewport)
     @sprites["leftarrow"].x       = -4
-    @sprites["leftarrow"].y       = 130
+    @sprites["leftarrow"].y       = 76
     @sprites["leftarrow"].visible = (!@choosing || numfilledpockets>1)
     @sprites["leftarrow"].play
     @sprites["rightarrow"] = AnimatedSprite.new("Graphics/Pictures/rightarrow",8,40,28,2,@viewport)
     @sprites["rightarrow"].x       = 150
-    @sprites["rightarrow"].y       = 130
+    @sprites["rightarrow"].y       = 76
     @sprites["rightarrow"].visible = (!@choosing || numfilledpockets>1)
     @sprites["rightarrow"].play
-    @sprites["itemlist"] = Window_PokemonBag.new(@bag,@filterlist,lastpocket,192,20,314,35+35+ITEMSVISIBLE*32)
+    @sprites["itemlist"] = Window_PokemonBag.new(@bag,@filterlist,lastpocket,168,-8,314,40+32+ITEMSVISIBLE*32)
     @sprites["itemlist"].viewport    = @viewport
     @sprites["itemlist"].pocket      = lastpocket
     @sprites["itemlist"].index       = @bag.getChoice(lastpocket)
@@ -254,12 +254,7 @@ class PokemonBag_Scene
 
   def pbRefresh
     # Set the background image
-
-    if $Trainer.female?
-      @sprites["background"].setBitmap(sprintf("Graphics/Pictures/Bag/bg_f"))
-    else
-      @sprites["background"].setBitmap(sprintf("Graphics/Pictures/Bag/bg_m"))
-    end
+    @sprites["background"].setBitmap(sprintf("Graphics/Pictures/Bag/bg_#{@bag.lastpocket}"))
     # Set the bag sprite
     fbagexists = pbResolveBitmap(sprintf("Graphics/Pictures/Bag/bag_#{@bag.lastpocket}_f"))
     if $Trainer.female? && fbagexists
@@ -272,11 +267,13 @@ class PokemonBag_Scene
     if @choosing && @filterlist
       for i in 1...@bag.pockets.length
         if @filterlist[i].length==0
-          #@sprites["pocketicon"].bitmap.blt((i-1)*24,6,@pocketbitmap.bitmap,Rect.new((i-1)*26,24,24,24))
+          @sprites["pocketicon"].bitmap.blt(6+(i-1)*22,6,
+             @pocketbitmap.bitmap,Rect.new((i-1)*20,28,20,20))
         end
       end
     end
-    @sprites["pocketicon"].bitmap.blt((@sprites["itemlist"].pocket-1)*24-(@sprites["itemlist"].pocket*2)+2,0,@pocketbitmap.bitmap,Rect.new((@sprites["itemlist"].pocket-1)*24,0,24,26))
+    @sprites["pocketicon"].bitmap.blt(2+(@sprites["itemlist"].pocket-1)*22,2,
+       @pocketbitmap.bitmap,Rect.new((@sprites["itemlist"].pocket-1)*28,0,28,28))
     # Refresh the item window
     @sprites["itemlist"].refresh
     # Refresh more things
@@ -289,7 +286,7 @@ class PokemonBag_Scene
     overlay.clear
     # Draw the pocket name
     pbDrawTextPositions(overlay,[
-       [PokemonBag.pocketNames[@bag.lastpocket],94,4,2,POCKETNAMEBASECOLOR,POCKETNAMESHADOWCOLOR]
+       [PokemonBag.pocketNames[@bag.lastpocket],94,180,2,POCKETNAMEBASECOLOR,POCKETNAMESHADOWCOLOR]
     ])
     # Draw slider arrows
     showslider = false
@@ -409,16 +406,6 @@ class PokemonBag_Scene
               pbPlayCursorSE
               pbRefresh
             end
-#          elsif Input.trigger?(Input::F5)   # Register/unregister selected item
-#            if !@choosing && itemwindow.index<thispocket.length
-#              if @bag.pbIsRegistered?(itemwindow.item)
-#                @bag.pbUnregisterItem(itemwindow.item)
-#              elsif pbCanRegisterItem?(itemwindow.item)
-#                @bag.pbRegisterItem(itemwindow.item)
-#              end
-#              pbPlayDecisionSE
-#              pbRefresh
-#            end
           elsif Input.trigger?(Input::A)   # Start switching the selected item
             if !@choosing
               if thispocket.length>1 && itemwindow.index<thispocket.length &&
@@ -448,7 +435,7 @@ end
 # Bag mechanics
 #===============================================================================
 class PokemonBagScreen
-  def initialize(scene,bag,lastpocket=-1)
+  def initialize(scene,bag)
     @bag   = bag
     @scene = scene
   end
@@ -583,22 +570,6 @@ class PokemonBagScreen
     oldlastpocket = @bag.lastpocket
     oldchoices = @bag.getAllChoices
     @scene.pbStartScene(@bag,true,proc)
-    item = @scene.pbChooseItem
-    @scene.pbEndScene
-    @bag.lastpocket = oldlastpocket
-    @bag.setAllChoices(oldchoices)
-    return item
-  end
-
-  # UI logic for the item screen for choosing a Cellulose.
-  def pbChooseItemCelluloseScreen(proc=nil,tutorial=false)
-    oldlastpocket = @bag.lastpocket
-    oldchoices = @bag.getAllChoices
-    @bag.lastpocket = 6
-    @scene.pbStartScene(@bag,true,Proc.new { |item| [1,2,5,6].include?(pbGetPocket(item)) },false)
-    if tutorial
-      pbMessage("\\rCypress: Great, now just select the Cellulose you want Arenay to hold! ")
-    end
     item = @scene.pbChooseItem
     @scene.pbEndScene
     @bag.lastpocket = oldlastpocket

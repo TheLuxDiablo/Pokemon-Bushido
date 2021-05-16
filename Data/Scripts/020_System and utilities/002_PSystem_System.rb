@@ -2,14 +2,10 @@
 # exists, the real file is deleted to ensure that the file is loaded from the
 # encrypted archive.
 def pbSafeLoad(file)
-  if (safeExists?("./Game.rgssad") || safeExists?("./Game.rgss2a")) && safeExists?(file)
+  if safeExists?("./Game.rgssad") && safeExists?(file)
     File.delete(file) rescue nil
   end
   return load_data(file)
-end
-
-def pbLoadRxData(file) # :nodoc:
-  return load_data(file+".rxdata")
 end
 
 def pbChooseLanguage
@@ -23,6 +19,14 @@ end
 #############
 #############
 
+def pbScreenCapture
+  t = pbGetTimeNow
+  filestart = t.strftime("[%Y-%m-%d] %H_%M_%S")
+  filestart = sprintf("%s.%03d", filestart, (t.to_f - t.to_i) * 1000)   # milliseconds
+  capturefile = (sprintf("%s.bmp", filestart))
+  Graphics.screenshot(capturefile)
+  pbSEPlay("Pkmn exp full") if FileTest.audio_exist?("Audio/SE/Pkmn exp full")
+end
 
 def pbSetUpSystem
   begin
@@ -31,7 +35,7 @@ def pbSetUpSystem
     game_system   = nil
     pokemonSystem = nil
     havedata = false
-    File.open(RTP.getSaveFileName("Game.rxdata")) { |f|
+    File.open(RTP.getSaveFileName("Game_0.rxdata")) { |f|
       trainer       = Marshal.load(f)
       framecount    = Marshal.load(f)
       game_system   = Marshal.load(f)
@@ -49,7 +53,7 @@ def pbSetUpSystem
   if !$INEDITOR
     $game_system   = game_system
     $PokemonSystem = pokemonSystem
-    pbSetResizeFactor([$PokemonSystem.screensize,(mkxp? ? 4 : 3)].min)
+    pbSetResizeFactor([$PokemonSystem.screensize,4].min)
   else
     pbSetResizeFactor(1.0)
   end
@@ -69,60 +73,5 @@ def pbSetUpSystem
     pbLoadMessages("Data/"+LANGUAGES[pokemonSystem.language][1])
   end
 end
-
-if mkxp?
-  def pbScreenCapture
-    t = pbGetTimeNow
-    filestart = t.strftime("[%Y-%m-%d] %H_%M_%S")
-    filestart = sprintf("%s.%03d", filestart, (t.to_f - t.to_i) * 1000)   # milliseconds
-    capturefile = RTP.getSaveFileName(sprintf("%s.png", filestart))
-    Graphics.snap_to_bitmap.save_to_png(capturefile)
-    pbSEPlay("Pkmn exp full") if FileTest.audio_exist?("Audio/SE/Pkmn exp full")
-  end
-else
-  def pbScreenCapture
-    t = pbGetTimeNow
-    filestart = t.strftime("[%Y-%m-%d] %H_%M_%S")
-    filestart = sprintf("%s.%03d",filestart,(t.to_f-t.to_i)*1000)   # milliseconds
-    capturefile = RTP.getSaveFileName(sprintf("%s.png",filestart))
-    if capturefile && safeExists?("rubyscreen.dll")
-      Graphics.snap_to_bitmap(false).saveToPng(capturefile)
-      pbSEPlay("Pkmn exp full") if FileTest.audio_exist?("Audio/SE/Pkmn exp full")
-    end
-  end
-end
-
-def pbDebugF7
-  if $DEBUG
-    Console::setup_console
-    begin
-      debugBitmaps
-    rescue
-    end
-    pbSEPlay("Pkmn exp full") if FileTest.audio_exist?("Audio/SE/Pkmn exp full")
-  end
-end
-
-
-
-module Input
-  unless defined?(update_KGC_ScreenCapture)
-    class << Input
-      alias update_KGC_ScreenCapture update
-    end
-  end
-
-  def self.update
-    update_KGC_ScreenCapture
-    if trigger?(Input::F8)
-      pbScreenCapture
-    end
-    if trigger?(Input::F7)
-      pbDebugF7
-    end
-  end
-end
-
-
 
 pbSetUpSystem

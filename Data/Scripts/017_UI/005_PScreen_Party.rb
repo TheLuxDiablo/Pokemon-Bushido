@@ -113,7 +113,7 @@ class Window_CommandPokemonColor < Window_CommandPokemon
     super(commands,width)
   end
 
-  def drawItem(index,count,rect)
+  def drawItem(index,_count,rect)
     pbSetSystemFont(self.contents) if @starting
     rect = drawCursor(index,rect)
     base   = self.baseColor
@@ -134,7 +134,7 @@ end
 class PokemonPartyBlankPanel < SpriteWrapper
   attr_accessor :text
 
-  def initialize(pokemon,index,viewport=nil)
+  def initialize(_pokemon,index,viewport=nil)
     super(viewport)
     self.x = [0,256,0,256,0,256][index]
     self.y = [0,16,96,112,192,208][index]
@@ -165,7 +165,7 @@ class PokemonPartyPanel < SpriteWrapper
   attr_reader :selected
   attr_reader :preselected
   attr_reader :switching
-  attr_accessor :text
+  attr_reader :text
 
   def initialize(pokemon,index,viewport=nil)
     super(viewport)
@@ -476,7 +476,6 @@ class PokemonParty_Scene
     @sprites["messagebox"].text    = text
     @sprites["messagebox"].visible = true
     @sprites["helpwindow"].visible = false
-    pbPlayDecisionSE
     loop do
       Graphics.update
       Input.update
@@ -832,7 +831,7 @@ class PokemonPartyScreen
     @party = party
   end
 
-  def pbStartScene(helptext,numBattlersOut,annotations=nil)
+  def pbStartScene(helptext,_numBattlersOut,annotations=nil)
     @scene.pbStartScene(@party,helptext,annotations)
   end
 

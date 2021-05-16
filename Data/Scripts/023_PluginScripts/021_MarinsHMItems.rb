@@ -50,7 +50,7 @@ USING_ROCK_SMASH_ITEM = true
 USING_FLY_ITEM = true
 
 # When true, this overrides the old strength mechanics.
-USING_STRENGTH_ITEM = true
+USING_STRENGTH_ITEM = false
 
 # When true, this overrides the old cut mechanics.
 USING_CUT_ITEM = true

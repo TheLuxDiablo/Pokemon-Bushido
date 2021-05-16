@@ -93,37 +93,14 @@ end
 
 # Returns a language ID
 def pbGetLanguage()
-  if !System.platform[/Windows/]
-    lang = System.user_language[0..1]
-    return 1 if lang == "ja" # Japanese
-    return 2 if lang == "en" # English
-    return 3 if lang == "fr" # French
-    return 4 if lang == "it" # Italian
-    return 5 if lang == "de" # German
-    return 6 if lang == "es" # Spanish
-    return 7 if lang == "ko" # Korean
-    return 2 # Use 'English' by default
-  end
-  getUserDefaultLangID = Win32API.new("kernel32","GetUserDefaultLangID","","i") rescue nil
-  ret = 0
-  ret = getUserDefaultLangID.call()&0x3FF if getUserDefaultLangID
-  if ret==0 # Unknown
-    ret = MiniRegistry.get(MiniRegistry::HKEY_CURRENT_USER,
-       "Control Panel\\Desktop\\ResourceLocale","",0)
-    ret = MiniRegistry.get(MiniRegistry::HKEY_CURRENT_USER,
-       "Control Panel\\International","Locale","0").to_i(16) if ret==0
-    ret = ret&0x3FF
-    return 0 if ret==0  # Unknown
-  end
-  case ret
-  when 0x11; return 1 # Japanese
-  when 0x09; return 2 # English
-  when 0x0C; return 3 # French
-  when 0x10; return 4 # Italian
-  when 0x07; return 5 # German
-  when 0x0A; return 7 # Spanish
-  when 0x12; return 8 # Korean
-  end
+  lang = System.user_language[0..1]
+  return 1 if lang == "ja" # Japanese
+  return 2 if lang == "en" # English
+  return 3 if lang == "fr" # French
+  return 4 if lang == "it" # Italian
+  return 5 if lang == "de" # German
+  return 6 if lang == "es" # Spanish
+  return 7 if lang == "ko" # Korean
   return 2 # Use 'English' by default
 end
 
@@ -136,79 +113,6 @@ end
 def toCelsius(fahrenheit)
   return ((fahrenheit-32)*5.0/9.0).round
 end
-
-
-
-#===============================================================================
-# General-purpose utilities with dependencies
-#===============================================================================
-# Similar to pbFadeOutIn, but pauses the music as it fades out.
-# Requires scripts "Audio" (for bgm_pause) and "SpriteWindow" (for pbFadeOutIn).
-def pbFadeOutInWithMusic(zViewport=99999)
-  playingBGS = $game_system.getPlayingBGS
-  playingBGM = $game_system.getPlayingBGM
-  $game_system.bgm_pause(1.0)
-  $game_system.bgs_pause(1.0)
-  pos = $game_system.bgm_position
-  pbFadeOutIn(zViewport) {
-     yield
-     $game_system.bgm_position = pos
-     $game_system.bgm_resume(playingBGM)
-     $game_system.bgs_resume(playingBGS)
-  }
-end
-
-# Gets the wave data from a file and displays an message if an error occurs.
-# Can optionally delete the wave file (this is useful if the file was a
-# temporary file created by a recording).
-# Requires the script AudioUtilities
-# Requires the script "PokemonMessages"
-def getWaveDataUI(filename,deleteFile=false)
-  error = getWaveData(filename)
-  if deleteFile
-    begin
-      File.delete(filename)
-    rescue Errno::EINVAL, Errno::EACCES, Errno::ENOENT
-    end
-  end
-  case error
-  when 1
-    pbMessage(_INTL("The recorded data could not be found or saved."))
-  when 2
-    pbMessage(_INTL("The recorded data was in an invalid format."))
-  when 3
-    pbMessage(_INTL("The recorded data's format is not supported."))
-  when 4
-    pbMessage(_INTL("There was no sound in the recording. Please ensure that a microphone is attached to the computer and is ready."))
-  else
-    return error
-  end
-  return nil
-end
-
-# Starts recording, and displays a message if the recording failed to start.
-# Returns true if successful, false otherwise
-# Requires the script AudioUtilities
-# Requires the script "PokemonMessages"
-def beginRecordUI
-  code = beginRecord
-  case code
-  when 0; return true
-  when 256+66
-    pbMessage(_INTL("All recording devices are in use. Recording is not possible now."))
-    return false
-  when 256+72
-    pbMessage(_INTL("No supported recording device was found. Recording is not possible."))
-    return false
-  else
-    buffer = "\0"*256
-    MciErrorString.call(code,buffer,256)
-    pbMessage(_INTL("Recording failed: {1}",buffer.gsub(/\x00/,"")))
-    return false
-  end
-end
-
-
 
 #===============================================================================
 # Constants utilities
@@ -293,61 +197,6 @@ class LinearCongRandom
     return r
   end
 end
-
-
-
-#===============================================================================
-# Json-related utilities
-#===============================================================================
-# Returns true if the given string represents a valid object in JavaScript
-# Object Notation, and false otherwise.
-def pbIsJsonString(str)
-  return false if !str || str[/^[\s]*$/]
-  d              = /(?:^|:|,)(?: ?\[)+/
-  charEscapes    = /\\[\"\\\/nrtubf]/ #"
-  stringLiterals = /"[^"\\\n\r\x00-\x1f\x7f-\x9f]*"/ #"
-  whiteSpace     = /[\s]+/
-  str = str.gsub(charEscapes,"@").gsub(stringLiterals,"true").gsub(whiteSpace," ")
-  # prevent cases like "truetrue" or "true true" or "true[true]" or "5-2" or "5true"
-  otherLiterals = /(true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)(?! ?[0-9a-z\-\[\{\"])/ #"
-  str = str.gsub(otherLiterals,"]").gsub(d,"") #"
-  return str[/^[\],:{} ]*$/] ? true : false
-end
-
-# Returns a Ruby object that corresponds to the given string, which is encoded in
-# JavaScript Object Notation (JSON). Returns nil if the string is not valid JSON.
-def pbParseJson(str)
-  return nil if !pbIsJsonString(str)
-  stringRE = /(\"(\\[\"\'\\rntbf]|\\u[0-9A-Fa-f]{4,4}|[^\\\"])*\")/ #"
-  strings = []
-  str = str.gsub(stringRE) {
-    sl = strings.length
-    ss = $1
-    if ss.include?("\\u")
-      ss.gsub!(/\\u([0-9A-Fa-f]{4,4})/) {
-        codepoint = $1.to_i(16)
-        if codepoint<=0x7F
-          next sprintf("\\x%02X",codepoint)
-        elsif codepoint<=0x7FF
-          next sprintf("%s%s",
-             (0xC0|((codepoint>>6)&0x1F)).chr,
-             (0x80|(codepoint&0x3F)).chr)
-        else
-          next sprintf("%s%s%s",
-             (0xE0|((codepoint>>12)&0x0F)).chr,
-             (0x80|((codepoint>>6)&0x3F)).chr,
-             (0x80|(codepoint&0x3F)).chr)
-        end
-      }
-    end
-    strings.push(eval(ss))
-    next sprintf("strings[%d]",sl)
-  }
-  str = str.gsub(/\:/,"=>")
-  str = str.gsub(/null/,"nil")
-  return eval("("+str+")")
-end
-
 
 
 #===============================================================================
@@ -727,45 +576,11 @@ def pbTrainerName(name=nil,outfit=0)
 end
 
 def pbSuggestTrainerName(gender)
-  userName = pbGetUserName()
-  userName = userName.gsub(/\s+.*$/,"")
-  if userName.length>0 && userName.length<7
-    userName[0,1] = userName[0,1].upcase
-    return userName
-  end
-  userName = userName.gsub(/\d+$/,"")
-  if userName.length>0 && userName.length<7
-    userName[0,1] = userName[0,1].upcase
-    return userName
-  end
-  owner="" # ~Zoro
-  owner=MiniRegistry.get(MiniRegistry::HKEY_LOCAL_MACHINE,
-    "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion",
-    "RegisteredOwner","") if System.platform[/Windows/]
-  owner = owner.gsub(/\s+.*$/,"")
-  if owner.length>0 && owner.length<7
-    owner[0,1] = owner[0,1].upcase
-    return owner
-  end
-  return getRandomNameEx(gender,nil,1,MAX_PLAYER_NAME_SIZE)
+  return System.user_name.capitalize
 end
 
 def pbGetUserName
-  if !System.platform[/Windows/]
-    user = ENV["USER"]
-    return (user ? user : "")
-  end
-  buffersize = 100
-  getUserName=Win32API.new('advapi32.dll','GetUserName','pp','i')
-  10.times do
-    size = [buffersize].pack("V")
-    buffer = "\0"*buffersize
-    if getUserName.call(buffer,size)!=0
-      return buffer.gsub(/\0/,"")
-    end
-    buffersize += 200
-  end
-  return ""
+  return System.user_name
 end
 
 def getRandomNameEx(type,variable,upper,maxLength=100)
@@ -1193,22 +1008,4 @@ def pbLoadRpgxpScene(scene)
   $scene.createSpritesets
   pbShowObjects(visibleObjects)
   Graphics.transition(20)
-end
-
-
-
-
-class PokemonGlobalMetadata
-  attr_accessor :trainerRecording
-end
-
-
-
-def pbRecordTrainer
-  wave = pbRecord(nil,10)
-  if wave
-    $PokemonGlobal.trainerRecording = wave
-    return true
-  end
-  return false
 end

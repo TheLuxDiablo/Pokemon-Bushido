@@ -1310,7 +1310,7 @@ end
 #===============================================================================
 def pbBitmap(name)
   if pbResolveBitmap(name)
-    bmp = BitmapCache.load_bitmap(name)
+    bmp = RPG::Cache.load_bitmap(name)
     bmp.storedPath = name
   else
     Env.log.warn("Image located at '#{name}' was not found!")

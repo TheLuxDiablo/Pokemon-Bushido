@@ -1,0 +1,5 @@
+Fix sRGB profile for
+UI
+Item Icons
+Pokemon Icons
+Battlers

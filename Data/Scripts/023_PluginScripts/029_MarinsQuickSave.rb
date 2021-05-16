@@ -18,17 +18,17 @@ class Scene_Map
   alias quicksave_update update
   def update
     quicksave_update
-    if Input.trigger?(Input::SAVE) && !$game_player.moving? && @mode.nil?
+    if Input.trigger?(Input::L) && !$game_player.moving? && @mode.nil?
       pbSave
       @mode = 0
       @vp = Viewport.new(0,0,Graphics.width,Graphics.height)
       @vp.z = 100000
       @disk = Sprite.new(@vp)
-      @disk.bitmap = BitmapCache.load_bitmap("Graphics/Pictures/saveDisk")
+      @disk.bitmap = RPG::Cache.load_bitmap("Graphics/Pictures/saveDisk")
       @disk.x, @disk.y = 8, 8
       @disk.opacity = 0
       @arrow = Sprite.new(@vp)
-      @arrow.bitmap = BitmapCache.load_bitmap("Graphics/Pictures/saveArrow")
+      @arrow.bitmap = RPG::Cache.load_bitmap("Graphics/Pictures/saveArrow")
       @arrow.x, @arrow.y = 8, -4
       @arrow.opacity = 0
     end

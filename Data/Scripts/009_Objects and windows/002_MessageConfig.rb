@@ -6,16 +6,10 @@ module MessageConfig
   WindowOpacity   = 255
   TextSpeed       = nil   # can be positive to wait frames or negative to
                           # show multiple characters in a single frame
-  #LIGHTTEXTBASE   = Color.new(248,248,248)
-  #LIGHTTEXTSHADOW = Color.new(72,80,88)
-  #DARKTEXTBASE    = Color.new(96,96,96)
-  #DARKTEXTSHADOW  = Color.new(208,208,200)
-
   LIGHTTEXTBASE   = Color.new(248,248,248)
   LIGHTTEXTSHADOW = Color.new(72,80,88)
   DARKTEXTBASE    = Color.new(80,80,88)
   DARKTEXTSHADOW  = Color.new(160,160,168)
-
   # 0 = Pause cursor is displayed at end of text
   # 1 = Pause cursor is displayed at bottom right
   # 2 = Pause cursor is displayed at lower middle side
@@ -393,11 +387,11 @@ def pbSetSystemFont(bitmap)
   fontname = MessageConfig.pbGetSystemFontName
   bitmap.font.name = fontname
   if fontname == "Pokemon FireLeaf" || fontname == "Power Red and Green"
-    bitmap.font.size = mkxp? ? 27 : 29
+    bitmap.font.size = 27
   elsif fontname == "Pokemon Emerald Small" || fontname == "Power Green Small"
-    bitmap.font.size = mkxp? ? 29 : 25
+    bitmap.font.size = 29
   else
-    bitmap.font.size = mkxp? ? 29 : 31
+    bitmap.font.size = 29
   end
 end
 
@@ -410,7 +404,7 @@ end
 # Sets a bitmap's font to the system narrow font.
 def pbSetNarrowFont(bitmap)
   bitmap.font.name = pbNarrowFontName
-  bitmap.font.size = mkxp? ? 29 : 31
+  bitmap.font.size = 29
 end
 
 #===============================================================================
@@ -628,6 +622,22 @@ def pbFadeOutAndHide(sprites)
   return visiblesprites
 end
 
+# Similar to pbFadeOutIn, but pauses the music as it fades out.
+# Requires scripts "Audio" (for bgm_pause) and "SpriteWindow" (for pbFadeOutIn).
+def pbFadeOutInWithMusic(zViewport=99999)
+  playingBGS = $game_system.getPlayingBGS
+  playingBGM = $game_system.getPlayingBGM
+  $game_system.bgm_pause(1.0)
+  $game_system.bgs_pause(1.0)
+  pos = $game_system.bgm_position
+  pbFadeOutIn(zViewport) {
+     yield
+     $game_system.bgm_position = pos
+     $game_system.bgm_resume(playingBGM)
+     $game_system.bgs_resume(playingBGS)
+  }
+end
+
 def pbFadeInAndShow(sprites,visiblesprites=nil)
   if visiblesprites
     for i in visiblesprites
@@ -737,22 +747,6 @@ def addBackgroundOrColoredPlane(sprites,planename,background,color,viewport=nil)
     end
   end
 end
-
-
-
-#===============================================================================
-# Ensure required method definitions
-#===============================================================================
-module Graphics
-  if !self.respond_to?("width")
-    def self.width; return 640; end
-  end
-  if !self.respond_to?("height")
-    def self.height; return 480; end
-  end
-end
-
-
 
 if !defined?(_INTL)
   def _INTL(*args)

@@ -98,22 +98,6 @@ class PokeBattle_Pokemon
   end
 end
 
-
-
-MultipleForms.register(:GROUDON,{
-  "getPrimalForm" => proc { |pkmn|
-    next 1 if pkmn.hasItem?(:REDORB)
-    next
-  }
-})
-
-MultipleForms.register(:KYOGRE,{
-  "getPrimalForm" => proc { |pkmn|
-    next 1 if pkmn.hasItem?(:BLUEORB)
-    next
-  }
-})
-
 #===============================================================================
 # Form Specific Mega Evolution
 # To prevent Galarian Slowbro from Mega Evolving
@@ -140,16 +124,3 @@ class PokeBattle_Pokemon
     return v if v.is_a?(Numeric)
   end
 end
-
-
-
-MultipleForms.register(:SLOWBRO,{
-  "getSpecificMegaForm" => proc { |pkmn|
-    next 2 if (pkmn.form == 0 && pkmn.hasItem?(:SLOWBRONITE))
-    next
-  },
-  "getSpecificUnmegaForm" => proc { |pkmn|
-    next 0 if pkmn.form == 2
-    next
-  }
-})

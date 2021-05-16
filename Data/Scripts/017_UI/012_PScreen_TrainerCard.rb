@@ -28,9 +28,6 @@ class PokemonTrainerCard_Scene
     @sprites["trainer"].y -= (@sprites["trainer"].bitmap.height-128)
     @sprites["trainer"].z = 2
     pbDrawTrainerCardFront
-    if $PokemonGlobal.trainerRecording
-      $PokemonGlobal.trainerRecording.play
-    end
     pbFadeInAndShow(@sprites) { pbUpdate }
   end
 
@@ -71,11 +68,6 @@ class PokemonTrainerCard_Scene
         imagePositions.push(["Graphics/Pictures/Trainer Card/icon_badges",x,310,i*32,region*32,32,32])
       end
       x += 48
-    end
-    value = ($PokemonTemp.begunNewGamePlus) ? ($PokemonTemp.oldNewGamePlusCount + 1) : $Trainer.newGamePlusCount
-    for i in 1..value
-      x = 472 - (i*28)
-      imagePositions.push(["Graphics/Pictures/Trainer Card/star",x,32,0,0,22,24])
     end
     pbDrawImagePositions(overlay,imagePositions)
   end

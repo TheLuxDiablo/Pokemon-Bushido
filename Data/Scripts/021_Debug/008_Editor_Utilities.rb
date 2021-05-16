@@ -81,7 +81,7 @@ def pbAllocateAnimation(animations,name)
 end
 
 def pbMapTree
-  mapinfos = pbLoadRxData("Data/MapInfos")
+  mapinfos = pbLoadMapInfos
   maplevels = []
   retarray = []
   for i in mapinfos.keys
@@ -422,7 +422,7 @@ def pbCommands2(cmdwindow,commands,cmdIfCancel,defaultindex=-1,noresize=false)
         command = cmdIfCancel
         break
       end
-    elsif Input.trigger?(Input::C) || (cmdwindow.doubleclick? rescue false)
+    elsif Input.trigger?(Input::C)
       command = cmdwindow.index
       break
     end
@@ -451,7 +451,7 @@ def pbCommands3(cmdwindow,commands,cmdIfCancel,defaultindex=-1,noresize=false)
     Graphics.update
     Input.update
     cmdwindow.update
-    if Input.trigger?(Input::F5)
+    if Input.trigger?(Input::X)
       command = [5,cmdwindow.index]
       break
     elsif Input.press?(Input::A)
@@ -476,7 +476,7 @@ def pbCommands3(cmdwindow,commands,cmdIfCancel,defaultindex=-1,noresize=false)
         command = [0,cmdIfCancel]
         break
       end
-    elsif Input.trigger?(Input::C) || (cmdwindow.doubleclick? rescue false)
+    elsif Input.trigger?(Input::C)
       command = [0,cmdwindow.index]
       break
     end
@@ -546,7 +546,7 @@ def pbCommandsSortable(cmdwindow,commands,cmdIfCancel,defaultindex=-1,sortable=f
     elsif Input.trigger?(Input::B)
       command = [0,(cmdIfCancel>0) ? cmdIfCancel-1 : cmdIfCancel]
       break
-    elsif Input.trigger?(Input::C) || (cmdwindow.doubleclick? rescue false)
+    elsif Input.trigger?(Input::C)
       command = [0,cmdwindow.index]
       break
     end

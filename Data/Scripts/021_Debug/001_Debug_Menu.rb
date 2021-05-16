@@ -117,12 +117,8 @@ def pbDebugMenuCommands(showall=true)
        _INTL("Give and take items."))
     commands.add("itemsmenu","additem",_INTL("Add Item"),
        _INTL("Choose an item and a quantity of it to add to the Bag."))
-    commands.add("itemsmenu", "additembyid", _INTL("Add Item by ID"),
-       _INTL("Choose an item by id and a quantity of it to add to the bag"))
     commands.add("itemsmenu","fillbag",_INTL("Fill Bag"),
        _INTL("Add a certain number of every item to the Bag."))
-    commands.add("itemsmenu","addAllCellulose",_INTL("Add All Cellulose"),
-          _INTL("Adds 1 of each cellulose to the Bag."))
     commands.add("itemsmenu","emptybag",_INTL("Empty Bag"),
        _INTL("Remove all items from the Bag."))
 
@@ -155,10 +151,6 @@ def pbDebugMenuCommands(showall=true)
        _INTL("Toggle possession of running shoes."))
     commands.add("playermenu","togglepokegear",_INTL("Toggle Pokégear"),
        _INTL("Toggle possession of the Pokégear."))
-    commands.add("playermenu","togglenewgameplus",_INTL("Toggle New Game +"),
-       _INTL("Allow selection of New Game + in the load screen. (Save after toggling this)"))
-    commands.add("playermenu","setnewgamelevel",_INTL("Set New Game + Level"),
-       _INTL("Set New Game + Level."))
     commands.add("playermenu","dexlists",_INTL("Toggle Pokédex and Dexes"),
        _INTL("Toggle possession of the Pokédex, and edit Regional Dex accessibility."))
     commands.add("playermenu","setplayer",_INTL("Set Player Character"),
@@ -513,30 +505,6 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
         end
       end
     }
-  when "additembyid"
-    params = ChooseNumberParams.new
-    params.setRange(1, PBItems.maxValue)
-    params.setInitialValue(1)
-    params.setCancelValue(0)
-    item = pbMessageChooseNumber(_INTL("Choose the item id."),params)
-    if item>0
-      qtyparams = ChooseNumberParams.new
-      qtyparams.setRange(1,255)
-      qtyparams.setInitialValue(1)
-      qtyparams.setCancelValue(0)
-      qty = pbMessageChooseNumber(_INTL("Choose the number of items."),qtyparams)
-      if qty>0
-        $PokemonBag.pbStoreItemById(item, qty)
-        pbMessage(_INTL("Gave {1}x {2}.", qty, PBItems.getName(item)))
-      end
-    end
-  when "addAllCellulose"
-    cellArray = [:FIRECELL,:WATERCELL,:GRASSCELL,:ELECCELL,:FLYCELL,:DARKCELL,:PSYCELL,:FAIRYCELL,
-                  :DRAGONCELL,:ROCKCELL,:GROUNDCELL,:STEELCELL,:ICECELL,:GHOSTCELL,:FIGHTCELL,:BUGCELL,:POISONCELL]
-    for i in cellArray
-      $PokemonBag.pbStoreItem(i,1)
-    end
-    pbMessage(_INTL("The Bag was filled with 1 of each cellulose."))
   when "fillbag"
     params = ChooseNumberParams.new
     params.setRange(1,BAG_MAX_PER_SLOT)
@@ -688,16 +656,6 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
     $Trainer.pokegear = !$Trainer.pokegear
     pbMessage(_INTL("Gave Pokégear.")) if $Trainer.pokegear
     pbMessage(_INTL("Lost Pokégear.")) if !$Trainer.pokegear
-  when "togglenewgameplus"
-    $Trainer.newGamePlus = !$Trainer.newGamePlus
-    pbMessage(_INTL("Allowed New Game +.")) if $Trainer.newGamePlus
-    pbMessage(_INTL("Disllowed New Game +.")) if !$Trainer.newGamePlus
-  when "setnewgamelevel"
-    params = ChooseNumberParams.new
-    params.setRange(0,5)
-    params.setDefaultValue($Trainer.newGamePlusCount)
-    $Trainer.newGamePlusCount = pbMessageChooseNumber(_INTL("Set the player's New Game + level. (Max. 5)"),params)
-    pbMessage(_INTL("The level has been set to {1}.",$Trainer.newGamePlusCount))
   when "dexlists"
     dexescmd = 0
     loop do
@@ -887,7 +845,6 @@ def pbDebugMenu(showall=true)
           break
         end
       elsif Input.trigger?(Input::C)
-        pbPlayDecisionSE
         ret = cmdwindow.index
         break
       end
@@ -895,6 +852,7 @@ def pbDebugMenu(showall=true)
     break if ret<0
     cmd = commands.getCommand(ret)
     if commands.hasSubMenu?(cmd)
+      pbPlayDecisionSE
       commands.currentList = cmd
       cmdwindow.commands = commands.list
       cmdwindow.index = 0

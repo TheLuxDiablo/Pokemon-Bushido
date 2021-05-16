@@ -1,97 +1,4 @@
 #===============================================================================
-# Exceptions and critical code
-#===============================================================================
-class Reset < Exception
-end
-
-
-
-def pbGetExceptionMessage(e,_script="")
-  emessage = e.message
-  if e.is_a?(Hangup)
-    emessage = "The script is taking too long. The game will restart."
-  elsif e.is_a?(Errno::ENOENT)
-    filename = emessage.sub("No such file or directory - ", "")
-    emessage = "File #{filename} not found."
-  end
-  if emessage && !safeExists?("Game.rgssad") && !safeExists?("Game.rgss2a")
-    emessage = emessage.gsub(/uninitialized constant PBItems\:\:(\S+)/) {
-       "The item '#{$1}' is not valid. Please add the item\r\nto the list of items in the editor. See the wiki for more information." }
-    emessage = emessage.gsub(/undefined method `(\S+?)' for PBItems\:Module/) {
-       "The item '#{$1}' is not valid. Please add the item\r\nto the list of items in the editor. See the wiki for more information." }
-    emessage = emessage.gsub(/uninitialized constant PBTypes\:\:(\S+)/) {
-       "The type '#{$1}' is not valid. Please add the type\r\nto the PBS/types.txt file." }
-    emessage = emessage.gsub(/undefined method `(\S+?)' for PBTypes\:Module/) {
-       "The type '#{$1}' is not valid. Please add the type\r\nto the PBS/types.txt file." }
-    emessage = emessage.gsub(/uninitialized constant PBTrainers\:\:(\S+)$/) {
-       "The trainer type '#{$1}' is not valid. Please add the trainer\r\nto the list of trainer types in the Editor. See the wiki for\r\nmore information." }
-    emessage = emessage.gsub(/undefined method `(\S+?)' for PBTrainers\:Module/) {
-       "The trainer type '#{$1}' is not valid. Please add the trainer\r\nto the list of trainer types in the Editor. See the wiki for\r\nmore information." }
-    emessage = emessage.gsub(/uninitialized constant PBSpecies\:\:(\S+)$/) {
-       "The Pokemon species '#{$1}' is not valid. Please\r\nadd the species to the PBS/pokemon.txt file.\r\nSee the wiki for more information." }
-    emessage = emessage.gsub(/undefined method `(\S+?)' for PBSpecies\:Module/) {
-       "The Pokemon species '#{$1}' is not valid. Please\r\nadd the species to the PBS/pokemon.txt file.\r\nSee the wiki for more information." }
-  end
-  emessage.gsub!(/Section(\d+)/) { $RGSS_SCRIPTS[$1.to_i][1] }
-  return emessage
-end
-
-def pbPrintException(e)
-  premessage = "\r\n=================\r\n\r\n[#{Time.now}]\r\n"
-  emessage = ""
-  if $EVENTHANGUPMSG && $EVENTHANGUPMSG!=""
-    emessage = $EVENTHANGUPMSG   # Message with map/event ID generated elsewhere
-    $EVENTHANGUPMSG = nil
-  else
-    emessage = pbGetExceptionMessage(e)
-  end
-  btrace = ""
-  if e.backtrace
-    maxlength = ($INTERNAL) ? 25 : 10
-    e.backtrace[0,maxlength].each { |i| btrace += "#{i}\r\n" }
-  end
-#  btrace.gsub!(/Section(\d+)/) { $RGSS_SCRIPTS[$1.to_i][1] }
-  message = "[Pokémon Essentials version #{ESSENTIALS_VERSION}]\r\n"
-  message += "#{ERROR_TEXT}"   # For third party scripts to add to
-  message += "Exception: #{e.class}\r\n"
-  message += "Message: #{emessage}\r\n"
-  message += "\r\nBacktrace:\r\n#{btrace}"
-  errorlog = "errorlog.txt"
-  if (Object.const_defined?(:RTP) rescue false)
-    errorlog = RTP.getSaveFileName("errorlog.txt")
-  end
-  File.open(errorlog,"ab") { |f| f.write(premessage); f.write(message) }
-  errorlogline = errorlog.sub("/", "\\")
-  errorlogline.sub!(Dir.pwd + "\\", "")
-  errorlogline.sub!(pbGetUserName, "USERNAME")
-  errorlogline = "\r\n" + errorlogline if errorlogline.length > 20
-  errorlogline.gsub!("/", "\\")
-  print("#{message}\r\nThis exception was logged in #{errorlogline}.\r\nPress Ctrl+C to copy this message to the clipboard.")
-end
-
-def pbCriticalCode
-  ret = 0
-  begin
-    yield
-    ret = 1
-  rescue Exception
-    e = $!
-    if e.is_a?(Reset) || e.is_a?(SystemExit)
-      raise
-    else
-      pbPrintException(e)
-      if e.is_a?(Hangup)
-        ret = 2
-        raise Reset.new
-      end
-    end
-  end
-  return ret
-end
-
-
-
-#===============================================================================
 # File reading
 #===============================================================================
 module FileLineData
@@ -172,7 +79,7 @@ def pbEachFileSectionEx(f)
   sectionname = nil
   lastsection = {}
   f.each_line { |line|
-    if lineno==1 && line[0]==0xEF && line[1]==0xBB && line[2]==0xBF
+    if lineno==1 && line[0].ord==0xEF && line[1].ord==0xBB && line[2].ord==0xBF
       line = line[3,line.length-3]
     end
     if !line[/^\#/] && !line[/^\s*$/]
@@ -220,7 +127,7 @@ def pbEachSection(f)
   sectionname = nil
   lastsection = []
   f.each_line { |line|
-    if lineno==1 && line[0]==0xEF && line[1]==0xBB && line[2]==0xBF
+    if lineno==1 && line[0].ord==0xEF && line[1].ord==0xBB && line[2].ord==0xBF
       line = line[3,line.length-3]
     end
     if !line[/^\#/] && !line[/^\s*$/]
@@ -245,7 +152,7 @@ end
 def pbEachCommentedLine(f)
   lineno = 1
   f.each_line { |line|
-    if lineno==1 && line[0]==0xEF && line[1]==0xBB && line[2]==0xBF
+    if lineno==1 && line[0].ord==0xEF && line[1].ord==0xBB && line[2].ord==0xBF
       line = line[3,line.length-3]
     end
     yield line, lineno if !line[/^\#/] && !line[/^\s*$/]
@@ -258,7 +165,7 @@ def pbCompilerEachCommentedLine(filename)
     FileLineData.file = filename
     lineno = 1
     f.each_line { |line|
-      if lineno==1 && line[0]==0xEF && line[1]==0xBB && line[2]==0xBF
+      if lineno==1 && line[0].ord==0xEF && line[1].ord==0xBB && line[2].ord==0xBF
         line = line[3,line.length-3]
       end
       if !line[/^\#/] && !line[/^\s*$/]
@@ -273,7 +180,7 @@ end
 def pbEachPreppedLine(f)
   lineno = 1
   f.each_line { |line|
-    if lineno==1 && line[0]==0xEF && line[1]==0xBB && line[2]==0xBF
+    if lineno==1 && line[0].ord==0xEF && line[1].ord==0xBB && line[2].ord==0xBF
       line = line[3,line.length-3]
     end
     line = prepline(line)
@@ -287,7 +194,7 @@ def pbCompilerEachPreppedLine(filename)
     FileLineData.file = filename
     lineno = 1
     f.each_line { |line|
-      if lineno==1 && line[0]==0xEF && line[1]==0xBB && line[2]==0xBF
+      if lineno==1 && line[0].ord==0xEF && line[1].ord==0xBB && line[2].ord==0xBF
         line = line[3,line.length-3]
       end
       line = prepline(line)
@@ -1117,6 +1024,9 @@ end
 def pbCompileAllData(mustCompile)
   FileLineData.clear
   if mustCompile
+    echoln ""
+    echoln _INTL("*** Starting full compile ***")
+    echoln ""
     if (!$INEDITOR || LANGUAGES.length<2) && pbRgssExists?("Data/messages.dat")
       MessageTypes.loadMessageFile("Data/messages.dat")
     end
@@ -1163,8 +1073,8 @@ def pbCompileAllData(mustCompile)
     yield(_INTL("Compiling metadata"))
     pbCompileMetadata
     # Depends on PBTrainers
-    yield(_INTL("Compiling battle Trainer data"))
-    pbCompileTrainerLists
+    # yield(_INTL("Compiling battle Trainer data"))
+    # pbCompileTrainerLists
     # Depends on PBSpecies
     yield(_INTL("Compiling encounter data"))
     pbCompileEncounters
@@ -1176,6 +1086,10 @@ def pbCompileAllData(mustCompile)
     pbCompileTrainerEvents(mustCompile)
     pbSetTextMessages
     MessageTypes.saveMessages
+    System.reload_cache
+    echoln ""
+    echoln _INTL("*** Finished full compile ***")
+    echoln ""
   else
     if (!$INEDITOR || LANGUAGES.length<2) && safeExists?("Data/messages.dat")
       MessageTypes.loadMessageFile("Data/messages.dat")
@@ -1184,7 +1098,7 @@ def pbCompileAllData(mustCompile)
   if !$INEDITOR && LANGUAGES.length>=2
     pbLoadMessages("Data/"+LANGUAGES[$PokemonSystem.language][1])
   end
-  pbSetWindowText(System.game_title) if mkxp?
+  pbSetWindowText(System.game_title)
 end
 
 def pbCompiler
@@ -1248,26 +1162,26 @@ def pbCompiler
     end
     # Check data files and PBS files, and recompile if any PBS file was edited
     # more recently than the data files were last created
-=begin
-    for i in 0...dataFiles.length
+    dataFiles.each do |filename|
+      next if !safeExists?("Data/" + filename)
       begin
-        File.open("Data/#{dataFiles[i]}") { |file|
-          latestDataTime = [latestDataTime,file.mtime.to_i].max
+        File.open("Data/#{filename}") { |file|
+          latestDataTime = [latestDataTime, file.mtime.to_i].max
         }
       rescue SystemCallError
         mustCompile = true
       end
     end
-    for i in 0...textFiles.length
+    textFiles.each do |filename|
+      next if !safeExists?("PBS/" + filename)
       begin
-        File.open("PBS/#{textFiles[i]}") { |file|
-          latestTextTime = [latestTextTime,file.mtime.to_i].max
+        File.open("PBS/#{filename}") { |file|
+          latestTextTime = [latestTextTime, file.mtime.to_i].max
         }
       rescue SystemCallError
       end
     end
     mustCompile |= (latestTextTime>=latestDataTime)
-=end
     # Should recompile if holding Ctrl
     Input.update
     mustCompile = true if Input.press?(Input::CTRL)
@@ -1275,13 +1189,13 @@ def pbCompiler
     if mustCompile
       for i in 0...dataFiles.length
         begin
-          File.delete("Data/#{dataFiles[i]}")
+          File.delete("Data/#{dataFiles[i]}") if File.exists?("Data/#{dataFiles[i]}")
         rescue SystemCallError
         end
       end
     end
     # Recompile all data
-    pbCompileAllData(mustCompile) { |msg| pbSetWindowText(msg) }
+    pbCompileAllData(mustCompile) { |msg| pbSetWindowText(msg); echoln(msg) }
   rescue Exception
     e = $!
     raise e if "#{e.class}"=="Reset" || e.is_a?(Reset) || e.is_a?(SystemExit)

@@ -445,13 +445,8 @@ def pbCryFrameLength(pokemon,form=0,pitch=nil)
     pkmnwav = pbResolveAudioSE(pbCryFile(pokemon,form))
     playtime = getPlayTime(pkmnwav) if pkmnwav
   elsif !pokemon.egg?
-    if pokemon.respond_to?("chatter") && pokemon.chatter
-      playtime = pokemon.chatter.time
-      pitch = 1.0
-    else
-      pkmnwav = pbResolveAudioSE(pbCryFile(pokemon))
-      playtime = getPlayTime(pkmnwav) if pkmnwav
-    end
+    pkmnwav = pbResolveAudioSE(pbCryFile(pokemon))
+    playtime = getPlayTime(pkmnwav) if pkmnwav
   end
   playtime /= pitch   # sound is lengthened the lower the pitch
   # 4 is added to provide a buffer between sounds
@@ -485,10 +480,6 @@ end
 
 def pbPlayCryPokemon(pokemon,volume=90,pitch=nil)
   return if !pokemon || pokemon.egg?
-  if pokemon.respond_to?("chatter") && pokemon.chatter
-    pokemon.chatter.play
-    return
-  end
   pkmnwav = pbCryFile(pokemon)
   if pkmnwav
     pitch ||= (pokemon.hp*25/pokemon.totalhp)+75

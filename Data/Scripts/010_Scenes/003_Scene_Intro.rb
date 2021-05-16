@@ -12,7 +12,7 @@ class IntroEventScene < EventScene
     @pic2 = addImage(0,0,"")   # flashing "Press Enter" picture
     @pic2.setOpacity(0,0)
     @index = 0
-    data_system = pbLoadRxData("Data/System")
+    data_system = load_data("Data/System.rxdata")
     pbBGMPlay(data_system.title_bgm)
     openPic(self,nil)
   end
@@ -109,11 +109,11 @@ class IntroEventScene < EventScene
       @pic2.moveOpacity(TICKS_PER_ENTER_FLASH*2/10,TICKS_PER_ENTER_FLASH*4/10,0)
       @pic2.moveOpacity(TICKS_PER_ENTER_FLASH*6/10,TICKS_PER_ENTER_FLASH*4/10,255)
     end
-    if Input.press?(Input::DOWN) &&
-       Input.press?(Input::B) &&
-       Input.press?(Input::CTRL)
-      closeSplashDelete(scene,args)
-    end
+#    if Input.press?(Input::DOWN) &&
+#       Input.press?(Input::B) &&
+#       Input.press?(Input::CTRL)
+#      closeSplashDelete(scene,args)
+#    end
   end
 end
 

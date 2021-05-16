@@ -1,7 +1,4 @@
 pbCompiler
-if mkxp? && Bitmap.max_size < 0x4000
-  raise("\nWeakHardwareError:\nYour GPU is too old to run the MKXP version of this game.\nRead the BUSHIDO_README.txt to run the Backup RGSS version of the game.\n\nMax Texture size: #{Bitmap.max_size}")
-end
 
 class Scene_DebugIntro
   def main
@@ -15,6 +12,7 @@ end
 
 def pbCallTitle
   pbAllowSpeedup
+  pbLoadBattleAnimations
   return Scene_DebugIntro.new if $DEBUG
   # First parameter is an array of images in the Titles
   # directory without a file extension, to show before the
@@ -34,15 +32,10 @@ end
 
 def mainFunctionDebug
   begin
-    if !mkxp?
-      getCurrentProcess = Win32API.new("kernel32.dll", "GetCurrentProcess", "", "l")
-      setPriorityClass  = Win32API.new("kernel32.dll", "SetPriorityClass", %w(l i), "")
-      setPriorityClass.call(getCurrentProcess.call(), 32768)   # "Above normal" priority class
-    end
-    $data_animations    = pbLoadRxData("Data/Animations")
-    $data_tilesets      = pbLoadRxData("Data/Tilesets")
-    $data_common_events = pbLoadRxData("Data/CommonEvents")
-    $data_system        = pbLoadRxData("Data/System")
+    $data_animations    = load_data("Data/Animations.rxdata")
+    $data_tilesets      = load_data("Data/Tilesets.rxdata")
+    $data_common_events = load_data("Data/CommonEvents.rxdata")
+    $data_system        = load_data("Data/System.rxdata")
     $game_system        = Game_System.new
     Graphics.update
     Graphics.freeze

@@ -2681,7 +2681,7 @@ BattlerEnemyX = 1
 BattlerEnemyY = 26
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = 
+Evolutions = SIRFETCHD,None,
 #-------------------------------
 [84]
 Name = Doduo
@@ -27564,7 +27564,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 35
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = ALCREMIE,SweetItem,
+Evolutions = ALCREMIE,None,
 #-------------------------------
 [869]
 Name = Alcremie

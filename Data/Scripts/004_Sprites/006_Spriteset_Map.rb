@@ -48,6 +48,7 @@ class Spriteset_Map
     @map = (map) ? map : $game_map
     @tilemap = TilemapLoader.new(@@viewport1)
     @tilemap.tileset = pbGetTileset(@map.tileset_name)
+    RPG::Cache.retain("Graphics/Tilesets/" + @map.tileset_name)
     for i in 0...7
       autotile_name = @map.autotile_names[i]
       @tilemap.autotiles[i] = pbGetAutotile(autotile_name)

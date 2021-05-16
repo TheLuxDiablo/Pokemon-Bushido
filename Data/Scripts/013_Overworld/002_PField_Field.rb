@@ -211,23 +211,14 @@ end
 
 
 def pbBatteryLow?
-  power="\0"*12
-  begin
-    sps=Win32API.new('kernel32.dll','GetSystemPowerStatus','p','l')
-  rescue
-    return false
-  end
-  if sps.call(power)==1
-    status=power.unpack("CCCCVV")
-    # AC line presence
-    return false if status[0]!=0   # Not plugged in or unknown
-    # Battery Flag
-    return true if status[1]==4   # Critical (<5%)
-    # Battery Life Percent
-    return true if status[2]<3   # Less than 3 percent
-    # Battery Life Time
-    return true if status[4]>0 && status[4]<300   # Less than 5 minutes and unplugged
-  end
+  pstate = System.power_state
+  # If it's not discharging, it doesn't matter if it's low
+  return false if !pstate[:discharging]
+  # Check for less than 10m, priority over the percentage
+  # Some laptops (Chromebooks, Macbooks) have very long lifetimes
+  return true if pstate[:seconds] && pstate[:seconds] <= 600
+  # Check for <=15%
+  return true if pstate[:percent] && pstate[:percent] <= 15
   return false
 end
 
@@ -336,35 +327,18 @@ Events.onStepTakenFieldMovement += proc { |_sender,e|
 }
 
 # Show grass rustle animation, and auto-move the player over waterfalls and ice
-Events.onStepTakenFieldMovement += proc { |sender,e|
+Events.onStepTakenFieldMovement += proc { |_sender,e|
   event = e[0] # Get the event affected by field movement
   if $scene.is_a?(Scene_Map)
     currentTag = pbGetTerrainTag(event)
     if PBTerrain.isJustGrass?(pbGetTerrainTag(event,true))  # Won't show if under bridge
       $scene.spriteset.addUserAnimation(GRASS_ANIMATION_ID,event.x,event.y,true,1)
-      if event==$game_player
-        $game_variables[54]=0
-      end
     elsif event==$game_player
       if currentTag==PBTerrain::WaterfallCrest
         # Descend waterfall, but only if this event is the player
         pbDescendWaterfall(event)
-        $game_variables[54]=0
       elsif PBTerrain.isIce?(currentTag) && !$PokemonGlobal.sliding
         pbSlideOnIce(event)
-        $game_variables[54]=0
-      elsif PBTerrain.isBog?(currentTag) #Thundaga bog
-        pbPoisonBog(event)
-      elsif PBTerrain.isUpArrow?(currentTag) #Thundaga arrows
-        pbMoveArrow(event, 1)
-      elsif PBTerrain.isDownArrow?(currentTag) #Thundaga arrows
-        pbMoveArrow(event, 2)
-      elsif PBTerrain.isLeftArrow?(currentTag) #Thundaga arrows
-        pbMoveArrow(event, 3)
-      elsif PBTerrain.isRightArrow?(currentTag) #Thundaga arrows
-        pbMoveArrow(event, 4)
-      else
-        $game_variables[54]=0
       end
     end
   end
@@ -393,124 +367,6 @@ Events.onChangeDirection += proc {
   repel = ($PokemonGlobal.repel > 0)
   pbBattleOnStepTaken(repel) if !$game_temp.in_menu
 }
-
-# Alcremie Evolution Method
-Events.onChangeDirection += proc {
-  if !$PokemonTemp.clockwiseSpin && !$PokemonTemp.antiClockwiseSpin
-    $PokemonTemp.startedSpinning = Graphics.frame_count
-  end
-  checkEvo = false
-  if (Graphics.frame_count - $PokemonTemp.lastTurned) <= (Graphics.frame_rate/2)
-    $PokemonTemp.lastTurned = Graphics.frame_count
-    case $PokemonTemp.oldDir
-    when 2
-      if $game_player.direction == 4
-        $PokemonTemp.clockwiseSpin = true
-        $PokemonTemp.antiClockwiseSpin = false
-      elsif $game_player.direction == 6
-        $PokemonTemp.antiClockwiseSpin = true
-        $PokemonTemp.clockwiseSpin = false
-      else
-        pbEvolveAlcremie
-      end
-    when 4
-      if $game_player.direction == 8
-        $PokemonTemp.clockwiseSpin = true
-        $PokemonTemp.antiClockwiseSpin = false
-      elsif $game_player.direction == 2
-        $PokemonTemp.antiClockwiseSpin = true
-        $PokemonTemp.clockwiseSpin = false
-      else
-        pbEvolveAlcremie
-      end
-    when 8
-      if $game_player.direction == 6
-        $PokemonTemp.clockwiseSpin = true
-        $PokemonTemp.antiClockwiseSpin = false
-      elsif $game_player.direction == 4
-        $PokemonTemp.antiClockwiseSpin = true
-        $PokemonTemp.clockwiseSpin = false
-      else
-        pbEvolveAlcremie
-      end
-    when 6
-      if $game_player.direction == 2
-        $PokemonTemp.clockwiseSpin = true
-        $PokemonTemp.antiClockwiseSpin = false
-      elsif $game_player.direction == 8
-        $PokemonTemp.antiClockwiseSpin = true
-        $PokemonTemp.clockwiseSpin = false
-      else
-        pbEvolveAlcremie
-      end
-    end
-  else
-    pbEvolveAlcremie
-  end
-}
-
-# Alcremie Evolution Method
-Events.onStepTaken += proc {
-  pbEvolveAlcremie
-}
-
-# Alcremie Evolution Method
-def pbEvolveAlcremie
-  for pkmn in $Trainer.ablePokemonParty
-    ret = pbCheckEvolutionEx(pkmn) { |pkmn, method, parameter, new_species|
-      success = PBEvolution.call("alcremieCheck", method, pkmn, parameter)
-      next (success) ? new_species : -1
-    }
-    if ret>0
-      pbExclaim($game_player)
-      pbWait(Graphics.frame_rate/2)
-      pbFadeOutIn(99999){
-        evo = PokemonEvolutionScene.new
-        evo.pbStartScreen(pkmn,ret)
-        evo.pbEvolution(true)
-        evo.pbEndScreen
-      }
-    end
-  end
-  $PokemonTemp.lastTurned = Graphics.frame_count
-  $PokemonTemp.antiClockwiseSpin = false
-  $PokemonTemp.clockwiseSpin = false
-  $PokemonTemp.startedSpinning = Graphics.frame_count
-end
-
-# Some extra PokemonTemp Items for Alcremies's Evolution
-class PokemonTemp
-  attr_accessor :clockwiseSpin
-  attr_accessor :antiClockwiseSpin
-  attr_accessor :lastTurned
-  attr_accessor :oldDir
-  attr_accessor :startedSpinning
-
-  def clockwiseSpin
-    @clockwiseSpin = false if !@clockwiseSpin
-    return @clockwiseSpin
-  end
-
-  def antiClockwiseSpin
-    @antiClockwiseSpin = false if !@antiClockwiseSpin
-    return @antiClockwiseSpin
-  end
-
-  def lastTurned
-    @lastTurned = Graphics.frame_count if !@lastTurned
-    return @lastTurned
-  end
-
-  def oldDir
-    @oldDir = $game_player.direction if !@oldDir
-    return @oldDir
-  end
-
-  def startedSpinning
-    @startedSpinning = Graphics.frame_count if !@startedSpinning
-    return @startedSpinning
-  end
-end
 
 def pbBattleOnStepTaken(repel = false)
   return if $Trainer.ablePokemonCount == 0
@@ -546,7 +402,7 @@ end
 Events.onMapChanging += proc { |_sender,e|
   newMapID = e[0]
   if newMapID>0
-    mapinfos = load_data("Data/MapInfos.rxdata")
+    mapinfos = pbLoadMapInfos
     oldWeather = pbGetMetadata($game_map.map_id,MetadataWeather)
     if $game_map.name!=mapinfos[newMapID].name
       $game_screen.weather(0,0,0) if oldWeather
@@ -566,7 +422,7 @@ Events.onMapChange += proc { |_sender,e|
   $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
   $PokemonGlobal.visitedMaps[$game_map.map_id] = true
   if oldid!=0 && oldid!=$game_map.map_id
-    mapinfos = load_data("Data/MapInfos.rxdata")
+    mapinfos = pbLoadMapInfos
     weather = pbGetMetadata($game_map.map_id,MetadataWeather)
     if $game_map.name!=mapinfos[oldid].name
       $game_screen.weather(weather[0],8,20) if weather && rand(100)<weather[1]
@@ -620,7 +476,7 @@ Events.onMapSceneChange += proc { |_sender,e|
           nosignpost = true if NO_SIGNPOSTS[2*i+1]==$PokemonGlobal.mapTrail[1] && NO_SIGNPOSTS[2*i]==$game_map.map_id
           break if nosignpost
         end
-        mapinfos = load_data("Data/MapInfos.rxdata")
+        mapinfos = pbLoadMapInfos
         oldmapname = mapinfos[$PokemonGlobal.mapTrail[1]].name
         nosignpost = true if $game_map.name==oldmapname
       end
@@ -982,76 +838,6 @@ def pbAutoplayOnSave
   end
 end
 
-
-
-#===============================================================================
-# Voice recorder
-#===============================================================================
-def pbRecord(text,maxtime=30.0)
-  text = "" if !text
-  textwindow = Window_UnformattedTextPokemon.newWithSize(text,0,0,Graphics.width,Graphics.height-96)
-  textwindow.z=99999
-  if text==""
-    textwindow.visible = false
-  end
-  wave = nil
-  msgwindow = pbCreateMessageWindow
-  oldvolume = Audio_bgm_get_volume()
-  Audio_bgm_set_volume(0)
-  delay = 2
-  delay.times do |i|
-    pbMessageDisplay(msgwindow,_INTL("Recording in {1} second(s)...\nPress ESC to cancel.",delay-i),false)
-    Graphics.frame_rate.times do
-      Graphics.update
-      Input.update
-      textwindow.update
-      msgwindow.update
-      if Input.trigger?(Input::B)
-        Audio_bgm_set_volume(oldvolume)
-        pbDisposeMessageWindow(msgwindow)
-        textwindow.dispose
-        return nil
-      end
-    end
-  end
-  pbMessageDisplay(msgwindow,_INTL("NOW RECORDING\nPress ESC to stop recording."),false)
-  if beginRecordUI
-    frames = (maxtime*Graphics.frame_rate).to_i
-    frames.times do
-      Graphics.update
-      Input.update
-      textwindow.update
-      msgwindow.update
-      if Input.trigger?(Input::B)
-        break
-      end
-    end
-    tmpFile = ENV["TEMP"]+"\\record.wav"
-    endRecord(tmpFile)
-    wave = getWaveDataUI(tmpFile,true)
-    if wave
-      pbMessageDisplay(msgwindow,_INTL("PLAYING BACK..."),false)
-      textwindow.update
-      msgwindow.update
-      Graphics.update
-      Input.update
-      wave.play
-      (Graphics.frame_rate*wave.time).to_i.times do
-        Graphics.update
-        Input.update
-        textwindow.update
-        msgwindow.update
-      end
-    end
-  end
-  Audio_bgm_set_volume(oldvolume)
-  pbDisposeMessageWindow(msgwindow)
-  textwindow.dispose
-  return wave
-end
-
-
-
 #===============================================================================
 # Event movement
 #===============================================================================
@@ -1183,75 +969,15 @@ def pbSlideOnIce(event=nil)
     break if !PBTerrain.isIce?(pbGetTerrainTag(event))
     event.move_forward
     while event.moving?
+      pbUpdateSceneMap
       Graphics.update
       Input.update
-      pbUpdateSceneMap
     end
   end
   event.center(event.x,event.y)
   event.straighten
   event.walk_anime = oldwalkanime
   $PokemonGlobal.sliding = false
-end
-
-#thundaga
-def pbPoisonBog(event=nil)
-  $game_variables[54] +=1
-  poisoned=false
-  if $game_variables[54] >= 10
-     # Poison every pokemon in the party
-     for pkmn in $Trainer.ablePokemonParty
-       next if pkmn.hasType?(:POISON)  || pkmn.hasType?(:STEEL) ||
-          pkmn.hasAbility?(:COMATOSE)  || pkmn.hasAbility?(:SHIELDSDOWN) ||
-          pkmn.status!=0
-       pkmn.status = 2
-       pkmn.statusCount = 2
-       poisoned=true
-       #pkmn.statusCount = 1 # Remove this if you don't want toxic poison
-     end
-     if poisoned
-       $scene.spriteset.addUserAnimation(14,event.x,event.y-1,true,1)
-       pbMessage(_INTL("All of your Pokémon became badly poisoned!"))
-     end
-  end
-end
-
-#thundaga
-def pbMoveArrow(event=nil, int=1)
-  pbMoveRoute($game_player, [PBMoveRoute::ChangeSpeed, 4, PBMoveRoute::DirectionFixOn, PBMoveRoute::WalkAnimeOff])
-  case int
-  when 2
-    pbMoveRoute($game_player, [PBMoveRoute::Down])
-  when 3
-    pbMoveRoute($game_player, [PBMoveRoute::Left])
-  when 4
-    pbMoveRoute($game_player, [PBMoveRoute::Right])
-  else
-    pbMoveRoute($game_player, [PBMoveRoute::Up])
-  end
-  pbMoveRoute($game_player, [PBMoveRoute::WalkAnimeOn, PBMoveRoute::DirectionFixOff, PBMoveRoute::ChangeSpeed, 3])
-  pbSEPlay("GUI naming tab swap start")
-end
-
-#thundaga
-def poisonAllPokemon(event=nil)
-    for pkmn in $Trainer.ablePokemonParty
-       next if pkmn.hasType?(:POISON)  || pkmn.hasType?(:STEEL) ||
-          pkmn.hasAbility?(:COMATOSE)  || pkmn.hasAbility?(:SHIELDSDOWN) ||
-          pkmn.status!=0
-       pkmn.status = 2
-       pkmn.statusCount = 2
-     end
-end
-
-#thundaga
-def paralyzeAllPokemon(event=nil)
-    for pkmn in $Trainer.ablePokemonParty
-       next if pkmn.hasType?(:ELECTRIC) ||
-          pkmn.hasAbility?(:COMATOSE)  || pkmn.hasAbility?(:SHIELDSDOWN) ||
-          pkmn.status!=0
-       pkmn.status = 4
-     end
 end
 
 def pbTurnTowardEvent(event,otherEvent)
@@ -1380,7 +1106,7 @@ def pbFishing(hasEncounter,rodType=1)
       break
     end
     if hasEncounter && rand(100)<biteChance
-      $scene.spriteset.addUserAnimation(EXCLAMATION_ANIMATION_ID,$game_player.x,$game_player.y-1,true,3)
+      $scene.spriteset.addUserAnimation(EXCLAMATION_ANIMATION_ID,$game_player.x,$game_player.y,true,3)
       frames = Graphics.frame_rate - rand(Graphics.frame_rate/2)   # 0.5-1 second
       if !pbWaitForInput(msgWindow,message+_INTL("\r\nOh! A bite!"),frames)
         pbFishingEnd

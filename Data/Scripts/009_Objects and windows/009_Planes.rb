@@ -40,7 +40,6 @@ class LargePlane < Plane
       @__bitmap=nil
       @__disposed=true
     end
-    super
   end
 
   def ox; @__ox; end

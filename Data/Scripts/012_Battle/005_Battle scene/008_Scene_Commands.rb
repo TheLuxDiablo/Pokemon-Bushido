@@ -53,7 +53,7 @@ class PokeBattle_Scene
       elsif Input.trigger?(Input::B) && mode==1   # Cancel
         pbPlayCancelSE
         break
-      elsif Input.trigger?(Input::F9) && $DEBUG    # Debug menu
+      elsif Input.triggerex?(0x78) && $DEBUG    # Debug menu
         pbPlayDecisionSE
         ret = -2
         break
@@ -125,7 +125,7 @@ class PokeBattle_Scene
           break if yield -2
           needRefresh = true
         end
-      elsif Input.trigger?(Input::F5)   # Shift
+      elsif Input.trigger?(Input::X)   # Shift
         if cw.shiftMode>0
           pbPlayDecisionSE
           break if yield -3
@@ -178,7 +178,6 @@ class PokeBattle_Scene
         break if yield idxPartyRet, switchScreen
       elsif cmdSummary>=0 && command==cmdSummary   # Summary
         scene.pbSummary(idxParty,true)
-        #scene.pbSummary(idxParty,true)
       end
     end
     # Close party screen

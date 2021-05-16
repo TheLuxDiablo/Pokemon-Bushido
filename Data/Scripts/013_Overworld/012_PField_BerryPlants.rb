@@ -33,7 +33,7 @@ Events.onSpritesetCreate += proc { |_sender,e|
   viewport  = e[1]
   map = spriteset.map
   for i in map.events.keys
-    if map.events[i].name.downcase=="berryplant"
+    if map.events[i].name[/berryplant/i]
       spriteset.addUserSprite(BerryPlantMoistureSprite.new(map.events[i],map,viewport))
       spriteset.addUserSprite(BerryPlantSprite.new(map.events[i],map,viewport))
     end
@@ -391,7 +391,6 @@ def pbBerryPlant
             berryData[5]=0             # number of replants
             berryData[6]=0             # yield penalty
             $PokemonBag.pbDeleteItem(berry,1)
-            $game_variables[37]+=1
             pbMessage(_INTL("The {1} was planted in the soft, earthy soil.",
                PBItems.getName(berry)))
             interp.setVariable(berryData)

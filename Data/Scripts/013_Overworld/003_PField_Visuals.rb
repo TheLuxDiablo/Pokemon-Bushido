@@ -32,7 +32,7 @@ def pbBattleAnimation(bgm=nil,battletype=0,foe=nil)
   pbWait(Graphics.frame_rate/4)
   pbMEStop
   # Play battle music
-  bgm = pbGetWildBattleBGM([0]) if !bgm
+  bgm = pbGetWildBattleBGM([]) if !bgm
   pbBGMPlay(bgm)
   # Take screenshot of game, for use in some animations
   $game_temp.background_bitmap.dispose if $game_temp.background_bitmap
@@ -132,9 +132,10 @@ def pbBattleAnimation(bgm=nil,battletype=0,foe=nil)
   $game_temp.in_battle = false
 end
 
-def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
+def pbBattleAnimationOverride(viewport,battletype = 0,foe = nil)
   ##### VS. animation, by Luka S.J. #####
   ##### Tweaked by Maruno           #####
+  return if !foe
   trainerid = (foe[0].trainertype rescue -1)
   if trainerid >= 0
     if checkIfSunMoonTransition(trainerid)
@@ -190,7 +191,7 @@ def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
         viewvs = Viewport.new(0,0,Graphics.width,Graphics.height)
         viewvs.z = viewport.z
         fade = Sprite.new(viewport)
-        fade.bitmap  = BitmapCache.load_bitmap("Graphics/Transitions/vsFlash")
+        fade.bitmap  = RPG::Cache.load_bitmap("Graphics/Transitions/vsFlash")
         fade.tone    = Tone.new(-255,-255,-255)
         fade.opacity = 100
         overlay = Sprite.new(viewport)
@@ -204,20 +205,20 @@ def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
         pbargraphic = sprintf("Graphics/Transitions/vsBar%d",$Trainer.trainertype) if !pbResolveBitmap(pbargraphic)
         xoffset = ((Graphics.width/2)/10)*10
         bar1 = Sprite.new(viewplayer)
-        bar1.bitmap = BitmapCache.load_bitmap(pbargraphic)
+        bar1.bitmap = RPG::Cache.load_bitmap(pbargraphic)
         bar1.x      = -xoffset
         bar2 = Sprite.new(viewopp)
-        bar2.bitmap = BitmapCache.load_bitmap(tbargraphic)
+        bar2.bitmap = RPG::Cache.load_bitmap(tbargraphic)
         bar2.x      = xoffset
         vs = Sprite.new(viewvs)
-        vs.bitmap  = BitmapCache.load_bitmap("Graphics/Transitions/vs")
+        vs.bitmap  = RPG::Cache.load_bitmap("Graphics/Transitions/vs")
         vs.ox      = vs.bitmap.width/2
         vs.oy      = vs.bitmap.height/2
         vs.x       = Graphics.width/2
         vs.y       = Graphics.height/1.5
         vs.visible = false
         flash = Sprite.new(viewvs)
-        flash.bitmap  = BitmapCache.load_bitmap("Graphics/Transitions/vsFlash")
+        flash.bitmap  = RPG::Cache.load_bitmap("Graphics/Transitions/vsFlash")
         flash.opacity = 0
         # Animate bars sliding in from either side
         slideInTime = (Graphics.frame_rate*0.25).floor
@@ -234,9 +235,9 @@ def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
         flash.opacity = 255
         # Replace bar sprites with AnimatedPlanes, set up trainer sprites
         bar1 = AnimatedPlane.new(viewplayer)
-        bar1.bitmap = BitmapCache.load_bitmap(pbargraphic)
+        bar1.bitmap = RPG::Cache.load_bitmap(pbargraphic)
         bar2 = AnimatedPlane.new(viewopp)
-        bar2.bitmap = BitmapCache.load_bitmap(tbargraphic)
+        bar2.bitmap = RPG::Cache.load_bitmap(tbargraphic)
         pgraphic = sprintf("Graphics/Transitions/vsTrainer%s_%d",getConstantName(PBTrainers,$Trainer.trainertype),outfit) rescue nil
         pgraphic = sprintf("Graphics/Transitions/vsTrainer%d_%d",$Trainer.trainertype,outfit) if !pbResolveBitmap(pgraphic)
         if !pbResolveBitmap(pgraphic)
@@ -244,10 +245,10 @@ def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
         end
         pgraphic = sprintf("Graphics/Transitions/vsTrainer%d",$Trainer.trainertype) if !pbResolveBitmap(pgraphic)
         player = Sprite.new(viewplayer)
-        player.bitmap = BitmapCache.load_bitmap(pgraphic)
+        player.bitmap = RPG::Cache.load_bitmap(pgraphic)
         player.x      = -xoffset
         trainer = Sprite.new(viewopp)
-        trainer.bitmap = BitmapCache.load_bitmap(tgraphic)
+        trainer.bitmap = RPG::Cache.load_bitmap(tgraphic)
         trainer.x      = xoffset
         trainer.tone   = Tone.new(-255,-255,-255)
         # Dim the flash and make the trainer sprites appear, while animating bars
@@ -353,9 +354,11 @@ def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
   return __over1__pbBattleAnimationOverride(viewport,battletype,foe)
 end
 
-################################################################################
-# Location signpost - Updated by LostSoulsDev / carmaniac & PurpleZaffre
-################################################################################
+
+
+#===============================================================================
+# Location signpost
+#===============================================================================
 class LocationWindow
   def initialize(name)
     @sprites = {}
@@ -365,33 +368,27 @@ class LocationWindow
     @sprites["Image"] = Sprite.new
     mapname = $game_map.name
     if pbResolveBitmap("Graphics/Maps/#{mapname}")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/#{mapname}")
+      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/#{mapname}")
     elsif $game_map.name.include?("Route")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Route_1")
-    elsif $game_map.name.include?("Hollow")
-        @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Haunted")
+      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Route_1")
     elsif $game_map.name.include?("Cavern")
-        @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Cave_1")
-    elsif $game_map.name.include?("Lab")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/HGSS_7")
+        @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Cave_1")
     elsif $game_map.name.include?("Mt.")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Cave_1")
+      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Cave_1")
     elsif $game_map.name.include?("Town")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Town_1")
+      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Town_1")
     elsif $game_map.name.include?("Lake")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Lake_1")
-    elsif $game_map.name.include?("Cascade")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Lake_1")
+      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Lake_1")
     elsif $game_map.name.include?("Cave")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Cave_1")
+      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Cave_1")
     elsif $game_map.name.include?("Village")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Village")
+      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Village")
     elsif $game_map.name.include?("Dojo")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/Dojo")
+      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Dojo")
     elsif $game_map.name.include?("City")
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/City_1")
+      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/City_1")
     else
-      @sprites["Image"].bitmap = BitmapCache.load_bitmap("Graphics/Maps/HGSS_3")
+      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/HGSS_3")
     end
     @sprites["Image"].x = 8
     @sprites["Image"].y = - @sprites["Image"].bitmap.height
@@ -603,12 +600,12 @@ Events.onSpritesetCreate += proc { |_sender,e|
     if map.events[i].name[/^outdoorlight\((\w+)\)$/i]
       filename = $~[1].to_s
       spriteset.addUserSprite(LightEffect_DayNight.new(map.events[i],viewport,map,filename))
-    elsif map.events[i].name.downcase=="outdoorlight"
+    elsif map.events[i].name[/^outdoorlight$/i]
       spriteset.addUserSprite(LightEffect_DayNight.new(map.events[i],viewport,map))
     elsif map.events[i].name[/^light\((\w+)\)$/i]
       filename = $~[1].to_s
       spriteset.addUserSprite(LightEffect_Basic.new(map.events[i],viewport,map,filename))
-    elsif map.events[i].name.downcase=="light"
+    elsif map.events[i].name[/^light$/i]
       spriteset.addUserSprite(LightEffect_Basic.new(map.events[i],viewport,map))
     end
   end
@@ -700,10 +697,6 @@ end
 #===============================================================================
 # Blacking out animation
 #===============================================================================
-def pbRxdataExists?(file)
-  return pbRgssExists?(file+".rxdata")
-end
-
 def pbStartOver(gameover=false)
   if pbInBugContest?
     pbBugContestStartOver

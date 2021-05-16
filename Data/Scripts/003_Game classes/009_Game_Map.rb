@@ -9,7 +9,7 @@ class Game_Map
   attr_accessor :tileset_name             # tileset file name
   attr_accessor :autotile_names           # autotile file name
   attr_reader   :passages                 # passage table
-  attr_reader   :priorities               # priority table
+  attr_reader   :priorities               # prioroty table
   attr_reader   :terrain_tags             # terrain tag table
   attr_reader   :events                   # events
   attr_accessor :panorama_name            # panorama file name
@@ -44,7 +44,7 @@ class Game_Map
 
   def setup(map_id)
     @map_id               = map_id
-    @map = load_data(sprintf("Data/Map%03d.%s",map_id,($RPGVX) ? "rvdata" : "rxdata"))
+    @map = load_data(sprintf("Data/Map%03d.rxdata",map_id))
     tileset = $data_tilesets[@map.tileset_id]
     updateTileset
     @fog_ox               = 0
@@ -318,6 +318,7 @@ class Game_Map
   end
 
   def display_x=(value)
+    return if @display_x == value
     @display_x = value
     if pbGetMetadata(self.map_id,MetadataSnapEdges)
       max_x = (self.width - Graphics.width*1.0/TILE_WIDTH) * REAL_RES_X
@@ -327,6 +328,7 @@ class Game_Map
   end
 
   def display_y=(value)
+    return if @display_y == value
     @display_y = value
     if pbGetMetadata(self.map_id,MetadataSnapEdges)
       max_y = (self.height - Graphics.height*1.0/TILE_HEIGHT) * REAL_RES_Y

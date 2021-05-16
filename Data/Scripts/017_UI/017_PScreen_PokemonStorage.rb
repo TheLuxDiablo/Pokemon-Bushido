@@ -413,7 +413,7 @@ class PokemonBoxSprite < SpriteWrapper
       pbSetSystemFont(@contents)
       widthval = @contents.text_size(boxname).width
       xval = 162-(widthval/2)
-      pbDrawShadowText(@contents,xval,8 + (mkxp? ? 6 : 0),widthval,32,
+      pbDrawShadowText(@contents,xval, 14 ,widthval,32,
            boxname,Color.new(248,248,248),Color.new(40,48,48))
       @refreshBox = false
     end
@@ -837,21 +837,21 @@ class PokemonStorageScene
         pbSetMosaic(selection)
       end
       self.update
-      if Input.trigger?(Input::L)
+      if Input.trigger?(Input::Y)
         pbPlayCursorSE
         nextbox = (@storage.currentBox+@storage.maxBoxes-1)%@storage.maxBoxes
         pbSwitchBoxToLeft(nextbox)
         @storage.currentBox = nextbox
         pbUpdateOverlay(selection)
         pbSetMosaic(selection)
-      elsif Input.trigger?(Input::R)
+      elsif Input.trigger?(Input::Z)
         pbPlayCursorSE
         nextbox = (@storage.currentBox+1)%@storage.maxBoxes
         pbSwitchBoxToRight(nextbox)
         @storage.currentBox = nextbox
         pbUpdateOverlay(selection)
         pbSetMosaic(selection)
-      elsif Input.trigger?(Input::F5)   # Jump to box name
+      elsif Input.trigger?(Input::X)   # Jump to box name
         if selection!=-1
           pbPlayCursorSE
           selection = -1
@@ -1813,9 +1813,6 @@ class PokemonStorageScreen
       return false
     elsif pokemon.mail
       pbDisplay(_INTL("Please remove the mail."))
-      return false
-    elsif pokemon.isSpecies?(:ARENAY)
-      pbDisplay(_INTL("You can't release Arenay! It's Professor Cypress' most prized posession!"))
       return false
     end
     if box==-1 && pbAbleCount<=1 && pbAble?(pokemon) && !heldpoke

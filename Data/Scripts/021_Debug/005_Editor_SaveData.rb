@@ -176,7 +176,7 @@ end
 def pbSaveConnectionData
   data = load_data("Data/map_connections.dat") rescue nil
   return if !data
-  pbSerializeConnectionData(data,pbLoadRxData("Data/MapInfos"))
+  pbSerializeConnectionData(data,pbLoadMapInfos)
 end
 
 
@@ -219,7 +219,7 @@ end
 def pbSaveMetadata
   data = load_data("Data/metadata.dat") rescue nil
   return if !data
-  pbSerializeMetadata(data,pbLoadRxData("Data/MapInfos"))
+  pbSerializeMetadata(data,pbLoadMapInfos)
 end
 
 
@@ -354,7 +354,7 @@ end
 def pbSaveEncounterData
   encdata = pbLoadEncountersData
   return if !encdata
-  mapinfos = pbLoadRxData("Data/MapInfos")
+  mapinfos = pbLoadMapInfos
   File.open("PBS/encounters.txt","wb") { |f|
     f.write(0xEF.chr)
     f.write(0xBB.chr)
