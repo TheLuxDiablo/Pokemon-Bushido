@@ -41,7 +41,7 @@ Emo_love = 100
 
 # Allow the player to toggle followers on/off using the Key specified below
 ALLOWTOGGLEFOLLOW = true
-TOGGLEFOLLOWERKEY = :CTRL
+TOGGLEFOLLOWERKEY = :Y
 
 #Status tones to be used, if this is true (Red,Green,Blue,Gray)
 APPLYSTATUSTONES = false

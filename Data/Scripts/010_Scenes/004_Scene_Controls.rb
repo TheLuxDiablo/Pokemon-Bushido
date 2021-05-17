@@ -43,7 +43,7 @@ class ButtonEventScene < EventScene
 
 
     addImageForScreen(4, 0, 0, "Graphics/Pictures/Controls/help_bg")
-    addImageForScreen(4, 20, 90, "Graphics/Pictures/Controls/help_yz")
+    addImageForScreen(4, 16, 90, "Graphics/Pictures/Controls/help_yz")
     addImageForScreen(4, 36, 252, "Graphics/Pictures/Controls/help_l")
     addLabelForScreen(4, 138, 64, 342, _INTL("Use these keys to quickly navigate through long lists like the Bag. (Default: S , D)"))
     addLabelForScreen(4, 138, 222, 342, _INTL("Save your current progress without opening the menu. (Default: Q)"))

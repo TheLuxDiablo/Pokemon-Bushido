@@ -10,14 +10,6 @@ class Game_Player < Game_Character
   attr_accessor :charsetData
   attr_accessor :encounter_count
 
-  def screenCenterX
-    return ((SCREEN_WIDTH / 2 - Game_Map::TILE_WIDTH / 2) * Game_Map::X_SUBPIXELS)
-  end
-
-  def screenCenterY
-    return ((SCREEN_HEIGHT / 2 - Game_Map::TILE_HEIGHT / 2) * Game_Map::Y_SUBPIXELS)
-  end
-
   def initialize(*arg)
     super(*arg)
     @lastdir=0
@@ -167,8 +159,12 @@ class Game_Player < Game_Character
   # * Set Map Display Position to Center of Screen
   #-----------------------------------------------------------------------------
   def center(x, y)
-    self.map.display_x = x * Game_Map::REAL_RES_X - screenCenterX
-    self.map.display_y = y * Game_Map::REAL_RES_Y - screenCenterY
+    center_x = (Graphics.width/2 - Game_Map::TILE_WIDTH/2) * Game_Map::X_SUBPIXELS
+    center_y = (Graphics.height/2 - Game_Map::TILE_HEIGHT/2) * Game_Map::Y_SUBPIXELS
+    dispx = x * Game_Map::REAL_RES_X - center_x
+    dispy = y * Game_Map::REAL_RES_Y - center_y
+    self.map.display_x = dispx
+    self.map.display_y = dispy
   end
 
   #-----------------------------------------------------------------------------
@@ -344,9 +340,21 @@ class Game_Player < Game_Character
 
   # Center player on-screen
   def update_screen_position(last_real_x, last_real_y)
-    return if self.map.scrolling? || !(@moved_last_frame || @moved_this_frame)
-    self.map.display_x = @real_x - screenCenterX
-    self.map.display_y = @real_y - screenCenterY
+    return if !@moved_this_frame
+    center_x = (Graphics.width/2 - Game_Map::TILE_WIDTH/2) * Game_Map::X_SUBPIXELS
+    center_y = (Graphics.height/2 - Game_Map::TILE_HEIGHT/2) * Game_Map::Y_SUBPIXELS
+    if @real_y < last_real_y and @real_y - $game_map.display_y < center_y
+      $game_map.scroll_up(last_real_y - @real_y)
+    end
+    if @real_y > last_real_y and @real_y - $game_map.display_y > center_y
+      $game_map.scroll_down(@real_y - last_real_y)
+    end
+    if @real_x < last_real_x and @real_x - $game_map.display_x < center_x
+      $game_map.scroll_left(last_real_x - @real_x)
+    end
+    if @real_x > last_real_x and @real_x - $game_map.display_x > center_x
+      $game_map.scroll_right(@real_x - last_real_x)
+    end
   end
 
   def update_event_triggering
