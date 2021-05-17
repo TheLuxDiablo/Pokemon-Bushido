@@ -887,6 +887,18 @@ def pbFixEventNames(event)
   return true
 end
 
+def pbRemoveInvisibleEvent(event)
+  return false if !event
+  changed = false
+  event.pages.each do |page|
+    if page.graphic.character_name == "invisible" || page.graphic.character_name == "nil"
+      page.graphic.character_name = ""
+      changed = true
+    end
+  end
+  return changed
+end
+
 def pbFixEventUse(event,_mapID,mapData)
   return nil if pbEventIsEmpty?(event)
   changed = false
@@ -1434,6 +1446,7 @@ def pbCompileTrainerEvents(_mustcompile)
         map.events[key] = newevent; changed = true
       end
       changed = true if pbFixEventNames(map.events[key])
+      changed = true if pbRemoveInvisibleEvent(map.events[key])
       newevent = pbFixEventUse(map.events[key],id,mapData)
       if newevent
         map.events[key] = newevent; changed = true

@@ -25,12 +25,6 @@ class Object
 
 end
 
-alias old_load_data load_data
-def load_data(filename)
-  return old_load_data(filename) if filename["Data/PkmnAnimations.rxdata"]
-  File.open(filename, 'rb'){|f| return Marshal.load(f.read)}
-end
-
 #===============================================================================
 # Ensure required method definitions
 #===============================================================================

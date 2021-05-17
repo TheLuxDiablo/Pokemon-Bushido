@@ -108,7 +108,7 @@ class Phenomenon
   attr_accessor :drawing # bool
 
   def initialize(types)
-    Kernel.echo("Initializing with types: #{types}")
+    Kernel.echo("Initializing with types: #{types} ")
     @x = nil
     @y = nil
     @types = types
@@ -194,7 +194,6 @@ class Phenomenon
   end
 
   def drawAnim(sound)
-    Kernel.echo("Drawing animation\n")
     dist = (((@x - $game_player.x).abs + (@y - $game_player.y).abs) / 4).floor
     if dist <= 6 && dist >= 0
       animation = PhenomenonConfig::Types[@type]
@@ -215,7 +214,6 @@ end
 def pbPhenomenonLoadTypes
   types = []
   PhenomenonConfig::Types.each do |(key, value)|
-    Kernel.echo("Testing map #{$game_map.map_id}, against #{key}, with value #{value}...\n")
     Kernel.echo("ERROR: No encounters setup!\n\n") if !$PokemonEncounters
     types.push(key) if $PokemonEncounters && $PokemonEncounters.pbMapHasEncounter?($game_map.map_id, value[3])
   end
