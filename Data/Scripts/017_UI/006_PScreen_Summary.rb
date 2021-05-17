@@ -320,7 +320,7 @@ class PokemonSummary_Scene
                 _INTL("TRAINER MEMO"),
                 _INTL("SKILLS"),
                 _INTL("MOVES"),
-                _INTL("RIBBONS")][page-1]
+                _INTL("EV's & IV's")][page-1]
     textpos = [
        [pagename,26,16,0,base,shadow],
        [@pokemon.name,46,62,0,base,shadow],
@@ -620,8 +620,8 @@ class PokemonSummary_Scene
 
   def drawPageThree
     overlay = @sprites["overlay"].bitmap
-    base   = Color.new(248,248,248)
-    shadow = Color.new(104,104,104)
+    base = Color.new(64,64,64)
+    shadow = Color.new(176,176,176)
     # Determine which stats are boosted and lowered by the Pokémon's nature
     statshadows = []
     PBStats.eachStat { |s| statshadows[s] = shadow }
@@ -824,30 +824,50 @@ class PokemonSummary_Scene
 
   def drawPageFive
     overlay = @sprites["overlay"].bitmap
-    @sprites["uparrow"].visible   = false
-    @sprites["downarrow"].visible = false
-    # Write various bits of text
-    textpos = [
-       [_INTL("No. of Ribbons:"),234,332,0,Color.new(64,64,64),Color.new(176,176,176)],
-       [@pokemon.ribbonCount.to_s,450,332,1,Color.new(64,64,64),Color.new(176,176,176)],
-    ]
-    # Draw all text
-    pbDrawTextPositions(overlay,textpos)
-    # Show all ribbons
-    imagepos = []
-    coord = 0
-    if @pokemon.ribbons
-      for i in @ribbonOffset*4...@ribbonOffset*4+12
-        break if !@pokemon.ribbons[i]
-        ribn = @pokemon.ribbons[i]-1
-        imagepos.push(["Graphics/Pictures/ribbons",230+68*(coord%4),78+68*(coord/4).floor,
-                                                   64*(ribn%8),64*(ribn/8).floor,64,64])
-        coord += 1
-        break if coord>=12
-      end
+    base = Color.new(64,64,64)
+    shadow = Color.new(176,176,176)
+    imagepos=[]
+    # Determine which stats are boosted and lowered by the Pokémon's nature
+    statshadows = []
+    PBStats.eachStat { |s| statshadows[s] = shadow }
+    if !@pokemon.shadowPokemon? || @pokemon.heartStage>3
+      natup = PBNatures.getStatRaised(@pokemon.calcNature)
+      natdn = PBNatures.getStatLowered(@pokemon.calcNature)
+      statshadows[natup] = Color.new(200,96,72) if natup != natdn
+      statshadows[natdn] = Color.new(64,120,200) if natup != natdn
     end
-    # Draw all images
-    pbDrawImagePositions(overlay,imagepos)
+    statshadows[natup] = Color.new(200,96,72) if natup != natdn
+    statshadows[natdn] = Color.new(64,120,200) if natup != natdn
+    textColumn = 300
+    evColumn   = 390
+    ivColumn   = 455
+    abilitydesc=pbGetMessage(MessageTypes::AbilityDescs,@pokemon.ability)
+    textpos = [
+       [_INTL("EV"),evColumn,60,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("IV"),ivColumn,60,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("HP"),textColumn,92,2,base,shadow],
+       [sprintf("%d",@pokemon.ev[0]),evColumn,92,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[0]),ivColumn,92,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Attack"),textColumn,124,2,base,statshadows[1]],
+       [sprintf("%d",@pokemon.ev[1]),evColumn,124,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[1]),ivColumn,124,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Defense"),textColumn,156,2,base,statshadows[2]],
+       [sprintf("%d",@pokemon.ev[2]),evColumn,156,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[2]),ivColumn,156,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Sp. Atk"),textColumn,187,2,base,statshadows[4]],
+       [sprintf("%d",@pokemon.ev[4]),evColumn,188,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[4]),ivColumn,188,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Sp. Def"),textColumn,219,2,base,statshadows[5]],
+       [sprintf("%d",@pokemon.ev[5]),evColumn,220,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[5]),ivColumn,220,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Speed"),textColumn,251,2,base,statshadows[3]],
+       [sprintf("%d",@pokemon.ev[3]),evColumn,252,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [sprintf("%d",@pokemon.iv[3]),ivColumn,252,2,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("Ability"),224,284,0,base,shadow], # 187,188 - 219,220 - 251,252
+       [PBAbilities.getName(@pokemon.ability),362,284,0,Color.new(64,64,64),Color.new(176,176,176)],
+    ]
+    pbDrawTextPositions(overlay,textpos)
+    drawTextEx(overlay,224,316,282,2,abilitydesc,Color.new(64,64,64),Color.new(176,176,176))
   end
 
   def drawSelectedRibbon(ribbonid)
