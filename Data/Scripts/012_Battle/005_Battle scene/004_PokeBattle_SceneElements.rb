@@ -198,7 +198,7 @@ class PokemonDataBox < SpriteWrapper
   end
 
   def pbDrawNumber(number,btmp,startX,startY,align=0)
-    n = (number==-1) ? [10] : number.to_i.digits   # -1 means draw the / character
+    n = (number==-1) ? [10] : number.to_i.digits.reverse   # -1 means draw the / character
     charWidth  = @numbersBitmap.width/11
     charHeight = @numbersBitmap.height
     startX -= charWidth*n.length if align==1
