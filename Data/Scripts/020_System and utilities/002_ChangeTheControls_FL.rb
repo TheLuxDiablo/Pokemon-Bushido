@@ -2,6 +2,10 @@
 # * Set the Controls Screen - by FL (Credits will be apreciated)
 #===============================================================================
 
+#===============================================================================
+# * Legacy save support. This doesn't do anything now.
+#===============================================================================
+
 module Keys
   # Available keys
   CONTROLSLIST = {
@@ -170,5 +174,19 @@ module Keys
         return keyCode if Input.triggerex?(keyCode)
       end
     end
+  end
+end
+
+class ControlConfig
+  attr_reader :controlAction
+  attr_accessor :keyCode
+
+  def initialize(controlAction,defaultKey)
+    @controlAction = controlAction
+    @keyCode = Keys.getKeyCode(defaultKey)
+  end
+
+  def keyName
+    return Keys.getKeyName(@keyCode)
   end
 end

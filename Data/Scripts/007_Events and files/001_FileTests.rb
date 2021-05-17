@@ -162,6 +162,12 @@ module RTP
 
   private
 
+  def self.getLegacySaveFolder
+    folder = System.data_directory
+    folder.gsub!("AppData\\Roaming\\","Saved Games\\")
+    return folder
+  end
+
   def self.getSaveFileName(fileName)
     File.join(getSaveFolder, fileName)
   end
@@ -275,81 +281,6 @@ def pbGetFileString(file)
   end
   return str
 end
-
-
-
-#===============================================================================
-#
-#===============================================================================
-if System.platform[/Windows/]
-module MiniRegistry
-  HKEY_CLASSES_ROOT  = 0x80000000
-  HKEY_CURRENT_USER  = 0x80000001
-  HKEY_LOCAL_MACHINE = 0x80000002
-  HKEY_USERS         = 0x80000003
-  FormatMessageA   = Win32API.new("kernel32","FormatMessageA","LPLLPLP","L")
-  RegOpenKeyExA    = Win32API.new("advapi32","RegOpenKeyExA","LPLLP","L")
-  RegCloseKey      = Win32API.new("advapi32","RegCloseKey","L","L")
-  RegQueryValueExA = Win32API.new("advapi32","RegQueryValueExA","LPLPPP","L")
-
-  def self.open(hkey,subkey,bit64=false)
-    key = 0.chr*4
-    flag = bit64 ? 0x20119 : 0x20019
-    rg = RegOpenKeyExA.call(hkey, subkey, 0, flag, key)
-    return nil if rg!=0
-    key = key.unpack("V")[0]
-    if block_given?
-      begin
-        yield(key)
-      ensure
-        check(RegCloseKey.call(key))
-      end
-    else
-      return key
-    end
-  end
-
-  def self.close(hkey); check(RegCloseKey.call(hkey)) if hkey; end
-
-  def self.get(hkey,subkey,name,defaultValue=nil,bit64=false)
-    self.open(hkey,subkey,bit64) { |key|
-      return self.read(key,name) rescue defaultValue
-    }
-    return defaultValue
-  end
-
-  def self.read(hkey,name)
-    hkey = 0 if !hkey
-    type = 0.chr*4
-    size = 0.chr*4
-    check(RegQueryValueExA.call(hkey,name,0,type,0,size))
-    data = " "*size.unpack("V")[0]
-    check(RegQueryValueExA.call(hkey,name,0,type,data,size))
-    type = type.unpack("V")[0]
-    data = data[0,size.unpack("V")[0]]
-    case type
-    when 1; return data.chop                                   # REG_SZ
-    when 2; return data.gsub(/%([^%]+)%/) { ENV[$1] || $& }    # REG_EXPAND_SZ
-    when 3; return data                                        # REG_BINARY
-    when 4; return data.unpack("V")[0]                         # REG_DWORD
-    when 5; return data.unpack("V")[0]                         # REG_DWORD_BIG_ENDIAN
-    when 11; data.unpack("VV"); return (data[1]<<32|data[0])   # REG_QWORD
-    else; raise "Type #{type} not supported."
-    end
-  end
-
-  private
-
-  def self.check(code)
-    if code!=0
-      msg = "\0"*1024
-      len = FormatMessageA.call(0x1200, 0, code, 0, msg, 1024, 0)
-      raise msg[0, len].tr("\r", '').chomp
-    end
-  end
-end
-end
-
 
 class StringInput
   include Enumerable

@@ -394,6 +394,20 @@ class PokemonLoadScreen
       $scene = nil
       return
     end
+    if System.platform[/Windows/]
+      oldfilename = File.join(RTP.getLegacySaveFolder, "Game.rxdata")
+      if safeExists?(oldfilename) && !safeExists?(RTP.getSaveFileName("Game_0.rxdata"))
+        pbMessage("The game has detected that you have a save file from an older version of the game.")
+        if pbConfirmMessage("Would you like to carry the old save file over?")
+          pbMessage("Retrieving old save data...\\wt[16] ...\\wt[16] ...\\wtnp[32]")
+          File.rename(oldfilename,RTP.getSaveFileName("Game_0.rxdata"))
+          pbMessage("Transferring old save data...\\wt[16] ...\\wt[16] ...\\wtnp[16]")
+          pbMessage("1, 2, and...\\wt[16] ...\\wt[16] ... Ta-da!\\se[Battle ball drop]\1\\wtnp[]")
+          pbMessage("\\se[]Your save file was transferred!\\se[Pkmn move learnt]")
+          pbMessage("Enjoy the new update!<ar>~Team Bushido</ar>")
+        end
+      end
+    end
     commands = []
     cmdNewGame     = -1
     cmdContinue    = -1
@@ -605,8 +619,8 @@ class PokemonLoadScreen
         end
       end
       if showContinue
-        if !haveBackup
-          begin; File.delete(savefile+".bak"); rescue; end
+        if !haveBackup && safeExists?(savefile+".bak")
+          File.delete(savefile+".bak")
         end
       end
     end

@@ -24,13 +24,13 @@ class Object
   def inspect; to_s; end
 
 end
-=begin
+
 alias old_load_data load_data
 def load_data(filename)
   return old_load_data(filename) if filename["Data/PkmnAnimations.rxdata"]
   File.open(filename, 'rb'){|f| return Marshal.load(f.read)}
 end
-=end
+
 #===============================================================================
 # Ensure required method definitions
 #===============================================================================
@@ -60,4 +60,4 @@ end
 
 ESSENTIALS_VERSION = "Bushido"
 ERROR_TEXT = ""
-GAME_VERSION = "1.2.0"
+GAME_VERSION = "2.0.0"

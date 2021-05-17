@@ -75,9 +75,15 @@ class PokemonSave_Scene
     else
       loctext+=_INTL("Time<r><c3={1}>{2}m</c3><br>",textColor,min)
     end
-    loctext+=_INTL("Badges<r><c3={1}>{2}</c3><br>",textColor,$Trainer.numbadges)
     if $Trainer.pokedex
-      loctext+=_INTL("Pokédex<r><c3={1}>{2}/{3}</c3>",textColor,$Trainer.pokedexOwned,$Trainer.pokedexSeen)
+      loctext+=_INTL("Journal<r><c3={1}>{2}/{3}</c3><br>",textColor,$Trainer.pokedexOwned,$Trainer.pokedexSeen)
+    end
+    loctext+=_INTL("Chapter<r><c3={1}>{2}</c3><br>",textColor,$game_variables[99])
+    if $game_variables[100]>0 && $game_variables[99]!="Hattori"
+      loctext+=_INTL("Katana Level<r><c3={1}>{2}</c3>",textColor,$game_variables[100])
+    end
+    if $game_variables[99]=="Hattori" && $game_variables[199]!=0
+      loctext+=_INTL("Corrupted<r><c3={1}>{2}</c3>",textColor,$game_variables[199])
     end
     @sprites["locwindow"]=Window_AdvancedTextPokemon.new(loctext)
     @sprites["locwindow"].viewport=@viewport

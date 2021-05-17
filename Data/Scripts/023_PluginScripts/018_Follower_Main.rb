@@ -270,8 +270,8 @@ class DependentEvents
     events=$PokemonGlobal.dependentEvents
     for i in 0...events.length
       if events[i] && events[i][8]== "FollowerPkmn"
-        events[i][6]=sprintf("nil")
-        @realEvents[i].character_name = sprintf("nil")
+        events[i][6] = ""
+        @realEvents[i].character_name = ""
         if anim
           $scene.spriteset.addUserAnimation(Animation_Come_In,@realEvents[i].x,@realEvents[i].y)
           pbWait(10)
