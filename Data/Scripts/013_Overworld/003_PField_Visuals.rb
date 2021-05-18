@@ -368,27 +368,27 @@ class LocationWindow
     @sprites["Image"] = Sprite.new
     mapname = $game_map.name
     if pbResolveBitmap("Graphics/Maps/#{mapname}")
-      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/#{mapname}")
+      @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/#{mapname}")
     elsif $game_map.name.include?("Route")
-      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Route_1")
+      @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/Route_1")
     elsif $game_map.name.include?("Cavern")
-        @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Cave_1")
+        @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/Cave_1")
     elsif $game_map.name.include?("Mt.")
-      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Cave_1")
+      @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/Cave_1")
     elsif $game_map.name.include?("Town")
-      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Town_1")
+      @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/Town_1")
     elsif $game_map.name.include?("Lake")
-      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Lake_1")
+      @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/Lake_1")
     elsif $game_map.name.include?("Cave")
-      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Cave_1")
+      @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/Cave_1")
     elsif $game_map.name.include?("Village")
-      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Village")
+      @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/Village")
     elsif $game_map.name.include?("Dojo")
-      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/Dojo")
+      @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/Dojo")
     elsif $game_map.name.include?("City")
-      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/City_1")
+      @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/City_1")
     else
-      @sprites["Image"].bitmap = RPG::Cache.load_bitmap("Graphics/Maps/HGSS_3")
+      @sprites["Image"].bitmap = Bitmap.new("Graphics/Maps/HGSS_3")
     end
     @sprites["Image"].x = 8
     @sprites["Image"].y = - @sprites["Image"].bitmap.height

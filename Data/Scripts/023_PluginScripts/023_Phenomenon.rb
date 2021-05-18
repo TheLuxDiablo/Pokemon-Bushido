@@ -108,7 +108,7 @@ class Phenomenon
   attr_accessor :drawing # bool
 
   def initialize(types)
-    Kernel.echo("Initializing with types: #{types} ")
+    echoln("Initializing with types: #{types} ")
     @x = nil
     @y = nil
     @types = types

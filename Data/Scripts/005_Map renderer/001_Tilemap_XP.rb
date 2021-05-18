@@ -807,11 +807,7 @@ class CustomTilemap
                            ((id - 384) >> 3) * @tileSrcHeight,
                            @tileSrcWidth, @tileSrcHeight)
               if @diffsizes
-                if mxkp?
-                  TileWrap::stretchBlitWrappedPixels(Rect.new(xpos, ypos, twidth, theight), bitmap, @tileset, temprect)
-                else
-                  bitmap.stretch_blt(Rect.new(xpos, ypos, twidth, theight), @tileset, temprect)
-                end
+                TileWrap::stretchBlitWrappedPixels(Rect.new(xpos, ypos, twidth, theight), bitmap, @tileset, temprect)
               else
                 TileWrap::blitWrappedPixels(xpos,ypos, bitmap, @tileset, temprect)
               end
