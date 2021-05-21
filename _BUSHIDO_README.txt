@@ -6,22 +6,8 @@ Developed by:
 - TristantineTheGreat
 - HauntedArtStudio
 
-🌸 Info 🌸
-
-When playing the game, please use Game.exe. GameRGSS.exe is only meant to be
-used if there are issues with the existing Game.exe.
-
-If you are experiencing issues with Game.exe, please follow these steps:
-1. Rename the current Game file to "Game_Backup"
-2. Rename GameRGSS to "Game".
-3. Run the newly renamed Game!
-
 If you are experiencing bugs with the game, please join the Pokemon Bushido Discord! https://discord.gg/FAeZEKwfUh
 
-FOR PLAYERS USING THE GameRGSS.exe:
-Please install the fonts in the game's "Fonts" folder!
-1. Double click each .ttf file to open the font installer.
-2. Click "Install" in the top left of the window that appears.
 
 🌸 Mac Installation Guide 🌸
 
@@ -78,9 +64,6 @@ No copyright infringements intended.
 Please support the official games!
 
 PUBLIC SCRIPTS
-
-“Gen 8-Style Item Find Description” (Boonzeet)
-https://reliccastle.com/resources/371/
 
 “CUSTOM Gen 4 Day & Night Tones“ (VanillaSunshine)
 https://reliccastle.com/resources/408/

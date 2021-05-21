@@ -362,8 +362,8 @@ end
 class LocationWindow
   def initialize(name)
     @sprites = {}
-    @baseColor=Color.new(255,255,255)
-    @shadowColor=MessageConfig::LIGHTTEXTSHADOW #Color.new(148,148,165)
+    @baseColor = Color.new(248,248,248)
+    @shadowColor = MessageConfig::LIGHTTEXTSHADOW
     #Thundaga signposts
     @sprites["Image"] = Sprite.new
     mapname = $game_map.name

@@ -674,8 +674,12 @@ class PokemonPokedex_Scene
   end
 
   def setIconBitmap(species)
-    gender = ($Trainer.formlastseen[species][0] rescue 0)
-    form   = ($Trainer.formlastseen[species][1] rescue 0)
+    gender = 0
+    form = 0
+    if $Trainer.formlastseen[species]
+      gender = $Trainer.formlastseen[species][0]
+      form   = $Trainer.formlastseen[species][1]
+    end
     @sprites["icon"].setSpeciesBitmap(species,(gender==1),form)
   end
 
