@@ -46,7 +46,7 @@ def pbDownloadData(url, filename = nil, authorization = nil, depth = 0, &block)
   headers["authorization"] = authorization if authorization
   begin
     ret = HTTPLite.get(url, headers)
-  rescue MXKPError
+  rescue MKXPError
     ret = ""
   end
   return ret if !ret.is_a?(Hash)
