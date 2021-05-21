@@ -43,9 +43,13 @@ class PokeBattle_Trainer
 
   def formowned
     if !@formowned
-      @formowned = []
-      for i in 1..PBSpecies.maxValue
-        @formowned[i]     = [[],[]]
+      if $PokemonSystem && $PokemonSystem.gameControls
+        @formowned = @formseen.clone
+      else
+        @formowned = []
+        for i in 1..PBSpecies.maxValue
+          @formowned[i]     = [[],[]]
+        end
       end
     end
     return @formowned
@@ -137,16 +141,18 @@ def pbAddForeignPokemon(pokemon,level=nil,ownerName=nil,nickname=nil,ownerGender
 end
 
 # Adding foreign Pokémon like Shuckie
-alias encounter_pbAddForeignPokemonBetter pbAddForeignPokemonBetter
-def pbAddForeignPokemonBetter(pokemon,level=nil,ownerName=nil,nickname=nil,
-  ownerGender=0,seeform=true,shiny=true,ability=0,form=0,pokeGender=0,nature=0,ballUsed=0,
-  move1=nil,move2=nil,move3=nil,move4=nil,
-  hpIV=rand(31),atkIV=rand(31),defIV=rand(31),spdIV=rand(31),satkIV=rand(31),sdefIV=rand(31),ownform = true)
-  ret = encounter_pbAddForeignPokemonBetter(pokemon,level,ownerName,nickname,
-    ownerGender,seeform,shiny,ability,form,pokeGender,nature,ballUsed,move1,
-    move2,move3,move4,hpIV,atkIV,defIV,spdIV,satkIV,sdefIV)
-  pbOwnedForm(pokemon) if ownform && ret
-  return ret
+if defined?(pbAddForeignPokemonBetter)
+  alias encounter_pbAddForeignPokemonBetter pbAddForeignPokemonBetter
+  def pbAddForeignPokemonBetter(pokemon,level=nil,ownerName=nil,nickname=nil,
+    ownerGender=0,seeform=true,shiny=true,ability=0,form=0,pokeGender=0,nature=0,ballUsed=0,
+    move1=nil,move2=nil,move3=nil,move4=nil,
+    hpIV=rand(31),atkIV=rand(31),defIV=rand(31),spdIV=rand(31),satkIV=rand(31),sdefIV=rand(31),ownform = true)
+    ret = encounter_pbAddForeignPokemonBetter(pokemon,level,ownerName,nickname,
+      ownerGender,seeform,shiny,ability,form,pokeGender,nature,ballUsed,move1,
+      move2,move3,move4,hpIV,atkIV,defIV,spdIV,satkIV,sdefIV)
+    pbOwnedForm(pokemon) if ownform && ret
+    return ret
+  end
 end
 
 # Hatching an egg
@@ -212,20 +218,19 @@ NAMES = ["Grass", "Cave", "Surfing", "Rock Smash", "Fishing (Old Rod)",
 # Controls whether Deerling's seasonal form is used for the UI
 DEERLING = true
 
-class EncounterListUI_withforms
+class EncounterListUI
   def initialize
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99999
     @sprites = {}
-    @encarray1 = []
-    @encarray2 = []
+    @encarray = []
     @index = 0
     @encdata = load_data("Data/encounters.dat")
     @mapid = $game_map.map_id
   end
 
   def pbStartMenu
-    getEncData
+    # getEncData
     if !File.file?("Graphics/Pictures/"+WINDOWSKIN)
       raise _INTL("You are missing the graphic for this UI. Make sure the image is in your Graphics/Pictures folder and that it is named appropriately.")
     end
@@ -235,72 +240,21 @@ class EncounterListUI_withforms
     @sprites["background"].oy = @sprites["background"].bitmap.height/2
     @sprites["background"].x  = Graphics.width/2; @sprites["background"].y = Graphics.height/2
     @sprites["overlay"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
-    pbSetSystemFont(@sprites["overlay"].bitmap)
-    @h = (Graphics.height - @sprites["background"].bitmap.height)/2
-    @w = (Graphics.width - @sprites["background"].bitmap.width)/2
-    if !@num_enc
-      @sprites["overlay"].bitmap.clear
-      textpos = []
-      textpos.push([_INTL("{1}", $game_map.name,@name),256,32,2,Color.new(64,64,64),Color.new(176,176,176)])
-      textpos.push([_INTL("This area has no encounters!", @encarray2.length),256,64,2,Color.new(64,64,64),Color.new(176,176,176)])
-      textpos.push(["-----------------------------------------",256,96,2,Color.new(64,64,64),Color.new(176,176,176)])
-      pbDrawTextPositions(@sprites["overlay"].bitmap,textpos)
-      pbFadeInAndShow(@sprites) {pbUpdate}
-      main3
-    else
-      if !NAMES.nil? # If NAMES is not nil
-        @name = NAMES[@type[@index]] # Pull string from NAMES array
-      else
-        @name = [EncounterTypes::Names].flatten[@type[@index]] # Otherwise, use default names
-      end
-      @sprites["overlay"].bitmap.clear
-      textpos = []
-      textpos.push([_INTL("{1}: {2}", $game_map.name,@name),256,32,2,Color.new(64,64,64),Color.new(176,176,176)])
-      textpos.push([_INTL("Total encounters for area: {1}", @encarray2.length),256,64,2,Color.new(64,64,64),Color.new(176,176,176)])
-      textpos.push(["-----------------------------------------",256,96,2,Color.new(64,64,64),Color.new(176,176,176)])
-      pbDrawTextPositions(@sprites["overlay"].bitmap,textpos)
-      @encarray2.each_with_index do |specie,i| # Loops over internal IDs of encounters on current map
-        fSpecies = pbGetSpeciesFromFSpecies(specie) # Array of internal ID of base form and form ID of specie
-        if !pbFormSeen?(fSpecies[0],fSpecies[1])
-          @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(0,@viewport)
-        else
-          @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(fSpecies[0],@viewport)
-          @sprites["icon_#{i}"].pbSetParams(fSpecies[0],0,fSpecies[1],false)
-        end
-        # @sprites["icon_#{i}"].color = Color.new(118,91,38,220)
-        if i > 6 && i < 14
-          @sprites["icon_#{i}"].y = @h + 128 + 64
-          @sprites["icon_#{i}"].x = @w + 28 + (64*(i-7))
-        elsif i > 13
-          @sprites["icon_#{i}"].y = @h + 128 + 128
-          @sprites["icon_#{i}"].x = @w + 28 + (64*(i-14))
-        else
-          @sprites["icon_#{i}"].y = @h + 128
-          @sprites["icon_#{i}"].x = @w + 28 + 64*i
-        end
-      end
-      @sprites["rightarrow"] = AnimatedSprite.new("Graphics/Pictures/rightarrow",8,40,28,2,@viewport)
-      @sprites["rightarrow"].x = Graphics.width - @sprites["rightarrow"].bitmap.width
-      @sprites["rightarrow"].y = Graphics.height/2 - @sprites["rightarrow"].bitmap.height/16
-      @sprites["rightarrow"].visible = false
-      @sprites["rightarrow"].play
-      @sprites["leftarrow"] = AnimatedSprite.new("Graphics/Pictures/leftarrow",8,40,28,2,@viewport)
-      @sprites["leftarrow"].x = 0
-      @sprites["leftarrow"].y = Graphics.height/2 - @sprites["rightarrow"].bitmap.height/16
-      @sprites["leftarrow"].visible = false
-      @sprites["leftarrow"].play
-      pbFadeInAndShow(@sprites) {pbUpdate}
-      main1
-    end
-  end
-
-  def pbListOfEncounters(encounter) # This method is from Nuri Yuri
-    return [] unless encounter
-    encable = encounter.compact # Remove nils
-    encable.map! {|enc| enc[0]} # Pull first element from each array
-    encable.flatten! # Transform array of arrays into array
-    encable.uniq! # Prevent duplication
-    return encable
+    @sprites["overlay"].bitmap.font.name = "TAKOYAKI"
+    @sprites["overlay"].bitmap.font.size = 34
+    @sprites["rightarrow"] = AnimatedSprite.new("Graphics/Pictures/rightarrow",8,40,28,2,@viewport)
+    @sprites["rightarrow"].x = Graphics.width - @sprites["rightarrow"].bitmap.width
+    @sprites["rightarrow"].y = Graphics.height/2 - @sprites["rightarrow"].bitmap.height/16
+    @sprites["rightarrow"].visible = false
+    @sprites["rightarrow"].play
+    @sprites["leftarrow"] = AnimatedSprite.new("Graphics/Pictures/leftarrow",8,40,28,2,@viewport)
+    @sprites["leftarrow"].x = 0
+    @sprites["leftarrow"].y = Graphics.height/2 - @sprites["rightarrow"].bitmap.height/16
+    @sprites["leftarrow"].visible = false
+    @sprites["leftarrow"].play
+    pbDrawPage
+    pbFadeInAndShow(@sprites) {pbUpdate}
+    pbMain
   end
 
   def getEncData
@@ -310,117 +264,111 @@ class EncounterListUI_withforms
       @type = (0...enc.length).reject {|i| enc[i].nil? } # Array indices of non-nil array elements
       @first = enc.index(enc.find { |i| !i.nil? } || false) # From Yuri to get index of first non-nil array element
       enctypes = enc[@type[@index]]
-      @encarray1 = pbListOfEncounters(enctypes)
+      temp_enc_array = []
+      if enctypes
+        temp_enc_array = enctypes.clone
+        temp_enc_array.compact! # Remove nils
+        temp_enc_array.map! {|enc| enc[0]} # Pull first element from each array
+        temp_enc_array.flatten! # Transform array of arrays into array
+        temp_enc_array.uniq! # Prevent duplication
+      end
       temp = []
-      @encarray1.each_with_index do |s,i| # Funky method for grouping forms with their base forms
+      temp_enc_array.each_with_index do |s,i| # Funky method for grouping forms with their base forms
         if (isConst?(s,PBSpecies,:DEERLING) ||
           isConst?(s,PBSpecies,:SAWSBUCK)) && DEERLING
-          @encarray1[i] = pbGetFSpeciesFromForm(s,pbGetSeason)
+          temp_enc_array[i] = pbGetFSpeciesFromForm(s,pbGetSeason)
         end
         fSpecies = pbGetSpeciesFromFSpecies(s)
         temp.push(fSpecies[0] + fSpecies[1]*0.001)
       end
       temp_sort = temp.sort
       id = temp_sort.map{|s| temp.index(s)}
-      @encarray2 = []
-      for i in 0..@encarray1.length-1
-        @encarray2[i] = @encarray1[id[i]]
+      @encarray = []
+      for i in 0..temp_enc_array.length-1
+        @encarray[i] = temp_enc_array[id[i]]
       end
     else
-      @encarray2 = [7]
+      @encarray = [7]
     end
   end
 
   def pbUpdate
-    #for key in @sprites.keys
-    #  next if key[/icon/]
-    #  @sprites[key].update
-    #end
     pbUpdateSpriteHash(@sprites)
   end
 
-  def pbShift
-    for i in 0...@encarray2.length
-      @sprites["icon_#{i}"].dispose
+  def pbDrawPage
+    for i in 0...@encarray.length
+      @sprites["icon_#{i}"].dispose if @sprites["icon_#{i}"] && !@sprites["icon_#{i}"].disposed?
+    end
+    @sprites["overlay"].bitmap.clear
+    getEncData
+    if !@num_enc
+      textpos = []
+      textpos.push([_INTL("{1}", $game_map.name,@name),256,32,2,Color.new(248,248,248),MessageConfig::LIGHTTEXTSHADOW,true])
+      textpos.push([_INTL("This area has no encounters!", @encarray.length),256,64,2,Color.new(248,248,248),MessageConfig::LIGHTTEXTSHADOW,true])
+      textpos.push(["-----------------------------------------",256,96,2,Color.new(248,248,248),MessageConfig::LIGHTTEXTSHADOW])
+    else
+      if !NAMES.nil? # If NAMES is not nil
+        @name = NAMES[@type[@index]] # Pull string from NAMES array
+      else
+        @name = [EncounterTypes::Names].flatten[@type[@index]] # Otherwise, use default names
+      end
+      textpos = []
+      textpos.push([_INTL("{1}: {2}", $game_map.name,@name),256,32,2,Color.new(248,248,248),MessageConfig::LIGHTTEXTSHADOW,true])
+      textpos.push([_INTL("Total encounters for area: {1}", @encarray.length),256,64,2,Color.new(248,248,248),MessageConfig::LIGHTTEXTSHADOW,true])
+      textpos.push(["-----------------------------------------",256,96,2,Color.new(248,248,248),MessageConfig::LIGHTTEXTSHADOW])
+      @encarray.each_with_index do |specie,i| # Loops over internal IDs of encounters on current map
+        fSpecies = pbGetSpeciesFromFSpecies(specie) # Array of internal ID of base form and form ID of specie
+        if !pbFormSeen?(fSpecies[0],fSpecies[1])
+          @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(0,@viewport)
+        elsif !pbFormOwned?(fSpecies[0],fSpecies[1])
+          @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(fSpecies[0],@viewport)
+          @sprites["icon_#{i}"].pbSetParams(fSpecies[0],0,fSpecies[1],false)
+          @sprites["icon_#{i}"].color = Color.new(100,100,100,200)
+        else
+          @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(fSpecies[0],@viewport)
+          @sprites["icon_#{i}"].pbSetParams(fSpecies[0],0,fSpecies[1],false)
+        end
+        xpos = [60,124,188,252,316,380,60,124,188,252,316,380,60,124,188,252,316,380]
+        ypos = [128,128,128,128,128,128,200,200,200,200,200,200,272,272,272,272,272,272]
+        @sprites["icon_#{i}"].x = xpos[i]
+        @sprites["icon_#{i}"].y = ypos[i]
+      end
+      pbRefreshArrows
+    end
+    pbDrawTextPositions(@sprites["overlay"].bitmap,textpos)
+  end
+
+  def pbRefreshArrows
+    @sprites["leftarrow"].visible  = true
+    @sprites["rightarrow"].visible = true
+    if @first == @type[@index]
+      @sprites["leftarrow"].visible  = false
+      @sprites["rightarrow"].visible = true
+    elsif @index == @type.length-1
+      @sprites["leftarrow"].visible  = true
+      @sprites["rightarrow"].visible = false
     end
   end
 
-  def main1
+  def pbMain
     loop do
       Graphics.update
       Input.update
       pbUpdate
-        if @first == @type[@index] && @num_enc >1 # If first page and there are more pages
-          @sprites["leftarrow"].visible=false
-          @sprites["rightarrow"].visible=true
-        elsif @index == @type.length-1 && @num_enc >1 # If last page and there is more than one page
-          @sprites["leftarrow"].visible=true
-          @sprites["rightarrow"].visible=false
-        end
-        if Input.trigger?(Input::RIGHT) && @num_enc >1 && @index< @num_enc-1
-          pbPlayCursorSE
-          @index += 1
-          pbShift # Dispose sprites
-          main2
-          @sprites["leftarrow"].visible=true
-          @sprites["rightarrow"].visible=true
-        elsif Input.trigger?(Input::LEFT) && @num_enc >1 && @index !=0
-          pbPlayCursorSE
-          @index -= 1
-          pbShift # Dispose sprites
-          main2
-          @sprites["leftarrow"].visible=true
-          @sprites["rightarrow"].visible=true
-        elsif Input.trigger?(Input::C) || Input.trigger?(Input::B)
-          pbPlayCloseMenuSE
-          break
-        end
-      end
-    dispose
-  end
-
-  def main2
-    getEncData
-    if !NAMES.nil?
-      @name = NAMES[@type[@index]]
-    else
-      @name = [EncounterTypes::Names].flatten[@type[@index]]
-    end
-    @sprites["overlay"].bitmap.clear
-    textpos = []
-    textpos.push([_INTL("{1}: {2}", $game_map.name,@name),256,32,2,Color.new(64,64,64),Color.new(176,176,176)])
-    textpos.push([_INTL("Total encounters for area: {1}", @encarray2.length),256,64,2,Color.new(64,64,64),Color.new(176,176,176)])
-    textpos.push(["-----------------------------------------",256,96,2,Color.new(64,64,64),Color.new(176,176,176)])
-    pbDrawTextPositions(@sprites["overlay"].bitmap,textpos)
-    @encarray2.each_with_index do |specie,i| # Loops over internal IDs of encounters on current map
-      fSpecies = pbGetSpeciesFromFSpecies(specie) # Array of internal ID of base form and form ID of specie
-      if !pbFormSeen?(fSpecies[0],fSpecies[1])
-        @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(0,@viewport)
-      else
-        @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(fSpecies[0],@viewport)
-        @sprites["icon_#{i}"].pbSetParams(fSpecies[0],0,fSpecies[1],false)
-      end
-      # @sprites["icon_#{i}"].color = Color.new(118,91,38,220)
-      if i > 6 && i < 14
-        @sprites["icon_#{i}"].y = @h + 128 + 64
-        @sprites["icon_#{i}"].x = @w + 28 + (64*(i-7))
-      elsif i > 13
-        @sprites["icon_#{i}"].y = @h + 128 + 128
-        @sprites["icon_#{i}"].x = @w + 28 + (64*(i-14))
-      else
-        @sprites["icon_#{i}"].y = @h + 128
-        @sprites["icon_#{i}"].x = @w + 28 + 64*i
-      end
-    end
-  end
-
-  def main3
-    loop do
-      Graphics.update
-      Input.update
       if Input.trigger?(Input::C) || Input.trigger?(Input::B)
         pbPlayCloseMenuSE
         break
+      end
+      next if @num_enc < 2
+      if Input.trigger?(Input::RIGHT) && @index < @num_enc-1
+        pbPlayCursorSE
+        @index += 1
+        pbDrawPage
+      elsif Input.trigger?(Input::LEFT) && @index > 0
+        pbPlayCursorSE
+        @index -= 1
+        pbDrawPage
       end
     end
     dispose
@@ -438,5 +386,5 @@ end
 ###############################################
 
 def pbEncounterListUI
-  EncounterListUI_withforms.new.pbStartMenu
+  EncounterListUI.new.pbStartMenu
 end

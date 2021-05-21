@@ -190,3 +190,8 @@ class ControlConfig
     return Keys.getKeyName(@keyCode)
   end
 end
+
+class PokemonSystem
+  attr_accessor :gameControls
+
+end
