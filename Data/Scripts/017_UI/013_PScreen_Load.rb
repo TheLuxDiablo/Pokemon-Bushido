@@ -433,7 +433,7 @@ class PokemonLoadScreen
           if pbHasSave?(i,true)
             trainerName = pbGetSave(i,true)[0].name
             displayArray.push(slotArray[i])
-            displayArray2.push(slotArray[i] + " . . . . . . Trainer: #{trainerName}")
+            displayArray2.push(slotArray[i] + " . . . . . . Kenshi: #{trainerName}")
           end
         end
         if displayArray.length == 1
@@ -505,7 +505,7 @@ class PokemonLoadScreen
         for i in 0...displayArray.length
           if pbHasSave?(i,true)
             trainerName = pbGetSave(i,true)[0].name
-            displayArray[i] += " . . . . . . Trainer: #{trainerName}"
+            displayArray[i] += " . . . . . . Kenshi: #{trainerName}"
           else
             displayArray[i] += " . . . . . . EMPTY"
           end
