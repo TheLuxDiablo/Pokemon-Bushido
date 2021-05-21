@@ -23,30 +23,36 @@ def pbScreenCapture
   t = pbGetTimeNow
   filestart = t.strftime("[%Y-%m-%d] %H_%M_%S")
   filestart = sprintf("%s.%03d", filestart, (t.to_f - t.to_i) * 1000)   # milliseconds
-  capturefile = (sprintf("%s.bmp", filestart))
-  Graphics.screenshot(capturefile)
+  capturefile = (sprintf("%s.png", filestart))
+  Dir.mkdir("Screenshots") if !safeExists?("Screenshots/")
+  Graphics.screenshot("Screenshots/" + capturefile)
   pbSEPlay("Pkmn exp full") if FileTest.audio_exist?("Audio/SE/Pkmn exp full")
 end
 
 def pbSetUpSystem
-  begin
+  if safeExists?(RTP.getSaveFileName("Game_0.rxdata"))
     trainer       = nil
     framecount    = 0
     game_system   = nil
     pokemonSystem = nil
     havedata = false
-    File.open(RTP.getSaveFileName("Game_0.rxdata")) { |f|
-      trainer       = Marshal.load(f)
-      framecount    = Marshal.load(f)
-      game_system   = Marshal.load(f)
-      pokemonSystem = Marshal.load(f)
-    }
-    raise "Corrupted file" if !trainer.is_a?(PokeBattle_Trainer)
-    raise "Corrupted file" if !framecount.is_a?(Numeric)
-    raise "Corrupted file" if !game_system.is_a?(Game_System)
-    raise "Corrupted file" if !pokemonSystem.is_a?(PokemonSystem)
-    havedata = true
-  rescue
+    begin
+      File.open(RTP.getSaveFileName("Game_0.rxdata")) { |f|
+        trainer       = Marshal.load(f)
+        framecount    = Marshal.load(f)
+        game_system   = Marshal.load(f)
+        pokemonSystem = Marshal.load(f)
+      }
+      raise "Corrupted file" if !trainer.is_a?(PokeBattle_Trainer)
+      raise "Corrupted file" if !framecount.is_a?(Numeric)
+      raise "Corrupted file" if !game_system.is_a?(Game_System)
+      raise "Corrupted file" if !pokemonSystem.is_a?(PokemonSystem)
+      havedata = true
+    rescue
+      game_system   = Game_System.new
+      pokemonSystem = PokemonSystem.new
+    end
+  else
     game_system   = Game_System.new
     pokemonSystem = PokemonSystem.new
   end

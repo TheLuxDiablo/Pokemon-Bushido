@@ -89,7 +89,9 @@ Lisa Anthony<s>Wachunga
 Luka S.J.<s>
 and everyone else who helped out
 
-
+"mkxp-z" by:
+Roza
+Based on MKXP by Ancurio et al.
 
 "RPG Maker XP" by:
 Enterbrain

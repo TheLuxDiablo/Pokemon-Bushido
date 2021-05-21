@@ -75,7 +75,8 @@ class HandlerHash
 
   def fromSymbol(sym)
     return sym unless sym.is_a?(Symbol) || sym.is_a?(String)
-    mod = Object.const_get(@mod) rescue nil
+    mod = nil
+    mod = Object.const_get(@mod) if Object.const_defined?(@mod)
     return nil if !mod
     return mod.const_get(sym.to_sym) rescue nil
   end

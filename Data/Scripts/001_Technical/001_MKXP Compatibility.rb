@@ -23,6 +23,29 @@ class Object
 
   def inspect; to_s; end
 
+  def deep_clone
+    return @deep_cloning_obj if @deep_cloning
+    @deep_cloning_obj = clone
+    @deep_cloning_obj.instance_variables.each do |var|
+      val = @deep_cloning_obj.instance_variable_get(var)
+      begin
+        if val.frozen?
+          val = val
+        else
+          @deep_cloning = true
+          val = val.deep_clone
+        end
+      rescue TypeError
+        next
+      ensure
+        @deep_cloning = false
+      end
+      @deep_cloning_obj.instance_variable_set(var, val)
+    end
+    deep_cloning_obj = @deep_cloning_obj
+    @deep_cloning_obj = nil
+    return deep_cloning_obj
+  end
 end
 
 #===============================================================================
