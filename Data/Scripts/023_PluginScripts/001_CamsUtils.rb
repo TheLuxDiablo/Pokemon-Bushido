@@ -98,7 +98,7 @@ def pbSelectOutfit
       pbMessage(_INTL("You're already wearing this outfit!"))
     end
   else
-    Kernel.pbMessage("Hmm... looks like there aren't any other clothes in here.")
+    pbMessage("Hmm... looks like there aren't any other clothes in here.")
   end
 end
 

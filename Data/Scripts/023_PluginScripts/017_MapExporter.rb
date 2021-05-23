@@ -47,13 +47,13 @@ def pbExportAMap
     end
     cmd = 0
     loop do
-      cmd = Kernel.pbShowCommands(nil,cmds,-1,cmd)
+      cmd = pbShowCommands(nil,cmds,-1,cmd)
       if cmd == 0
         options = []
         options << :events if cmds[1].split("")[1] == "X"
         options << :player if player && cmds[2].split("")[1] == "X"
         pbExportMap(mapid, options)
-        Kernel.pbMessage(_INTL("Successfully exported this map."))
+        pbMessage(_INTL("Successfully exported this map."))
         break
       elsif cmd == 1
         if cmds[1].split("")[1] == " "

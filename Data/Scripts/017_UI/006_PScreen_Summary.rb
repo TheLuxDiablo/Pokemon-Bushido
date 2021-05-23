@@ -755,8 +755,8 @@ class PokemonSummary_Scene
   def drawMoveSelection(moveToLearn)
     overlay = @sprites["overlay"].bitmap
     overlay.clear
-    base   = Color.new(248,248,248)
-    shadow = Color.new(104,104,104)
+    base   = Color.new(64,64,64)
+    shadow = Color.new(176,176,176)
     moveBase   = Color.new(64,64,64)
     moveShadow = Color.new(176,176,176)
     ppBase   = [moveBase,                # More than 1/2 of total PP

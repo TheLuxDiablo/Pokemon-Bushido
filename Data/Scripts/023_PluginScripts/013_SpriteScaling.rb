@@ -48,19 +48,24 @@ class EBSBitmapWrapper
     @actualBitmap=Bitmap.new(@width,@height)
     @actualBitmap.clear
     @actualBitmap.stretch_blt(Rect.new(0,0,@width,@height),@bitmap,Rect.new(@currentIndex*(@width/@scale),0,@width/@scale,@height/@scale))
+    @filename = file
   end
   alias initialize_elite initialize unless self.method_defined?(:initialize_elite)
+
+  attr_reader :filename
 
   def length; @totalFrames; end
   def disposed?; @actualBitmap.disposed?; end
   def dispose
     @bitmap.dispose
-  @bitmapFile.dispose
+    @bitmapFile.dispose
     @actualBitmap.dispose
   end
   def copy; @actualBitmap.clone; end
   def bitmap; @actualBitmap; end
   def bitmap=(val); @actualBitmap=val; end
+  def fullbitmap; @bitmap; end
+  def fullbitmap=(val); @bitmap=val; end
   def each; end
   def alterBitmap(index); return @strip[index]; end
 
@@ -72,6 +77,7 @@ class EBSBitmapWrapper
       @strip.push(bitmap)
     end
   end
+
   def compileStrip
     @bitmap.clear
     for i in 0...@strip.length
@@ -120,7 +126,7 @@ class EBSBitmapWrapper
   end
 
   def update
-  return false if @@disableBitmapAnimation
+    return false if @@disableBitmapAnimation
     return false if @actualBitmap.disposed?
     return false if @speed < 1
     case @speed
@@ -217,7 +223,6 @@ if !defined?(EliteBattle)
                                                 (pokemon.form rescue 0),
                                                 (pokemon.isShadow? rescue false)])
     end
-    raise missingPokeSpriteError(pokemon,back) if bitmapFileName.nil?
     scale = BACK_SCALE if back
     ebsBitmap=EBSBitmapWrapper.new(bitmapFileName,scale) if bitmapFileName
     ret = ebsBitmap if bitmapFileName
@@ -227,7 +232,7 @@ if !defined?(EliteBattle)
     # as they will not account for the sprite animation itself
 
     # alterBitmap methods for static sprites will work just fine
-    alterBitmap=(MultipleForms.getFunction(species,"alterBitmap") rescue nil) if !pokemon.isEgg? && ebsBitmap && ebsBitmap.totalFrames==1 # remove this totalFrames clause to allow for dynamic sprites too
+    alterBitmap=(MultipleForms.getFunction(species,"alterBitmap") rescue nil) if !pokemon.isEgg? && ebsBitmap
     if bitmapFileName && alterBitmap
       ebsBitmap.prepareStrip
       for i in 0...ebsBitmap.totalFrames

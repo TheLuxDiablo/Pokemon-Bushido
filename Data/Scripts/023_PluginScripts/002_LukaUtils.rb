@@ -1123,7 +1123,7 @@ class Color
     elsif color.is_a?(String) # string
       if color.include?("#") # hex color
         return Color.new(color)
-      elsif color.include(",") # RGB color
+      elsif color.include?(",") # RGB color
         rgb = color.split(",")
         return Color.new(rgb[0].to_i, rgb[1].to_i, rgb[2].to_i)
       end

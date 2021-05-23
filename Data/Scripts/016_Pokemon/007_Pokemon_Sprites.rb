@@ -86,6 +86,7 @@ class PokemonIconSprite < SpriteWrapper
   attr_accessor :selected
   attr_accessor :active
   attr_reader   :pokemon
+  attr_reader   :filename
 
   def initialize(pokemon,viewport=nil)
     super(viewport)
@@ -129,7 +130,8 @@ class PokemonIconSprite < SpriteWrapper
       @counter = 0
       return
     end
-    @animBitmap = AnimatedBitmap.new(pbPokemonIconFile(value))
+    @filename = pbPokemonIconFile(value)
+    @animBitmap = AnimatedBitmap.new(@filename)
     self.bitmap = @animBitmap.bitmap
     self.src_rect.width  = @animBitmap.height
     self.src_rect.height = @animBitmap.height

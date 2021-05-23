@@ -516,6 +516,7 @@ class PokemonLoadScreen
           next
         end
         $PokemonTemp.saveSlot = value
+        pbPlayDecisionSE
         @scene.pbEndScene
         if $game_map && $game_map.events
           for event in $game_map.events.values

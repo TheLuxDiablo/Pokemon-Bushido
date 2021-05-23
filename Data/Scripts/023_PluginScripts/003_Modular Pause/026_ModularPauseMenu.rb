@@ -48,7 +48,7 @@ MenuHandlers.addEntry(:POKEMON,_INTL("Pokémon"),"menuPokemon",proc{|menu|
     end
   }
   if hiddenmove
-    Kernel.pbUseHiddenMove(hiddenmove[0],hiddenmove[1])
+    pbUseHiddenMove(hiddenmove[0],hiddenmove[1])
     menu.close = true
   end
 },proc{ next $Trainer.party.length > 0 })
@@ -65,7 +65,7 @@ MenuHandlers.addEntry(:BAG,_INTL("Bag"),"menuBag",proc{|menu|
   end
   }
   if item > 0
-    Kernel.pbUseKeyItemInField(item)
+    pbUseKeyItemInField(item)
     menu.close = true
   end
 },proc{ next true })
@@ -131,7 +131,7 @@ MenuHandlers.addEntry(:POKEDEX,_INTL("Journal"),"menuPokedex",proc{|menu|
 # Quit Safari-Zone
 MenuHandlers.addEntry(:QUIT,_INTL("\\contest"),"menuQuit",proc{|menu|
   if pbInSafari?
-    if Kernel.pbConfirmMessage(_INTL("Would you like to leave the Safari Game right now?"))
+    if pbConfirmMessage(_INTL("Would you like to leave the Safari Game right now?"))
       menu.pbEndScene
       menu.endscene = false
       menu.close = true
@@ -139,7 +139,7 @@ MenuHandlers.addEntry(:QUIT,_INTL("\\contest"),"menuQuit",proc{|menu|
       pbSafariState.pbGoToStart
     end
   else
-    if Kernel.pbConfirmMessage(_INTL("Would you like to end the Contest now?"))
+    if pbConfirmMessage(_INTL("Would you like to end the Contest now?"))
       menu.pbEndScene
       menu.endscene = false
       menu.close = true

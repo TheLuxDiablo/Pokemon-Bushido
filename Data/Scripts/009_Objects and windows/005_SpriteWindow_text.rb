@@ -25,7 +25,7 @@ class Window_UnformattedTextPokemon < SpriteWindow_Base
     refresh
   end
 
-  def initialize(text="")
+  def initialize(text="",small = false)
     super(0,0,33,33)
     self.contents=Bitmap.new(1,1)
     pbSetSystemFont(self.contents)
@@ -715,7 +715,7 @@ class Window_InputNumberPokemon < SpriteWindow_Base
 
   def textHelper(x,y,text,i)
     textwidth = self.contents.text_size(text).width
-    pbDrawShadowText(self.contents,x+(12-textwidth/2),y, textwidth+4 , 32, text, @baseColor, @shadowColor)
+    pbDrawShadowText(self.contents,x+(12-textwidth/2),y + 6, textwidth+4 , 32, text, @baseColor, @shadowColor)
     if @index==i && @active && @frame/15==0
       colors=getDefaultTextColors(self.windowskin)
       self.contents.fill_rect(x+(12-textwidth/2),y+30,textwidth,2,colors[0])

@@ -225,12 +225,11 @@ class EncounterListUI
     @sprites = {}
     @encarray = []
     @index = 0
-    @encdata = load_data("Data/encounters.dat")
+    @encdata = pbLoadEncountersData
     @mapid = $game_map.map_id
   end
 
   def pbStartMenu
-    # getEncData
     if !File.file?("Graphics/Pictures/"+WINDOWSKIN)
       raise _INTL("You are missing the graphic for this UI. Make sure the image is in your Graphics/Pictures folder and that it is named appropriately.")
     end
@@ -319,9 +318,9 @@ class EncounterListUI
       textpos.push(["-----------------------------------------",256,96,2,Color.new(248,248,248),MessageConfig::LIGHTTEXTSHADOW])
       @encarray.each_with_index do |specie,i| # Loops over internal IDs of encounters on current map
         fSpecies = pbGetSpeciesFromFSpecies(specie) # Array of internal ID of base form and form ID of specie
-        if !pbFormSeen?(fSpecies[0],fSpecies[1])
+        if !pbFormSeen?(fSpecies[0],fSpecies[1]) && !$DEBUG
           @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(0,@viewport)
-        elsif !pbFormOwned?(fSpecies[0],fSpecies[1])
+        elsif !pbFormOwned?(fSpecies[0],fSpecies[1]) && !$DEBUG
           @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(fSpecies[0],@viewport)
           @sprites["icon_#{i}"].pbSetParams(fSpecies[0],0,fSpecies[1],false)
           @sprites["icon_#{i}"].color = Color.new(100,100,100,200)
@@ -360,7 +359,7 @@ class EncounterListUI
         pbPlayCloseMenuSE
         break
       end
-      next if @num_enc < 2
+      next if !@num_enc
       if Input.trigger?(Input::RIGHT) && @index < @num_enc-1
         pbPlayCursorSE
         @index += 1

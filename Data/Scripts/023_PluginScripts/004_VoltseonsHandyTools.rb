@@ -64,14 +64,14 @@ PluginManager.register({
 
 # Receive Item | Variables: itm = The Item, qty = Quantity of the item.
 def vRI(itm, qty=1)
-Kernel.pbReceiveItem(itm.upcase,qty)
+  pbReceiveItem(itm.upcase,qty)
 #Example: vRI("Potion",5) - The player receives 5 potions.
 #Alternates: vReceiveItem(), vItemReceive(), vGI(), vGetItem(), vItemGet()
 end
 
 # Find Item | Variables: itm = The Item, qty = Quantity of the item.
 def vFI(itm, qty=1)
-Kernel.pbItemBall(itm.upcase,qty)
+  pbItemBall(itm.upcase,qty)
 #Example: vFI("Pokeball",5) - The player finds 5 pokéballs.
 #Alternates: vFindItem(), vItemFind(), vItemBall()
 end

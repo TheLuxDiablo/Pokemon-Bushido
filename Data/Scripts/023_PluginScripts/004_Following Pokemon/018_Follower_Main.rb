@@ -153,6 +153,7 @@ end
 #-------------------------------------------------------------------------------
 class DependentEvents
   attr_accessor :realEvents
+
 #-------------------------------------------------------------------------------
 # Raises The Current Pokemon's Happiness level +1 per each time
 # 5000 frames (2 min 5s) have passed
@@ -614,7 +615,7 @@ def pbHiddenMoveAnimation(pokemon,followAnim = true)
     pbWait(Graphics.frame_rate/5)
   end
 end
-=begin
+
 #-------------------------------------------------------------------------------
 # New sendout animation for Followers to slide in when sent out for the 1st time in battle
 #-------------------------------------------------------------------------------
@@ -705,7 +706,7 @@ class PokeballPlayerSendOutAnimation < PokeBattle_Animation
     end
   end
 end
-=end
+
 
 def pbStartOver(gameover=false)
   if pbInBugContest?
@@ -1074,21 +1075,25 @@ class DependentEventSprites
     for i in 0...@sprites.length
       pbDayNightTint(@sprites[i])
       firstPkmn = $Trainer.firstAblePokemon
-      if $PokemonGlobal.followerToggled && APPLYSTATUSTONES && firstPkmn
-        if MultipleForms.hasFunction?(firstPkmn,"getForm")
-          $PokemonTemp.dependentEvents.come_back(false)
+      if $PokemonGlobal.followerToggled && firstPkmn
+        if APPLYSTATUSTONES
+          case firstPkmn.status
+          when PBStatuses::BURN
+            @sprites[i].tone.set(@sprites[i].tone.red+BURNTONE[0],@sprites[i].tone.green+BURNTONE[1],@sprites[i].tone.blue+BURNTONE[2],@sprites[i].tone.gray+BURNTONE[3])
+          when PBStatuses::POISON
+            @sprites[i].tone.set(@sprites[i].tone.red+POISONTONE[0],@sprites[i].tone.green+POISONTONE[1],@sprites[i].tone.blue+POISONTONE[2],@sprites[i].tone.gray+POISONTONE[3])
+          when PBStatuses::PARALYSIS
+            @sprites[i].tone.set(@sprites[i].tone.red+PARALYSISTONE[0],@sprites[i].tone.green+PARALYSISTONE[1],@sprites[i].tone.blue+PARALYSISTONE[2],@sprites[i].tone.gray+PARALYSISTONE[3])
+          when PBStatuses::FROZEN
+            @sprites[i].tone.set(@sprites[i].tone.red+FREEZETONE[0],@sprites[i].tone.green+FREEZETONE[1],@sprites[i].tone.blue+FREEZETONE[2],@sprites[i].tone.gray+FREEZETONE[3])
+          when PBStatuses::SLEEP
+            @sprites[i].tone.set(@sprites[i].tone.red+SLEEPTONE[0],@sprites[i].tone.green+SLEEPTONE[1],@sprites[i].tone.blue+SLEEPTONE[2],@sprites[i].tone.gray+SLEEPTONE[3])
+          end
         end
-        case firstPkmn.status
-        when PBStatuses::BURN
-          @sprites[i].tone.set(@sprites[i].tone.red+BURNTONE[0],@sprites[i].tone.green+BURNTONE[1],@sprites[i].tone.blue+BURNTONE[2],@sprites[i].tone.gray+BURNTONE[3])
-        when PBStatuses::POISON
-          @sprites[i].tone.set(@sprites[i].tone.red+POISONTONE[0],@sprites[i].tone.green+POISONTONE[1],@sprites[i].tone.blue+POISONTONE[2],@sprites[i].tone.gray+POISONTONE[3])
-        when PBStatuses::PARALYSIS
-          @sprites[i].tone.set(@sprites[i].tone.red+PARALYSISTONE[0],@sprites[i].tone.green+PARALYSISTONE[1],@sprites[i].tone.blue+PARALYSISTONE[2],@sprites[i].tone.gray+PARALYSISTONE[3])
-        when PBStatuses::FROZEN
-          @sprites[i].tone.set(@sprites[i].tone.red+FREEZETONE[0],@sprites[i].tone.green+FREEZETONE[1],@sprites[i].tone.blue+FREEZETONE[2],@sprites[i].tone.gray+FREEZETONE[3])
-        when PBStatuses::SLEEP
-          @sprites[i].tone.set(@sprites[i].tone.red+SLEEPTONE[0],@sprites[i].tone.green+SLEEPTONE[1],@sprites[i].tone.blue+SLEEPTONE[2],@sprites[i].tone.gray+SLEEPTONE[3])
+        if firstPkmn.shadowPokemon? && !$PokemonGlobal.dependentEvents[i][6][/_shadow/]
+          @sprites[i].color.set(67,0,255,133)
+        else
+          @sprites[i].color.set(0,0,0,0)
         end
       end
     end

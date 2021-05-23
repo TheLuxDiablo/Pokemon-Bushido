@@ -176,7 +176,7 @@ end
   @sprites["item"].zoom_x-=0.17/2
   @sprites["item"].opacity-=14.16
   end
-  pbReceiveItem(@item,@quantity) if !@fakeitem # Deleted Kernel. and @plural
+  pbReceiveItem(@item,@quantity) if !@fakeitem
   loop do
     break
   end

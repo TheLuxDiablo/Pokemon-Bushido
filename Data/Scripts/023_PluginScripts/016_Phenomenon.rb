@@ -118,7 +118,7 @@ class Phenomenon
   end
 
   def generate!
-    Kernel.echo("Generating...\n")
+    echo("Generating...\n")
     phenomenon_tiles = []   # x, y, type
     # limit range to around the player to reduce CPU load
     x_range = [[$game_player.x - 20, 0].max, [$game_player.x + 20, $game_map.width].min]
@@ -145,7 +145,6 @@ class Phenomenon
       end
     end
     if phenomenon_tiles.length == 0
-      Kernel.echo("No phenomenon tiles available!!!\n\n")
       pbPhenomenonCancel
     else
       selected_tile = phenomenon_tiles.random
@@ -186,10 +185,12 @@ class Phenomenon
         $PokemonGlobal.nextBattleBGM = PhenomenonConfig::BattleMusic
       end
       $PokemonTemp.forceSingleBattle = true
+      $PokemonTemp.nonStaticEncounter = true
       pbWildBattle(encounter[0], encounter[1])
+      $PokemonTemp.nonStaticEncounter = false
     elsif item != nil
       pbPhenomenonCancel
-      Kernel.pbReceiveItem(item)
+      pbReceiveItem(item)
     end
   end
 
@@ -214,7 +215,7 @@ end
 def pbPhenomenonLoadTypes
   types = []
   PhenomenonConfig::Types.each do |(key, value)|
-    Kernel.echo("ERROR: No encounters setup!\n\n") if !$PokemonEncounters
+    echo("ERROR: No encounters setup!\n\n") if !$PokemonEncounters
     types.push(key) if $PokemonEncounters && $PokemonEncounters.pbMapHasEncounter?($game_map.map_id, value[3])
   end
   $PokemonTemp.phenomenonPossible = types.size > 0

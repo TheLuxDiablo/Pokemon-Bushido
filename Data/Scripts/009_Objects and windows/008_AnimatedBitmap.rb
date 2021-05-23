@@ -24,6 +24,8 @@ class AnimatedBitmap
   def dispose;      @bitmap.dispose;                    end
   def deanimate;    @bitmap.deanimate;                  end
   def copy;         @bitmap.copy;                       end
+
+  attr_reader :filename
 end
 
 #===============================================================================

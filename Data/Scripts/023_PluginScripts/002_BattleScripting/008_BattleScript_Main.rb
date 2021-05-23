@@ -1137,7 +1137,7 @@ module TrainerDialogue
       scene.pbShowOpponent(0) if !battle.wildBattle?
       scene.disappearDatabox
       scene.sprites["messageWindow"].text = ""
-      Kernel.pbMessage(_INTL(turnStart))
+      pbMessage(_INTL(turnStart))
       if !battle.wildBattle?
         for i in 1..battle.opponent.length
           scene.pbHideOpponent(i)
@@ -1161,20 +1161,20 @@ module TrainerDialogue
         turnStart["opp"]=0 if turnStart["opp"] < 0
         if turnStart["text"].is_a?(Array)
           for i in 0...turnStart["text"].length
-            Kernel.pbMessage(_INTL(turnStart["text"][i]))
+            pbMessage(_INTL(turnStart["text"][i]))
           end
         else
-          Kernel.pbMessage(_INTL(turnStart["text"]))
+          pbMessage(_INTL(turnStart["text"]))
         end
       else
         TrainerDialogue.changeTrainerSprite(turnStart["opp"],scene) if turnStart["opp"].is_a?(String)
         scene.pbShowOpponent(0) if !battle.wildBattle? || (battle.wildBattle? && turnStart["opp"].is_a?(String))
         if turnStart["text"].is_a?(Array)
           for i in 0...turnStart["text"].length
-            Kernel.pbMessage(_INTL(turnStart["text"][i]))
+            pbMessage(_INTL(turnStart["text"][i]))
           end
         else
-          Kernel.pbMessage(_INTL(turnStart["text"]))
+          pbMessage(_INTL(turnStart["text"]))
         end
       end
       if battle.opponent.is_a?(Array)
@@ -1203,7 +1203,7 @@ module TrainerDialogue
       scene.disappearDatabox
       scene.sprites["messageWindow"].text = ""
       for i in 0...turnStart.length
-        Kernel.pbMessage(_INTL(turnStart[i]))
+        pbMessage(_INTL(turnStart[i]))
       end
       if !battle.wildBattle?
         for i in 1..battle.opponent.length
