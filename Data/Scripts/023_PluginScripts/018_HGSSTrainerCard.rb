@@ -211,7 +211,7 @@ class PokemonTrainerCard_Scene
     $game_variables[94]=pbGetTotalPurified
     gameModes = []
     gameModes.push("#{($PokemonGlobal.randomizerRules && $PokemonGlobal.randomizerRules.include?(:SPECIES_MOVESETS))? "Extreme " : ""}Randomizer") if Randomizer.on?
-    gameModes.push("#{($PokemonGlobal.nuzlockeRules && $PokemonGlobal.nuzlockeRules.include?(:NOSTORE))? "Extreme " : ""}Nuzlocke") if Nuzlocke.on?
+    gameModes.push("#{($PokemonGlobal.nuzlockeRules && $PokemonGlobal.nuzlockeRules.include?(:NOSTORE))? "Hardcore " : ""}Nuzlocke") if Nuzlocke.on?
     gameModes.push("Normal") if gameModes.length == 0
     gameModes = gameModes.to_s
     gameModes.gsub!("\"","")

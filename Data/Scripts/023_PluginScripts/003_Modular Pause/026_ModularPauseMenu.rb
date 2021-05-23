@@ -180,7 +180,7 @@ MenuHandlers.addEntry(:ENCLIST,_INTL("Encounters"),"menuDebug",proc{|menu|
 },proc{ next $DEBUG })
 
 # Quit Game
-MenuHandlers.addEntry(:QUITGAME,_INTL("Quit"),"menuDebug",proc{|menu|
+MenuHandlers.addEntry(:QUITGAME,_INTL("Quit"),"menuQuit",proc{|menu|
   if pbConfirmMessage(_INTL("Are you sure you want to quit the game?"))
     menu.pbHideMenu
     scene = PokemonSave_Scene.new

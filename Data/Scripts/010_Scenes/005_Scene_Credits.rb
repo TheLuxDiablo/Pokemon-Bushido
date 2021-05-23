@@ -245,7 +245,7 @@ _END_
         pbMessage("You beat the game in Nuzlocke Mode.")
         if $PokemonGlobal.nuzlockeRules && $PokemonGlobal.nuzlockeRules.include?(:NOSTORE)
           $PokemonGlobal.gameModes[4] = true
-          pbMessage("You beat the game with the Extreme Nuzlocke Mode.")
+          pbMessage("You beat the game with the Hardcore Nuzlocke Mode.")
         end
         Nuzlocke.toggle(false)
         $PokemonGlobal.isNuzlocke = false

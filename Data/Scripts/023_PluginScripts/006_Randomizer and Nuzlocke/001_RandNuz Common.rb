@@ -54,9 +54,9 @@ def pbSelectGameMode
   randomizerRules = [:STATIC,:ENCOUNTERS,:GIFTS,:ITEMS]
   extremeRandomizerRules = [:STATIC,:ENCOUNTERS,:GIFTS,:ITEMS,:TRAINERS,:SPECIES_MOVESETS]
   nuzlockeRules = [:NOREVIVE, :ONEROUTE, :DUPSCLAUSE, :STATIC, :NICKNAME]
-  extremeNuzlockeRules = [:NOREVIVE, :ONEROUTE, :NICKNAME, :NOSTORE]
+  hardcoreNuzlockeRules = [:NOREVIVE, :ONEROUTE, :NICKNAME, :NOSTORE]
   modes = []
-  modestrings = ["Randomizer","Extreme Randomizer","Nuzlocke","Extreme Nuzlocke"]
+  modestrings = ["Randomizer","Extreme Randomizer","Nuzlocke","Hardcore Nuzlocke"]
   modeinfo = [
     ["These are the rules of the Randomizer Mode:",
 "\\l[6]- All wild encounters are randomized
@@ -94,7 +94,7 @@ def pbSelectGameMode
 - You cannot purchase any medicinal items from the marts",
 "\\l[2]The challenge starts upon receiving your first Pokeball and ends upon beating the main story.",
 "\\l[3]You will lose the challenge if you have no Pokemon in your Party, or on Sukiro's Islands, that are able to battle.",
-"\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Extreme Nuzlocke Mode."]
+"\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Hardcore Nuzlocke Mode."]
   ]
   pbMessage("Pokémon Bushido offers built-in challenge modifiers like Nuzlocke Mode and Randomizers.")
   pbMessage("These are meant to offer unique ways to challenge the player in their playthrough.")
@@ -175,9 +175,9 @@ def pbSelectGameMode
       elsif [2,3].include?(m)
         Nuzlocke.reset
         $PokemonGlobal.isNuzlocke = true
-        $PokemonGlobal.nuzlockeRules = (m == 3)? extremeNuzlockeRules : nuzlockeRules
+        $PokemonGlobal.nuzlockeRules = (m == 3)? hardcoreNuzlockeRules : nuzlockeRules
         Nuzlocke.toggle(true)
-        Nuzlocke.set_rules((m == 3)? extremeNuzlockeRules : nuzlockeRules)
+        Nuzlocke.set_rules((m == 3)? hardcoreNuzlockeRules : nuzlockeRules)
       end
     end
     cmdwindow.dispose
