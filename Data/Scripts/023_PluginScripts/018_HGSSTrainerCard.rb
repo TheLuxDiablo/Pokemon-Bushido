@@ -333,9 +333,6 @@ class PokemonTrainerCardScreen
   end
 
   def pbStartScreen
-    $PokemonGlobal.gameModesWon[0] = true
-    $PokemonGlobal.gameModesWon[1] = true
-    $PokemonGlobal.gameModesWon[4] = true
     @scene.pbStartScene
     @scene.pbTrainerCard
     @scene.pbEndScene
