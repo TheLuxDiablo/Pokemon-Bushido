@@ -136,7 +136,7 @@ class PokeBattle_Scene
   alias pbFaintBattler_nuzlocke_x pbFaintBattler unless self.method_defined?(:pbFaintBattler_nuzlocke_x)
   def pbFaintBattler(battler)
   data = Nuzlocke.rules; data = [] if data.nil?
-    if opposes?(battler) && !self.firstFainted
+    if battler.opposes? && !self.firstFainted
       if Nuzlocke.on? && data.include?(:ONEROUTE)
         evo = Nuzlocke.checkEvoNuzlocke?(battler.pokemon.species) && data.include?(:DUPSCLAUSE)
         static = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
@@ -206,7 +206,7 @@ end
 #===============================================================================
 #  losing the nuzlocke
 #===============================================================================
-alias pbStartOver_nuzlocke_x pbStartOver unless defined?(:pbStartOver_nuzlocke_x)
+alias pbStartOver_nuzlocke_x pbStartOver
 def self.pbStartOver(*args)
   if Nuzlocke.on?
     resume = false

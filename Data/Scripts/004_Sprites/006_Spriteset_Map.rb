@@ -1,5 +1,3 @@
-$tilemapCache = {}
-
 class ClippableSprite < Sprite_Character
   def initialize(viewport,event,tilemap)
     @tilemap = tilemap
@@ -48,24 +46,7 @@ class Spriteset_Map
 
   def initialize(map=nil)
     @map = (map) ? map : $game_map
-    # @tilemap = TilemapLoader.new(@@viewport1)
-    if $tilemapCache[@map.map_id].is_a?(TilemapLoader) && !$tilemapCache[@map.map_id].disposed?
-      @tilemap = $tilemapCache[@map.map_id].clone
-    else
-      @tilemap = TilemapLoader.new(@@viewport1)
-      $tilemapCache[@map.map_id] = TilemapLoader.new(@@viewport1,true)
-      if $tilemapCache.keys.length > 8
-        oldest = -1
-        $tilemapCache.keys.each do |k|
-          next if $game_map.map_id == k
-          next if $MapFactory.areConnected?(k,$game_map.map_id)
-          oldest = k
-        end
-        $tilemapCache[oldest].dispose
-        $tilemapCache[oldest] = nil
-        $tilemapCache.compact!
-      end
-    end
+    @tilemap = TilemapLoader.new(@@viewport1)
     @tilemap.tileset = pbGetTileset(@map.tileset_name)
     for i in 0...7
       autotile_name = @map.autotile_names[i]

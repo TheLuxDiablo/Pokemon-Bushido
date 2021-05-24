@@ -44,7 +44,7 @@ class Scene_Intro
         ret = 1
         break
       end
-      if Input.trigger?(Input::C) || (defined?($mouse) && $mouse.leftClick?)
+      if Input.trigger?(Input::C) || Input.trigger?(Input::A) || Input.trigger?(Input::B) || Input.triggerex?(:ENTER)
         ret = 2
         break
       end

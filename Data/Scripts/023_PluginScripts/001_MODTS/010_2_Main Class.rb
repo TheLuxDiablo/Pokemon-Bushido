@@ -201,7 +201,7 @@ class ModularTitleScreen
       end
     end
     # loads data
-    bgm = pbLoadRxData("Data/System").title_bgm.name if bgm.nil?
+    bgm = load_data("Data/System.rxdata").title_bgm.name if bgm.nil?
     @totalFrames = (getPlayTime("Audio/BGM/"+bgm).floor - 1) * Graphics.frame_rate
     pbBGMPlay(bgm)
   end
