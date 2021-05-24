@@ -22,7 +22,8 @@ class PokemonMartAdapter
     itemname = PBItems.getName(item)
     if pbIsMachine?(item)
       machine = pbGetMachine(item)
-      itemname = _INTL("{1} {2}",itemname,PBMoves.getName(machine))
+      string = (pbIsTechnicalRecord?(item)) ? "Note" : "Scroll"
+      itemname = _INTL("{2} {1}",string,PBMoves.getName(machine))
     end
     return itemname
   end
@@ -287,9 +288,9 @@ class Window_PokemonMart < Window_DrawableCommand
     return self.index>=@stock.length ? 0 : @stock[self.index]
   end
 
-  def drawItem(index,count,rect)
+  def drawItem(index,count,ogrect)
     textpos=[]
-    rect=drawCursor(index,rect)
+    rect = Rect.new(ogrect.x+16,ogrect.y,ogrect.width-16,ogrect.height)
     ypos=rect.y
     if index==count-1
       textpos.push([_INTL("CANCEL"),rect.x,ypos+2,false,
@@ -304,6 +305,7 @@ class Window_PokemonMart < Window_DrawableCommand
       textpos.push([qty,xQty,ypos+2,false,self.baseColor,self.shadowColor])
     end
     pbDrawTextPositions(self.contents,textpos)
+    drawCursor(index,ogrect)
   end
 end
 
@@ -809,12 +811,13 @@ def pbPokemonMart(stock,speech=nil,cantsell=false,gender=0)
   commands[cmdBuy = commands.length]  = _INTL("Buy")
   commands[cmdSell = commands.length] = _INTL("Sell") if !cantsell
   commands[cmdQuit = commands.length] = _INTL("Quit")
-  if gender==1
-    speechString = _INTL("\\rWelcome! How may I serve you?")
+  speechString = _INTL("Welcome! How may I serve you?")
+  if speech.is_a?(Array)
+    cmd = pbMessage("#{gender == 1 ? "\\r" : "\\b"}#{speech[0]}",commands,cmdQuit+1)
   else
-    speechString = _INTL("\\bWelcome! How may I serve you?")
+    string = speech ? speech : speechString
+    cmd = pbMessage("#{gender == 1 ? "\\r" : "\\b"}#{string}",commands,cmdQuit+1)
   end
-  cmd = pbMessage(speech ? speech : speechString,commands,cmdQuit+1)
   loop do
     if cmdBuy>=0 && cmd==cmdBuy
       scene = PokemonMart_Scene.new
@@ -825,73 +828,63 @@ def pbPokemonMart(stock,speech=nil,cantsell=false,gender=0)
       screen = PokemonMartScreen.new(scene,stock)
       screen.pbSellScreen
     else
-      if gender==1
-        pbMessage(_INTL("\\rPlease come again!"))
-      else
-        pbMessage(_INTL("\\bPlease come again!"))
-      end
+      string = speech.is_a?(Array) ? speech[1] : "Please come again!"
+      pbMessage(_INTL("#{gender == 1 ? "\\r" : "\\b"}#{string}"))
       break
     end
-    if gender==1
-      cmd = pbMessage(_INTL("\\rIs there anything else I can help you with?"),
-         commands,cmdQuit+1)
-    else
-      cmd = pbMessage(_INTL("\\bIs there anything else I can help you with?"),
-         commands,cmdQuit+1)
-    end
+    string = speech.is_a?(Array) ? speech[2] : "Is there anything else I can help you with?"
+    cmd = pbMessage(_INTL("#{gender == 1 ? "\\r" : "\\b"}#{string}"),
+      commands,cmdQuit+1)
   end
   $game_temp.clear_mart_prices
 end
 
 
 def pbScentSeller(stock,speech=nil,cantsell=false,gender=0)
-  for i in 0...stock.length
-    stock[i] = getID(PBItems,stock[i])
-    if !stock[i] || stock[i]==0 ||
-       (pbIsImportantItem?(stock[i]) && $PokemonBag.pbHasItem?(stock[i]))
-      stock[i] = nil
-    end
+  speechArray = []
+  if speech.is_a?(String)
+    speechArray[0] = speech
+    gender = 1 if speech.starts_with?("\\r")
+  elsif speech.is_a?(Array)
+    speechArray = speech.clone
   end
-  stock.compact!
-  commands = []
-  cmdBuy  = -1
-  cmdSell = -1
-  cmdQuit = -1
-  commands[cmdBuy = commands.length]  = _INTL("Buy")
-  commands[cmdSell = commands.length] = _INTL("Sell") if !cantsell
-  commands[cmdQuit = commands.length] = _INTL("Quit")
-  if gender==1
-    speechString = _INTL("\\rHello there! I sell wonderful scents. Can I interest you in some?")
-  else
-    speechString = _INTL("\\rHello there! I sell wonderful scents. Can I interest you in some?")
+  speechArray[0] = "Hello there! I sell wonderful scents. Can I interest you in some?" if !speechArray[0]
+  speechArray[1] = "Please come again!" if !speechArray[1]
+  speechArray[2] = "Is there anything else you're interested in?" if !speechArray[2]
+  pbPokemonMart(stock,speechArray,cantsell,gender)
+end
+
+def pbNotesSeller(speech = nil,gender = 0)
+  speechArray = []
+  if speech.is_a?(String)
+    speechArray[0] = speech
+    gender = 1 if speech.starts_with?("\\r")
+  elsif speech.is_a?(Array)
+    speechArray = speech.clone
   end
-  cmd = pbMessage(speech ? speech : speechString,commands,cmdQuit+1)
-  loop do
-    if cmdBuy>=0 && cmd==cmdBuy
-      scene = PokemonMart_Scene.new
-      screen = PokemonMartScreen.new(scene,stock)
-      screen.pbBuyScreen
-    elsif cmdSell>=0 && cmd==cmdSell
-      scene = PokemonMart_Scene.new
-      screen = PokemonMartScreen.new(scene,stock)
-      screen.pbSellScreen
-    else
-      if gender==1
-        pbMessage(_INTL("\\rPlease come again!"))
-      else
-        pbMessage(_INTL("\\bPlease come again!"))
-      end
-      break
-    end
-    if gender==1
-      cmd = pbMessage(_INTL("\\rIs there anything else you're interested in?"),
-         commands,cmdQuit+1)
-    else
-      cmd = pbMessage(_INTL("\\bIs there anything else you're interested in?"),
-         commands,cmdQuit+1)
-    end
+  speechArray[0] = "Hello there! Would you like to buy some notes?" if !speechArray[0]
+  speechArray[1] = "Please come again!" if !speechArray[1]
+  speechArray[2] = "Is there anything else you're interested in?" if !speechArray[2]
+  stock = []
+  timenow = pbGetTimeNow
+  wday = timenow.wday
+  case wday
+  when 1 # Monday
+    stock = [:TR00,:TR07,:TR14,:TR21,:TR28,:TR35,:TR42,:TR49,:TR56,:TR63,:TR70,:TR77,:TR84,:TR91]
+  when 2 # Tuesday
+    stock = [:TR01,:TR08,:TR15,:TR22,:TR29,:TR36,:TR43,:TR50,:TR57,:TR64,:TR71,:TR78,:TR85,:TR92]
+  when 3 # Wednesday
+    stock = [:TR02,:TR09,:TR16,:TR23,:TR30,:TR37,:TR44,:TR51,:TR58,:TR65,:TR72,:TR79,:TR86,:TR93]
+  when 4 # Thursday
+    stock = [:TR03,:TR10,:TR17,:TR24,:TR31,:TR38,:TR45,:TR52,:TR59,:TR66,:TR73,:TR80,:TR87,:TR94]
+  when 5 # Friday
+    stock = [:TR04,:TR11,:TR18,:TR25,:TR32,:TR39,:TR46,:TR53,:TR60,:TR67,:TR74,:TR81,:TR88,:TR95]
+  when 6 # Saturday
+    stock = [:TR05,:TR12,:TR19,:TR26,:TR33,:TR40,:TR47,:TR54,:TR61,:TR68,:TR75,:TR82,:TR89,:TR96,:TR98]
+  when 0 # Sunday
+    stock = [:TR06,:TR13,:TR20,:TR27,:TR34,:TR41,:TR48,:TR55,:TR62,:TR69,:TR76,:TR83,:TR90,:TR97,:TR99]
   end
-  $game_temp.clear_mart_prices
+  pbPokemonMart(stock,speechArray,true,gender)
 end
 
 

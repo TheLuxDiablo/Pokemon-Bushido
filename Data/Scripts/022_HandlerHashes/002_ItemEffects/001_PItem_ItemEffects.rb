@@ -348,6 +348,13 @@ ItemHandlers::UseInField.add(:EXPALLOFF,proc { |item|
   next 1
 })
 
+ItemHandlers::UseInField.add(:HABITATSCROLL,proc { |item|
+  pbFadeOutIn(99999) {
+    pbEncounterListUI
+  }
+  next 1
+})
+
 #===============================================================================
 # UseOnPokemon handlers
 #===============================================================================

@@ -126,7 +126,7 @@ class PokemonIconSprite < SpriteWrapper
     @pokemon = value
     @animBitmap.dispose if @animBitmap
     @animBitmap = nil
-    @shinyicon  = RPG::Cache.load_bitmap("Graphics/Pictures/shiny") if !@shinyicon 
+    @shinyicon  = RPG::Cache.load_bitmap("Graphics/Pictures/shiny") if !@shinyicon
     if !@pokemon
       self.bitmap = nil
       @currentFrame = 0
@@ -235,7 +235,7 @@ class PokemonSpeciesIconSprite < SpriteWrapper
     @species      = species
     @gender       = 0
     @form         = 0
-    @shiny        = 0
+    @shiny        = false
     @numFrames    = 0
     @currentFrame = 0
     @counter      = 0

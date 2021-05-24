@@ -318,9 +318,9 @@ class EncounterListUI
       textpos.push(["-----------------------------------------",256,96,2,Color.new(248,248,248),MessageConfig::LIGHTTEXTSHADOW])
       @encarray.each_with_index do |specie,i| # Loops over internal IDs of encounters on current map
         fSpecies = pbGetSpeciesFromFSpecies(specie) # Array of internal ID of base form and form ID of specie
-        if !pbFormSeen?(fSpecies[0],fSpecies[1]) && !$DEBUG
+        if !pbFormSeen?(fSpecies[0],fSpecies[1])# && !$DEBUG
           @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(0,@viewport)
-        elsif !pbFormOwned?(fSpecies[0],fSpecies[1]) && !$DEBUG
+        elsif !pbFormOwned?(fSpecies[0],fSpecies[1])# && !$DEBUG
           @sprites["icon_#{i}"] = PokemonSpeciesIconSprite.new(fSpecies[0],@viewport)
           @sprites["icon_#{i}"].pbSetParams(fSpecies[0],0,fSpecies[1],false)
           @sprites["icon_#{i}"].color = Color.new(100,100,100,200)

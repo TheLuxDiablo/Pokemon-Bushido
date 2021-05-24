@@ -172,13 +172,6 @@ MenuHandlers.addEntry(:MGIFT,_INTL("Mystery Gift"),"menuDebug",proc{|menu|
   }
 },proc{ next $DEBUG })
 
-# Debug Mystery Gift
-MenuHandlers.addEntry(:ENCLIST,_INTL("Encounters"),"menuDebug",proc{|menu|
-  pbFadeOutIn(99999) {
-    pbEncounterListUI
-  }
-},proc{ next $DEBUG })
-
 # Quit Game
 MenuHandlers.addEntry(:QUITGAME,_INTL("Quit"),"menuQuit",proc{|menu|
   if pbConfirmMessage(_INTL("Are you sure you want to quit the game?"))

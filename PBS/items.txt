@@ -816,7 +816,6 @@
 #----------------------------------------------------------------------------------------------
 # Bushido Items
 #-----------------------------------------------------------------------------------------------
-792,TM95,TM95,TM95s,4,10000,"BITE.",3,0,0,BITE,
 793,JAM1,Healing Jam,Healing Jams,2,300,"A tasty recovery jam. It restores the HP of one Pokémon by 20 points.",1,1,0,
 794,JAM2,Super Jam,Super Jams,2,800,"A delicious recovery jam. It restores the HP of one Pokémon by 50 points.",1,1,0,
 795,JAM3,Ultra Jam,Ultra Jams,2,1500,"An amazing recovery jam. It restores the HP of one Pokémon by 200 points.",1,1,0,
@@ -860,3 +859,4 @@
 833,ILEXLEAF,Ilex Leaf,Ilex Leaves,6,0,"Leaves that fall in a serene forest in a distant land.",0,0,6,
 834,DEXCERT,Journal Certificate,Journal Certificates,8,0,"A certificate proving the completion of the Aisho Journal. Only given to true masters.",0,0,6,
 835,ABILITYCHARM,Dream Charm,Dream Charms,8,0,"A charm said to increase the chance of finding a Pokémon with a Dream World Ability.",0,0,6,
+836,HABITATSCROLL,Habitat Scroll,Habitat Scroll,8,0,"A scroll that allows you to read and record the wild Pokemon that are present in your vicinity.",2,0,6,
