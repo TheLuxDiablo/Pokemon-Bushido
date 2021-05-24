@@ -1138,8 +1138,8 @@ class DependentEvents
       end
     end
     facings=[facingDirection] # Get facing from behind
-    #facings.push([0,0,4,0,8,0,2,0,6][d]) # Get right facing
-    #facings.push([0,0,6,0,2,0,8,0,4][d]) # Get left facing
+    facings.push([0,0,4,0,8,0,2,0,6][d]) # Get right facing
+    facings.push([0,0,6,0,2,0,8,0,4][d]) # Get left facing
     if !leaderIsTrueLeader
       facings.push(d) # Get forward facing
     end

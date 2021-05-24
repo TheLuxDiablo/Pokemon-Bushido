@@ -100,10 +100,12 @@ class PokemonIconSprite < SpriteWrapper
     @logical_y    = 0   # Actual y coordinate
     @adjusted_x   = 0   # Offset due to "jumping" animation in party screen
     @adjusted_y   = 0   # Offset due to "jumping" animation in party screen
+    @shinyicon    = RPG::Cache.load_bitmap("Graphics/Pictures/shiny")
   end
 
   def dispose
     @animBitmap.dispose if @animBitmap
+    @shinyicon.dispose if @shinyicon
     super
   end
 
@@ -124,6 +126,7 @@ class PokemonIconSprite < SpriteWrapper
     @pokemon = value
     @animBitmap.dispose if @animBitmap
     @animBitmap = nil
+    @shinyicon  = RPG::Cache.load_bitmap("Graphics/Pictures/shiny") if !@shinyicon 
     if !@pokemon
       self.bitmap = nil
       @currentFrame = 0
@@ -137,6 +140,10 @@ class PokemonIconSprite < SpriteWrapper
     self.src_rect.height = @animBitmap.height
     @numFrames    = @animBitmap.width/@animBitmap.height
     @currentFrame = 0 if @currentFrame>=@numFrames
+    if @pokemon.shiny? && self.bitmap
+      pbCopyBitmap(@animBitmap.bitmap,@shinyicon,(@animBitmap.bitmap.width/2 - 18),@animBitmap.bitmap.height - 18)
+      pbCopyBitmap(@animBitmap.bitmap,@shinyicon,(@animBitmap.bitmap.width - 18),@animBitmap.bitmap.height - 18)
+    end
     changeOrigin
   end
 
@@ -200,13 +207,13 @@ class PokemonIconSprite < SpriteWrapper
     end
     self.src_rect.x = self.src_rect.width*@currentFrame
     # Update "jumping" animation (used in party screen)
-    if @selected
-      @adjusted_x = 4
-      @adjusted_y = (@currentFrame>=@numFrames/2) ? -2 : 6
-    else
+  #  if @selected
+  #    @adjusted_x = 4
+  #    @adjusted_y = (@currentFrame>=@numFrames/2) ? -2 : 6
+  #  else
       @adjusted_x = 0
       @adjusted_y = 0
-    end
+  #  end
     self.x = self.x
     self.y = self.y
   end
@@ -232,11 +239,13 @@ class PokemonSpeciesIconSprite < SpriteWrapper
     @numFrames    = 0
     @currentFrame = 0
     @counter      = 0
+    @shinyicon    = RPG::Cache.load_bitmap("Graphics/Pictures/shiny")
     refresh
   end
 
   def dispose
     @animBitmap.dispose if @animBitmap
+    @shinyicon.dispose if @shinyicon
     super
   end
 
@@ -316,6 +325,10 @@ class PokemonSpeciesIconSprite < SpriteWrapper
     self.src_rect.height = @animBitmap.height
     @numFrames = @animBitmap.width/@animBitmap.height
     @currentFrame = 0 if @currentFrame>=@numFrames
+    if @shiny && @animBitmap
+      pbCopyBitmap(@animBitmap.bitmap,@shinyicon,(@animBitmap.bitmap.width/2 - 18),@animBitmap.bitmap.height - 18)
+      pbCopyBitmap(@animBitmap.bitmap,@shinyicon,(@animBitmap.bitmap.width - 18),@animBitmap.bitmap.height - 18)
+    end
     changeOrigin
   end
 

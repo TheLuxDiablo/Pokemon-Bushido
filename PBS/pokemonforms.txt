@@ -1944,6 +1944,14 @@ BattlerEnemyY = 16
 BattlerShadowX = 0
 #-------------------------------
 [FLOETTE,5]
+FormName = Sakura Petal
+BattlerPlayerX = 1
+BattlerPlayerY = 20
+BattlerEnemyX = 1
+BattlerEnemyY = 16
+BattlerShadowX = 0
+#-------------------------------
+[FLOETTE,6]
 FormName = Eternal Flower
 BaseStats = 74,65,67,92,125,128
 BaseEXP = 243
@@ -1954,14 +1962,6 @@ BattlerPlayerY = 67
 BattlerEnemyX = 0
 BattlerShadowX = 0
 Evolutions = FLORGES,None,
-#-------------------------------
-[FLOETTE,6]
-FormName = Sakura Petal
-BattlerPlayerX = 1
-BattlerPlayerY = 20
-BattlerEnemyX = 1
-BattlerEnemyY = 16
-BattlerShadowX = 0
 #-------------------------------
 [FLORGES,1]
 FormName = Yellow Flower

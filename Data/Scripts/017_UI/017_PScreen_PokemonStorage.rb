@@ -7,6 +7,7 @@ class PokemonBoxIcon < IconSprite
     @pokemon = pokemon
     @release = Interpolator.new
     @startRelease = false
+    @shinyicon  = RPG::Cache.load_bitmap("Graphics/Pictures/shiny")
     refresh
   end
 
@@ -31,6 +32,11 @@ class PokemonBoxIcon < IconSprite
     return if !@pokemon
     self.setBitmap(pbPokemonIconFile(@pokemon))
     self.src_rect = Rect.new(0,0,self.bitmap.height,self.bitmap.height)
+    @shinyicon  = RPG::Cache.load_bitmap("Graphics/Pictures/shiny") if !@shinyicon
+    if @pokemon.shiny? && self.bitmap
+      pbCopyBitmap(self.bitmap,@shinyicon,(self.bitmap.width/2 - 18),self.bitmap.height - 18)
+      pbCopyBitmap(self.bitmap,@shinyicon,(self.bitmap.width - 18),self.bitmap.height - 18)
+    end
   end
 
   def update

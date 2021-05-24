@@ -386,10 +386,10 @@ class PokemonPartyPanel < SpriteWrapper
           textpos.push([_INTL("♀"),224,16,0,Color.new(232,32,16),Color.new(248,168,184)])
         end
         # Draw shiny icon
-        if @pokemon.shiny?
-          pbDrawImagePositions(@overlaysprite.bitmap,[[
-             "Graphics/Pictures/shiny",80,48,0,0,16,16]])
-        end
+        #if @pokemon.shiny?
+        #  pbDrawImagePositions(@overlaysprite.bitmap,[[
+      #       "Graphics/Pictures/shiny",80,48,0,0,16,16]])
+      #  end
       end
       pbDrawTextPositions(@overlaysprite.bitmap,textpos)
       # Draw level text

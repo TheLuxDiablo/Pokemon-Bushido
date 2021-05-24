@@ -350,7 +350,7 @@ MultipleForms.copy(:SCATTERBUG,:SPEWPA,:VIVILLON)
 
 MultipleForms.register(:FLABEBE,{
   "getFormOnCreation" => proc { |pkmn|
-    next rand(5)
+    next rand(6)
   }
 })
 
