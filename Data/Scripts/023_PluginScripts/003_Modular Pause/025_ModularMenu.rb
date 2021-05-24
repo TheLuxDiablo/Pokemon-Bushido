@@ -139,6 +139,9 @@ class PokemonPauseMenu_Scene
         content.push("Caught: none")
       end
       content.push(_INTL("Balls: {1}",pbBugContestState.ballcount))
+    else
+      content.push($game_map.name)
+      content.push(pbGetTimeNow.strftime("%I:%M %p"))
     end
     for i in 0...content.length
       text.push([content[i],16, 60 + i*50, 0, Color.new(255,255,255),Color.new(0,0,0,65)])

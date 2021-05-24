@@ -1,7 +1,7 @@
 2.0.0 ===============================================================================================================
 Fixed many of the lag issues in older versions. (Especially Hagane)
 Added Multiple Save Slots
-Added Randomizer and Nuzlocke Modes
+Added Challenge Modes
 Added native gamepad support
 Added Mystery Gifts
 Added an Encounter List

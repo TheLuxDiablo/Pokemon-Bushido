@@ -257,7 +257,7 @@ _END_
 
   # Check if the credits should be cancelled
   def cancel?
-    if Input.trigger?(Input::C) && $PokemonGlobal.creditsPlayed
+    if Input.trigger?(Input::C) && ($PokemonGlobal.creditsPlayed || $DEBUG)
       $scene = Scene_Map.new
       pbBGMFade(1.0)
       return true

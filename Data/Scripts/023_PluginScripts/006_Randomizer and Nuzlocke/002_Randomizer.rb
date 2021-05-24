@@ -410,3 +410,11 @@ class PokemonLoadScreen
     return ret
   end
 end
+
+alias randomizer_pbReceiveMysteryGift pbReceiveMysteryGift
+def pbReceiveMysteryGift(id)
+  oldrandomizer = $PokemonGlobal.isRandomizer
+  $PokemonGlobal.isRandomizer = false
+  randomizer_pbReceiveMysteryGift(id)
+  $PokemonGlobal.isRandomizer = oldrandomizer
+end
