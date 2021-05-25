@@ -1,0 +1,74 @@
+
+=================
+
+[2021-05-24 22:08:41 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 4 (coords 44,13), map 158 (Jinsu Island):
+Exception: TypeError
+Message: no implicit conversion of Symbol into Integer
+
+***Full script:
+$Trainer.shadowcaught[:LARVITAR]
+
+Backtrace:
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2021-05-24 22:14:42 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 4 (coords 44,13), map 158 (Jinsu Island):
+Exception: TypeError
+Message: no implicit conversion of Module into Integer
+
+***Full script:
+$Trainer.shadowcaught[PBSpecies,:LARVITAR]
+
+Backtrace:
+(eval):1:in `[]'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'

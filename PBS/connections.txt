@@ -1,76 +1,80 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
-# Route 5 (41) - Route 4 (40)
-41,North,0,40,South,0
-# Route 5 (41) - Route 6 (45)
-41,South,6,45,North,0
+# Lappet Town (2) - Route 1 (5)
+2,North,0,5,South,4
+# Lappet Town (2) - Safari Zone (66)
+2,West,0,66,East,0
+# Route 8 (69) - Lappet Town (2)
+69,North,12,2,South,0
 # Route 6 (44) - Route 1 (5)
 44,South,43,5,North,0
 # Safari Zone (66) - Route 1 (5)
 66,North,18,5,South,0
 # Cedolan City (7) - Route 1 (5)
 7,South,0,5,North,2
-# Lappet Town (2) - Route 1 (5)
-2,North,0,5,South,4
 # Cedolan City (7) - Route 6 (44)
 7,West,5,44,East,0
-# Lappet Town (2) - Safari Zone (66)
-2,West,0,66,East,0
-# Route 8 (69) - Safari Zone (66)
-69,North,0,66,South,10
-# Ingido Plateau (35) - Route 4 (39)
-35,West,11,39,East,0
 # Cedolan City (7) - Lerucean Town (23)
 7,East,0,23,West,78
-# Route 3 (31) - Lerucean Town (23)
-31,South,32,23,North,0
-# Route 2 (21) - Lerucean Town (23)
-21,East,0,23,West,1
 # Route 7 (47) - Cedolan City (7)
 47,West,0,7,East,0
 # Route 2 (21) - Cedolan City (7)
 21,South,0,7,North,21
-# Route 3 (31) - Ingido Plateau (35)
-31,West,0,35,East,10
-# Route 8 (69) - Lappet Town (2)
-69,North,12,2,South,0
-# Route 7 (47) - Battle Frontier (52)
-47,East,8,52,West,0
+# Route 2 (21) - Lerucean Town (23)
+21,East,0,23,West,1
 # Route 2 (21) - Route 7 (47)
 21,East,77,47,West,0
 # CamTest (48) - TEST (22)
 48,West,0,22,East,1
-# CamTest2 (76) - CamTest (48)
-76,West,4,48,East,0
+# Route 3 (31) - Lerucean Town (23)
+31,South,32,23,North,0
+# Route 3 (31) - Ingido Plateau (35)
+31,West,0,35,East,10
 # MAP032 (32) - CamTest2 (76)
 32,West,0,76,East,3
-# Izumi Village (127) - Izumi Pass (132)
-127,West,14,132,East,0
+# Ingido Plateau (35) - Route 4 (39)
+35,West,11,39,East,0
+# Route 5 (41) - Route 4 (40)
+41,North,0,40,South,0
+# Route 5 (41) - Route 6 (45)
+41,South,6,45,North,0
+# Route 7 (47) - Battle Frontier (52)
+47,East,8,52,West,0
+# CamTest2 (76) - CamTest (48)
+76,West,4,48,East,0
+# Route 8 (69) - Safari Zone (66)
+69,North,0,66,South,10
 # Fubuki Bay (124) - Izumi Village (127)
 124,West,0,127,East,19
+# Izumi Village (127) - Izumi Pass (132)
+127,West,14,132,East,0
+# Chikyu Village (107) - Kowai Pass (156)
+107,West,22,156,East,0
+# Kowai Pass (157) - Kowai Pass (156)
+157,East,0,156,West,16
+# Kaiyo Sea (106) - Chikyu Village (107)
+106,West,0,107,East,17
+# Hagane City (85) - Kaiyo Sea (106)
+85,West,15,106,East,0
+# Shizen Trail (90) - Kaiyo Sea (106)
+90,West,0,106,East,39
+# Sakura Pass (82) - Hagane City (85)
+82,West,0,85,East,4
+# Shizen Trail (90) - Hagane City (85)
+90,North,0,85,South,0
+# Jonetsu Pass (102) - Hagane City (85)
+102,South,27,85,North,0
 # Ezo Village (79) - Sakura Pass (82)
 79,West,0,82,East,11
 # Shizen Trail (90) - Sakura Pass (82)
 90,East,0,82,West,50
-# Hagane City (85) - Sakura Pass (82)
-85,East,4,82,West,0
-# Yami Pass (98) - Yami Island (99)
-98,East,0,99,West,12
-# Shizen Trail (90) - Kaiyo Sea (106)
-90,West,0,106,East,39
-# Hagane City (85) - Kaiyo Sea (106)
-85,West,15,106,East,0
-# Chikyu Village (107) - Kaiyo Sea (106)
-107,East,17,106,West,0
-# Chikyu Village (107) - Kowai Pass (156)
-107,West,22,156,East,0
 # Nagisa Bay (81) - Ezo Village (79)
 81,West,0,79,East,6
-# Hagane City (85) - Shizen Trail (90)
-85,South,0,90,North,0
-# Jonetsu Pass (102) - Hagane City (85)
-102,South,27,85,North,0
-# Hanatsu Village (103) - Jonetsu Pass (102)
-103,South,7,102,North,0
 # Yami Pass (98) - Nagisa Bay (81)
 98,West,35,81,East,0
+# Yami Island (99) - Yami Pass (98)
+99,West,12,98,East,0
+# Hanatsu Village (103) - Jonetsu Pass (102)
+103,South,7,102,North,0
+# Jinsu Island (158) - Kowai Pass (157)
+158,East,16,157,West,0

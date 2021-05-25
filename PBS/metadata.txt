@@ -1,15 +1,15 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 [000]
-PlayerC = POKEMONTRAINER_PLAYERF,trHattoriFB,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,girl_fish_offset
-PlayerB = POKEMONTRAINER_PLAYERF,trchar001,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,girl_fish_offset
-PlayerA = POKEMONTRAINER_PLAYERM,trchar000,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,boy_fish_offset
-SurfBGM = HGSS-170-Surf.ogg
-WildBattleBGM = Conquest-BattleNormal.ogg
-WildVictoryME = HGSSBattleVictoryWild.ogg
 Home = 83,31,7,8
-TrainerVictoryME = HGSSBattleVictoryTrainer.ogg
+WildBattleBGM = Conquest-BattleNormal.ogg
 TrainerBattleBGM = CON-LeafVillageDay.ogg
+WildVictoryME = HGSSBattleVictoryWild.ogg
+TrainerVictoryME = HGSSBattleVictoryTrainer.ogg
+SurfBGM = HGSS-170-Surf.ogg
+PlayerA = POKEMONTRAINER_PLAYERM,trchar000,boy_bike,boy_surf,boy_run,boy_surf,boy_fish_offset,boy_fish_offset
+PlayerB = POKEMONTRAINER_PLAYERF,trchar001,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,girl_fish_offset
+PlayerC = POKEMONTRAINER_PLAYERF,trHattoriFB,girl_bike,girl_surf,girl_run,girl_surf,girl_fish_offset,girl_fish_offset
 #-------------------------------
 [001]
 # Intro
@@ -17,9 +17,9 @@ TrainerBattleBGM = CON-LeafVillageDay.ogg
 [002]
 # Lappet Town
 Outdoor = true
-BattleBack = field
-MapPosition = 0,13,12
 ShowArea = true
+MapPosition = 0,13,12
+BattleBack = field
 #-------------------------------
 [003]
 # \PN's house
@@ -28,15 +28,15 @@ MapPosition = 0,13,12
 #-------------------------------
 [004]
 # Pokémon Lab
-MapPosition = 0,13,12
 ShowArea = false
+MapPosition = 0,13,12
 #-------------------------------
 [005]
 # Route 1
 Outdoor = true
-BattleBack = field
-MapPosition = 0,13,11
 ShowArea = true
+MapPosition = 0,13,11
+BattleBack = field
 #-------------------------------
 [006]
 # Kurt's house
@@ -45,9 +45,9 @@ MapPosition = 0,13,11
 [007]
 # Cedolan City
 Outdoor = true
+ShowArea = true
 MapPosition = 0,13,10
 MapSize = 2,11
-ShowArea = true
 #-------------------------------
 [008]
 # Daisy's house
@@ -60,8 +60,8 @@ MapPosition = 0,14,10
 #-------------------------------
 [010]
 # Cedolan Gym
-BattleBack = indoor3
 MapPosition = 0,13,10
+BattleBack = indoor3
 Environment = Rock
 #-------------------------------
 [011]
@@ -107,17 +107,17 @@ MapPosition = 0,13,10
 [021]
 # Route 2
 Outdoor = true
-BattleBack = field
-MapPosition = 0,14,8
-Weather = Rain,100
-MapSize = 1,11
 ShowArea = true
+Weather = Rain,100
+MapPosition = 0,14,8
+BattleBack = field
+MapSize = 1,11
 #-------------------------------
 [023]
 # Lerucean Town
 Outdoor = true
-MapPosition = 0,15,8
 ShowArea = true
+MapPosition = 0,15,8
 #-------------------------------
 [024]
 # Lerucean Town Poké Center
@@ -139,9 +139,9 @@ MapPosition = 0,15,8
 [028]
 # Natural Park
 Outdoor = true
-BattleBack = field
-MapPosition = 0,16,8
 ShowArea = true
+MapPosition = 0,16,8
+BattleBack = field
 #-------------------------------
 [029]
 # Natural Park Entrance
@@ -155,23 +155,23 @@ MapPosition = 0,16,8
 [031]
 # Route 3
 Outdoor = true
-BattleBack = field
-MapPosition = 0,14,6
-MapSize = 2,1101
 ShowArea = true
+MapPosition = 0,14,6
+BattleBack = field
+MapSize = 2,1101
 #-------------------------------
 [034]
 # Ice Cave
 Bicycle = true
-BattleBack = cave1
 MapPosition = 0,15,6
+BattleBack = cave1
 Environment = Cave
 #-------------------------------
 [035]
 # Ingido Plateau
 Outdoor = true
-MapPosition = 0,13,6
 ShowArea = true
+MapPosition = 0,13,6
 #-------------------------------
 [036]
 # Pokémon League
@@ -180,8 +180,8 @@ MapPosition = 0,13,6
 #-------------------------------
 [037]
 # Pokémon League
-BattleBack = elite1
 MapPosition = 0,13,6
+BattleBack = elite1
 #-------------------------------
 [038]
 # Hall of Fame
@@ -190,25 +190,25 @@ MapPosition = 0,13,6
 [039]
 # Route 4
 Outdoor = true
-BattleBack = field
-MapPosition = 0,11,6
-MapSize = 2,11
 ShowArea = true
+MapPosition = 0,11,6
+BattleBack = field
+MapSize = 2,11
 #-------------------------------
 [040]
 # Route 4
 Outdoor = true
+ShowArea = true
 BicycleAlways = true
 MapPosition = 0,11,6
-ShowArea = true
 #-------------------------------
 [041]
 # Route 5
 Outdoor = true
+ShowArea = true
 BicycleAlways = true
 MapPosition = 0,11,7
 MapSize = 1,111
-ShowArea = true
 #-------------------------------
 [043]
 # Pokemon Bushido
@@ -216,17 +216,17 @@ ShowArea = true
 [044]
 # Route 6
 Outdoor = true
-BattleBack = field
-MapPosition = 0,11,10
-MapSize = 2,11
 ShowArea = true
+MapPosition = 0,11,10
+BattleBack = field
+MapSize = 2,11
 #-------------------------------
 [045]
 # Route 6
 Outdoor = true
+ShowArea = true
 BicycleAlways = true
 MapPosition = 0,11,10
-ShowArea = true
 #-------------------------------
 [046]
 # Cycling Road gate
@@ -236,12 +236,12 @@ MapPosition = 0,12,6
 [047]
 # Route 7
 Outdoor = true
-BattleBack = rocky
-MapPosition = 0,15,10
-Weather = Rain,0
-Environment = Rock
-MapSize = 2,11
 ShowArea = true
+Weather = Rain,0
+MapPosition = 0,15,10
+BattleBack = rocky
+MapSize = 2,11
+Environment = Rock
 #-------------------------------
 [048]
 # CamTest
@@ -251,31 +251,31 @@ ShowArea = true
 [049]
 # Rock Cave
 Bicycle = true
-BattleBack = cave1
 MapPosition = 0,16,10
+BattleBack = cave1
 Environment = Cave
 #-------------------------------
 [050]
 # Rock Cave
 Bicycle = true
-BattleBack = cave3
 MapPosition = 0,16,10
 DarkMap = true
+BattleBack = cave3
 Environment = Cave
 #-------------------------------
 [051]
 # Dungeon
-Dungeon = true
 Bicycle = true
-BattleBack = cave2
 MapPosition = 0,16,10
+Dungeon = true
+BattleBack = cave2
 Environment = Cave
 #-------------------------------
 [052]
 # Battle Frontier
 Outdoor = true
-MapPosition = 0,17,10
 ShowArea = true
+MapPosition = 0,17,10
 #-------------------------------
 [053]
 # Battle Frontier Poké Center
@@ -293,8 +293,8 @@ MapPosition = 0,17,10
 #-------------------------------
 [056]
 # Battle Tower arena
-BattleBack = indoor1
 MapPosition = 0,17,10
+BattleBack = indoor1
 #-------------------------------
 [057]
 # Stadium Cup lobby
@@ -306,8 +306,8 @@ MapPosition = 0,17,10
 #-------------------------------
 [059]
 # Battle Palace arena
-BattleBack = indoor1
 MapPosition = 0,17,10
+BattleBack = indoor1
 #-------------------------------
 [060]
 # Battle Arena
@@ -315,8 +315,8 @@ MapPosition = 0,17,10
 #-------------------------------
 [061]
 # Battle Arena arena
-BattleBack = indoor1
 MapPosition = 0,17,10
+BattleBack = indoor1
 #-------------------------------
 [062]
 # Battle Factory
@@ -328,8 +328,8 @@ MapPosition = 0,17,10
 #-------------------------------
 [064]
 # Battle Factory arena
-BattleBack = indoor1
 MapPosition = 0,17,10
+BattleBack = indoor1
 #-------------------------------
 [065]
 # Battle Factory corridor
@@ -338,9 +338,9 @@ MapPosition = 0,17,10
 [066]
 # Safari Zone
 Outdoor = true
-BattleBack = field
-MapPosition = 0,12,12
 ShowArea = true
+MapPosition = 0,12,12
+BattleBack = field
 #-------------------------------
 [067]
 # Safari Zone gate
@@ -349,24 +349,24 @@ MapPosition = 0,12,12
 [068]
 # Safari Zone
 Outdoor = true
-BattleBack = forest
-MapPosition = 0,12,12
-Environment = Forest
-SafariMap = true
 ShowArea = true
+MapPosition = 0,12,12
+SafariMap = true
+BattleBack = forest
+Environment = Forest
 #-------------------------------
 [069]
 # Route 8
 Outdoor = true
-BattleBack = field
-DiveMap = 70
-MapPosition = 0,13,13
 ShowArea = true
+MapPosition = 0,13,13
+DiveMap = 70
+BattleBack = field
 #-------------------------------
 [070]
 # Underwater
-BattleBack = underwater
 MapPosition = 0,13,13
+BattleBack = underwater
 Environment = Underwater
 #-------------------------------
 [071]
@@ -376,17 +376,17 @@ MapPosition = 0,13,13
 [072]
 # Berth Island
 Outdoor = true
-BattleBack = field
-MapPosition = 0,18,17
-Weather = Storm,50
 ShowArea = true
+Weather = Storm,50
+MapPosition = 0,18,17
+BattleBack = field
 #-------------------------------
 [073]
 # Faraday Island
 Outdoor = true
-BattleBack = field
-MapPosition = 0,22,16
 ShowArea = true
+MapPosition = 0,22,16
+BattleBack = field
 #-------------------------------
 [074]
 # Cycling Road gate
@@ -396,8 +396,8 @@ MapPosition = 0,12,10
 [075]
 # Tiall Region
 Outdoor = true
-BattleBack = city
 MapPosition = 1,13,16
+BattleBack = city
 #-------------------------------
 [076]
 # CamTest2
@@ -411,24 +411,24 @@ ShowArea = true
 #-------------------------------
 [079]
 # Ezo Village
-HealingSpot = 79,15,13
 Outdoor = true
-MapPosition = 2,19,10
 ShowArea = true
+HealingSpot = 79,15,13
+MapPosition = 2,19,10
 #-------------------------------
 [081]
 # Nagisa Bay
 Outdoor = true
-BattleBack = Beach
-MapPosition = 2,20,11
 ShowArea = true
+MapPosition = 2,20,11
+BattleBack = Beach
 #-------------------------------
 [082]
 # Sakura Pass
 Outdoor = true
-BattleBack = Sakura
-MapPosition = 2,17,10
 ShowArea = true
+MapPosition = 2,17,10
+BattleBack = Sakura
 #-------------------------------
 [083]
 # Ezo Village
@@ -437,83 +437,83 @@ MapPosition = 2,19,10
 [084]
 # Jikan Shrine
 Outdoor = true
-BattleBack = Lush
-MapPosition = 2,17,9
 ShowArea = true
+MapPosition = 2,17,9
+BattleBack = Lush
 #-------------------------------
 [085]
 # Hagane City
-HealingSpot = 85,63,31
 Outdoor = true
-BattleBack = Village
-MapPosition = 2,15,10
 ShowArea = true
+HealingSpot = 85,63,31
+MapPosition = 2,15,10
+BattleBack = Village
 #-------------------------------
 [086]
 # Hagane Springs
 Outdoor = false
-MapPosition = 2,15,10
 ShowArea = true
+MapPosition = 2,15,10
 #-------------------------------
 [087]
 # Sukiro's Dojo
 Outdoor = false
-BattleBack = Dojo1
-MapPosition = 2,19,10
 ShowArea = true
+MapPosition = 2,19,10
+BattleBack = Dojo1
 #-------------------------------
 [088]
 # Shogun's Tower
 Outdoor = false
-BattleBack = Shogun
-MapPosition = 2,14,9
 ShowArea = true
+MapPosition = 2,14,9
+BattleBack = Shogun
 #-------------------------------
 [089]
 # Hagane Market
 Outdoor = false
-MapPosition = 2,15,10
 ShowArea = false
+MapPosition = 2,15,10
 #-------------------------------
 [090]
 # Shizen Trail
 Outdoor = true
-BattleBack = ShizenTrail
-MapPosition = 2,15,12
 ShowArea = true
+MapPosition = 2,15,12
+BattleBack = ShizenTrail
 #-------------------------------
 [091]
 # Shizen Forest
 Outdoor = true
-BattleBack = forest
-MapPosition = 2,14,13
 ShowArea = true
+MapPosition = 2,14,13
+BattleBack = forest
 #-------------------------------
 [092]
 # Tsuchi Village
 Outdoor = true
-MapPosition = 2,14,15
 ShowArea = true
+MapPosition = 2,14,15
 #-------------------------------
 [093]
 # Komorei Dojo
 Outdoor = false
-BattleBack = Dojo2
-MapPosition = 2,14,15
 ShowArea = true
+MapPosition = 2,14,15
+BattleBack = Dojo2
 #-------------------------------
 [094]
 # Tsuchi Springs
 Outdoor = false
-MapPosition = 2,14,15
 ShowArea = true
+MapPosition = 2,14,15
 #-------------------------------
 [095]
 # Tsuchi Shrine
 Outdoor = true
-BattleBack = Lush
-MapPosition = 2,15,14
 ShowArea = true
+MapPosition = 2,15,14
+BattleBack = Lush
 #-------------------------------
 [097]
 # Shogun's Tower
@@ -521,15 +521,15 @@ ShowArea = true
 [098]
 # Yami Pass
 Outdoor = true
-MapPosition = 2,22,10
 ShowArea = true
+MapPosition = 2,22,10
 #-------------------------------
 [099]
 # Yami Island
 Outdoor = true
-BattleBack = YamiIsland
-MapPosition = 2,25,8
 ShowArea = true
+MapPosition = 2,25,8
+BattleBack = YamiIsland
 #-------------------------------
 [100]
 # Yami Island
@@ -539,285 +539,285 @@ ShowArea = false
 [102]
 # Jonetsu Pass
 Outdoor = true
-BattleBack = Mountain
-MapPosition = 2,15,8
 ShowArea = true
+MapPosition = 2,15,8
+BattleBack = Mountain
 #-------------------------------
 [103]
 # Hanatsu Village
 Outdoor = true
-BattleBack = HanatsuVillage
-MapPosition = 2,14,5
 ShowArea = true
+MapPosition = 2,14,5
+BattleBack = HanatsuVillage
 #-------------------------------
 [104]
 # Jonetsu Caverns
 Outdoor = false
-BattleBack = CaveBushido4
+ShowArea = true
 MapPosition = 2,15,7
 DarkMap = true
-ShowArea = true
+BattleBack = CaveBushido4
 #-------------------------------
 [105]
 # Jonetsu Caverns
 Outdoor = false
-BattleBack = CaveBushido4
+ShowArea = true
 MapPosition = 2,14,7
 DarkMap = true
-ShowArea = true
+BattleBack = CaveBushido4
 #-------------------------------
 [106]
 # Kaiyo Sea
 Outdoor = true
-BattleBack = Beach
-MapPosition = 2,12,10
 ShowArea = true
+MapPosition = 2,12,10
+BattleBack = Beach
 #-------------------------------
 [107]
 # Chikyu Village
 Outdoor = true
-MapPosition = 2,10,10
 ShowArea = true
+MapPosition = 2,10,10
 #-------------------------------
 [108]
 # Tsuchi Village
 Outdoor = false
-MapPosition = 2,14,15
 ShowArea = false
+MapPosition = 2,14,15
 #-------------------------------
 [109]
 # Hagane City
 Outdoor = false
-MapPosition = 2,15,10
 ShowArea = false
+MapPosition = 2,15,10
 #-------------------------------
 [110]
 # Tsuchi Market
 Outdoor = false
-MapPosition = 2,14,15
 ShowArea = false
+MapPosition = 2,14,15
 #-------------------------------
 [111]
 # Hanatsu Springs
 Outdoor = false
-MapPosition = 2,12,5
 ShowArea = false
+MapPosition = 2,12,5
 #-------------------------------
 [112]
 # Tsuchi Library
 Outdoor = false
-MapPosition = 2,14,15
 ShowArea = false
+MapPosition = 2,14,15
 #-------------------------------
 [113]
 # Tsuchi Shrine
 Outdoor = false
-BattleBack = CaveBushido1
-MapPosition = 2,16,15
 ShowArea = false
+MapPosition = 2,16,15
+BattleBack = CaveBushido1
 #-------------------------------
 [114]
 # Hanatsu Village
 Outdoor = false
-MapPosition = 2,12,5
 ShowArea = false
+MapPosition = 2,12,5
 #-------------------------------
 [115]
 # Hanatsu Market
 Outdoor = false
-MapPosition = 2,12,5
 ShowArea = false
+MapPosition = 2,12,5
 #-------------------------------
 [116]
 # Nensho Dojo
 Outdoor = false
-BattleBack = Dojo3
-MapPosition = 2,12,5
 ShowArea = true
+MapPosition = 2,12,5
+BattleBack = Dojo3
 #-------------------------------
 [117]
 # Hanatsu Cave
 Outdoor = false
-BattleBack = CaveBushido4
+ShowArea = false
 MapPosition = 2,14,4
 DarkMap = true
-ShowArea = false
+BattleBack = CaveBushido4
 #-------------------------------
 [118]
 # Hanatsu Shrine
 Outdoor = true
-BattleBack = Lush
-MapPosition = 2,13,3
 ShowArea = true
+MapPosition = 2,13,3
+BattleBack = Lush
 #-------------------------------
 [119]
 # Tsuchi Shrine
 Outdoor = false
-MapPosition = 2,16,15
 ShowArea = false
+MapPosition = 2,16,15
 #-------------------------------
 [120]
 # Chikyu Village
 Outdoor = false
-MapPosition = 2,10,10
 ShowArea = false
+MapPosition = 2,10,10
 #-------------------------------
 [121]
 # Chikyu Springs
 Outdoor = false
-MapPosition = 2,10,10
 ShowArea = false
+MapPosition = 2,10,10
 #-------------------------------
 [122]
 # Chikyu Market
 Outdoor = false
-MapPosition = 2,10,10
 ShowArea = false
+MapPosition = 2,10,10
 #-------------------------------
 [123]
 # Chikyu Cave
 Outdoor = false
-BattleBack = CaveBushido4
+ShowArea = true
 MapPosition = 2,10,8
 DarkMap = true
-ShowArea = true
+BattleBack = CaveBushido4
 #-------------------------------
 [124]
 # Fubuki Bay
 Outdoor = true
-BattleBack = BeachIce
-MapPosition = 2,8,7
-Weather = Snow,100
 ShowArea = true
+Weather = Snow,100
+MapPosition = 2,8,7
+BattleBack = BeachIce
 #-------------------------------
 [125]
 # Hanatsu Mine
 Outdoor = false
-BattleBack = CaveBushido4
+ShowArea = true
 MapPosition = 2,15,3
 DarkMap = true
-ShowArea = true
+BattleBack = CaveBushido4
 #-------------------------------
 [126]
 # Hanatsu Mine
 Outdoor = false
-BattleBack = CaveBushido4
+ShowArea = true
 MapPosition = 2,15,3
 DarkMap = true
-ShowArea = true
+BattleBack = CaveBushido4
 #-------------------------------
 [127]
 # Izumi Village
 Outdoor = true
-BattleBack = BeachIce
-MapPosition = 2,7,5
-Weather = Rain,100
 ShowArea = true
+Weather = Rain,100
+MapPosition = 2,7,5
+BattleBack = BeachIce
 #-------------------------------
 [128]
 # Izumi Springs
 Outdoor = false
-MapPosition = 2,7,5
 ShowArea = false
+MapPosition = 2,7,5
 #-------------------------------
 [129]
 # Izumi Market
 Outdoor = false
-MapPosition = 2,7,5
 ShowArea = false
+MapPosition = 2,7,5
 #-------------------------------
 [130]
 # Izumi Village
 Outdoor = false
-MapPosition = 2,7,5
 ShowArea = false
+MapPosition = 2,7,5
 #-------------------------------
 [131]
 # Shimizu Dojo
 Outdoor = false
-BattleBack = Dojo4
-MapPosition = 2,7,5
 ShowArea = false
+MapPosition = 2,7,5
+BattleBack = Dojo4
 #-------------------------------
 [132]
 # Izumi Pass
 Outdoor = true
-BattleBack = Beach
-MapPosition = 2,5,5
-Weather = Rain,100
 ShowArea = true
+Weather = Rain,100
+MapPosition = 2,5,5
+BattleBack = Beach
 #-------------------------------
 [133]
 # Izumi Shrine
 Outdoor = true
-BattleBack = Lush
-MapPosition = 2,4,5
-Weather = Rain,100
 ShowArea = true
+Weather = Rain,100
+MapPosition = 2,4,5
+BattleBack = Lush
 #-------------------------------
 [134]
 # Yami Island
 Outdoor = false
-BattleBack = Dojo5
-MapPosition = 2,25,8
 ShowArea = false
+MapPosition = 2,25,8
+BattleBack = Dojo5
 #-------------------------------
 [135]
 # Sakura Cave
 Outdoor = false
-BattleBack = CaveBushido1
+ShowArea = true
 MapPosition = 2,16,10
 DarkMap = true
-ShowArea = true
+BattleBack = CaveBushido1
 #-------------------------------
 [136]
 # Yami Dungeon
 Outdoor = false
-BattleBack = Dojo5
-MapPosition = 2,25,8
 ShowArea = false
+MapPosition = 2,25,8
+BattleBack = Dojo5
 #-------------------------------
 [137]
 # Yami Prison
 Outdoor = false
-BattleBack = Dojo5
-MapPosition = 2,25,8
 ShowArea = false
+MapPosition = 2,25,8
+BattleBack = Dojo5
 #-------------------------------
 [138]
 # Akui Dojo
 Outdoor = false
-MapPosition = 2,25,8
 ShowArea = true
+MapPosition = 2,25,8
 #-------------------------------
 [143]
 # Hikari Cave
 Outdoor = false
-BattleBack = CaveBushido4
+ShowArea = true
 MapPosition = 2,24,8
 DarkMap = true
-ShowArea = true
+BattleBack = CaveBushido4
 #-------------------------------
 [147]
 # Kaminari Pass
 Outdoor = true
-BattleBack = ShizenTrail
-MapPosition = 2,9,17
 ShowArea = true
+MapPosition = 2,9,17
+BattleBack = ShizenTrail
 #-------------------------------
 [148]
 # Kaminari Cave
 Outdoor = false
-BattleBack = CaveBushido4
+ShowArea = true
 MapPosition = 2,9,17
 DarkMap = true
-ShowArea = true
+BattleBack = CaveBushido4
 #-------------------------------
 [152]
 # Hagane Prison
 Outdoor = false
-MapPosition = 2,14,9
 ShowArea = false
+MapPosition = 2,14,9
 #-------------------------------
 [155]
 # MAP155
@@ -827,5 +827,17 @@ Environment = Cave
 [156]
 # Kowai Pass
 Outdoor = true
-MapPosition = 2,8,12
 ShowArea = true
+MapPosition = 2,8,12
+#-------------------------------
+[157]
+# Kowai Pass
+Outdoor = true
+ShowArea = true
+MapPosition = 2,6,12
+#-------------------------------
+[158]
+# Jinsu Island
+Outdoor = true
+ShowArea = true
+MapPosition = 2,4,12
