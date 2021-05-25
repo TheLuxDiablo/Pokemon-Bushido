@@ -54,12 +54,12 @@ def pbStartScene
  @finished=false
 
  @sprites["whitescreen"] = Sprite.new(@viewport)
- @sprites["whitescreen"].bitmap = RPG::Cache.picture("blackscreen")
+ @sprites["whitescreen"].bitmap = RPG::Cache.load_bitmap("Graphics/Pictures/white")
  @sprites["whitescreen"].color=Color.new(255,255,255)
  @sprites["whitescreen"].opacity=0
 
  @sprites["bg"] = Sprite.new(@viewport)
- @sprites["bg"].bitmap = RPG::Cache.picture("keyitembg")
+ @sprites["bg"].bitmap = RPG::Cache.load_bitmap("Graphics/Pictures/keyitembg")
  @sprites["bg"].ox=@sprites["bg"].bitmap.width/2
  @sprites["bg"].oy=@sprites["bg"].bitmap.height/2
  @sprites["bg"].y=SCREEN_HEIGHT/2 # Updated DEFAULTSCREENHEIGHT
