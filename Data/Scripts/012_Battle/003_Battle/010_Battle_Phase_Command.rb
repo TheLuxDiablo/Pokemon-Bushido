@@ -231,6 +231,8 @@ class PokeBattle_Battle
           end
         when 4    # Call
           break if pbCallMenu(idxBattler)
+        when 5
+          @scene.pbStatsPage(idxBattler)
         when -2   # Debug
           pbDebugMenu
           next

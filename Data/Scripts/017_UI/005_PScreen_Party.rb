@@ -138,7 +138,7 @@ class PokemonPartyBlankPanel < SpriteWrapper
     super(viewport)
     self.x = [0,256,0,256,0,256][index]
     self.y = [0,16,96,112,192,208][index]
-    @panelbgsprite = AnimatedBitmap.new("Graphics/Pictures/Party/panel_blank")
+    @panelbgsprite = AnimatedBitmap.new("Graphics/Pictures/Party/panel_basic")
     self.bitmap = @panelbgsprite.bitmap
     @text = nil
   end
@@ -161,7 +161,6 @@ end
 
 class PokemonPartyPanel < SpriteWrapper
   attr_reader :pokemon
-  attr_reader :active
   attr_reader :selected
   attr_reader :preselected
   attr_reader :switching
@@ -170,29 +169,18 @@ class PokemonPartyPanel < SpriteWrapper
   def initialize(pokemon,index,viewport=nil)
     super(viewport)
     @pokemon = pokemon
-    @active = (index==0)   # true = rounded panel, false = rectangular panel
     @refreshing = true
     self.x = [0,256,0,256,0,256][index]
     self.y = [0,16,96,112,192,208][index]
     @panelbgsprite = ChangelingSprite.new(0,0,viewport)
     @panelbgsprite.z = self.z
-    if @active   # Rounded panel
-      @panelbgsprite.addBitmap("able","Graphics/Pictures/Party/panel_round")
-      @panelbgsprite.addBitmap("ablesel","Graphics/Pictures/Party/panel_round_sel")
-      @panelbgsprite.addBitmap("fainted","Graphics/Pictures/Party/panel_round_faint")
-      @panelbgsprite.addBitmap("faintedsel","Graphics/Pictures/Party/panel_round_faint_sel")
-      @panelbgsprite.addBitmap("swap","Graphics/Pictures/Party/panel_round_swap")
-      @panelbgsprite.addBitmap("swapsel","Graphics/Pictures/Party/panel_round_swap_sel")
-      @panelbgsprite.addBitmap("swapsel2","Graphics/Pictures/Party/panel_round_swap_sel2")
-    else   # Rectangular panel
-      @panelbgsprite.addBitmap("able","Graphics/Pictures/Party/panel_rect")
-      @panelbgsprite.addBitmap("ablesel","Graphics/Pictures/Party/panel_rect_sel")
-      @panelbgsprite.addBitmap("fainted","Graphics/Pictures/Party/panel_rect_faint")
-      @panelbgsprite.addBitmap("faintedsel","Graphics/Pictures/Party/panel_rect_faint_sel")
-      @panelbgsprite.addBitmap("swap","Graphics/Pictures/Party/panel_rect_swap")
-      @panelbgsprite.addBitmap("swapsel","Graphics/Pictures/Party/panel_rect_swap_sel")
-      @panelbgsprite.addBitmap("swapsel2","Graphics/Pictures/Party/panel_rect_swap_sel2")
-    end
+    @panelbgsprite.addBitmap("able","Graphics/Pictures/Party/panel_basic")
+    @panelbgsprite.addBitmap("ablesel","Graphics/Pictures/Party/panel_basic_sel")
+    @panelbgsprite.addBitmap("fainted","Graphics/Pictures/Party/panel_faint")
+    @panelbgsprite.addBitmap("faintedsel","Graphics/Pictures/Party/panel_faint_sel")
+    @panelbgsprite.addBitmap("swap","Graphics/Pictures/Party/panel_swap")
+    @panelbgsprite.addBitmap("swapsel","Graphics/Pictures/Party/panel_swap_sel")
+    @panelbgsprite.addBitmap("swapsel2","Graphics/Pictures/Party/panel_swap_sel2")
     @hpbgsprite = ChangelingSprite.new(0,0,viewport)
     @hpbgsprite.z = self.z+1
     @hpbgsprite.addBitmap("able","Graphics/Pictures/Party/overlay_hp_back")
@@ -204,7 +192,6 @@ class PokemonPartyPanel < SpriteWrapper
     @ballsprite.addBitmap("sel","Graphics/Pictures/Party/icon_ball_sel")
     @pkmnsprite = PokemonIconSprite.new(pokemon,viewport)
     @pkmnsprite.setOffset(PictureOrigin::Center)
-    @pkmnsprite.active = @active
     @pkmnsprite.z      = self.z+2
     @helditemsprite = HeldItemIconSprite.new(0,0,@pokemon,viewport)
     @helditemsprite.z = self.z+3

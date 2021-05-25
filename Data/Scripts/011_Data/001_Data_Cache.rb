@@ -21,7 +21,7 @@ class PokemonTemp
   attr_accessor :mapInfos
 end
 
-def pbClearData
+def pbClearData(noanim = false)
   if $PokemonTemp
     $PokemonTemp.metadata              = nil
     $PokemonTemp.townMapData           = nil
@@ -38,7 +38,7 @@ def pbClearData
     $PokemonTemp.trainerTypesData      = nil
     $PokemonTemp.trainersData          = nil
     $PokemonTemp.moveToAnim            = nil
-    $PokemonTemp.battleAnims           = nil
+    $PokemonTemp.battleAnims           = nil if !noanim
     $PokemonTemp.mapInfos              = nil
   end
   MapFactoryHelper.clear

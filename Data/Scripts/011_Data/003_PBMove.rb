@@ -39,9 +39,9 @@ def pbGetMoveData(move_id, move_data_type = -1)
 end
 
 alias __moveData__pbClearData pbClearData
-def pbClearData
+def pbClearData(noanim = false)
   $PokemonTemp.movesData = nil if $PokemonTemp
-  __moveData__pbClearData
+  __moveData__pbClearData(noanim)
 end
 
 #===============================================================================

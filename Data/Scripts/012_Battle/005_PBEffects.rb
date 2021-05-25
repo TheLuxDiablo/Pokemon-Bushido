@@ -169,7 +169,7 @@ begin
     Tailwind           = 19
     ToxicSpikes        = 20
     WideGuard          = 21
-	StickyWebUser      = 22
+    StickyWebUser      = 22
 
 
     #===========================================================================

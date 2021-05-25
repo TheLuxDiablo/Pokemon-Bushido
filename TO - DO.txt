@@ -1,12 +1,4 @@
 Fix sRGB profile for:
-UI
-Item Icons
-Pokemon Icons
 Battlers
 
-Make Encounters list cooler
-Port Nuzlocke
-Port Randomizer
-Make Nuzlocke & Randomizer available from the menu
-Add Stock changing TR Seller
 Add Stock changing IoA move tutor

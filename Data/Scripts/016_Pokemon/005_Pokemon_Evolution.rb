@@ -120,9 +120,9 @@ def pbGetEvolutionData(species)
 end
 
 alias __evolutionsData__pbClearData pbClearData
-def pbClearData
+def pbClearData(noanim = false)
   $PokemonTemp.evolutionsData = nil if $PokemonTemp
-  __evolutionsData__pbClearData
+  __evolutionsData__pbClearData(noanim)
 end
 
 #===============================================================================

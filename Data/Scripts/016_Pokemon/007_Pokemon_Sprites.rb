@@ -84,14 +84,12 @@ end
 #===============================================================================
 class PokemonIconSprite < SpriteWrapper
   attr_accessor :selected
-  attr_accessor :active
   attr_reader   :pokemon
   attr_reader   :filename
 
   def initialize(pokemon,viewport=nil)
     super(viewport)
     @selected     = false
-    @active       = false
     @numFrames    = 0
     @currentFrame = 0
     @counter      = 0

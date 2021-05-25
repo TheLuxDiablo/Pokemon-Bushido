@@ -215,7 +215,7 @@ module Randomizer
       $PokemonGlobal.randomizedData[:DEXORDER] = rand_dex.clone
     end
     # refresh encounter tables
-    pbClearData
+    pbClearData(true)
     $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
     # display confirmation message
     return if skip

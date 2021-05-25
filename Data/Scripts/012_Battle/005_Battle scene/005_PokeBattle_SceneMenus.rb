@@ -125,7 +125,7 @@ class CommandMenuDisplay < BattleMenuBase
     addSprite("msgBox",@msgBox)
     if USE_GRAPHICS
       # Create background graphic
-      background = IconSprite.new(self.x,self.y,viewport)
+      background = IconSprite.new(self.x ,self.y - 48,viewport)
       background.setBitmap("Graphics/Pictures/Battle/overlay_command")
       addSprite("background",background)
       # Create bitmaps
@@ -175,6 +175,12 @@ class CommandMenuDisplay < BattleMenuBase
       commands.push(value[i]) if value[i] && value[i]!=nil
     end
     @cmdWindow.commands = commands
+  end
+
+  def pressAButton
+    @sprites["background"].setBitmap("Graphics/Pictures/Battle/overlay_command_1")
+    yield if block_given?
+    @sprites["background"].setBitmap("Graphics/Pictures/Battle/overlay_command")
   end
 
   def refreshButtons

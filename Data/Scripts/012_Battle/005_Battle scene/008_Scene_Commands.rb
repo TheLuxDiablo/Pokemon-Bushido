@@ -53,6 +53,10 @@ class PokeBattle_Scene
       elsif Input.trigger?(Input::B) && mode==1   # Cancel
         pbPlayCancelSE
         break
+      elsif Input.trigger?(Input::A)
+        pbPlayDecisionSE
+        ret = 5
+        break
       elsif Input.triggerex?(0x78) && $DEBUG    # Debug menu
         pbPlayDecisionSE
         ret = -2

@@ -36,9 +36,9 @@ def pbGetItemData(item,itemDataType)
 end
 
 alias __itemsData__pbClearData pbClearData
-def pbClearData
+def pbClearData(noanim = false)
   $PokemonTemp.itemsData = nil if $PokemonTemp
-  __itemsData__pbClearData
+  __itemsData__pbClearData(noanim)
 end
 
 def pbGetPocket(item)

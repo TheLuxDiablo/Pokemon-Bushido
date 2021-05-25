@@ -23,9 +23,9 @@ def pbGetBerryPlantData(item)
 end
 
 alias __berryPlant__pbClearData pbClearData
-def pbClearData
+def pbClearData(noanim = false)
   $PokemonTemp.berryPlantData = nil if $PokemonTemp
-  __berryPlant__pbClearData
+  __berryPlant__pbClearData(noanim)
 end
 
 Events.onSpritesetCreate += proc { |_sender,e|
