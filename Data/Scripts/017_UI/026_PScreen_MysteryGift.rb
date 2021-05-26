@@ -16,11 +16,13 @@ class PokeBattle_Trainer
   attr_writer :mysterygift         # Variable that stores downloaded MG data
 
   def mysterygiftaccess
-    return @mysterygiftaccess || false
+    @mysterygiftaccess = false if !@mysterygiftaccess
+    return @mysterygiftaccess
   end
 
   def mysterygift
-    return @mysterygift || []
+    @mysterygift = [] if !@mysterygift
+    return @mysterygift
   end
 end
 
@@ -254,6 +256,12 @@ end
 #===============================================================================
 # Called from the Continue/New Game screen.
 def pbDownloadMysteryGift(trainer)
+  if $game_system && $game_system.is_a?(Game_System)
+    playingBGS = $game_system.getPlayingBGS
+    playingBGM = $game_system.getPlayingBGM
+    $game_system.bgm_pause
+    $game_system.bgs_pause
+  end
   pbBGMPlay("MysteryGift")
   sprites={}
   viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
@@ -337,13 +345,16 @@ def pbDownloadMysteryGift(trainer)
       end
     end
   end
-  pbBGMPlay(nil)
+  $game_map.need_refresh = true if $game_map
+  if $game_system && $game_system.is_a?(Game_System)
+    $game_system.bgm_resume(playingBGM)
+    $game_system.bgs_resume(playingBGS)
+  end
   pbFadeOutAndHide(sprites)
   pbDisposeMessageWindow(sprites["msgwindow"])
   pbDisposeSpriteHash(sprites)
   viewport.dispose
   return trainer
-  pbBGMPlay("title_vh")
 end
 
 #===============================================================================

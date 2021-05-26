@@ -219,7 +219,11 @@ def self.pbStartOver(*args)
     if resume
       while pbAllFainted
         pbMessage(_INTL("\\w[]\\wm\\l[3]All your Pokémon have fainted. But you still have Pokémon on Sukiro's Island with which you can continue the challenge."))
-        pbPokeCenterPC
+        pbFadeOutIn {
+          scene = PokemonStorageScene.new
+          screen = PokemonStorageScreen.new(scene,$PokemonStorage)
+          screen.pbStartScreen(1)
+        }
       end
     else
       pbMessage(_INTL("\\w[]\\wm\\l[3]All your Pokémon have fainted. You have lost the Nuzlocke challenge! The challenge will now be turned off."))

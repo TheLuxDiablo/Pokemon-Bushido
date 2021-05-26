@@ -1,4 +1,1 @@
-Fix sRGB profile for:
-Battlers
-
 Add Stock changing IoA move tutor

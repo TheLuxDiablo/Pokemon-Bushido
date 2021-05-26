@@ -138,7 +138,7 @@ class PokeBattle_Scene
     bg.mirror = true
     for side in 0...2
       baseX, baseY = PokeBattle_SceneConstants.pbBattlerPosition(side)
-      base = pbAddSprite("base_#{side}",baseX,baseY,
+      base = pbAddSprite("",baseX,baseY,
          (side==0) ? playerBase : enemyBase,@viewport)
       base.z    = 1
       if base.bitmap
