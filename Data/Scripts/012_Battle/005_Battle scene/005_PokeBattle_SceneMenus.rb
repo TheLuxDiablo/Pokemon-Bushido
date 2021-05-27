@@ -125,7 +125,7 @@ class CommandMenuDisplay < BattleMenuBase
     addSprite("msgBox",@msgBox)
     if USE_GRAPHICS
       # Create background graphic
-      background = IconSprite.new(self.x ,self.y - 48,viewport)
+      background = IconSprite.new(self.x ,self.y - 52,viewport)
       background.setBitmap("Graphics/Pictures/Battle/overlay_command")
       addSprite("background",background)
       # Create bitmaps
