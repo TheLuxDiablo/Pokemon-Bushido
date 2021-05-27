@@ -13,7 +13,7 @@ module MessageConfig
   # 0 = Pause cursor is displayed at end of text
   # 1 = Pause cursor is displayed at bottom right
   # 2 = Pause cursor is displayed at lower middle side
-  CURSORMODE      = 1
+  CURSORMODE      = 0
   FontSubstitutes = {
      "Power Red and Blue"  => "Pokemon RS",
      "Power Red and Green" => "Pokemon FireLeaf",
