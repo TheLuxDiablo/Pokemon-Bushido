@@ -133,14 +133,14 @@ class PokemonIconSprite < SpriteWrapper
     end
     @filename = pbPokemonIconFile(value)
     @animBitmap = AnimatedBitmap.new(@filename)
-    self.bitmap = @animBitmap.bitmap
+    self.bitmap = @animBitmap.bitmap.clone
     self.src_rect.width  = @animBitmap.height
     self.src_rect.height = @animBitmap.height
     @numFrames    = @animBitmap.width/@animBitmap.height
     @currentFrame = 0 if @currentFrame>=@numFrames
     if @pokemon.shiny? && self.bitmap
-      pbCopyBitmap(@animBitmap.bitmap,@shinyicon,(@animBitmap.bitmap.width/2 - 18),@animBitmap.bitmap.height - 18)
-      pbCopyBitmap(@animBitmap.bitmap,@shinyicon,(@animBitmap.bitmap.width - 18),@animBitmap.bitmap.height - 18)
+      pbCopyBitmap(self.bitmap,@shinyicon,(self.bitmap.width/2 - 18),self.bitmap.height - 18)
+      pbCopyBitmap(self.bitmap,@shinyicon,(self.bitmap.width - 18),self.bitmap.height - 18)
     end
     changeOrigin
   end
@@ -190,8 +190,6 @@ class PokemonIconSprite < SpriteWrapper
   def update
     return if !@animBitmap
     super
-    @animBitmap.update
-    self.bitmap = @animBitmap.bitmap
     # Update animation
     cl = self.counterLimit
     if cl==0
@@ -318,14 +316,14 @@ class PokemonSpeciesIconSprite < SpriteWrapper
     @animBitmap = nil
     bitmapFileName = pbCheckPokemonIconFiles([@species,(@gender==1),@shiny,@form,false])
     @animBitmap = AnimatedBitmap.new(bitmapFileName)
-    self.bitmap = @animBitmap.bitmap
+    self.bitmap = @animBitmap.bitmap.clone
     self.src_rect.width  = @animBitmap.height
     self.src_rect.height = @animBitmap.height
     @numFrames = @animBitmap.width/@animBitmap.height
     @currentFrame = 0 if @currentFrame>=@numFrames
     if @shiny && @animBitmap
-      pbCopyBitmap(@animBitmap.bitmap,@shinyicon,(@animBitmap.bitmap.width/2 - 18),@animBitmap.bitmap.height - 18)
-      pbCopyBitmap(@animBitmap.bitmap,@shinyicon,(@animBitmap.bitmap.width - 18),@animBitmap.bitmap.height - 18)
+      pbCopyBitmap(self.bitmap,@shinyicon,(self.bitmap.width/2 - 18),self.bitmap.height - 18)
+      pbCopyBitmap(self.bitmap,@shinyicon,(self.bitmap.width - 18),self.bitmap.height - 18)
     end
     changeOrigin
   end
@@ -333,8 +331,6 @@ class PokemonSpeciesIconSprite < SpriteWrapper
   def update
     return if !@animBitmap
     super
-    @animBitmap.update
-    self.bitmap = @animBitmap.bitmap
     # Update animation
     @counter += 1
     if @counter>=self.counterLimit
