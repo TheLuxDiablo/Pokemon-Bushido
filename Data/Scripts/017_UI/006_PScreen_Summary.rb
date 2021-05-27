@@ -623,31 +623,41 @@ class PokemonSummary_Scene
     base = Color.new(64,64,64)
     shadow = Color.new(176,176,176)
     # Determine which stats are boosted and lowered by the Pokémon's nature
+    statbases = []
     statshadows = []
-    PBStats.eachStat { |s| statshadows[s] = shadow }
+    PBStats.eachStat { |s|
+      statbases[s] = base
+      statshadows[s] = shadow
+     }
     if !@pokemon.shadowPokemon? || @pokemon.heartStage>3
       natup = PBNatures.getStatRaised(@pokemon.calcNature)
       natdn = PBNatures.getStatLowered(@pokemon.calcNature)
-      statshadows[natup] = Color.new(136,96,72) if natup!=natdn
-      statshadows[natdn] = Color.new(64,120,152) if natup!=natdn
+      statbases[natup] = Color.new(232,32,16) if natup!=natdn
+      statbases[natdn] = Color.new(0,112,248) if natup!=natdn
+      statshadows[natup] = Color.new(248,168,184) if natup!=natdn
+      statshadows[natdn] = Color.new(120,184,232) if natup!=natdn
     end
     # Write various bits of text
     textpos = [
-       [_INTL("HP"),292,76,2,base,statshadows[PBStats::HP]],
-       [sprintf("%d/%d",@pokemon.hp,@pokemon.totalhp),462,76,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Attack"),248,120,0,base,statshadows[PBStats::ATTACK]],
-       [sprintf("%d",@pokemon.attack),456,120,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Defense"),248,152,0,base,statshadows[PBStats::DEFENSE]],
-       [sprintf("%d",@pokemon.defense),456,152,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Sp. Atk"),248,184,0,base,statshadows[PBStats::SPATK]],
-       [sprintf("%d",@pokemon.spatk),456,184,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Sp. Def"),248,216,0,base,statshadows[PBStats::SPDEF]],
-       [sprintf("%d",@pokemon.spdef),456,216,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Speed"),248,248,0,base,statshadows[PBStats::SPEED]],
-       [sprintf("%d",@pokemon.speed),456,248,1,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Ability"),224,284,0,base,shadow],
-       [PBAbilities.getName(@pokemon.ability),362,284,0,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("HP"),292,76,2,statbases[PBStats::HP],statshadows[PBStats::HP]],
+       [sprintf("%d/%d",@pokemon.hp,@pokemon.totalhp),462,76,1,base,shadow],
+       [_INTL("Attack"),248,120,0,statbases[PBStats::ATTACK],statshadows[PBStats::ATTACK]],
+       [sprintf("%d",@pokemon.attack),456,120,1,base,shadow],
+       [_INTL("Defense"),248,152,0,statbases[PBStats::DEFENSE],statshadows[PBStats::DEFENSE]],
+       [sprintf("%d",@pokemon.defense),456,152,1,base,shadow],
+       [_INTL("Sp. Atk"),248,184,0,statbases[PBStats::SPATK],statshadows[PBStats::SPATK]],
+       [sprintf("%d",@pokemon.spatk),456,184,1,base,shadow],
+       [_INTL("Sp. Def"),248,216,0,statbases[PBStats::SPDEF],statshadows[PBStats::SPDEF]],
+       [sprintf("%d",@pokemon.spdef),456,216,1,base,shadow],
+       [_INTL("Speed"),248,248,0,statbases[PBStats::SPEED],statshadows[PBStats::SPEED]],
+       [sprintf("%d",@pokemon.speed),456,248,1,base,shadow],
+       [_INTL("Ability"),224,284,0,base,shadow]
     ]
+    if @pokemon.abilityIndex<2
+      textpos.push([PBAbilities.getName(@pokemon.ability),362,284,0,base,shadow])
+    else
+      textpos.push([PBAbilities.getName(@pokemon.ability),362,284,0,Color.new(144,64,232),Color.new(184,168,224)])
+    end
     # Draw all text
     pbDrawTextPositions(overlay,textpos)
     # Draw ability description
@@ -828,44 +838,53 @@ class PokemonSummary_Scene
     shadow = Color.new(176,176,176)
     imagepos=[]
     # Determine which stats are boosted and lowered by the Pokémon's nature
+    statbases = []
     statshadows = []
-    PBStats.eachStat { |s| statshadows[s] = shadow }
+    PBStats.eachStat { |s|
+      statbases[s] = base
+      statshadows[s] = shadow
+     }
     if !@pokemon.shadowPokemon? || @pokemon.heartStage>3
       natup = PBNatures.getStatRaised(@pokemon.calcNature)
       natdn = PBNatures.getStatLowered(@pokemon.calcNature)
-      statshadows[natup] = Color.new(200,96,72) if natup != natdn
-      statshadows[natdn] = Color.new(64,120,200) if natup != natdn
+      statbases[natup] = Color.new(232,32,16) if natup!=natdn
+      statbases[natdn] = Color.new(0,112,248) if natup!=natdn
+      statshadows[natup] = Color.new(248,168,184) if natup!=natdn
+      statshadows[natdn] = Color.new(120,184,232) if natup!=natdn
     end
-    statshadows[natup] = Color.new(200,96,72) if natup != natdn
-    statshadows[natdn] = Color.new(64,120,200) if natup != natdn
+    # Write various bits of text
     textColumn = 300
     evColumn   = 390
     ivColumn   = 455
     abilitydesc=pbGetMessage(MessageTypes::AbilityDescs,@pokemon.ability)
     textpos = [
-       [_INTL("EV"),evColumn,60,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("IV"),ivColumn,60,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("HP"),textColumn,92,2,base,shadow],
-       [sprintf("%d",@pokemon.ev[0]),evColumn,92,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[0]),ivColumn,92,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Attack"),textColumn,124,2,base,statshadows[1]],
-       [sprintf("%d",@pokemon.ev[1]),evColumn,124,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[1]),ivColumn,124,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Defense"),textColumn,156,2,base,statshadows[2]],
-       [sprintf("%d",@pokemon.ev[2]),evColumn,156,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[2]),ivColumn,156,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Sp. Atk"),textColumn,187,2,base,statshadows[4]],
-       [sprintf("%d",@pokemon.ev[4]),evColumn,188,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[4]),ivColumn,188,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Sp. Def"),textColumn,219,2,base,statshadows[5]],
-       [sprintf("%d",@pokemon.ev[5]),evColumn,220,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[5]),ivColumn,220,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Speed"),textColumn,251,2,base,statshadows[3]],
-       [sprintf("%d",@pokemon.ev[3]),evColumn,252,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [sprintf("%d",@pokemon.iv[3]),ivColumn,252,2,Color.new(64,64,64),Color.new(176,176,176)],
-       [_INTL("Ability"),224,284,0,base,shadow], # 187,188 - 219,220 - 251,252
-       [PBAbilities.getName(@pokemon.ability),362,284,0,Color.new(64,64,64),Color.new(176,176,176)],
+       [_INTL("EV"),evColumn,60,2,base,shadow],
+       [_INTL("IV"),ivColumn,60,2,base,shadow],
+       [_INTL("HP"),textColumn,92,2,statbases[PBStats::HP],statshadows[PBStats::HP]],
+       [sprintf("%d",@pokemon.ev[0]),evColumn,92,2,base,shadow],
+       [sprintf("%d",@pokemon.iv[0]),ivColumn,92,2,base,shadow],
+       [_INTL("Attack"),textColumn,124,2,statbases[PBStats::ATTACK],statshadows[PBStats::ATTACK]],
+       [sprintf("%d",@pokemon.ev[1]),evColumn,124,2,base,shadow],
+       [sprintf("%d",@pokemon.iv[1]),ivColumn,124,2,base,shadow],
+       [_INTL("Defense"),textColumn,156,2,statbases[PBStats::DEFENSE],statshadows[PBStats::DEFENSE]],
+       [sprintf("%d",@pokemon.ev[2]),evColumn,156,2,base,shadow],
+       [sprintf("%d",@pokemon.iv[2]),ivColumn,156,2,base,shadow],
+       [_INTL("Sp. Atk"),textColumn,187,2,statbases[PBStats::SPATK],statshadows[PBStats::SPATK]],
+       [sprintf("%d",@pokemon.ev[4]),evColumn,188,2,base,shadow],
+       [sprintf("%d",@pokemon.iv[4]),ivColumn,188,2,base,shadow],
+       [_INTL("Sp. Def"),textColumn,219,2,statbases[PBStats::SPDEF],statshadows[PBStats::SPDEF]],
+       [sprintf("%d",@pokemon.ev[5]),evColumn,220,2,base,shadow],
+       [sprintf("%d",@pokemon.iv[5]),ivColumn,220,2,base,shadow],
+       [_INTL("Speed"),textColumn,251,2,statbases[PBStats::SPEED],statshadows[PBStats::SPEED]],
+       [sprintf("%d",@pokemon.ev[3]),evColumn,252,2,base,shadow],
+       [sprintf("%d",@pokemon.iv[3]),ivColumn,252,2,base,shadow],
+       [_INTL("Ability"),224,284,0,base,shadow]
     ]
+    if @pokemon.abilityIndex<2
+      textpos.push([PBAbilities.getName(@pokemon.ability),362,284,0,base,shadow])
+    else
+      textpos.push([PBAbilities.getName(@pokemon.ability),362,284,0,Color.new(144,64,232),Color.new(184,168,224)])
+    end
     pbDrawTextPositions(overlay,textpos)
     drawTextEx(overlay,224,316,282,2,abilitydesc,Color.new(64,64,64),Color.new(176,176,176))
   end
