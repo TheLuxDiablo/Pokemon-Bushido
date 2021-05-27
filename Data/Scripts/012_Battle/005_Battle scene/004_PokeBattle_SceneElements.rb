@@ -8,14 +8,12 @@ class PokemonDataBox < SpriteWrapper
   attr_reader   :animatingExp
 
   # Time in seconds to fully fill the Exp bar (from empty).
-  EXP_BAR_FILL_TIME  = 1.75
+  EXP_BAR_FILL_TIME  = 1.5
   # Maximum time in seconds to make a change to the HP bar.
   HP_BAR_CHANGE_TIME = 1.0
   STATUS_ICON_HEIGHT = 16
-  #NAME_BASE_COLOR         = Color.new(72,72,72)
-  #NAME_SHADOW_COLOR       = Color.new(184,184,184)
-  NAME_BASE_COLOR         = Color.new(255,255,255)
-  NAME_SHADOW_COLOR       = Color.new(100,100,100)
+  NAME_BASE_COLOR         = Color.new(248,248,248)
+  NAME_SHADOW_COLOR       = Color.new(56,23,12) # Color.new(40,48,40)
   MALE_BASE_COLOR         = Color.new(48,96,216)
   MALE_SHADOW_COLOR       = NAME_SHADOW_COLOR
   FEMALE_BASE_COLOR       = Color.new(248,88,40)
@@ -59,18 +57,20 @@ class PokemonDataBox < SpriteWrapper
     if onPlayerSide
       @spriteX = Graphics.width - 244
       @spriteY = Graphics.height - 192
-      @spriteBaseX = 34
+      @spriteBaseX = 36
     else
       @spriteX = -16
       @spriteY = 36
-      @spriteBaseX = 16
+      @spriteBaseX = 8
     end
     case sideSize
+    when 1
+      @spriteX += [-16,  8,  0,  0][@battler.index]
     when 2
-      @spriteX += [-12,  12,  0,  0][@battler.index]
+      @spriteX += [-16,  8,  0, 0][@battler.index]
       @spriteY += [-20, -34, 34, 20][@battler.index]
     when 3
-      @spriteX += [-12,  12, -6,  6,  0,  0][@battler.index]
+      @spriteX += [-16,  8, -8,  4,  0,  0][@battler.index]
       @spriteY += [-42, -46,  4,  0, 50, 46][@battler.index]
     end
   end
@@ -114,16 +114,16 @@ class PokemonDataBox < SpriteWrapper
 
   def x=(value)
     super
-    @hpBar.x     = value+@spriteBaseX+102
-    @expBar.x    = value+@spriteBaseX+6
-    @hpNumbers.x = value+@spriteBaseX+80
+    @hpBar.x     = value+@spriteBaseX + 100
+    @expBar.x    = value+@spriteBaseX + 12
+    @hpNumbers.x = value+@spriteBaseX + 94
   end
 
   def y=(value)
     super
-    @hpBar.y     = value+40
-    @expBar.y    = value+74
-    @hpNumbers.y = value+52
+    @hpBar.y     = value+48
+    @expBar.y    = value+78
+    @hpNumbers.y = value+56
   end
 
   def z=(value)
@@ -211,53 +211,49 @@ class PokemonDataBox < SpriteWrapper
   def refresh
     self.bitmap.clear
     return if !@battler.pokemon
+    onPlayerSide = ((@battler.index%2)==0)
     textPos = []
     imagePos = []
     # Draw background panel
     self.bitmap.blt(0,0,@databoxBitmap.bitmap,Rect.new(0,0,@databoxBitmap.width,@databoxBitmap.height))
     # Draw Pokémon's name
     nameWidth = self.bitmap.text_size(@battler.name).width
-    nameOffset = 0
-    #nameOffset = nameWidth-116 if nameWidth>116
-    textPos.push([@battler.name,@spriteBaseX+10-nameOffset,6,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
-    # Draw Pokémon's gender symbol
-    case @battler.displayGender
-    when 0   # Male
-      textPos.push([_INTL("♂"),@spriteBaseX+128,6,false,MALE_BASE_COLOR,MALE_SHADOW_COLOR])
-    when 1   # Female
-      textPos.push([_INTL("♀"),@spriteBaseX+128,6,false,FEMALE_BASE_COLOR,FEMALE_SHADOW_COLOR])
-    end
+    textPos.push([@battler.name,@spriteBaseX + 4,10,false,NAME_BASE_COLOR,NAME_SHADOW_COLOR])
     pbDrawTextPositions(self.bitmap,textPos)
     # Draw Pokémon's level
-    imagePos.push(["Graphics/Pictures/Battle/overlay_lv",@spriteBaseX+142,16])
-    pbDrawNumber(@battler.level,self.bitmap,@spriteBaseX+164,16)
-    # Draw shiny icon
-    if @battler.shiny?
-      shinyX = (@battler.opposes?(0)) ? 10 : 12   # Foe's/player's
-      shinyY = (@battler.opposes?(0)) ? 36 : 48   # Foe's/player's
-      imagePos.push(["Graphics/Pictures/shiny",@spriteBaseX+shinyX,shinyY])
-    end
+    xVal = 256 - (onPlayerSide ? 0 : 30)
+    leveldigits = @battler.level.to_i.digits.length
+    iconwidth = @numbersBitmap.width/11
+    leveloffset = (leveldigits > 2)? 0 : iconwidth
+    pbDrawNumber(@battler.level,self.bitmap,xVal - leveloffset,22,1)
+    levelwidth = (leveldigits * iconwidth) + 22
+    imagePos.push(["Graphics/Pictures/Battle/overlay_lv",xVal - levelwidth - leveloffset,22])
+    # Draw Pokémon's gender symbol
+    xVal = xVal - levelwidth - leveloffset - 8
+    imagePos.push(["Graphics/Pictures/Battle/icon_gender",xVal,18 ,(12 * @battler.displayGender),0,12,20])
     # Draw Mega Evolution/Primal Reversion icon
-    if @battler.mega?
-      imagePos.push(["Graphics/Pictures/Battle/icon_mega",@spriteBaseX+8,34])
-    elsif @battler.primal?
-      primalX = (@battler.opposes?) ? 208 : -28   # Foe's/player's
-      if @battler.isSpecies?(:KYOGRE)
-        imagePos.push(["Graphics/Pictures/Battle/icon_primal_Kyogre",@spriteBaseX+primalX,4])
-      elsif @battler.isSpecies?(:GROUDON)
-        imagePos.push(["Graphics/Pictures/Battle/icon_primal_Groudon",@spriteBaseX+primalX,4])
-      end
-    end
+  #  if @battler.mega?
+  #    imagePos.push(["Graphics/Pictures/Battle/icon_mega",@spriteBaseX+8,34])
+  #  elsif @battler.primal?
+  #    primalX = (@battler.opposes?) ? 208 : -28   # Foe's/player's
+  #    if @battler.isSpecies?(:KYOGRE)
+  #      imagePos.push(["Graphics/Pictures/Battle/icon_primal_Kyogre",@spriteBaseX+primalX,4])
+  #    elsif @battler.isSpecies?(:GROUDON)
+  #      imagePos.push(["Graphics/Pictures/Battle/icon_primal_Groudon",@spriteBaseX+primalX,4])
+  #    end
+  #  end
+    # Draw shiny icon
+    imagePos.push(["Graphics/Pictures/shiny",@spriteBaseX + 4,40]) if @battler.shiny?
     # Draw owned icon (foe Pokémon only)
     if @battler.owned? && @battler.opposes?(0) && !@battler.shiny?
-      imagePos.push(["Graphics/Pictures/Battle/icon_own",@spriteBaseX+8,36])
+      imagePos.push(["Graphics/Pictures/Battle/icon_own",@spriteBaseX+8,44])
     end
     # Draw status icon
     if @battler.status>0
       s = @battler.status
       s = 6 if s==PBStatuses::POISON && @battler.statusCount>0   # Badly poisoned
-      imagePos.push(["Graphics/Pictures/Battle/icon_statuses",@spriteBaseX+24,34,
-         0,(s-1)*STATUS_ICON_HEIGHT,-1,STATUS_ICON_HEIGHT])
+      imagePos.push(["Graphics/Pictures/Battle/icon_statuses",@spriteBaseX + 26,
+        44,0,(s-1)*STATUS_ICON_HEIGHT,-1,STATUS_ICON_HEIGHT])
     end
     pbDrawImagePositions(self.bitmap,imagePos)
     refreshHP

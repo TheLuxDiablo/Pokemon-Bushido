@@ -475,6 +475,8 @@ class PokeBattle_Scene
     target = (targets && targets.is_a?(Array)) ? targets[0] : targets
     animations = pbLoadBattleAnimations
     return if !animations
+    fadeAnim = DataboxFadeAnimation.new(@sprites,@viewport,@battle.battlers.length)
+    @animations.push(fadeAnim)
     pbSaveShadows {
       if animID[1]   # On opposing side and using OppMove animation
         pbAnimationCore(animations[anim],target,user,true)
@@ -482,6 +484,8 @@ class PokeBattle_Scene
         pbAnimationCore(animations[anim],user,target)
       end
     }
+    fadeAnim = DataboxUnfadeAnimation.new(@sprites,@viewport,@battle.battlers.length)
+    @animations.push(fadeAnim)
   end
 
   # Plays a common animation.
@@ -492,7 +496,27 @@ class PokeBattle_Scene
     return if !animations
     animations.each do |a|
       next if !a || a.name!="Common:"+animName
+      if !(user || target)
+        fadeAnim = DataboxFadeAnimation.new(@sprites,@viewport,@battle.battlers.length)
+        @animations.push(fadeAnim)
+      else
+        arr = []
+        arr.push(target.index) if target
+        arr.push(user.index) if user && !target
+        fadeAnim = DataboxFadeAnimation.new(@sprites,@viewport,@battle.battlers.length,0,arr)
+        @animations.push(fadeAnim)
+      end
       pbAnimationCore(a,user,(target!=nil) ? target : user)
+      if !(user || target)
+        fadeAnim = DataboxUnfadeAnimation.new(@sprites,@viewport,@battle.battlers.length)
+        @animations.push(fadeAnim)
+      else
+        arr = []
+        arr.push(target.index) if target
+        arr.push(user.index) if user && !target
+        fadeAnim = DataboxUnfadeAnimation.new(@sprites,@viewport,@battle.battlers.length,0,arr)
+        @animations.push(fadeAnim)
+      end
       return
     end
   end

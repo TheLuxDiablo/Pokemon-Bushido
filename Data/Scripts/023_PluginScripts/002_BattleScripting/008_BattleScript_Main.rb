@@ -1424,7 +1424,7 @@ class DataboxFadeAnimation < PokeBattle_Animation
     boxes = []
     for i in 0...@battlers
       if @sprites["dataBox_#{i}"]
-        next if @specific.is_a?(Array) && !@specific.include?(i)
+        next if @specific.is_a?(Array) && @specific.include?(i)
         boxes[i]= addSprite(@sprites["dataBox_#{i}"])
         boxes[i].moveOpacity(delay,3,0)
       end
@@ -1445,7 +1445,7 @@ class DataboxUnfadeAnimation < PokeBattle_Animation
     boxes = []
     for i in 0...@battlers
       if @sprites["dataBox_#{i}"]
-        next if @specific.is_a?(Array) && !@specific.include?(i)
+        next if @specific.is_a?(Array) && @specific.include?(i)
         boxes[i]= addSprite(@sprites["dataBox_#{i}"])
         boxes[i].setOpacity(delay,0)
         boxes[i].moveOpacity(delay,3,255)

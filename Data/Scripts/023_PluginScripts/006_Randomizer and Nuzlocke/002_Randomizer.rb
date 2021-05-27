@@ -234,7 +234,7 @@ module Randomizer
       $PokemonGlobal.isRandomizer = nil
       $PokemonGlobal.randomizerRules = nil
     end
-    pbClearData
+    pbClearData(true)
     $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
   end
   #-----------------------------------------------------------------------------
