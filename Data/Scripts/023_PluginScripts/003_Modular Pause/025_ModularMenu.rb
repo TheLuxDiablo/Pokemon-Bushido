@@ -324,7 +324,7 @@ class PokemonPauseMenu
         pbPlayDecisionSE()
         MenuHandlers.runAction(@scene.entries[@scene.index],@scene)
       end
-      break if @scene.close || Input.trigger?(Input::B)
+      break if @scene.close || Input.trigger?(Input::B) || Input.trigger?(Input::A)
     end
     # used to dispose of the scene
     @scene.pbEndScene if @scene.endscene

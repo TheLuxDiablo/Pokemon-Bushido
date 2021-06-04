@@ -22,7 +22,7 @@ class Scene_Map
       pbSave
       @mode = 0
       @vp = Viewport.new(0,0,Graphics.width,Graphics.height)
-      @vp.z = 100000
+      @vp.z = 99999
       @disk = Sprite.new(@vp)
       @disk.bitmap = RPG::Cache.load_bitmap("Graphics/Pictures/saveDisk")
       @disk.x, @disk.y = 8, 8
@@ -32,12 +32,25 @@ class Scene_Map
       @arrow.x, @arrow.y = 8, -4
       @arrow.opacity = 0
     end
+    if $game_temp.in_menu || $game_temp.in_battle && $game_player.move_route_forcing ||
+      $game_temp.message_window_showing || $game_player.moving? || pbMapInterpreterRunning?
+      @mode = nil
+      if @disk && !@disk.disposed?
+        @disk.opacity = 0
+        @disk.dispose
+      end
+      if @arrow && !@arrow.disposed?
+        @arrow.opacity = 0
+        @arrow.dispose
+      end
+      @vp.dispose if @vp
+    end
     if @mode == 0
-      @disk.opacity += 16
+      @disk.opacity += (255/(4 * (Graphics.frame_rate/10)))
       @mode = 1 if @disk.opacity >= 255
     end
     if @mode == 1
-      @arrow.opacity += 16
+      @arrow.opacity += (255/(4 * (Graphics.frame_rate/10)))
       @mode = 2 if @arrow.opacity >= 255
     end
     if @mode == 2
@@ -45,8 +58,8 @@ class Scene_Map
       @mode = 3 if @arrow.y >= 22
     end
     if @mode == 3
-      @arrow.opacity -= 16
-      @disk.opacity -= 16
+      @arrow.opacity -= (255/(4 * (Graphics.frame_rate/10)))
+      @disk.opacity -= (255/(4 * (Graphics.frame_rate/10)))
       if @disk.opacity <= 0
         @arrow.dispose
         @disk.dispose
