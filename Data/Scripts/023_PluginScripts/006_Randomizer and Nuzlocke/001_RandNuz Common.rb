@@ -10,12 +10,14 @@ module Randomizer
   # list of species to exclude from the randomizer
   EXCLUSIONS_SPECIES = [
     :LUGIA, :HOOH, :COBALION, :TERRAKION, :VIRIZION, :ZERAORA, :LANDORUS,
-    :TORNADUS, :THUNDURUS, :CELEBI, :DARMANITAN, :DARUMAKA, :OSHAWOTT,
-    :FENNEKIN, :TREECKO
+    :TORNADUS, :THUNDURUS, :CELEBI
   ]
 
   # list of items to exclude from the randomizer
-  EXCLUSIONS_ITEMS = [:HM01, :HM02, :HM03, :HM04, :HM05, :HM06, :RARECANDY]
+  EXCLUSIONS_ITEMS = [
+    :HM01, :HM02, :HM03, :HM04, :HM05, :HM06, :RARECANDY, :LIGHTFLUTE,
+    :GALARICACUFF, :GALARICAWREATH
+  ]
 end
 
 #===============================================================================
