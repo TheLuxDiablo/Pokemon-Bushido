@@ -143,7 +143,7 @@ module Randomizer
     (PBItems.maxValue - 1).times do
       loop do
         item = 1 + rand(PBItems.maxValue)
-        break if !pbIsKeyItem?(item)
+        break if !(pbIsKeyItem?(item) || pbIsMegaStone?(item))
       end
       new.push(item)
     end

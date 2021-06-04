@@ -5,6 +5,8 @@ Added Challenge Modes
 Added native gamepad support
 Added Mystery Gifts
 Added an Encounter List
+Added a Battle Stat screen
+Misc Improvements in graphics and events
 
 1.1.12 ===============================================================================================================
 Fix for Soft Resest (F12) on the RGSS exe

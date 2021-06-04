@@ -1,12 +1,11 @@
 class TilemapLoader
   attr_reader :cached
 
-  def initialize(viewport, cached = false)
+  def initialize(viewport)
     @viewport = viewport
     @tilemap  = nil
     @color    = Color.new(0,0,0,0)
     @tone     = Tone.new(0,0,0,0)
-    @cached   = cached
     updateClass
   end
 
