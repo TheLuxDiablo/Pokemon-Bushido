@@ -136,7 +136,7 @@ def pbBattleAnimationOverride(viewport,battletype = 0,foe = nil)
   ##### VS. animation, by Luka S.J. #####
   ##### Tweaked by Maruno           #####
   return if !foe
-  trainerid = (foe[0].trainertype rescue -1)
+  trainerid = foe.respond_to?(:trainertype) ? foe[0].trainertype : -1
   if trainerid >= 0
     if checkIfSunMoonTransition(trainerid)
       $PokemonTemp.smAnim[1] = Viewport.new(0,0,Graphics.width,Graphics.height)
@@ -175,7 +175,7 @@ def pbBattleAnimationOverride(viewport,battletype = 0,foe = nil)
     end
   end
   if (battletype==1 || battletype==3) && foe.length==1   # Against single trainer
-    trainerid = (foe[0].trainertype rescue -1)
+    trainerid = foe.respond_to?(:trainertype) ? foe[0].trainertype : -1
     if trainerid>=0
       tbargraphic = sprintf("Graphics/Transitions/vsBar%s",getConstantName(PBTrainers,trainerid)) rescue nil
       tbargraphic = sprintf("Graphics/Transitions/vsBar%d",trainerid) if !pbResolveBitmap(tbargraphic)
