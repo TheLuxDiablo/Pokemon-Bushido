@@ -32,8 +32,7 @@ class Scene_Map
       @arrow.x, @arrow.y = 8, -4
       @arrow.opacity = 0
     end
-    if $game_temp.in_menu || $game_temp.in_battle && $game_player.move_route_forcing ||
-      $game_temp.message_window_showing || $game_player.moving? || pbMapInterpreterRunning?
+    if $game_temp.in_menu || $game_temp.in_battle || $game_player.move_route_forcing
       @mode = nil
       if @disk && !@disk.disposed?
         @disk.opacity = 0
@@ -44,6 +43,7 @@ class Scene_Map
         @arrow.dispose
       end
       @vp.dispose if @vp
+      return
     end
     if @mode == 0
       @disk.opacity += (255/(4 * (Graphics.frame_rate/10)))
