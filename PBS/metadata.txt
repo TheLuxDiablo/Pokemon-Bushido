@@ -621,6 +621,7 @@ BattleBack = CaveBushido1
 Outdoor = false
 ShowArea = false
 MapPosition = 2,12,5
+BattleBack = Dojo1
 #-------------------------------
 [115]
 # Hanatsu Market
