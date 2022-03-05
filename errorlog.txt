@@ -1,0 +1,74 @@
+
+=================
+
+[2022-03-05 13:07:15 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 86 (coords 48,17), map 85 (Hagane City):
+Exception: NameError
+Message: undefined local variable or method `game_map' for #<Interpreter:0x000001a82f42b4d0>
+
+***Full script:
+$game_map.fog_name!="Clouds3"&&game_map.id==85
+
+Backtrace:
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+006_Game_Event.rb:246:in `update'
+009_Game_Map.rb:418:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+006_Game_Event.rb:246:in `update'
+009_Game_Map.rb:418:in `block in update'
+009_Game_Map.rb:417:in `each'
+
+=================
+
+[2022-03-05 13:08:02 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 86 (coords 48,17), map 85 (Hagane City):
+Exception: NoMethodError
+Message: undefined method `id' for #<Game_Map:0x000001f87e043990>
+
+***Full script:
+$game_map.fog_name!="Clouds3" && $game_map.id==85
+
+Backtrace:
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+006_Game_Event.rb:246:in `update'
+009_Game_Map.rb:418:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+006_Game_Event.rb:246:in `update'
+009_Game_Map.rb:418:in `block in update'
+009_Game_Map.rb:417:in `each'
