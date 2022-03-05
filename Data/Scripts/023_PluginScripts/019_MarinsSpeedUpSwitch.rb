@@ -27,7 +27,7 @@ PluginManager.register({
 })
 
 # When the user clicks Alt, it'll pick the next number in this array.
-SPEEDUP_STAGES = [1,2]
+SPEEDUP_STAGES = [1,3]
 
 
 def pbAllowSpeedup
