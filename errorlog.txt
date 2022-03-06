@@ -72,3 +72,77 @@ Backtrace:
 006_Game_Event.rb:246:in `update'
 009_Game_Map.rb:418:in `block in update'
 009_Game_Map.rb:417:in `each'
+
+=================
+
+[2022-03-05 16:26:41 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 28 (coords 61,25), map 82 (Sakura Pass):
+Exception: LocalJumpError
+Message: no block given (yield)
+
+***Full script:
+pbTrainerBattle(:RIVALBUSHIDO_F,"Akane",nil,nil,1)
+
+Backtrace:
+003_PField_Visuals.rb:138:in `pbBattleAnimationOverride'
+003_PField_Visuals.rb:41:in `pbBattleAnimation'
+006_PField_Battles.rb:447:in `pbTrainerBattleCore'
+006_PField_Battles.rb:515:in `pbTrainerBattle'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-05 16:31:10 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 28 (coords 61,25), map 82 (Sakura Pass):
+Exception: NoMethodError
+Message: undefined method `length' for -1:Integer
+
+***Full script:
+pbTrainerBattle(:RIVALBUSHIDO_F,"Akane",nil,nil,1)
+
+Backtrace:
+005_SpriteWindow_text.rb:1082:in `getAutoDims'
+005_SpriteWindow_text.rb:1157:in `initialize'
+011_Messages.rb:1237:in `new'
+011_Messages.rb:1237:in `pbShowCommands'
+011_Messages.rb:1207:in `block in pbMessage'
+010_GelaNameBoxes.rb:519:in `pbMessageDisplay'
+011_Messages.rb:1205:in `pbMessage'
+003_PField_Visuals.rb:140:in `pbBattleAnimationOverride'
+003_PField_Visuals.rb:41:in `pbBattleAnimation'
+006_PField_Battles.rb:447:in `pbTrainerBattleCore'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'

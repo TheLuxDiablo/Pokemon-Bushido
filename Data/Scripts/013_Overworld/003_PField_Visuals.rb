@@ -136,7 +136,9 @@ def pbBattleAnimationOverride(viewport,battletype = 0,foe = nil)
   ##### VS. animation, by Luka S.J. #####
   ##### Tweaked by Maruno           #####
   return if !foe
-  trainerid = foe.respond_to?(:trainertype) ? foe[0].trainertype : -1
+  #trainerid = foe.respond_to?(:trainertype) ? foe[0].trainertype : -1
+  trainerid = getID(PBTrainers,foe[0].trainertype)
+  #trainerid = 180
   if trainerid >= 0
     if checkIfSunMoonTransition(trainerid)
       $PokemonTemp.smAnim[1] = Viewport.new(0,0,Graphics.width,Graphics.height)
@@ -338,9 +340,9 @@ end
 # When the custom animation has finished, the screen should have faded to black
 # somehow.
 
-alias __over1__pbBattleAnimationOverride pbBattleAnimationOverride
+#alias __over1__pbBattleAnimationOverride pbBattleAnimationOverride
 
-def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
+#def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
   # The following example runs a common event that ought to do a custom
   # animation if some condition is true:
   #
@@ -351,8 +353,8 @@ def pbBattleAnimationOverride(viewport,battletype=0,foe=nil)
   #
   # The following line needs to call the aliased method if the custom transition
   # animation was NOT shown.
-  return __over1__pbBattleAnimationOverride(viewport,battletype,foe)
-end
+  #return __over1__pbBattleAnimationOverride(viewport,battletype,foe)
+#end
 
 
 
