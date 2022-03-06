@@ -53,7 +53,7 @@ class PokeBattle_Scene
       elsif Input.trigger?(Input::B) && mode==1   # Cancel
         pbPlayCancelSE
         break
-      elsif Input.trigger?(Input::A)
+      elsif Input.trigger?(Input::A) || Input.pressex?(0x41) #Thundaga, stats menu, also use the A key
         pbPlayDecisionSE
         ret = 5
         break

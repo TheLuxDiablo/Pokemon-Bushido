@@ -189,7 +189,7 @@ class Scene_Map
           $game_temp.menu_calling = true
           $game_temp.menu_beep = true
         end
-      elsif Input.trigger?(Input::X)
+      elsif Input.trigger?(Input::X) || Input.pressex?(0x46) #thundaga, A key and F key for key item calling
         unless $game_player.moving?
           $PokemonTemp.keyItemCalling = true
         end
