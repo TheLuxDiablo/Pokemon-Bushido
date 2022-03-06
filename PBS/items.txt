@@ -860,3 +860,4 @@
 834,DEXCERT,Journal Certificate,Journal Certificates,8,0,"A certificate proving the completion of the Aisho Journal. Only given to true masters.",0,0,6,
 835,ABILITYCHARM,Dream Charm,Dream Charms,8,0,"A charm said to increase the chance of finding a Pokémon with a Dream World Ability.",0,0,6,
 836,HABITATSCROLL,Habitat Scroll,Habitat Scroll,8,0,"A scroll that allows you to read and record the wild Pokemon that are present in your vicinity.",2,0,6,
+837,SHADEBALL,Shade Ball,Shade Balls,3,500,"A special Ball designed for capturing Shadow Pokémon and opening their hearts.",0,4,4,

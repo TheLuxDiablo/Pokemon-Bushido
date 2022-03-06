@@ -24,7 +24,8 @@ $BallTypes = {
   22 => :MOONBALL,
   23 => :SPORTBALL,
   24 => :DREAMBALL,
-  25 => :BEASTBALL
+  25 => :BEASTBALL,
+  26 => :SHADEBALL
 }
 
 def pbBallTypeToItem(balltype)
@@ -231,6 +232,12 @@ BallHandlers::ModifyCatchRate.add(:BEASTBALL,proc { |ball,catchRate,battle,battl
   next catchRate
 })
 
+BallHandlers::ModifyCatchRate.add(:SHADEBALL,proc { |ball,catchRate,battle,battler,ultraBeast|
+  multiplier = 6
+  catchRate *= multiplier if battler.pbHasType?(:SHADOW)
+  next catchRate
+})
+
 #===============================================================================
 # OnCatch
 #===============================================================================
@@ -240,4 +247,10 @@ BallHandlers::OnCatch.add(:HEALBALL,proc { |ball,battle,pkmn|
 
 BallHandlers::OnCatch.add(:FRIENDBALL,proc { |ball,battle,pkmn|
   pkmn.happiness = 200
+})
+
+BallHandlers::OnCatch.add(:SHADEBALL,proc { |ball,battle,pkmn|
+  if pkmn.shadowPokemon?
+    pbRaiseHappinessAndReduceHeartSilent(pkmn,2000)
+  end
 })

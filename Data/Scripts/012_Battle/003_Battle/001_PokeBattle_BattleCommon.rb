@@ -151,7 +151,7 @@ module PokeBattle_BattleCommon
     when 4
       pbMEPlay("HGSSLevelUp")
       pbDisplayBrief(_INTL("Gotcha! {1} was caught!",pkmn.name))
-      @scene.pbThrowSuccess   # Play capture success jingle
+      #@scene.pbThrowSuccess   # Play capture success jingle
       pbRemoveFromParty(battler.index,battler.pokemonIndex)
       # Gain Exp
       if GAIN_EXP_FOR_CAPTURE

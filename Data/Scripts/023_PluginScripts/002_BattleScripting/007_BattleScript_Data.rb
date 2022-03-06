@@ -2235,8 +2235,10 @@ module DialogueModule
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
-                    battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
-                    battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+                    if battle.battlers[3]
+                      battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
+                      battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+                    end
                     battle.scene.appearBar
                     pbMessage("...")
                     pbMessage("Leave me alone...")
@@ -2245,17 +2247,23 @@ module DialogueModule
                     battle.scene.appearBar
                     pbMessage("\\xn[Nori]\\bCome on \\PN, let's show these cowards how a real Kenshi battles!")
                     pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Breath of Flames!")
-                    battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
+                    if battle.battlers[2]
+                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
+                    else
+                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[0],battle.battlers[1])
+                    end
                     battle.scene.disappearBar
                     if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
                       battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
                     else
                       battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
                     end
-                    if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                    if battle.battlers[3]
+                      if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                      end
                     end
                   }
       Hotoke2 = Proc.new{|battle|

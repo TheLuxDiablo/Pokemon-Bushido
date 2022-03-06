@@ -482,6 +482,27 @@ def pbRaiseHappinessAndReduceHeart(pokemon,scene,amount)
   end
 end
 
+def pbRaiseHappinessAndReduceHeartSilent(pokemon,amount)
+  if !pokemon.shadowPokemon?
+    return false
+  end
+  if pokemon.happiness==255 && pokemon.heartgauge==0
+    return false
+  elsif pokemon.happiness==255
+    pokemon.adjustHeart(-amount)
+    pbReadyToPurify(pokemon)
+    return true
+  elsif pokemon.heartgauge==0
+    pokemon.changeHappiness("vitamin")
+    return true
+  else
+    pokemon.changeHappiness("vitamin")
+    pokemon.adjustHeart(-amount)
+    pbReadyToPurify(pokemon)
+    return true
+  end
+end
+
 #===============================================================================
 # No additional effect. (Shadow Blast, Shadow Blitz, Shadow Break, Shadow Rave,
 # Shadow Rush, Shadow Wave)

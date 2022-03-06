@@ -137,9 +137,13 @@ def pbBattleAnimationOverride(viewport,battletype = 0,foe = nil)
   ##### Tweaked by Maruno           #####
   return if !foe
   #trainerid = foe.respond_to?(:trainertype) ? foe[0].trainertype : -1
-  trainerid = getID(PBTrainers,foe[0].trainertype)
+  if battletype==1 || battletype==3
+    trainerid = getID(PBTrainers,foe[0].trainertype)
+  else
+    trainerid=0
+  end
   #trainerid = 180
-  if trainerid >= 0
+  if trainerid > 0
     if checkIfSunMoonTransition(trainerid)
       $PokemonTemp.smAnim[1] = Viewport.new(0,0,Graphics.width,Graphics.height)
       $PokemonTemp.smAnim[1].z = 100000

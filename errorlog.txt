@@ -146,3 +146,342 @@ Backtrace:
 002_Scene_Map.rb:162:in `block in update'
 002_Scene_Map.rb:160:in `loop'
 002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-05 22:52:57 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 47 (coords 12,13), map 101 (Test Events):
+Exception: NoMethodError
+Message: undefined method `pbRaiseStatStage' for nil:NilClass
+
+***Full script:
+pbTrainerBattle(:HOTOKE,"Hotoke",nil,nil,0)
+
+Backtrace:
+007_BattleScript_Data.rb:2238:in `block in <module:DialogueModule>'
+008_BattleScript_Main.rb:1196:in `display'
+008_BattleScript_Main.rb:96:in `block in pbBattleLoop'
+008_BattleScript_Main.rb:86:in `loop'
+008_BattleScript_Main.rb:86:in `pbBattleLoop'
+003_Battle_StartAndEnd.rb:305:in `pbStartBattleCore'
+003_Battle_StartAndEnd.rb:262:in `pbStartBattle'
+006_PField_Battles.rb:449:in `block (2 levels) in pbTrainerBattleCore'
+003_PField_Visuals.rb:14:in `pbSceneStandby'
+006_PField_Battles.rb:448:in `block in pbTrainerBattleCore'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-05 22:55:21 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 47 (coords 12,13), map 101 (Test Events):
+Exception: NoMethodError
+Message: undefined method `index' for nil:NilClass
+
+***Full script:
+pbTrainerBattle(:HOTOKE,"Hotoke",nil,nil,0)
+
+Backtrace:
+009_Scene_Animations.rb:472:in `pbAnimation'
+002_PokeBattle_Battle.rb:765:in `pbAnimation'
+007_BattleScript_Data.rb:2250:in `block in <module:DialogueModule>'
+008_BattleScript_Main.rb:1196:in `display'
+008_BattleScript_Main.rb:96:in `block in pbBattleLoop'
+008_BattleScript_Main.rb:86:in `loop'
+008_BattleScript_Main.rb:86:in `pbBattleLoop'
+003_Battle_StartAndEnd.rb:305:in `pbStartBattleCore'
+003_Battle_StartAndEnd.rb:262:in `pbStartBattle'
+006_PField_Battles.rb:449:in `block (2 levels) in pbTrainerBattleCore'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-05 23:00:03 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 47 (coords 12,13), map 101 (Test Events):
+Exception: NoMethodError
+Message: undefined method `index' for nil:NilClass
+
+***Full script:
+pbTrainerBattle(:HOTOKE,"Hotoke",nil,nil,0)
+
+Backtrace:
+009_Scene_Animations.rb:472:in `pbAnimation'
+002_PokeBattle_Battle.rb:765:in `pbAnimation'
+007_BattleScript_Data.rb:2250:in `block in <module:DialogueModule>'
+008_BattleScript_Main.rb:1196:in `display'
+008_BattleScript_Main.rb:96:in `block in pbBattleLoop'
+008_BattleScript_Main.rb:86:in `loop'
+008_BattleScript_Main.rb:86:in `pbBattleLoop'
+003_Battle_StartAndEnd.rb:305:in `pbStartBattleCore'
+003_Battle_StartAndEnd.rb:262:in `pbStartBattle'
+006_PField_Battles.rb:449:in `block (2 levels) in pbTrainerBattleCore'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-05 23:05:50 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: LocalJumpError
+Message: unexpected return
+
+Backtrace:
+014_MarinsHMItems.rb:255:in `block (2 levels) in load_scripts_from_folder'
+003_Event_Handlers.rb:141:in `trigger'
+001_PItem_Items.rb:312:in `triggerUseFromBag'
+001_PItem_Items.rb:792:in `pbUseItem'
+021_FRLG Bag.rb:487:in `block in pbStartScreen'
+021_FRLG Bag.rb:451:in `loop'
+021_FRLG Bag.rb:451:in `pbStartScreen'
+018_Follower_Main.rb:530:in `pbStartScreen'
+026_ModularPauseMenu.rb:61:in `block (3 levels) in load_scripts_from_folder'
+002_MessageConfig.rb:560:in `pbFadeOutIn'
+
+=================
+
+[2022-03-05 23:07:30 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: LocalJumpError
+Message: unexpected return
+
+Backtrace:
+014_MarinsHMItems.rb:255:in `block (2 levels) in load_scripts_from_folder'
+003_Event_Handlers.rb:141:in `trigger'
+001_PItem_Items.rb:312:in `triggerUseFromBag'
+001_PItem_Items.rb:792:in `pbUseItem'
+021_FRLG Bag.rb:487:in `block in pbStartScreen'
+021_FRLG Bag.rb:451:in `loop'
+021_FRLG Bag.rb:451:in `pbStartScreen'
+018_Follower_Main.rb:530:in `pbStartScreen'
+026_ModularPauseMenu.rb:61:in `block (3 levels) in load_scripts_from_folder'
+002_MessageConfig.rb:560:in `pbFadeOutIn'
+
+=================
+
+[2022-03-05 23:08:25 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: LocalJumpError
+Message: unexpected return
+
+Backtrace:
+014_MarinsHMItems.rb:255:in `block (2 levels) in load_scripts_from_folder'
+003_Event_Handlers.rb:141:in `trigger'
+001_PItem_Items.rb:312:in `triggerUseFromBag'
+001_PItem_Items.rb:792:in `pbUseItem'
+021_FRLG Bag.rb:487:in `block in pbStartScreen'
+021_FRLG Bag.rb:451:in `loop'
+021_FRLG Bag.rb:451:in `pbStartScreen'
+018_Follower_Main.rb:530:in `pbStartScreen'
+026_ModularPauseMenu.rb:61:in `block (3 levels) in load_scripts_from_folder'
+002_MessageConfig.rb:560:in `pbFadeOutIn'
+
+=================
+
+[2022-03-06 11:21:10 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 7 (coords 42,30), map 158 (Jinsu Island):
+Exception: NoMethodError
+Message: undefined method `trainertype' for #<PokeBattle_Pokemon:0x000001d2c04441e0>
+
+***Full script:
+pbWildBattle(:CROCONAW,34)
+
+
+Backtrace:
+003_PField_Visuals.rb:140:in `pbBattleAnimationOverride'
+003_PField_Visuals.rb:41:in `pbBattleAnimation'
+006_PField_Battles.rb:296:in `pbWildBattleCore'
+006_PField_Battles.rb:330:in `pbWildBattle'
+002_Randomizer.rb:332:in `pbWildBattle'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-06 11:22:38 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 7 (coords 42,30), map 158 (Jinsu Island):
+Exception: NoMethodError
+Message: undefined method `length' for 0:Integer
+
+***Full script:
+pbWildBattle(:CROCONAW,34)
+
+
+Backtrace:
+005_SpriteWindow_text.rb:1082:in `getAutoDims'
+005_SpriteWindow_text.rb:1157:in `initialize'
+011_Messages.rb:1237:in `new'
+011_Messages.rb:1237:in `pbShowCommands'
+011_Messages.rb:1207:in `block in pbMessage'
+010_GelaNameBoxes.rb:519:in `pbMessageDisplay'
+011_Messages.rb:1205:in `pbMessage'
+003_PField_Visuals.rb:140:in `pbBattleAnimationOverride'
+003_PField_Visuals.rb:41:in `pbBattleAnimation'
+006_PField_Battles.rb:296:in `pbWildBattleCore'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-06 11:23:25 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 7 (coords 42,30), map 158 (Jinsu Island):
+Exception: NoMethodError
+Message: undefined method `trainertype' for #<PokeBattle_Pokemon:0x0000020a0e5f37e0>
+
+***Full script:
+pbWildBattle(:CROCONAW,34)
+
+
+Backtrace:
+003_PField_Visuals.rb:140:in `pbBattleAnimationOverride'
+003_PField_Visuals.rb:41:in `pbBattleAnimation'
+006_PField_Battles.rb:296:in `pbWildBattleCore'
+006_PField_Battles.rb:330:in `pbWildBattle'
+002_Randomizer.rb:332:in `pbWildBattle'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-06 11:30:42 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 7 (coords 42,30), map 158 (Jinsu Island):
+Exception: NoMethodError
+Message: undefined method `>=' for nil:NilClass
+
+***Full script:
+pbWildBattle(:CROCONAW,34)
+
+
+Backtrace:
+003_PField_Visuals.rb:144:in `pbBattleAnimationOverride'
+003_PField_Visuals.rb:41:in `pbBattleAnimation'
+006_PField_Battles.rb:296:in `pbWildBattleCore'
+006_PField_Battles.rb:330:in `pbWildBattle'
+002_Randomizer.rb:332:in `pbWildBattle'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-06 11:46:38 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: NameError
+Message: undefined local variable or method `scene' for nil:NilClass
+
+Backtrace:
+003_PokeBall_CatchEffects.rb:254:in `block (2 levels) in load_scripts_from_folder'
+003_Event_Handlers.rb:141:in `trigger'
+003_PokeBall_CatchEffects.rb:73:in `onCatch'
+001_PokeBattle_BattleCommon.rb:173:in `pbThrowPokeBall'
+003_Nuzlocke.rb:175:in `pbThrowPokeBall'
+002_PItem_BattleItemEffects.rb:307:in `block (2 levels) in load_scripts_from_folder'
+003_Event_Handlers.rb:141:in `trigger'
+001_PItem_Items.rb:346:in `triggerUseInBattle'
+007_Battle_Action_UseItem.rb:124:in `pbUsePokeBallInBattle'
+011_Battle_Phase_Attack.rb:83:in `block in pbAttackPhaseItems'

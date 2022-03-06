@@ -448,7 +448,10 @@ class PokemonSummary_Scene
     # Draw Pokémon type(s)
     type1rect = Rect.new(0,@pokemon.type1*28,64,28)
     type2rect = Rect.new(0,@pokemon.type2*28,64,28)
-    if @pokemon.type1==@pokemon.type2
+    if @pokemon.shadowPokemon?  # Thundaga, making Shadow pokemon use shadow as their type
+      type1rect = Rect.new(0,getID(PBTypes,:SHADOW)*28,64,28)
+      overlay.blt(402,146,@typebitmap.bitmap,type1rect)
+    elsif @pokemon.type1==@pokemon.type2
       overlay.blt(402,146,@typebitmap.bitmap,type1rect)
     else
       overlay.blt(370,146,@typebitmap.bitmap,type1rect)
