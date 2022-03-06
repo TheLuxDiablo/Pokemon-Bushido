@@ -485,3 +485,79 @@ Backtrace:
 001_PItem_Items.rb:346:in `triggerUseInBattle'
 007_Battle_Action_UseItem.rb:124:in `pbUsePokeBallInBattle'
 011_Battle_Phase_Attack.rb:83:in `block in pbAttackPhaseItems'
+
+=================
+
+[2022-03-06 13:58:38 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: LocalJumpError
+Message: unexpected return
+
+Backtrace:
+014_MarinsHMItems.rb:678:in `block (2 levels) in load_scripts_from_folder'
+003_Event_Handlers.rb:141:in `trigger'
+001_PItem_Items.rb:312:in `triggerUseFromBag'
+001_PItem_Items.rb:792:in `pbUseItem'
+021_FRLG Bag.rb:487:in `block in pbStartScreen'
+021_FRLG Bag.rb:451:in `loop'
+021_FRLG Bag.rb:451:in `pbStartScreen'
+018_Follower_Main.rb:530:in `pbStartScreen'
+026_ModularPauseMenu.rb:61:in `block (3 levels) in load_scripts_from_folder'
+002_MessageConfig.rb:560:in `pbFadeOutIn'
+
+=================
+
+[2022-03-06 14:01:43 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: LocalJumpError
+Message: unexpected return
+
+Backtrace:
+014_MarinsHMItems.rb:668:in `block (2 levels) in load_scripts_from_folder'
+003_Event_Handlers.rb:141:in `trigger'
+001_PItem_Items.rb:331:in `triggerUseInField'
+001_PItem_Items.rb:849:in `pbUseKeyItemInField'
+016_PScreen_ReadyMenu.rb:283:in `block in pbStartReadyMenu'
+016_PScreen_ReadyMenu.rb:247:in `loop'
+016_PScreen_ReadyMenu.rb:247:in `pbStartReadyMenu'
+016_PScreen_ReadyMenu.rb:324:in `pbUseKeyItem'
+002_Scene_Map.rb:210:in `update'
+020_MarinsQuickSave.rb:20:in `update'
+
+=================
+
+[2022-03-06 14:03:28 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: LocalJumpError
+Message: unexpected return
+
+Backtrace:
+014_MarinsHMItems.rb:668:in `block (2 levels) in load_scripts_from_folder'
+003_Event_Handlers.rb:141:in `trigger'
+001_PItem_Items.rb:331:in `triggerUseInField'
+001_PItem_Items.rb:849:in `pbUseKeyItemInField'
+016_PScreen_ReadyMenu.rb:283:in `block in pbStartReadyMenu'
+016_PScreen_ReadyMenu.rb:247:in `loop'
+016_PScreen_ReadyMenu.rb:247:in `pbStartReadyMenu'
+016_PScreen_ReadyMenu.rb:324:in `pbUseKeyItem'
+002_Scene_Map.rb:210:in `update'
+020_MarinsQuickSave.rb:20:in `update'
+
+=================
+
+[2022-03-06 14:31:26 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: LocalJumpError
+Message: unexpected return
+
+Backtrace:
+014_MarinsHMItems.rb:206:in `block (2 levels) in load_scripts_from_folder'
+003_Event_Handlers.rb:141:in `trigger'
+001_PItem_Items.rb:312:in `triggerUseFromBag'
+001_PItem_Items.rb:792:in `pbUseItem'
+021_FRLG Bag.rb:487:in `block in pbStartScreen'
+021_FRLG Bag.rb:451:in `loop'
+021_FRLG Bag.rb:451:in `pbStartScreen'
+018_Follower_Main.rb:530:in `pbStartScreen'
+026_ModularPauseMenu.rb:61:in `block (3 levels) in load_scripts_from_folder'
+002_MessageConfig.rb:560:in `pbFadeOutIn'

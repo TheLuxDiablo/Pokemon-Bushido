@@ -170,79 +170,17 @@ if USING_SURF_ITEM
       if $PokemonGlobal.surfing ||
                       pbGetMetadata($game_map.map_id,MetadataBicycleAlways) ||
                       !PBTerrain.isSurfable?(pbFacingTerrainTag) || !$game_player.passable?($game_player.x, $game_player.y, $game_player.direction)
+          pbMessage(_INTL("You cannot use Water Walking here."))
           next 1
       else
         pbSurf
-        return true
+        next 1
       end
     else
       pbMessage(_INTL("You put the Katana of Light back into its sheath."))
       next 1
     end
   })
-
-  ItemHandlers::UseFromBag.add(SURF_ITEM,proc{|item|
-    cmd=0
-    cmd= pbMessage("It's the Katana of Light.\nIt is glowing brightly.",["Heal Pokémon","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
-    if cmd == 0 # HEAL
-      pbHealingVial()
-      next 1
-    elsif cmd == 1 # CUT
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
-        pbMessage(_INTL("You closed the bag and readied your Katana."))
-        return 2
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
-        pbMessage(_INTL("You closed the bag and readied your Katana."))
-        return 2
-      else
-        pbMessage(_INTL("There is nothing to cut."))
-      end
-      next 1
-    elsif cmd == 2 # FLASH
-      if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-        pbMessage(_INTL("This area is already perfectly lit!"))
-      elsif $PokemonGlobal.flashUsed
-         pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
-       else
-         pbMessage(_INTL("You closed the bag and readied your Katana."))
-         return 2
-      end
-      next 1
-    elsif cmd == 3 # ROCK SMASH
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
-        pbMessage(_INTL("You closed the bag and readied your Katana."))
-        return 2
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
-        # return 2 is how to force close the menu
-        pbMessage(_INTL("You closed the bag and readied your Katana."))
-        return 2
-      else
-        pbMessage(_INTL("There are no rocks to smash with Solid Strike."))
-      end
-      next 1
-    elsif cmd == 4 # SURF
-      if $PokemonGlobal.surfing ||
-                      pbGetMetadata($game_map.map_id,MetadataBicycleAlways) ||
-                      !PBTerrain.isSurfable?(pbFacingTerrainTag) ||
-                      !$game_player.passable?($game_player.x, $game_player.y, $game_player.direction)
-          return false
-      else
-        pbMessage(_INTL("You closed the bag and readied your Katana."))
-        return 2
-      end
-    else
-      pbMessage(_INTL("You put the Katana of Light back into its sheath."))
-      next 1
-    end
-  })
-
-  #ItemHandlers::UseFromBag.add(SURF_ITEM, proc do |item|
-  #  return false if $PokemonGlobal.surfing ||
-  #                  pbGetMetadata($game_map.map_id,MetadataBicycleAlways) ||
-  #                  !PBTerrain.isSurfable?(pbFacingTerrainTag) ||
-  #                  !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction,$game_player)
-  #  return 2
-  #end)
 end
 
 
@@ -264,9 +202,9 @@ if USING_FLY_ITEM
     end
     if ret
       $PokemonTemp.flydata = ret
-      return 2
+      next 1
     end
-    return 0
+    next 1
   end)
 
   ItemHandlers::UseInField.add(FLY_ITEM, proc do |item|
@@ -333,51 +271,6 @@ if USING_ROCK_SMASH_ITEM
     end
     return false
   end
-
-  ItemHandlers::UseFromBag.add(ROCK_SMASH_ITEM,proc{|item|
-    cmd=0
-    cmd= pbMessage("It's the Katana of Light.\nIt is glowing warmly.",["Heal Pokémon","Cut","Flash","Rock Smash","Put Away"],0,nil,0)
-    if cmd == 0 # HEAL
-      pbHealingVial()
-      next 1
-    elsif cmd == 1 # CUT
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
-        pbMessage(_INTL("You closed the bag and readied your Katana."))
-        return 2
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
-        pbMessage(_INTL("You closed the bag and readied your Katana."))
-        return 2
-      else
-        pbMessage(_INTL("There is nothing to cut."))
-      end
-      next 1
-    elsif cmd == 2 # FLASH
-      if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-        pbMessage(_INTL("This area is already perfectly lit!"))
-      elsif $PokemonGlobal.flashUsed
-         pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
-       else
-         pbMessage(_INTL("You closed the bag and readied your Katana."))
-         return 2
-      end
-      next 1
-    elsif cmd == 3 # ROCK SMASH
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
-        pbMessage(_INTL("You closed the bag and readied your Katana."))
-        return 2
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
-        # return 2 is how to force close the menu
-        pbMessage(_INTL("You closed the bag and readied your Katana."))
-        return 2
-      else
-        pbMessage(_INTL("There are no rocks to smash with Solid Strike."))
-      end
-      next 1
-    else
-      pbMessage(_INTL("You put the Katana of Light back into its sheath."))
-      next 1
-    end
-  })
 
   ItemHandlers::UseInField.add(ROCK_SMASH_ITEM,proc{|item|
     cmd=0
@@ -499,13 +392,6 @@ if USING_CUT_ITEM
     return false
   end
 
-  ItemHandlers::UseFromBag.add(CUT_ITEM, proc do
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
-      return 2
-    end
-    return false
-  end)
-
   ItemHandlers::UseInField.add(CUT_ITEM, proc do
     if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i] && !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM)
       pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
@@ -550,38 +436,6 @@ if USING_FLASH_ITEM
   end
 
 
-  ItemHandlers::UseFromBag.add(FLASH_ITEM,proc{|item|
-    cmd=0
-    cmd= pbMessage("It's the Katana of Light.\nThough it has awakened, it appears weak.",["Heal Pokémon","Cut","Flash","Put Away"],0,nil,0)
-    if cmd == 0 # HEAL
-      pbHealingVial()
-      next 1
-    elsif cmd == 1 # CUT
-      if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
-        pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
-      elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
-        pbMessage(_INTL("You closed the bag and readied your Katana."))
-        return 2
-      else
-        pbMessage(_INTL("There is nothing to cut."))
-      end
-      next 1
-    elsif cmd == 2 # FLASH
-      if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-        pbMessage(_INTL("This area is already perfectly lit!"))
-      elsif $PokemonGlobal.flashUsed
-         pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
-       else
-         pbMessage(_INTL("You closed the bag and readied your Katana."))
-         return 2
-      end
-      next 1
-    else
-      pbMessage(_INTL("You put the Katana of Light back into its sheath."))
-      next 1
-    end
-  })
-
   ItemHandlers::UseInField.add(FLASH_ITEM,proc{|item|
     cmd=0
     cmd= pbMessage("It's the Katana of Light.\nThough it has awakened, it appears weak.",["Heal Pokémon","Cut","Flash","Put Away"],0,nil,0)
@@ -620,7 +474,7 @@ end
 
 ItemHandlers::UseInField.add(FINAL_KATANA,proc{|item|
   cmd=0
-  cmd= pbMessage("It's the Katana of Light.\nIt shines brilliantly.",["Heal Pokémon","Purify","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+  cmd= pbMessage("It's the true Katana of Light.\nIt shines brilliantly.",["Heal Pokémon","Purify","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
   if cmd == 0 # HEAL
     pbHealingVial()
     next 1
@@ -665,7 +519,7 @@ ItemHandlers::UseInField.add(FINAL_KATANA,proc{|item|
         next 1
     else
       pbSurf
-      return true
+      next 1
     end
   else
     pbMessage(_INTL("You put the Katana of Light back into its sheath."))
@@ -673,60 +527,34 @@ ItemHandlers::UseInField.add(FINAL_KATANA,proc{|item|
   end
 })
 
-ItemHandlers::UseFromBag.add(FINAL_KATANA,proc{|item|
-  cmd=0
-  cmd= pbMessage("It's the Katana of Light.\nIt shines brilliantly.",["Heal Pokémon","Purify","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
-  if cmd == 0 # HEAL
-    pbHealingVial()
-    next 1
-  elsif cmd == 1 # PURIFY
-    pbRelicStone
-    next 1
-  elsif cmd == 2 # CUT
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
-      pbMessage(_INTL("You closed the bag and readied your Katana."))
-      return 2
-    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
-      pbMessage(_INTL("You closed the bag and readied your Katana."))
-      return 2
-    else
-      pbMessage(_INTL("There is nothing to cut."))
-    end
-    next 1
-  elsif cmd == 3 # FLASH
-    if !pbGetMetadata($game_map.map_id,MetadataDarkMap)
-      pbMessage(_INTL("This area is already perfectly lit!"))
-    elsif $PokemonGlobal.flashUsed
-       pbMessage(_INTL("The Katana of Light has already illuminated this area!"))
-     else
-       pbMessage(_INTL("You closed the bag and readied your Katana."))
-       return 2
-    end
-    next 1
-  elsif cmd == 4 # ROCK SMASH
-    if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/CutTree/i]
-      pbMessage(_INTL("You closed the bag and readied your Katana."))
-      return 2
-    elsif $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i]
-      # return 2 is how to force close the menu
-      pbMessage(_INTL("You closed the bag and readied your Katana."))
-      return 2
-    else
-      pbMessage(_INTL("There are no rocks to smash with Solid Strike."))
-    end
-    next 1
-  elsif cmd == 5 # SURF
-    if $PokemonGlobal.surfing ||
-                    pbGetMetadata($game_map.map_id,MetadataBicycleAlways) ||
-                    !PBTerrain.isSurfable?(pbFacingTerrainTag) ||
-                    !$game_map.passable?($game_player.x,$game_player.y,$game_player.direction,$game_player)
-        return false
-    else
-      pbMessage(_INTL("You closed the bag and readied your Katana."))
-      return 2
-    end
-  else
-    pbMessage(_INTL("You put the Katana of Light back into its sheath."))
-    next 1
-  end
+#===========================================================
+# Thundaga, making it so bag closes when using Katana from bag
+#===========================================================
+
+ItemHandlers::UseFromBag.add(CUT_ITEM,proc { |item|
+  next 2
+})
+
+ItemHandlers::UseFromBag.add(FLY_ITEM,proc { |item|
+  next 2
+})
+
+ItemHandlers::UseFromBag.add(STRENGTH_ITEM,proc { |item|
+  next 2
+})
+
+ItemHandlers::UseFromBag.add(FLASH_ITEM,proc { |item|
+  next 2
+})
+
+ItemHandlers::UseFromBag.add(ROCK_SMASH_ITEM,proc { |item|
+  next 2
+})
+
+ItemHandlers::UseFromBag.add(SURF_ITEM,proc { |item|
+  next 2
+})
+
+ItemHandlers::UseFromBag.add(FINAL_KATANA,proc { |item|
+  next 2
 })
