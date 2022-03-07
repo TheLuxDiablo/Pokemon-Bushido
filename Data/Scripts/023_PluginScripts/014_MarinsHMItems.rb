@@ -395,11 +395,11 @@ if USING_CUT_ITEM
   ItemHandlers::UseInField.add(CUT_ITEM, proc do
     if $game_player.pbFacingEvent && $game_player.pbFacingEvent.name[/SmashRock/i] && !$PokemonBag.pbHasItem?(ROCK_SMASH_ITEM)
       pbMessage(_INTL("You have not yet mastered the Solid Strike technique."))
-      return false
+      next 1
     end
     if !$game_player.pbFacingEvent || !$game_player.pbFacingEvent.name[/CutTree/i]
       pbMessage(_INTL("There are no trees to cut with the Ancient Katana!"))
-      return false
+      next 1
     end
     $game_player.pbFacingEvent.start
   end)
