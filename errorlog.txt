@@ -580,3 +580,96 @@ Backtrace:
 016_PScreen_ReadyMenu.rb:324:in `pbUseKeyItem'
 002_Scene_Map.rb:210:in `update'
 020_MarinsQuickSave.rb:20:in `update'
+
+=================
+
+[2022-03-06 20:14:21 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Field abef is not an integer
+File PBS/moves.txt, line 797
+774,PSYSHIELDBASH,Psyshield Bash,02A,70,PSYCHIC,Physical,90,10,40,NearOther,abef,"Cloaking itself in psychic energy, the user slams into the target. This may also raise the user's defensive stats."
+
+
+
+Backtrace:
+001_Compiler.rb:288:in `csvInt!'
+001_Compiler.rb:387:in `block in pbGetCsvRecord'
+001_Compiler.rb:383:in `each'
+001_Compiler.rb:383:in `pbGetCsvRecord'
+002_Compiler_PBS.rb:608:in `block in pbCompileMoves'
+001_Compiler.rb:203:in `block (2 levels) in pbCompilerEachPreppedLine'
+001_Compiler.rb:196:in `each_line'
+001_Compiler.rb:196:in `block in pbCompilerEachPreppedLine'
+001_Compiler.rb:193:in `open'
+001_Compiler.rb:193:in `pbCompilerEachPreppedLine'
+
+=================
+
+[2022-03-06 20:17:05 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Field NearOther is not a positive integer
+File PBS/moves.txt, line 798
+775,STONEAXE,Stone Axe,103,65,ROCK,Physical,90,15,NearOther,0,abefh,"The user swings its stone axes at the target, aiming to land a critical hit. Stone splinters left behind by this attack continue to...
+
+
+
+Backtrace:
+001_Compiler.rb:296:in `csvPosInt!'
+001_Compiler.rb:398:in `block in pbGetCsvRecord'
+001_Compiler.rb:383:in `each'
+001_Compiler.rb:383:in `pbGetCsvRecord'
+002_Compiler_PBS.rb:608:in `block in pbCompileMoves'
+001_Compiler.rb:203:in `block (2 levels) in pbCompilerEachPreppedLine'
+001_Compiler.rb:196:in `each_line'
+001_Compiler.rb:196:in `block in pbCompilerEachPreppedLine'
+001_Compiler.rb:193:in `open'
+001_Compiler.rb:193:in `pbCompilerEachPreppedLine'
+
+=================
+
+[2022-03-06 20:19:04 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Field  is not a positive integer
+File PBS/items.txt, line 867
+838,BLACKAUGURITE,Black Augurite,Black Augurites,1,500,"A glassy black stone that produces a sharp cutting edge when split. It’s loved by a certain Pokémon."
+
+
+
+
+Backtrace:
+001_Compiler.rb:296:in `csvPosInt!'
+001_Compiler.rb:398:in `block in pbGetCsvRecord'
+001_Compiler.rb:383:in `each'
+001_Compiler.rb:383:in `pbGetCsvRecord'
+002_Compiler_PBS.rb:549:in `block in pbCompileItems'
+001_Compiler.rb:173:in `block (2 levels) in pbCompilerEachCommentedLine'
+001_Compiler.rb:167:in `each_line'
+001_Compiler.rb:167:in `block in pbCompilerEachCommentedLine'
+001_Compiler.rb:164:in `open'
+001_Compiler.rb:164:in `pbCompilerEachCommentedLine'
+
+=================
+
+[2022-03-06 20:20:55 -0800]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Field '0' must be greater than 0
+File PBS/pokemon.txt, section 899, key StepsToHatch
+0
+
+
+
+Backtrace:
+001_Compiler.rb:410:in `block in pbGetCsvRecord'
+001_Compiler.rb:383:in `each'
+001_Compiler.rb:383:in `pbGetCsvRecord'
+002_Compiler_PBS.rb:748:in `block (4 levels) in pbCompilePokemonData'
+002_Compiler_PBS.rb:735:in `each'
+002_Compiler_PBS.rb:735:in `block (3 levels) in pbCompilePokemonData'
+002_Compiler_PBS.rb:734:in `each'
+002_Compiler_PBS.rb:734:in `block (2 levels) in pbCompilePokemonData'
+001_Compiler.rb:114:in `block in pbEachFileSection'
+001_Compiler.rb:87:in `block in pbEachFileSectionEx'

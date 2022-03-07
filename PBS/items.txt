@@ -864,5 +864,5 @@
 #----------------------------------------------------------------------------------------------
 # Legends Arceus Items
 #-----------------------------------------------------------------------------------------------
-838,BLACKAUGURITE,Black Augurite,Black Augurites,1,500,"A glassy black stone that produces a sharp cutting edge when split. It’s loved by a certain Pokémon."
-839,PEATBLOCK,Peat Block,Peat Blocks,1,500,"A block of muddy material that can be used as fuel for burning when it is dried. It’s loved by a certain Pokémon."
+838,BLACKAUGURITE,Black Augurite,Black Augurites,1,500,"A glassy black stone that produces a sharp cutting edge when split. It’s loved by a certain Pokémon.",0,0,0,
+839,PEATBLOCK,Peat Block,Peat Blocks,1,500,"A block of muddy material that can be used as fuel for burning when it is dried. It’s loved by a certain Pokémon.",0,0,0,
