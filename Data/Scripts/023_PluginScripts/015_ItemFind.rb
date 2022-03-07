@@ -193,6 +193,8 @@ def pbReceiveItem(item, quantity = 1)
     meName = "BOTW-GetFanfare"
   elsif isConst?(item,PBItems,:KATANALIGHT5)
     meName = "BOTW-GetFanfare"
+  elsif isConst?(item,PBItems,:HABITATSCROLL)
+    meName = "BOTW-GetFanfare"
   end
   if $PokemonBag.pbCanStore?(item,quantity)
     scene = $game_player.addFoundItem(item)
@@ -211,7 +213,7 @@ def pbReceiveItem(item, quantity = 1)
   elsif isConst?(item,PBItems,:SUKIROLETTER)
     pbMessage(_INTL("You obtained \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
     pbMessage(_INTL("This letter can be used to get into the Kenshi Tournament.",itemname))
-  elsif isConst?(item,PBItems,:SHINYCHARM) || isConst?(item,PBItems,:RAINBOWFEATHER)
+  elsif isConst?(item,PBItems,:SHINYCHARM) || isConst?(item,PBItems,:RAINBOWFEATHER) || isConst?(item,PBItems,:HABITATSCROLL)
     pbMessage(_INTL("You were given the \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
   elsif isConst?(item,PBItems,:EXPALL)
     pbMessage(_INTL("You obtained \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
