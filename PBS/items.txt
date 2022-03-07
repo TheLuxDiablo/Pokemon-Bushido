@@ -861,3 +861,8 @@
 835,ABILITYCHARM,Dream Charm,Dream Charms,8,0,"A charm said to increase the chance of finding a Pokemon with a Dream World Ability.",0,0,6,
 836,HABITATSCROLL,Habitat Scroll,Habitat Scroll,8,0,"A scroll that allows you to read and record the wild Pokemon that are present in your vicinity.",2,0,6,
 837,SHADEBALL,Shade Ball,Shade Balls,3,500,"A special Ball designed for capturing Shadow Pokemon and opening their hearts.",0,4,4,
+#----------------------------------------------------------------------------------------------
+# Legends Arceus Items
+#-----------------------------------------------------------------------------------------------
+838,BLACKAUGURITE,Black Augurite,Black Augurites,1,500,"A glassy black stone that produces a sharp cutting edge when split. It’s loved by a certain Pokémon."
+839,PEATBLOCK,Peat Block,Peat Blocks,1,500,"A block of muddy material that can be used as fuel for burning when it is dried. It’s loved by a certain Pokémon."

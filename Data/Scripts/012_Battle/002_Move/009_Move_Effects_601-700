@@ -1,0 +1,9 @@
+################################################################################
+# Increase an ally's Special Defense by 1 stage.
+################################################################################
+class PokeBattle_Move_501 < PokeBattle_StatUpMove
+  def initialize(battle,move)
+    super
+    @statUp = [PBStats::SPDEF,1]
+  end
+end
