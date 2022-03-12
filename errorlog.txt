@@ -673,3 +673,95 @@ Backtrace:
 002_Compiler_PBS.rb:734:in `block (2 levels) in pbCompilePokemonData'
 001_Compiler.rb:114:in `block in pbEachFileSection'
 001_Compiler.rb:87:in `block in pbEachFileSectionEx'
+
+=================
+
+[2022-03-12 15:53:53 -0600]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Undefined value DIRECLAW in PBMoves
+File PBS/pokemon.txt, section 903, key Moves
+1,QUICKATTACK,6,ROCKSMASH,11,SWIFT,11,DIRECLAW,18,SLASH,25,POISONJAB,34,SWORDSDANCE,43,CLOSECOMBAT
+
+
+
+Backtrace:
+001_Compiler.rb:331:in `checkEnumField'
+001_Compiler.rb:308:in `csvEnumField!'
+001_Compiler.rb:491:in `block in pbGetCsvRecord'
+001_Compiler.rb:383:in `each'
+001_Compiler.rb:383:in `pbGetCsvRecord'
+002_Compiler_PBS.rb:748:in `block (4 levels) in pbCompilePokemonData'
+002_Compiler_PBS.rb:735:in `each'
+002_Compiler_PBS.rb:735:in `block (3 levels) in pbCompilePokemonData'
+002_Compiler_PBS.rb:734:in `each'
+002_Compiler_PBS.rb:734:in `block (2 levels) in pbCompilePokemonData'
+
+=================
+
+[2022-03-12 15:56:41 -0600]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Field abef is not an integer
+File PBS/moves.txt, line 801
+778,DIRECLAW,Dire Claw,000,60,POISON,Physical,100,15,0,NearOther,abef,"The user lashes out at the target with ruinous claws, aiming to land a critical hit. This may also leave the target poisoned, par...
+
+
+
+Backtrace:
+001_Compiler.rb:288:in `csvInt!'
+001_Compiler.rb:387:in `block in pbGetCsvRecord'
+001_Compiler.rb:383:in `each'
+001_Compiler.rb:383:in `pbGetCsvRecord'
+002_Compiler_PBS.rb:608:in `block in pbCompileMoves'
+001_Compiler.rb:203:in `block (2 levels) in pbCompilerEachPreppedLine'
+001_Compiler.rb:196:in `each_line'
+001_Compiler.rb:196:in `block in pbCompilerEachPreppedLine'
+001_Compiler.rb:193:in `open'
+001_Compiler.rb:193:in `pbCompilerEachPreppedLine'
+
+=================
+
+[2022-03-12 15:57:21 -0600]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Field abef is not an integer
+File PBS/moves.txt, line 801
+778,DIRECLAW,Dire Claw,000,60,POISON,Physical,100,15,0,NearOther,abef,"The user lashes out at the target with ruinous claws, aiming to land a critical hit. This may also leave the target poisoned, par...
+
+
+
+Backtrace:
+001_Compiler.rb:288:in `csvInt!'
+001_Compiler.rb:387:in `block in pbGetCsvRecord'
+001_Compiler.rb:383:in `each'
+001_Compiler.rb:383:in `pbGetCsvRecord'
+002_Compiler_PBS.rb:608:in `block in pbCompileMoves'
+001_Compiler.rb:203:in `block (2 levels) in pbCompilerEachPreppedLine'
+001_Compiler.rb:196:in `each_line'
+001_Compiler.rb:196:in `block in pbCompilerEachPreppedLine'
+001_Compiler.rb:193:in `open'
+001_Compiler.rb:193:in `pbCompilerEachPreppedLine'
+
+=================
+
+[2022-03-12 15:57:47 -0600]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Undefined value RAGINGFURY in PBMoves
+File PBS/pokemonforms.txt, section 1285, key Moves
+1,TACKLE,5,EMBER,9,BITE,15,FIREFANG,21,ROCKSLIDE,29,RAGINGFURY,29,CRUNCH,37,DOUBLEEDGE,47,FLAREBLITZ
+
+
+
+Backtrace:
+001_Compiler.rb:331:in `checkEnumField'
+001_Compiler.rb:308:in `csvEnumField!'
+001_Compiler.rb:491:in `block in pbGetCsvRecord'
+001_Compiler.rb:383:in `each'
+001_Compiler.rb:383:in `pbGetCsvRecord'
+002_Compiler_PBS.rb:973:in `block (4 levels) in pbCompilePokemonForms'
+002_Compiler_PBS.rb:966:in `each'
+002_Compiler_PBS.rb:966:in `block (3 levels) in pbCompilePokemonForms'
+002_Compiler_PBS.rb:965:in `each'
+002_Compiler_PBS.rb:965:in `block (2 levels) in pbCompilePokemonForms'
