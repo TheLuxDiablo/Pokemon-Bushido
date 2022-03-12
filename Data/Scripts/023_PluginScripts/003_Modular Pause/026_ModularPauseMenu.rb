@@ -166,11 +166,17 @@ MenuHandlers.addEntry(:DEBUG,_INTL("Debug"),"menuDebug",proc{|menu|
 },proc{ next $DEBUG })
 
 # Debug Mystery Gift
-MenuHandlers.addEntry(:MGIFT,_INTL("Mystery Gift"),"menuDebug",proc{|menu|
+#MenuHandlers.addEntry(:MGIFT,_INTL("Mystery Gift"),"menuDebug",proc{|menu|
+#  pbFadeOutIn(99999) {
+#    pbDownloadMysteryGift($Trainer)
+#  }
+#},proc{ next $DEBUG })
+
+MenuHandlers.addEntry(:MGIFT,_INTL("Mystery Gift"),"menuMysteryGift",proc{|menu|
   pbFadeOutIn(99999) {
     pbDownloadMysteryGift($Trainer)
   }
-},proc{ next $DEBUG })
+},proc{ next $game_switches[69] })
 
 # Quit Game
 MenuHandlers.addEntry(:QUITGAME,_INTL("Quit"),"menuQuit",proc{|menu|
