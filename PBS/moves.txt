@@ -785,8 +785,8 @@
 #-------------------------------------
 # Legends Arceus Moves
 #-------------------------------------
-765,INFERNALPARADE,Infernal Parade,602,60,GHOST,Special,100,15,30,NearOther,0,bef,"The user attacks with myriad fireballs. This may also leave the target with a burn."
-766,TRIPLEARROWS,Triple Arrows,601,50,FIGHTING,Physical,100,15,30,NearOther,0,abef,"The user delivers an axe kick, then fires three arrows. This raises the chance of its future attacks landing critical hits and also lowers the target's defensive stats."
+765,INFERNALPARADE,Infernal Parade,605,60,GHOST,Special,100,15,100,NearOther,0,bef,"This may leave the target with a burn. This move's power is doubled if the target has a status condition."
+766,TRIPLEARROWS,Triple Arrows,604,50,FIGHTING,Physical,100,15,100,NearOther,0,abef,"This raises the chance of its future attacks landing critical hits and also lowers the target's defensive stats."
 767,CEASELESSEDGE,Ceaseless Edge,103,65,DARK,Physical,90,15,30,NearOther,0,abefh,"The user slashes its shell blade at the target, aiming to land a critical hit."
 768,MOUNTAINGALE,Mountain Gale,03E,100,ICE,Physical,85,5,0,NearOther,0,abef,"The user hurls giant chunks of ice at the target to inflict damage."
 769,ESPERWING,Esper Wing,01F,75,PSYCHIC,Special,90,10,0,NearOther,0,abefh,"	The user slashes the target with aura-enriched wings. This also raises the user's action speed. This move has a heightened chance of landing a critical hit."

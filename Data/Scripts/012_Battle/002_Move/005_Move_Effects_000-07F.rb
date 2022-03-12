@@ -1202,7 +1202,7 @@ end
 
 
 #===============================================================================
-# Decreases the target's Defense by 1 stage.
+# Decreases the target's Defense by 1 stage. Crunch, Crush Claw
 #===============================================================================
 class PokeBattle_Move_043 < PokeBattle_TargetStatDownMove
   def initialize(battle,move)
