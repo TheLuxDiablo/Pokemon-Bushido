@@ -1,4 +1,4 @@
-def pbChangeEventSpriteToMon(eventID, mon)
+def pbChangeEventSpriteToMon(eventID, mon, shiny = false)
     # Get the event from its id
     thisevent = $game_map.events[eventID]
     monid = mon.species
@@ -7,7 +7,7 @@ def pbChangeEventSpriteToMon(eventID, mon)
     fname += _INTL("0") if monid < 100
     fname += _INTL("0") if monid < 10
     fname += _INTL("{1}",monid)
-    #fname += _INTL("s") if shiny
+    fname += _INTL("s") if shiny
     fname += _INTL(".png")
     # Finally sets the graphic
     thisevent.character_name = fname

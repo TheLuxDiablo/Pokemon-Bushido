@@ -238,6 +238,21 @@ module Randomizer
     $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
   end
   #-----------------------------------------------------------------------------
+  def self.shuffledata
+    usingExtreme = Randomizer.rules.include?(:TRAINERS)
+    if $PokemonGlobal
+      $PokemonGlobal.randomizedData = nil
+    end
+    $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
+    rand_dex =  Randomizer.randomizeRegionalDex(usingExtreme)
+    $PokemonGlobal.randomizedData = {}
+    $PokemonGlobal.randomizedData[:DEXORDER] = rand_dex.clone
+    $PokemonGlobal.randomizedData = self.randomizeData
+    $PokemonGlobal.randomizedData[:DEXORDER] = rand_dex.clone
+    # refresh encounter tables
+    pbClearData(true)
+    $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
+  end
 end
 
 #-----------------------------------------------------------------------------
