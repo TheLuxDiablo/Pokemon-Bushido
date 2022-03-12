@@ -2958,3 +2958,69 @@ Pokedex = Able to freely control the hardness of its metallic shell. It loathes 
 BattlerPlayerY = 50
 BattlerEnemyY = 31
 BattlerShadowX = -1
+#-------------------------------
+[GROWLITHE,1]
+FormName = Hisuian
+Type1 = FIRE
+Type2 = ROCK
+BaseStats = 60,75,45,55,65,50
+EffortPoints = 0,1,0,0,0,0
+Abilities = INTIMIDATE,FLASHFIRE
+HiddenAbility = JUSTIFIED
+Moves = 1,TACKLE,5,EMBER,9,BITE,15,FIREFANG,21,ROCKSLIDE,29,CRUNCH,37,DOUBLEEDGE,47,FLAREBLITZ
+Pokedex = They patrol their territory in pairs. I believe the igneous rock components in the fur of this species are the result of volcanic activity in its habitat.
+BattlerPlayerY = 50
+BattlerEnemyY = 31
+BattlerShadowX = -1
+#-------------------------------
+[ARCANINE,1]
+FormName = Hisuian
+Type1 = FIRE
+Type2 = ROCK
+BaseStats = 95,115,80,90,95,80
+EffortPoints = 0,3,0,0,0,0
+Abilities = INTIMIDATE,FLASHFIRE
+HiddenAbility = JUSTIFIED
+Moves = 1,TACKLE,5,EMBER,9,BITE,15,FIREFANG,21,ROCKSLIDE,29,RAGINGFURY,29,CRUNCH,37,DOUBLEEDGE,47,FLAREBLITZ
+Pokedex = Snaps at its foes with fangs cloaked in blazing flame. Despite its bulk, it deftly feints every which way, leading opponents on a deceptively merry chase as it all but dances around them.
+BattlerPlayerY = 50
+BattlerEnemyY = 31
+BattlerShadowX = -1
+#-------------------------------
+[QWILFISH,1]
+FormName = Hisuian
+Type1 = DARK
+Type2 = POISON
+BaseStats = 65,95,85,85,55,55
+EffortPoints = 0,1,0,0,0,0
+Abilities = POISONPOINT,SWIFTSWIM
+HiddenAbility = INTIMIDATE
+Moves = 1,POISONSTING,5,SPIKES,9,PINMISSILE,15,BARBBARRAGE,21,WATERPULSE,26,DARKPULSE,29,POISONJAB,37,AQUATAIL,47,DOUBLEEDGE,57,SELFDESTRUCT
+Pokedex = Fishers detest this troublesome Pokémon because it sprays poison from its spines, getting it everywhere. A different form of Qwilfish lives in other regions.
+BattlerEnemyY = 31
+BattlerShadowX = -1
+Evolutions = OVERQWIL,Level,29
+#-------------------------------
+[SNEASEL,1]
+FormName = Hisuian
+Type1 = POISON
+Type2 = FIGHTING
+BaseStats = 55,95,55,115,35,75
+EffortPoints = 0,0,0,1,0,0
+Abilities = INNERFOCUS,KEENEYE
+HiddenAbility = POISONTOUCH
+Moves = 1,QUICKATTACK,6,ROCKSMASH,11,SWIFT,18,SLASH,25,POISONJAB,34,SWORDSDANCE,43,CLOSECOMBAT
+Pokedex = Its sturdy, curved claws are ideal for traversing precipitous cliffs. From the tips of these claws drips a venom that infiltrates the nerves of any prey caught in Sneasel's grasp.
+BattlerEnemyY = 31
+BattlerShadowX = -1
+Evolutions = SNEASLER,Item,RAZORCLAW
+#-------------------------------
+[ENAMORUS,1]
+FormName = Therian Forme
+BaseStats = 74,115,110,46,135,100
+EffortPoints = 0,3,0,0,0,0
+Abilities = OVERCOAT
+HiddenAbility = OVERCOAT
+Shape = 8
+BattlerPlayerY = 54
+BattlerEnemyY = 11

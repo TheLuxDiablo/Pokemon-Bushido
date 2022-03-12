@@ -798,3 +798,7 @@
 775,STONEAXE,Stone Axe,103,65,ROCK,Physical,90,15,0,NearOther,0,abefh,"The user swings its stone axes at the target, aiming to land a critical hit. Stone splinters left behind by this attack continue to damage the target for several turns."
 776,HEADLONGRUSH,Headlong Rush,15F,100,GROUND,Physical,100,5,0,NearOther,0,abef,"The user smashes into the target in a full-body tackle. This also lowers the user's defensive stats."
 777,WAVECRASH,Wave Crash,0FB,75,WATER,Physical,100,10,0,NearOther,0,abef,"The user shrouds itself in water and slams into the target with its whole body to inflict damage. This also damages the user and raises the user's action speed."
+778,DIRECLAW,Dire Claw,000,60,POISON,Physical,100,15,0,NearOther,0,abef,"The user lashes out at the target with ruinous claws, aiming to land a critical hit. This may also leave the target poisoned, paralyzed, or drowsy."
+779,BARBBARRAGE,Barb Barrage,000,60,POISON,Physical,100,15,0,NearOther,0,abef,"The user launches countless toxic barbs to inflict damage. This may also poison the target. This move’s power is doubled if the target has a status condition."
+780,SPRINGTIDESTORM,Springtide Storm,000,95,FAIRY,Physical,85,5,0,NearOther,0,abef,"The user attacks by wrapping the target in fierce winds brimming with love and hate. This move’s additional effects depend on the user’s form."
+781,RAGINGFURY,Raging Fury,000,90,FIRE,Physical,85,10,0,NearOther,0,abef,"The user rampages and spews vicious flames to inflict damage on the target, then becomes fixated on using this move."
