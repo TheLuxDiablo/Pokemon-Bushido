@@ -842,3 +842,15 @@ MapPosition = 2,6,12
 Outdoor = true
 ShowArea = true
 MapPosition = 2,4,12
+#-------------------------------
+[162]
+# Jinsu Forest
+Outdoor = true
+ShowArea = true
+MapPosition = 2,4,12
+#-------------------------------
+[163]
+# Jinsu Cave
+Outdoor = false
+ShowArea = true
+MapPosition = 2,4,12
