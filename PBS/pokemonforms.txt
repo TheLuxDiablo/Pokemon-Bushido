@@ -465,7 +465,7 @@ Pokedex = Because Galarian Slowpoke eat the seeds of a plant that grows only in 
 BattlerPlayerY = 57
 BattlerEnemyX = 0
 BattlerEnemyY = 40
-Evolutions = SLOWBRO,Item,GALARICACUFF,SLOWKING,Item,GALARICAWREATH
+Evolutions = SLOWKING,Item,GALARICAWREATH,SLOWKING,Item,GALARICAWREATH
 #-------------------------------
 [SLOWBRO,1]
 FormName = Galarian
@@ -2782,33 +2782,29 @@ BattlerPlayerY = 50
 BattlerEnemyY = 31
 BattlerShadowX = -1
 #-------------------------------
-# Hisuian Forms
-#-------------------------------
 [TYPHLOSION,1]
 FormName = Hisuian
 Type1 = FIRE
 Type2 = GHOST
 BaseStats = 73,84,78,95,119,85
-EffortPoints = 0,0,0,0,3,0
 Abilities = BLAZE,FLASHFIRE
 Moves = 1,QUICKATTACK,6,EMBER,11,ROLLOUT,18,FLAMEWHEEL,25,SWIFT,34,FLAMETHROWER,40,INFERNALPARADE,43,SHADOWBALL,43,OVERHEAT
 Pokedex = It is said to purify lost, forsaken souls with its flames and guide them to the afterlife. Its form has been influenced by the energy of the sacred mountain towering at Hisui's center.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = -2
+BattlerEnemyY = 11
 BattlerShadowX = -1
+BattlerShadowSize = 3
 #-------------------------------
 [DECIDUEYE,1]
 FormName = Hisuian
 Type1 = GRASS
 Type2 = FIGHTING
 BaseStats = 88,112,80,60,95,95
-EffortPoints = 0,3,0,0,0,0
-Abilities = OVERGROW
-HiddenAbility = LONGREACH
 Moves = 1,GUST,6,LEAFAGE,11,ROOST,18,AERIALACE,21,MAGICALLEAF,25,AIRSLASH,30,AURASPHERE,34,LEAFBLADE,34,TRIPLEARROWS,40,BRAVEBIRD,43,LEAFSTORM
 Pokedex = The air stored inside the rachises of Decidueye's feathers insulates the Pokémon against Hisui's extreme cold. This is firm proof that evolution can be influenced by environment.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = 3
 BattlerShadowX = -1
 #-------------------------------
 [SAMUROTT,1]
@@ -2817,12 +2813,10 @@ Type1 = WATER
 Type2 = DARK
 BaseStats = 90,108,80,85,100,65
 EffortPoints = 0,3,0,0,0,0
-Abilities = TORRENT
-HiddenAbility = SHELLARMOR
 Moves = 1,TACKLE,6,AQUAJET,11,SWORDSDANCE,18,WATERPULSE,21,CEASELESSEDGE,25,SLASH,34,AQUATAIL,40,DARKPULSE,43,HYDROPUMP
 Pokedex = Hard of heart and deft of blade, this rare form of Samurott is a product of the Pokémon's evolution in the region of Hisui. Its turbulent blows crash into foes like ceaseless pounding waves.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyY = 13
 BattlerShadowX = -1
 #-------------------------------
 [AVALUGG,1]
@@ -2832,11 +2826,11 @@ Type2 = ROCK
 BaseStats = 95,127,184,38,34,36
 EffortPoints = 0,0,3,0,0,0
 Abilities = STRONGJAW,ICEBODY
-HiddenAbility = STURDY
 Moves = 1,TACKLE,5,POWDERSNOW,9,ICESHARD,15,BITE,21,IRONDEFENSE,29,CRUNCH,29,EARTHPOWER,37,MOUNTAINGALE,37,BLIZZARD,47,DOUBLEEDGE
 Pokedex = The armor of ice covering its lower jaw puts steel to shame and can shatter rocks with ease. This Pokémon barrels along steep mountain paths, cleaving through the deep snow.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = 0
+BattlerEnemyY = 30
 BattlerShadowX = -1
 #-------------------------------
 [BRAVIARY,1]
@@ -2845,25 +2839,23 @@ Type1 = PSYCHIC
 Type2 = FLYING
 BaseStats = 110,83,70,65,112,70
 EffortPoints = 0,0,0,0,3,0
-Abilities = KEENEYE,SHEERFORCE
-HiddenAbility = DEFIANT
 Moves = 1,QUICKATTACK,6,AERIALACE,11,TWISTER,18,SLASH,20,AIRSLASH,25,ESPERWING,25,ROOST,34,DOUBLEEDGE,43,BRAVEBIRD,52,HURRICANE
 Pokedex = Screaming a bloodcurdling battle cry, this huge and ferocious bird Pokémon goes out on the hunt. It blasts lakes with shock waves, then scoops up any prey that float to the water's surface.
-BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = 5
+BattlerEnemyY = 7
 BattlerShadowX = -1
+BattlerShadowSize = 3
 #-------------------------------
 [ZORUA,1]
 FormName = Hisuian
 Type1 = NORMAL
 Type2 = GHOST
 BaseStats = 35,60,40,70,85,40
-EffortPoints = 0,0,0,0,1,0
-Abilities = ILLUSION
 Moves = 1,SHADOWSNEAK,6,SNARL,11,SWIFT,18,BITTERMALICE,25,SLASH,34,SHADOWCLAW,43,NASTYPLOT
 Pokedex = A once-departed soul, returned to life in Hisui. Derives power from resentment, which rises as energy atop its head and takes on the forms of foes. In this way, Zorua vents lingering malice.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = 0
+BattlerEnemyY = 28
 BattlerShadowX = -1
 #-------------------------------
 [ZOROARK,1]
@@ -2871,26 +2863,22 @@ FormName = Hisuian
 Type1 = NORMAL
 Type2 = GHOST
 BaseStats = 55,100,60,110,125,60
-EffortPoints = 0,0,0,0,2,0
-Abilities = ILLUSION
 Moves = 1,SHADOWSNEAK,6,SNARL,11,SWIFT,18,BITTERMALICE,25,SLASH,34,SHADOWCLAW,40,SHADOWBALL,43,NASTYPLOT,52,EXTRASENSORY
 Pokedex = With its disheveled white fur, it looks like an embodiment of death. Heedless of its own safety, Zoroark attacks its nemeses with a bitter energy so intense, it lacerates Zoroark's own body.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = -4
+BattlerEnemyY = 8
 BattlerShadowX = -1
 #-------------------------------
 [VOLTORB,1]
 FormName = Hisuian
 Type1 = ELECTRIC
 Type2 = GRASS
-BaseStats = 40,30,50,100,55,55
-EffortPoints = 0,0,0,1,0,0
-Abilities = SOUNDPROOF,STATIC
-HiddenAbility = AFTERMATH
 Moves = 1,THUNDERSHOCK,5,TACKLE,9,THUNDERWAVE,15,SPARK,21,ENERGYBALL,29,THUNDERBOLT,37,THUNDER,47,SELFDESTRUCT
 Pokedex = An enigmatic Pokémon that happens to bear a resemblance to a Poké Ball. When excited, it discharges the electric current it has stored in its belly, then lets out a great, uproarious laugh.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = -2
+BattlerEnemyY = 33
 BattlerShadowX = -1
 Evolutions = ELECTRODE,Item,LEAFSTONE
 #-------------------------------
@@ -2898,14 +2886,12 @@ Evolutions = ELECTRODE,Item,LEAFSTONE
 FormName = Hisuian
 Type1 = ELECTRIC
 Type2 = GRASS
-BaseStats = 60,50,70,150,80,80
 EffortPoints = 0,0,0,1,0,0
-Abilities = SOUNDPROOF,STATIC
-HiddenAbility = AFTERMATH
 Moves = 1,THUNDERSHOCK,5,TACKLE,9,THUNDERWAVE,15,SPARK,21,ENERGYBALL,29,THUNDERBOLT,37,THUNDER,47,CHLOROBLAST,47,SELFDESTRUCT
 Pokedex = The tissue on the surface of its body is curiously similar in composition to an Apricorn. When irritated, this Pokémon lets loose an electric current equal to 20 lightning bolts.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = -1
+BattlerEnemyY = 26
 BattlerShadowX = -1
 #-------------------------------
 [LILLIGANT,1]
@@ -2915,19 +2901,20 @@ Type2 = FIGHTING
 BaseStats = 70,105,75,105,50,75
 EffortPoints = 0,2,0,2,0,0
 Abilities = CHLOROPHYLL,HUSTLE
-HiddenAbility = LEAFGUARD
 Moves = 1,ABSORB,5,LEAFAGE,9,STUNSPORE,15,POISONPOWDER,21,ENERGYBALL,29,SLEEPPOWDER,34,DRAINPUNCH,37,RECOVER,37,LEAFBLADE,42,VICTORYDANCE,47,LEAFSTORM,53,PETALDANCE,57,CLOSECOMBAT
 Pokedex = I suspect that its well-developed legs are the result of a life spent on mountains covered in deep snow. The scent it exudes from its flower crown heartens those in proximity.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = -1
+BattlerEnemyY = 16
 BattlerShadowX = -1
+BattlerShadowSize = 2
 #-------------------------------
 [BASCULIN,2]
 FormName = White-Striped
 Abilities = RATTLED,ADAPTABILITY
-HiddenAbility = MOLDBREAKER
 Pokedex = Even Basculin, which devours everything it can with its huge jaws, is nothing more than food to organisms stronger than itself.
-BattlerEnemyY = 37
+BattlerEnemyX = -2
+BattlerEnemyY = 32
 Evolutions = BASCULEGION,Level,34
 #-------------------------------
 [SLIGGOO,1]
@@ -2935,14 +2922,13 @@ FormName = Hisuian
 Type1 = DRAGON
 Type2 = STEEL
 BaseStats = 58,75,83,40,83,113
-EffortPoints = 0,0,0,0,0,2
 Abilities = SAPSIPPER,OVERCOAT
-HiddenAbility = GOOEY
 Moves = 1,BUBBLE,6,ACIDSPRAY,11,ACIDARMOR,18,WATERPULSE,25,IRONHEAD,25,DRAGONPULSE,34,SHELTER,43,HYDROPUMP
 Pokedex = A creature given to melancholy. I suspect its metallic shell developed as a result of the mucus on its skin reacting with the iron in Hisui's water.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = -1
 BattlerShadowX = -1
+BattlerShadowSize = 3
 Evolutions = GOODRA,Level,50
 #-------------------------------
 [GOODRA,1]
@@ -2950,28 +2936,26 @@ FormName = Hisuian
 Type1 = DRAGON
 Type2 = STEEL
 BaseStats = 80,100,100,60,110,150
-EffortPoints = 0,0,0,0,0,3
 Abilities = SAPSIPPER,OVERCOAT
-HiddenAbility = GOOEY
 Moves = 1,BUBBLE,6,ACIDSPRAY,11,ACIDARMOR,18,WATERPULSE,25,IRONHEAD,25,DRAGONPULSE,34,SHELTER,43,HYDROPUMP
 Pokedex = Able to freely control the hardness of its metallic shell. It loathes solitude and is extremely clingy—it will fume and run riot if those dearest to it ever leave its side.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = 1
 BattlerShadowX = -1
+BattlerShadowSize = 3
 #-------------------------------
 [GROWLITHE,1]
 FormName = Hisuian
 Type1 = FIRE
 Type2 = ROCK
 BaseStats = 60,75,45,55,65,50
-EffortPoints = 0,1,0,0,0,0
-Abilities = INTIMIDATE,FLASHFIRE
-HiddenAbility = JUSTIFIED
 Moves = 1,TACKLE,5,EMBER,9,BITE,15,FIREFANG,21,ROCKSLIDE,29,CRUNCH,37,DOUBLEEDGE,47,FLAREBLITZ
 Pokedex = They patrol their territory in pairs. I believe the igneous rock components in the fur of this species are the result of volcanic activity in its habitat.
 BattlerPlayerY = 50
+BattlerEnemyX = 2
 BattlerEnemyY = 31
 BattlerShadowX = -1
+BattlerShadowSize = 3
 #-------------------------------
 [ARCANINE,1]
 FormName = Hisuian
@@ -2979,22 +2963,18 @@ Type1 = FIRE
 Type2 = ROCK
 BaseStats = 95,115,80,90,95,80
 EffortPoints = 0,3,0,0,0,0
-Abilities = INTIMIDATE,FLASHFIRE
-HiddenAbility = JUSTIFIED
 Moves = 1,TACKLE,5,EMBER,9,BITE,15,FIREFANG,21,ROCKSLIDE,29,RAGINGFURY,29,CRUNCH,37,DOUBLEEDGE,47,FLAREBLITZ
 Pokedex = Snaps at its foes with fangs cloaked in blazing flame. Despite its bulk, it deftly feints every which way, leading opponents on a deceptively merry chase as it all but dances around them.
 BattlerPlayerY = 50
-BattlerEnemyY = 31
+BattlerEnemyX = 1
+BattlerEnemyY = 18
 BattlerShadowX = -1
+BattlerShadowSize = 3
 #-------------------------------
 [QWILFISH,1]
 FormName = Hisuian
 Type1 = DARK
 Type2 = POISON
-BaseStats = 65,95,85,85,55,55
-EffortPoints = 0,1,0,0,0,0
-Abilities = POISONPOINT,SWIFTSWIM
-HiddenAbility = INTIMIDATE
 Moves = 1,POISONSTING,5,SPIKES,9,PINMISSILE,15,BARBBARRAGE,21,WATERPULSE,26,DARKPULSE,29,POISONJAB,37,AQUATAIL,47,DOUBLEEDGE,57,SELFDESTRUCT
 Pokedex = Fishers detest this troublesome Pokémon because it sprays poison from its spines, getting it everywhere. A different form of Qwilfish lives in other regions.
 BattlerEnemyY = 31
@@ -3005,13 +2985,11 @@ Evolutions = OVERQWIL,Level,29
 FormName = Hisuian
 Type1 = POISON
 Type2 = FIGHTING
-BaseStats = 55,95,55,115,35,75
-EffortPoints = 0,0,0,1,0,0
-Abilities = INNERFOCUS,KEENEYE
 HiddenAbility = POISONTOUCH
 Moves = 1,QUICKATTACK,6,ROCKSMASH,11,SWIFT,18,SLASH,25,POISONJAB,34,SWORDSDANCE,43,CLOSECOMBAT
 Pokedex = Its sturdy, curved claws are ideal for traversing precipitous cliffs. From the tips of these claws drips a venom that infiltrates the nerves of any prey caught in Sneasel's grasp.
-BattlerEnemyY = 31
+BattlerEnemyX = 1
+BattlerEnemyY = 26
 BattlerShadowX = -1
 Evolutions = SNEASLER,Item,RAZORCLAW
 #-------------------------------
@@ -3022,5 +3000,4 @@ EffortPoints = 0,3,0,0,0,0
 Abilities = OVERCOAT
 HiddenAbility = OVERCOAT
 Shape = 8
-BattlerPlayerY = 54
 BattlerEnemyY = 11

@@ -299,3 +299,9 @@ def switchToCharacter(char=0)
     $game_variables[99]=7
   end
 end
+
+def shadowCheckAndSwitch(poke,switch)
+  if $Trainer.shadowcaught[getID(PBSpecies,poke.upcase)]
+    vSST(switch)
+  end
+end
