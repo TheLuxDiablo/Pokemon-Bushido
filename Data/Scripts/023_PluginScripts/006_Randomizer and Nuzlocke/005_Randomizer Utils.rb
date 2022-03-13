@@ -72,10 +72,10 @@ class DrawPokemon_Scene
   def pbStartScene
     @sprites["pokemon_sprite"] = Sprite.new(@viewport)
     @sprites["pokemon_sprite"].bitmap = pbLoadPokemonBitmap(@pokemon,@spritemode==1).bitmap.clone
-    @sprites["pokemon_sprite"].x = (Graphics.width/2-@sprites["pokemon_sprite"].bitmap.width/2) + @sprite_pos[0]
-    @sprites["pokemon_sprite"].y = (Graphics.height/2-@sprites["pokemon_sprite"].bitmap.height/2) + @sprite_pos[1]
     @sprites["pokemon_sprite"].zoom_x *= @scale
     @sprites["pokemon_sprite"].zoom_y *= @scale
+    @sprites["pokemon_sprite"].x = (Graphics.width/2-@sprites["pokemon_sprite"].bitmap.width/2) + @sprite_pos[0]
+    @sprites["pokemon_sprite"].y = (Graphics.height/2-@sprites["pokemon_sprite"].bitmap.height/2) + @sprite_pos[1]
     @sprites["pokemon_sprite"].visible = true
     @sprites["pokemon_sprite"].opacity = 0
     pbDrawPokemonOutline
