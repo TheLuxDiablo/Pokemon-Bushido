@@ -6,7 +6,7 @@
 # You should change it to your file's url once you upload it.
 # NOTE: Essentials cannot handle https addresses. You must use a http address.
 #===============================================================================
-MYSTERY_GIFT_URL = "https://pastebin.com/raw/CZvL7t9r"
+MYSTERY_GIFT_URL = "https://pastebin.com/raw/vzMvMEpe"
 # MYSTERY_GIFT_URL = "http://pastebin.com/raw/w6BqqUsm"
 
 
@@ -34,16 +34,15 @@ end
 # type: 0=Pokémon; 1 or higher=item (is the item's quantity).
 # item: The thing being turned into a Mystery Gift (Pokémon object or item ID).
 def pbEditMysteryGift(type,item,id=0,giftname="")
-  pbBGMPlay("cinnabar")
+  #pbBGMPlay("cinnabar")
   begin
     if type==0   # Pokémon
-      commands=[_INTL("Mystery Gift"),
-                _INTL("Faraway place")]
+      commands=[_INTL("Mystery Gift"),_INTL("Faraway place")]
       commands.push(item.obtainText) if item.obtainText && item.obtainText!=""
       commands.push(_INTL("[Custom]"))
       loop do
-        command=pbMessage(
-           _INTL("Choose a phrase to be where the gift Pokémon was obtained from."),commands,-1)
+        #command=pbMessage(_INTL("Choose a phrase to be where the gift Pokémon was obtained from."),commands,-1)
+        command=pbShowCommands("Choose a phrase to be where the gift Pokémon was obtained from.",commands,0)
         if command<0
           return nil if pbConfirmMessage(_INTL("Stop editing this gift?"))
         elsif command<commands.length-1
@@ -111,7 +110,7 @@ def pbEditMysteryGift(type,item,id=0,giftname="")
     pbMessage(_INTL("Couldn't edit the gift."))
     return nil
   end
-  pbBGMPlay("title_vh")
+  #pbBGMPlay("title_vh")
 end
 
 def pbCreateMysteryGift(type,item)
@@ -325,7 +324,7 @@ def pbDownloadMysteryGift(trainer)
           end
           sprites["msgwindow"].visible=true
           pbMessageDisplay(sprites["msgwindow"],_INTL("The gift has been received!")) { sprite.update }
-          pbMessageDisplay(sprites["msgwindow"],_INTL("Please pick up your gift from any of the Fletchlings in each village.")) { sprite.update }
+          pbMessageDisplay(sprites["msgwindow"],_INTL("Please pick up your gift from any of the Fletchlings in the villages.")) { sprite.update }
           trainer.mysterygift.push(gift)
           pending[command]=nil; pending.compact!
           opacityDiff = 16*20/Graphics.frame_rate

@@ -1531,3 +1531,22 @@ Backtrace:
 002_Scene_Map.rb:162:in `block in update'
 002_Scene_Map.rb:160:in `loop'
 002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 15:23:28 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: ArgumentError
+Message: wrong number of arguments (given 4, expected 2..3)
+
+Backtrace:
+005_PScreen_Party.rb:890:in `pbShowCommands'
+011_Messages.rb:1207:in `block in pbMessage'
+010_GelaNameBoxes.rb:519:in `pbMessageDisplay'
+011_Messages.rb:1205:in `pbMessage'
+011_Messages.rb:1218:in `pbConfirmMessage'
+001_PItem_Items.rb:700:in `block in pbLearnMove'
+001_PItem_Items.rb:681:in `loop'
+001_PItem_Items.rb:681:in `pbLearnMove'
+003_Debug_Pokemon.rb:352:in `pbPokemonDebugActions'
+003_Debug_Pokemon.rb:870:in `block in pbPokemonDebug'
