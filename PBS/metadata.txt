@@ -829,7 +829,7 @@ Environment = Cave
 # Kowai Pass
 Outdoor = true
 ShowArea = true
-MapPosition = 2,8,12
+MapPosition = 2,7,12
 #-------------------------------
 [157]
 # Kowai Pass
@@ -843,14 +843,35 @@ Outdoor = true
 ShowArea = true
 MapPosition = 2,4,12
 #-------------------------------
+[159]
+# Jinsu Springs
+Outdoor = false
+ShowArea = false
+MapPosition = 2,4,12
+#-------------------------------
+[161]
+# Jinsu Island
+Outdoor = false
+ShowArea = false
+MapPosition = 2,4,12
+#-------------------------------
 [162]
 # Jinsu Forest
 Outdoor = true
 ShowArea = true
 MapPosition = 2,4,12
+BattleBack = forest
 #-------------------------------
 [163]
 # Jinsu Cave
 Outdoor = false
 ShowArea = true
 MapPosition = 2,4,12
+BattleBack = CaveBushido4
+#-------------------------------
+[164]
+# Jinsu Shrine
+Outdoor = true
+ShowArea = true
+MapPosition = 2,4,12
+BattleBack = Lush

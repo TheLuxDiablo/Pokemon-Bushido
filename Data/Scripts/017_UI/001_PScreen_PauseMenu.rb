@@ -139,7 +139,7 @@ class PokemonPauseMenu
     end
     commands[cmdOption = commands.length]   = _INTL("Options")
     commands[cmdDebug = commands.length]    = _INTL("Debug") if $DEBUG
-    commands[cmdEndGame = commands.length]  = _INTL("Quit Game")
+    commands[cmdEndGame = commands.length]  = _INTL("Title Screen")
     loop do
       command = @scene.pbShowCommands(commands)
       if cmdPokedex>=0 && command==cmdPokedex
@@ -264,7 +264,7 @@ class PokemonPauseMenu
         }
       elsif cmdEndGame>=0 && command==cmdEndGame
         @scene.pbHideMenu
-        if pbConfirmMessage(_INTL("Are you sure you want to quit the game?"))
+        if pbConfirmMessage(_INTL("Are you sure you want to return to the Title Screen?"))
           scene = PokemonSave_Scene.new
           screen = PokemonSaveScreen.new(scene)
           if screen.pbSaveScreen
