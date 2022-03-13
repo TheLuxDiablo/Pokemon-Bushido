@@ -765,3 +765,535 @@ Backtrace:
 002_Compiler_PBS.rb:966:in `block (3 levels) in pbCompilePokemonForms'
 002_Compiler_PBS.rb:965:in `each'
 002_Compiler_PBS.rb:965:in `block (2 levels) in pbCompilePokemonForms'
+
+=================
+
+[2022-03-13 03:52:00 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `each' for #<SpriteWrapper:0x000001d22419b9f8>
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(:CHARMANDER,5),200,200,5,3,true,false)
+
+
+Backtrace:
+002_MessageConfig.rb:686:in `pbActivateWindow'
+002_MessageConfig.rb:674:in `pbDeactivateWindows'
+002_MessageConfig.rb:651:in `pbFadeInAndShow'
+005_Randomizer Utils.rb:53:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 03:58:08 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `each' for #<SpriteWrapper:0x00000234e6276b00>
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(3,5),200,200,5,3,true,false)
+
+
+Backtrace:
+002_MessageConfig.rb:686:in `pbActivateWindow'
+002_MessageConfig.rb:674:in `pbDeactivateWindows'
+002_MessageConfig.rb:651:in `pbFadeInAndShow'
+005_Randomizer Utils.rb:55:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 03:58:35 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `each' for #<SpriteWrapper:0x000001ebdb83ac48>
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(3,5),200,200,5,3,true,false)
+
+
+Backtrace:
+002_MessageConfig.rb:686:in `pbActivateWindow'
+002_MessageConfig.rb:674:in `pbDeactivateWindows'
+002_MessageConfig.rb:651:in `pbFadeInAndShow'
+005_Randomizer Utils.rb:56:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 14:36:55 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NameError
+Message: undefined local variable or method `viewport' for #<DrawPokemon_Scene:0x000001d50493a780>
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(3,5),200,200,5,3,true,false)
+
+
+Backtrace:
+005_Randomizer Utils.rb:66:in `pbStartScene'
+005_Randomizer Utils.rb:114:in `pbStartScreen'
+005_Randomizer Utils.rb:46:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 14:37:21 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: TypeError
+Message: Can't convert EBSBitmapWrapper into Bitmap
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(3,5),200,200,5,3,true,false)
+
+
+Backtrace:
+007_SpriteWrapper.rb:19:in `bitmap='
+007_SpriteWrapper.rb:19:in `bitmap='
+005_Randomizer Utils.rb:67:in `pbStartScene'
+005_Randomizer Utils.rb:114:in `pbStartScreen'
+005_Randomizer Utils.rb:46:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 14:39:02 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: TypeError
+Message: Can't convert EBSBitmapWrapper into Bitmap
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(3,5),200,200,5,3,true,false)
+
+
+Backtrace:
+005_Randomizer Utils.rb:67:in `bitmap='
+005_Randomizer Utils.rb:67:in `pbStartScene'
+005_Randomizer Utils.rb:114:in `pbStartScreen'
+005_Randomizer Utils.rb:46:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 14:48:47 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `pbEndScene' for #<DrawPokemon_Screen:0x00000271a3c1b0f8>
+
+***Full script:
+pbDisposePokemon
+
+
+Backtrace:
+005_Randomizer Utils.rb:53:in `pbDisposePokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 14:59:58 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `color' for ["pokemon_sprite", #<SpriteWrapper:0x00000268d8073120>]:Array
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(rand(800)+1,5),200,200,5,1,true,false)
+
+
+Backtrace:
+005_Randomizer Utils.rb:97:in `block in pbFadeSprites'
+005_Randomizer Utils.rb:96:in `each'
+005_Randomizer Utils.rb:96:in `pbFadeSprites'
+005_Randomizer Utils.rb:82:in `pbStartScene'
+005_Randomizer Utils.rb:143:in `pbStartScreen'
+005_Randomizer Utils.rb:46:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 15:00:39 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `color' for #<Bitmap:0x000002218df69608>
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(rand(800)+1,5),200,200,5,1,true,false)
+
+
+Backtrace:
+005_Randomizer Utils.rb:80:in `pbStartScene'
+005_Randomizer Utils.rb:143:in `pbStartScreen'
+005_Randomizer Utils.rb:46:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 15:02:43 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `color' for ["pokemon_sprite", #<Sprite:0x000001d7b44dfa70>]:Array
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(rand(800)+1,5),200,200,5,1,true,false)
+
+
+Backtrace:
+005_Randomizer Utils.rb:97:in `block in pbFadeSprites'
+005_Randomizer Utils.rb:96:in `each'
+005_Randomizer Utils.rb:96:in `pbFadeSprites'
+005_Randomizer Utils.rb:82:in `pbStartScene'
+005_Randomizer Utils.rb:143:in `pbStartScreen'
+005_Randomizer Utils.rb:46:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 15:08:24 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RGSSError
+Message: disposed sprite
+
+***Full script:
+pbDisposePokemon
+
+
+Backtrace:
+005_Randomizer Utils.rb:112:in `color'
+005_Randomizer Utils.rb:112:in `block (2 levels) in pbFadeSprites'
+005_Randomizer Utils.rb:99:in `each'
+005_Randomizer Utils.rb:99:in `block in pbFadeSprites'
+005_Randomizer Utils.rb:96:in `each'
+005_Randomizer Utils.rb:96:in `pbFadeSprites'
+005_Randomizer Utils.rb:132:in `pbEndScene'
+005_Randomizer Utils.rb:149:in `pbEndScreen'
+005_Randomizer Utils.rb:53:in `pbDisposePokemon'
+(eval):1:in `pbExecuteScript'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 15:09:58 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RGSSError
+Message: disposed sprite
+
+***Full script:
+pbDisposePokemon
+
+
+Backtrace:
+005_Randomizer Utils.rb:112:in `color'
+005_Randomizer Utils.rb:112:in `block (2 levels) in pbFadeSprites'
+005_Randomizer Utils.rb:99:in `each'
+005_Randomizer Utils.rb:99:in `block in pbFadeSprites'
+005_Randomizer Utils.rb:96:in `each'
+005_Randomizer Utils.rb:96:in `pbFadeSprites'
+005_Randomizer Utils.rb:133:in `pbEndScene'
+005_Randomizer Utils.rb:150:in `pbEndScreen'
+005_Randomizer Utils.rb:53:in `pbDisposePokemon'
+(eval):1:in `pbExecuteScript'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 15:11:08 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RGSSError
+Message: disposed sprite
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(rand(800)+1,5),200,200,100,1,true,false)
+
+
+Backtrace:
+005_Randomizer Utils.rb:112:in `opacity'
+005_Randomizer Utils.rb:112:in `block (2 levels) in pbFadeSprites'
+005_Randomizer Utils.rb:99:in `each'
+005_Randomizer Utils.rb:99:in `block in pbFadeSprites'
+005_Randomizer Utils.rb:96:in `each'
+005_Randomizer Utils.rb:96:in `pbFadeSprites'
+005_Randomizer Utils.rb:82:in `pbStartScene'
+005_Randomizer Utils.rb:146:in `pbStartScreen'
+005_Randomizer Utils.rb:46:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-13 15:19:18 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `get_pixel' for #<AnimatedBitmap:0x00000188ece0f2d8>
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(rand(800)+1,5),200,200,20,1,true,false,2)
+
+
+Backtrace:
+005_Randomizer Utils.rb:120:in `pbGetOutlineColor'
+005_Randomizer Utils.rb:87:in `pbDrawPokemonOutline'
+005_Randomizer Utils.rb:81:in `pbStartScene'
+005_Randomizer Utils.rb:143:in `pbStartScreen'
+005_Randomizer Utils.rb:46:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
