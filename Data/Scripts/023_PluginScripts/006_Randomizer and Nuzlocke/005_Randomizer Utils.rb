@@ -12,7 +12,6 @@ def pbChangeEventSpriteToMon(eventID, mon, shiny = false)
   # Finally sets the graphic
   thisevent.character_name = fname
   thisevent.character_hue = 0
-  echoln fname
 end
 
 def generateRandomPkmn(species,level)
@@ -40,8 +39,8 @@ def pbAddPokemonNoRandomizer(pokemon,level=nil,seeform=true)
 end
 
 # Draw a Pokemon on the screen
-def pbDrawPokemon(pokemon,x=0,y=0,frames=20,scale=1,outline=false,backsprite=false,thickness=5)
-  scene = DrawPokemon_Scene.new(pokemon,x,y,frames,scale,outline,backsprite,thickness)
+def pbDrawPokemon(num,x=0,y=0,frames=20,scale=1)
+  scene = DrawPokemon_Scene.new(num,x,y,frames,scale)
   screen = DrawPokemon_Screen.new(scene)
   screen.pbStartScreen
   $game_variables[2] = screen
@@ -53,49 +52,55 @@ def pbDisposePokemon
   screen.pbEndScreen
 end
 
+def pbGenerateImages(backsprite=false,thickness=5)
+  pokes = []
+  for i in 0..2
+    pkmn = pbGet(73+i)
+    sprite = Sprite.new
+    sprite.visible = false
+    sprite.bitmap = pbLoadPokemonBitmap(pkmn,backsprite).bitmap.clone
+    # draws the outline
+    outline_color = Bitmap.new(_INTL("Graphics/Pictures/types")).get_pixel(3,3+pkmn.type1*28)
+    for i in 0..thickness
+      outline_color.alpha*=0.6
+      sprite.create_outline(outline_color,1)
+    end
+    pokes.push(sprite)
+    sprite.dispose
+  end
+  pbSet(4,pokes)
+end
+
 class DrawPokemon_Scene
-  def initialize(pokemon,x,y,frames,scale,outline,backsprite,thickness)
+  def initialize(num,x,y,frames,scale)
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99999
     @sprites = {}
-    @pokemon = pokemon
+    @pokemon_sprite = pbGet(4)[num]
     @sprite_pos = [x,y]
     @frames = frames # how many frames it takes to fade in.
     @scale = scale
-    @outline = outline # whether should draw an outline
-    @spritemode = (backsprite) ? 1 : 0 # 0 = front, 1 = back
-    @outline_thickness = thickness
     @disposed = false
   end
   
   # draw scene elements
   def pbStartScene
     case @scale
-    when 1 then scale_offset = 0.5
+    when 1 then scale_offset = 2
     when 2 then scale_offset = 1
-    when 3 then scale_offset = 1.5
-    when 4 then scale_offset = 2
+    when 3 then scale_offset = 0.5
+    when 4 then scale_offset = 0.25
     else scale_offset = 0
     end
     @sprites["pokemon_sprite"] = Sprite.new(@viewport)
-    @sprites["pokemon_sprite"].bitmap = pbLoadPokemonBitmap(@pokemon,@spritemode==1).bitmap.clone
+    @sprites["pokemon_sprite"].bitmap = @pokemon_sprite.bitmap
     @sprites["pokemon_sprite"].zoom_x *= @scale
     @sprites["pokemon_sprite"].zoom_y *= @scale
-    @sprites["pokemon_sprite"].x = (Graphics.width/2-@sprites["pokemon_sprite"].bitmap.width*scale_offset) + @sprite_pos[0]
-    @sprites["pokemon_sprite"].y = (Graphics.height/2-@sprites["pokemon_sprite"].bitmap.height*scale_offset) + @sprite_pos[1]
+    @sprites["pokemon_sprite"].x = (Graphics.width/2-@sprites["pokemon_sprite"].bitmap.width/scale_offset) + @sprite_pos[0]
+    @sprites["pokemon_sprite"].y = (Graphics.height/2-@sprites["pokemon_sprite"].bitmap.height/scale_offset) + @sprite_pos[1]
     @sprites["pokemon_sprite"].visible = true
     @sprites["pokemon_sprite"].opacity = 0
-    pbDrawPokemonOutline
     pbFadeSprites(@sprites)
-  end
-
-  # draws the outline
-  def pbDrawPokemonOutline
-    outline_color = pbGetOutlineColor
-    for i in 0..@outline_thickness
-      outline_color.alpha*=0.6
-      @sprites["pokemon_sprite"].create_outline(outline_color,1)
-    end
   end
 
   # fades the sprites
@@ -119,13 +124,6 @@ class DrawPokemon_Scene
       end
       sprite.opacity = 255 if sprite
     end
-  end
-
-  # returns a color based on the pokémon's type
-  def pbGetOutlineColor
-    color = []
-    color = Bitmap.new(_INTL("Graphics/Pictures/types")).get_pixel(3,3+@pokemon.type1*28)
-    return color
   end
 
   def pbUpdate
