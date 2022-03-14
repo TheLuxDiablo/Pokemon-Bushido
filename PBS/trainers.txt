@@ -1265,3 +1265,10 @@ LoseText = "That's impressive! I can see your power flashing in front of me!"
 Pokemon = WURMPLE,1
 Pokemon = ZOROARK,30
 Pokemon = LUGIA,30
+#-------------------------------	
+[ELITEKENSHI_F,Eri]
+LoseText = "No way! But I'm an elite Kenshi..."
+Pokemon = ARCANINE,72
+    Form = 1
+Pokemon = DECIDUEYE,73
+    Form = 1

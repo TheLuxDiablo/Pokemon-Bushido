@@ -174,7 +174,7 @@ class PokemonStatsPage
         pbSEPlay("GUI summary change page")
         drawPage
       end
-      if Input.trigger?(Input::B) || Input.trigger?(Input::C)
+      if Input.trigger?(Input::B) || Input.trigger?(Input::C) || Input.pressex?(0x1B)
         pbSEPlay("GUI menu close")
         break
       end
