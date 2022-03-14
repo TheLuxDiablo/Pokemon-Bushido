@@ -214,5 +214,5 @@
 211,HAUNTED,Developer,100,CON-HokageMonument,,,Male,,
 212,RAIKAMI_M,Raikami Clan,100,CON-HokageMonument,,,Male,,
 213,RAIKAMI_F,Raikami Clan,100,CON-HokageMonument,,,Male,,
-214,ELITEKENSHI_M,Elite Kenshi,100,CON-ThreeWayDeadlock,,HGSSEncounter-KimonoGirl,Male,,
-215,ELITEKENSHI_F,Elite Kenshi,100,CON-ThreeWayDeadlock,,HGSSEncounter-KimonoGirl,Male,,
+214,ELITEKENSHI_M,Elite Kenshi,100,CON_Enshujyo,,HGSSEncounter-KimonoGirl,Male,,
+215,ELITEKENSHI_F,Elite Kenshi,100,CON_Enshujyo,,HGSSEncounter-KimonoGirl,Male,,
