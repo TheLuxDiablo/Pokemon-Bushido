@@ -1550,3 +1550,82 @@ Backtrace:
 001_PItem_Items.rb:681:in `pbLearnMove'
 003_Debug_Pokemon.rb:352:in `pbPokemonDebugActions'
 003_Debug_Pokemon.rb:870:in `block in pbPokemonDebug'
+
+=================
+
+[2022-03-14 02:14:53 -0500]
+[Pokemon Bushido v2.0.0]
+Exception: EOFError
+Message: end of file reached
+
+Backtrace:
+013_PScreen_Load.rb:639:in `load'
+013_PScreen_Load.rb:639:in `load'
+013_PScreen_Load.rb:639:in `block in pbGetSave'
+013_PScreen_Load.rb:631:in `open'
+013_PScreen_Load.rb:631:in `pbGetSave'
+013_PScreen_Load.rb:500:in `block in pbStartLoadScreen'
+013_PScreen_Load.rb:426:in `loop'
+013_PScreen_Load.rb:426:in `pbStartLoadScreen'
+002_Randomizer.rb:419:in `pbStartLoadScreen'
+003_Nuzlocke.rb:269:in `pbStartLoadScreen'
+
+=================
+
+[2022-03-14 02:15:10 -0500]
+[Pokemon Bushido v2.0.0]
+Exception: EOFError
+Message: end of file reached
+
+Backtrace:
+013_PScreen_Load.rb:639:in `load'
+013_PScreen_Load.rb:639:in `load'
+013_PScreen_Load.rb:639:in `block in pbGetSave'
+013_PScreen_Load.rb:631:in `open'
+013_PScreen_Load.rb:631:in `pbGetSave'
+013_PScreen_Load.rb:500:in `block in pbStartLoadScreen'
+013_PScreen_Load.rb:426:in `loop'
+013_PScreen_Load.rb:426:in `pbStartLoadScreen'
+002_Randomizer.rb:419:in `pbStartLoadScreen'
+003_Nuzlocke.rb:269:in `pbStartLoadScreen'
+
+=================
+
+[2022-03-14 02:19:53 -0500]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 17 (coords 17,20), map 81 (Nagisa Bay):
+Exception: NoMethodError
+Message: undefined method `species' for 0:Integer
+
+***Full script:
+pkmn = pbGet(73).species
+pbDrawPokemon(0,0,0,10,1)
+vCry(pkmn)
+pbSet(1,pbGet(73).name)
+
+
+Backtrace:
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
