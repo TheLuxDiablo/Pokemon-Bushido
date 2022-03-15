@@ -1629,3 +1629,1035 @@ Backtrace:
 002_Scene_Map.rb:162:in `block in update'
 002_Scene_Map.rb:160:in `loop'
 002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:09:11 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: ArgumentError
+Message: wrong number of arguments (given 8, expected 1..5)
+
+***Full script:
+pbDrawPokemon(pbNewPkmn(rand(800)+1,5),0,0,20,1,true,false,2)
+
+
+Backtrace:
+005_Randomizer Utils.rb:42:in `pbDrawPokemon'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:10:44 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `species' for 1:Integer
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+013_SpriteScaling.rb:208:in `pbLoadPokemonBitmap'
+005_Randomizer Utils.rb:59:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:16:39 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `>' for [12, 3, [45, 49, 49, 45, 65, 65], 2, 3, 64, [0, 0, 0, 0, 1, 0], 45, 50, [65, nil], [34, nil, nil, nil], [1, 7], 5355, 7, 69, 3, 8]:Array
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+001_PokeBattle_Pokemon.rb:898:in `initialize'
+002_Pokemon_Forms.rb:43:in `initialize'
+001_PokeBattle_Pokemon.rb:961:in `new'
+001_PokeBattle_Pokemon.rb:961:in `pbNewPkmn'
+005_Randomizer Utils.rb:57:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:17:17 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:67:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:19:55 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:67:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:22:46 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:67:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:23:13 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `save_to_png' for #<Sprite:0x000001eedfe5f900>
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+005_Randomizer Utils.rb:67:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:25:57 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: Errno::ENOENT
+Message: File No such file or directory @ rb_sysopen - Call/1 not found.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:976:in `initialize'
+003_MarinUtils.rb:976:in `new'
+003_MarinUtils.rb:976:in `initialize'
+003_MarinUtils.rb:1016:in `new'
+003_MarinUtils.rb:1016:in `save_to_png'
+005_Randomizer Utils.rb:67:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:28:24 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:67:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:33:08 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:67:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:34:32 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:68:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:46:04 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:69:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:47:54 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:69:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:48:51 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:69:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:50:12 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:69:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:51:14 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:69:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 17:53:49 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:70:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 20:26:13 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: TypeError
+Message: Argument 0: Expected string
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+005_Randomizer Utils.rb:67:in `initialize'
+005_Randomizer Utils.rb:67:in `new'
+005_Randomizer Utils.rb:67:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 20:26:43 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: Errno::ENOENT
+Message: File No such file or directory @ rb_sysopen - Grabhics/Battlers/PopOut/1.png not found.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:976:in `initialize'
+003_MarinUtils.rb:976:in `new'
+003_MarinUtils.rb:976:in `initialize'
+003_MarinUtils.rb:1016:in `new'
+003_MarinUtils.rb:1016:in `save_to_png'
+005_Randomizer Utils.rb:70:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 20:27:44 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:70:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 20:29:15 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:70:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 20:30:34 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: RuntimeError
+Message: Invalid data for writing.
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+003_MarinUtils.rb:990:in `block in write'
+003_MarinUtils.rb:984:in `each'
+003_MarinUtils.rb:984:in `write'
+003_MarinUtils.rb:980:in `<<'
+003_MarinUtils.rb:1057:in `save_to_png'
+005_Randomizer Utils.rb:70:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 20:45:28 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: ArgumentError
+Message: wrong number of arguments
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+005_Randomizer Utils.rb:58:in `initialize'
+005_Randomizer Utils.rb:58:in `new'
+005_Randomizer Utils.rb:58:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 20:47:53 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `gender=' for #<PokeBattle_Pokemon:0x000002b0ff625090>
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+005_Randomizer Utils.rb:65:in `block (3 levels) in pbGenerateImages'
+005_Randomizer Utils.rb:60:in `each'
+005_Randomizer Utils.rb:60:in `block (2 levels) in pbGenerateImages'
+005_Randomizer Utils.rb:59:in `each'
+005_Randomizer Utils.rb:59:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 21:02:31 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 9 (coords 5,17), map 153 (MAP153):
+Exception: NoMethodError
+Message: undefined method `shiny=' for #<PokeBattle_Pokemon:0x00000254af69f1d0>
+
+***Full script:
+pbGenerateImages(false,1)
+
+
+Backtrace:
+005_Randomizer Utils.rb:72:in `block (4 levels) in pbGenerateImages'
+005_Randomizer Utils.rb:64:in `each'
+005_Randomizer Utils.rb:64:in `block (3 levels) in pbGenerateImages'
+005_Randomizer Utils.rb:63:in `each'
+005_Randomizer Utils.rb:63:in `block (2 levels) in pbGenerateImages'
+005_Randomizer Utils.rb:62:in `each'
+005_Randomizer Utils.rb:62:in `block in pbGenerateImages'
+005_Randomizer Utils.rb:56:in `each'
+005_Randomizer Utils.rb:56:in `pbGenerateImages'
+(eval):1:in `pbExecuteScript'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 21:41:43 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 20 (coords 19,20), map 81 (Nagisa Bay):
+Exception: Errno::ENOENT
+Message: File Graphics/Battlers/PopOut/77.png not found.
+
+***Full script:
+pkmn = pbGet(75).species
+pbDrawPokemon(pbGet(75),0,0,10,1)
+vCry(pkmn)
+pbSet(1,pbGet(75).name)
+
+
+Backtrace:
+005_Randomizer Utils.rb:127:in `initialize'
+005_Randomizer Utils.rb:127:in `new'
+005_Randomizer Utils.rb:127:in `initialize'
+005_Randomizer Utils.rb:65:in `new'
+005_Randomizer Utils.rb:65:in `pbDrawPokemon'
+(eval):2:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 21:44:21 +0100]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 20 (coords 19,20), map 81 (Nagisa Bay):
+Exception: TypeError
+Message: no implicit conversion of Integer into String
+
+***Full script:
+pkmn = pbGet(75).species
+pbDrawPokemon(pbGet(75),0,0,10,1)
+vCry(pkmn)
+pbSet(1,pbGet(75).name)
+
+
+Backtrace:
+005_Randomizer Utils.rb:48:in `+'
+005_Randomizer Utils.rb:48:in `pbDrawPokemon'
+(eval):2:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'

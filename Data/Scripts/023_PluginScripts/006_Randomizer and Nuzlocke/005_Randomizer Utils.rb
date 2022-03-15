@@ -39,8 +39,34 @@ def pbAddPokemonNoRandomizer(pokemon,level=nil,seeform=true)
 end
 
 # Draw a Pokemon on the screen
-def pbDrawPokemon(num,x=0,y=0,frames=20,scale=1)
-  scene = DrawPokemon_Scene.new(num,x,y,frames,scale)
+def pbDrawPokemon(pkmn,x=0,y=0,frames=20,scale=1)
+  file = ""
+  suffix = ""
+  index = ""
+  index += "0" if pkmn.species < 100
+  index += "0" if pkmn.species < 10
+  index += _INTL("{1}",pkmn.species)
+  for i in 0..4
+    case i
+    when 0
+      suffix += "f" if pkmn.gender == 1
+      suffix += "s" if pkmn.shiny?
+      suffix += _INTL("_{1}",pkmn.form) if pkmn.form > 0
+    when 1
+      suffix += "f" if pkmn.gender == 1
+      suffix += "s" if pkmn.shiny?
+    when 2
+      suffix += "s" if pkmn.shiny?
+      suffix += _INTL("_{1}",pkmn.form) if pkmn.form > 0
+    when 3
+      suffix += "s" if pkmn.shiny?
+    else
+      suffix = ""
+    end
+    file = _INTL("Graphics/Battlers/PopOut/{1}{2}.png",index,suffix)
+    break if File.exists?(file)
+  end
+  scene = DrawPokemon_Scene.new(file,x,y,frames,scale)
   screen = DrawPokemon_Screen.new(scene)
   screen.pbStartScreen
   $game_variables[2] = screen
@@ -50,33 +76,59 @@ end
 def pbDisposePokemon
   screen = $game_variables[2]
   screen.pbEndScreen
+  pbSet(2,nil)
 end
 
 def pbGenerateImages(backsprite=false,thickness=5)
-  pokes = []
-  for i in 0..2
-    pkmn = pbGet(73+i)
-    sprite = Sprite.new
-    sprite.visible = false
-    sprite.bitmap = pbLoadPokemonBitmap(pkmn,backsprite).bitmap.clone
-    # draws the outline
-    outline_color = Bitmap.new(_INTL("Graphics/Pictures/types")).get_pixel(3,3+pkmn.type1*28)
-    for i in 0..thickness
-      outline_color.alpha*=0.6
-      sprite.create_outline(outline_color,1)
+  for i in 1..PBSpecies.maxValue
+    pkmn = pbNewPkmn(i,5)
+    index = ""
+    index += "0" if i < 100
+    index += "0" if i < 10
+    index += _INTL("{1}",i)
+    for j in 0..62
+      for k in 0..1
+        for l in 0..1
+          next if pkmn.genderless? && k>0
+          suffix = ""
+          suffix = "f" if k>0
+          suffix += "s" if l>0
+          suffix += _INTL("_{1}",j) if j > 0
+          next if !File.exists?(_INTL("Graphics/Battlers/{1}{2}.png",index,suffix))
+          next if File.exists?(_INTL("Graphics/Battlers/PopOut/{1}{2}.png",index,suffix))
+          pkmn.forcedForm = j
+          pkmn.form = j
+          l > 0 ? pkmn.makeShiny : pkmn.makeNotShiny
+          pkmn.setGender(k) if !pkmn.genderless?
+          sprite = Sprite.new
+          sprite.visible = false
+          sprite.bitmap = pbLoadPokemonBitmap(pkmn,backsprite).bitmap.clone
+          # draws the outline
+          outline_color = Bitmap.new(_INTL("Graphics/Pictures/types")).get_pixel(3,3+pkmn.type1*28)
+          for n in 0..thickness
+            outline_color.alpha*=0.6
+            sprite.create_outline(outline_color,1)
+          end
+          bmp = sprite.bitmap.clone
+          bit = Bitmap.new(96,96)
+          bit.blt(0, 0, bmp, Rect.new(0,0,96,96))
+          bmp.save_to_png(_INTL("Graphics/Battlers/PopOut/{1}{2}.png",index,suffix))
+          echoln _INTL("Finished \#{1}{2}",index,suffix)
+          sprite.bitmap.dispose
+          sprite.dispose
+          bit.dispose
+        end
+      end
     end
-    pokes.push(sprite)
-    sprite.dispose
   end
-  pbSet(4,pokes)
 end
 
 class DrawPokemon_Scene
-  def initialize(num,x,y,frames,scale)
+  def initialize(file,x,y,frames,scale)
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99999
     @sprites = {}
-    @pokemon_sprite = pbGet(4)[num]
+    @pokemon_sprite = Bitmap.new(file)
     @sprite_pos = [x,y]
     @frames = frames # how many frames it takes to fade in.
     @scale = scale
@@ -93,7 +145,7 @@ class DrawPokemon_Scene
     else scale_offset = 0
     end
     @sprites["pokemon_sprite"] = Sprite.new(@viewport)
-    @sprites["pokemon_sprite"].bitmap = @pokemon_sprite.bitmap
+    @sprites["pokemon_sprite"].bitmap = @pokemon_sprite
     @sprites["pokemon_sprite"].zoom_x *= @scale
     @sprites["pokemon_sprite"].zoom_y *= @scale
     @sprites["pokemon_sprite"].x = (Graphics.width/2-@sprites["pokemon_sprite"].bitmap.width/scale_offset) + @sprite_pos[0]

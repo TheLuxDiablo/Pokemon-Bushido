@@ -1049,7 +1049,7 @@ class Bitmap
       end
     end
     # Zlib deflation
-    smoldata = Zlib::Deflate.deflate(data.pack("C*")).bytes.map
+    smoldata = Zlib::Deflate.deflate(data.pack("C*")).bytes
     # data chunk length
     f.write_int smoldata.size
     # IDAT
