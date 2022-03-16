@@ -2661,3 +2661,283 @@ Backtrace:
 002_Scene_Map.rb:162:in `block in update'
 002_Scene_Map.rb:160:in `loop'
 002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 18:47:09 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 19 (coords 18,20), map 81 (Nagisa Bay):
+Exception: NoMethodError
+Message: undefined method `nil_or_empty' for #<Interpreter:0x00000234f5c458c0>
+
+***Full script:
+pkmn = pbGet(74)
+pbDisposePokemon
+pbAddPokemonNoRandomizer(pkmn)
+
+
+Backtrace:
+003_Nuzlocke.rb:286:in `block in pbEnterPokemonName'
+003_Nuzlocke.rb:284:in `loop'
+003_Nuzlocke.rb:284:in `pbEnterPokemonName'
+004_PSystem_PokemonUtilities.rb:12:in `pbNickname'
+004_PSystem_PokemonUtilities.rb:59:in `pbNicknameAndStore'
+005_Randomizer Utils.rb:36:in `pbAddPokemonNoRandomizer'
+(eval):3:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 18:48:13 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 19 (coords 18,20), map 81 (Nagisa Bay):
+Exception: NoMethodError
+Message: undefined method `nil_or_empty' for #<Interpreter:0x0000018adec83628>
+
+***Full script:
+pkmn = pbGet(74)
+pbDisposePokemon
+pbAddPokemonNoRandomizer(pkmn)
+
+
+Backtrace:
+003_Nuzlocke.rb:286:in `block in pbEnterPokemonName'
+003_Nuzlocke.rb:284:in `loop'
+003_Nuzlocke.rb:284:in `pbEnterPokemonName'
+004_PSystem_PokemonUtilities.rb:12:in `pbNickname'
+004_PSystem_PokemonUtilities.rb:59:in `pbNicknameAndStore'
+005_Randomizer Utils.rb:36:in `pbAddPokemonNoRandomizer'
+(eval):3:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 18:49:15 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 20 (coords 19,20), map 81 (Nagisa Bay):
+Exception: NoMethodError
+Message: undefined method `nil_or_empty' for #<Interpreter:0x0000015ce6f6be60>
+
+***Full script:
+pkmn = pbGet(75)
+pbDisposePokemon
+pbAddPokemonNoRandomizer(pkmn)
+
+
+Backtrace:
+003_Nuzlocke.rb:286:in `block in pbEnterPokemonName'
+003_Nuzlocke.rb:284:in `loop'
+003_Nuzlocke.rb:284:in `pbEnterPokemonName'
+004_PSystem_PokemonUtilities.rb:12:in `pbNickname'
+004_PSystem_PokemonUtilities.rb:59:in `pbNicknameAndStore'
+005_Randomizer Utils.rb:36:in `pbAddPokemonNoRandomizer'
+(eval):3:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 18:49:36 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 19 (coords 18,20), map 81 (Nagisa Bay):
+Exception: NoMethodError
+Message: undefined method `nil_or_empty' for #<Interpreter:0x0000016b61561468>
+
+***Full script:
+pkmn = pbGet(74)
+pbDisposePokemon
+pbAddPokemonNoRandomizer(pkmn)
+
+
+Backtrace:
+003_Nuzlocke.rb:286:in `block in pbEnterPokemonName'
+003_Nuzlocke.rb:284:in `loop'
+003_Nuzlocke.rb:284:in `pbEnterPokemonName'
+004_PSystem_PokemonUtilities.rb:12:in `pbNickname'
+004_PSystem_PokemonUtilities.rb:59:in `pbNicknameAndStore'
+005_Randomizer Utils.rb:36:in `pbAddPokemonNoRandomizer'
+(eval):3:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 18:50:06 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 17 (coords 17,20), map 81 (Nagisa Bay):
+Exception: NoMethodError
+Message: undefined method `nil_or_empty' for #<Interpreter:0x0000028c47e29818>
+
+***Full script:
+pkmn = pbGet(73)
+pbDisposePokemon
+pbAddPokemonNoRandomizer(pkmn)
+
+
+Backtrace:
+003_Nuzlocke.rb:286:in `block in pbEnterPokemonName'
+003_Nuzlocke.rb:284:in `loop'
+003_Nuzlocke.rb:284:in `pbEnterPokemonName'
+004_PSystem_PokemonUtilities.rb:12:in `pbNickname'
+004_PSystem_PokemonUtilities.rb:59:in `pbNicknameAndStore'
+005_Randomizer Utils.rb:36:in `pbAddPokemonNoRandomizer'
+(eval):3:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 19:38:36 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 19 (coords 18,20), map 81 (Nagisa Bay):
+Exception: NoMethodError
+Message: undefined method `nil_or_empty' for #<Interpreter:0x000001758ec33d68>
+
+***Full script:
+pkmn = pbGet(74)
+pbDisposePokemon
+pbAddPokemonNoRandomizer(pkmn)
+
+
+Backtrace:
+003_Nuzlocke.rb:286:in `block in pbEnterPokemonName'
+003_Nuzlocke.rb:284:in `loop'
+003_Nuzlocke.rb:284:in `pbEnterPokemonName'
+004_PSystem_PokemonUtilities.rb:12:in `pbNickname'
+004_PSystem_PokemonUtilities.rb:59:in `pbNicknameAndStore'
+005_Randomizer Utils.rb:36:in `pbAddPokemonNoRandomizer'
+(eval):3:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 19:41:32 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 19 (coords 18,20), map 81 (Nagisa Bay):
+Exception: NoMethodError
+Message: undefined method `nil_or_empty' for #<Interpreter:0x000001a1f224d8b8>
+
+***Full script:
+pkmn = pbGet(74)
+pbDisposePokemon
+pbAddPokemonNoRandomizer(pkmn)
+
+
+Backtrace:
+003_Nuzlocke.rb:286:in `block in pbEnterPokemonName'
+003_Nuzlocke.rb:284:in `loop'
+003_Nuzlocke.rb:284:in `pbEnterPokemonName'
+004_PSystem_PokemonUtilities.rb:12:in `pbNickname'
+004_PSystem_PokemonUtilities.rb:59:in `pbNicknameAndStore'
+005_Randomizer Utils.rb:36:in `pbAddPokemonNoRandomizer'
+(eval):3:in `pbExecuteScript'
+001_Interpreter.rb:198:in `eval'
+001_Interpreter.rb:198:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:1459:in `command_355'
+001_Interpreter.rb:360:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'

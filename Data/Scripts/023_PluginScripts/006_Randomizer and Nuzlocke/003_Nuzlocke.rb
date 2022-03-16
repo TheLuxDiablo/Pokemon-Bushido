@@ -283,7 +283,7 @@ def pbEnterPokemonName(helptext,minlength,maxlength,initialText="",pokemon=nil,n
   if Nuzlocke.on? && data.include?(:NICKNAME)
     loop do
       speciesname = pokemon.nil? ? initialText : pokemon.speciesName
-      break if !nil_or_empty(ret) && ret.downcase != speciesname.downcase
+      break if !nil_or_empty?(ret) && ret.downcase != speciesname.downcase
       pbMessage("Nuzlocke rules make it mandatory to nickname your Pokémon!")
     end
   end
