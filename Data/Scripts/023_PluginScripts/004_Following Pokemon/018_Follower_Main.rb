@@ -693,7 +693,7 @@ class PokeballPlayerSendOutAnimation < PokeBattle_Animation
       battler.setOpacity(delay-ball.totalDuration,255)
       battler.setXY(0,-192,battlerEndY)
       battler.moveXY(delay-ball.totalDuration+1,16,battlerStartX,battlerEndY)
-      battler.setSE(delay-ball.totalDuration+18,"GUI naming tab swap start",100)
+      #battler.setSE(delay-ball.totalDuration+18,"GUI naming tab swap start",100)
       battler.setCallback(delay-ball.totalDuration+18,[batSprite,:pbPlayIntroAnimation])
     end
     if @shadowVisible
