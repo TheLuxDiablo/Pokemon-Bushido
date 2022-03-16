@@ -253,6 +253,11 @@ module PokemonPCList
       i += 1
     end
     if cmd==2
+      if $game_switches[93] && !$game_switches[94]
+        pbMessage(_INTL("Talonflame is looking pretty tired at the moment."))
+        pbMessage(_INTL("Perhaps you should visit Tsuku at the Tsuchi Shrine, and give Talonflame some time to rest."))
+        return false
+      end
       pbMessage(_INTL("{1} got on Talonflame...",$Trainer.name))
       $game_temp.in_menu = false
       if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
