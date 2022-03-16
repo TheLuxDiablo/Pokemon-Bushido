@@ -6674,7 +6674,7 @@ BattlerEnemyX = -3
 BattlerEnemyY = 27
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = GLISCOR,NightHoldItem,RAZORFANG
+Evolutions = GLISCOR,HoldItem,RAZORFANG
 #-------------------------------
 [208]
 Name = Steelix
@@ -6939,7 +6939,7 @@ BattlerEnemyX = 3
 BattlerEnemyY = 27
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = WEAVILE,NightHoldItem,RAZORCLAW
+Evolutions = WEAVILE,HoldItem,RAZORCLAW
 #-------------------------------
 [216]
 Name = Teddiursa
@@ -13016,7 +13016,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 27
 BattlerShadowX = 0
 BattlerShadowSize = 1
-Evolutions = ROSELIA,HappinessDay,
+Evolutions = ROSELIA,Happiness,
 Incense = ROSEINCENSE
 #-------------------------------
 [407]
@@ -13868,7 +13868,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 33
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = CHIMECHO,HappinessNight,
+Evolutions = CHIMECHO,Happiness,
 Incense = PUREINCENSE
 #-------------------------------
 [434]
@@ -14096,7 +14096,7 @@ BattlerEnemyX = -1
 BattlerEnemyY = 29
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = CHANSEY,DayHoldItem,OVALSTONE
+Evolutions = CHANSEY,HoldItem,OVALSTONE
 Incense = LUCKINCENSE
 #-------------------------------
 [441]
@@ -14327,7 +14327,7 @@ BattlerEnemyX = -1
 BattlerEnemyY = 28
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = LUCARIO,HappinessDay,
+Evolutions = LUCARIO,Happiness,
 #-------------------------------
 [448]
 Name = Lucario
@@ -22176,7 +22176,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 29
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = TYRANTRUM,LevelDay,39
+Evolutions = TYRANTRUM,Level,39
 #-------------------------------
 [697]
 Name = Tyrantrum
@@ -22239,7 +22239,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 22
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = AURORUS,LevelNight,39
+Evolutions = AURORUS,Level,39
 #-------------------------------
 [699]
 Name = Aurorus
@@ -23371,7 +23371,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 33
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = GUMSHOOS,LevelDay,20
+Evolutions = GUMSHOOS,Level,20
 #-------------------------------
 [735]
 Name = Gumshoos
@@ -23981,7 +23981,7 @@ BattlerEnemyX = -3
 BattlerEnemyY = 27
 BattlerShadowX = 0
 BattlerShadowSize = 1
-Evolutions = LURANTIS,LevelDay,34
+Evolutions = LURANTIS,Level,34
 #-------------------------------
 [754]
 Name = Lurantis
@@ -27689,7 +27689,7 @@ BattlerEnemyX = 1
 BattlerEnemyY = 38
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = FROSMOTH,HappinessNight,
+Evolutions = FROSMOTH,Happiness,
 #-------------------------------
 [873]
 Name = Frosmoth
