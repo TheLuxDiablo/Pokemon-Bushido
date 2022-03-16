@@ -737,7 +737,7 @@ def pbStartOver(gameover=false)
     $game_map.refresh
   else
     homedata = pbGetMetadata(0,MetadataHome)
-    if homedata && !pbRxdataExists?(sprintf("Data/Map%03d",homedata[0]))
+    if homedata && homedata[0]==nil
       if $DEBUG
         pbMessage(_ISPRINTF("Can't find the map 'Map{1:03d}' in the Data folder. The game will resume at the player's position.",homedata[0]))
       end

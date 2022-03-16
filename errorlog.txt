@@ -2941,3 +2941,173 @@ Backtrace:
 002_Scene_Map.rb:162:in `block in update'
 002_Scene_Map.rb:160:in `loop'
 002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 19:50:07 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: NoMethodError
+Message: undefined method `[]' for nil:NilClass
+
+Backtrace:
+003_Nuzlocke.rb:143:in `pbFaintBattler'
+003_Battler_ChangeSelf.rb:58:in `pbFaint'
+008_BattleScript_Main.rb:724:in `pbFaint'
+007_Battler_UseMove.rb:721:in `block in pbProcessMoveHit'
+007_Battler_UseMove.rb:721:in `each'
+007_Battler_UseMove.rb:721:in `pbProcessMoveHit'
+007_Battler_UseMove.rb:429:in `block in pbUseMove'
+007_Battler_UseMove.rb:427:in `each'
+007_Battler_UseMove.rb:427:in `pbUseMove'
+007_Battler_UseMove.rb:60:in `block in pbProcessTurn'
+
+=================
+
+[2022-03-15 19:51:08 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: RuntimeError
+Message: Script error within event 12 (coords 41,22), map 82 (Sakura Pass):
+Exception: NoMethodError
+Message: undefined method `pbRxdataExists?' for nil:NilClass
+
+***Full script:
+pbTrainerBattle(:KENSHI_F,"Saki")
+
+Backtrace:
+018_Follower_Main.rb:740:in `pbStartOver'
+003_Nuzlocke.rb:234:in `pbStartOver'
+006_PField_Battles.rb:606:in `block (2 levels) in load_scripts_from_folder'
+003_Event_Handlers.rb:51:in `block in trigger'
+003_Event_Handlers.rb:46:in `each'
+003_Event_Handlers.rb:46:in `trigger'
+006_PField_Battles.rb:583:in `pbAfterBattle'
+006_PField_Battles.rb:451:in `block in pbTrainerBattleCore'
+003_PField_Visuals.rb:109:in `pbBattleAnimation'
+006_PField_Battles.rb:447:in `pbTrainerBattleCore'
+
+
+Backtrace:
+001_Interpreter.rb:247:in `rescue in pbExecuteScript'
+001_Interpreter.rb:196:in `pbExecuteScript'
+001_Interpreter.rb:659:in `command_111'
+001_Interpreter.rb:273:in `execute_command'
+001_Interpreter.rb:156:in `block in update'
+001_Interpreter.rb:103:in `loop'
+001_Interpreter.rb:103:in `update'
+002_Scene_Map.rb:162:in `block in update'
+002_Scene_Map.rb:160:in `loop'
+002_Scene_Map.rb:160:in `update'
+
+=================
+
+[2022-03-15 20:04:19 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: NoMethodError
+Message: undefined method `[]' for nil:NilClass
+
+Backtrace:
+003_Nuzlocke.rb:143:in `pbFaintBattler'
+003_Battler_ChangeSelf.rb:58:in `pbFaint'
+008_BattleScript_Main.rb:724:in `pbFaint'
+007_Battler_UseMove.rb:721:in `block in pbProcessMoveHit'
+007_Battler_UseMove.rb:721:in `each'
+007_Battler_UseMove.rb:721:in `pbProcessMoveHit'
+007_Battler_UseMove.rb:429:in `block in pbUseMove'
+007_Battler_UseMove.rb:427:in `each'
+007_Battler_UseMove.rb:427:in `pbUseMove'
+007_Battler_UseMove.rb:60:in `block in pbProcessTurn'
+
+=================
+
+[2022-03-15 20:04:49 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: NoMethodError
+Message: undefined method `[]' for nil:NilClass
+
+Backtrace:
+003_Nuzlocke.rb:143:in `pbFaintBattler'
+003_Battler_ChangeSelf.rb:58:in `pbFaint'
+008_BattleScript_Main.rb:724:in `pbFaint'
+007_Battler_UseMove.rb:721:in `block in pbProcessMoveHit'
+007_Battler_UseMove.rb:721:in `each'
+007_Battler_UseMove.rb:721:in `pbProcessMoveHit'
+007_Battler_UseMove.rb:429:in `block in pbUseMove'
+007_Battler_UseMove.rb:427:in `each'
+007_Battler_UseMove.rb:427:in `pbUseMove'
+007_Battler_UseMove.rb:60:in `block in pbProcessTurn'
+
+=================
+
+[2022-03-15 20:05:35 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: NoMethodError
+Message: undefined method `[]' for nil:NilClass
+
+Backtrace:
+003_Nuzlocke.rb:196:in `pbRun'
+010_Battle_Phase_Command.rb:152:in `pbRunMenu'
+010_Battle_Phase_Command.rb:228:in `block (2 levels) in pbCommandPhaseLoop'
+010_Battle_Phase_Command.rb:206:in `loop'
+010_Battle_Phase_Command.rb:206:in `block in pbCommandPhaseLoop'
+010_Battle_Phase_Command.rb:191:in `loop'
+010_Battle_Phase_Command.rb:191:in `pbCommandPhaseLoop'
+010_Battle_Phase_Command.rb:181:in `pbCommandPhase'
+008_BattleScript_Main.rb:100:in `block (2 levels) in pbBattleLoop'
+004_PBDebug.rb:6:in `logonerr'
+
+=================
+
+[2022-03-15 20:05:56 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: NoMethodError
+Message: undefined method `[]' for nil:NilClass
+
+Backtrace:
+003_Nuzlocke.rb:196:in `pbRun'
+010_Battle_Phase_Command.rb:152:in `pbRunMenu'
+010_Battle_Phase_Command.rb:228:in `block (2 levels) in pbCommandPhaseLoop'
+010_Battle_Phase_Command.rb:206:in `loop'
+010_Battle_Phase_Command.rb:206:in `block in pbCommandPhaseLoop'
+010_Battle_Phase_Command.rb:191:in `loop'
+010_Battle_Phase_Command.rb:191:in `pbCommandPhaseLoop'
+010_Battle_Phase_Command.rb:181:in `pbCommandPhase'
+008_BattleScript_Main.rb:100:in `block (2 levels) in pbBattleLoop'
+004_PBDebug.rb:6:in `logonerr'
+
+=================
+
+[2022-03-15 20:05:59 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: NoMethodError
+Message: undefined method `[]' for nil:NilClass
+
+Backtrace:
+003_Nuzlocke.rb:196:in `pbRun'
+010_Battle_Phase_Command.rb:152:in `pbRunMenu'
+010_Battle_Phase_Command.rb:228:in `block (2 levels) in pbCommandPhaseLoop'
+010_Battle_Phase_Command.rb:206:in `loop'
+010_Battle_Phase_Command.rb:206:in `block in pbCommandPhaseLoop'
+010_Battle_Phase_Command.rb:191:in `loop'
+010_Battle_Phase_Command.rb:191:in `pbCommandPhaseLoop'
+010_Battle_Phase_Command.rb:181:in `pbCommandPhase'
+008_BattleScript_Main.rb:100:in `block (2 levels) in pbBattleLoop'
+004_PBDebug.rb:6:in `logonerr'
+
+=================
+
+[2022-03-15 20:18:14 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: NoMethodError
+Message: undefined method `isNuzlocke' for PokemonGlobalMetadata:Class
+
+Backtrace:
+003_Nuzlocke.rb:270:in `pbStartLoadScreen'
+999_Main.rb:8:in `main'
+999_Main.rb:43:in `mainFunctionDebug'
+999_Main.rb:26:in `block in mainFunction'
+003_Exceptions.rb:83:in `pbCriticalCode'
+999_Main.rb:26:in `mainFunction'
+999_Main.rb:53:in `block (2 levels) in load_scripts_from_folder'
+999_Main.rb:52:in `loop'
+999_Main.rb:52:in `block in load_scripts_from_folder'
+000:Main:31:in `eval'

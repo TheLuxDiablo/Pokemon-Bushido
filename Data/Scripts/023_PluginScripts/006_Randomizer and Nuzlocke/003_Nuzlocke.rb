@@ -140,6 +140,9 @@ class PokeBattle_Scene
       if Nuzlocke.on? && data.include?(:ONEROUTE)
         evo = Nuzlocke.checkEvoNuzlocke?(battler.pokemon.species) && data.include?(:DUPSCLAUSE)
         static = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
+        if $PokemonGlobal.nuzlockeData[$game_map.map_id]==nil
+          $PokemonGlobal.nuzlockeData[$game_map.map_id]=true
+        end
         map = $PokemonGlobal.nuzlockeData[$game_map.map_id]
         $PokemonGlobal.nuzlockeData[$game_map.map_id] = true if map.nil? && !static && !evo && !(battler.shiny? || battler.shadowPokemon?)
         map = $PokemonGlobal.nuzlockeShiny[$game_map.map_id]
@@ -193,6 +196,9 @@ class PokeBattle_Battle
     if Nuzlocke.on? && data.include?(:ONEROUTE) && !self.opponent
       evo = battler.nil? ? false : Nuzlocke.checkEvoNuzlocke?(battler.species) && data.include?(:DUPSCLAUSE)
       static = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
+      if $PokemonGlobal.nuzlockeData[$game_map.map_id]==nil
+        $PokemonGlobal.nuzlockeData[$game_map.map_id]=true
+      end
       map = $PokemonGlobal.nuzlockeData[$game_map.map_id]
       $PokemonGlobal.nuzlockeData[$game_map.map_id] = true if map.nil? && !static && !evo && !battler.shiny
       map = $PokemonGlobal.nuzlockeShiny[$game_map.map_id]
