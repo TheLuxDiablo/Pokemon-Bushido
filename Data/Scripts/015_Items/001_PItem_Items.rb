@@ -471,23 +471,32 @@ end
 
 def pbHPItem(pkmn,restoreHP,scene)
   if !pkmn.able? || pkmn.hp==pkmn.totalhp
-    scene.pbDisplay(_INTL("It won't have any effect."))
+    pbMessage(_INTL("It won't have any effect."))
     return false
   end
   hpGain = pbItemRestoreHP(pkmn,restoreHP)
   scene.pbRefresh
-  scene.pbDisplay(_INTL("{1}'s HP was restored by {2} points.",pkmn.name,hpGain))
+  pbMessage(_INTL("{1}'s HP was restored by {2} points.",pkmn.name,hpGain))
   return true
 end
 
 def pbBattleHPItem(pkmn,battler,restoreHP,scene)
   if battler
     if battler.pbRecoverHP(restoreHP)>0
-      scene.pbDisplay(_INTL("{1}'s HP was restored.",battler.pbThis))
+      pbMessage(_INTL("{1}'s HP was restored.",battler.pbThis))
     end
   else
     if pbItemRestoreHP(pkmn,restoreHP)>0
-      scene.pbDisplay(_INTL("{1}'s HP was restored.",pkmn.name))
+      pbMessage(_INTL("{1}'s HP was restored.",pkmn.name))
+    end
+  end
+  return true
+end
+
+def pbBattleHPItemBattler(battler,restoreHP,scene)
+  if battler
+    if battler.pbRecoverHP(restoreHP)>0
+      pbMessage(_INTL("{1}'s HP was restored.",battler.pbThis))
     end
   end
   return true

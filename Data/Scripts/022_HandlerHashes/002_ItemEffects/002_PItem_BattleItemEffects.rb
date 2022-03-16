@@ -385,7 +385,7 @@ ItemHandlers::BattleUseOnPokemon.add(:VIVIDSCENT,proc { |item,battler,scene|
   next true
 })
 
-ItemHandlers::BattleUseOnPokemon.add(:SUSHI1,proc { |item,battler,scene|
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI1,proc { |item,pokemon,battler,scene|
   pbBattleHPItem(pokemon,battler,30,scene)
   if battler.inHyperMode?
     battler.pokemon.hypermode = false
@@ -397,7 +397,7 @@ ItemHandlers::BattleUseOnPokemon.add(:SUSHI1,proc { |item,battler,scene|
   next true
 })
 
-ItemHandlers::BattleUseOnPokemon.add(:SUSHI2,proc { |item,battler,scene|
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI2,proc { |item,pokemon,battler,scene|
   pbBattleHPItem(pokemon,battler,60,scene)
   if battler.inHyperMode?
     battler.pokemon.hypermode = false
@@ -409,7 +409,7 @@ ItemHandlers::BattleUseOnPokemon.add(:SUSHI2,proc { |item,battler,scene|
   next true
 })
 
-ItemHandlers::BattleUseOnPokemon.add(:SUSHI3,proc { |item,battler,scene|
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI3,proc { |item,pokemon,battler,scene|
   pbBattleHPItem(pokemon,battler,90,scene)
   if battler.inHyperMode?
     battler.pokemon.hypermode = false
@@ -421,7 +421,7 @@ ItemHandlers::BattleUseOnPokemon.add(:SUSHI3,proc { |item,battler,scene|
   next true
 })
 
-ItemHandlers::BattleUseOnPokemon.add(:SUSHI4,proc { |item,battler,scene|
+ItemHandlers::BattleUseOnPokemon.add(:SUSHI4,proc { |item,pokemon,battler,scene|
   pbBattleHPItem(pokemon,battler,120,scene)
   if battler.inHyperMode?
     battler.pokemon.hypermode = false
