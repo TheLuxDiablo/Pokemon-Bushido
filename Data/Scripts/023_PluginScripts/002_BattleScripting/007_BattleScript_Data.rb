@@ -1371,6 +1371,33 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
+      KayokoB3Intro = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Kayoko]\\rEven if you've managed to defeat the Akui Clan, I still won't go easy!")
+                    pbMessage("\\xn[Kayoko]\\rSignature Technique! Vaporized Terrain!")
+                    battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
+                    pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
+                    battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
+                  }
+      KayokoB3Last = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\xn[Kayoko]\\rMy Hisuian partner will lead me to victory!")
+                    pbMessage("\\xn[Kayoko]\\rZoroark, Signature Technique! Malicious Boost!")
+                    battle.scene.disappearBar
+                    battle.scene.pbHideOpponent
+                    battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                  }
       # Akui intros, make them cheat a lot!
       ShadowIntroToxic = Proc.new{|battle|
                     battle.scene.appearBar

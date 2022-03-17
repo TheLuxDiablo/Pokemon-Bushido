@@ -1272,3 +1272,27 @@ Pokemon = ARCANINE,72
     Form = 1
 Pokemon = DECIDUEYE,73
     Form = 1
+#-------------------------------	
+[KAYOKO,Kayoko,2]
+LoseText = "Hmph. Of course, you always remain triumphant."
+Pokemon = MASQUERAIN,70
+	Item = FOCUSSASH
+	Ability = 0
+	Moves = STICKYWEB,BUGBUZZ,HYDROPUMP,QUIVERDANCE
+Pokemon = BASCULEGION,70
+	Moves = WAVECRASH,SHADOWBALL,CRUNCH,ICEFANG
+	Nature = ADAMANT
+Pokemon = SYLVEON,70
+	Item = LEFTOVERS
+	Ability = 1
+	Moves = WISH,HEALBELL,BABYDOLLEYES,HYPERVOICE
+Pokemon = MEDICHAM,70
+	Ability = 0
+	Moves = PSYCHOCUT,DRAINPUNCH,THUNDERPUNCH,BULLETPUNCH
+Pokemon = EELEKTROSS,70
+	Item = EXPERTBELT
+	Ability = 0
+	Moves = THUNDERBOLT,SUPERPOWER,GIGADRAIN,FLAMETHROWER
+Pokemon = ZOROARK,72
+	Form = 1
+	Moves = SLASH,EXTRASENSORY,BITTERMALICE,SHADOWBALL
