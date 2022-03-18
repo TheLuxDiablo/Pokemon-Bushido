@@ -1,6 +1,6 @@
 # Backgrounds to show in credits. Found in Graphics/Titles/ folder
-CreditsBackgroundList = ["credits1","credits2","credits3","credits4","credits5"]
-CreditsMusic          = "Credits"
+CreditsBackgroundList = ["backgroundbushido"]
+CreditsMusic          = "PMD-DontEverForget"
 CreditsScrollSpeed    = 2
 CreditsFrequency      = 9   # Number of seconds per credits slide
 CREDITS_OUTLINE       = Color.new(0,0,128, 255)

@@ -3206,3 +3206,22 @@ Backtrace:
 011_Battle_Phase_Attack.rb:70:in `pbAttackPhaseItems'
 011_Battle_Phase_Attack.rb:187:in `pbAttackPhase'
 008_BattleScript_Main.rb:103:in `block (2 levels) in pbBattleLoop'
+
+=================
+
+[2022-03-17 18:52:10 -0700]
+[Pokemon Bushido v2.0.0]
+Exception: NoMethodError
+Message: undefined method `gameModes' for #<PokemonGlobalMetadata:0x000002461739a2d8>
+
+Backtrace:
+005_Scene_Credits.rb:226:in `block in main'
+002_MessageConfig.rb:560:in `pbFadeOutIn'
+005_Scene_Credits.rb:224:in `main'
+999_Main.rb:43:in `mainFunctionDebug'
+999_Main.rb:26:in `block in mainFunction'
+003_Exceptions.rb:83:in `pbCriticalCode'
+999_Main.rb:26:in `mainFunction'
+999_Main.rb:53:in `block (2 levels) in load_scripts_from_folder'
+999_Main.rb:52:in `loop'
+999_Main.rb:52:in `block in load_scripts_from_folder'
