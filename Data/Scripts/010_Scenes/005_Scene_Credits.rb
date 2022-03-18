@@ -3,9 +3,9 @@ CreditsBackgroundList = ["backgroundbushido"]
 CreditsMusic          = "PMD-DontEverForget"
 CreditsScrollSpeed    = 2
 CreditsFrequency      = 9   # Number of seconds per credits slide
-CREDITS_OUTLINE       = Color.new(0,0,128, 255)
+CREDITS_OUTLINE       = Color.new(100,0,0, 255)
 CREDITS_SHADOW        = Color.new(0,0,0, 100)
-CREDITS_FILL          = Color.new(255,255,255, 255)
+CREDITS_FILL          = Color.new(255,220,220,255)
 
 #==============================================================================
 # * Scene_Credits
@@ -223,14 +223,14 @@ _END_
     $PokemonGlobal.creditsPlayed = true
     pbFadeOutIn(99999) {
       getBadge = false
-      $PokemonGlobal.gameModes[0] = true
+      $PokemonGlobal.gameModesWon[0] = true
       if Randomizer.on?
         pbMEPlay("DexSound8")
         getBadge = true
-        $PokemonGlobal.gameModes[1] = true
+        $PokemonGlobal.gameModesWon[1] = true
         pbMessage("You beat the game in Randomizer Mode.")
         if $PokemonGlobal.randomizerRules && $PokemonGlobal.randomizerRules.include?(:SPECIES_MOVESETS)
-          $PokemonGlobal.gameModes[2] = true
+          $PokemonGlobal.gameModesWon[2] = true
           pbMessage("You beat the game in Extreme Randomizer Mode.")
         end
         if pbConfirmMessage("Would you like to turn the Randomizer off? (You won't be able to turn it back on)")
@@ -241,16 +241,16 @@ _END_
       if Nuzlocke.on?
         pbMEPlay("DexSound8")
         getBadge = true
-        $PokemonGlobal.gameModes[3] = true
+        $PokemonGlobal.gameModesWon[3] = true
         pbMessage("You beat the game in Nuzlocke Mode.")
         if $PokemonGlobal.nuzlockeRules && $PokemonGlobal.nuzlockeRules.include?(:NOSTORE)
-          $PokemonGlobal.gameModes[4] = true
+          $PokemonGlobal.gameModesWon[4] = true
           pbMessage("You beat the game with the Hardcore Nuzlocke Mode.")
         end
         Nuzlocke.toggle(false)
         $PokemonGlobal.isNuzlocke = false
+        pbMessage("#{getBadge == true ? "" : "\\me[BOTW-GetFanfare]"}Your trainer card has been updated with new badges.")
       end
-      pbMessage("#{getBadge == true ? "" : "\\me[BOTW-GetFanfare]"}Your trainer card has been updated with new badges.")
     }
     pbBGMPlay(previousBGM)
   end
