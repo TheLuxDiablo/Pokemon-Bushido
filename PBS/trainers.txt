@@ -1296,3 +1296,9 @@ Pokemon = EELEKTROSS,70
 Pokemon = ZOROARK,72
 	Form = 1
 	Moves = SLASH,EXTRASENSORY,BITTERMALICE,SHADOWBALL
+#-------------------------------	
+[SHIMIZU_F,Takai]
+LoseText = "You're definitely one of the best Kenshi I've ever fought!"
+Pokemon = SAMUROTT,68
+Pokemon = CORSOLA,69
+Pokemon = OVERQWIL,70
