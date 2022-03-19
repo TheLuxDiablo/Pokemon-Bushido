@@ -146,6 +146,13 @@ def pbIsImportantItem?(item)
   return false
 end
 
+def pbIsLeafItem?(item)
+  itemData = pbLoadItemsData[getID(PBItems,item)]
+  return false if !itemData
+  return true if itemData[ITEM_POCKET] && itemData[ITEM_POCKET]==6   # Leaf pouch
+  return false
+end
+
 def pbCanHoldItem?(item)
   return !pbIsImportantItem?(item)
 end
