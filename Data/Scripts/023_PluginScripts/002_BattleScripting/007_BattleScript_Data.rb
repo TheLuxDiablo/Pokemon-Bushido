@@ -425,6 +425,18 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
+      BlackBelt2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\bLet me show you why they call me the Machamp King!")
+                    pbMessage("\\bHiyaaah! Let's go Machamp! We got them for 3 minutes of playtime!")
+                    battle.pbAnimation(getID(PBMoves,:FOCUSENERGY),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
        KenshiF3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
@@ -473,6 +485,16 @@ module DialogueModule
                     battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[0])
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
+                    battle.scene.pbHideOpponent
+                  }
+        Komorei5 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rHere we go! Feel the embrace of the forest!")
+                    battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
         KomoreiDojo1 = Proc.new{|battle|
@@ -878,6 +900,22 @@ module DialogueModule
                         battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
                       end
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                      battle.scene.pbHideOpponent
+                    }
+        Nensho7 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("\\bNo ocean can extinquish the fire deep within my heart!")
+                      pbMessage("\\bKatana of Fire, Nensho Style! Breath of Flames!")
+                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                       battle.scene.pbHideOpponent
                     }
         Nori1 = Proc.new{|battle|

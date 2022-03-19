@@ -1302,3 +1302,20 @@ LoseText = "You're definitely one of the best Kenshi I've ever fought!"
 Pokemon = SAMUROTT,68
 Pokemon = CORSOLA,69
 Pokemon = OVERQWIL,70
+#-------------------------------	
+[BLACKBELT,Chano]
+LoseText = "Unbelievable! You've scaled the mountain of Machamp!"
+Pokemon = MACHAMP,72
+Pokemon = PANGORO,73
+#-------------------------------	
+[KOMOREI_F,Mori]
+LoseText = "No way! You must have a lot of experience fighting in forests as well!"
+Pokemon = BRELOOM,71
+Pokemon = VICTREEBEL,72
+Pokemon = TANGROWTH,73
+#-------------------------------	
+[NENSHO_M,Yuki]
+LoseText = "Gah! My fire... where did it go?"
+Pokemon = DARMANITAN,72
+Pokemon = CHARIZARD,73
+Pokemon = TURTONATOR,74
