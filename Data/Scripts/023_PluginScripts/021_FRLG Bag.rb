@@ -77,7 +77,7 @@ class Window_PokemonBag < Window_DrawableCommand
       textpos.push(
          [@adapter.getDisplayName(item),rect.x,ypos,false,baseColor,shadowColor]
       )
-      if !pbIsImportantItem?(item)   # Not a Key item or HM (or infinite TM)
+      if !pbIsImportantItem?(item) || pbIsLeafItem?(item)  # Not a Key item or HM (or infinite TM) or is a leaf
         qty = (@filterlist) ? thispocket[@filterlist[@pocket][index]][1] : thispocket[index][1]
         qtytext = _ISPRINTF("x{1: 3d}",qty)
         xQty    = rect.x+rect.width-self.contents.text_size(qtytext).width-16

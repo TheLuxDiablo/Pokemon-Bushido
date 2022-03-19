@@ -16760,7 +16760,7 @@ BattlerEnemyX = 0
 BattlerEnemyY = 30
 BattlerShadowX = 0
 BattlerShadowSize = 2
-Evolutions = GIGALITH,Trade,
+Evolutions = GIGALITH,Level,42
 #-------------------------------
 [526]
 Name = Gigalith
