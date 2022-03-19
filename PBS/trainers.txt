@@ -1303,7 +1303,7 @@ Pokemon = SAMUROTT,68
 Pokemon = CORSOLA,69
 Pokemon = OVERQWIL,70
 #-------------------------------	
-[BLACKBELT,Chano]
+[BLACKBELT,Sabeji]
 LoseText = "Unbelievable! You've scaled the mountain of Machamp!"
 Pokemon = MACHAMP,72
 Pokemon = PANGORO,73

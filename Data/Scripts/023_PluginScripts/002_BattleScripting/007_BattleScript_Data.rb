@@ -429,7 +429,13 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\bLet me show you why they call me the Machamp King!")
-                    pbMessage("\\bHiyaaah! Let's go Machamp! We got them for 3 minutes of playtime!")
+                    pbMessage("\\bYou're going nowhere!")
+                    battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].effects[PBEffects::MeanLook] = battle.battlers[1].index
+                    battle.pbDisplay(_INTL("{1} can no longer escape!",battle.battlers[0].name))
+                    battle.scene.appearBar
+                    pbMessage("\\bWe got you for 3 minutes! 3 minutes of playtime!")
                     battle.pbAnimation(getID(PBMoves,:FOCUSENERGY),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
