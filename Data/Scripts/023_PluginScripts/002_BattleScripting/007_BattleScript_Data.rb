@@ -3055,6 +3055,19 @@ module DialogueModule
                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                        battle.scene.pbHideOpponent
                       }
+        Darkrai = Proc.new{|battle|
+                       battle.scene.appearBar
+                       pbMessage("Darkrai's nightmare aura engulfs the battlefield!")
+                       battle.pbAnimation(getID(PBMoves,:NIGHTMAREVOID),battle.battlers[1],battle.battlers[1])
+                       battle.scene.disappearBar
+                       if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                         battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(5,6),"Your Pokémon was put into a deep sleep by the Katana of Shadows!")
+                         battle.battlers[0].effects[PBEffects::Nightmare] = true
+                         battle.pbDisplay(_INTL("{1} began having a nightmare!",battle.battlers[0].name))
+                       else
+                         battle.pbDisplay(_INTL("{1} resisted Darkrai's aura!",battle.battlers[0].name))
+                       end
+                      }
         # Dev intros
         CamIntro = Proc.new{|battle|
                     battle.scene.appearBar
