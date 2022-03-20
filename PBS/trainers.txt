@@ -1319,3 +1319,8 @@ LoseText = "Gah! My fire... where did it go?"
 Pokemon = DARMANITAN,72
 Pokemon = CHARIZARD,73
 Pokemon = TURTONATOR,74
+#-------------------------------	
+[IWA_F,Eru]
+LoseText = "My rocky domain has crumbled!"
+Pokemon = GIGALITH,74
+Pokemon = STEELIX,75

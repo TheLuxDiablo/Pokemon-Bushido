@@ -709,14 +709,31 @@ module DialogueModule
       Iwa1 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("The Iwa Clan mean business!")
-                    pbMessage("We may be small, but our spirit is unbreakable!")
-                    pbMessage("I draw my power from the earth!")
-                    pbMessage("Katana of Earth, Iwa Style! Shifting Sands!")
+                    pbMessage("\\bThe Iwa Clan mean business!")
+                    pbMessage("\\bWe may be small, but our spirit is unbreakable!")
+                    pbMessage("\\bI draw my power from the earth!")
+                    pbMessage("\\bKatana of Earth, Iwa Style! Shifting Sands!")
                     battle.pbCommonAnimation("Sandstorm",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
                     battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      Iwa2 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rIwa battle cry! Mountainous Roar!")
+                    battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
+                    battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
+                    battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                    battle.scene.appearBar
+                    pbMessage("\\rAnd now for my secret technique, Rocky Domain!")
+                    battle.pbAnimation(getID(PBMoves,:STEALTHROCK),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::StealthRock] = true
+                    pbMessage(_INTL("Pointed stones float in the air around {1}!",battle.battlers[0].name))
                     battle.scene.pbHideOpponent
                   }
       # Raikami Clan intros
