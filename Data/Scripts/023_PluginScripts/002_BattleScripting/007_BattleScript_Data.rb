@@ -3197,6 +3197,13 @@ module DialogueModule
                          battle.pbDisplay(_INTL("{1} resisted Darkrai's aura!",battle.battlers[0].name))
                        end
                       }
+        Cresselia = Proc.new{|battle|
+                      battle.scene.appearBar
+                      pbMessage("Cresselia's lunar presence envelopes the battlefield!")
+                      battle.pbAnimation(getID(PBMoves,:MOONLIGHT),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Psychic)
+                    }
         # Dev intros
         CamIntro = Proc.new{|battle|
                     battle.scene.appearBar
