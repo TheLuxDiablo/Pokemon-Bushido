@@ -1256,6 +1256,18 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
+      Shimizu13 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rKatana of Water, Shimizu Style! Misty Terrain!")
+                    battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
+                    battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[1].effects[PBEffects::AquaRing] = true
+                    battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!",battle.battlers[1].name))
+                    battle.scene.pbHideOpponent
+                  }
         Mai1 = Proc.new{|battle|
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)

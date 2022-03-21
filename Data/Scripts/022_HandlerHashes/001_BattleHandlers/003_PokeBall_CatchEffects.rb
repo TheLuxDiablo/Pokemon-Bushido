@@ -251,6 +251,6 @@ BallHandlers::OnCatch.add(:FRIENDBALL,proc { |ball,battle,pkmn|
 
 BallHandlers::OnCatch.add(:SHADEBALL,proc { |ball,battle,pkmn|
   if pkmn.shadowPokemon?
-    pbRaiseHappinessAndReduceHeartSilent(pkmn,2000)
+    pbRaiseHappinessAndReduceHeartSilent(pkmn,3000)
   end
 })

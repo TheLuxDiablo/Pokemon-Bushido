@@ -1255,10 +1255,10 @@ Pokemon = STEELIX,70
 LoseText = "That's impressive! I can see your power flashing in front of me!"
 Pokemon = AEGISLASH,70
 Pokemon = DRAPION,70
-Pokemon = SYLVEON,70
-Pokemon = EELEKTROSS,70
-Pokemon = MIENSHAO,70
-Pokemon = GASTRODON,70
+Pokemon = SYLVEON,71
+Pokemon = EELEKTROSS,71
+Pokemon = MIENSHAO,72
+Pokemon = GASTRODON,72
 #-------------------------------	
 [RAIKAMI_M,Test1]
 LoseText = "That's impressive! I can see your power flashing in front of me!"
@@ -1268,112 +1268,118 @@ Pokemon = LUGIA,30
 #-------------------------------	
 [ELITEKENSHI_F,Eri]
 LoseText = "No way! But I'm an elite Kenshi..."
-Pokemon = ARCANINE,72
+Pokemon = ARCANINE,73
     Form = 1
-Pokemon = DECIDUEYE,73
+Pokemon = DECIDUEYE,74
     Form = 1
 #-------------------------------	
 [KAYOKO,Kayoko,2]
 LoseText = "Hmph. Of course, you always remain triumphant."
-Pokemon = MASQUERAIN,70
+Pokemon = MASQUERAIN,72
 	Item = FOCUSSASH
 	Ability = 0
 	Moves = STICKYWEB,BUGBUZZ,HYDROPUMP,QUIVERDANCE
-Pokemon = BASCULEGION,70
+Pokemon = BASCULEGION,73
 	Moves = WAVECRASH,SHADOWBALL,CRUNCH,ICEFANG
 	Nature = ADAMANT
-Pokemon = SYLVEON,70
+Pokemon = SYLVEON,74
 	Item = LEFTOVERS
 	Ability = 1
 	Moves = WISH,HEALBELL,BABYDOLLEYES,HYPERVOICE
-Pokemon = MEDICHAM,70
+Pokemon = MEDICHAM,74
 	Ability = 0
 	Moves = PSYCHOCUT,DRAINPUNCH,THUNDERPUNCH,BULLETPUNCH
-Pokemon = EELEKTROSS,70
+Pokemon = EELEKTROSS,74
 	Item = EXPERTBELT
 	Ability = 0
 	Moves = THUNDERBOLT,SUPERPOWER,GIGADRAIN,FLAMETHROWER
-Pokemon = ZOROARK,72
+Pokemon = ZOROARK,75
 	Form = 1
 	Moves = SLASH,EXTRASENSORY,BITTERMALICE,SHADOWBALL
 #-------------------------------	
 [SHIMIZU_F,Takai]
 LoseText = "You're definitely one of the best Kenshi I've ever fought!"
-Pokemon = SAMUROTT,68
-Pokemon = CORSOLA,69
-Pokemon = OVERQWIL,70
+Pokemon = SAMUROTT,67
+Pokemon = CORSOLA,68
+Pokemon = OVERQWIL,69
 #-------------------------------	
 [BLACKBELT,Sabeji]
 LoseText = "Unbelievable! You've scaled the mountain of Machamp!"
-Pokemon = MACHAMP,72
-Pokemon = PANGORO,73
+Pokemon = MACHAMP,70
+Pokemon = PANGORO,71
 #-------------------------------	
 [KOMOREI_F,Mori]
 LoseText = "No way! You must have a lot of experience fighting in forests as well!"
-Pokemon = BRELOOM,71
-Pokemon = VICTREEBEL,72
-Pokemon = TANGROWTH,73
+Pokemon = BRELOOM,70
+Pokemon = VICTREEBEL,71
+Pokemon = TANGROWTH,72
 #-------------------------------	
 [NENSHO_M,Yuki]
 LoseText = "Gah! My fire... where did it go?"
 Pokemon = DARMANITAN,72
-Pokemon = CHARIZARD,73
-Pokemon = TURTONATOR,74
+Pokemon = CHARIZARD,72
+Pokemon = TURTONATOR,73
 #-------------------------------	
 [IWA_F,Eru]
 LoseText = "My rocky domain has crumbled!"
-Pokemon = GIGALITH,74
-Pokemon = STEELIX,75
+Pokemon = GIGALITH,73
+Pokemon = STEELIX,74
 #-------------------------------	
 [RAIKAMI_F,Shokku]
 LoseText = "I'm shocked you managed to defeat my team!"
-Pokemon = ELECTIVIRE,74
-Pokemon = PACHIRISU,75
+Pokemon = ELECTIVIRE,73
+Pokemon = PACHIRISU,74
 #-------------------------------	
 [YUKI_F,Takara]
 LoseText = "Fine, go on! No need to be so cold!"
-Pokemon = WALREIN,73
-Pokemon = AURORUS,74
+Pokemon = WALREIN,72
+Pokemon = AURORUS,73
 #-------------------------------	
 [SHIMIZU_M,Fukai]
 LoseText = "It appears my mindset was too shallow... I have a lot to learn."
-Pokemon = GOREBYSS,72
-Pokemon = VAPOREON,73
-Pokemon = WAILORD,74
+Pokemon = GOREBYSS,71
+Pokemon = VAPOREON,72
+Pokemon = WAILORD,73
 #-------------------------------	
 [KOMOREI_M,Kaigan]
 LoseText = "What should I do now?"
-Pokemon = CHERRIM,73
-Pokemon = LEAFEON,74
-Pokemon = APPLETUN,75
+Pokemon = CHERRIM,72
+Pokemon = LEAFEON,73
+Pokemon = APPLETUN,74
 #-------------------------------	
 [NENSHO_F,Hashiru]
 LoseText = "Oh no! My brisk pace has been shattered!"
-Pokemon = CHANDELURE,75
-Pokemon = MAGMORTAR,75
+Pokemon = CHANDELURE,73
+Pokemon = MAGMORTAR,74
 #-------------------------------	
 [RAIKAMI_M,Sonikku]
 LoseText = "That's no good! I'm too slow!"
-Pokemon = TOGEDEMARU,77
+Pokemon = TOGEDEMARU,75
 #-------------------------------	
 [BLACKBELT,Saitama]
 LoseText = "Ok."
-Pokemon = HITMONCHAN,79
+Pokemon = HITMONCHAN,75
     Moves = MEGAPUNCH,DRAINPUNCH
 #-------------------------------	
 [IWA_F,Hoshi]
 LoseText = "No way! You actually managed to beat me? You might make it on Jinsu after all!"
-Pokemon = GARCHOMP,75
+Pokemon = GARCHOMP,72
     Moves = SWORDSDANCE,EARTHQUAKE,FIREFANG,SCALESHOT
 	Item = LEFTOVERS
 	Ability = 2
 	Nature = JOLLY
-Pokemon = SWAMPERT,76
+Pokemon = SWAMPERT,73
     Moves = EARTHQUAKE,SCALD,PROTECT,ROAR
 	Item = LEFTOVERS
 	Nature = RELAXED
-Pokemon = GLISCOR,77
+Pokemon = GLISCOR,74
     Moves = SWORDSDANCE,ROOST,EARTHQUAKE,FACADE
 	Item = TOXICORB
 	Ability = 2
 	Nature = JOLLY
+#-------------------------------	
+[SHIMIZU_F,Asai]
+LoseText = "What a fight! I need to rest my Pokémon now!"
+Pokemon = TOXAPEX,72
+Pokemon = BLASTOISE,73
+Pokemon = GRENINJA,74
