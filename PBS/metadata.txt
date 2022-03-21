@@ -882,3 +882,9 @@ Outdoor = false
 ShowArea = true
 MapPosition = 2,7,12
 DarkMap = true
+#-------------------------------
+[166]
+# Jinsu Forest
+Outdoor = true
+ShowArea = true
+MapPosition = 2,4,12

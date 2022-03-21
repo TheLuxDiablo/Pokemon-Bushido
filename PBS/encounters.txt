@@ -614,3 +614,24 @@ Water
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
+#-------------------------------
+166 # Jinsu Forest
+18,8,8
+Land
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+Water
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5
+    BULBASAUR,5

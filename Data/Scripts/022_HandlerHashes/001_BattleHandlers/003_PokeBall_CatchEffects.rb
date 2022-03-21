@@ -233,7 +233,7 @@ BallHandlers::ModifyCatchRate.add(:BEASTBALL,proc { |ball,catchRate,battle,battl
 })
 
 BallHandlers::ModifyCatchRate.add(:SHADEBALL,proc { |ball,catchRate,battle,battler,ultraBeast|
-  multiplier = 6
+  multiplier = 8
   catchRate *= multiplier if battler.pbHasType?(:SHADOW)
   next catchRate
 })
