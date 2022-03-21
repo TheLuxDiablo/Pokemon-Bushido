@@ -202,6 +202,16 @@ MultipleForms.register(:GIRATINA,{
   }
 })
 
+MultipleForms.register(:MAROWAK,{
+  "getFormOnCreation" => proc { |pkmn|
+    maps = [1]   # Map IDs for Normal Forme
+    if maps.include?($game_map.map_id)
+      next 0
+    end
+    next 1
+  }
+})
+
 MultipleForms.register(:SHAYMIN,{
   "getForm" => proc { |pkmn|
     next 0 if pkmn.fainted? || pkmn.status==PBStatuses::FROZEN ||

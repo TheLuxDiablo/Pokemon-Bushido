@@ -443,6 +443,17 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
+      BlackBelt3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\bI'm putting everything into this next punch! Kiiiyaaaaah!")
+                    battle.pbAnimation(getID(PBMoves,:FOCUSENERGY),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,4,battle.battlers[1])
+                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    battle.scene.pbHideOpponent
+                  }
        KenshiF3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
@@ -501,6 +512,16 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+        Komorei6 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\bKatana of Nature, Komorei Style! Blazing Sunlight!!")
+                    battle.pbCommonAnimation("Sunny",nil,nil)
+                    battle.scene.disappearBar
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
         KomoreiDojo1 = Proc.new{|battle|
@@ -736,6 +757,20 @@ module DialogueModule
                     pbMessage(_INTL("Pointed stones float in the air around {1}!",battle.battlers[0].name))
                     battle.scene.pbHideOpponent
                   }
+      Iwa3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rI'm one of the best trainers out there!")
+                    pbMessage("\\rKatana of Earth, Iwa Style! Shifting Sands!")
+                    battle.pbCommonAnimation("Sandstorm",nil,nil)
+                    battle.scene.disappearBar
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
+                    battle.pbAnimation(getID(PBMoves,:STEALTHROCK),battle.battlers[1],battle.battlers[0])
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::StealthRock] = true
+                    pbMessage(_INTL("Pointed stones float in the air around {1}!",battle.battlers[0].name))
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
       # Raikami Clan intros
       # 1 is Rohan
       Raikami1 = Proc.new{|battle|
@@ -773,6 +808,37 @@ module DialogueModule
                       battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
                     end
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      Raikami3 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\rThe Raikami Clan is the best clan of all!")
+                    pbMessage("\\rWe can summon lightning, like this!")
+                    battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                    end
+                    battle.scene.appearBar
+                    pbMessage("\\rKatana of Lightning, Raikami Style! Heaven's Domain!")
+                    battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
+      Raikami4 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("\\bKatana of Lightning, Raikami Style! Galvanizing Jolt!")
+                    battle.pbAnimation(getID(PBMoves,:THUNDER),battle.battlers[1],battle.battlers[1])
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,4,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1],false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
       # Yuki Clan intros
@@ -842,6 +908,17 @@ module DialogueModule
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
+      Yuki5 = Proc.new{|battle|
+                  battle.scene.appearBar
+                  battle.scene.pbShowOpponent(0)
+                  pbMessage("\\rKatana of Ice, Yuki Style! Frigid Hail!")
+                  battle.scene.disappearBar
+                  battle.pbCommonAnimation("Hail",battle.battlers[0],nil)
+                  battle.pbStartWeather(battle.battlers[1],PBWeather::Hail,true,false)
+                  battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                  battle.scene.pbHideOpponent
+                }
       # Nensho intros
       Nensho1 = Proc.new{|battle|
                     battle.scene.appearBar
@@ -939,6 +1016,19 @@ module DialogueModule
                       end
                       battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.scene.pbHideOpponent
+                    }
+        Nensho8 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("\\rKatana of Fire, Nensho Style! Fire Vortex!")
+                      battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                      battle.battlers[0].effects[PBEffects::Trapping] = 5
+                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                       battle.scene.pbHideOpponent
                     }
         Nori1 = Proc.new{|battle|
@@ -1156,6 +1246,16 @@ module DialogueModule
                       battle.scene.disappearBar
                       battle.scene.pbHideOpponent
                     }
+        Shimizu12 = Proc.new{|battle|
+                    battle.scene.appearBar
+                    battle.scene.pbShowOpponent(0)
+                    pbMessage("Katana of Water, Shimizu Style! Torrential Downpour!")
+                    battle.scene.disappearBar
+                    battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    battle.scene.pbHideOpponent
+                  }
         Mai1 = Proc.new{|battle|
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)

@@ -875,3 +875,10 @@ Outdoor = true
 ShowArea = true
 MapPosition = 2,4,12
 BattleBack = Lush
+#-------------------------------
+[165]
+# Kowai Cave
+Outdoor = false
+ShowArea = true
+MapPosition = 2,7,12
+DarkMap = true
