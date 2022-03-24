@@ -226,11 +226,12 @@ class FightMenuDisplay < BattleMenuBase
   ]
   MAX_MOVES = 4   # Number of moves to display at once
 
-  def initialize(viewport,z)
+  def initialize(viewport, z, battle)
     super(viewport)
     self.x = 0
     self.y = Graphics.height-96
     @battler   = nil
+    @battle    = battle
     @shiftMode = 0
     # NOTE: @mode is for the display of the Mega Evolution button.
     #       0=don't show, 1=show unpressed, 2=show pressed
@@ -248,11 +249,11 @@ class FightMenuDisplay < BattleMenuBase
       @buttons = Array.new(MAX_MOVES) do |i|
         button = SpriteWrapper.new(viewport)
         button.bitmap = @buttonBitmap.bitmap
+        button.src_rect.width  = @buttonBitmap.width/8
         button.x      = self.x+4
-        button.x      += (((i%2)==0) ? 0 : @buttonBitmap.width/2-4)
+        button.x      += (((i%2)==0) ? 0 : button.src_rect.width - 4)
         button.y      = self.y+6
-        button.y      += (((i/2)==0) ? 0 : BUTTON_HEIGHT-4)
-        button.src_rect.width  = @buttonBitmap.width/2
+        button.y      += (((i/2)==0) ? 0 : BUTTON_HEIGHT - 4)
         button.src_rect.height = BUTTON_HEIGHT
         addSprite("button_#{i}",button)
         next button
@@ -272,10 +273,17 @@ class FightMenuDisplay < BattleMenuBase
       # Create type icon
       @typeIcon = SpriteWrapper.new(viewport)
       @typeIcon.bitmap = @typeBitmap.bitmap
-      @typeIcon.x      = self.x+416
-      @typeIcon.y      = self.y+20
+      @typeIcon.x      = self.x + 402
+      @typeIcon.y      = self.y + 20
       @typeIcon.src_rect.height = TYPE_ICON_HEIGHT
       addSprite("typeIcon",@typeIcon)
+      # PSS Icon
+      @pssIcon = SpriteWrapper.new(viewport)
+      @pssIcon.bitmap = pbBitmap("Graphics/Pictures/Battle/icon_pss")
+      @pssIcon.x      = @typeIcon.x + @typeIcon.src_rect.width + 4
+      @pssIcon.y      = self.y + 20
+      @pssIcon.src_rect.height = @pssIcon.bitmap.height / 3
+      addSprite("pssIcon", @pssIcon)
       # Create Mega Evolution button
       @megaButton = SpriteWrapper.new(viewport)
       @megaButton.bitmap = @megaEvoBitmap.bitmap
@@ -324,6 +332,7 @@ class FightMenuDisplay < BattleMenuBase
     @overlay.z     += 5 if @overlay
     @infoOverlay.z += 6 if @infoOverlay
     @typeIcon.z    += 1 if @typeIcon
+    @pssIcon.z     += 1 if @pssIcon
   end
 
   def battler=(value)
@@ -371,6 +380,7 @@ class FightMenuDisplay < BattleMenuBase
 
   def refreshSelection
     moves = (@battler) ? @battler.moves : []
+    target  = (@battle.sideSizes.any? { |s| s > 1 } ? nil : @battle.battlers[1])
     if USE_GRAPHICS
       # Choose appropriate button graphics and z positions
       @buttons.each_with_index do |button,i|
@@ -378,8 +388,18 @@ class FightMenuDisplay < BattleMenuBase
           @visibility["button_#{i}"] = false
           next
         end
+        move = moves[i]
         @visibility["button_#{i}"] = true
-        button.src_rect.x = (i==@index) ? @buttonBitmap.width/2 : 0
+        button.src_rect.x = (i == @index ? @buttonBitmap.width / 2 : 0)
+        if target && move.type != getID(PBTypes, :SHADOW)
+          if PBTypes.superEffective?(move.type, target.displayPokemon.type1, target.displayPokemon.type2, target.effects[PBEffects::Type3]) && move.damagingMove?
+            button.src_rect.x += button.src_rect.width
+          elsif PBTypes.notVeryEffective?(move.type, target.displayPokemon.type1, target.displayPokemon.type2, target.effects[PBEffects::Type3]) && move.damagingMove?
+            button.src_rect.x += button.src_rect.width * 2
+          elsif PBTypes.ineffective?(move.type, target.displayPokemon.type1, target.displayPokemon.type2, target.effects[PBEffects::Type3])
+            button.src_rect.x += button.src_rect.width * 3
+          end
+        end
         button.src_rect.y = moves[i].type*BUTTON_HEIGHT
         button.z          = self.z + ((i==@index) ? 4 : 3)
       end
@@ -406,7 +426,8 @@ class FightMenuDisplay < BattleMenuBase
     end
     @visibility["typeIcon"] = true
     # Type icon
-    @typeIcon.src_rect.y = move.type*TYPE_ICON_HEIGHT
+    @typeIcon.src_rect.y = move.pbCalcType(@battler) * TYPE_ICON_HEIGHT
+    @pssIcon.src_rect.y = move.category * @pssIcon.bitmap.width
     # PP text
     if move.totalpp>0
       ppFraction = [(4.0*move.pp/move.totalpp).ceil,3].min
@@ -461,9 +482,11 @@ class TargetMenuDisplay < BattleMenuBase
   TEXT_BASE_COLOR   = Color.new(240,248,224)
   TEXT_SHADOW_COLOR = Color.new(64,64,64)
 
-  def initialize(viewport,z,sideSizes)
+  def initialize(viewport, z, sideSizes, battle)
     super(viewport)
     @sideSizes = sideSizes
+    @battle    = battle
+    @battler   = nil
     maxIndex = (@sideSizes[0]>@sideSizes[1]) ? (@sideSizes[0]-1)*2 : @sideSizes[1]*2-1
     @smallButtons = (@sideSizes.max>2)
     self.x = 0
@@ -483,7 +506,7 @@ class TargetMenuDisplay < BattleMenuBase
       inc = ((i%2)==0) ? i/2 : numButtons-1-i/2
       button = SpriteWrapper.new(viewport)
       button.bitmap = @buttonBitmap.bitmap
-      button.src_rect.width  = (@smallButtons) ? CMD_BUTTON_WIDTH_SMALL : @buttonBitmap.width/2
+      button.src_rect.width  = (@smallButtons) ? CMD_BUTTON_WIDTH_SMALL : @buttonBitmap.width/8
       button.src_rect.height = BUTTON_HEIGHT
       if @smallButtons
         button.x    = self.x+170-[0,82,166][numButtons-1]
@@ -519,6 +542,10 @@ class TargetMenuDisplay < BattleMenuBase
   def setDetails(texts,mode)
     @texts = texts
     @mode  = mode
+  end
+
+  def battler=(value)
+    @battler = value
     refresh
   end
 
@@ -533,8 +560,19 @@ class TargetMenuDisplay < BattleMenuBase
         sel ||= (@mode==1)
         buttonType = ((i%2)==0) ? 1 : 2
       end
+      target = @battle.battlers[i]
+      move   = @battler ? @battle.choices[@battler.index][2] : nil
       buttonType = 2*buttonType + ((@smallButtons) ? 1 : 0)
-      button.src_rect.x = (sel) ? @buttonBitmap.width/2 : 0
+      button.src_rect.x = (sel ? @buttonBitmap.width / 2 : 0)
+      if target && move && move.type != getID(PBTypes, :SHADOW)
+        if PBTypes.superEffective?(move.type, target.displayPokemon.type1, target.displayPokemon.type2, target.effects[PBEffects::Type3]) && move.damagingMove?
+          button.src_rect.x += button.src_rect.width
+        elsif PBTypes.notVeryEffective?(move.type, target.displayPokemon.type1, target.displayPokemon.type2, target.effects[PBEffects::Type3]) && move.damagingMove?
+          button.src_rect.x += button.src_rect.width * 2
+        elsif PBTypes.ineffective?(move.type, target.displayPokemon.type1, target.displayPokemon.type2, target.effects[PBEffects::Type3])
+          button.src_rect.x += button.src_rect.width * 3
+        end
+      end
       button.src_rect.y = buttonType*BUTTON_HEIGHT
       button.z          = self.z + ((sel) ? 3 : 2)
     end

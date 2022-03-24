@@ -385,6 +385,7 @@ class PokeBattle_Scene
     # Determine mode based on targetType
     mode = (PBTargets.oneTarget?(targetType)) ? 0 : 1
     cw.setDetails(texts,mode)
+    cw.battler = @battle.battlers[idxBattler]
     cw.index = pbFirstTarget(idxBattler,targetType)
     pbSelectBattler((mode==0) ? cw.index : texts,2)   # Select initial battler/data box
     pbFadeInAndShow(@sprites,visibleSprites) if visibleSprites

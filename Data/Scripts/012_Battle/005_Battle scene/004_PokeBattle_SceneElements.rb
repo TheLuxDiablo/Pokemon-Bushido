@@ -59,7 +59,7 @@ class PokemonDataBox < SpriteWrapper
       @spriteY = Graphics.height - 192
       @spriteBaseX = 36
     else
-      @spriteX = -16
+      @spriteX = -8
       @spriteY = 36
       @spriteBaseX = 8
     end
@@ -229,7 +229,7 @@ class PokemonDataBox < SpriteWrapper
     levelwidth = (leveldigits * iconwidth) + 22
     imagePos.push(["Graphics/Pictures/Battle/overlay_lv",xVal - levelwidth - leveloffset,22])
     # Draw Pokémon's gender symbol
-    xVal = xVal - levelwidth - leveloffset - 8
+    xVal = @spriteBaseX + 4 + nameWidth + 4
     imagePos.push(["Graphics/Pictures/Battle/icon_gender",xVal,18 ,(12 * @battler.displayGender),0,12,20])
     # Draw Mega Evolution/Primal Reversion icon
   #  if @battler.mega?

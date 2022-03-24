@@ -42,9 +42,9 @@ class PokeBattle_Scene
     # Create command window
     @sprites["commandWindow"] = CommandMenuDisplay.new(@viewport,200)
     # Create fight window
-    @sprites["fightWindow"] = FightMenuDisplay.new(@viewport,200)
+    @sprites["fightWindow"] = FightMenuDisplay.new(@viewport, 200, @battle)
     # Create targeting window
-    @sprites["targetWindow"] = TargetMenuDisplay.new(@viewport,200,@battle.sideSizes)
+    @sprites["targetWindow"] = TargetMenuDisplay.new(@viewport, 200, @battle.sideSizes, @battle)
     pbShowWindow(MESSAGE_BOX)
     # The party lineup graphics (bar and balls) for both sides
     for side in 0...2
@@ -161,7 +161,7 @@ class PokeBattle_Scene
     trainer = pbAddSprite("player_#{idxTrainer+1}",spriteX,spriteY,trainerFile,@viewport)
     return if !trainer.bitmap
     # Alter position of sprite
-    trainer.z  = 30+idxTrainer
+    trainer.z  = 80 + idxTrainer
     if trainer.bitmap.width>trainer.bitmap.height*2
       trainer.src_rect.x     = 0
       trainer.src_rect.width = trainer.bitmap.width/5
