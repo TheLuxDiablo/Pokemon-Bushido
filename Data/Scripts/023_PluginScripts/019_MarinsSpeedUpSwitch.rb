@@ -1,62 +1,103 @@
-#==============================================================================#
-#                         Better Fast-forward Mode                             #
-#                                   v1.0                                       #
-#                                                                              #
-#                                 by Marin                                     #
-#==============================================================================#
-#                                   Usage                                      #
-#                                                                              #
-# SPEEDUP_STAGES are the speed stages the game will pick from. If you click F, #
-# it'll choose the next number in that array. It goes back to the first number #
-#                                 afterward.                                   #
-#                                                                              #
-#             $GameSpeed is the current index in the speed up array.           #
-#   Should you want to change that manually, you can do, say, $GameSpeed = 0   #
-#                                                                              #
-# If you don't want the user to be able to speed up at certain points, you can #
-#                use "pbDisallowSpeedup" and "pbAllowSpeedup".                 #
-#==============================================================================#
-#                    Please give credit when using this.                       #
-#==============================================================================#
+module Input
+  class << self
+    alias __fast_forward__update update unless method_defined?(:__fast_forward__update)
+  end
 
-PluginManager.register({
-  :name => "Better Fast-forward Mode",
-  :version => "1.1",
-  :credits => "Marin",
-  :link => "https://reliccastle.com/resources/151/"
-})
+  def self.update
+    __fast_forward__update
+    if $CanToggle && trigger?(Input::R) #remap your Q button on the F1 screen to change your speedup switch
+      $GameSpeed += 1
+      $GameSpeed = 0 if $GameSpeed >= SPEEDUP_STAGES.size
+      if $game_temp
+        $game_temp.ff_sprite.opacity = 0
+        $game_temp.ff_sprite.src_rect.x = $game_temp.ff_sprite.src_rect.height * $GameSpeed
+        $game_temp.ff_timer = Graphics.frame_rate * 2
+      end
+    end
+    if $game_temp && $game_temp.ff_timer <= 0
+      $game_temp.ff_sprite.opacity = 0
+      $game_temp.ff_timer = 0
+    end
+  end
+end
 
-# When the user clicks Alt, it'll pick the next number in this array.
-SPEEDUP_STAGES = [1,3]
+class Game_Temp
+  attr_accessor :ff_sprite
+  attr_accessor :ff_vp
+  attr_accessor :ff_timer
 
+  def ff_sprite
+    if !@ff_sprite
+      @ff_sprite = Sprite.new(self.ff_vp)
+      @ff_sprite.bitmap = Bitmap.new("Graphics/Pictures/ff_icon") rescue Bitmap.new(32, 32)
+      @ff_sprite.x = 8
+      @ff_sprite.y = 8
+      @ff_sprite.opacity = 0
+      @ff_sprite.src_rect.width = @ff_sprite.src_rect.height
+    end
+    return @ff_sprite
+  end
+
+  def ff_vp
+    if !@ff_vp
+      @ff_vp = Viewport.new(0, 0, Graphics.width/4, Graphics.height/4)
+      @ff_vp.z = 9999999
+    end
+    return @ff_vp
+  end
+
+  def ff_timer
+    @ff_timer = 0 if !@ff_timer
+    return @ff_timer
+  end
+
+  def update_ff_sprite
+    return if self.ff_timer <= 0
+    self.ff_timer -= 1
+    if self.ff_timer >= (Graphics.frame_rate/4 * 7)
+      self.ff_sprite.opacity += (255/(Graphics.frame_rate/4))
+    elsif self.ff_timer <= (Graphics.frame_rate/4)
+      self.ff_sprite.opacity -= (255/(Graphics.frame_rate/4))
+    else
+      self.ff_sprite.opacity = 255
+    end
+    self.ff_sprite.update
+  end
+end
+
+SPEEDUP_STAGES = [1, 3]
+$GameSpeed = 0
+$frame = 0
+$CanToggle = $DEBUG
+
+module Graphics
+  class << self
+    alias __fast_forward__update update unless method_defined?(:__fast_forward__update)
+  end
+
+  def self.update
+    $frame += 1
+    return unless $frame % SPEEDUP_STAGES[$GameSpeed] == 0
+    __fast_forward__update
+    $frame = 0
+    $game_temp.update_ff_sprite if $game_temp
+  end
+end
+
+def pbDisallowSpeedup
+  $CanToggle = false
+  $GameSpeed = 0
+end
 
 def pbAllowSpeedup
   $CanToggle = true
 end
 
-def pbDisallowSpeedup
-  $GameSpeed = 0
+alias speedup_pbEnterText pbEnterText unless defined?(speedup_pbEnterText)
+def pbEnterText(*args)
+  old_toggle = $CanToggle
   $CanToggle = false
-end
-
-# Default game speed.
-$GameSpeed = 0
-$frame = 0
-$CanToggle = true
-
-module Graphics
-  class << Graphics
-    alias fast_forward_update update
-  end
-
-  def self.update
-    if $CanToggle && Input.trigger?(Input::R)
-      $GameSpeed += 1
-      $GameSpeed = 0 if $GameSpeed >= SPEEDUP_STAGES.size
-    end
-    $frame += 1
-    return unless $frame % SPEEDUP_STAGES[$GameSpeed] == 0
-    fast_forward_update
-    $frame = 0
-  end
+  ret = speedup_pbEnterText(*args)
+  $CanToggle = old_toggle
+  return ret
 end
