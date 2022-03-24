@@ -1420,7 +1420,7 @@ end
 #===============================================================================
 def pbEnterText(helptext,minlength,maxlength,initialText="",mode=0,pokemon=nil,nofadeout=false)
   ret=""
-  if ($PokemonSystem.textinput==1 rescue false) && !Input.joystick  # Keyboard
+  if ($PokemonSystem.textinput==1 rescue false)  # Keyboard
     pbFadeOutIn(99999,nofadeout) {
        sscene=PokemonEntryScene.new
        sscreen=PokemonEntry.new(sscene)

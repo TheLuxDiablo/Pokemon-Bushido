@@ -13,10 +13,15 @@ module Randomizer
     :TORNADUS, :THUNDURUS, :CELEBI
   ]
 
-  # list of items to exclude from the randomizer
+  # list of items to exclude from the randomizer (Automatically excludes Key Items)
   EXCLUSIONS_ITEMS = [
     :HM01, :HM02, :HM03, :HM04, :HM05, :HM06, :RARECANDY, :LIGHTFLUTE,
-    :GALARICACUFF, :GALARICAWREATH
+    :GALARICACUFF, :GALARICAWREATH, :POKEBALL
+  ]
+
+  # list of moves to exclude from the randomizer (Automatically excludes shadow moves)
+  EXCLUSIONS_MOVES = [
+    :BURNKUNAI, :SHOCKKUNAI, :POISONKUNAI, :SLEEPKUNAI
   ]
 end
 
@@ -56,7 +61,7 @@ def pbSelectGameMode
   randomizerRules = [:STATIC,:ENCOUNTERS,:GIFTS,:ITEMS]
   extremeRandomizerRules = [:STATIC,:ENCOUNTERS,:GIFTS,:ITEMS,:TRAINERS,:SPECIES_MOVESETS]
   nuzlockeRules = [:NOREVIVE, :ONEROUTE, :DUPSCLAUSE, :STATIC, :NICKNAME]
-  hardcoreNuzlockeRules = [:NOREVIVE, :ONEROUTE, :NICKNAME, :NOSTORE]
+  hardcoreNuzlockeRules = [:NOREVIVE, :ONEROUTE, :NICKNAME, :NOSTORE, :NOWHITEOUT]
   modes = []
   modestrings = ["Randomizer","Extreme Randomizer","Nuzlocke","Hardcore Nuzlocke"]
   modeinfo = [
@@ -79,28 +84,28 @@ def pbSelectGameMode
 "\\l[3]You can choose to turn off the Randomizer after the main story ends, but this won't un-randomize your randomized data.",
 "\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Extreme Randomizer Mode."],
 ["These are the rules of the Nuzlocke Mode:",
-"\\l[9]- Fainted Pokemon cannot be revived
-- You can catch one non-shiny and one shiny/shadow Pokemon per map
+"\\l[8]- Fainted Pokemon cannot be revived
+- You can catch one non-shiny, one shiny/shadow, and one static encounter per map
 - All Pokemon that are caught, must be nicknamed
-- Duplicate species are disregarded from the \"one capture per map\" rule
-- Static Encounters are disregarded from the \"one capture per map\" rule",
+- Duplicate species are disregarded from the \"one capture per map\" rule",
 "\\l[2]The challenge starts upon receiving your first Pokeball and ends upon beating the main story.",
 "\\l[3]You will lose the challenge if you have no Pokemon in your Party, or on Sukiro's Islands, that are able to battle.",
 "\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Nuzlocke Mode."],
-["These are the rules of the Nuzlocke Mode:",
+["These are the rules of the Hardcore Nuzlocke Mode:",
 "\\l[11]- Fainted Pokemon cannot be revived
-- You can catch one non-shiny and one shiny/shadow Pokemon per map
+- You can catch one non-shiny and one shiny/shadow per map.
 - All Pokemon that are caught, must be nicknamed
 - Duplicate species are counted in the \"one capture per map\" rule
-- Static Encounters are counted in the \"one capture per map\" rule
+- Static encounters are counted in the \"one capture per map\" rule
 - You cannot purchase any medicinal items from the marts",
 "\\l[2]The challenge starts upon receiving your first Pokeball and ends upon beating the main story.",
-"\\l[3]You will lose the challenge if you have no Pokemon in your Party, or on Sukiro's Islands, that are able to battle.",
+"\\l[3]You will lose the challenge if you have no Pokemon in your Party that are able to battle. Pokemon on Sukiro's Islands do not count.",
 "\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Hardcore Nuzlocke Mode."]
   ]
   pbMessage("Pokémon Bushido offers built-in challenge modifiers like Nuzlocke Mode and Randomizers.")
   pbMessage("These are meant to offer unique ways to challenge the player in their playthrough.")
-  return false if !pbConfirmMessage("Would you like to play the game with challenge modifiers?")
+  pbMessage("These are only recommended if you've already played through Pokémon Bushido atleast once.")
+  return false if !pbConfirmMessageSerious("Would you like to play the game with challenge modifiers?")
   infowindow = Window_AdvancedTextPokemon.newWithSize("",0,Graphics.height - 96,Graphics.width,0,vp)
   infowindow.text = _INTL("Select the modifiers of your choice.\nC: Add/Remove                                 A: More Info")
   infowindow.resizeHeightToFit(infowindow.text)
@@ -180,6 +185,7 @@ def pbSelectGameMode
         $PokemonGlobal.nuzlockeRules = (m == 3)? hardcoreNuzlockeRules : nuzlockeRules
         Nuzlocke.toggle(true)
         Nuzlocke.set_rules((m == 3)? hardcoreNuzlockeRules : nuzlockeRules)
+        Nuzlocke.start(true)
       end
     end
     cmdwindow.dispose
@@ -187,29 +193,6 @@ def pbSelectGameMode
     vp.dispose
   }
 end
-
-=begin
-infowindow.text = modeinfo[cmdwindow.index]
-infowindow.letterbyletter = false
-infowindow.resizeHeightToFit(modeinfo[cmdwindow.index])
-pbSetSmallFont(infowindow.contents)
-infowindow.lineHeight(25)
-infowindow.y = Graphics.height - infowindow.height
-cmdwindow.visible = false
-loop do
-  Graphics.update
-  Input.update
-  infowindow.update
-  break if Input.trigger?(Input::C) || Input.trigger?(Input::B) || Input.trigger?(Input::A)
-end
-infowindow.text = _INTL("Select the modifiers of your choice.\nA: More Info about selected modifier")
-infowindow.letterbyletter = true
-pbSetSystemFont(infowindow.contents)
-infowindow.lineHeight(32)
-infowindow.resizeHeightToFit(_INTL("Select the modifiers of your choice.\nA: More Info about selected modifier"))
-infowindow.y = Graphics.height - 96
-cmdwindow.visible = true
-=end
 
 PluginManager.register({
   :name => "Randomizer X",

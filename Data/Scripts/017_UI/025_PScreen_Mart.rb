@@ -22,7 +22,7 @@ class PokemonMartAdapter
     itemname = PBItems.getName(item)
     if pbIsMachine?(item)
       machine = pbGetMachine(item)
-      string = (pbIsTechnicalRecord?(item)) ? "Note" : "Scroll"
+      string = (pbIsTechnicalRecord?(item)) ? _INTL("Note") : _INTL("Scroll")
       itemname = _INTL("{2} {1}",string,PBMoves.getName(machine))
     end
     return itemname

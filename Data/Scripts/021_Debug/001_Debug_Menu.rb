@@ -302,7 +302,7 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
       level = pbMessageChooseNumber(_INTL("Set the wild {1}'s level.",PBSpecies.getName(species)),params)
       if level>0
         $PokemonTemp.encounterType = -1
-        pbWildBattle(species,level)
+        pbWildBattle_randomizer_x(species,level)
       end
     end
   when "testwildbattleadvanced"
@@ -537,7 +537,7 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
       params.setCancelValue(0)
       level = pbMessageChooseNumber(_INTL("Set the Pokémon's level."),params)
       if level>0
-        pbAddPokemon(species,level)
+        pbAddPokemon_randomizer_x(species,level)
       end
     end
   when "demoparty"

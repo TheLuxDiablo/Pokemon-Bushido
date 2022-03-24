@@ -106,8 +106,8 @@ class PokemonEggHatch_Scene
     pbBGMStop()
     pbMEPlay("Evolution success")
     pbMessage(_INTL("\\se[]{1} hatched from the Egg!\\wt[80]",@pokemon.name)) { update }
-    if pbConfirmMessage(
-        _INTL("Would you like to nickname the newly hatched {1}?",@pokemon.name)) { update } || Nuzlocke.on?
+    if Nuzlocke.on? || pbConfirmMessage(
+        _INTL("Would you like to nickname the newly hatched {1}?",@pokemon.name)) { update }
       nickname=pbEnterPokemonName(_INTL("{1}'s nickname?",@pokemon.name),
          0,PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE,"",@pokemon,true)
       @pokemon.name=nickname if nickname!=""
@@ -207,7 +207,7 @@ def pbHatch(pokemon)
     pbMessage(_INTL("...\1"))
     pbMessage(_INTL("... .... .....\1"))
     pbMessage(_INTL("{1} hatched from the Egg!",speciesname))
-    if pbConfirmMessage(_INTL("Would you like to nickname the newly hatched {1}?",speciesname)) || Nuzlocke.on?
+    if Nuzlocke.on? || pbConfirmMessage(_INTL("Would you like to nickname the newly hatched {1}?",speciesname))
       nickname = pbEnterPokemonName(_INTL("{1}'s nickname?",speciesname),
          0,PokeBattle_Pokemon::MAX_POKEMON_NAME_SIZE,"",pokemon)
       pokemon.name = nickname if nickname!=""

@@ -4,12 +4,14 @@
 class AnimatedBitmap
   def initialize(file, hue = 0)
     raise "Filename is nil (missing graphic)." if file.nil?
-    if file.split(/[\\\/]/)[-1][/^\[\d+(?:,\d+)?]/]
+    if file[/^\[\d+(?:,\d+)?\]/]   # Starts with 1 or 2 numbers in square brackets
       @bitmap = PngAnimatedBitmap.new(file, hue)
     else
       @bitmap = GifBitmap.new(file, hue)
     end
   end
+
+  attr_reader :filename
 
   def [](index);    @bitmap[index];                     end
   def width;        @bitmap.bitmap.width;               end
@@ -24,8 +26,6 @@ class AnimatedBitmap
   def dispose;      @bitmap.dispose;                    end
   def deanimate;    @bitmap.deanimate;                  end
   def copy;         @bitmap.copy;                       end
-
-  attr_reader :filename
 end
 
 #===============================================================================
@@ -136,7 +136,6 @@ class PngAnimatedBitmap
   end
 end
 
-
 #===============================================================================
 #
 #===============================================================================
@@ -212,13 +211,12 @@ class GifBitmap
   end
 end
 
-
 #===============================================================================
 #
 #===============================================================================
 def pbGetTileBitmap(filename, tile_id, hue)
   return RPG::Cache.tileEx(filename, tile_id, hue) { |f|
-    AnimatedBitmap.new("Graphics/Tilesets/"+filename).deanimate
+    AnimatedBitmap.new("Graphics/Tilesets/" + filename).deanimate
   }
 end
 

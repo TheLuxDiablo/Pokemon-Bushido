@@ -88,6 +88,10 @@ module Randomizer
   #  randomize the pokedex
   #-----------------------------------------------------------------------------
   def self.randomizeRegionalDex(extreme = false)
+    excl = Randomizer::EXCLUSIONS_SPECIES.clone.map!{ |s|
+      next getID(PBSpecies, s) if s.is_a?(Symbol)
+      next s
+    }
     if extreme
       rgdex = (1..PBSpecies.maxValue).to_a
     else
@@ -96,33 +100,25 @@ module Randomizer
     rgdex.delete(0)
     rgdex.compact!
     rgdex.uniq!
-    finalHash = {}
-    shuffledDexes = {}
-    keys = [:STATIC,:GIFTS,:ENCDATA,:TRAINER]
-    for key in keys
-      finalHash[key] = []
-      shuffledDexes[key] = rgdex.clone
-      4.times {shuffledDexes[key].shuffle!}
-    end
-    index = 0
-    excl = Randomizer::EXCLUSIONS_SPECIES.clone.map!{|s|
-      getID(PBSpecies,s) if s.is_a?(Symbol)
-      next s
-    }
-    for i in 1..PBSpecies.maxValue
-      toPut = 0
-      toPut = i if excl.include?(i) || !rgdex.include?(i)
-      for key in keys
-        incIndex =
-        if toPut != 0
-          finalHash[key][i] = toPut
-        else
-          finalHash[key][i] = shuffledDexes[key][index]
-        end
+    if !extreme
+      for i in 1..PBSpecies.maxValue
+        excl.push(i) if !rgdex.include?(i)
       end
-      index += 1 if toPut == 0
     end
-    return finalHash
+    excl.push(0)
+    excl.uniq!
+    shuffled_dex = {}
+    keys = [:STATIC, :GIFTS, :ENCDATA, :TRAINER]
+    for key in keys
+      shuffled_dex[key] = (0..PBSpecies.maxValue).to_a
+      4.times { shuffled_dex[key].shuffle! }
+      excl.each do |pkmn|
+        new_pkmn = shuffled_dex[key].index(pkmn)
+        next if !new_pkmn
+        shuffled_dex[key][pkmn], shuffled_dex[key][new_pkmn] = shuffled_dex[key][new_pkmn], shuffled_dex[key][pkmn]
+      end
+    end
+    return shuffled_dex
   end
   #-----------------------------------------------------------------------------
   #  randomizes static battles called through events
@@ -137,31 +133,59 @@ module Randomizer
   #  randomizes items received through events
   #-----------------------------------------------------------------------------
   def self.randomizeItems
-    new = []
-    item = 1
     # shuffles up item indexes to load a different one
-    (PBItems.maxValue - 1).times do
-      loop do
-        item = 1 + rand(PBItems.maxValue)
-        break if !(pbIsKeyItem?(item) || pbIsMegaStone?(item))
-      end
-      new.push(item)
+    items = (0..PBItems.maxValue).to_a
+    items.compact!
+    items.uniq!
+    4.times { items.shuffle! }
+    excl = Randomizer::EXCLUSIONS_ITEMS.clone.map! { |s|
+      next getID(PBItems, s) if s.is_a?(Symbol)
+      next s
+    }
+    (1..PBItems.maxValue).each do |item|
+      excl.push(item) if pbIsMegaStone?(item)
+      excl.push(item) if pbIsKeyItem?(item)
+      excl.push(item) if pbIsLeafItem?(item)
+      excl.push(item) if pbIsTechnicalMachine?(item) || pbIsHiddenMachine?(item)
     end
-    return new
+    excl.push(0)
+    excl.uniq!
+    excl.each do |item|
+      new_item = items.index(item)
+      next if !new_item
+      items[item], items[new_item] = items[new_item], items[item]
+    end
+    return items
   end
   #-----------------------------------------------------------------------------
   #  randomizes all movesets
   #-----------------------------------------------------------------------------
   def self.randomizeMovesets
     # shuffles up item indexes to load a different one
-    new = (1..PBMoves.maxValue).to_a
-    4.times {new.shuffle!}
+    moves = (0..PBMoves.maxValue).to_a
+    moves.compact!
+    moves.uniq!
+    4.times { moves.shuffle! }
+    excl = Randomizer::EXCLUSIONS_MOVES.clone.map! { |s|
+      next getID(PBMoves, s) if s.is_a?(Symbol)
+      next s
+    }
+    (1..PBMoves.maxValue).each do |move|
+      type = pbGetMoveData(move, MOVE_TYPE)
+      excl.push(move) if type == getID(PBTypes, :SHADOW)
+    end
+    excl.push(0)
+    excl.each do |move|
+      new_move = moves.index(move)
+      next if !new_move
+      moves[move], moves[new_move] = moves[new_move], moves[move]
+    end
     data = load_data("Data/species_movesets.dat").clone
     for i in 1...data.length
       moveset = data[i]
       for j in 0...moveset.length
         move = moveset[j]
-        data[i][j][1] = new[move[1]]
+        data[i][j][1] = moves[move[1]]
       end
     end
     return data
@@ -237,22 +261,6 @@ module Randomizer
     pbClearData(true)
     $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
   end
-  #-----------------------------------------------------------------------------
-  def self.shuffledata
-    usingExtreme = Randomizer.rules.include?(:TRAINERS)
-    if $PokemonGlobal
-      $PokemonGlobal.randomizedData = nil
-    end
-    $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
-    rand_dex =  Randomizer.randomizeRegionalDex(usingExtreme)
-    $PokemonGlobal.randomizedData = {}
-    $PokemonGlobal.randomizedData[:DEXORDER] = rand_dex.clone
-    $PokemonGlobal.randomizedData = self.randomizeData
-    $PokemonGlobal.randomizedData[:DEXORDER] = rand_dex.clone
-    # refresh encounter tables
-    pbClearData(true)
-    $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
-  end
 end
 
 #-----------------------------------------------------------------------------
@@ -313,15 +321,6 @@ end
 def randomizeItem(item)
   return item if !Randomizer.on?
   item = getID(PBItems, item) unless item.is_a?(Numeric)
-  return item if pbIsKeyItem?(item)
-  # if defined as an exclusion rule, species will not be randomized
-  excl = Randomizer::EXCLUSIONS_ITEMS
-  if !excl.nil? && excl.is_a?(Array)
-    for ent in excl
-      i = ent.is_a?(Numeric) ? ent : getID(PBItems, ent)
-      return item if item == i
-    end
-  end
   return Randomizer.getRandomizedData(item, :ITEMS, item)
 end
 #===============================================================================
@@ -332,6 +331,14 @@ def pbBattleOnStepTaken(*args)
   $PokemonTemp.nonStaticEncounter = true
   pbBattleOnStepTaken_randomizer_x(*args)
   $PokemonTemp.nonStaticEncounter = false
+end
+
+alias pbEncounter_randomizer_x pbEncounter unless defined?(pbEncounter_randomizer_x)
+def pbEncounter(*args)
+  $PokemonTemp.nonStaticEncounter = true
+  ret = pbEncounter_randomizer_x(*args)
+  $PokemonTemp.nonStaticEncounter = false
+  return ret
 end
 #===============================================================================
 #  aliasing to randomize static battles

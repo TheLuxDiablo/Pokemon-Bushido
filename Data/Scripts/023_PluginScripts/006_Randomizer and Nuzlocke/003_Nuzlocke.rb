@@ -73,7 +73,7 @@ module Nuzlocke
     # sets the nuzlocke to true if already has a bag and Pokeballs
     if !$PokemonBag
       for i in 1..PBItems.maxValue
-        if pbIsPokeball?(i) && $PokemonBag.pbHasItem?(i)
+        if pbIsPokeBall?(i) && $PokemonBag && $PokemonBag.pbHasItem?(i)
           @@nuzlocke = ret
           $PokemonGlobal.isNuzlocke = ret
           break
@@ -102,7 +102,7 @@ end
 #===============================================================================
 #  adding nuzlocke functionality to battler specific classes
 #===============================================================================
-class PokeBattle_Battler
+class PokeBattle_Pokemon
   def permaFaint
     @permaFaint = false if !@permaFaint
     return @permaFaint
@@ -136,17 +136,21 @@ class PokeBattle_Scene
   alias pbFaintBattler_nuzlocke_x pbFaintBattler unless self.method_defined?(:pbFaintBattler_nuzlocke_x)
   def pbFaintBattler(battler)
   data = Nuzlocke.rules; data = [] if data.nil?
-    if battler.opposes? && !self.firstFainted
+    if battler.opposes? && !self.firstFainted && @battle.wildBattle?
       if Nuzlocke.on? && data.include?(:ONEROUTE)
-        evo = Nuzlocke.checkEvoNuzlocke?(battler.pokemon.species) && data.include?(:DUPSCLAUSE)
-        static = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
-        if $PokemonGlobal.nuzlockeData[$game_map.map_id]==nil
-          $PokemonGlobal.nuzlockeData[$game_map.map_id]=true
+        evo      = Nuzlocke.checkEvoNuzlocke?(battler.pokemon.species) && data.include?(:DUPSCLAUSE)
+        static   = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
+        shiny    = battler.shiny? || battler.shadowPokemon?
+        enc_type = {
+            :BASE   => !static && !evo && !shiny,
+            :SHINY  => !static && !evo,
+            :STATIC => !evo && !shiny
+        }
+        $PokemonGlobal.nuzlockeData[$game_map.map_id] = {} if !$PokemonGlobal.nuzlockeData[$game_map.map_id]
+        enc_type.each do |type, value|
+          map = $PokemonGlobal.nuzlockeData[$game_map.map_id][type]
+          $PokemonGlobal.nuzlockeData[$game_map.map_id][type] = true if map.nil? && value
         end
-        map = $PokemonGlobal.nuzlockeData[$game_map.map_id]
-        $PokemonGlobal.nuzlockeData[$game_map.map_id] = true if map.nil? && !static && !evo && !(battler.shiny? || battler.shadowPokemon?)
-        map = $PokemonGlobal.nuzlockeShiny[$game_map.map_id]
-        $PokemonGlobal.nuzlockeShiny[$game_map.map_id] = true if map.nil? && !static
       end
       self.firstFainted = true
     end
@@ -166,21 +170,45 @@ class PokeBattle_Battle
   alias pbThrowPokeBall_nuzlocke_x pbThrowPokeBall unless self.method_defined?(:pbThrowPokeBall_nuzlocke_x)
   def pbThrowPokeBall(*args)
     battler = @battlers[args[0]]
+    pokemon = battler.pokemon.clone
     # part to disable Pokeball throwing if already caught
     data = Nuzlocke.rules; data = [] if data.nil?
     if Nuzlocke.on? && data.include?(:ONEROUTE)
-      static = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
-      map = $PokemonGlobal.nuzlockeShiny[$game_map.map_id]
-      return pbDisplay(_INTL("Nuzlocke rules prevent you from catching a shiny Pokémon on a map you already had a shiny encounter on!")) if !map.nil? && !static && (battler.shiny? || battler.shadowPokemon?)
-      map = $PokemonGlobal.nuzlockeData[$game_map.map_id]
-      return pbDisplay(_INTL("Nuzlocke rules prevent you from catching a Pokémon on a map you already had an encounter on!")) if !map.nil? && !static
+      evo      = Nuzlocke.checkEvoNuzlocke?(battler.pokemon.species) && data.include?(:DUPSCLAUSE)
+      static   = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
+      shiny    = battler.shiny? || battler.shadowPokemon?
+      enc_type = {
+          :BASE   => !static && !shiny && !evo,
+          :SHINY  => !static && !evo,
+          :STATIC => !shiny && !evo
+      }
+      enc_type.each do |type, value|
+        next if !$PokemonGlobal.nuzlockeData[$game_map.map_id]
+        map = $PokemonGlobal.nuzlockeData[$game_map.map_id][type]
+        next if !map || !value
+        message = _INTL("Nuzlocke rules prevent you from catching a Pokémon on a map you already had an encounter on!")
+        message = _INTL("Nuzlocke rules prevent you from catching a Pokémon on a map you already had a #{type.to_s.downcase} encounter on!") if type != :BASE
+        return pbDisplay(message)
+      end
     end
-    pbThrowPokeBall_nuzlocke_x(*args)
+    ret = pbThrowPokeBall_nuzlocke_x(*args)
     # part that registers caught Pokemon for map
-    if Nuzlocke.on? && data.include?(:ONEROUTE) && @decision == 4
-      $PokemonGlobal.nuzlockeData[$game_map.map_id] = true unless static && !(battler.shiny? || battler.shadowPokemon?)
-      $PokemonGlobal.nuzlockeShiny[$game_map.map_id] = true unless static
+    if Nuzlocke.on? && data.include?(:ONEROUTE) && @decision != 0
+      evo      = Nuzlocke.checkEvoNuzlocke?(pokemon.species) && data.include?(:DUPSCLAUSE)
+      static   = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
+      shiny    = (pokemon.shiny? || pokemon.shadowPokemon?)
+      enc_type = {
+          :BASE   => !static && !evo && !shiny,
+          :SHINY  => !static && !evo,
+          :STATIC => !evo && !shiny
+      }
+      $PokemonGlobal.nuzlockeData[$game_map.map_id] = {} if !$PokemonGlobal.nuzlockeData[$game_map.map_id]
+      enc_type.each do |type, value|
+        map = $PokemonGlobal.nuzlockeData[$game_map.map_id][type]
+        $PokemonGlobal.nuzlockeData[$game_map.map_id][type] = true if map.nil? && value
+      end
     end
+    return ret
   end
   #-----------------------------------------------------------------------------
   #  registers Pokemon for nuzlocke map when fleeing
@@ -189,20 +217,21 @@ class PokeBattle_Battle
   def pbRun(*args)
     data = Nuzlocke.rules; data = [] if data.nil?
     battler = nil
-    eachOtherSideBattler do |b|
-      battler = b
-      break
-    end
+    eachOtherSideBattler { |b| battler = b; break }
     if Nuzlocke.on? && data.include?(:ONEROUTE) && !self.opponent
-      evo = battler.nil? ? false : Nuzlocke.checkEvoNuzlocke?(battler.species) && data.include?(:DUPSCLAUSE)
-      static = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
-      if $PokemonGlobal.nuzlockeData[$game_map.map_id]==nil
-        $PokemonGlobal.nuzlockeData[$game_map.map_id]=true
+      evo      = Nuzlocke.checkEvoNuzlocke?(battler.pokemon.species) && data.include?(:DUPSCLAUSE)
+      static   = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
+      shiny    = battler.shiny? || battler.shadowPokemon?
+      enc_type = {
+          :BASE   => !static && !evo && !shiny,
+          :SHINY  => !static && !evo,
+          :STATIC => !evo && !shiny
+      }
+      $PokemonGlobal.nuzlockeData[$game_map.map_id] = {} if !$PokemonGlobal.nuzlockeData[$game_map.map_id]
+      enc_type.each do |type, value|
+        map = $PokemonGlobal.nuzlockeData[$game_map.map_id][type]
+        $PokemonGlobal.nuzlockeData[$game_map.map_id][type] = true if map.nil? && value
       end
-      map = $PokemonGlobal.nuzlockeData[$game_map.map_id]
-      $PokemonGlobal.nuzlockeData[$game_map.map_id] = true if map.nil? && !static && !evo && !battler.shiny
-      map = $PokemonGlobal.nuzlockeShiny[$game_map.map_id]
-      $PokemonGlobal.nuzlockeShiny[$game_map.map_id] = true if map.nil? && !static
     end
     # returns original function
     return pbRun_nuzlocke_x(*args)
@@ -213,26 +242,26 @@ end
 #  losing the nuzlocke
 #===============================================================================
 alias pbStartOver_nuzlocke_x pbStartOver
-def self.pbStartOver(*args)
+def pbStartOver(*args)
   if Nuzlocke.on?
     resume = false
     pbEachPokemon do |pkmn|
-      if pkmn.able?
-        resume = true
-        break
-      end
+      next if !pkmn.able?
+      resume = true
+      break
     end
-    if resume
+    data = Nuzlocke.rules; data = [] if data.nil?
+    if resume && !data.include?(:NOWHITEOUT)
       while pbAllFainted
-        pbMessage(_INTL("\\w[]\\wm\\l[3]All your Pokémon have fainted. But you still have Pokémon on Sukiro's Island with which you can continue the challenge."))
+        pbMessage(_INTL("\\c[12]\\w[]\\wm\\l[3]All your Pokémon have fainted. But you still have Pokémon on Sukiro's Island with which you can continue the challenge."))
         pbFadeOutIn {
           scene = PokemonStorageScene.new
-          screen = PokemonStorageScreen.new(scene,$PokemonStorage)
+          screen = PokemonStorageScreen.new(scene, $PokemonStorage)
           screen.pbStartScreen(1)
         }
       end
     else
-      pbMessage(_INTL("\\w[]\\wm\\l[3]All your Pokémon have fainted. You have lost the Nuzlocke challenge! The challenge will now be turned off."))
+      pbMessage(_INTL("\\c[12]\\w[]\\wm\\l[3]All your Pokémon have fainted. You have lost the Nuzlocke challenge! Nuzlocke Mode will now be turned off."))
       Nuzlocke.toggle(false)
       $PokemonGlobal.isNuzlocke = false
     end
@@ -257,11 +286,12 @@ class PokemonBag
   def pbStoreItem(*args)
     ret = pbStoreItem_nuzlocke_x(*args)
     item = args[0]
-    if $PokemonGlobal && $PokemonGlobal.qNuzlocke && pbIsPokeball?(item)
+    if $PokemonGlobal && $PokemonGlobal.qNuzlocke && pbIsPokeBall?(item)
       Nuzlocke.toggle(true)
       Nuzlocke.set_rules($PokemonGlobal.nuzlockeRules) if !$PokemonGlobal.nuzlockeRules.nil?
+      $PokemonGlobal.qNuzlocke = false
       $PokemonGlobal.isNuzlocke = true
-      pbMessage("Your Nuzlocke has begun!")
+      pbMessage(_INTL("Your Nuzlocke has begun!"))
     end
     return ret
   end
@@ -284,14 +314,15 @@ end
 #  force nicknames
 #===============================================================================
 def pbEnterPokemonName(helptext,minlength,maxlength,initialText="",pokemon=nil,nofadeout=false)
-  ret = pbEnterText(helptext,minlength,maxlength,initialText,2,pokemon,nofadeout)
   data = Nuzlocke.rules; data = [] if data.nil?
-  if Nuzlocke.on? && data.include?(:NICKNAME)
-    loop do
-      speciesname = pokemon.nil? ? initialText : pokemon.speciesName
-      break if !nil_or_empty?(ret) && ret.downcase != speciesname.downcase
-      pbMessage("Nuzlocke rules make it mandatory to nickname your Pokémon!")
-    end
+  ret  = ""
+  loop do
+    ret = pbEnterText(helptext,minlength,maxlength,initialText,2,pokemon,nofadeout)
+    break if $DEBUG
+    break if !Nuzlocke.on? || !data.include?(:NICKNAME)
+    speciesname = pokemon.nil? ? initialText : pokemon.speciesName
+    break if !nil_or_empty?(ret) && ret.downcase != speciesname.downcase
+    pbMessage(_INTL("Nuzlocke rules make it mandatory to nickname your Pokémon!"))
   end
   return ret
 end

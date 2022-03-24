@@ -57,7 +57,7 @@ end
 class RibbonSelectionSprite < MoveSelectionSprite
   def initialize(viewport=nil)
     super(viewport)
-    @movesel = AnimatedBitmap.new("Graphics/Pictures/Summary/cursor_ribbon")
+    @movesel = AnimatedBitmap.new("Graphics/Pictures/Summary/cursor_move")
     @frame = 0
     @index = 0
     @preselected = false
@@ -110,7 +110,6 @@ class PokemonSummary_Scene
     @inbattle   = inbattle
     @page = 1
     @typebitmap    = AnimatedBitmap.new(_INTL("Graphics/Pictures/types"))
-    @markingbitmap = AnimatedBitmap.new("Graphics/Pictures/Summary/markings")
     @sprites = {}
     @sprites["background"] = IconSprite.new(0,0,@viewport)
     @sprites["pokemon"] = PokemonSprite.new(@viewport)
@@ -154,7 +153,7 @@ class PokemonSummary_Scene
     @sprites["markingoverlay"].visible = false
     pbSetSystemFont(@sprites["markingoverlay"].bitmap)
     @sprites["markingsel"] = IconSprite.new(0,0,@viewport)
-    @sprites["markingsel"].setBitmap("Graphics/Pictures/Summary/cursor_marking")
+    @sprites["markingsel"].setBitmap("Graphics/Pictures/Summary/cursor_move")
     @sprites["markingsel"].src_rect.height = @sprites["markingsel"].bitmap.height/2
     @sprites["markingsel"].visible = false
     @sprites["messagebox"] = Window_AdvancedTextPokemon.new("")
@@ -273,6 +272,7 @@ class PokemonSummary_Scene
   end
 
   def drawMarkings(bitmap,x,y)
+    return false
     markings = @pokemon.markings
     markrect = Rect.new(0,0,16,16)
     for i in 0...6
@@ -656,10 +656,10 @@ class PokemonSummary_Scene
        [sprintf("%d",@pokemon.speed),456,248,1,base,shadow],
        [_INTL("Ability"),224,284,0,base,shadow]
     ]
-    if @pokemon.abilityIndex<2
-      textpos.push([PBAbilities.getName(@pokemon.ability),362,284,0,base,shadow])
-    else
+    if @pokemon.hasHiddenAbility?
       textpos.push([PBAbilities.getName(@pokemon.ability),362,284,0,Color.new(144,64,232),Color.new(184,168,224)])
+    else
+      textpos.push([PBAbilities.getName(@pokemon.ability),362,284,0,base,shadow])
     end
     # Draw all text
     pbDrawTextPositions(overlay,textpos)
@@ -1216,7 +1216,6 @@ class PokemonSummary_Scene
       commands[cmdTakeItem = commands.length] = _INTL("Take item") if @pokemon.hasItem?
       commands[cmdPokedex = commands.length]  = _INTL("View Pokédex") if $Trainer.pokedex
     end
-    commands[cmdMark = commands.length]       = _INTL("Mark")
     commands[commands.length]                 = _INTL("Cancel")
     command = pbShowCommands(commands)
     if cmdGiveItem>=0 && command==cmdGiveItem

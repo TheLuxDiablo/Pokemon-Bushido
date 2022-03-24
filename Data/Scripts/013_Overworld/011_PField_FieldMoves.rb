@@ -167,11 +167,11 @@ def pbKatanaMoveAnimation(color=1)
   else
     bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg")
   end
-  sprite = IconSprite.new(200,400,@viewport)
+  sprite = IconSprite.new(viewport)
   sprite.setBitmap(pbPlayerSpriteFile($Trainer.trainertype))
   sprite.ox = (sprite.bitmap.width/2)
-  sprite.oy = (sprite.bitmap.height/2)-100
-  sprite.z=999999
+  sprite.oy = (sprite.bitmap.height/2) + 4
+  sprite.z = 1
   sprite.visible=false
   strobebitmap=AnimatedBitmap.new("Graphics/Pictures/hiddenMoveStrobes")
   strobes=[]
@@ -214,7 +214,6 @@ def pbKatanaMoveAnimation(color=1)
       sprite.visible=true
       if ptinterp.done?
         phase=3
-        #pbPlayCry(pokemon)
         # Add trainer grunt SFX
         i = rand(4)
         if $Trainer.gender==0 # Male grunts = Marth
@@ -323,7 +322,6 @@ def pbTalonflameMoveAnimation(color=1)
     bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg")
   end
   sprite = IconSprite.new(200,400,@viewport)
-  #sprite.setOffset(PictureOrigin::Center)
   sprite.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/663")
   sprite.ox = (sprite.bitmap.width/2)
   sprite.z=999999
@@ -369,7 +367,7 @@ def pbTalonflameMoveAnimation(color=1)
       sprite.visible=true
       if ptinterp.done?
         phase=3
-        #pbPlayCry(pokemon)
+        pbPlayCrySpecies(:TALONFLAME)
         frames=0
       end
     when 3   # Wait

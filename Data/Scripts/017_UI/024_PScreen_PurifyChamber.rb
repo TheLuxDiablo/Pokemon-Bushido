@@ -259,6 +259,7 @@ class PurifyChamberPC
   def access
     pbMessage(_INTL("\\se[PC access]Accessed the Purify Chamber."))
     pbPurifyChamber()
+    return true
   end
 end
 

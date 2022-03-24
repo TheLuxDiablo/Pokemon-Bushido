@@ -471,6 +471,7 @@ class HallOfFamePC
   def access
     pbMessage(_INTL("\\se[PC access]Accessed the Hall of Fame."))
     pbHallOfFamePC
+    return true
   end
 end
 

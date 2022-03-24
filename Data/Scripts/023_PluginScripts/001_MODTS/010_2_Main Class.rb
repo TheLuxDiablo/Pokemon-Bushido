@@ -175,9 +175,6 @@ class ModularTitleScreen
   def update
     @currentFrame += 1
     self.updateElements
-    if !@totalFrames.nil? && @totalFrames >= 0 && @currentFrame >= @totalFrames
-      self.restart
-    end
   end
   # disposes of all visual elements
   def dispose

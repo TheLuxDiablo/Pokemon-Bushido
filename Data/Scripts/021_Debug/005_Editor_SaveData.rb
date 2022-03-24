@@ -610,11 +610,11 @@ end
 # Save Pokémon data to PBS file
 #===============================================================================
 def pbSavePokemonData
-  speciesData  = pbLoadSpeciesData
+  speciesData  = load_data("Data/species.dat")
   messages     = Messages.new("Data/messages.dat") rescue nil
   return if !speciesData || !messages
   metrics      = pbLoadSpeciesMetrics
-  movesets     = pbLoadMovesetsData
+  movesets     = load_data("Data/species_movesets.dat")
   eggMoves     = pbLoadEggMovesData
   regionaldata = pbLoadRegionalDexes
   numRegions   = regionaldata.length
@@ -870,11 +870,11 @@ end
 # Save Pokémon forms data to PBS file
 #===============================================================================
 def pbSavePokemonFormsData
-  speciesData  = pbLoadSpeciesData
+  speciesData  = load_data("Data/species.dat")
   messages     = Messages.new("Data/messages.dat") rescue nil
   return if !speciesData || !messages
   metrics      = pbLoadSpeciesMetrics
-  movesets     = pbLoadMovesetsData
+  movesets     = load_data("Data/species_movesets.dat")
   eggMoves     = pbLoadEggMovesData
   pokedata = File.open("PBS/pokemonforms.txt","wb") rescue nil
   pokedata.write(0xEF.chr)

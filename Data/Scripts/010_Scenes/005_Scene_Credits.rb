@@ -221,17 +221,19 @@ _END_
     @sprite.dispose
     @credit_sprite.dispose
     $PokemonGlobal.creditsPlayed = true
+    pbWait(Graphics.frame_rate)
     pbFadeOutIn(99999) {
       getBadge = false
       $PokemonGlobal.gameModesWon[0] = true
       if Randomizer.on?
         pbMEPlay("DexSound8")
         getBadge = true
-        $PokemonGlobal.gameModesWon[1] = true
-        pbMessage("You beat the game in Randomizer Mode.")
         if $PokemonGlobal.randomizerRules && $PokemonGlobal.randomizerRules.include?(:SPECIES_MOVESETS)
           $PokemonGlobal.gameModesWon[2] = true
           pbMessage("You beat the game in Extreme Randomizer Mode.")
+        else
+          $PokemonGlobal.gameModesWon[1] = true
+          pbMessage("You beat the game in Randomizer Mode.")
         end
         if pbConfirmMessage("Would you like to turn the Randomizer off? (You won't be able to turn it back on)")
           Randomizer.toggle(false)
@@ -241,11 +243,12 @@ _END_
       if Nuzlocke.on?
         pbMEPlay("DexSound8")
         getBadge = true
-        $PokemonGlobal.gameModesWon[3] = true
-        pbMessage("You beat the game in Nuzlocke Mode.")
         if $PokemonGlobal.nuzlockeRules && $PokemonGlobal.nuzlockeRules.include?(:NOSTORE)
           $PokemonGlobal.gameModesWon[4] = true
           pbMessage("You beat the game with the Hardcore Nuzlocke Mode.")
+        else
+          $PokemonGlobal.gameModesWon[3] = true
+          pbMessage("You beat the game in Nuzlocke Mode.")
         end
         Nuzlocke.toggle(false)
         $PokemonGlobal.isNuzlocke = false

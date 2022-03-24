@@ -132,8 +132,57 @@ class TrainerPC
   def access
     pbMessage(_INTL("Accessed {1}'s item storage.",$Trainer.name))
     pbTrainerPCMenu
+    return true
   end
 end
+
+class TalonflameFly
+  def shouldShow?
+    return false if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
+    return $game_switches[81]
+  end
+
+  def name
+    return _INTL("Fly")
+  end
+
+  def access
+    if $game_switches[93] && !$game_switches[94]
+      pbMessage(_INTL("Talonflame is looking pretty tired at the moment."))
+      pbMessage(_INTL("Perhaps you should visit Tsuku at the Tsuchi Shrine, and give Talonflame some time to rest."))
+      return true
+    end
+    pbMessage(_INTL("{1} got on Talonflame...",$Trainer.name))
+    $game_temp.in_menu = false
+    if !$PokemonTemp.flydata
+      ret = pbFadeOutIn(99999) {
+        scene = PokemonRegionMap_Scene.new(-1, false)
+        screen = PokemonRegionMapScreen.new(scene)
+        next screen.pbStartFlyScreen
+      }
+      return true if !ret
+      $PokemonTemp.flydata = ret
+    end
+    pbMessage(_INTL("{1} and Talonflame used Fly!", $Trainer.name))
+    pbTalonflameMoveAnimation(3)
+    pbWait(20)
+    pbSEPlay("wind1")
+    pbFadeOutIn(99999) {
+      $game_temp.player_new_map_id    = $PokemonTemp.flydata[0]
+      $game_temp.player_new_x         = $PokemonTemp.flydata[1]
+      $game_temp.player_new_y         = $PokemonTemp.flydata[2]
+      $game_temp.player_new_direction = 2
+      pbCancelVehicles
+      $PokemonTemp.flydata = nil
+      $scene.transfer_player
+      $game_map.autoplay
+      $game_map.refresh
+    }
+    pbEraseEscapePoint
+    return false
+  end
+end
+
 
 
 
@@ -197,6 +246,7 @@ class StorageSystemPC
         break
       end
     end
+    return true
   end
 end
 
@@ -234,9 +284,6 @@ module PokemonPCList
     for pc in @@pclist
       commands.push(pc.name) if pc.shouldShow?
     end
-    if $game_switches[81]
-      commands.push(_INTL("Fly"))
-    end
     commands.push(_INTL("Leave"))
     return commands
   end
@@ -246,57 +293,8 @@ module PokemonPCList
     i = 0
     for pc in @@pclist
       next if !pc.shouldShow?
-      if i==cmd
-        pc.access
-        return true
-      end
+      return pc.access if i == cmd
       i += 1
-    end
-    if cmd==2
-      if $game_switches[93] && !$game_switches[94]
-        pbMessage(_INTL("Talonflame is looking pretty tired at the moment."))
-        pbMessage(_INTL("Perhaps you should visit Tsuku at the Tsuchi Shrine, and give Talonflame some time to rest."))
-        return false
-      end
-      pbMessage(_INTL("{1} got on Talonflame...",$Trainer.name))
-      $game_temp.in_menu = false
-      if !pbGetMetadata($game_map.map_id,MetadataOutdoor)
-       pbMessage(_INTL("Wait a second... Talonflame can't fly indoors!"))
-       return false
-      end
-      if !$PokemonTemp.flydata
-          ret = pbFadeOutIn(99999) do
-            scene = PokemonRegionMap_Scene.new(-1, false)
-            screen = PokemonRegionMapScreen.new(scene)
-            next screen.pbStartFlyScreen
-          end
-        if ret
-          $PokemonTemp.flydata = ret
-        elsif
-          pbMessage(_INTL("You decided not to fly on Talonflame."))
-          return false
-        end
-      end
-      pbMessage(_INTL("{1} and Talonflame used Fly!", $Trainer.name))
-      pbSEPlay("663Cry")
-      pbTalonflameMoveAnimation(3)
-      #pbMEPlay("flute")
-      pbWait(20)
-      pbSEPlay("wind1")
-      #pbWait(8)
-      pbFadeOutIn(99999) do
-         $game_temp.player_new_map_id    = $PokemonTemp.flydata[0]
-         $game_temp.player_new_x         = $PokemonTemp.flydata[1]
-         $game_temp.player_new_y         = $PokemonTemp.flydata[2]
-         $game_temp.player_new_direction = 2
-         pbCancelVehicles
-         $PokemonTemp.flydata = nil
-         $scene.transfer_player
-         $game_map.autoplay
-         $game_map.refresh
-      end
-      pbEraseEscapePoint
-      return false
     end
     return false
   end
@@ -306,3 +304,4 @@ end
 
 PokemonPCList.registerPC(StorageSystemPC.new)
 PokemonPCList.registerPC(TrainerPC.new)
+PokemonPCList.registerPC(TalonflameFly.new)

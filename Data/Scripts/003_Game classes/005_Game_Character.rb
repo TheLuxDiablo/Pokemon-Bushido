@@ -177,21 +177,21 @@ class Game_Character
   def calculate_bush_depth
     if @tile_id > 0 || @always_on_top || jumping?
       @bush_depth = 0
+      return
+    end
+    xbehind = @x + (@direction == 4 ? 1 : @direction == 6 ? -1 : 0)
+    ybehind = @y + (@direction == 8 ? 1 : @direction == 2 ? -1 : 0)
+    this_map = (self.map.valid?(@x, @y)) ? [self.map, @x, @y] : $MapFactory&.getNewMap(@x, @y)
+    behind_map = (self.map.valid?(xbehind, ybehind)) ? [self.map, xbehind, ybehind] : $MapFactory&.getNewMap(xbehind, ybehind)
+    if this_map && this_map[0].deepBush?(this_map[1], this_map[2]) &&
+       (!behind_map || behind_map[0].deepBush?(behind_map[1], behind_map[2]))
+      @bush_depth = Game_Map::TILE_HEIGHT
+    elsif this_map && this_map[0].bush?(this_map[1], this_map[2]) && !moving?
+      @bush_depth = 12
     else
-      deep_bush = regular_bush = false
-      xbehind = @x + (@direction == 4 ? 1 : @direction == 6 ? -1 : 0)
-      ybehind = @y + (@direction == 8 ? 1 : @direction == 2 ? -1 : 0)
-      this_map = (self.map.valid?(@x, @y)) ? [self.map, @x, @y] : $MapFactory.getNewMap(@x, @y)
-      if this_map[0].deepBush?(this_map[1], this_map[2]) && self.map.deepBush?(xbehind, ybehind)
-        @bush_depth = Game_Map::TILE_HEIGHT
-      elsif !moving? && this_map[0].bush?(this_map[1], this_map[2])
-        @bush_depth = 12
-      else
-        @bush_depth = 0
-      end
+      @bush_depth = 0
     end
   end
-
   #=============================================================================
   # Passability
   #=============================================================================
@@ -892,8 +892,8 @@ class Game_Character
     # it takes to move half a tile (or a whole tile if cycling). We assume the
     # game uses square tiles.
     real_speed = (jumping?) ? jump_speed_real : move_speed_real
-    frames_per_pattern = Game_Map::REAL_RES_X / (real_speed * 2.0)
-    frames_per_pattern *= 2 if move_speed == 6   # Cycling/fastest speed
+    frames_per_pattern = Game_Map::REAL_RES_X / (real_speed * 1.4)
+    frames_per_pattern *= 2 if move_speed >= 5   # Cycling/fastest speed
     return if @anime_count < frames_per_pattern
     # Advance to the next animation frame
     @pattern = (@pattern + 1) % 4

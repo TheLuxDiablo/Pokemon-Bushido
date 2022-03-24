@@ -43,8 +43,9 @@ class PokemonItemFind_Scene
 
     colors = getDefaultTextColors(@sprites["background"].windowskin)
 
-    @sprites["itemicon"] = ItemIconSprite.new(42, Graphics.height - 48, -1, @viewport)
-    @sprites["itemicon"].visible = false
+    @sprites["itemicon"] = ItemIconSprite.new(42, Graphics.height - 48, 0, @viewport)
+    @sprites["itemicon"].blankzero = true
+    @sprites["itemicon"].visible   = false
     @sprites["itemicon"].z = @viewport.z + 10
 
     @sprites["descwindow"] = Window_AdvancedTextPokemon.newWithSize("", 64, 0, Graphics.width - 64, 64, @viewport)

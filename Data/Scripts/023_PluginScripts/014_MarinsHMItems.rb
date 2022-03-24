@@ -355,6 +355,10 @@ if USING_STRENGTH_ITEM
     return false
   end)
 
+  ItemHandlers::UseFromBag.add(STRENGTH_ITEM,proc { |item|
+    next 2
+  })
+
   ItemHandlers::UseInField.add(STRENGTH_ITEM, proc { pbStrength })
 end
 
@@ -536,10 +540,6 @@ ItemHandlers::UseFromBag.add(CUT_ITEM,proc { |item|
 })
 
 ItemHandlers::UseFromBag.add(FLY_ITEM,proc { |item|
-  next 2
-})
-
-ItemHandlers::UseFromBag.add(STRENGTH_ITEM,proc { |item|
   next 2
 })
 

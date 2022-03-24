@@ -1,139 +1,9 @@
-# Overhauls the classic Trainer Card from Pokémon Essentials
-class PokeBattle_Trainer
-  # These need to be initialized
-  # A swinging number, increases and decreases with progress
-  attr_accessor(:score)
-  # Changes the Trainer Card, similar to achievements
-  attr_accessor(:stars)
-  # Battle Points, if you wish to use them
-  attr_accessor(:bp)
-  # Date and time
-  attr_accessor(:halloffame)
-  # Fake Trainer Class
-  attr_accessor(:tclass)
-
-  def score
-    @score=0 if !@score
-    return @score
-  end
-
-  def stars
-    @stars=0 if !@stars
-    return @stars
-  end
-
-  def bp
-    @bp=0 if !@bp
-    return @bp
-  end
-
-  def halloffame
-    @halloffame=[] if !@halloffame
-    return @halloffame
-  end
-
-  def tclass
-    @tclass="PKMN Trainer" if !@tclass
-    return @tclass
-  end
-
-  def publicID(id=nil)   # Portion of the ID which is visible on the Trainer Card
-    return id ? id&0xFFFF : @id&0xFFFF
-  end
-
-  def fullname2
-    return _INTL("{1} {2}",$Trainer.tclass,$Trainer.name)
-  end
-
-  def initialize(name,trainertype)
-    @name=name
-    @language=pbGetLanguage()
-    @trainertype=trainertype
-    @id=rand(256)
-    @id|=rand(256)<<8
-    @id|=rand(256)<<16
-    @id|=rand(256)<<24
-    @metaID=0
-    @outfit=0
-    @pokegear=false
-    @pokedex=false
-    clearPokedex
-    @shadowcaught=[]
-    for i in 1..PBSpecies.maxValue
-      @shadowcaught[i]=false
-    end
-    @badges=[]
-    for i in 0...8
-      @badges[i]=false
-    end
-    @money=INITIAL_MONEY
-    @party=[]
-    @score=0
-    @stars=0
-    @bp=0
-    @halloffame=[]
-    @tclass="PKMN Trainer"
-  end
-
-  def getForeignID(number=nil)   # Random ID other than this Trainer's ID
-    fid=0
-    fid=number if number!=nil
-    loop do
-      fid=rand(256)
-      fid|=rand(256)<<8
-      fid|=rand(256)<<16
-      fid|=rand(256)<<24
-      break if fid!=@id
-    end
-    return fid
-  end
-
-  def setForeignID(other,number=nil)
-    @id=other.getForeignID(number)
-  end
-end
-
-class HallOfFame_Scene # Minimal change to store HoF time into a variable
-
-  def writeTrainerData
-    totalsec = Graphics.frame_count / Graphics.frame_rate
-    hour = totalsec / 60 / 60
-    min = totalsec / 60 % 60
-    # Store time of first Hall of Fame in $Trainer.halloffame if not array is empty
-    if $Trainer.halloffame=[]
-      $Trainer.halloffame.push(pbGetTimeNow)
-      $Trainer.halloffame.push(totalsec)
-    end
-    pubid=sprintf("%05d",$Trainer.publicID($Trainer.id))
-    lefttext= _INTL("Name<r>{1}<br>",$Trainer.name)
-    lefttext+=_INTL("IDNo.<r>{1}<br>",pubid)
-    lefttext+=_ISPRINTF("Time<r>{1:02d}:{2:02d}<br>",hour,min)
-    lefttext+=_INTL("Pokédex<r>{1}/{2}<br>",
-        $Trainer.pokedexOwned,$Trainer.pokedexSeen)
-    @sprites["messagebox"]=Window_AdvancedTextPokemon.new(lefttext)
-    @sprites["messagebox"].viewport=@viewport
-    @sprites["messagebox"].width=192 if @sprites["messagebox"].width<192
-    @sprites["msgwindow"]=Kernel.pbCreateMessageWindow(@viewport)
-    Kernel.pbMessageDisplay(@sprites["msgwindow"],
-        _INTL("League champion!\nCongratulations!\\^"))
-  end
-
-end
-
 class PokemonTrainerCard_Scene
-
-  # Waits x frames
-  def wait(frames)
-    frames.times do
-    Graphics.update
-    end
-  end
-
   def pbUpdate
     pbUpdateSpriteHash(@sprites)
     if @sprites["bg"]
-      @sprites["bg"].ox-=2
-      @sprites["bg"].oy-=2
+      @sprites["bg"].ox -= 2
+      @sprites["bg"].oy -= 2
     end
   end
 
@@ -194,10 +64,6 @@ class PokemonTrainerCard_Scene
     shadowColor = Color.new(160,160,160)
     baseGold = Color.new(255,198,74)
     shadowGold = Color.new(123,107,74)
-    if $Trainer.stars==5
-      baseColor   = baseGold
-      shadowColor = shadowGold
-    end
     totalsec = Graphics.frame_count / Graphics.frame_rate
     hour = totalsec / 60 / 60
     min = totalsec / 60 % 60
