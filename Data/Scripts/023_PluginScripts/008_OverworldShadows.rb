@@ -62,7 +62,7 @@ class Sprite_ShadowOverworld
       @sprite.x       = @rsprite.x
       @sprite.y       = @rsprite.y
       @sprite.ox      = @shadowoverworldbitmap.width/2
-      @sprite.oy      = @shadowoverworldbitmap.height - 2
+      @sprite.oy      = @shadowoverworldbitmap.height
       @sprite.z       = @rsprite.z-1
       @sprite.zoom_x  = @rsprite.zoom_x
       @sprite.zoom_y  = @rsprite.zoom_y

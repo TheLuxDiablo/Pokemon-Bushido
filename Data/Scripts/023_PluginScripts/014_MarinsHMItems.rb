@@ -125,7 +125,6 @@ if USING_SURF_ITEM
       surfbgm = pbGetMetadata(0,MetadataSurfBGM)
       pbCueBGM(surfbgm,0.5) if surfbgm
       pbStartSurfing
-      $PokemonTemp.dependentEvents.come_back(true) if !$PokemonTemp.dependentEvents.refresh_sprite(false,true)
       return true
     end
     return false
