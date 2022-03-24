@@ -1,12 +1,14 @@
 2.0.0 ===============================================================================================================
 Fixed many of the lag issues in older versions. (Especially Hagane)
-Added Multiple Save Slots
-Added Challenge Modes
+Added 3 Save Slots
+Added Challenge Modes (Nuzlocke and Randomizer)
 Added native gamepad support
 Added Mystery Gifts
-Added an Encounter List
-Added a Battle Stat screen
+Added a screen to show the encounters on a route
+Added a screen to show stat changes and battle summary
+Added type effectiveness display in battle
 Misc Improvements in graphics and events
+
 
 1.1.12 ===============================================================================================================
 Fix for Soft Resest (F12) on the RGSS exe
