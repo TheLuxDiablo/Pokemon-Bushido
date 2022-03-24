@@ -2718,69 +2718,9 @@ EffortPoints = 0,0,0,0,3,0
 Abilities = ASONEGHOST
 Moves = 1,ASTRALBARRAGE,1,TACKLE,1,TAILWHIP,1,DOUBLEKICK,1,HEX,1,STOMP,1,CONFUSERAY,1,HAZE,1,SHADOWBALL,1,TAKEDOWN,1,AGILITY,1,THRASH,1,DISABLE,1,DOUBLEEDGE,1,NASTYPLOT,1,POUND,1,MEGADRAIN,1,CONFUSION,1,GROWTH,8,LIFEDEW,16,GIGADRAIN,24,PSYSHOCK,32,HELPINGHAND,40,AROMATHERAPY,48,ENERGYBALL,56,PSYCHIC,64,LEECHSEED,72,HEALPULSE,80,SOLARBEAM,88,FUTURESIGHT
 Kind = High King
-BattlerPlayerY = 52
-BattlerEnemyY = 9
-#-------------------------------
-[TREECKO,1]
-FormName = Aisho
-Type1 = FIGHTING
-BaseStats = 71,80,49,40,35,35
-EffortPoints = 0,1,0,0,0,0
-Abilities = STEADFAST,INNERFOCUS
-HiddenAbility = MOXIE
-Moves = 1,POUND,1,LEER,5,SANDATTACK,8,ARMTHRUST,10,WORKUP,13,FORCEPALM,17,PURSUIT,21,BRICKBREAK,25,CALMMIND,29,REVERSAL,33,SCARYFACE,37,UTURN,41,ENTRAINMENT,45,PARTINGSHOT,49,SKYUPPERCUT,57,FINALGAMBIT,61,AURASPHERE
-EggMoves = BULLETPUNCH,COUNTER,FEINT,HELPINGHAND
-Pokedex = They spend their time training in the wild for hours on end. The bands on their wrist represent their mastery of fighting.
-BattlerPlayerX = -1
-BattlerPlayerY = 45
-BattlerEnemyX = -1
-BattlerShadowX = -5
-#-------------------------------
-[GROVYLE,1]
-FormName = Aisho
-Type1 = FIGHTING
-Type2 = DARK
-BaseStats = 80,100,69,50,55,51
-EffortPoints = 0,2,0,0,0,0
-Abilities = STEADFAST,INNERFOCUS
-HiddenAbility = MOXIE
-Moves = 0,PAYBACK,1,POUND,1,LEER,1,SANDATTACK,1,ARMTHRUST,1,KARATECHOP,5,SANDATTACK,8,ARMTHRUST,10,WORKUP,13,FORCEPALM,18,PURSUIT,23,DARKPULSE,28,CALMMIND,33,REVERSAL,38,SCARYFACE,43,UTURN,48,PARTINGSHOT,53,FINALGAMBIT,58,GIGAIMPACT,63,AURASPHERE
-EggMoves = BULLETPUNCH,COUNTER,FEINT,HELPINGHAND,KNOCKOFF,SEISMICTOSS,VITALTHROW,WAKEUPSLAP
-Pokedex = Many martial arts teachers use Grovyle as sparring partners to teach the young. Grovyle are natural leaders and teachers.
-BattlerPlayerX = 0
-BattlerPlayerY = 44
-BattlerEnemyX = -4
-BattlerShadowX = -3
-#-------------------------------
-[SCEPTILE,1]
-FormName = Aisho
-Type1 = FIGHTING
-Type2 = DARK
-BaseStats = 80,100,69,50,55,51
-EffortPoints = 0,2,0,0,0,0
-Abilities = STEADFAST,INNERFOCUS
-HiddenAbility = MOXIE
-Moves = 0,PAYBACK,1,POUND,1,LEER,1,SANDATTACK,1,ARMTHRUST,1,KARATECHOP,5,SANDATTACK,8,ARMTHRUST,10,WORKUP,13,FORCEPALM,18,PURSUIT,23,DARKPULSE,28,CALMMIND,33,REVERSAL,38,SCARYFACE,43,UTURN,48,PARTINGSHOT,53,FINALGAMBIT,58,GIGAIMPACT,63,AURASPHERE
-EggMoves = BULLETPUNCH,COUNTER,FEINT,HELPINGHAND,KNOCKOFF,SEISMICTOSS,VITALTHROW,WAKEUPSLAP
-Pokedex = Many martial arts teachers use Grovyle as sparring partners to teach the young. Grovyle are natural leaders and teachers.
-BattlerPlayerY = 35
-BattlerEnemyX = -1
-BattlerEnemyY = 18
-BattlerShadowX = -5
-#-------------------------------
-[OSHAWOTT,1]
-FormName = Aisho
-Type1 = STEEL
-BaseStats = 50,70,80,38,40,30
-EffortPoints = 0,0,1,0,0,0
-Abilities = STURDY,ROCKHEAD
-HiddenAbility = REGENERATOR
-Moves = 1,TACKLE,1,HARDEN,5,TAILWHIP,7,BULLETPUNCH,11,METALSOUND,13,ROCKTOMB,17,FURYATTACK,19,SWIFT,23,IRONHEAD,25,POWERGEM,29,ROCKBLAST,31,AGILITY
-EggMoves = BULLETPUNCH,COUNTER,FEINT,HELPINGHAND
-Pokedex = They spend their time training in the wild for hours on end. The bands on their wrist represent their mastery of fighting.
-BattlerPlayerY = 50
-BattlerEnemyY = 31
-BattlerShadowX = -1
+BattlerPlayerY = 47
+BattlerEnemyX = -5
+BattlerShadowSize = 3
 #-------------------------------
 [TYPHLOSION,1]
 FormName = Hisuian
