@@ -57,55 +57,71 @@ end
 #  UI to select game mode
 #===============================================================================
 def pbSelectGameMode
-  vp = Viewport.new(0,0,Graphics.width,Graphics.height)
-  randomizerRules = [:STATIC,:ENCOUNTERS,:GIFTS,:ITEMS]
-  extremeRandomizerRules = [:STATIC,:ENCOUNTERS,:GIFTS,:ITEMS,:TRAINERS,:SPECIES_MOVESETS]
-  nuzlockeRules = [:NOREVIVE, :ONEROUTE, :DUPSCLAUSE, :STATIC, :NICKNAME]
-  hardcoreNuzlockeRules = [:NOREVIVE, :ONEROUTE, :NICKNAME, :NOSTORE, :NOWHITEOUT]
+  vp = Viewport.new(0, 0, Graphics.width, Graphics.height)
+  randomizer_rules         = [:DEXORDER, :STATIC, :ENCOUNTERS, :GIFTS, :ITEMS]
+  super_randomizer_rules   = [:DEXORDER, :STATIC, :ENCOUNTERS, :GIFTS, :ITEMS, :TRAINERS]
+  extreme_randomizer_rules = [:DEXORDER, :STATIC, :ENCOUNTERS, :GIFTS, :ITEMS, :MOVES, :MOVESETS, :TMS, :EGGMOVES, :ABILITIES, :TRAINERS]
+  nuzlocke_rules           = [:NOREVIVE, :ONEROUTE, :NICKNAME, :DUPSCLAUSE, :STATIC]
+  hardcore_nuzlocke_rules  = [:NOREVIVE, :ONEROUTE, :NICKNAME, :NOSTORE, :NOWHITEOUT]
   modes = []
-  modestrings = ["Randomizer","Extreme Randomizer","Nuzlocke","Hardcore Nuzlocke"]
+  modestrings = [_INTL("Randomizer"), _INTL("Super Randomizer"), _INTL("Extreme Randomizer"), _INTL("Nuzlocke"), _INTL("Hardcore Nuzlocke")]
   modeinfo = [
-    ["These are the rules of the Randomizer Mode:",
-"\\l[6]- All wild encounters are randomized
+    [_INTL("These are the rules of the Randomizer Mode:"),
+_INTL("\\l[6]- All wild encounters are randomized
 - All static encounters are randomized
 - All gifted Pokemon are randomized
 - All items are randomized
-- Randomized Pokemon can be species from the Aisho Dex only",
-"\\l[3]You can choose to turn off the Randomizer after the main story ends, but this won't un-randomize your randomized data.",
-"\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Randomizer Mode."],
-["These are the rules of the Extreme Randomizer Mode:",
-"\\l[8]- All wild encounters are randomized
+- Randomized Pokemon can be species from the Aisho Dex only"),
+_INTL("\\l[3]You can choose to turn off the Randomizer after the main story ends, but this won't un-randomize your randomized data."),
+_INTL("\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Randomizer Mode.")],
+[_INTL("These are the rules of the Super Randomizer Mode:"),
+_INTL("\\l[7]- All wild encounters are randomized
 - All static encounters are randomized
 - All gifted Pokemon are randomized
 - All items are randomized
 - All Trainer Pokemon are randomized
-- All Pokemon have their movesets randomized
-- Randomized Pokemon can be any species from the National Dex",
-"\\l[3]You can choose to turn off the Randomizer after the main story ends, but this won't un-randomize your randomized data.",
-"\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Extreme Randomizer Mode."],
-["These are the rules of the Nuzlocke Mode:",
-"\\l[8]- Fainted Pokemon cannot be revived
+- Randomized Pokemon can be any species from the National Dex"),
+_INTL("\\l[3]You can choose to turn off the Randomizer after the main story ends, but this won't un-randomize your randomized data."),
+_INTL("\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Super Randomizer Mode.")],
+[_INTL("These are the rules of the Extreme Randomizer Mode:"),
+_INTL("\\l[11]- All wild encounters are randomized
+- All static encounters are randomized
+- All gifted Pokemon are randomized
+- All items are randomized
+- All Trainer Pokemon are randomized
+- All Pokemon Abilities are randomized
+- All movesets and egg moves are randomized
+- All Moves taught by scrolls and notes are randomized
+- Randomized Pokemon can be any species from the National Dex"),
+_INTL("\\l[3]You can choose to turn off the Randomizer after the main story ends, but this won't un-randomize your randomized data."),
+_INTL("\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Extreme Randomizer Mode.")],
+[_INTL("These are the rules of the Nuzlocke Mode:"),
+_INTL("\\l[8]- Fainted Pokemon cannot be revived
 - You can catch one non-shiny, one shiny/shadow, and one static encounter per map
 - All Pokemon that are caught, must be nicknamed
-- Duplicate species are disregarded from the \"one capture per map\" rule",
-"\\l[2]The challenge starts upon receiving your first Pokeball and ends upon beating the main story.",
-"\\l[3]You will lose the challenge if you have no Pokemon in your Party, or on Sukiro's Islands, that are able to battle.",
-"\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Nuzlocke Mode."],
-["These are the rules of the Hardcore Nuzlocke Mode:",
-"\\l[11]- Fainted Pokemon cannot be revived
+- Duplicate species are disregarded from the \"one capture per map\" rule"),
+_INTL("\\l[3]The challenge starts upon receiving your first Pokeball from Sukiro in Nagisa Bay and ends upon beating the main story."),
+_INTL("\\l[3]You will be allowed to continue the challenge if you white out, but have Pokemon on Sukiro's Islands that can battle."),
+_INTL("\\l[3]You will lose the challenge if you have no Pokemon in your Party, or on Sukiro's Islands, that are able to battle."),
+_INTL("\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Nuzlocke Mode.")],
+[_INTL("These are the rules of the Hardcore Nuzlocke Mode:"),
+_INTL("\\l[11]- Fainted Pokemon cannot be revived
 - You can catch one non-shiny and one shiny/shadow per map.
 - All Pokemon that are caught, must be nicknamed
 - Duplicate species are counted in the \"one capture per map\" rule
 - Static encounters are counted in the \"one capture per map\" rule
-- You cannot purchase any medicinal items from the marts",
-"\\l[2]The challenge starts upon receiving your first Pokeball and ends upon beating the main story.",
-"\\l[3]You will lose the challenge if you have no Pokemon in your Party that are able to battle. Pokemon on Sukiro's Islands do not count.",
-"\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Hardcore Nuzlocke Mode."]
+- You cannot purchase any medicinal items from the marts"),
+_INTL("\\l[3]The challenge starts upon receiving your first Pokeball from Sukiro in Nagisa Bay and ends upon beating the main story."),
+_INTL("\\l[3]You will not be allowed to continue the challenge if you white out, but have Pokemon on Sukiro's Islands."),
+_INTL("\\l[3]You will lose the challenge if you have no Pokemon in your Party or on Sukiro's Islands that are able to battle."),
+_INTL("\\l[3]You will receive a commemorative badge on your Kenshi Card upon beating the game in Hardcore Nuzlocke Mode.")]
   ]
-  pbMessage("Pokémon Bushido offers built-in challenge modifiers like Nuzlocke Mode and Randomizers.")
-  pbMessage("These are meant to offer unique ways to challenge the player in their playthrough.")
-  pbMessage("These are only recommended if you've already played through Pokémon Bushido atleast once.")
-  return false if !pbConfirmMessageSerious("Would you like to play the game with challenge modifiers?")
+  if !$DEBUG
+    pbMessage(_INTL("Pokémon Bushido offers built-in challenge modifiers like Nuzlocke Mode and Randomizers."))
+    pbMessage(_INTL("These are meant to offer unique ways to challenge the player in their playthrough."))
+    pbMessage(_INTL("These are only recommended if you've already played through Pokémon Bushido atleast once."))
+  end
+  return false if pbMessage(_INTL("Would you like to play the game with challenge modifiers?"), [_INTL("No"), _INTL("Yes")]) == 0
   infowindow = Window_AdvancedTextPokemon.newWithSize("",0,Graphics.height - 96,Graphics.width,0,vp)
   infowindow.text = _INTL("Select the modifiers of your choice.\nC: Add/Remove                                 A: More Info")
   infowindow.resizeHeightToFit(infowindow.text)
@@ -128,7 +144,7 @@ def pbSelectGameMode
     infowindow.update
     if Input.trigger?(Input::B)
       infowindow.visible = false
-      if pbConfirmMessage("\\w[#{defaultskin}]Clear current selection of modifiers and start a regular playthrough?")
+      if pbConfirmMessage(_INTL("\\w[{1}]Clear current selection of modifiers and start a regular playthrough?", defaultskin))
         modes.clear
         modes = []
         break
@@ -138,31 +154,44 @@ def pbSelectGameMode
     elsif Input.trigger?(Input::A)
       cmdwindow.visible = false
       infowindow.visible = false
-      modeinfo[cmdwindow.index].each{|m|
-        pbMessage("\\w[#{defaultskin}]#{m}")
+      modeinfo[cmdwindow.index].each{ |m|
+        message = _INTL(m)
+        pbMessage("\\w[#{defaultskin}]#{message}")
       }
       infowindow.visible = true
       cmdwindow.visible = true
       need_refresh = true
     elsif Input.trigger?(Input::C)
       command = cmdwindow.index
-      if command == 4
+      if command == 5
         infowindow.visible = false
         finalmodes = modes.clone
-        finalmodes.map!{|m| next modestrings[m]}
-        finalmodes = finalmodes.to_s.gsub!("\"","")
+        finalmodes.map!{ |m| next modestrings[m] }
+        finalmodes = finalmodes.join(" and ")
         finalmodes = "" if !finalmodes
-        break if pbConfirmMessage("\\w[#{defaultskin}]Would you like to start the game with #{finalmodes.length == 0 ? "no modifiers?" : "these modifiers: #{finalmodes}"}")
+        message = _INTL("{1} mode", finalmodes)
+        message = _INTL("Normal mode") if finalmodes.length == 0
+        break if pbConfirmMessage(_INTL("\\w[{1}]Would you like to start the game in {2}?", defaultskin, message))
         infowindow.visible = true
       else
         pbPlayCursorSE
         if !modes.include?(command)
           modes.push(command)
           modes.uniq!
-          modes.delete(1) if command == 0
-          modes.delete(0) if command == 1
-          modes.delete(3) if command == 2
-          modes.delete(2) if command == 3
+          if command == 0
+            modes.delete(1)
+            modes.delete(2)
+          end
+          if command == 1
+            modes.delete(0)
+            modes.delete(2)
+          end
+          if command == 2
+            modes.delete(0)
+            modes.delete(1)
+          end
+          modes.delete(3) if command == 4
+          modes.delete(4) if command == 3
         else
           modes.delete(command)
           modes.uniq!
@@ -173,18 +202,36 @@ def pbSelectGameMode
   end
   pbFadeOutIn(99999) {
     modes.each do |m|
-      if [0,1].include?(m)
+      case m
+      when 0
         Randomizer.reset
         $PokemonGlobal.isRandomizer = true
-        $PokemonGlobal.randomizerRules = (m == 1)? extremeRandomizerRules : randomizerRules
-        Randomizer.set_rules((m == 1)? extremeRandomizerRules : randomizerRules)
-        Randomizer.start(true,m == 1)
-      elsif [2,3].include?(m)
+        $PokemonGlobal.randomizerRules = randomizer_rules
+        Randomizer.set_rules(randomizer_rules)
+        Randomizer.start(true, false)
+      when 1
+        Randomizer.reset
+        $PokemonGlobal.isRandomizer = true
+        $PokemonGlobal.randomizerRules = super_randomizer_rules
+        Randomizer.set_rules(super_randomizer_rules)
+        Randomizer.start(true, true)
+      when 2
+        Randomizer.reset
+        $PokemonGlobal.isRandomizer = true
+        $PokemonGlobal.randomizerRules = extreme_randomizer_rules
+        Randomizer.set_rules(extreme_randomizer_rules)
+        Randomizer.start(true, true)
+      when 3
         Nuzlocke.reset
         $PokemonGlobal.isNuzlocke = true
-        $PokemonGlobal.nuzlockeRules = (m == 3)? hardcoreNuzlockeRules : nuzlockeRules
-        Nuzlocke.toggle(true)
-        Nuzlocke.set_rules((m == 3)? hardcoreNuzlockeRules : nuzlockeRules)
+        $PokemonGlobal.nuzlockeRules = nuzlocke_rules
+        Nuzlocke.set_rules(nuzlocke_rules)
+        Nuzlocke.start(true)
+      when 4
+        Nuzlocke.reset
+        $PokemonGlobal.isNuzlocke = true
+        $PokemonGlobal.nuzlockeRules = hardcore_nuzlocke_rules
+        Nuzlocke.set_rules(hardcore_nuzlocke_rules)
         Nuzlocke.start(true)
       end
     end

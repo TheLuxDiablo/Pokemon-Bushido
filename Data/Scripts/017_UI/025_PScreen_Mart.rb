@@ -33,7 +33,12 @@ class PokemonMartAdapter
   end
 
   def getDescription(item)
-    return pbGetMessage(MessageTypes::ItemDescriptions,item)
+    if pbIsMachine?(item)
+      machine = pbGetMachine(item)
+      pbGetMessage(MessageTypes::MoveDescriptions,machine)
+    else
+      return pbGetMessage(MessageTypes::ItemDescriptions,item)
+    end
   end
 
   def getItemIcon(item)

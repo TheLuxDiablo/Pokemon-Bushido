@@ -50,7 +50,6 @@ module Randomizer
       end
       # randomizes the species of each trainer party and removes move data if present
       for j in 0...data[i][3].length
-        # if defined as an exclusion rule, species will not be randomized
         default = data[i][3][j][TPSPECIES]
         data[i][3][j][TPSPECIES] = self.getRandomizedPkmn(:TRAINER,default,default)
         # erases moves so they get auto-generated
@@ -124,7 +123,7 @@ module Randomizer
   #  randomizes static battles called through events
   #-----------------------------------------------------------------------------
   def self.getRandomizedPkmn(key ,data = nil, index = nil)
-    array = self.getRandomizedData(nil,:DEXORDER)
+    array = self.getRandomizedData(nil, :DEXORDER)
     return data if !array || !array[key]
     return array[key] if !index
     return array[key][index]
@@ -158,10 +157,29 @@ module Randomizer
     return items
   end
   #-----------------------------------------------------------------------------
-  #  randomizes all movesets
+  #  randomizes all abilities
   #-----------------------------------------------------------------------------
-  def self.randomizeMovesets
-    # shuffles up item indexes to load a different one
+  def self.randomizeAbilities
+    # shuffles up ability indexes to load a different one
+    abils = (0..PBAbilities.maxValue).to_a
+    abils.compact!
+    abils.uniq!
+    4.times { abils.shuffle! }
+    excl = []
+    excl.push(0)
+    excl.uniq!
+    excl.each do |abil|
+      new_abil = abils.index(abil)
+      next if !new_abil
+      abils[abil], abils[new_abil] = abils[new_abil], abils[abil]
+    end
+    return abils
+  end
+  #-----------------------------------------------------------------------------
+  #  randomizes all moves
+  #-----------------------------------------------------------------------------
+  def self.randomizeMoves
+    # shuffles up move indexes to load a different one
     moves = (0..PBMoves.maxValue).to_a
     moves.compact!
     moves.uniq!
@@ -180,12 +198,68 @@ module Randomizer
       next if !new_move
       moves[move], moves[new_move] = moves[new_move], moves[move]
     end
+    return moves
+  end
+  #-----------------------------------------------------------------------------
+  #  randomizes all movesets
+  #-----------------------------------------------------------------------------
+  def self.randomizeMovesets
     data = load_data("Data/species_movesets.dat").clone
     for i in 1...data.length
       moveset = data[i]
       for j in 0...moveset.length
-        move = moveset[j]
-        data[i][j][1] = moves[move[1]]
+        move     = moveset[j][1]
+        new_move = Randomizer.getRandomizedData(move, :MOVES, move)
+        data[i][j][1] = new_move
+      end
+    end
+    return data
+  end
+  #-----------------------------------------------------------------------------
+  #  randomizes all movesets
+  #-----------------------------------------------------------------------------
+  def self.randomizeSpeciesAbilities
+    data = pbLoadSpeciesData.clone
+    for i in 1...data.length
+      abil   = data[i][SpeciesAbilities].clone
+      h_abil = data[i][SpeciesHiddenAbility].clone
+      if abil.is_a?(Array)
+        data[i][SpeciesAbilities] = abil.map! { |a| next Randomizer.getRandomizedData(a, :ABILITIES, a || 0) }
+      else
+        data[i][SpeciesAbilities] = Randomizer.getRandomizedData(abil, :ABILITIES, abil || 0)
+      end
+      if h_abil.is_a?(Array)
+        data[i][SpeciesHiddenAbility] = h_abil.map! { |a| next Randomizer.getRandomizedData(a, :ABILITIES, a || 0) }
+      else
+        data[i][SpeciesHiddenAbility] = Randomizer.getRandomizedData(h_abil, :ABILITIES, h_abil || 0)
+      end
+    end
+    $PokemonGlobal.randomizedData[:SPECIES] = data.clone
+    $PokemonTemp.speciesData = nil
+    return true
+  end
+  #-----------------------------------------------------------------------------
+  #  randomizes all TM compatibility
+  #-----------------------------------------------------------------------------
+  def self.randomizeTMs
+    tm_data = {}
+    (1..PBMoves.maxValue).each do |move|
+      tm_data[move] = Randomizer.getRandomizedPkmn(:STATIC).sample(PBSpecies.maxValueF)
+    end
+    return tm_data
+  end
+  #-----------------------------------------------------------------------------
+  #  randomizes all Egg Moves
+  #-----------------------------------------------------------------------------
+  def self.randomizeEggMoves
+    data = load_data("Data/species_eggmoves.dat").clone
+    for i in 1...data.length
+      egg_data = data[i]
+      next if !egg_data
+      for j in 0...egg_data.length
+        move     = egg_data[j]
+        new_move = Randomizer.getRandomizedData(move, :MOVES, move)
+        data[i][j] = new_move
       end
     end
     return data
@@ -193,23 +267,31 @@ module Randomizer
   #-----------------------------------------------------------------------------
   #  begins the process of randomizing all data
   #-----------------------------------------------------------------------------
-  def self.randomizeData
-    data = {}
+  def self.randomizeData(extreme)
+    $PokemonGlobal.randomizedData = {}
     # compiles hashtable with randomized values
     randomized = {
-      :TRAINERS => proc{ next Randomizer.randomizeTrainers },
-      :ENCOUNTERS => proc {next Randomizer.randomizeEncounters },
-      :STATIC => proc{ next Randomizer.getRandomizedPkmn(:STATIC) },
-      :GIFTS => proc{ next Randomizer.getRandomizedPkmn(:GIFTS) },
-      :ITEMS => proc{ next Randomizer.randomizeItems },
-      :SPECIES_MOVESETS => proc{ next Randomizer.randomizeMovesets },
+      :DEXORDER   => proc { next Randomizer.randomizeRegionalDex(extreme) },
+      :TRAINERS   => proc { next Randomizer.randomizeTrainers },
+      :ENCOUNTERS => proc { next Randomizer.randomizeEncounters },
+      :STATIC     => proc { next Randomizer.getRandomizedPkmn(:STATIC) },
+      :GIFTS      => proc { next Randomizer.getRandomizedPkmn(:GIFTS) },
+      :ITEMS      => proc { next Randomizer.randomizeItems },
+      :MOVES      => proc { next Randomizer.randomizeMoves },
+      :MOVESETS   => proc { next Randomizer.randomizeMovesets },
+      :ABILITIES  => proc {
+        ret = Randomizer.randomizeAbilities
+        $PokemonGlobal.randomizedData[:ABILITIES] = ret
+        Randomizer.randomizeSpeciesAbilities
+        next ret
+      },
+      :TMS        => proc { next Randomizer.randomizeTMs },
+      :EGGMOVES   => proc { next Randomizer.randomizeEggMoves },
     }
     # applies randomized data for specified rule sets
     for key in @@rules
-      data[key] = randomized[key].call if randomized.has_key?(key)
+      $PokemonGlobal.randomizedData[key] = randomized[key].call if randomized.has_key?(key)
     end
-    # return randomized data
-    return data
   end
   #-----------------------------------------------------------------------------
   #  returns randomized data for specific entry
@@ -225,19 +307,13 @@ module Randomizer
   #-----------------------------------------------------------------------------
   # randomizes all data and toggles on randomizer
   #-----------------------------------------------------------------------------
-  def self.start(skip = false,extreme = false)
+  def self.start(skip = false, extreme = false)
     ret = $PokemonGlobal && $PokemonGlobal.isRandomizer
     ret, cmd = self.randomizerSelection unless skip
     @@randomizer = ret
     $PokemonGlobal.isRandomizer = ret
     # randomize data and cache it
-    if !$PokemonGlobal.randomizedData
-      rand_dex =  Randomizer.randomizeRegionalDex(extreme)
-      $PokemonGlobal.randomizedData = {}
-      $PokemonGlobal.randomizedData[:DEXORDER] = rand_dex.clone
-      $PokemonGlobal.randomizedData = self.randomizeData
-      $PokemonGlobal.randomizedData[:DEXORDER] = rand_dex.clone
-    end
+    self.randomizeData(extreme) if !$PokemonGlobal.randomizedData
     # refresh encounter tables
     pbClearData(true)
     $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
@@ -290,9 +366,52 @@ def pbLoadMovesetsData
   $PokemonTemp = PokemonTemp.new if !$PokemonTemp
   if !$PokemonTemp.speciesMovesets
     data = load_data("Data/species_movesets.dat") || []
-    $PokemonTemp.speciesMovesets = Randomizer.getRandomizedData(data, :SPECIES_MOVESETS)
+    $PokemonTemp.speciesMovesets = Randomizer.getRandomizedData(data, :MOVESETS)
   end
   return $PokemonTemp.speciesMovesets
+end
+
+def pbLoadSpeciesTMData
+  $PokemonTemp = PokemonTemp.new if !$PokemonTemp
+  if !$PokemonTemp.speciesTMData
+    data = load_data("Data/tm.dat") || []
+    $PokemonTemp.speciesTMData = Randomizer.getRandomizedData(data, :TMS)
+  end
+  return $PokemonTemp.speciesTMData
+end
+
+def pbLoadEggMovesData
+  $PokemonTemp = PokemonTemp.new if !$PokemonTemp
+  if !$PokemonTemp.speciesEggMoves
+    data = load_data("Data/species_eggmoves.dat") || []
+    $PokemonTemp.speciesEggMoves = Randomizer.getRandomizedData(data, :EGGMOVES)
+  end
+  return $PokemonTemp.speciesEggMoves
+end
+
+def pbLoadSpeciesData
+  $PokemonTemp = PokemonTemp.new if !$PokemonTemp
+  if !$PokemonTemp.speciesData
+    data = load_data("Data/species.dat") || []
+    $PokemonTemp.speciesData = Randomizer.getRandomizedData(data, :SPECIES)
+  end
+  return $PokemonTemp.speciesData
+end
+
+alias pbGetItemData_randomizer pbGetItemData unless defined?(pbGetItemData_randomizer)
+def pbGetItemData(*args)
+  type = args[1]
+  ret  = pbGetItemData_randomizer(*args)
+  rules = Randomizer.rules || []
+  if rules.include?(:TMS)
+    if type < 0
+      move = ret[ITEM_MACHINE]
+      ret[ITEM_MACHINE] = Randomizer.getRandomizedData(move, :MOVES, move)
+    elsif type == ITEM_MACHINE
+      ret = Randomizer.getRandomizedData(ret, :MOVES, ret)
+    end
+  end
+  return ret
 end
 
 #===============================================================================

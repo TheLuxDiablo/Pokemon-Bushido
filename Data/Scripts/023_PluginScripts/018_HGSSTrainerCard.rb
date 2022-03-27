@@ -74,15 +74,29 @@ class PokemonTrainerCard_Scene
        $PokemonGlobal.startTime.day,
        $PokemonGlobal.startTime.year)
     # loop through all pokemon and see if they've been purified, check if has NATIONAL ribbon?
-    $game_variables[94]=pbGetTotalPurified
-    gameModes = []
-    gameModes.push("#{($PokemonGlobal.randomizerRules && $PokemonGlobal.randomizerRules.include?(:SPECIES_MOVESETS))? "Extreme " : ""}Randomizer") if Randomizer.on?
-    gameModes.push("#{($PokemonGlobal.nuzlockeRules && $PokemonGlobal.nuzlockeRules.include?(:NOSTORE))? "Hardcore " : ""}Nuzlocke") if Nuzlocke.on?
-    gameModes.push("Normal") if gameModes.length == 0
-    gameModes = gameModes.to_s
-    gameModes.gsub!("\"","")
-    gameModes.gsub!("[","")
-    gameModes.gsub!("]","")
+    $game_variables[94] = pbGetTotalPurified
+    game_modes = []
+    if Randomizer.on? && $PokemonGlobal.randomizerRules
+      if $PokemonGlobal.randomizerRules.include?(:MOVESETS)
+        game_modes.push(_INTL("Extreme Randomizer"))
+      elsif $PokemonGlobal.randomizerRules.include?(:TRAINERS)
+        game_modes.push(_INTL("Super Randomizer"))
+      else
+        game_modes.push(_INTL("Randomizer"))
+      end
+    end
+    if (Nuzlocke.on? || $PokemonGlobal.qNuzlocke) && $PokemonGlobal.nuzlockeRules
+      if $PokemonGlobal.nuzlockeRules.include?(:NOSTORE)
+        game_modes.push(_INTL("Hardcore Nuzlocke"))
+      else
+        game_modes.push(_INTL("Nuzlocke"))
+      end
+    end
+    game_modes.push(_INTL("Normal")) if game_modes.length == 0
+    game_modes = game_modes.to_s
+    game_modes.gsub!("\"","")
+    game_modes.gsub!("[","")
+    game_modes.gsub!("]","")
     imagepos = []
     if $game_variables[99]=="Hattori"
        textPositions = [
@@ -97,8 +111,7 @@ class PokemonTrainerCard_Scene
           #[sprintf("%d",$game_variables[99]),302+2,112+32,1,baseColor,shadowColor],
           [_INTL("Pokémon Corrupted"),32,112+64,0,baseColor,shadowColor],
           [sprintf("%d",$game_variables[199]),302+2,112+64,1,baseColor,shadowColor],
-          [_INTL("GAME MODE"),32,256+32,0,baseColor,shadowColor],
-          [_INTL("Tales of Aisho"),302+89*2,256+32,1,baseColor,shadowColor]
+          [_INTL("Tales of Aisho"),32,256+32,1,baseColor,shadowColor]
           #[_INTL("ADVENTURE STARTED"),32,256+32,0,baseColor,shadowColor],
           #[starttime,302+89*2,256+32,1,baseColor,shadowColor]
        ]
@@ -117,8 +130,7 @@ class PokemonTrainerCard_Scene
          [sprintf("%d",$game_variables[100]),302+2,112+64,1,baseColor,shadowColor],
          [_INTL("Shadows Purified"),32,112+98,0,baseColor,shadowColor],
          [sprintf("%d",$game_variables[94]),302+2,112+98,1,baseColor,shadowColor],
-         [_INTL("GAME MODE"),32,208+48,0,baseColor,shadowColor],
-         [gameModes,302+88*2,208+48,1,baseColor,shadowColor],
+         [_INTL("{1} mode", game_modes),32,208+48,0,baseColor,shadowColor],
          [_INTL("ADVENTURE STARTED"),32,256+32,0,baseColor,shadowColor],
          [starttime,302+89*2,256+32,1,baseColor,shadowColor]
       ]
@@ -137,8 +149,7 @@ class PokemonTrainerCard_Scene
          [sprintf("%d",$game_variables[100]),302+2,112+64,1,baseColor,shadowColor],
          [_INTL("---"),32,112+98,0,baseColor,shadowColor],
          [sprintf("-"),302+2,112+98,1,baseColor,shadowColor],
-         [_INTL("GAME MODE"),32,208+48,0,baseColor,shadowColor],
-         [gameModes,302+88*2,208+48,1,baseColor,shadowColor],
+         [_INTL("{1} mode", game_modes),32,208+48,0,baseColor,shadowColor],
          [_INTL("ADVENTURE STARTED"),32,256+32,0,baseColor,shadowColor],
          [starttime,302+89*2,256+32,1,baseColor,shadowColor]
       ]
@@ -157,18 +168,19 @@ class PokemonTrainerCard_Scene
          [sprintf("-"),302+2,112+64,1,baseColor,shadowColor],
          [_INTL("---"),32,112+98,0,baseColor,shadowColor],
          [sprintf("-"),302+2,112+98,1,baseColor,shadowColor],
-         [_INTL("GAME MODE"),32,208+48,0,baseColor,shadowColor],
-         [gameModes,302+88*2,208+48,1,baseColor,shadowColor],
+         [_INTL("{1} mode", game_modes),32,208+48,0,baseColor,shadowColor],
          [_INTL("ADVENTURE STARTED"),32,256+32,0,baseColor,shadowColor],
          [starttime,302+89*2,256+32,1,baseColor,shadowColor]
       ]
     end
     # Draw trainer achievements
     x = 462
-    for i in 0...8
-      if $PokemonGlobal.gameModesWon[i]
-        imagepos.push(["Graphics/Pictures/Trainer Card/icon_badges",x,10,i*32,0,32,32])
-        x -= 36
+    if $game_variables[99] != "Hattori"
+      for i in 0...8
+        if $PokemonGlobal.gameModesWon[i]
+          imagepos.push(["Graphics/Pictures/Trainer Card/icon_badges",x,10,i*32,0,32,32])
+          x -= 36
+        end
       end
     end
     pbDrawImagePositions(@overlay,imagepos)

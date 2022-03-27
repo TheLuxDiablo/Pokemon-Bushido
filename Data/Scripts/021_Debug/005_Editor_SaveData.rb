@@ -319,7 +319,7 @@ end
 # Save TM compatibility data to PBS file
 #===============================================================================
 def pbSaveMachines
-  machines = pbLoadSpeciesTMData
+  machines = load_data("Data/tm.dat")
   return if !machines
   File.open("PBS/tm.txt","wb") { |f|
     f.write(0xEF.chr)

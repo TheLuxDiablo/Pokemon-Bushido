@@ -228,12 +228,15 @@ _END_
       if Randomizer.on?
         pbMEPlay("DexSound8")
         getBadge = true
-        if $PokemonGlobal.randomizerRules && $PokemonGlobal.randomizerRules.include?(:SPECIES_MOVESETS)
+        if $PokemonGlobal.randomizerRules && $PokemonGlobal.randomizerRules.include?(:MOVESETS)
+          $PokemonGlobal.gameModesWon[3] = true
+          pbMessage(_INTL("You beat the game in Extreme Randomizer Mode."))
+        elsif $PokemonGlobal.randomizerRules && $PokemonGlobal.randomizerRules.include?(:TRAINERS)
           $PokemonGlobal.gameModesWon[2] = true
-          pbMessage("You beat the game in Extreme Randomizer Mode.")
+          pbMessage(_INTL("You beat the game in Super Randomizer Mode."))
         else
           $PokemonGlobal.gameModesWon[1] = true
-          pbMessage("You beat the game in Randomizer Mode.")
+          pbMessage(_INTL("You beat the game in Randomizer Mode."))
         end
         if pbConfirmMessage("Would you like to turn the Randomizer off? (You won't be able to turn it back on)")
           Randomizer.toggle(false)
@@ -244,15 +247,17 @@ _END_
         pbMEPlay("DexSound8")
         getBadge = true
         if $PokemonGlobal.nuzlockeRules && $PokemonGlobal.nuzlockeRules.include?(:NOSTORE)
-          $PokemonGlobal.gameModesWon[4] = true
-          pbMessage("You beat the game with the Hardcore Nuzlocke Mode.")
+          $PokemonGlobal.gameModesWon[5] = true
+          pbMessage(_INTL("You beat the game with the Hardcore Nuzlocke Mode."))
         else
-          $PokemonGlobal.gameModesWon[3] = true
-          pbMessage("You beat the game in Nuzlocke Mode.")
+          $PokemonGlobal.gameModesWon[4] = true
+          pbMessage(_INTL("You beat the game in Nuzlocke Mode."))
         end
+        pbMessage(_INTL("Nuzlocke Mode has been turned off."))
         Nuzlocke.toggle(false)
         $PokemonGlobal.isNuzlocke = false
-        pbMessage("#{getBadge == true ? "" : "\\me[BOTW-GetFanfare]"}Your trainer card has been updated with new badges.")
+        pbMEPlay("BOTW-GetFanfare") if getBadge
+        pbMessage(_INTL("Your trainer card has been updated with new badges."))
       end
     }
     pbBGMPlay(previousBGM)

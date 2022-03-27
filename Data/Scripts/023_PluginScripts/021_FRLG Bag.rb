@@ -217,8 +217,14 @@ class PokemonBag_Scene
     # Set the selected item's icon
     @sprites["itemicon"].item = itemlist.item
     # Set the selected item's description
-    @sprites["itemtext"].text = (itemlist.item == 0) ? _INTL("Close bag.") :
-       pbGetMessage(MessageTypes::ItemDescriptions,itemlist.item)
+    if itemlist.item == 0
+      @sprites["itemtext"].text = _INTL("Close bag.")
+    elsif pbIsMachine?(itemlist.item)
+      machine = pbGetMachine(itemlist.item)
+      @sprites["itemtext"].text = pbGetMessage(MessageTypes::MoveDescriptions,machine)
+    else
+      @sprites["itemtext"].text = pbGetMessage(MessageTypes::ItemDescriptions,itemlist.item)
+    end
   end
 
 
