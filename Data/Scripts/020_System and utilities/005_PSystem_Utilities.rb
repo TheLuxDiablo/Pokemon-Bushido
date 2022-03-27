@@ -576,7 +576,8 @@ def pbTrainerName(name=nil,outfit=0)
 end
 
 def pbSuggestTrainerName(gender)
-  return System.user_name.capitalize
+  names = [_INTL("Ichiro"), _INTL("Aiko")]
+  return names[gender] || System.user_name
 end
 
 def pbGetUserName
