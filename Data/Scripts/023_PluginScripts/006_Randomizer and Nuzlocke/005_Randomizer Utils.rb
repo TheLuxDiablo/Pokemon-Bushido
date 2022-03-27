@@ -18,6 +18,8 @@ def generateRandomPkmn(species,level)
   species = getID(PBSpecies, species) if species.is_a?(Symbol) || species.is_a?(String)
   pkmn = PokeBattle_Pokemon.new(species, level, $Trainer)
   newpkmn = randomizeSpecies(pkmn, true)
+  #Thundaga, jankily making species always change on reset
+  newpkmn.species = rand(PBSpecies.maxValue)
   return newpkmn
 end
 
