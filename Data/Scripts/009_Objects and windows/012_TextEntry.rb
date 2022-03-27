@@ -876,6 +876,8 @@ class PokemonEntryScene
   end
 
   def pbEntry
+    #Thundaga, disallow speedup on text entry
+    pbDisallowSpeedup()
     return USEKEYBOARD ? pbEntry1 : pbEntry2
   end
 
@@ -884,6 +886,8 @@ class PokemonEntryScene
     pbFadeOutAndHide(@sprites)
     pbDisposeSpriteHash(@sprites)
     @viewport.dispose
+    #Thundaga, reallow speedup after text entry
+    pbAllowSpeedup()
   end
 end
 
