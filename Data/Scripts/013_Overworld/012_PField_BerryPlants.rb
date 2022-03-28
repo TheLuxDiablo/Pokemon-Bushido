@@ -22,7 +22,7 @@ def pbGetBerryPlantData(item)
   return [3,15,2,5]   # Hours/stage, drying/hour, min yield, max yield
 end
 
-alias __berryPlant__pbClearData pbClearData
+alias __berryPlant__pbClearData pbClearData unless defined?(__berryPlant__pbClearData)
 def pbClearData(noanim = false)
   $PokemonTemp.berryPlantData = nil if $PokemonTemp
   __berryPlant__pbClearData(noanim)

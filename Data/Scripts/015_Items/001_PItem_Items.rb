@@ -35,7 +35,7 @@ def pbGetItemData(item,itemDataType)
   return nil
 end
 
-alias __itemsData__pbClearData pbClearData
+alias __itemsData__pbClearData pbClearData unless defined?(__itemsPlant__pbClearData)
 def pbClearData(noanim = false)
   $PokemonTemp.itemsData = nil if $PokemonTemp
   __itemsData__pbClearData(noanim)

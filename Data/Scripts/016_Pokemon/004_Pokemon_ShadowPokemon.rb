@@ -279,7 +279,7 @@ class PokeBattle_Pokemon
   attr_accessor :shadowmovenum
   HEARTGAUGESIZE = 3840
 
-  alias :__shadow_expeq :exp=
+  alias __shadow_expeq exp= unless method_defined?(:__shadow_expeq)
   def exp=(value)
     if shadowPokemon?
       @savedexp += value-self.exp
@@ -288,7 +288,7 @@ class PokeBattle_Pokemon
     end
   end
 
-  alias :__shadow_hpeq :hp=
+  alias __shadow_hpeq hp= unless method_defined?(:__shadow_hpeq)
   def hp=(value)
     __shadow_hpeq(value)
     @hypermode = false if value<=0
@@ -319,7 +319,7 @@ class PokeBattle_Pokemon
   def shadowPokemon?
     return @shadow && @heartgauge && @heartgauge>=0
   end
-  alias :isShadow? :shadowPokemon?
+  alias isShadow? shadowPokemon?
 
   def makeShadow
     self.shadow      = true
@@ -371,7 +371,7 @@ class PokeBattle_Pokemon
     end
   end
 
-  alias :__shadow_clone :clone
+  alias __shadow_clone clone unless method_defined?(:__shadow_clone)
   def clone
     ret = __shadow_clone
     ret.savedev     = self.savedev.clone if self.savedev
@@ -386,7 +386,7 @@ end
 # Shadow Pokémon in battle.
 #===============================================================================
 class PokeBattle_Battle
-  alias __shadow__pbCanUseItemOnPokemon? pbCanUseItemOnPokemon?
+  alias __shadow__pbCanUseItemOnPokemon? pbCanUseItemOnPokemon? unless method_defined?(:__shadow__pbCanUseItemOnPokemon?)
 
   def pbCanUseItemOnPokemon?(item,pkmn,battler,scene,showMessages=true)
     ret = __shadow__pbCanUseItemOnPokemon?(item,pkmn,battler,scene,showMessages)
@@ -404,7 +404,7 @@ end
 
 
 class PokeBattle_Battler
-  alias __shadow__pbInitPokemon pbInitPokemon
+  alias __shadow__pbInitPokemon pbInitPokemon unless method_defined?(:__shadow__pbInitPokemon)
 
   def pbInitPokemon(*arg)
     if self.pokemonIndex>0 && inHyperMode?

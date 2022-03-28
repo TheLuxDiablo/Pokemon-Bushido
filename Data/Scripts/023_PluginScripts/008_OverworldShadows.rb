@@ -75,7 +75,7 @@ end
 
 class Sprite_Character
 
- alias sh_init initialize
+ alias sh_init initialize unless private_method_defined?(:sh_init)
   def initialize(viewport, character = nil)
     sh_init(viewport,character)
     @shadowoverworldbitmap = Sprite_ShadowOverworld.new(self,character,viewport)
@@ -89,7 +89,7 @@ class Sprite_Character
     @shadowoverworldbitmap.visible = value if @shadowoverworldbitmap
   end
 
-  alias sh_dispose dispose
+  alias sh_dispose dispose unless method_defined?(:sh_dispose)
   def dispose
     sh_dispose
     @shadowoverworldbitmap.dispose if @shadowoverworldbitmap
@@ -97,7 +97,7 @@ class Sprite_Character
     super
   end
 
-  alias sh_update update
+  alias sh_update update unless method_defined?(:sh_update)
   def update
     sh_update
     @shadowoverworldbitmap.update if @shadowoverworldbitmap

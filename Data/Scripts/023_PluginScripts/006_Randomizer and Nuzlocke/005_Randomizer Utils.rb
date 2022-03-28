@@ -19,7 +19,11 @@ def generateRandomPkmn(species,level)
   pkmn = PokeBattle_Pokemon.new(species, level, $Trainer)
   newpkmn = randomizeSpecies(pkmn, true)
   #Thundaga, jankily making species always change on reset
+  old_level = newpkmn.level
   newpkmn.species = rand(PBSpecies.maxValue)
+  newpkmn.calcStats
+  newpkmn.resetMoves
+  newpkmn.level = old_level
   return newpkmn
 end
 

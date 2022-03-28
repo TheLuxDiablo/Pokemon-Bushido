@@ -688,7 +688,7 @@ class ::Numeric
   #-----------------------------------------------------------------------------
   #  Superior way to round stuff
   #-----------------------------------------------------------------------------
-	alias quick_mafs round
+	alias quick_mafs round unless method_defined?(:quick_mafs)
 	def round(n = 0)
 		# gets the current float to an actually roundable integer
 		t = self*(10.0**n)

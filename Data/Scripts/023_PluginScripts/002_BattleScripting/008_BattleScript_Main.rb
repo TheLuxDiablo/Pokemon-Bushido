@@ -718,7 +718,7 @@ end
 
 class PokeBattle_Battler
 # Faint Dialogue
-  alias dialogue_faint pbFaint
+  alias dialogue_faint pbFaint unless method_defined?(:dialogue_faint)
 
   def pbFaint(showMessage=true)
     dialogue_faint(showMessage=true)
@@ -1311,7 +1311,7 @@ end
 # New Graphics stuff added by the script
 #------------------------------------------------------------------------------#
 class PokeBattle_Scene
-  alias mbd_initSprites pbInitSprites
+  alias mbd_initSprites pbInitSprites unless method_defined?(:mbd_initSprites)
 
   def pbInitSprites
     mbd_initSprites

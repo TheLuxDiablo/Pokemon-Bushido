@@ -4,7 +4,7 @@
 # ----------------
 #  Various utilities used within my plugins. Neat and nifty ways to speed
 #  the coding process of certain scripts.
-SOFTRESETFIX = true
+SOFTRESETFIX = false
 # set up plugin metadata
 if defined?(PluginManager)
   PluginManager.register({
@@ -103,7 +103,7 @@ class ::Numeric
   #-----------------------------------------------------------------------------
   #  Superior way to round stuff
   #-----------------------------------------------------------------------------
-	alias quick_mafs round
+	alias quick_mafs round unless method_defined?(:quick_mafs)
 	def round(n = 0)
 		# gets the current float to an actually roundable integer
 		t = self*(10.0**n)
@@ -1060,7 +1060,7 @@ end
 #===============================================================================
 class Color
 	# alias for old constructor
-	alias initialize_without_conversion initialize unless self.method_defined?(:initialize_without_conversion)
+	alias initialize_org initialize unless private_method_defined?(:initialize_org)
   #-----------------------------------------------------------------------------
 	# new constructor accepts RGB values as well as a hex number or string value
   #-----------------------------------------------------------------------------
@@ -1080,8 +1080,8 @@ class Color
 		elsif args.length == 3
 			r, g, b = *args
 		end
-		return initialize_without_conversion(r, g, b) if r && g && b
-		return initialize_without_conversion(*args)
+		return initialize_org(r, g, b) if r && g && b
+		return initialize_org(*args)
 	end
   #-----------------------------------------------------------------------------
 	# returns an RGB color value as a hex value
@@ -1384,7 +1384,7 @@ end
 #  Other utilities
 #===============================================================================
 # Allows for skipping of the global wait function
-alias pbWait_updater pbWait
+alias pbWait_updater pbWait unless defined?(pbWait_updater)
 def pbWait(*args)
   skip = $skipDatWait
   $skipDatWait = false

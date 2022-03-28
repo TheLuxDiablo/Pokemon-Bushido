@@ -324,14 +324,14 @@ Events.onWildPokemonCreate+=proc {|sender,e|
 ################################################################################
 
 class PokemonEncounters
-  alias isCave_phenomenon isCave?
+  alias isCave_phenomenon isCave? unless method_defined?(:isCave_phenomenon)
   def isCave? # show cave background on battle for dust clouds
     return self.hasEncounter?(PhenomenonConfig::Types[:cave][3]) || isCave_phenomenon
   end
 end
 
 class Spriteset_Map
-  alias update_phenomenon update
+  alias update_phenomenon update unless method_defined?(:update_phenomenon)
   def update
     if $PokemonTemp.phenomenonPossible && pbPhenomenonActive? && !$game_temp.in_menu
       phn = $PokemonTemp.phenomenon

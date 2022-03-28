@@ -420,7 +420,7 @@ end
 
 
 class Sprite_Character
-  alias perspectivetilemap_initialize initialize
+  alias perspectivetilemap_initialize initialize unless private_method_defined?(:perspectivetilemap_initialize)
   attr_accessor :character
 
   def initialize(viewport, character = nil)
@@ -428,7 +428,7 @@ class Sprite_Character
     perspectivetilemap_initialize(viewport,character)
   end
 
-  alias update_or :update
+  alias update_or update unless method_defined?(:update_or)
 
   def update
     update_or

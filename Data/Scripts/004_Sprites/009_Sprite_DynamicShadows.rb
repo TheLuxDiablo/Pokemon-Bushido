@@ -126,7 +126,7 @@ end
 # ? CLASS Sprite_Character edit
 #===================================================
 class Sprite_Character < RPG::Sprite
-  alias :shadow_initialize :initialize
+  alias shadow_initialize initialize unless private_method_defined?(:shadow_initialize)
 
   def initialize(viewport, character = nil)
     @ombrelist = []
@@ -151,7 +151,7 @@ class Sprite_Character < RPG::Sprite
     update
   end
 
-  alias shadow_update update
+  alias shadow_update update unless method_defined?(:shadow_update)
 
   def update
     shadow_update
@@ -180,7 +180,7 @@ end
 class Spriteset_Map
   attr_accessor :shadows
 
-  alias shadow_initialize initialize
+  alias shadow_initialize initialize unless private_method_defined?(:shadow_initialize)
   def initialize(map=nil)
     @shadows = []
     warn = false

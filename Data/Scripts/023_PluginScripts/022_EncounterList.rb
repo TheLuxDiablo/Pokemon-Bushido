@@ -101,7 +101,7 @@ end
 ###############################################################################
 
 # Gift Pokémon
-alias encounter_pbAddPokemon pbAddPokemon
+alias encounter_pbAddPokemon pbAddPokemon unless defined?(encounter_pbAddPokemon)
 def pbAddPokemon(pokemon,level=nil,seeform=true,ownform=true)
   ret = encounter_pbAddPokemon(pokemon,level,seeform)
   pbOwnedForm(pokemon) if ownform && ret
@@ -109,7 +109,7 @@ def pbAddPokemon(pokemon,level=nil,seeform=true,ownform=true)
 end
 
 # Silently gift Pokémon
-alias encounter_pbAddPokemonSilent pbAddPokemonSilent
+alias encounter_pbAddPokemonSilent pbAddPokemonSilent unless defined?(encounter_pbAddPokemonSilent)
 def pbAddPokemonSilent(pokemon,level=nil,seeform=true,ownform=true)
   ret = encounter_pbAddPokemonSilent(pokemon,level,seeform)
   pbOwnedForm(pokemon) if ownform && ret
@@ -117,7 +117,7 @@ def pbAddPokemonSilent(pokemon,level=nil,seeform=true,ownform=true)
 end
 
 # Adding Pokémon to party
-alias encounter_pbAddToParty pbAddToParty
+alias encounter_pbAddToParty pbAddToParty unless defined?(encounter_pbAddToParty)
 def pbAddToParty(pokemon,level=nil,seeform=true,ownform=true)
   ret = encounter_pbAddToParty(pokemon,level,seeform)
   pbOwnedForm(pokemon) if ownform && ret
@@ -125,7 +125,7 @@ def pbAddToParty(pokemon,level=nil,seeform=true,ownform=true)
 end
 
 # Silently adding Pokémon to party
-alias encounter_pbAddToPartySilent pbAddToPartySilent
+alias encounter_pbAddToPartySilent pbAddToPartySilent unless defined?(encounter_pbAddToPartySilent)
 def pbAddToPartySilent(pokemon,level=nil,seeform=true,ownform=true)
   ret = encounter_pbAddToPartySilent(pokemon,level,seeform)
   pbOwnedForm(pokemon) if ownform && ret
@@ -133,7 +133,7 @@ def pbAddToPartySilent(pokemon,level=nil,seeform=true,ownform=true)
 end
 
 # Adding foreign Pokémon like Shuckie
-alias encounter_pbAddForeignPokemon pbAddForeignPokemon
+alias encounter_pbAddForeignPokemon pbAddForeignPokemon unless defined?(encounter_pbAddForeignPokemon)
 def pbAddForeignPokemon(pokemon,level=nil,ownerName=nil,nickname=nil,ownerGender=0,seeform=true,ownform=true)
   ret = encounter_pbAddForeignPokemon(pokemon,level,seeform)
   pbOwnedForm(pokemon) if ownform && ret
@@ -142,7 +142,7 @@ end
 
 # Adding foreign Pokémon like Shuckie
 if defined?(pbAddForeignPokemonBetter)
-  alias encounter_pbAddForeignPokemonBetter pbAddForeignPokemonBetter
+  alias encounter_pbAddForeignPokemonBetter pbAddForeignPokemonBetter unless defined?(encounter_pbAddForeignPokemonBetter)
   def pbAddForeignPokemonBetter(pokemon,level=nil,ownerName=nil,nickname=nil,
     ownerGender=0,seeform=true,shiny=true,ability=0,form=0,pokeGender=0,nature=0,ballUsed=0,
     move1=nil,move2=nil,move3=nil,move4=nil,
@@ -156,7 +156,7 @@ if defined?(pbAddForeignPokemonBetter)
 end
 
 # Hatching an egg
-alias encounter_pbHatch pbHatch
+alias encounter_pbHatch pbHatch unless defined?(encounter_pbHatch)
 def pbHatch(pokemon)
   encounter_pbHatch(pokemon)
   pbOwnedForm(pokemon) # Edit
@@ -165,7 +165,7 @@ end
 class PokemonEvolutionScene
 
   # Evolution
-  alias encounter_pbEvolutionSuccess pbEvolutionSuccess
+  alias encounter_pbEvolutionSuccess pbEvolutionSuccess unless method_defined?(:encounter_pbEvolutionSuccess)
   def pbEvolutionSuccess
     encounter_pbEvolutionSuccess
     pbOwnedForm(@pokemon) # Edit

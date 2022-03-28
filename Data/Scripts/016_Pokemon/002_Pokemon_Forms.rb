@@ -37,7 +37,7 @@ class PokeBattle_Pokemon
     return pbGetFSpeciesFromForm(@species,formSimple)
   end
 
-  alias __mf_initialize initialize
+  alias __mf_initialize initialize unless private_method_defined?(:__mf_initialize)
   def initialize(*args)
     @form = (pbGetSpeciesFromFSpecies(args[0])[1] rescue 0)
     __mf_initialize(*args)

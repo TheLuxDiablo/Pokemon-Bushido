@@ -77,7 +77,7 @@ def pbExportAMap
   vp.dispose
 end
 
-alias map_exporter_menu pbDebugMenuCommands
+alias map_exporter_menu pbDebugMenuCommands unless defined?(map_exporter_menu)
 def pbDebugMenuCommands(showall = true)
   cmds = map_exporter_menu(showall)
   if showall
@@ -87,7 +87,7 @@ def pbDebugMenuCommands(showall = true)
   return cmds
 end
 
-alias map_exporter_actions pbDebugMenuActions
+alias map_exporter_actions pbDebugMenuActions unless defined?(map_exporter_actions)
 def pbDebugMenuActions(cmd = "", sprites = nil, viewport = nil)
   if cmd == "exportmap"
     pbExportAMap

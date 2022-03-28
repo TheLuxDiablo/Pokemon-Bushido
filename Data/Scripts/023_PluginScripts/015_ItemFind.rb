@@ -111,7 +111,7 @@ end
 #-------------------------------------------------------------------------------
 
 class Game_Player
-  alias initialize_itemfind initialize
+  alias initialize_itemfind initialize unless private_method_defined?(:initialize_itemfind)
   def initialize(*args)
     @found_items = []
     initialize_itemfind(*args)

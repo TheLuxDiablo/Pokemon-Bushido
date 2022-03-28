@@ -8,7 +8,7 @@ Added a screen to show the encounters on a route
 Added a screen to show stat changes and battle summary
 Added type effectiveness display in battle
 Fixed many glitches with Following Pokemon
-All Pokemon now have appropriate data from the latest game they appeared in (SM / SwSh / BDSP)
+All Pokemon now have appropriate data from the latest game they appeared in (SM / SwSh / BDSP / PLA)
 Misc Improvements in graphics and events
 
 

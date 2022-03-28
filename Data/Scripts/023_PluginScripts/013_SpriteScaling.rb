@@ -50,7 +50,7 @@ class EBSBitmapWrapper
     @actualBitmap.stretch_blt(Rect.new(0,0,@width,@height),@bitmap,Rect.new(@currentIndex*(@width/@scale),0,@width/@scale,@height/@scale))
     @filename = file
   end
-  alias initialize_elite initialize unless self.method_defined?(:initialize_elite)
+  alias initialize_elite initialize unless method_defined?(:initialize_elite)
 
   attr_reader :filename
 
@@ -150,7 +150,7 @@ class EBSBitmapWrapper
     @actualBitmap.stretch_blt(Rect.new(0,0,@width,@height),@bitmap,Rect.new(@currentIndex*(@width/@scale),0,@width/@scale,@height/@scale))
     # updates the actual bitmap
   end
-  alias update_elite update unless self.method_defined?(:update_elite)
+  alias update_elite update unless method_defined?(:update_elite)
 
   # returns bitmap to original state
   def deanimate
@@ -188,7 +188,7 @@ class EBSBitmapSprite < Sprite
   def finished?; return @ebsBitmap.finished?; end
   def ebsBitmap; return @ebsBitmap; end
 
-  alias update_wrapper update unless self.method_defined?(:update_wrapper)
+  alias update_wrapper update unless method_defined?(:update_wrapper)
   def update
     update_wrapper
     return if @ebsBitmap.nil?

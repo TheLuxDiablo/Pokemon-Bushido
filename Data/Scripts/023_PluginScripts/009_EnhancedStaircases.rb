@@ -49,146 +49,6 @@ SMOOTH_SCROLLING = false
 
 $DisableScrollCounter = 0
 
-class DependentEvents
-  def pbFollowEventAcrossMaps(leader,follower,instant=false,leaderIsTrueLeader=true)
-    d=leader.direction
-    areConnected=$MapFactory.areConnected?(leader.map.map_id,follower.map.map_id)
-    # Get the rear facing tile of leader
-    facingDirection=[0,0,8,0,6,0,4,0,2][d]
-    if !leaderIsTrueLeader && areConnected
-      relativePos=$MapFactory.getThisAndOtherEventRelativePos(leader,follower)
-      if (relativePos[1]==0 && relativePos[0]==2) # 2 spaces to the right of leader
-        facingDirection=6
-      elsif (relativePos[1]==0 && relativePos[0]==-2) # 2 spaces to the left of leader
-        facingDirection=4
-      elsif relativePos[1]==-2 && relativePos[0]==0 # 2 spaces above leader
-        facingDirection=8
-      elsif relativePos[1]==2 && relativePos[0]==0 # 2 spaces below leader
-        facingDirection=2
-      end
-    end
-    facings=[facingDirection] # Get facing from behind
-    facings.push([0,0,4,0,8,0,2,0,6][d]) # Get right facing
-    facings.push([0,0,6,0,2,0,8,0,4][d]) # Get left facing
-    if !leaderIsTrueLeader
-      facings.push([0,0,2,0,4,0,6,0,8][d]) # Get forward facing
-    end
-    mapTile=nil
-    if areConnected
-      bestRelativePos=-1
-      oldthrough=follower.through
-      follower.through=false
-      for i in 0...facings.length
-        facing=facings[i]
-        tile=$MapFactory.getFacingTile(facing,leader)
-        passable=tile && $MapFactory.isPassable?(tile[0],tile[1],tile[2],follower)
-        if !passable && $PokemonGlobal.bridge>0
-          passable = PBTerrain.isBridge?($MapFactory.getTerrainTag(tile[0],tile[1],tile[2]))
-        elsif passable && !$PokemonGlobal.surfing && $PokemonGlobal.bridge==0
-          passable=!PBTerrain.isWater?($MapFactory.getTerrainTag(tile[0],tile[1],tile[2]))
-        end
-        if i==0 && !passable && tile &&
-           $MapFactory.getTerrainTag(tile[0],tile[1],tile[2],true)==PBTerrain::Ledge &&
-           $PokemonGlobal.bridge==0
-          # If the tile isn't passable and the tile is a ledge,
-          # get tile from further behind
-          tile=$MapFactory.getFacingTileFromPos(tile[0],tile[1],tile[2],facing)
-          passable=tile && $MapFactory.isPassable?(tile[0],tile[1],tile[2],follower)
-          if passable && !$PokemonGlobal.surfing
-            passable=!PBTerrain.isWater?($MapFactory.getTerrainTag(tile[0],tile[1],tile[2]))
-          end
-        end
-        if passable
-          relativePos=$MapFactory.getThisAndOtherPosRelativePos(
-             follower,tile[0],tile[1],tile[2])
-          distance=Math.sqrt(relativePos[0]*relativePos[0]+relativePos[1]*relativePos[1])
-          if bestRelativePos==-1 || bestRelativePos>distance
-            bestRelativePos=distance
-            mapTile=tile
-          end
-          if i==0 && distance<=1 # Prefer behind if tile can move up to 1 space
-            break
-          end
-        end
-      end
-      follower.through=oldthrough
-    else
-      tile=$MapFactory.getFacingTile(facings[0],leader)
-      passable=tile && $MapFactory.isPassable?(
-         tile[0],tile[1],tile[2],follower)
-      mapTile=passable ? mapTile : nil
-    end
-    if mapTile && follower.map.map_id==mapTile[0]
-      # Follower is on same map
-      newX=mapTile[1]
-      newY=mapTile[2]
-      if leader.on_stair?
-        newX = leader.x + (leader.direction == 4 ? 1 : leader.direction == 6 ? -1 : 0)
-        if leader.on_middle_of_stair?
-          newY = leader.y + (leader.direction == 8 ? 1 : leader.direction == 2 ? -1 : 0)
-        else
-          if follower.on_middle_of_stair?
-            newY = follower.stair_start_y - follower.stair_y_position
-          else
-            newY = leader.y + (leader.direction == 8 ? 1 : leader.direction == 2 ? -1 : 0)
-          end
-        end
-      end
-      deltaX=(d == 6 ? -1 : d == 4 ? 1 : 0)
-      deltaY=(d == 2 ? -1 : d == 8 ? 1 : 0)
-      posX = newX + deltaX
-      posY = newY + deltaY
-      follower.move_speed=leader.move_speed # sync movespeed
-      if (follower.x-newX==-1 && follower.y==newY) ||
-         (follower.x-newX==1 && follower.y==newY) ||
-         (follower.y-newY==-1 && follower.x==newX) ||
-         (follower.y-newY==1 && follower.x==newX)
-        if instant
-          follower.moveto(newX,newY)
-        else
-          pbFancyMoveTo(follower,newX,newY)
-        end
-      elsif (follower.x-newX==-2 && follower.y==newY) ||
-            (follower.x-newX==2 && follower.y==newY) ||
-            (follower.y-newY==-2 && follower.x==newX) ||
-            (follower.y-newY==2 && follower.x==newX)
-        if instant
-          follower.moveto(newX,newY)
-        else
-          pbFancyMoveTo(follower,newX,newY)
-        end
-      elsif follower.x!=posX || follower.y!=posY
-        if instant
-          follower.moveto(newX,newY)
-        else
-          pbFancyMoveTo(follower,posX,posY)
-          pbFancyMoveTo(follower,newX,newY)
-        end
-      end
-    else
-      if !mapTile
-        # Make current position into leader's position
-        mapTile=[leader.map.map_id,leader.x,leader.y]
-      end
-      if follower.map.map_id==mapTile[0]
-        # Follower is on same map as leader
-        follower.moveto(leader.x,leader.y)
-      else
-        # Follower will move to different map
-        events=$PokemonGlobal.dependentEvents
-        eventIndex=pbEnsureEvent(follower,mapTile[0])
-        if eventIndex>=0
-          newFollower=@realEvents[eventIndex]
-          newEventData=events[eventIndex]
-          newFollower.moveto(mapTile[1],mapTile[2])
-          newEventData[3]=mapTile[1]
-          newEventData[4]=mapTile[2]
-        end
-      end
-    end
-  end
-end
-
 def pbTurnTowardEvent(event,otherEvent)
   sx = 0; sy = 0
   if $MapFactory
@@ -212,7 +72,7 @@ def pbTurnTowardEvent(event,otherEvent)
 end
 
 class Scene_Map
-  alias stair_transfer_player transfer_player
+  alias stair_transfer_player transfer_player unless method_defined?(:stair_transfer_player)
   def transfer_player(cancelVehicles = true)
     stair_transfer_player(cancelVehicles)
     $game_player.clear_stair_data
@@ -220,13 +80,13 @@ class Scene_Map
 end
 
 class Game_Event
-  alias stair_cett check_event_trigger_touch
+  alias stair_cett check_event_trigger_touch unless method_defined?(:stair_cett)
   def check_event_trigger_touch(x, y)
     return if on_stair?
     return stair_cett(x, y)
   end
 
-  alias stair_ceta check_event_trigger_auto
+  alias stair_ceta check_event_trigger_auto unless method_defined?(:stair_ceta)
   def check_event_trigger_auto
     if $game_map && $game_map.events
       for event in $game_map.events.values
@@ -244,7 +104,7 @@ class Game_Event
     return stair_ceta
   end
 
-  alias stair_start start
+  alias stair_start start unless method_defined?(:stair_start)
   def start
     if is_stair_event?
       $game_player.slope(*self.get_stair_data)
@@ -285,19 +145,19 @@ class Game_Event
 end
 
 class Game_Player
-  alias stair_cetc check_event_trigger_touch
+  alias stair_cetc check_event_trigger_touch unless method_defined?(:stair_cetc)
   def check_event_trigger_touch(x, y)
     return if on_stair?
     return stair_cetc(x, y)
   end
 
-  alias stair_ceth check_event_trigger_here
+  alias stair_ceth check_event_trigger_here unless method_defined?(:stair_ceth)
   def check_event_trigger_here(triggers)
     return if on_stair?
     return stair_ceth(triggers)
   end
 
-  alias stair_cett check_event_trigger_there
+  alias stair_cett check_event_trigger_there unless method_defined?(:stair_cett)
   def check_event_trigger_there(triggers)
     return if on_stair?
     return stair_cett(triggers)
@@ -316,7 +176,7 @@ class Game_Player
     else
       if !check_event_trigger_touch(@x, @y+1)
         if !@bump_se || @bump_se<=0
-          pbSEPlay("Player bump"); @bump_se = 10
+          pbSEPlay("Player bump"); @bump_se = Graphics.frame_rate / 4
         end
       end
     end
@@ -335,7 +195,7 @@ class Game_Player
     else
       if !check_event_trigger_touch(@x, @y-1)
         if !@bump_se || @bump_se<=0
-          pbSEPlay("Player bump"); @bump_se = 10
+          pbSEPlay("Player bump"); @bump_se = Graphics.frame_rate / 4
         end
       end
     end
@@ -343,7 +203,7 @@ class Game_Player
 end
 
 class Game_Map
-  alias stair_passable? passable?
+  alias stair_passable? passable? unless method_defined?(:stair_passable?)
   def passable?(x, y, d, self_event = nil)
     return stair_passable?(x, y, d, self_event) if self_event.nil?
     return stair_passable?(x, y, d, self_event) if !self_event.on_middle_of_stair?
@@ -355,25 +215,25 @@ class Game_Map
     return true
   end
 
-  alias stair_scroll_down scroll_down
+  alias stair_scroll_down scroll_down unless method_defined?(:stair_scroll_down)
   def scroll_down(distance)
     return if $DisableScrollCounter == 1
     return stair_scroll_down(distance)
   end
 
-  alias stair_scroll_left scroll_left
+  alias stair_scroll_left scroll_left unless method_defined?(:stair_scroll_left)
   def scroll_left(distance)
     return if $DisableScrollCounter == 1
     return stair_scroll_left(distance)
   end
 
-  alias stair_scroll_right scroll_right
+  alias stair_scroll_right scroll_right unless method_defined?(:stair_scroll_right)
   def scroll_right(distance)
     return if $DisableScrollCounter == 1
     return stair_scroll_right(distance)
   end
 
-  alias stair_scroll_up scroll_up
+  alias stair_scroll_up scroll_up unless method_defined?(:stair_scroll_up)
   def scroll_up(distance)
     return if $DisableScrollCounter == 1
     return stair_scroll_up(distance)
@@ -461,7 +321,7 @@ class Game_Character
     end
   end
 
-  alias stair_update update
+  alias stair_update update unless method_defined?(:stair_update)
   def update
     if self == $game_player && SMOOTH_SCROLLING && on_stair?
       # Game_Player#update called; now disable Game_Map#scroll_*
@@ -480,7 +340,7 @@ class Game_Character
     end
   end
 
-  alias stair_update_pattern update_pattern
+  alias stair_update_pattern update_pattern unless method_defined?(:stair_update_pattern)
   def update_pattern
     if self == $game_player && $DisableScrollCounter == 2
       $DisableScrollCounter = 1
@@ -488,7 +348,7 @@ class Game_Character
     stair_update_pattern
   end
 
-  alias stair_moving? moving?
+  alias stair_moving? moving? unless method_defined?(:stair_moving?)
   def moving?
     if self == $game_player && $DisableScrollCounter == 1
       # New Game_Player#update scroll method
@@ -503,7 +363,7 @@ class Game_Character
     return stair_moving?
   end
 
-  alias stair_screen_y screen_y
+  alias stair_screen_y screen_y unless method_defined?(:stair_screen_y)
   def screen_y
     real_y = @real_y
     if on_stair?

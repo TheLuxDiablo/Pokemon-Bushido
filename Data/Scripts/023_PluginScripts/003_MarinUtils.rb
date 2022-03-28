@@ -598,7 +598,7 @@ end
 # Dir class extensions
 class Dir
   class << Dir
-    alias marin_delete delete
+    alias marin_delete delete unless defined?(marin_delete)
   end
 
   # Returns all files in the targeted path

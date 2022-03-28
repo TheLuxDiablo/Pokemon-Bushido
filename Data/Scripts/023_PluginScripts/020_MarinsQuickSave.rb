@@ -15,7 +15,7 @@ PluginManager.register({
 })
 
 class Scene_Map
-  alias quicksave_update update
+  alias quicksave_update update unless method_defined?(:quicksave_update)
   def update
     quicksave_update
     if Input.trigger?(Input::L) && !$game_player.moving? && @mode.nil?

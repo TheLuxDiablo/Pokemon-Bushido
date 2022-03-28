@@ -119,7 +119,7 @@ def pbGetEvolutionData(species)
   return evosData[species] || nil
 end
 
-alias __evolutionsData__pbClearData pbClearData
+alias __evolutionsData__pbClearData pbClearData unless defined?(__evolutionsData__pbClearData)
 def pbClearData(noanim = false)
   $PokemonTemp.evolutionsData = nil if $PokemonTemp
   __evolutionsData__pbClearData(noanim)

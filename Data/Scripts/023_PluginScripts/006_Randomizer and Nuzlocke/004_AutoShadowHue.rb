@@ -14,7 +14,7 @@ def drawShadowPoke(bitmap,color=nil)
   end
 end
 
-alias _shadow_pbLoadPokemonBitmapSpecies pbLoadPokemonBitmapSpecies
+alias _shadow_pbLoadPokemonBitmapSpecies pbLoadPokemonBitmapSpecies unless defined?(_shadow_pbLoadPokemonBitmapSpecies)
 def pbLoadPokemonBitmapSpecies(pokemon, species, back=false, scale=FRONT_SCALE)
   ret = _shadow_pbLoadPokemonBitmapSpecies(pokemon, species, back, scale)
   if ret
@@ -27,9 +27,9 @@ def pbLoadPokemonBitmapSpecies(pokemon, species, back=false, scale=FRONT_SCALE)
 end
 
 class PokemonIconSprite
-  alias _shadow_pokemon= pokemon=
+  alias _shadow_pokemon pokemon= unless method_defined?(:_shadow_pokemon)
   def pokemon=(value)
-    self._shadow_pokemon = value
+    _shadow_pokemon(value)
     if pokemon
       color = (MultipleForms.call("bitmapColor",pokemon))
       color = Color.new(67,0,255) if pokemon.shadowPokemon? &&  !self.filename[/_shadow/]

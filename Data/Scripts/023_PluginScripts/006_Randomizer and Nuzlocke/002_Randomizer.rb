@@ -430,9 +430,11 @@ def randomizeSpecies(species, static = false, gift = false)
   species = Randomizer.getRandomizedPkmn(:STATIC, species, species) if static
   species = Randomizer.getRandomizedPkmn(:GIFTS, species, species) if gift
   if !pokemon.nil?
+    old_level = pokemon.level
     pokemon.species = species
     pokemon.calcStats
     pokemon.resetMoves
+    pokemon.level = old_level
   end
   return pokemon.nil? ? species : pokemon
 end
@@ -540,7 +542,7 @@ end
 #  refresh cache on load
 #===============================================================================
 class PokemonLoadScreen
-  alias pbStartLoadScreen_randomizer_x pbStartLoadScreen unless self.method_defined?(:pbStartLoadScreen_randomizer_x)
+  alias pbStartLoadScreen_randomizer_x pbStartLoadScreen unless method_defined?(:pbStartLoadScreen_randomizer_x)
   def pbStartLoadScreen
     ret = pbStartLoadScreen_randomizer_x
     # refresh current cache
@@ -552,10 +554,19 @@ class PokemonLoadScreen
   end
 end
 
-alias randomizer_pbReceiveMysteryGift pbReceiveMysteryGift
+alias randomizer_pbReceiveMysteryGift pbReceiveMysteryGift unless defined?(randomizer_pbReceiveMysteryGift)
 def pbReceiveMysteryGift(id)
   oldrandomizer = $PokemonGlobal.isRandomizer
   $PokemonGlobal.isRandomizer = false
   randomizer_pbReceiveMysteryGift(id)
   $PokemonGlobal.isRandomizer = oldrandomizer
 end
+=begin
+alias randomizer_pbPokemonMart pbPokemonMart unless defined?(randomizer_pbPokemonMart)
+def pbPokemonMart(*args)
+  args[0].each do
+
+  end
+  return randomizer_pbPokemonMart
+end
+=end

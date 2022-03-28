@@ -27,7 +27,9 @@ class Game_Temp
   attr_accessor :ff_timer
 
   def ff_sprite
-    if !@ff_sprite
+    if !@ff_sprite || @ff_sprite.disposed?
+      @ff_sprite.dispose if @ff_sprite.respond_to?(:disposed?)
+      @ff_sprite = nil
       @ff_sprite = Sprite.new(self.ff_vp)
       @ff_sprite.bitmap = Bitmap.new("Graphics/Pictures/ff_icon") rescue Bitmap.new(32, 32)
       @ff_sprite.x = 8

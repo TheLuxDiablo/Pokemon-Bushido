@@ -110,14 +110,14 @@ class PokeBattle_Pokemon
   #-----------------------------------------------------------------------------
   #  modifies returned HP
   #-----------------------------------------------------------------------------
-  alias hpget_nuzlocke_x hp unless self.method_defined?(:hpget_nuzlocke_x)
+  alias hpget_nuzlocke_x hp unless method_defined?(:hpget_nuzlocke_x)
   def hp
     return (@permaFaint && Nuzlocke.on?) ? 0 : hpget_nuzlocke_x
   end
   #-----------------------------------------------------------------------------
   #  if HP falls to (or below 0) permanent faint is in effect
   #-----------------------------------------------------------------------------
-  alias hpset_nuzlocke_x hp= unless self.method_defined?(:hpset_nuzlocke_x)
+  alias hpset_nuzlocke_x hp= unless method_defined?(:hpset_nuzlocke_x)
   def hp=(val)
     data = Nuzlocke.rules; data = [] if data.nil?
     @permaFaint = true if Nuzlocke.on? && data.include?(:NOREVIVE) && val <= 0
@@ -133,7 +133,7 @@ class PokeBattle_Scene
   #-----------------------------------------------------------------------------
   #  registers defeated battler on map
   #-----------------------------------------------------------------------------
-  alias pbFaintBattler_nuzlocke_x pbFaintBattler unless self.method_defined?(:pbFaintBattler_nuzlocke_x)
+  alias pbFaintBattler_nuzlocke_x pbFaintBattler unless method_defined?(:pbFaintBattler_nuzlocke_x)
   def pbFaintBattler(battler)
   data = Nuzlocke.rules; data = [] if data.nil?
     if battler.opposes? && !self.firstFainted && @battle.wildBattle?
@@ -167,7 +167,7 @@ class PokeBattle_Battle
   #-----------------------------------------------------------------------------
   #  allows for the catching of only one Pokemon per route
   #-----------------------------------------------------------------------------
-  alias pbThrowPokeBall_nuzlocke_x pbThrowPokeBall unless self.method_defined?(:pbThrowPokeBall_nuzlocke_x)
+  alias pbThrowPokeBall_nuzlocke_x pbThrowPokeBall unless method_defined?(:pbThrowPokeBall_nuzlocke_x)
   def pbThrowPokeBall(*args)
     battler = @battlers[args[0]]
     pokemon = battler.pokemon.clone
@@ -213,7 +213,7 @@ class PokeBattle_Battle
   #-----------------------------------------------------------------------------
   #  registers Pokemon for nuzlocke map when fleeing
   #-----------------------------------------------------------------------------
-  alias pbRun_nuzlocke_x pbRun unless self.method_defined?(:pbRun_nuzlocke_x)
+  alias pbRun_nuzlocke_x pbRun unless method_defined?(:pbRun_nuzlocke_x)
   def pbRun(*args)
     data = Nuzlocke.rules; data = [] if data.nil?
     battler = nil
@@ -241,7 +241,7 @@ end
 #===============================================================================
 #  losing the nuzlocke
 #===============================================================================
-alias pbStartOver_nuzlocke_x pbStartOver
+alias pbStartOver_nuzlocke_x pbStartOver unless defined?(pbStartOver_nuzlocke_x)
 def pbStartOver(*args)
   if Nuzlocke.on?
     resume = false
@@ -282,7 +282,7 @@ end
 #  starts nuzlocke only after obtaining a Pokeball
 #===============================================================================
 class PokemonBag
-  alias pbStoreItem_nuzlocke_x pbStoreItem unless self.method_defined?(:pbStoreItem_nuzlocke_x)
+  alias pbStoreItem_nuzlocke_x pbStoreItem unless method_defined?(:pbStoreItem_nuzlocke_x)
   def pbStoreItem(*args)
     ret = pbStoreItem_nuzlocke_x(*args)
     item = args[0]
@@ -300,7 +300,7 @@ end
 #  refresh cache on load
 #===============================================================================
 class PokemonLoadScreen
-  alias pbStartLoadScreen_nuzlocke_x pbStartLoadScreen unless self.method_defined?(:pbStartLoadScreen_nuzlocke_x)
+  alias pbStartLoadScreen_nuzlocke_x pbStartLoadScreen unless method_defined?(:pbStartLoadScreen_nuzlocke_x)
   def pbStartLoadScreen
     ret = pbStartLoadScreen_nuzlocke_x
     if $PokemonGlobal && $PokemonGlobal.isNuzlocke

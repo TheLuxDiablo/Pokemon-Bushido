@@ -1,10 +1,20 @@
 # Files in the main project folder
 
-
-# Temp files
-
-~*
 # Word files
 *.docx
 Data/System.rxdata
 errorlog.txt
+RGSS*.dll
+
+# Common code editor folders & files
+.vscode/
+*.code-workspace
+*.mkproj
+.idea/
+
+# Operating system generated files & folders
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
