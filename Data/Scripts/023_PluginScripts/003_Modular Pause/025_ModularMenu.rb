@@ -142,6 +142,10 @@ class PokemonPauseMenu_Scene
     else
       content.push($game_map.name)
       content.push(pbGetTimeNow.strftime("%I:%M %p"))
+      content.push(_INTL("Chapter: {1}",$game_variables[99]))
+      if $game_switches[68]
+        content.push(_INTL("Purified: {1}",$game_variables[94]))
+      end
     end
     for i in 0...content.length
       text.push([content[i],16, 60 + i*50, 0, Color.new(255,255,255),Color.new(0,0,0,65)])

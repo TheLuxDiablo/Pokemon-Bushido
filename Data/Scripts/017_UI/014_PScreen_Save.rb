@@ -79,9 +79,9 @@ class PokemonSave_Scene
       loctext+=_INTL("Journal<r><c3={1}>{2}/{3}</c3><br>",textColor,$Trainer.pokedexOwned,$Trainer.pokedexSeen)
     end
     loctext+=_INTL("Chapter<r><c3={1}>{2}</c3><br>",textColor,$game_variables[99])
-    if $game_variables[100]>0 && $game_variables[99]!="Hattori"
-      loctext+=_INTL("Katana Level<r><c3={1}>{2}</c3>",textColor,$game_variables[100])
-    end
+    #if $game_variables[100]>0 && $game_variables[99]!="Hattori"
+      #loctext+=_INTL("Katana Level<r><c3={1}>{2}</c3>",textColor,$game_variables[100])
+    #end
     if $game_variables[99]=="Hattori" && $game_variables[199]!=0
       loctext+=_INTL("Corrupted<r><c3={1}>{2}</c3>",textColor,$game_variables[199])
     end
