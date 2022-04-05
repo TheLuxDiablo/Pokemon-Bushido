@@ -872,7 +872,13 @@
 #-------------------------------
 837,SHADEBALL,Shade Ball,Shade Balls,3,500,"A special Ball designed for capturing Shadow Pokemon and opening their hearts.",0,4,4,
 #-------------------------------
-838,BLACKAUGURITE,Black Augurite,Black Augurites,1,500,"A glassy black stone that produces a sharp cutting edge when split. It’s loved by a certain Pokémon.",0,0,0,
-839,PEATBLOCK,Peat Block,Peat Blocks,1,500,"A block of muddy material that can be used as fuel for burning when it is dried. It’s loved by a certain Pokémon.",0,0,0,
+838,BLACKAUGURITE,Black Augurite,Black Augurites,1,2100,"A glassy black stone that produces a sharp cutting edge when split. It’s loved by a certain Pokémon.",1,0,7,
+839,PEATBLOCK,Peat Block,Peat Blocks,1,2100,"A block of muddy material that can be used as fuel for burning when it is dried. It’s loved by a certain Pokémon.",1,0,7,
+840,LINKINGCORD,Linking Cord,Linking Cords,1,2100,"A string exuding a mysterious energy that makes you feel a strange sense of connection. It’s loved by certain Pokémon.",1,0,7,
+841,ADAMANTCRYSTAL,Adamant Crystal,Adamant Crystals,8,0,"When used on Dialga, this large, glowing gem wells with power and allows the Pokémon to change form.",5,0,6,
+842,LUSTROUSGLOBE,Lustrous Globe,Lustrous Globes,8,0,"When used on Palkia, this large, glowing orb wells with power and allows the Pokémon to change form.",5,0,6,
+843,LEGENDPLATE,Legend Plate,Legend Plates,8,0,"A stone tablet imbued with the essence of all creation. When used on a certain Pokémon, it allows that Pokémon to gain the power of every type there is.",5,0,6,
+844,BLANKPLATE,Blank Plate,Blank Plates,1,1000,"A stone tablet imbued with the essence of normalcy. When used on a certain Pokémon, it allows that Pokémon to gain the power of the Normal type.",0,0,0,
+845,HOPOBERRY,Hopo Berry,Hopo Berries,5,20,"A Berry that can be fed to a Pokémon to restore its PP.",0,0,5,
 #-------------------------------
-840,LUNARWING,Lunar Wing,Lunar Wings,8,0,"A feather that glows like the moon. It's said to possess the power to dispel nightmares.",0,0,6,
+846,LUNARWING,Lunar Wing,Lunar Wings,8,0,"A feather that glows like the moon. It's said to possess the power to dispel nightmares.",0,0,6,
