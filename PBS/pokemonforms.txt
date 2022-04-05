@@ -2825,7 +2825,7 @@ TutorMoves = AGILITY,AQUATAIL,ASSURANCE,ATTRACT,BRINE,CALMMIND,CONFIDE,CRUNCH,CU
 EggMoves = AGILITY,BRINE,BUBBLEBEAM,ENDEAVOR,MUDDYWATER,MUDSHOT,RAGE,REVENGE,SWIFT,WHIRLPOOL
 Pokedex = Though it differs from other Basculin in several respects, including demeanor—this one is gentle—people have categorized it as a regional form given the vast array of shared qualities.
 Generation = 8
-Evolutions = BASCULEGION,DamageDone,94
+Evolutions = BASCULEGION,Level,32
 #-------------------------------
 [ZORUA,1]
 FormName = Hisuian
@@ -2949,8 +2949,7 @@ BattlerEnemyY = 17
 FormName = Therian Forme
 BaseStats = 74,115,110,46,135,100
 Abilities = OVERCOAT
-HiddenAbility = OVERCOAT
-Shape = Quadruped
+HiddenAbility = OVERCOAT	
 Pokedex = A different guise from its feminine humanoid form. From the clouds, it descends upon those who treat any form of life with disrespect and metes out wrathful, ruthless punishment.
 BattlerEnemyX = -1
 BattlerEnemyY = 14

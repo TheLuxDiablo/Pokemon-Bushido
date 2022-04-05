@@ -35,6 +35,8 @@ class PokeBattle_Battler
         when PBStatuses::BURN;      msg = _INTL("{1} already has a burn!",pbThis)
         when PBStatuses::PARALYSIS; msg = _INTL("{1} is already paralyzed!",pbThis)
         when PBStatuses::FROZEN;    msg = _INTL("{1} is already frozen solid!",pbThis)
+        when PBStatuses::FROSTBITE; msg = _INTL("{1} is already frostbitten!",pbThis)
+        when PBStatuses::DROWSY;    msg = _INTL("{1} is already drowsy!",pbThis)
         end
         @battle.pbDisplay(msg)
       end
@@ -96,6 +98,9 @@ class PokeBattle_Battler
       hasImmuneType |= pbHasType?(:ELECTRIC) && NEWEST_BATTLE_MECHANICS
     when PBStatuses::FROZEN
       hasImmuneType |= pbHasType?(:ICE)
+    when PBStatuses::FROSTBITE
+      hasImmuneType |= pbHasType?(:ICE)
+      hasImmuneType |= pbHasType?(:FIRE)
     end
     if hasImmuneType
       @battle.pbDisplay(_INTL("It doesn't affect {1}...",pbThis(true))) if showMessages
@@ -129,6 +134,8 @@ class PokeBattle_Battler
           when PBStatuses::BURN;      msg = _INTL("{1} cannot be burned!",pbThis)
           when PBStatuses::PARALYSIS; msg = _INTL("{1} cannot be paralyzed!",pbThis)
           when PBStatuses::FROZEN;    msg = _INTL("{1} cannot be frozen solid!",pbThis)
+          when PBStatuses::FROSTBITE; msg = _INTL("{1} cannot be frostbitten!",pbThis)
+          when PBStatuses::DROWSY;    msg = _INTL("{1} resists drowsiness!",pbThis)
           end
         elsif immAlly
           case newStatus
@@ -147,6 +154,12 @@ class PokeBattle_Battler
           when PBStatuses::FROZEN
             msg = _INTL("{1} cannot be frozen solid because of {2}'s {3}!",
                pbThis,immAlly.pbThis(true),immAlly.abilityName)
+          when PBStatuses::FROSTBITE
+            msg = _INTL("{1} cannot be frostbitten because of {2}'s {3}!",
+               pbThis,immAlly.pbThis(true),immAlly.abilityName)
+          when PBStatuses::DROWSY
+            msg = _INTL("{1} resists drowsiness because of {2}'s {3}!",
+              pbThis,immAlly.pbThis(true),immAlly.abilityName)
           end
         else
           case newStatus
@@ -155,6 +168,8 @@ class PokeBattle_Battler
           when PBStatuses::BURN;      msg = _INTL("{1}'s {2} prevents burns!",pbThis,abilityName)
           when PBStatuses::PARALYSIS; msg = _INTL("{1}'s {2} prevents paralysis!",pbThis,abilityName)
           when PBStatuses::FROZEN;    msg = _INTL("{1}'s {2} prevents freezing!",pbThis,abilityName)
+          when PBStatuses::FROSTBITE;    msg = _INTL("{1}'s {2} prevents frostbites!",pbThis,abilityName)
+          when PBStatuses::DROWSY;    msg = _INTL("{1}'s {2} prevents drowsiness!",pbThis,abilityName)
           end
         end
         @battle.pbDisplay(msg)
@@ -242,6 +257,12 @@ class PokeBattle_Battler
     when PBStatuses::FROZEN
       @battle.pbCommonAnimation("Frozen",self)
       msg = _INTL("{1} was frozen solid!",pbThis) if !msg || msg==""
+    when PBStatuses::FROSTBITE
+      @battle.pbCommonAnimation("Frozen",self)
+      msg = _INTL("{1} was frostbitten!", pbThis) if !msg || msg==""
+    when PBStatutes::DROWSY
+      @battle.pbCommonAnimation("Sleep",self)
+      msg = _INTL("{1} was drowsy!", pbThis) if !msg || msg==""
     end
     # Show message
     @battle.pbDisplay(msg) if msg && msg!=""
@@ -411,6 +432,10 @@ class PokeBattle_Battler
       anim = "Paralysis"; msg = _INTL("{1} is paralyzed! It can't move!",pbThis)
     when PBStatuses::FROZEN
       anim = "Frozen";    msg = _INTL("{1} is frozen solid!",pbThis)
+    when PBStatutes::FROSTBITE
+      anim = "Frozen";    msg = _INTL("{1} was hurt by its frostbite!",pbThis)
+    when PBStatutes::DROWSY
+      anim = "Sleep";     msg = _INTL("{1} is drowsy.",pbThis)
     end
     @battle.pbCommonAnimation(anim,self) if anim!=""
     yield if block_given?
@@ -428,6 +453,8 @@ class PokeBattle_Battler
       when PBStatuses::BURN;      @battle.pbDisplay(_INTL("{1}'s burn was healed.",pbThis))
       when PBStatuses::PARALYSIS; @battle.pbDisplay(_INTL("{1} was cured of paralysis.",pbThis))
       when PBStatuses::FROZEN;    @battle.pbDisplay(_INTL("{1} thawed out!",pbThis))
+      when PBStatutes::FROSTBITE; @battle.pbDisplay(_INTL("{1}'s frostbite was healed!",pbThis))
+      when PBStatutes::DROWSY;    @battle.pbDisplay(_INTL("{1} is no longer drowsy!",pbThis))
       end
     end
     PBDebug.log("[Status change] #{pbThis}'s status was cured") if !showMessages
