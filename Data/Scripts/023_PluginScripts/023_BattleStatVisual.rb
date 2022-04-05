@@ -43,11 +43,11 @@ class PokemonStatsPage
     @sprites["overlay"].bitmap.clear
     battler = @battle.battlers[@idxBattler]
     @sprites["background"].setBitmap("Graphics/Pictures/Battle/StatVisual/stat_#{@idxBattler}")
-    @sprites["icon"].pokemon = battler.pokemon
+    @sprites["icon"].pokemon = battler.displayPokemon
     imagepos = []
     textpos = [
-      [_INTL("#{battler.level}"),180,85,0,@whiteBase,@whiteShadow],
-      ["#{battler.hp}/#{battler.totalhp}",354,92,1,@whiteBase,@whiteShadow],
+      [_INTL("#{battler.displayPokemon.level}"),180,85,0,@whiteBase,@whiteShadow],
+      ["#{battler.displayPokemon.hp}/#{battler.displayPokemon.totalhp}",354,92,1,@whiteBase,@whiteShadow],
       ["Weather",49,294,2,@whiteBase,@whiteShadow],
       ["Terrain",147,294,2,@whiteBase,@whiteShadow],
       ["Active Battle Effects",392,264,2,@whiteBase,@whiteShadow],
@@ -124,13 +124,13 @@ class PokemonStatsPage
       0,@battle.field.terrain * 50,86,50])
     # Draw HP bar
     hpzone = 0
-    hpzone = 1 if battler.hp<=(battler.totalhp/2).floor
-    hpzone = 2 if battler.hp<=(battler.totalhp/4).floor
-    imagepos.push(["Graphics/Pictures/Battle/overlay_hp",256,84,0,hpzone*6,battler.hp*96/battler.totalhp,6])
+    hpzone = 1 if battler.displayPokemon.hp<=(battler.displayPokemon.totalhp/2).floor
+    hpzone = 2 if battler.displayPokemon.hp<=(battler.displayPokemon.totalhp/4).floor
+    imagepos.push(["Graphics/Pictures/Battle/overlay_hp",256,84,0,hpzone*6,battler.displayPokemon.hp*96/battler.displayPokemon.totalhp,6])
     pbDrawImagePositions(@sprites["overlay"].bitmap,imagepos)
-    type1rect = Rect.new(0,battler.type1*28,72,28)
-    type2rect = Rect.new(0,battler.type2*28,72,28)
-    if battler.type1==battler.type2
+    type1rect = Rect.new(0,battler.displayPokemon.type1*28,72,28)
+    type2rect = Rect.new(0,battler.displayPokemon.type2*28,72,28)
+    if battler.displayPokemon.type1==battler.displayPokemon.type2
       @sprites["overlay"].bitmap.blt(436,82,@typebitmap.bitmap,type1rect)
     else
       @sprites["overlay"].bitmap.blt(366,82,@typebitmap.bitmap,type1rect)
