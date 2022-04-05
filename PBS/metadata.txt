@@ -867,6 +867,7 @@ BattleBack = forest
 Outdoor = false
 ShowArea = true
 MapPosition = 2,4,12
+DarkMap = true
 BattleBack = CaveBushido4
 #-------------------------------
 [164]

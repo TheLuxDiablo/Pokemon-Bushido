@@ -3396,6 +3396,79 @@ module DialogueModule
                       battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                       battle.scene.pbHideOpponent
                     }
+# Post-Cresselia Double BATTLE
+  PostCress1 = Proc.new{|battle|
+                battle.scene.appearBar
+                battle.scene.pbShowOpponent(0)
+                pbMessage("\\xn[Ryo]\\PN! Show Kayoko your true strength! No holding back!")
+                pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Brilliant Barrier!")
+                battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[1])
+                battle.scene.disappearBar
+                battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
+                battle.pbDisplay(_INTL("Ryo created a wall of light in front of {1}!",battle.battlers[1].name))
+                battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                battle.scene.appearBar
+                battle.scene.pbShowOpponent(1)
+                pbMessage("\\xn[Kayoko]\\rI can't lose now! This is my first step to  being a true Kenshi!")
+                pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
+                battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[3],battle.battlers[3])
+                battle.scene.disappearBar
+                battle.scene.pbHideOpponent(1)
+                battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[3])
+                battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+            }
 
+  PostCress2 = Proc.new{|battle|
+                battle.scene.appearBar
+                battle.scene.pbShowOpponent(0)
+                pbMessage("\\xn[Ryo]\\bLet's see how you handle this!")
+                pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Blinding Radiance!")
+                battle.pbAnimation(getID(PBMoves,:FLASH),battle.battlers[1],battle.battlers[0])
+                battle.scene.disappearBar
+                battle.scene.pbHideOpponent
+                battle.battlers[0].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[0])
+            }
+
+  PostCress3 = Proc.new{|battle|
+                battle.scene.appearBar
+                battle.scene.pbShowOpponent(1)
+                pbMessage("\\xn[Kayoko]\\rI've learned some things too!")
+                pbMessage("\\xn[Kayoko]\\rKatana of Illumination! Brilliant Barrier!")
+                battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[1])
+                battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
+                battle.pbDisplay(_INTL("Kayoko created a wall of light in front of {1}!",battle.battlers[3].name))
+                battle.scene.disappearBar
+                battle.scene.pbHideOpponent(1)
+                battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
+                battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+            }
+
+  PostCressFinal = Proc.new{|battle|
+                battle.scene.appearBar
+                battle.scene.pbShowOpponent(0)
+                pbMessage("\\xn[Ryo]\\bKayoko! You've done well thus far! Let's finish this now!")
+                battle.scene.pbHideOpponent
+                battle.scene.pbShowOpponent(1)
+                pbMessage("\\xn[Kayoko]\\rYes, sir!")
+                pbMessage("\\xn[Kayoko]\\rSignature Technique! Malicious Boost!")
+                battle.scene.disappearBar
+                battle.scene.pbHideOpponent(1)
+                battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
+                battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                battle.battlers[3].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                battle.battlers[3].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                battle.battlers[3].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                battle.scene.appearBar
+                battle.scene.pbShowOpponent(0)
+                pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Radiant Shield!")
+                battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[1])
+                battle.scene.disappearBar
+                battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
+                battle.pbDisplay(_INTL("Ryo created a strong wall of light in front of {1}!",battle.battlers[1].name))
+                battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,5,battle.battlers[1])
+                battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,5,battle.battlers[1],false)
+                battle.scene.pbHideOpponent
+            }
 # DONT DELETE THIS END
 end
