@@ -1562,7 +1562,7 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[Kayoko]\\rMy Hisuian partner will lead me to victory!")
-                    pbMessage("\\xn[Kayoko]\\rZoroark, Signature Technique! Malicious Boost!")
+                    pbMessage("\\xn[Kayoko]\\r#{battle.battle.battlers[1].name}, Signature Technique! Malicious Boost!")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                     battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
@@ -3404,10 +3404,13 @@ module DialogueModule
                 pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Brilliant Barrier!")
                 battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[1])
                 battle.scene.disappearBar
+                battle.scene.pbHideOpponent
                 battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
-                battle.pbDisplay(_INTL("Ryo created a wall of light in front of {1}!",battle.battlers[1].name))
+                battle.pbDisplay(_INTL("Ryo created a wall of light in front of {1}!",battle.battlers[1].pbTeam))
                 battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
                 battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
                 battle.scene.appearBar
                 battle.scene.pbShowOpponent(1)
                 pbMessage("\\xn[Kayoko]\\rI can't lose now! This is my first step to  being a true Kenshi!")
@@ -3417,6 +3420,8 @@ module DialogueModule
                 battle.scene.pbHideOpponent(1)
                 battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[3])
                 battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+                battle.battlers[3].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[3])
+                battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
             }
 
   PostCress2 = Proc.new{|battle|
@@ -3427,7 +3432,8 @@ module DialogueModule
                 battle.pbAnimation(getID(PBMoves,:FLASH),battle.battlers[1],battle.battlers[0])
                 battle.scene.disappearBar
                 battle.scene.pbHideOpponent
-                battle.battlers[0].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[0])
+                battle.battlers[0].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[1])
+                battle.battlers[2].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[1])
             }
 
   PostCress3 = Proc.new{|battle|
@@ -3436,10 +3442,12 @@ module DialogueModule
                 pbMessage("\\xn[Kayoko]\\rI've learned some things too!")
                 pbMessage("\\xn[Kayoko]\\rKatana of Illumination! Brilliant Barrier!")
                 battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[1])
-                battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
+                battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 4
                 battle.pbDisplay(_INTL("Kayoko created a wall of light in front of {1}!",battle.battlers[3].name))
                 battle.scene.disappearBar
                 battle.scene.pbHideOpponent(1)
+                battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
+                battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
                 battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
                 battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
             }
@@ -3455,8 +3463,8 @@ module DialogueModule
                 battle.scene.disappearBar
                 battle.scene.pbHideOpponent(1)
                 battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
-                battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                battle.battlers[3].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                 battle.battlers[3].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
                 battle.battlers[3].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                 battle.scene.appearBar
@@ -3468,6 +3476,8 @@ module DialogueModule
                 battle.pbDisplay(_INTL("Ryo created a strong wall of light in front of {1}!",battle.battlers[1].name))
                 battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,5,battle.battlers[1])
                 battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,5,battle.battlers[1],false)
+                battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,5,battle.battlers[1])
+                battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,5,battle.battlers[1],false)
                 battle.scene.pbHideOpponent
             }
 # DONT DELETE THIS END
