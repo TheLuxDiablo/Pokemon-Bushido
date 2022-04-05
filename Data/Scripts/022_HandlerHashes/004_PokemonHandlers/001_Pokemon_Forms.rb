@@ -257,7 +257,8 @@ MultipleForms.register(:ARCEUS,{
 
 MultipleForms.register(:BASCULIN,{
   "getFormOnCreation" => proc { |pkmn|
-    next rand(2)
+    # Only make Hisuan Basculin
+    next 2
   }
 })
 
@@ -648,21 +649,47 @@ MultipleForms.register(:KOFFING,{
   }
 })
 
-MultipleForms.copy(:KOFFING,:MIMEJR)
+MultipleForms.copy(:KOFFING, :MIMEJR)
 
 MultipleForms.register(:SLOWPOKE,{
-"getFormOnCreation"=>proc{|pokemon|
-   maps=[1]
-   if $game_map && maps.include?($game_map.map_id)
-     next 0
-   else
-     next 1
-   end
+"getFormOnCreation" => proc{|pokemon|
+   maps = [1]
+   next ($game_map && maps.include?($game_map.map_id) ? 0 : 1)
 }
 })
-MultipleForms.copy(:SLOWPOKE,:SLOWBRO,:SLOWKING,
+
+MultipleForms.copy(:SLOWPOKE, :SLOWBRO, :SLOWKING,
                    :FARFETCHD,
-                   :SANDSHREW,:SANDSLASH,
-                   :ZIGZAGOON,:LINOONE,
-                   :MRMIME
+                   :SANDSHREW, :SANDSLASH,
+                   :ZIGZAGOON, :LINOONE,
+                   :MRMIME,
+                   # Hisui Forms
+                   :SNEASEL,
+                   :QWILFISH,
+                   :CYNDAQUIL, :QUILAVA, :TYPHLOSION,
+                   :OSHAWOTT, :DEWOTT, :SAMUROTT,
+                   :ROWLET, :DARTRIX, :DECIDUEYE,
+                   :GROWLITHE, :ARCANINE,
+                   :BERGMITE, :AVALUGG,
+                   :GOOMY, :SLIGGOO, :GOODRA,
+                   :RUFFLET, :BRAVIARY,
+                   :PETLIL, :LILLIGANT,
+                   :ZORUA, :ZOROARK,
+                   :VOLTORB, :ELECTRODE
                  )
+
+MultipleForms.register(:BASCULEGION, {
+ "getForm" => proc { |pkmn| next pkmn.gender }
+})
+
+ # These species are required to be in form 1 for breeding purposes.
+ MultipleForms.register(:SIRFETCHD, {
+   "getForm" => proc { |pkmn| next 1 }
+ })
+
+
+ MultipleForms.register(:PERRSERKER, {
+   "getForm" => proc { |pkmn| next 2 }
+ })
+
+ MultipleForms.copy(:SIRFETCHD, :MRRIME, :CURSOLA, :OBSTAGOON, :RUNERIGUS, :OVERQWIL, :SNEASLER)

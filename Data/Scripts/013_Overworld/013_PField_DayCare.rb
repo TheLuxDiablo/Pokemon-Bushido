@@ -242,7 +242,20 @@ def pbDayCareGenerateEgg
      isConst?(babyspecies,PBSpecies,:ZIGZAGOON) ||
      isConst?(babyspecies,PBSpecies,:DARUMAKA) ||
      isConst?(babyspecies,PBSpecies,:YAMASK) ||
-     isConst?(babyspecies,PBSpecies,:STUNFISK)
+     isConst?(babyspecies,PBSpecies,:STUNFISK) ||
+     # Hisuian
+     isConst?(babyspecies,PBSpecies,:SNEASEL) ||
+     isConst?(babyspecies,PBSpecies,:QWILFISH) ||
+     isConst?(babyspecies,PBSpecies,:PETLIL) ||
+     isConst?(babyspecies,PBSpecies,:RUFFLET) ||
+     isConst?(babyspecies,PBSpecies,:CYNDAQUIL) ||
+     isConst?(babyspecies,PBSpecies,:OSHAWOTT) ||
+     isConst?(babyspecies,PBSpecies,:ROWLET) ||
+     isConst?(babyspecies,PBSpecies,:GROWLITHE) ||
+     isConst?(babyspecies,PBSpecies,:BERGMITE) ||
+     isConst?(babyspecies,PBSpecies,:GOOMY) ||
+     isConst?(babyspecies,PBSpecies,:ZORUA) ||
+     isConst?(babyspecies,PBSpecies,:VOLTORB)
     if mother.form==1
       egg.form = 1 if mother.hasItem?(:EVERSTONE)
     elsif pbGetBabySpecies(father.species,mother.item,father.item)==babyspecies
