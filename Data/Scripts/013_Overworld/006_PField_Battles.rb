@@ -238,6 +238,7 @@ def pbWildBattleCore(*args)
     $PokemonGlobal.nextBattleME        = nil
     $PokemonGlobal.nextBattleCaptureME = nil
     $PokemonGlobal.nextBattleBack      = nil
+    TrainerDialogue.resetAll
     return 1   # Treat it as a win
   end
   # Record information about party Pokémon to be used at the end of battle (e.g.
@@ -376,6 +377,7 @@ def pbTrainerBattleCore(*args)
     $PokemonGlobal.nextBattleME        = nil
     $PokemonGlobal.nextBattleCaptureME = nil
     $PokemonGlobal.nextBattleBack      = nil
+    TrainerDialogue.resetAll
     pbMEStop
     return ($Trainer.ablePokemonCount==0) ? 0 : 1   # Treat it as undecided/a win
   end
