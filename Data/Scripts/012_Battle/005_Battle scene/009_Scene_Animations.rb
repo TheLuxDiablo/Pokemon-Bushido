@@ -522,59 +522,13 @@ class PokeBattle_Scene
     end
   end
 
-=begin
   def pbAnimationCore(animation,user,target,oppMove=false)
     return if !animation
     @briefMessage = false
-    userSprite   = (user) ? @sprites["pokemon_#{user.index}"] : nil
-    targetSprite = (target) ? @sprites["pokemon_#{target.index}"] : nil
-    # Remember the original positions of Pokémon sprites
-    oldUserX = (userSprite) ? userSprite.x : 0
-    oldUserY = (userSprite) ? userSprite.y : 0
-    oldTargetX = (targetSprite) ? targetSprite.x : oldUserX
-    oldTargetY = (targetSprite) ? targetSprite.y : oldUserY
-    # Create the animation player
-    animPlayer = PBAnimationPlayerX.new(animation,user,target,self,oppMove)
-    # Apply a transformation to the animation based on where the user and target
-    # actually are. Get the centres of each sprite.
-    userHeight = (userSprite && userSprite.bitmap && !userSprite.bitmap.disposed?) ? userSprite.bitmap.height : 128
-    if targetSprite
-      targetHeight = (targetSprite.bitmap && !targetSprite.bitmap.disposed?) ? targetSprite.bitmap.height : 128
-    else
-      targetHeight = userHeight
-    end
-    animPlayer.setLineTransform(
-       PokeBattle_SceneConstants::FOCUSUSER_X,PokeBattle_SceneConstants::FOCUSUSER_Y,
-       PokeBattle_SceneConstants::FOCUSTARGET_X,PokeBattle_SceneConstants::FOCUSTARGET_Y,
-       oldUserX,oldUserY-userHeight/2,
-       oldTargetX,oldTargetY-targetHeight/2)
-    # Play the animation
-    animPlayer.start
-    loop do
-      animPlayer.update
-      pbUpdate
-      break if animPlayer.animDone?
-    end
-    animPlayer.dispose
-    # Return Pokémon sprites to their original positions
-    if userSprite
-      userSprite.x = oldUserX
-      userSprite.y = oldUserY
-      userSprite.pbSetOrigin
-    end
-    if targetSprite
-      targetSprite.x = oldTargetX
-      targetSprite.y = oldTargetY
-      targetSprite.pbSetOrigin
-    end
-  end
-=end
-
-    def pbAnimationCore(animation,user,target,oppMove=false)
-    return if !animation
-    @briefMessage = false
-    userSprite   = (user) ? @sprites["pokemon_#{user.index}"] : nil
-    targetSprite = (target) ? @sprites["pokemon_#{target.index}"] : nil
+    userSprite   = (user && !user.fainted?) ? @sprites["pokemon_#{user.index}"] : nil
+    targetSprite = (target && !target.fainted?) ? @sprites["pokemon_#{target.index}"] : nil
+    return if userSprite.respond_to?(:no_anim) && userSprite.no_anim
+    return if targetSprite.respond_to?(:no_anim) && targetSprite.no_anim
     # Remember the original positions of Pokémon sprites
     oldUserX = (userSprite) ? userSprite.x : 0
     oldUserY = (userSprite) ? userSprite.y : 0
@@ -617,6 +571,7 @@ class PokeBattle_Scene
       userSprite.color = oldTargetColor
       userSprite.tone  = oldUserTone
       userSprite.opacity = oldUserOpacity
+      userSprite.no_anim = false
     end
     if targetSprite
       targetSprite.x = oldTargetX
@@ -625,6 +580,7 @@ class PokeBattle_Scene
       targetSprite.color = oldTargetColor
       targetSprite.tone  = oldTargetTone
       targetSprite.opacity = oldTargetOpacity
+      targetSprite.no_anim = false
     end
   end
 end
