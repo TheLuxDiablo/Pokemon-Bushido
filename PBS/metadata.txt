@@ -889,3 +889,8 @@ DarkMap = true
 Outdoor = true
 ShowArea = true
 MapPosition = 2,4,12
+#-------------------------------
+[167]
+# Jinsu Wavelands
+Outdoor = true
+ShowArea = true

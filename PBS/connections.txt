@@ -48,10 +48,16 @@
 124,West,0,127,East,19
 # Izumi Village (127) - Izumi Pass (132)
 127,West,14,132,East,0
+# Kowai Pass (157) - Jinsu Island (158)
+157,West,0,158,East,16
+# Jinsu Wavelands (167) - Jinsu Island (158)
+167,North,0,158,South,0
+# Kowai Pass (156) - Kowai Pass (157)
+156,West,16,157,East,0
+# Jinsu Wavelands (167) - Kowai Pass (157)
+167,East,0,157,West,54
 # Chikyu Village (107) - Kowai Pass (156)
 107,West,22,156,East,0
-# Kowai Pass (157) - Kowai Pass (156)
-157,East,0,156,West,16
 # Kaiyo Sea (106) - Chikyu Village (107)
 106,West,0,107,East,17
 # Hagane City (85) - Kaiyo Sea (106)
@@ -76,5 +82,3 @@
 99,West,12,98,East,0
 # Hanatsu Village (103) - Jonetsu Pass (102)
 103,South,7,102,North,0
-# Jinsu Island (158) - Kowai Pass (157)
-158,East,16,157,West,0
