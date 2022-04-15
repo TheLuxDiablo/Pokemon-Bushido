@@ -882,3 +882,5 @@
 845,HOPOBERRY,Hopo Berry,Hopo Berries,5,20,"A Berry that can be fed to a Pokémon to restore its PP.",0,0,5,
 #-------------------------------
 846,LUNARWING,Lunar Wing,Lunar Wings,8,0,"A feather that glows like the moon. It's said to possess the power to dispel nightmares.",0,0,6,
+847,TM95,Scroll 95,Scroll 95s,4,10000,"The user attacks by swinging its tail as if it were a vicious wave in a raging storm.",3,0,0,AQUATAIL
+848,TM96,Scroll 96,Scroll 96s,4,10000,"The user attacks by borrowing the power of the moon. This may also lower the target's Sp. Atk stat.",3,0,0,MOONBLAST
