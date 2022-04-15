@@ -437,7 +437,8 @@ class PokeBattle_Scene
          :ICE      => [:ICEPUNCH,:ICEBEAM,:MIST,nil,:POWDERSNOW,:HAIL],
          :DRAGON   => [:DRAGONCLAW,:DRAGONRAGE,:DRAGONDANCE,nil,:TWISTER,nil],
          :DARK     => [:PURSUIT,:DARKPULSE,:HONECLAWS,nil,:SNARL,:EMBARGO],
-         :FAIRY    => [:TACKLE,:FAIRYWIND,:MOONLIGHT,nil,:SWIFT,:SWEETKISS]
+         :FAIRY    => [:TACKLE,:FAIRYWIND,:MOONLIGHT,nil,:SWIFT,:SWEETKISS],
+         :SHADOW   => [:SHADOWPUNCH,:SHADOWBALL,:COIL,:DARKVOID,:DOOMDUMMY,:OMINOUSWIND]
       }
       typeDefaultAnim.each do |type, anims|
         next if !isConst?(moveType,PBTypes,type)

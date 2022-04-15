@@ -246,7 +246,7 @@ def pbDayCareGenerateEgg
      # Hisuian
      isConst?(babyspecies,PBSpecies,:SNEASEL) ||
      isConst?(babyspecies,PBSpecies,:QWILFISH) ||
-     isConst?(babyspecies,PBSpecies,:PETLIL) ||
+     isConst?(babyspecies,PBSpecies,:PETILIL) ||
      isConst?(babyspecies,PBSpecies,:RUFFLET) ||
      isConst?(babyspecies,PBSpecies,:CYNDAQUIL) ||
      isConst?(babyspecies,PBSpecies,:OSHAWOTT) ||

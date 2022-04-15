@@ -350,7 +350,7 @@ class PokeBattle_Battler
 
   def pbTransform(target)
     if target.shadowPokemon?
-      pbDisplay(_INTL("{1} is unable to transform into {2}!",pbThis,target.pbThis))
+      @battle.pbDisplay(_INTL("{1} is unable to transform into {2}!",pbThis,target.pbThis))
       return false
     end
     oldAbil = @ability

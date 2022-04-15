@@ -67,7 +67,7 @@ class Game_Temp
   end
 end
 
-SPEEDUP_STAGES = [1, 3]
+SPEEDUP_STAGES = [1, 2, 3]
 $GameSpeed = 0
 $frame = 0
 $CanToggle = $DEBUG

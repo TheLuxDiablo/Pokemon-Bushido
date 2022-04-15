@@ -7,7 +7,11 @@ class PokemonStatsPage
     @sprites = {}
     @typebitmap = AnimatedBitmap.new("Graphics/Pictures/types")
     @sprites["background"] = IconSprite.new(0,0,@viewport)
-    @sprites["background"].setBitmap("Graphics/Pictures/Battle/StatVisual/stat_#{@idxBattler}")
+    if pbResolveBitmap("Graphics/Pictures/Battle/StatVisual/stat_#{@idxBattler}")
+      @sprites["background"].setBitmap("Graphics/Pictures/Battle/StatVisual/stat_#{@idxBattler}")
+    else
+      @sprites["background"].setBitmap("Graphics/Pictures/Battle/StatVisual/stat_0")
+    end
     @sprites["overlay"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
     @sprites["icon"] = PokemonIconSprite.new(@battle.battlers[idxBattler].pokemon,@viewport)
     @sprites["icon"].x = 2
@@ -42,7 +46,11 @@ class PokemonStatsPage
   def drawPage
     @sprites["overlay"].bitmap.clear
     battler = @battle.battlers[@idxBattler]
-    @sprites["background"].setBitmap("Graphics/Pictures/Battle/StatVisual/stat_#{@idxBattler}")
+    if pbResolveBitmap("Graphics/Pictures/Battle/StatVisual/stat_#{@idxBattler}")
+      @sprites["background"].setBitmap("Graphics/Pictures/Battle/StatVisual/stat_#{@idxBattler}")
+    else
+      @sprites["background"].setBitmap("Graphics/Pictures/Battle/StatVisual/stat_0")
+    end
     @sprites["icon"].pokemon = battler.displayPokemon
     imagepos = []
     textpos = [

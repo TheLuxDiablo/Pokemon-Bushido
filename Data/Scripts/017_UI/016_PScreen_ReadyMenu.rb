@@ -296,9 +296,7 @@ end
 # Using a registered item
 #===============================================================================
 def pbUseKeyItem
-  moves = [:CUT,:DEFOG,:DIG,:DIVE,:FLASH,:FLY,:HEADBUTT,:ROCKCLIMB,:ROCKSMASH,
-           :SECRETPOWER,:STRENGTH,:SURF,:SWEETSCENT,:TELEPORT,:WATERFALL,
-           :WHIRLPOOL]
+  moves = []
   realmoves = []
   for i in moves
     move = getID(PBMoves,i)

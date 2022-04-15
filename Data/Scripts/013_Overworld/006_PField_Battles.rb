@@ -139,7 +139,7 @@ def pbPrepareBattle(battle)
     if $PokemonEncounters.isCave?
       backdrop = "CaveBushido1"
     else
-      backdrop = "FRLGLab"
+      backdrop = "Dojo1"
     end
   end
 

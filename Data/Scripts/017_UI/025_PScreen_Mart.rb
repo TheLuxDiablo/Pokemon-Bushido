@@ -296,20 +296,18 @@ class Window_PokemonMart < Window_DrawableCommand
   def drawItem(index,count,ogrect)
     textpos=[]
     rect = Rect.new(ogrect.x+16,ogrect.y,ogrect.width-16,ogrect.height)
-    ypos=rect.y
+    ypos = rect.y
     if index==count-1
-      textpos.push([_INTL("CANCEL"),rect.x,ypos+2,false,
-         self.baseColor,self.shadowColor])
+      pbDrawShadowText(self.contents, rect.x, ypos + 8, rect.width, rect.height, _INTL("CANCEL"), self.baseColor,self.shadowColor)
     else
       item=@stock[index]
       itemname=@adapter.getDisplayName(item)
       qty=@adapter.getDisplayPrice(item)
       sizeQty=self.contents.text_size(qty).width
       xQty=rect.x+rect.width-sizeQty-2-16
-      textpos.push([itemname,rect.x,ypos+2,false,self.baseColor,self.shadowColor])
-      textpos.push([qty,xQty,ypos+2,false,self.baseColor,self.shadowColor])
+      pbDrawShadowText(self.contents, rect.x, ypos + 8, rect.width - sizeQty - 20, rect.height, itemname, self.baseColor,self.shadowColor)
+      pbDrawShadowText(self.contents, xQty, ypos + 8, sizeQty, rect.height, qty, self.baseColor,self.shadowColor)
     end
-    pbDrawTextPositions(self.contents,textpos)
     drawCursor(index,ogrect)
   end
 end

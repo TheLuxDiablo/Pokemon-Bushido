@@ -141,26 +141,21 @@ end
 # Changes Category based on Opponent's Def and SpDef. Has 20% Chance to Poison
 # (Shell Side Arm)
 #===============================================================================
-class PokeBattle_Move_187 < PokeBattle_Move_005
+class PokeBattle_Move_187 < PokeBattle_PoisonMove
   def initialize(battle,move)
     super
     @calcCategory = 1
-  end
-
-  def pbEffectAgainstTarget(user,target)
-    if rand(5)<1 && target.pbCanPoison?(user,true,self)
-      target.pbPoison(user)
-    end
   end
 
   def physicalMove?(thisType=nil); return (@calcCategory==0); end
   def specialMove?(thisType=nil);  return (@calcCategory==1); end
 
   def pbOnStartUse(user,targets)
+    return false if !targets || !targets[0]
     stageMul = [2,2,2,2,2,2, 2, 3,4,5,6,7,8]
     stageDiv = [8,7,6,5,4,3, 2, 2,2,2,2,2,2]
-    defense      = targets[0].defense
-    defenseStage = targets[0].stages[PBStats::DEFENSE]+6
+    defense      = targets[0].defense || 0
+    defenseStage = targets[0].stages[PBStats::DEFENSE] + 6
     realDefense  = (defense.to_f*stageMul[defenseStage]/stageDiv[defenseStage]).floor
     spdef        = targets[0].spdef
     spdefStage   = targets[0].stages[PBStats::SPDEF]+6

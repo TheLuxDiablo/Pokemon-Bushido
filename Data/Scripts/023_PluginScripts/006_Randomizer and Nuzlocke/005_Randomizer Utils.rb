@@ -1,29 +1,18 @@
-def pbChangeEventSpriteToMon(eventID, mon, shiny = false)
+def pbChangeEventSpriteToMon(eventID, mon)
   # Get the event from its id
   thisevent = $game_map.events[eventID]
   monid = mon.species
   # Setting up shininess, form and stuffs
-  fname = _INTL("")
-  fname += _INTL("0") if monid < 100
-  fname += _INTL("0") if monid < 10
-  fname += _INTL("{1}",monid)
-  fname += _INTL("s") if shiny
-  fname += _INTL(".png")
+  fname = pbLoadOverworldPokemonBitmap([mon.species, mon.female?, mon.shiny?, mon.form, mon.shadowPokemon?])
   # Finally sets the graphic
   thisevent.character_name = fname
   thisevent.character_hue = 0
 end
 
-def generateRandomPkmn(species,level)
+def generateRandomPkmn(species, level)
   species = getID(PBSpecies, species) if species.is_a?(Symbol) || species.is_a?(String)
   pkmn = PokeBattle_Pokemon.new(species, level, $Trainer)
-  newpkmn = randomizeSpecies(pkmn, true)
-  #Thundaga, jankily making species always change on reset
-  old_level = newpkmn.level
-  newpkmn.species = rand(PBSpecies.maxValue)
-  newpkmn.calcStats
-  newpkmn.resetMoves
-  newpkmn.level = old_level
+  newpkmn = randomizeStarter(pkmn)
   return newpkmn
 end
 

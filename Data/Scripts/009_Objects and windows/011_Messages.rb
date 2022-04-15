@@ -1204,7 +1204,7 @@ def pbMessage(message,commands=nil,cmdIfCancel=0,skin=nil,defaultCmd=0,&block)
   if commands
     ret = pbMessageDisplay(msgwindow,message,true,
        proc { |msgwindow|
-         next pbShowCommands(msgwindow,commands,cmdIfCancel,defaultCmd,&block)
+         next Kernel.pbShowCommands(msgwindow,commands,cmdIfCancel,defaultCmd,&block)
        },&block)
   else
     pbMessageDisplay(msgwindow,message,&block)

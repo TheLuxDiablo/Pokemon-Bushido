@@ -876,8 +876,6 @@ class PokemonEntryScene
   end
 
   def pbEntry
-    #Thundaga, disallow speedup on text entry
-    pbDisallowSpeedup()
     return USEKEYBOARD ? pbEntry1 : pbEntry2
   end
 
@@ -1424,19 +1422,11 @@ end
 #===============================================================================
 def pbEnterText(helptext,minlength,maxlength,initialText="",mode=0,pokemon=nil,nofadeout=false)
   ret=""
-  if ($PokemonSystem.textinput==1 rescue false)  # Keyboard
-    pbFadeOutIn(99999,nofadeout) {
-       sscene=PokemonEntryScene.new
-       sscreen=PokemonEntry.new(sscene)
-       ret=sscreen.pbStartScreen(helptext,minlength,maxlength,initialText,mode,pokemon)
-    }
-  else   # Cursor
-    pbFadeOutIn(99999,nofadeout) {
-       sscene=PokemonEntryScene2.new
-       sscreen=PokemonEntry.new(sscene)
-       ret=sscreen.pbStartScreen(helptext,minlength,maxlength,initialText,mode,pokemon)
-    }
-  end
+  pbFadeOutIn(99999,nofadeout) {
+     sscene=PokemonEntryScene2.new
+     sscreen=PokemonEntry.new(sscene)
+     ret=sscreen.pbStartScreen(helptext,minlength,maxlength,initialText,mode,pokemon)
+   }
   return ret
 end
 

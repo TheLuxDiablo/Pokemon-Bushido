@@ -13,7 +13,7 @@ begin
 
     def self.animationName(weather)
       case weather
-      when Sun;         return "Sun"
+      when Sun;         return "Sunny"
       when Rain;        return "Rain"
       when Sandstorm;   return "Sandstorm"
       when Hail;        return "Hail"

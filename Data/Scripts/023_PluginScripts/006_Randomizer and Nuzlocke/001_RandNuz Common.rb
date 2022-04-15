@@ -10,7 +10,8 @@ module Randomizer
   # list of species to exclude from the randomizer
   EXCLUSIONS_SPECIES = [
     :LUGIA, :HOOH, :COBALION, :TERRAKION, :VIRIZION, :ZERAORA, :LANDORUS,
-    :TORNADUS, :THUNDURUS, :CELEBI, :ZORUA, :ZOROARK
+    :TORNADUS, :THUNDURUS, :CELEBI, :ZORUA, :ZOROARK, :DREEPY, :DRAKOLAK,
+    :DRAGAPULT
   ]
 
   # list of items to exclude from the randomizer (Automatically excludes Key Items)
@@ -21,7 +22,7 @@ module Randomizer
 
   # list of moves to exclude from the randomizer (Automatically excludes shadow moves)
   EXCLUSIONS_MOVES = [
-    :BURNKUNAI, :SHOCKKUNAI, :POISONKUNAI, :SLEEPKUNAI
+    :BURNKUNAI, :SHOCKKUNAI, :POISONKUNAI, :SLEEPKUNAI, :STRUGGLE
   ]
 end
 

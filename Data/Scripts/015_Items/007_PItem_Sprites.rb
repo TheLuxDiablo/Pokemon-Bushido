@@ -3,7 +3,7 @@
 #===============================================================================
 class ItemIconSprite < SpriteWrapper
   attr_reader :item
-  ANIM_ICON_SIZE   = 48
+  ANIM_ICON_SIZE   = 64
   FRAMES_PER_CYCLE = Graphics.frame_rate
 
   def initialize(x,y,item,viewport=nil)

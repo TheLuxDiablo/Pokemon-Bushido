@@ -328,16 +328,6 @@ class Game_Character
       $DisableScrollCounter = 2
     end
     stair_update
-    if on_middle_of_stair?
-      @old_move_speed ||= self.move_speed
-      ptgrs = Math.sqrt((@stair_end_x - @stair_start_x) ** 2 + (@stair_end_y - @stair_start_y) ** 2)
-      fraction = (@stair_end_x - @stair_start_x).abs / ptgrs * 0.85
-      #self.move_speed = fraction * @old_move_speed
-      self.move_speed = 3
-    else
-      self.move_speed = @old_move_speed if @old_move_speed
-      @old_move_speed = nil
-    end
   end
 
   alias stair_update_pattern update_pattern unless method_defined?(:stair_update_pattern)

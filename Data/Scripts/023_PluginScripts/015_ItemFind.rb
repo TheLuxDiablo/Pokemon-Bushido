@@ -117,6 +117,11 @@ class Game_Player
     initialize_itemfind(*args)
   end
 
+  def found_items
+    @found_items = [] if !@found_items
+    return @found_items
+  end
+
   def addFoundItem(item)
     if !defined?(@found_items)
       @found_items = []

@@ -358,9 +358,9 @@ class PokemonPartyPanel < SpriteWrapper
           end
           # Draw status
           status = -1
-          status = 6 if @pokemon.pokerusStage==1
+          status = 8 if @pokemon.pokerusStage==1
           status = @pokemon.status-1 if @pokemon.status>0
-          status = 5 if @pokemon.hp<=0
+          status = 7 if @pokemon.hp<=0
           if status>=0
             statusrect = Rect.new(0,16*status,44,16)
             @overlaysprite.bitmap.blt(78,68,@statuses.bitmap,statusrect)

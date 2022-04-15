@@ -134,8 +134,10 @@ class PokemonBag
     pocket = pbGetPocket(item)
     maxsize = maxPocketSize(pocket)
     maxsize = @pockets[pocket].length+1 if maxsize<0
-    return ItemStorageHelper.pbStoreItem(@pockets[pocket],maxsize,
+    ret = ItemStorageHelper.pbStoreItem(@pockets[pocket],maxsize,
                                          BAG_MAX_PER_SLOT,item,qty,true)
+    $game_player.found_items.push(item) if ret && !$game_player.found_items.include?(item)
+    return ret
   end
 
   def pbStoreItemById(item,qty=1)

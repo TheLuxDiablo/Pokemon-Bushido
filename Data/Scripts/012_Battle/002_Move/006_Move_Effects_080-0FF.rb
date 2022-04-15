@@ -1682,7 +1682,11 @@ class PokeBattle_Move_0B6 < PokeBattle_Move
        :TECHNOBLAST,      # Genesect (Gen 5)
        :THOUSANDARROWS,   # Zygarde (Gen 6)
        :THOUSANDWAVES,    # Zygarde (Gen 6)
-       :VCREATE           # Victini (Gen 5)
+       :VCREATE,          # Victini (Gen 5)
+       :BURNKUNAI,
+       :SLEEPKUNAI,
+       :POISONKUNAI,
+       :SHOCKKUNAI
     ]
   end
 
@@ -2074,6 +2078,7 @@ class PokeBattle_Move_0C4 < PokeBattle_TwoTurnMove
         @powerHerb = false
         @chargingTurn = true
         @damagingTurn = true
+        return false
       end
     end
     return ret
@@ -3189,6 +3194,7 @@ end
 class PokeBattle_Move_0EE < PokeBattle_Move
   def pbEndOfMoveUsageEffect(user,targets,numHits,switchedBattlers)
     return if user.fainted? || numHits==0
+    return if @battle.pbAllFainted?
     targetSwitched = true
     targets.each do |b|
       targetSwitched = false if !switchedBattlers.include?(b.index)

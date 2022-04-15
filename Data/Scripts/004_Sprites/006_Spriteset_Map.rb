@@ -73,7 +73,7 @@ class Spriteset_Map
     for i in 0...7
       @tilemap.autotiles[i].dispose
     end
-    @tilemap.dispose if !@tilemap.cached
+    @tilemap.dispose if @tilemap
     @panorama.dispose
     @fog.dispose
     for sprite in @character_sprites

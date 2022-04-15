@@ -143,8 +143,8 @@ class PokeBattle_Scene
         shiny    = battler.shiny? || battler.shadowPokemon?
         enc_type = {
             :BASE   => !static && !evo && !shiny,
-            :SHINY  => !static && !evo,
-            :STATIC => !evo && !shiny
+            :SHINY_OR_SHADOW  => !static && shiny && !evo,
+            :STATIC => static && !evo && !shiny
         }
         $PokemonGlobal.nuzlockeData[$game_map.map_id] = {} if !$PokemonGlobal.nuzlockeData[$game_map.map_id]
         enc_type.each do |type, value|
@@ -169,6 +169,7 @@ class PokeBattle_Battle
   #-----------------------------------------------------------------------------
   alias pbThrowPokeBall_nuzlocke_x pbThrowPokeBall unless method_defined?(:pbThrowPokeBall_nuzlocke_x)
   def pbThrowPokeBall(*args)
+    old_caught_length = @caughtPokemon.length
     battler = @battlers[args[0]]
     pokemon = battler.pokemon.clone
     # part to disable Pokeball throwing if already caught
@@ -179,28 +180,28 @@ class PokeBattle_Battle
       shiny    = battler.shiny? || battler.shadowPokemon?
       enc_type = {
           :BASE   => !static && !shiny && !evo,
-          :SHINY  => !static && !evo,
-          :STATIC => !shiny && !evo
+          :SHINY_OR_SHADOW  => !static && shiny && !evo,
+          :STATIC => static && !shiny && !evo
       }
       enc_type.each do |type, value|
         next if !$PokemonGlobal.nuzlockeData[$game_map.map_id]
         map = $PokemonGlobal.nuzlockeData[$game_map.map_id][type]
         next if !map || !value
         message = _INTL("Nuzlocke rules prevent you from catching a Pokémon on a map you already had an encounter on!")
-        message = _INTL("Nuzlocke rules prevent you from catching a Pokémon on a map you already had a #{type.to_s.downcase} encounter on!") if type != :BASE
+        message = _INTL("Nuzlocke rules prevent you from catching a Pokémon on a map you already had a #{type.to_s.gsub("_", " ").downcase} encounter on!") if type != :BASE
         return pbDisplay(message)
       end
     end
     ret = pbThrowPokeBall_nuzlocke_x(*args)
     # part that registers caught Pokemon for map
-    if Nuzlocke.on? && data.include?(:ONEROUTE) && @decision != 0
+    if Nuzlocke.on? && data.include?(:ONEROUTE) && old_caught_length != @caughtPokemon.length
       evo      = Nuzlocke.checkEvoNuzlocke?(pokemon.species) && data.include?(:DUPSCLAUSE)
       static   = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
       shiny    = (pokemon.shiny? || pokemon.shadowPokemon?)
       enc_type = {
           :BASE   => !static && !evo && !shiny,
-          :SHINY  => !static && !evo,
-          :STATIC => !evo && !shiny
+          :SHINY_OR_SHADOW  => !static && shiny && !evo,
+          :STATIC => static && !evo && !shiny
       }
       $PokemonGlobal.nuzlockeData[$game_map.map_id] = {} if !$PokemonGlobal.nuzlockeData[$game_map.map_id]
       enc_type.each do |type, value|
@@ -218,14 +219,14 @@ class PokeBattle_Battle
     data = Nuzlocke.rules; data = [] if data.nil?
     battler = nil
     eachOtherSideBattler { |b| battler = b; break }
-    if Nuzlocke.on? && data.include?(:ONEROUTE) && !self.opponent
+    if Nuzlocke.on? && data.include?(:ONEROUTE) && wildBattle?
       evo      = Nuzlocke.checkEvoNuzlocke?(battler.pokemon.species) && data.include?(:DUPSCLAUSE)
       static   = data.include?(:STATIC) && !$PokemonTemp.nonStaticEncounter
       shiny    = battler.shiny? || battler.shadowPokemon?
       enc_type = {
           :BASE   => !static && !evo && !shiny,
-          :SHINY  => !static && !evo,
-          :STATIC => !evo && !shiny
+          :SHINY_OR_SHADOW  => !static && shiny && !evo,
+          :STATIC => static && !evo && !shiny
       }
       $PokemonGlobal.nuzlockeData[$game_map.map_id] = {} if !$PokemonGlobal.nuzlockeData[$game_map.map_id]
       enc_type.each do |type, value|

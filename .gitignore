@@ -2,7 +2,6 @@
 
 # Word files
 *.docx
-Data/System.rxdata
 errorlog.txt
 RGSS*.dll
 

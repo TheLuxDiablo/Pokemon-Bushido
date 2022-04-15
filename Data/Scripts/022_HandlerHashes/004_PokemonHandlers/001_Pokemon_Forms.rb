@@ -673,7 +673,7 @@ MultipleForms.copy(:SLOWPOKE, :SLOWBRO, :SLOWKING,
                    :BERGMITE, :AVALUGG,
                    :GOOMY, :SLIGGOO, :GOODRA,
                    :RUFFLET, :BRAVIARY,
-                   :PETLIL, :LILLIGANT,
+                   :PETILIL, :LILLIGANT,
                    :ZORUA, :ZOROARK,
                    :VOLTORB, :ELECTRODE
                  )

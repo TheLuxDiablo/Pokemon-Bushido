@@ -403,7 +403,7 @@
 392,RAWSTBERRY,Rawst Berry,Rawst Berries,5,300,"It may be used or held by a Pokemon to recover from a burn.",1,1,5,
 393,ASPEARBERRY,Aspear Berry,Aspear Berries,5,100,"It may be used or held by a Pokemon to defrost it.",1,1,5,
 394,LEPPABERRY,Leppa Berry,Leppa Berries,5,800,"It may be used or held by a Pokemon to restore a move's PP by 10.",1,2,5,
-395,ORANBERRY,Oran Berry,Oran Berries,5,100,"It ma	y be used or held by a Pokemon to heal the user by just 10 HP.",1,1,5,
+395,ORANBERRY,Oran Berry,Oran Berries,5,100,"It may be used or held by a Pokemon to heal the user by just 10 HP.",1,1,5,
 396,PERSIMBERRY,Persim Berry,Persim Berries,5,100,"It may be used or held by a Pokemon to recover from confusion.",0,3,5,
 397,LUMBERRY,Lum Berry,Lum Berries,5,800,"It may be used or held by a Pokemon to recover from any status problem.",1,1,5,
 398,SITRUSBERRY,Sitrus Berry,Sitrus Berries,5,600,"It may be used or held by a Pokemon to heal the user's HP a little.",1,1,5,
@@ -871,9 +871,9 @@
 #-------------------------------
 837,SHADEBALL,Shade Ball,Shade Balls,3,500,"A special Ball designed for capturing Shadow Pokemon and opening their hearts.",0,4,4,
 #-------------------------------
-838,BLACKAUGURITE,Black Augurite,Black Augurites,1,2100,"A glassy black stone that produces a sharp cutting edge when split. It’s loved by a certain Pokémon.",1,0,7,
-839,PEATBLOCK,Peat Block,Peat Blocks,1,2100,"A block of muddy material that can be used as fuel for burning when it is dried. It’s loved by a certain Pokémon.",1,0,7,
-840,LINKINGCORD,Linking Cord,Linking Cords,1,2100,"A string exuding a mysterious energy that makes you feel a strange sense of connection. It’s loved by certain Pokémon.",1,0,7,
+838,BLACKAUGURITE,Black Augurite,Black Augurites,1,2100,"A glassy black stone that produces a sharp cutting edge when split. It's loved by a certain Pokémon.",1,0,7,
+839,PEATBLOCK,Peat Block,Peat Blocks,1,2100,"A block of muddy material that can be used as fuel for burning when it is dried. It's loved by a certain Pokémon.",1,0,7,
+840,LINKINGCORD,Linking Cord,Linking Cords,1,2100,"A string exuding a mysterious energy that makes you feel a strange sense of connection. It's loved by certain Pokémon.",1,0,7,
 841,ADAMANTCRYSTAL,Adamant Crystal,Adamant Crystals,8,0,"When used on Dialga, this large, glowing gem wells with power and allows the Pokémon to change form.",5,0,6,
 842,LUSTROUSGLOBE,Lustrous Globe,Lustrous Globes,8,0,"When used on Palkia, this large, glowing orb wells with power and allows the Pokémon to change form.",5,0,6,
 843,LEGENDPLATE,Legend Plate,Legend Plates,8,0,"A stone tablet imbued with the essence of all creation. When used on a certain Pokémon, it allows that Pokémon to gain the power of every type there is.",5,0,6,

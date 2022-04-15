@@ -106,6 +106,9 @@ module Randomizer
     end
     excl.push(0)
     excl.uniq!
+    allowed = (0..PBSpecies.maxValue).to_a
+    allowed.delete_if { |s| excl.include?(s) }
+    $PokemonGlobal.randomizedData[:ALLOWED_SPECIES] = allowed.clone
     shuffled_dex = {}
     keys = [:STATIC, :GIFTS, :ENCDATA, :TRAINER]
     for key in keys
@@ -437,6 +440,19 @@ def randomizeSpecies(species, static = false, gift = false)
     pokemon.level = old_level
   end
   return pokemon.nil? ? species : pokemon
+end
+
+def randomizeStarter(pokemon)
+  return pokemon if !Randomizer.on?
+  allowed_pkmn = $PokemonGlobal.randomizedData[:ALLOWED_SPECIES]
+  rand_species = allowed_pkmn.sample
+  new_species = randomizeSpecies(rand_species, true)
+  old_level = pokemon.level
+  pokemon.species = new_species
+  pokemon.calcStats
+  pokemon.resetMoves
+  pokemon.level = old_level
+  return pokemon
 end
 
 def randomizeItem(item)

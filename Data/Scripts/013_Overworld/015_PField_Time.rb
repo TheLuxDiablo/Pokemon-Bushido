@@ -285,7 +285,7 @@ end
 # Seasons
 #===============================================================================
 def pbGetSeason
-  return (pbGetTimeNow.mon-1)%4
+  return (pbGetTimeNow.mon-1)/4
 end
 
 def pbIsSeason(seasonVariable,*arg)

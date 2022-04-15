@@ -410,11 +410,11 @@ class PokeBattle_Move
         end
 	  end
     end
-	if @battle.pbWeather == PBWeather::Sandstorm
-	  if target.pbHasType?(:ROCK) && specialMove? && @function!="122"   # Psyshock
-	    multipliers[DEF_MULT] *= 1.5
-	  end
-	end
+  	if @battle.pbWeather == PBWeather::Sandstorm
+  	  if target.pbHasType?(:ROCK) && specialMove? && @function!="122"   # Psyshock
+  	    multipliers[DEF_MULT] *= 1.5
+  	  end
+  	end
     # Critical hits
     if target.damageState.critical
       if NEWEST_BATTLE_MECHANICS

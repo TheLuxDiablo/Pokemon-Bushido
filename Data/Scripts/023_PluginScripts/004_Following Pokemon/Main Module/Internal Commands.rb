@@ -32,7 +32,7 @@ module FollowingPkmn
     shiny = first_pkmn.shiny?
     shiny = first_pkmn.superVariant if (first_pkmn.respond_to?(:superVariant) && !first_pkmn.superVariant.nil? && first_pkmn.superShiny?)
     $PokemonTemp.dependentEvents.change_sprite([
-      first_pkmn.species, first_pkmn.gender, shiny, first_pkmn.form, first_pkmn.shadowPokemon?
+      first_pkmn.species, first_pkmn.female?, shiny, first_pkmn.form, first_pkmn.shadowPokemon?
     ]) if ret
     FollowingPkmn.move_route([(ret ? PBMoveRoute::StepAnimeOn : PBMoveRoute::StepAnimeOff)]) if FollowingPkmn::ALWAYS_ANIMATE
     return ret

@@ -2881,11 +2881,11 @@ def tryLoadData(file)
 end
 
 def dumpBase64Anim(s)
-  return [Zlib::Deflate.deflate(Marshal.dump(s))].pack("m").gsub(/\n/,"\r\n")
+  return [Zlib::Deflate.deflate(Marshal.dump(s))].pack("m").gsub(/\n/, "\r\n")
 end
 
 def loadBase64Anim(s)
-  return Marshal.restore(StringInput.new(Zlib::Inflate.inflate(s.unpack("m")[0])))
+  return Marshal.restore(Zlib::Inflate.inflate(s.unpack("m")[0]))
 end
 
 def pbExportAnim(animations)

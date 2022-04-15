@@ -7,6 +7,44 @@ class Sprite_Character
   end
 end
 
+def pbLoadOverworldPokemonBitmap(params)
+  factors = []
+  factors.push([4,params[4],false]) if params[4] && params[4]!=false   # shadow
+  factors.push([1,params[1],false]) if params[1] && params[1]!=false  # gender
+  factors.push([2,params[2],false]) if params[2] && params[2]!=false   # shiny
+  factors.push([3,params[3],0]) if params[3] && params[3]!=0           # form
+  factors.push([0,params[0],0])                                        # species
+  trySpecies = 0
+  tryGender = false
+  tryShiny  = false
+  tryForm   = 0
+  tryShadow = false
+  for i in 0...2**factors.length
+    factors.each_with_index do |factor,index|
+      newVal = ((i/(2**index))%2==0) ? factor[1] : factor[2]
+      case factor[0]
+      when 0; trySpecies = newVal
+      when 1; tryGender  = newVal
+      when 2; tryShiny   = newVal
+      when 3; tryForm    = newVal
+      when 4; tryShadow  = newVal
+      end
+    end
+    for j in 0...2   # Try using the species' internal name and then its ID number
+      next if trySpecies==0 && j==0
+      trySpeciesText = (j==0) ? getConstantName(PBSpecies,trySpecies) : sprintf("%03d",trySpecies)
+      bitmapFileName = sprintf("%s%s%s%s%s",
+         trySpeciesText,
+         (tryGender) ? "f" : "",
+         (tryShiny) ? "s" : "",
+         (tryForm!=0) ? "_"+tryForm.to_s : "",
+         (tryShadow) ? "_shadow" : "") rescue nil
+       ret = pbResolveBitmap("Graphics/Characters/" + bitmapFileName)
+       return bitmapFileName if ret
+    end
+  end
+end
+
 
 
 class DependentEvents
@@ -16,50 +54,11 @@ class DependentEvents
   def change_sprite(params)
     $PokemonGlobal.dependentEvents.each_with_index do |event,idx|
       next if !event[8][/FollowerPkmn/]
-      factors = []
-      factors.push([4,params[4],false]) if params[4] && params[4]!=false   # shadow
-      factors.push([1,params[1],false]) if params[1] && params[1]!=false  # gender
-      factors.push([2,params[2],false]) if params[2] && params[2]!=false   # shiny
-      factors.push([3,params[3],0]) if params[3] && params[3]!=0           # form
-      factors.push([0,params[0],0])                                        # species
-      trySpecies = 0
-      tryGender = false
-      tryShiny  = false
-      tryForm   = 0
-      tryShadow = false
-      for i in 0...2**factors.length
-        factors.each_with_index do |factor,index|
-          newVal = ((i/(2**index))%2==0) ? factor[1] : factor[2]
-          case factor[0]
-          when 0; trySpecies = newVal
-          when 1; tryGender  = newVal
-          when 2; tryShiny   = newVal
-          when 3; tryForm    = newVal
-          when 4; tryShadow  = newVal
-          end
-        end
-        ret = [-1,""]
-        for j in 0...2   # Try using the species' internal name and then its ID number
-          next if trySpecies==0 && j==0
-          trySpeciesText = (j==0) ? getConstantName(PBSpecies,trySpecies) : sprintf("%03d",trySpecies)
-          bitmapFileName = sprintf("%s%s%s%s%s",
-             trySpeciesText,
-             (tryGender) ? "f" : "",
-             (tryShiny) ? "s" : "",
-             (tryForm!=0) ? "_"+tryForm.to_s : "",
-             (tryShadow) ? "_shadow" : "") rescue nil
-          ret = [0,bitmapFileName] if pbResolveBitmap("Graphics/Characters/"+bitmapFileName)
-          ret = [1,bitmapFileName] if pbResolveBitmap("Graphics/Characters/Following/"+bitmapFileName)
-        end
-        if ret[0] > -1
-          fname = ret[1]
-          event[6] = fname
-          @realEvents[idx].character_name = fname
-          @realEvents[idx].character_hue = 0
-          $game_temp.super_shiny_hue = false
-          break
-        end
-      end
+      fname = pbLoadOverworldPokemonBitmap(params)
+      event[6] = fname
+      @realEvents[idx].character_name = fname
+      @realEvents[idx].character_hue = 0
+      $game_temp.super_shiny_hue = false
     end
   end
   #-----------------------------------------------------------------------------
@@ -126,13 +125,14 @@ class DependentEventSprites
         $PokemonTemp.dependentEvents.realEvents[i].character_hue = first_pkmn.superHue
         $game_temp.super_shiny_hue = true
       end
-      if first_pkmn.status == :NONE || !FollowingPkmn::APPLY_STATUS_TONES
+      if first_pkmn.status == PBStatuses::NONE || !FollowingPkmn::APPLY_STATUS_TONES
         @sprites[i].color.set(0, 0, 0, 0)
         $game_temp.status_pulse = [50.0, 50.0, 150.0, (100/(Graphics.frame_rate * 2.0))]
         next
       end
       status_tone = nil
-      status_tone = FollowingPkmn.const_get("TONE_#{first_pkmn.status}") if FollowingPkmn.const_defined?("TONE_#{first_pkmn.status}")
+      status = getConstantName(PBStatuses, first_pkmn.status)
+      status_tone = FollowingPkmn.const_get("TONE_#{status}") if FollowingPkmn.const_defined?("TONE_#{status}")
       next if !status_tone || !status_tone.all? {|s| s > 0}
       $game_temp.status_pulse[0] += $game_temp.status_pulse[3]
       $game_temp.status_pulse[3] *= -1 if $game_temp.status_pulse[0] < $game_temp.status_pulse[1] ||

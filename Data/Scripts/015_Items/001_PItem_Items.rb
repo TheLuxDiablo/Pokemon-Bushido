@@ -166,6 +166,8 @@ def pbCanUseOnPokemon?(item)
 end
 
 def pbIsHiddenMove?(move)
+  # ALlow Forgetting HMs
+  return false
   itemsData = pbLoadItemsData
   return false if !itemsData
   for i in 0...itemsData.length
@@ -574,6 +576,7 @@ def pbRaiseEffortValues(pkmn,ev,evgain=10,evlimit=true)
 end
 
 def pbRaiseHappinessAndLowerEV(pkmn,scene,ev,messages)
+  fainted = pkmn.fainted?
   h = pkmn.happiness<255
   e = pkmn.ev[ev]>0
   if !h && !e
@@ -587,6 +590,7 @@ def pbRaiseHappinessAndLowerEV(pkmn,scene,ev,messages)
     pkmn.ev[ev] -= 10
     pkmn.ev[ev] = 0 if pkmn.ev[ev]<0
     pkmn.calcStats
+    pkmn.hp += 1 if pkmn.hp == 0 && !fainted?
   end
   scene.pbRefresh
   scene.pbDisplay(messages[2-(h ? 0 : 2)-(e ? 0 : 1)])

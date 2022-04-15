@@ -1,5 +1,4 @@
 class TilemapLoader
-  attr_reader :cached
 
   def initialize(viewport)
     @viewport = viewport
