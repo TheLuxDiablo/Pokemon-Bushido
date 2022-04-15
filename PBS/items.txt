@@ -385,6 +385,11 @@
 380,TM92,Scroll 92,Scroll 92s,4,10000,"The user attacks by breathing a special, hot fire. This also lowers the target's Sp. Atk stat.",3,0,0,MYSTICALFIRE
 381,TM93,Scroll 93,Scroll 93s,4,10000,"The user's body generates an eerie impulse. This harshly lowers the target's Sp. Atk stat.",3,0,0,EERIEIMPULSE
 382,TM94,Scroll 94,Scroll 94s,4,10000,"A restrained attack that prevents the target from fainting. The target is left with at least 1 HP.",3,0,0,FALSESWIPE
+621,TM95,Scroll 95,Scroll 95s,4,10000,"The user attacks with a blade of air that slices even the sky. This may also make the target flinch.",3,0,0,AIRSLASH
+622,TM96,Scroll 96,Scroll 96s,4,10000,"The user stabs the target with a sharp horn. This attack never misses.",3,0,0,SMARTSTRIKE
+623,TM97,Scroll 97,Scroll 97s,4,10000,"The user swings its body around violently to inflict damage on everything in its vicinity.",3,0,0,BRUTALSWING
+624,TM98,Scroll 98,Scroll 98s,4,10000,"The user attacks frustratedly. If the user's previous move has failed, the power of this move doubles.",3,0,0,STOMPINGTANTRUM
+625,TM99,Scroll 99,Scroll 99s,4,10000,"The user swings its tough tail wildly at the opposing Pokemon. This also lowers their Attack stats.",3,0,0,BREAKINGSWIPE
 383,HM01,HM01,HM01s,4,0,"The target is cut with a scythe or claw. It can also be used to cut down thin trees.",4,0,0,CUT
 384,HM02,HM02,HM02s,4,0,"The user soars, then strikes on the second turn. It can also be used to fly to any familiar town.",4,0,0,FLY
 385,HM03,HM03,HM03s,4,0,"It swamps the area around the user with a giant wave. It can also be used for crossing water.",4,0,0,SURF
@@ -631,12 +636,6 @@
 619,DREAMBALL,Dream Ball,Dream Balls,3,500,"A somewhat different Poke Ball that makes it easier to catch wild Pokemon while they're asleep.",0,4,4,
 620,BEASTBALL,Beast Ball,Beast Balls,3,1000,"A special Poke Ball designed to catch Ultra Beasts. It has a low success rate for catching others.",0,4,4,
 #-------------------------------
-621,TM95,Scroll 95,Scroll 95s,4,10000,"The user attacks with a blade of air that slices even the sky. This may also make the target flinch.",3,0,0,AIRSLASH
-622,TM96,Scroll 96,Scroll 96s,4,10000,"The user stabs the target with a sharp horn. This attack never misses.",3,0,0,SMARTSTRIKE
-623,TM97,Scroll 97,Scroll 97s,4,10000,"The user swings its body around violently to inflict damage on everything in its vicinity.",3,0,0,BRUTALSWING
-624,TM98,Scroll 98,Scroll 98s,4,10000,"The user attacks frustratedly. If the user's previous move has failed, the power of this move doubles.",3,0,0,STOMPINGTANTRUM
-625,TM99,Scroll 99,Scroll 99s,4,10000,"The user swings its tough tail wildly at the opposing Pokemon. This also lowers their Attack stats.",3,0,0,BREAKINGSWIPE
-#-------------------------------
 626,ROSELIBERRY,Roseli Berry,Roseli Berries,5,20,"If held by a Pokemon, this Berry will lessen the damage taken from one supereffective Fairy-type attack.",0,0,5,
 627,KEEBERRY,Kee Berry,Kee Berries,5,20,"If held by a Pokemon, this Berry will increase the holder's Defense if it's hit with a physical move.",0,0,5,
 628,MARANGABERRY,Maranga Berry,Maranga Berries,5,20,"If held by a Pokemon, this Berry will increase the holder's Sp. Def if it's hit with a special move.",0,0,5,
@@ -882,5 +881,3 @@
 845,HOPOBERRY,Hopo Berry,Hopo Berries,5,20,"A Berry that can be fed to a Pokémon to restore its PP.",0,0,5,
 #-------------------------------
 846,LUNARWING,Lunar Wing,Lunar Wings,8,0,"A feather that glows like the moon. It's said to possess the power to dispel nightmares.",0,0,6,
-847,TM95,Scroll 95,Scroll 95s,4,10000,"The user attacks by swinging its tail as if it were a vicious wave in a raging storm.",3,0,0,AQUATAIL
-848,TM96,Scroll 96,Scroll 96s,4,10000,"The user attacks by borrowing the power of the moon. This may also lower the target's Sp. Atk stat.",3,0,0,MOONBLAST
