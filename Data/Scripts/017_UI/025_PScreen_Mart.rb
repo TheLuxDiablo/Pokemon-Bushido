@@ -328,6 +328,15 @@ class PokemonMart_Scene
       @sprites["icon"].item=itemwindow.item
       @sprites["itemtextwindow"].text=(itemwindow.item==0) ? _INTL("Quit shopping.") :
          @adapter.getDescription(itemwindow.item)
+      @sprites["tm_compat"].visible = pbIsMachine?(@sprites["itemwindow"].item)
+      @sprites["tm_compat"].move = pbGetMachine(@sprites["itemwindow"].item) if pbIsMachine?(@sprites["itemwindow"].item)
+      if @sprites["itemwindow"].item != 0 && !pbIsImportantItem?(@sprites["itemwindow"].item)
+        @sprites["qtywindow"].visible = !pbIsMachine?(@sprites["itemwindow"].item)
+        @sprites["qtywindow"].text    = _INTL("In Bag:<r>{1}", @adapter.getQuantity(itemwindow.item))
+      else
+        @sprites["qtywindow"].visible = false
+      end
+      @sprites["qtywindow"].y       = Graphics.height - 102 - @sprites["qtywindow"].height
       itemwindow.refresh
     end
     @sprites["moneywindow"].text=_INTL("Money:\r\n<r>{1}",@adapter.getMoneyString)
@@ -377,6 +386,21 @@ class PokemonMart_Scene
     @sprites["moneywindow"].height=96
     @sprites["moneywindow"].baseColor=Color.new(88,88,80)
     @sprites["moneywindow"].shadowColor=Color.new(168,184,184)
+    @sprites["qtywindow"] = Window_AdvancedTextPokemon.new("")
+    pbPrepareWindow(@sprites["qtywindow"])
+    @sprites["qtywindow"].setSkin("Graphics/Windowskins/goldskin")
+    @sprites["qtywindow"].viewport = @viewport
+    @sprites["qtywindow"].width = 190
+    @sprites["qtywindow"].height = 64
+    @sprites["qtywindow"].baseColor = Color.new(88, 88, 80)
+    @sprites["qtywindow"].shadowColor = Color.new(168, 184, 184)
+    @sprites["qtywindow"].text = _INTL("In Bag:<r>{1}", @adapter.getQuantity(@sprites["itemwindow"].item))
+    @sprites["qtywindow"].y    = Graphics.height - 102 - @sprites["qtywindow"].height
+    @sprites["tm_compat"] = TMCompatibilityPanel.new(@viewport)
+    @sprites["tm_compat"].bitmap = pbBitmap("Graphics/Pictures/martPanel")
+    @sprites["tm_compat"].x      = 4
+    @sprites["tm_compat"].y      = @sprites["moneywindow"].y + @sprites["moneywindow"].height
+    @sprites["tm_compat"].z = 10000
     pbDeactivateWindows(@sprites)
     @buying=buying
     pbRefresh
@@ -477,6 +501,16 @@ class PokemonMart_Scene
     @sprites["moneywindow"].visible=false
   end
 
+  def pbShowQuantity
+    pbRefresh
+    @sprites["qtywindow"].visible = true
+  end
+
+  def pbHideQuantity
+    pbRefresh
+    @sprites["qtywindow"].visible = false
+  end
+
   def pbDisplay(msg,brief=false)
     cw=@sprites["helpwindow"]
     cw.letterbyletter=true
@@ -562,66 +596,61 @@ class PokemonMart_Scene
     itemprice=@adapter.getPrice(item,!@buying)
     itemprice/=2 if !@buying
     pbDisplay(helptext,true)
+    old_visible = @sprites["qtywindow"].visible
     using(numwindow=Window_AdvancedTextPokemon.new("")) { # Showing number of items
-      qty=@adapter.getQuantity(item)
-      using(inbagwindow=Window_AdvancedTextPokemon.new("")) { # Showing quantity in bag
-        pbPrepareWindow(numwindow)
-        pbPrepareWindow(inbagwindow)
-        numwindow.viewport=@viewport
-        numwindow.width=224
-        numwindow.height=64
-        numwindow.baseColor=Color.new(88,88,80)
-        numwindow.shadowColor=Color.new(168,184,184)
-        inbagwindow.visible=@buying
-        inbagwindow.viewport=@viewport
-        inbagwindow.width=190
-        inbagwindow.height=64
-        inbagwindow.baseColor=Color.new(88,88,80)
-        inbagwindow.shadowColor=Color.new(168,184,184)
-        inbagwindow.text=_INTL("In Bag:<r>{1}  ",qty)
-        numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
-        pbBottomRight(numwindow)
-        numwindow.y-=helpwindow.height
-        pbBottomLeft(inbagwindow)
-        inbagwindow.y-=helpwindow.height
-        loop do
-          Graphics.update
-          Input.update
-          numwindow.update
-          inbagwindow.update
-          self.update
-          if Input.repeat?(Input::LEFT)
-            pbPlayCursorSE()
-            curnumber-=10
-            curnumber=1 if curnumber<1
-            numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
-          elsif Input.repeat?(Input::RIGHT)
-            pbPlayCursorSE()
-            curnumber+=10
-            curnumber=maximum if curnumber>maximum
-            numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
-          elsif Input.repeat?(Input::UP)
-            pbPlayCursorSE()
-            curnumber+=1
-            curnumber=1 if curnumber>maximum
-            numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
-          elsif Input.repeat?(Input::DOWN)
-            pbPlayCursorSE()
-            curnumber-=1
-            curnumber=maximum if curnumber<1
-            numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
-          elsif Input.trigger?(Input::C)
-            pbPlayDecisionSE()
-            ret=curnumber
-            break
-          elsif Input.trigger?(Input::B)
-            pbPlayCancelSE()
-            ret=0
-            break
-          end
+      pbPrepareWindow(numwindow)
+      numwindow.viewport=@viewport
+      numwindow.width=224
+      numwindow.height=64
+      numwindow.baseColor=Color.new(88,88,80)
+      numwindow.shadowColor=Color.new(168,184,184)
+      numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
+      @sprites["qtywindow"].visible = true
+      if @sprites["tm_compat"].visible
+        @sprites["qtywindow"].x = Graphics.width - @sprites["qtywindow"].width
+        @sprites["qtywindow"].y = Graphics.height - 98 - numwindow.height - @sprites["qtywindow"].height
+      end
+      pbBottomRight(numwindow)
+      numwindow.y-=helpwindow.height
+      loop do
+        Graphics.update
+        Input.update
+        numwindow.update
+        self.update
+        if Input.repeat?(Input::LEFT)
+          pbPlayCursorSE()
+          curnumber-=10
+          curnumber=1 if curnumber<1
+          numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
+        elsif Input.repeat?(Input::RIGHT)
+          pbPlayCursorSE()
+          curnumber+=10
+          curnumber=maximum if curnumber>maximum
+          numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
+        elsif Input.repeat?(Input::UP)
+          pbPlayCursorSE()
+          curnumber+=1
+          curnumber=1 if curnumber>maximum
+          numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
+        elsif Input.repeat?(Input::DOWN)
+          pbPlayCursorSE()
+          curnumber-=1
+          curnumber=maximum if curnumber<1
+          numwindow.text=_INTL("x{1}<r>$ {2}",curnumber,(curnumber*itemprice).to_s_formatted)
+        elsif Input.trigger?(Input::C)
+          pbPlayDecisionSE()
+          ret=curnumber
+          break
+        elsif Input.trigger?(Input::B)
+          pbPlayCancelSE()
+          ret=0
+          break
         end
-      }
+      end
     }
+    @sprites["qtywindow"].visible = old_visible
+    @sprites["qtywindow"].x = 0
+    @sprites["qtywindow"].y = Graphics.height - 102 - @sprites["qtywindow"].height
     helpwindow.visible=false
     return ret
   end
@@ -636,11 +665,7 @@ class PokemonMart_Scene
         Input.update
         olditem=itemwindow.item
         self.update
-        if itemwindow.item!=olditem
-          @sprites["icon"].item=itemwindow.item
-          @sprites["itemtextwindow"].text=(itemwindow.item==0) ? _INTL("Quit shopping.") :
-             @adapter.getDescription(itemwindow.item)
-        end
+        pbRefresh if itemwindow.item!=olditem
         if Input.trigger?(Input::B)
           pbPlayCloseMenuSE
           return 0

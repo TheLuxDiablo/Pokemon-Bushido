@@ -107,13 +107,13 @@ class PokemonBag_Scene
     @sprites["pocketicon"].x = 8
     @sprites["pocketicon"].y = 228
     @sprites["leftarrow"] = AnimatedSprite.new("Graphics/Pictures/leftarrow",8,40,28,2,@viewport)
-    @sprites["leftarrow"].x       = -4
+    @sprites["leftarrow"].x       = -2
     # :Splice: Change Arrow Positions
     @sprites["leftarrow"].y       = 126
     @sprites["leftarrow"].visible = (!@choosing || numfilledpockets>1)
     @sprites["leftarrow"].play
     @sprites["rightarrow"] = AnimatedSprite.new("Graphics/Pictures/rightarrow",8,40,28,2,@viewport)
-    @sprites["rightarrow"].x       = 150
+    @sprites["rightarrow"].x       = 148
     # :Splice: Change Arrow Positions
     @sprites["rightarrow"].y       = 126
     @sprites["rightarrow"].visible = (!@choosing || numfilledpockets>1)
@@ -135,6 +135,12 @@ class PokemonBag_Scene
     @sprites["itemtext"].shadowColor = ITEMTEXTSHADOWCOLOR
     @sprites["itemtext"].visible     = true
     @sprites["itemtext"].windowskin  = nil
+    @sprites["tm_compat"] = TMCompatibilityPanel.new(@viewport)
+    @sprites["tm_compat"].bitmap = pbBitmap("Graphics/Pictures/Bag/tm_panel")
+    @sprites["tm_compat"].x      = 2
+    @sprites["tm_compat"].y      = 62
+    @sprites["tm_compat"].visible = pbIsMachine?(@sprites["itemlist"].item)
+    @sprites["tm_compat"].z = 10000
     @sprites["helpwindow"] = Window_UnformattedTextPokemon.new("")
     @sprites["helpwindow"].visible  = false
     @sprites["helpwindow"].viewport = @viewport
@@ -218,12 +224,18 @@ class PokemonBag_Scene
     @sprites["itemicon"].item = itemlist.item
     # Set the selected item's description
     if itemlist.item == 0
-      @sprites["itemtext"].text = _INTL("Close bag.")
+      @sprites["tm_compat"].move    = 0
+      @sprites["tm_compat"].visible = false
+      @sprites["itemtext"].text      = _INTL("Close bag.")
     elsif pbIsMachine?(itemlist.item)
       machine = pbGetMachine(itemlist.item)
-      @sprites["itemtext"].text = pbGetMessage(MessageTypes::MoveDescriptions,machine)
+      @sprites["tm_compat"].move    = machine
+      @sprites["tm_compat"].visible = true
+      @sprites["itemtext"].text     = pbGetMessage(MessageTypes::MoveDescriptions,machine)
     else
-      @sprites["itemtext"].text = pbGetMessage(MessageTypes::ItemDescriptions,itemlist.item)
+      @sprites["tm_compat"].move    = 0
+      @sprites["tm_compat"].visible = false
+      @sprites["itemtext"].text     = pbGetMessage(MessageTypes::ItemDescriptions,itemlist.item)
     end
   end
 
