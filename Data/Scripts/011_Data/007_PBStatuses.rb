@@ -7,8 +7,6 @@ begin
     BURN      = 3
     PARALYSIS = 4
     FROZEN    = 5
-    FROSTBITE = 6
-    DROWSY    = 7
 
     def self.getName(id)
       id = getID(PBStatuses,id)
@@ -18,9 +16,7 @@ begin
         _INTL("poisoned"),
         _INTL("burned"),
         _INTL("paralyzed"),
-        _INTL("frozen"),
-        _INTL("frostbitten"),
-        _INTL("drowsy")
+        _INTL("frozen")
       ]
       return names[id]
     end
