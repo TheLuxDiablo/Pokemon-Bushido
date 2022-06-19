@@ -101,10 +101,31 @@ Events.onMapChange += proc { |_sender,e|
   # Get and compare map names
   mapInfos = pbLoadMapInfos
   next if mapInfos && oldMapID>0 && mapInfos[oldMapID] &&
-     mapInfos[oldMapID].name && $game_map.name==mapInfos[oldMapID].name
+     mapInfos[oldMapID].name && $game_map.name == mapInfos[oldMapID].name
   # Make roaming Pokémon roam
   pbRoamPokemon
   $PokemonGlobal.roamedAlready = false
+  RoamingSpecies.each_with_index do |pkmn, i|
+    next if !$game_switches[pkmn[2]]
+    next if $PokemonGlobal.roamPokemonCaught[i]
+    next if $PokemonGlobal.roamPokemon[i] == true
+    # Get the roamer's current map
+    roamerMap = $PokemonGlobal.roamPosition[i]
+    if !roamerMap
+      mapIDs = pbRoamingAreas(i).keys   # Hash of area patrolled by the roaming Pokémon
+      next if !mapIDs || mapIDs.length == 0   # No roaming area defined somehow
+      roamerMap = mapIDs[rand(mapIDs.length)]
+      $PokemonGlobal.roamPosition[i] = roamerMap
+    end
+    if roamerMap!=$game_map.map_id
+      currentRegion = pbGetCurrentRegion
+      map_position = pbGetMetadata(roamerMap,MetadataMapPosition)
+      next if !map_position || map_position[0] != currentRegion
+      currentMapName = pbGetMessage(MessageTypes::MapNames,$game_map.map_id)
+      next if pbGetMessage(MessageTypes::MapNames,roamerMap)!=currentMapName
+    end
+    vCry(pkmn[0])
+  end
 }
 
 
