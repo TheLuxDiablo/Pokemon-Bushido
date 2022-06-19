@@ -217,5 +217,5 @@
 214,ELITEKENSHI_M,Elite Kenshi,100,CON_Enshujyo,,HGSSEncounter-KimonoGirl,Male,,
 215,ELITEKENSHI_F,Elite Kenshi,100,CON_Enshujyo,,HGSSEncounter-KimonoGirl,Male,,
 216,GOLI,Developer,100,Masters-Koga,Male,,
-216,VOLTSEON,Developer,100,XD-BattleSIMTheme,Male,,
-216,ENLS,Developer,100,Masters-Koga,Male,,
+217,VOLTSEON,Developer,100,XD-BattleSIMTheme,Male,,
+218,ENLS,Developer,100,Masters-Koga,Male,,
