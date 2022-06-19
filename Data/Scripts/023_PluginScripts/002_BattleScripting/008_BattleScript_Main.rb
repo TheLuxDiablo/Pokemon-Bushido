@@ -1252,8 +1252,8 @@ module BattleScripting
     TrainerDialogue.copy(param,data)
   end
 
-  def self.setInScript(param,name)
-    if defined?(DialogueModule) && defined?(DialogueModule::name)
+  def self.setInScript(param,name,mandatory=false)
+    if defined?(DialogueModule) && defined?(DialogueModule::name) && ($PokemonSystem.enemyTechniques==0 || mandatory)
       value = getConst(DialogueModule,name)
       TrainerDialogue.set(param,value)
     end

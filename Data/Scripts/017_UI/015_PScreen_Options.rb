@@ -12,6 +12,7 @@ class PokemonSystem
   attr_writer   :sevolume
   attr_writer   :textinput
   attr_accessor :controlScheme
+  attr_accessor :enemyTechniques
 
   def initialize
     @textspeed   = 1     # Text speed (0=slow, 1=normal, 2=fast)
@@ -27,6 +28,7 @@ class PokemonSystem
     @sevolume    = 100   # Volume of sound effects
     @textinput   = 1     # Text input mode (0=cursor, 1=keyboard)
     @controlScheme = 0
+    @enemyTechniques = 0     # Disable enemy katana techniques (0=No, 1=Yes)
   end
 
   def textskin;  return @textskin || 0;    end
@@ -37,6 +39,7 @@ class PokemonSystem
   def textinput; return @textinput || 0;   end
   def tilemap;   return MAP_VIEW_MODE;     end
   def controlScheme; return @controlScheme || 0; end
+  def enemyTechniques; return @enemyTechniques || 0;   end
 end
 
 
@@ -521,7 +524,11 @@ class PokemonOption_Scene
       EnumOption.new(_INTL("Configure Controls"),[_INTL(""),_INTL("")],
         proc { },
         proc { }
-      )
+      ),
+      EnumOption.new(_INTL("Enemy Techniques"),[_INTL("On"),_INTL("Off")],
+        proc { $PokemonSystem.enemyTechniques },
+        proc { |value| $PokemonSystem.enemyTechniques = value }
+      ),
     ]
     @PokemonOptions = pbAddOnOptions(@PokemonOptions)
     @Descriptions = [_INTL("Change the volume of the ingame music."),_INTL("Change the volume of the ingame sound effects."),
@@ -534,6 +541,7 @@ class PokemonOption_Scene
       _INTL("Change the size of the Game Window."),
       _INTL("Change the default method of movement."),
       _INTL("Match the controls to the main series.\n(Press C for more details)"),
+      _INTL("Toggles enemy Katana Techniques in battle. Keep On for a true Bushido experience!"),
       _INTL("Reconfigure the game's controls."),
       _INTL("Close the Options Menu.")
     ]
