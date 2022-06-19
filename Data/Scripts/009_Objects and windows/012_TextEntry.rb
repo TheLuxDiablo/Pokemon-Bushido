@@ -1423,7 +1423,7 @@ end
 def pbEnterText(helptext,minlength,maxlength,initialText="",mode=0,pokemon=nil,nofadeout=false)
   ret=""
   pbFadeOutIn(99999,nofadeout) {
-     sscene=PokemonEntryScene2.new
+     sscene=PokemonEntryScene.new
      sscreen=PokemonEntry.new(sscene)
      ret=sscreen.pbStartScreen(helptext,minlength,maxlength,initialText,mode,pokemon)
    }
