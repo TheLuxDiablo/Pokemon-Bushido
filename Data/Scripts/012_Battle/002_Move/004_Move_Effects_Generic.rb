@@ -556,9 +556,7 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
 
   def pbShowAnimation(id,user,targets,hitNum=0,showAnimation=true)
     hitNum = 1 if @chargingTurn && !@damagingTurn   # Charging anim
-    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = false if hitNum == 0
     super
-    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = true if hitNum == 1
   end
 end
 

@@ -323,52 +323,11 @@ class TextField < UIControl
       end
       return
     end
-    # Backspace
-    if Input.pressex?(0x08) || Input.pressex?(0x2E)
-      5.times do; Graphics.update; end
-      self.delete if @cursor > 0
+    if Input.triggerex?(0x08) || Input.repeatex?(0x08)
+      self.delete if @cursor>0
       return
     end
-    # Letter keys
-    for i in 65..90
-      if Input.repeatex?(i)
-        shift=(Input.press?(Input::SHIFT)) ? 0x41 : 0x61
-        insert((shift+i-65).chr)
-        return
-      end
-    end
-    # Number keys
-    shifted=")!@\#$%^&*("
-    unshifted="0123456789"
-    for i in 48..57
-      if Input.repeatex?(i)
-        insert((Input.press?(Input::SHIFT)) ? shifted[i-48].chr : unshifted[i-48].chr)
-        return
-      end
-    end
-    keys=[
-       [32," "," "],
-       [106,"*","*"],
-       [107,"+","+"],
-       [109,"-","-"],
-       [111,"/","/"],
-       [186,";",":"],
-       [187,"=","+"],
-       [188,",","<"],
-       [189,"-","_"],
-       [190,".",">"],
-       [191,"/","?"],
-       [219,"[","{"],
-       [220,"\\","|"],
-       [221,"]","}"],
-       [222,"\"","'"]
-    ]
-    for i in keys
-      if Input.repeatex?(i[0])
-        insert((Input.press?(Input::SHIFT)) ? i[2] : i[1])
-        return
-      end
-    end
+    Input.gets.each_char{|c|insert(c)}
   end
 
   def refresh
@@ -2794,6 +2753,7 @@ def pbAnimName(animation,cmdwin)
       break
     end
   end
+  Input.text_input = false
   window.dispose
   return
 end
@@ -2856,7 +2816,10 @@ def pbAnimList(animations,canvas,animwin)
         end
       end
     end
-    if Input.trigger?(Input::B)
+    if Input.trigger?(Input::X)
+      pbSearchAnimations(animations, cmdwin, canvas, animwin)
+      break
+    elsif Input.trigger?(Input::B)
       break
     end
   end

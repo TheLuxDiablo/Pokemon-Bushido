@@ -774,7 +774,11 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
       pbDisposeMessageWindow(msgwindow)
     end
   when "animeditor"
+    old_toggle = $CanToggle
+    $CanToggle = false
     pbFadeOutIn { pbAnimationEditor }
+    old_toggle = $CanToggle
+    $CanToggle = false
   when "animorganiser"
     pbFadeOutIn { pbAnimationsOrganiser }
   when "importanims"

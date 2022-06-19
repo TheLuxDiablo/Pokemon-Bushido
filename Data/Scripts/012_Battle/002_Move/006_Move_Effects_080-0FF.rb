@@ -2182,6 +2182,13 @@ class PokeBattle_Move_0C9 < PokeBattle_TwoTurnMove
   def pbChargingTurnMessage(user,targets)
     @battle.pbDisplay(_INTL("{1} flew up high!",user.pbThis))
   end
+
+  def pbShowAnimation(id,user,targets,hitNum=0,showAnimation=true)
+    hitNum = 1 if @chargingTurn && !@damagingTurn   # Charging anim
+    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = false if hitNum == 0
+    super
+    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = true if hitNum == 1
+  end
 end
 
 
@@ -2193,6 +2200,13 @@ end
 class PokeBattle_Move_0CA < PokeBattle_TwoTurnMove
   def pbChargingTurnMessage(user,targets)
     @battle.pbDisplay(_INTL("{1} burrowed its way under the ground!",user.pbThis))
+  end
+
+  def pbShowAnimation(id,user,targets,hitNum=0,showAnimation=true)
+    hitNum = 1 if @chargingTurn && !@damagingTurn   # Charging anim
+    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = false if hitNum == 0
+    super
+    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = true if hitNum == 1
   end
 end
 
@@ -2211,6 +2225,13 @@ class PokeBattle_Move_0CB < PokeBattle_TwoTurnMove
       user.form=1 if user.hp>(user.totalhp/2)
       @battle.scene.pbChangePokemon(user,user.pokemon)
     end
+  end
+
+  def pbShowAnimation(id,user,targets,hitNum=0,showAnimation=true)
+    hitNum = 1 if @chargingTurn && !@damagingTurn   # Charging anim
+    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = false if hitNum == 0
+    super
+    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = true if hitNum == 1
   end
 end
 
@@ -2231,6 +2252,13 @@ class PokeBattle_Move_0CC < PokeBattle_TwoTurnMove
   def pbAdditionalEffect(user,target)
     return if target.damageState.substitute
     target.pbParalyze(user) if target.pbCanParalyze?(user,false,self)
+  end
+
+  def pbShowAnimation(id,user,targets,hitNum=0,showAnimation=true)
+    hitNum = 1 if @chargingTurn && !@damagingTurn   # Charging anim
+    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = false if hitNum == 0
+    super
+    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = true if hitNum == 1
   end
 end
 
@@ -2254,6 +2282,13 @@ class PokeBattle_Move_0CD < PokeBattle_TwoTurnMove
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false
     target.pbOwnSide.effects[PBEffects::WideGuard]    = false
+  end
+
+  def pbShowAnimation(id,user,targets,hitNum=0,showAnimation=true)
+    hitNum = 1 if @chargingTurn && !@damagingTurn   # Charging anim
+    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = false if hitNum == 0
+    super
+    @battle.scene.sprites["pokemon_#{user.index}"]&.no_anim = true if hitNum == 1
   end
 end
 

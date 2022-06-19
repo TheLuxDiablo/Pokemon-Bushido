@@ -503,7 +503,8 @@ class PBAnimation < Array
       case i.timingType
       when 0   # Play SE
         if i.name && i.name!=""
-          pbSEPlay("Anim/"+i.name,i.volume,i.pitch)
+          name = i.name.split(".")[0]
+          pbSEPlay("Anim/" + name, i.volume,i.pitch)
         else
           poke = (user && user.pokemon) ? user.pokemon : 1
           name = (pbCryFile(poke) rescue nil)
