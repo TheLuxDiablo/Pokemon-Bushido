@@ -395,7 +395,14 @@ class PokemonLoadScreen
       return
     end
     if System.platform[/Windows/]
-      oldfilename = File.join(RTP.getLegacySaveFolder, "Game.rxdata")
+      old_save_data = File.join(RTP.getLegacySaveFolder, "Game.rxdata")
+      keybinds_file = RTP.getSaveFileName("keybindings.mkxp1")
+      if safeExists?(old_save_data)
+        File.rename(old_save_data, File.join(RTP.getLegacySaveFolder, "Game_old.rxdata"))
+        File.delete(keybinds_file) if safeExists?(keybinds_file)
+      end
+      File.copy("Data/keybindings.mkxp1", keybinds_file) if !safeExists?(keybinds_file)
+=begin
       if safeExists?(oldfilename) && !safeExists?(RTP.getSaveFileName("Game_0.rxdata"))
         pbMessage("The game has detected that you have a save file from an older version of the game.")
         if pbConfirmMessage("Would you like to carry the old save file over?")
@@ -407,6 +414,7 @@ class PokemonLoadScreen
           pbMessage("Enjoy the new update!<ar>~Team Bushido</ar>")
         end
       end
+=end
     end
     commands = []
     cmdNewGame     = -1
