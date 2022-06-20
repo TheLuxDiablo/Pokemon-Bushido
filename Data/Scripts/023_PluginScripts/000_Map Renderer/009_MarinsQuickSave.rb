@@ -25,11 +25,11 @@ class Scene_Map
       @vp.z = 99999
       @disk = Sprite.new(@vp)
       @disk.bitmap = RPG::Cache.load_bitmap("Graphics/Pictures/saveDisk")
-      @disk.x, @disk.y = 8, 8
+      @disk.x, @disk.y = Graphics.width - 36, 8
       @disk.opacity = 0
       @arrow = Sprite.new(@vp)
       @arrow.bitmap = RPG::Cache.load_bitmap("Graphics/Pictures/saveArrow")
-      @arrow.x, @arrow.y = 8, -4
+      @arrow.x, @arrow.y = Graphics.width - 36, -4
       @arrow.opacity = 0
     end
     if $game_temp.in_menu || $game_temp.in_battle || $game_player.move_route_forcing
