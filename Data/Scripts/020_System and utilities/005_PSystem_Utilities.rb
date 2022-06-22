@@ -793,6 +793,7 @@ def pbUnlockDex(dex=-1)
   if index<0 || index>$PokemonGlobal.pokedexUnlocked.length-1
     index = $PokemonGlobal.pokedexUnlocked.length-1
   end
+  index = 3 if (Randomizer.on? && Randomizer.rules.include?(:TRAINERS))
   $PokemonGlobal.pokedexUnlocked[index] = true
 end
 

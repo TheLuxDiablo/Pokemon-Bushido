@@ -201,7 +201,7 @@ REGION_MAP_EXTRAS = [
 def pbStorageCreator
   return _INTL("Sukiro")
 end
-NUM_STORAGE_BOXES = 30
+NUM_STORAGE_BOXES = 40
 
 #===============================================================================
 # * Whether the Pokédex list shown is the one for the player's current region
@@ -232,7 +232,7 @@ def pbDexNames; return [
   [_INTL("Kanto Pokédex"), 0],
   [_INTL("Johto Pokédex"), 1],
   [_INTL("Aisho Journal"),2],
-  _INTL("National Pokédex")
+  _INTL("Aisho Journal (National)")
 ]; end
 DEX_SHOWS_ALL_FORMS = false
 DEXES_WITH_OFFSETS  = []

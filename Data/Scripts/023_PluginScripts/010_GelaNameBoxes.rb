@@ -183,18 +183,18 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
       next $game_actors[m].name
     }
   end
-  text.gsub!(/\\pn/i,$Trainer.name) if $Trainer
-  text.gsub!(/\\pm/i,_INTL("${1}",$Trainer.money.to_s_formatted)) if $Trainer
-  text.gsub!(/\\n/i,"\n")
-  text.gsub!(/\\\[([0-9a-f]{8,8})\]/i) { "<c2="+$1+">" }
-  text.gsub!(/\\pg/i,"\\b") if $Trainer && $Trainer.male?
-  text.gsub!(/\\pg/i,"\\r") if $Trainer && $Trainer.female?
-  text.gsub!(/\\pog/i,"\\r") if $Trainer && $Trainer.male?
-  text.gsub!(/\\pog/i,"\\b") if $Trainer && $Trainer.female?
-  text.gsub!(/\\pg/i,"")
-  text.gsub!(/\\pog/i,"")
-  text.gsub!(/\\b/i,"<c3=3774bd,a5cbf9>")
-  text.gsub!(/\\r/i,"<c3=eb6c91,fdc2d3>")
+  text.gsub!(/\\pn/i,  $Trainer.name) if $Trainer
+  text.gsub!(/\\pm/i,  _INTL("${1}", $Trainer.money.to_s_formatted)) if $Trainer
+  text.gsub!(/\\n/i,   "\n")
+  text.gsub!(/\\\[([0-9a-f]{8,8})\]/i) { "<c2=" + $1 + ">" }
+  text.gsub!(/\\pg/i,  "\\b") if $Trainer&.male?
+  text.gsub!(/\\pg/i,  "\\r") if $Trainer&.female?
+  text.gsub!(/\\pog/i, "\\r") if $Trainer&.male?
+  text.gsub!(/\\pog/i, "\\b") if $Trainer&.female?
+  text.gsub!(/\\pg/i,  "")
+  text.gsub!(/\\pog/i, "")
+  text.gsub!(/\\b/i,   "<c3=3050C8,D0D0C8>")
+  text.gsub!(/\\r/i,   "<c3=E00808,D0D0C8>")
   text.gsub!(/\\[Ww]\[([^\]]*)\]/) {
     w = $1.to_s
     if w==""

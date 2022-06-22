@@ -30,14 +30,22 @@ def pbScreenCapture
 end
 
 def pbSetUpSystem
-  if safeExists?(RTP.getSaveFileName("Game_0.rxdata"))
+  save_file = RTP.getSaveFileName("Game_0.rxdata")
+  Dir.foreach(RTP.getSaveFolder) do |f|
+    next if f == "." || f == ".."
+    next if File.directory?(RTP.getSaveFileName("#{f}"))
+    next if !f[/Game_(\d+).rxdata/i]
+    save_file = File.join(RTP.getSaveFileName("#{f}"))
+    break
+  end
+  if safeExists?(save_file)
     trainer       = nil
     framecount    = 0
     game_system   = nil
     pokemonSystem = nil
     havedata = false
     begin
-      File.open(RTP.getSaveFileName("Game_0.rxdata")) { |f|
+      File.open(save_file) { |f|
         trainer       = Marshal.load(f)
         framecount    = Marshal.load(f)
         game_system   = Marshal.load(f)

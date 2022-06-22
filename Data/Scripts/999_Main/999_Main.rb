@@ -1,5 +1,7 @@
 pbCompiler
 
+Input.text_input = false
+
 class Scene_DebugIntro
   def main
     Graphics.transition(0)

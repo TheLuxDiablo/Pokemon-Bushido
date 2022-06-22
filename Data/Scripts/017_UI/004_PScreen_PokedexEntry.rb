@@ -52,7 +52,7 @@ class PokemonPokedexInfo_Scene
     @sprites["formfront"].x = 130
     @sprites["formfront"].y = 158
     @sprites["formback"] = PokemonSprite.new(@viewport)
-    #@sprites["formback"].setOffset(PictureOrigin::Center)
+    @sprites["formback"].setOffset(PictureOrigin::Center)
     @sprites["formback"].x = 200
     @sprites["formicon"] = PokemonSpeciesIconSprite.new(0,@viewport)
     @sprites["formicon"].setOffset(PictureOrigin::Center)
@@ -117,7 +117,7 @@ class PokemonPokedexInfo_Scene
     pbSetSystemFont(@sprites["overlay"].bitmap)
     pbUpdateDummyPokemon
     drawPage(@page)
-    pbFadeInAndShow(@sprites) { for key in @sprites.keys; next if key == "formicon"; @sprites[key].update; end }
+    pbFadeInAndShow(@sprites) { @sprites.each { |key, sprite| sprite.update if key != "formicon" } }
   end
 
   def pbEndScene
@@ -146,7 +146,8 @@ class PokemonPokedexInfo_Scene
     end
     if @sprites["formback"]
       @sprites["formback"].setSpeciesBitmap(@species,(@gender==1),@form,false,false,true)
-      #@sprites["formback"].y = 256
+      @sprites["formback"].zoom_x = @sprites["formback"].zoom_y = 0.66
+      @sprites["formback"].y = 158
       fSpecies = pbGetFSpeciesFromForm(@species,@form)
       #@sprites["formback"].y += (pbLoadSpeciesMetrics[MetricBattlerPlayerY][fSpecies] || 0)*2
     end
@@ -229,18 +230,11 @@ class PokemonPokedexInfo_Scene
   end
 
   def drawPageInfo
-    if !@brief
-      @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_info"))
-    else
-      @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_info_reg"))
-    end
+    @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_info"))
     overlay = @sprites["overlay"].bitmap
     base   = Color.new(96,96,96)
     shadow = Color.new(208,208,208)
     imagepos = []
-    #if @brief
-  #    imagepos.push([_INTL("Graphics/Pictures/Pokedex/overlay_info"),0,0])
-  #  end
     # Write various bits of text
     indexText = "???"
     if @dexlist[@index][4]>0
@@ -389,7 +383,7 @@ class PokemonPokedexInfo_Scene
          [sprintf("Graphics/Pictures/Pokedex/overlay_areanone"),108,178]
       ])
     end
-    textpos.push([pbGetMessage(MessageTypes::RegionNames,@region),414,44,2,base,shadow])
+    textpos.push([pbGetMessage(MessageTypes::RegionNames,@region),414,48,2,base,shadow])
     textpos.push([_INTL("{1}'s area",PBSpecies.getName(@species)),
        Graphics.width/2,352,2,base,shadow])
     pbDrawTextPositions(overlay,textpos)
@@ -547,34 +541,34 @@ class PokemonPokedexInfo_Scene
   end
 
   def pbSceneBrief
-    pbSEPlay("Pkmn exp gain")
-    v = -255
-    for i in 0...127
-      @sprites["infosprite"].tone = Tone.new(v,v,v)
-      @sprites["formicon"].tone = Tone.new(v,v,v)
-      v+=(2)
+    duration = getPlayTime("Pkmn exp gain") * Graphics.frame_rate / (125 / 100.0)
+    pbSEPlay("Pkmn exp gain", 125)
+    @sprites["infosprite"].color.alpha = 255
+    @sprites["formicon"].color.alpha   = 255
+    duration.times do |i|
       Graphics.update
+      factor = (i + 1).to_f / duration
+      @sprites["infosprite"].color.alpha = 255 * (1 - factor)
+      @sprites["formicon"].color.alpha = 255 * (1 - factor)
     end
-    @sprites["infosprite"].tone = Tone.new(0,0,0)
-    @sprites["formicon"].tone = Tone.new(0,0,0)
     pbSEPlay("Pkmn exp full")
-    for i in 0...5
-      @sprites["infosprite"].tone = Tone.new(46*i,40*i,6*i)
-      @sprites["infosprite"].zoom_x += (0.05)*i
-      @sprites["infosprite"].zoom_y += (0.05)*i
+    duration = getPlayTime("Pkmn exp full") * Graphics.frame_rate
+    duration.times do |i|
       Graphics.update
+      factor = f = (i + 1).to_f / duration
+      @sprites["infosprite"].tone = Tone.new(230 * f, 200 * f, 30 * f)
+      @sprites["infosprite"].zoom_x = 1 + (0.2 * factor)
+      @sprites["infosprite"].zoom_y = 1 + (0.2 * factor)
     end
-    v=255
-    for i in 0...5
-      @sprites["infosprite"].tone = Tone.new(230-(46*i),200-(40*i),30-(6*i))
-      @sprites["infosprite"].zoom_x -= (0.05)*i
-      @sprites["infosprite"].zoom_y -= (0.05)*i
+    duration.times do |i|
       Graphics.update
+      factor = f = (i + 1).to_f / duration
+      @sprites["infosprite"].tone = Tone.new(230 - (230 * f), 200 - (200 * f), 30 * (30 - f))
+      @sprites["infosprite"].zoom_x = 1.2 - (0.2 * factor)
+      @sprites["infosprite"].zoom_y = 1.2 - (0.2 * factor)
     end
-    @sprites["infosprite"].tone = Tone.new(0,0,0)
-    @sprites["formicon"].tone = Tone.new(0,0,0)
-    pbWait(8)
-    pbPlayCrySpecies(@species,@form)
+    pbWait(Graphics.frame_rate / 5)
+    pbPlayCrySpecies(@species, @form)
     loop do
       Graphics.update
       Input.update

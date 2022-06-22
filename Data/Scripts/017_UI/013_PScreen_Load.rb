@@ -544,7 +544,7 @@ class PokemonLoadScreen
         $PokemonGlobal       = PokemonGlobalMetadata.new
         $PokemonStorage      = PokemonStorage.new
         $PokemonEncounters   = PokemonEncounters.new
-        $PokemonTemp.begunNewGame = true
+        $PokemonTemp.begunNewGame = pbHasSave?(value, true)
         $data_system         = load_data("Data/System.rxdata")
         $MapFactory          = PokemonMapFactory.new($data_system.start_map_id)   # calls setMapChanged
         $game_player.moveto($data_system.start_x, $data_system.start_y)
@@ -601,12 +601,16 @@ class PokemonLoadScreen
       haveBackup   = false
       showContinue = false
       begin
+        old_system = $PokemonSystem
         trainer, framecount, $game_system, $PokemonSystem, mapid = pbTryLoadFile(savefile)
+        $PokemonSystem = old_system
         showContinue = true
       rescue
         if safeExists?(savefile+".bak")
           begin
+            old_system = $PokemonSystem
             trainer, framecount, $game_system, $PokemonSystem, mapid = pbTryLoadFile(savefile+".bak")
+            $PokemonSystem = old_system
             haveBackup   = true
             showContinue = true
           rescue

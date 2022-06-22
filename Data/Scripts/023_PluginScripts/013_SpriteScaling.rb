@@ -274,9 +274,8 @@ if !defined?(EliteBattle)
       if @sprites["formback"]
         @sprites["formback"].setSpeciesBitmap(@species,(@gender==1),@form,false,false,true)
         @sprites["formback"].x = 380
-        @sprites["formback"].y = 100
+        @sprites["formback"].y = 158
         fSpecies = pbGetFSpeciesFromForm(@species,@form)
-        @sprites["formback"].y += (pbLoadSpeciesMetrics[MetricBattlerPlayerY][fSpecies] || 0)*2
         @sprites["formback"].zoom_x = 0.66 #(FRONT_SCALE/BACK_SCALE) if BACK_SCALE > FRONT_SCALE
         @sprites["formback"].zoom_y = 0.66 #(FRONT_SCALE/BACK_SCALE) if BACK_SCALE > FRONT_SCALE
       end
