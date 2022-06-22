@@ -1253,7 +1253,7 @@ module BattleScripting
   end
 
   def self.setInScript(param,name,mandatory=false)
-    if defined?(DialogueModule) && defined?(DialogueModule::name) && ($PokemonSystem.enemyTechniques==0 || mandatory)
+    if defined?(DialogueModule) && defined?(DialogueModule::name) #&& ($PokemonSystem.enemyTechniques==0 || mandatory)
       value = getConst(DialogueModule,name)
       TrainerDialogue.set(param,value)
     end

@@ -525,7 +525,7 @@ class PokemonOption_Scene
         proc { },
         proc { }
       ),
-      EnumOption.new(_INTL("Enemy Techniques"),[_INTL("On"),_INTL("Off")],
+      EnumOption.new(_INTL("Weaker Techniques"),[_INTL("Off"),_INTL("On")],
         proc { $PokemonSystem.enemyTechniques },
         proc { |value| $PokemonSystem.enemyTechniques = value }
       ),
@@ -541,7 +541,7 @@ class PokemonOption_Scene
       _INTL("Change the size of the Game Window."),
       _INTL("Change the default method of movement."),
       _INTL("Match the controls to the main series.\n(Press C for more details)"),
-      _INTL("Toggles enemy Katana Techniques in battle. Keep On for a true Bushido experience!"),
+      _INTL("Weakens enemy Katana Techniques. Prevents statuses and most stat changes."),
       _INTL("Reconfigure the game's controls."),
       _INTL("Close the Options Menu.")
     ]

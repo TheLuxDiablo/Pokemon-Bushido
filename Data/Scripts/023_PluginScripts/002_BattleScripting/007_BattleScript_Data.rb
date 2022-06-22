@@ -399,7 +399,9 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\rShow me your honorable battle style!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
       KenshiF2 = Proc.new{|battle|
@@ -407,7 +409,9 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\rPrepare to feel our anger! Hiyaah!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
       KenshiM1 = Proc.new{|battle|
@@ -415,7 +419,9 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\bCome on, let's see what you've got!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
       BlackBelt1 = Proc.new{|battle|
@@ -430,28 +436,37 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\bLet me show you why they call me the Machamp King!")
                     pbMessage("\\bYou're going nowhere!")
-                    battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].effects[PBEffects::MeanLook] = battle.battlers[1].index
-                    battle.pbDisplay(_INTL("{1} can no longer escape!",battle.battlers[0].name))
-                    battle.scene.appearBar
-                    pbMessage("\\bWe got you for 3 minutes! 3 minutes of playtime!")
-                    battle.pbAnimation(getID(PBMoves,:FOCUSENERGY),battle.battlers[1],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].effects[PBEffects::MeanLook] = battle.battlers[1].index
+                      battle.pbDisplay(_INTL("{1} can no longer escape!",battle.battlers[0].name))
+                      battle.scene.appearBar
+                      pbMessage("\\bWe got you for 3 minutes! 3 minutes of playtime!")
+                      battle.pbAnimation(getID(PBMoves,:FOCUSENERGY),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    else
+                      pbMessage("\\bWe got you for 3 minutes! 3 minutes of playtime!")
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       BlackBelt3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\bI'm putting everything into this next punch! Kiiiyaaaaah!")
-                    battle.pbAnimation(getID(PBMoves,:FOCUSENERGY),battle.battlers[1],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,4,battle.battlers[1])
-                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.pbAnimation(getID(PBMoves,:FOCUSENERGY),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,4,battle.battlers[1])
+                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
        KenshiF3 = Proc.new{|battle|
@@ -459,7 +474,9 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\rBrace yourself, Toxel!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         # Komorei Intros
@@ -470,7 +487,9 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         Komorei2 = Proc.new{|battle|
@@ -480,7 +499,9 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         Komorei3 = Proc.new{|battle|
@@ -490,7 +511,9 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         Komorei4 = Proc.new{|battle|
@@ -498,8 +521,10 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You cannot hide from my love!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:CHARM),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[0])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.pbAnimation(getID(PBMoves,:CHARM),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[0])
+                    end
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
                     battle.scene.pbHideOpponent
@@ -511,7 +536,9 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         Komorei6 = Proc.new{|battle|
@@ -521,7 +548,9 @@ module DialogueModule
                     battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         KomoreiDojo1 = Proc.new{|battle|
@@ -532,7 +561,9 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         KomoreiDojo2 = Proc.new{|battle|
@@ -543,152 +574,179 @@ module DialogueModule
                     battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         HarumiIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("After everything, I believe I owe you a fair fight.")
+                    pbMessage("\\rAfter everything, I believe I owe you a fair fight.")
+                    pbMessage("\\rNow, let us begin!")
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    end
                     battle.scene.pbHideOpponent
                   }
         HarumiSun = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("You truly are a talented Kenshi!")
-                    pbMessage("Unforunately, you'll be going out in a blaze of glory!")
-                    pbMessage("Katana of Nature, Komorei Style! Blazing Sunlight!!")
+                    pbMessage("\\rYou truly are a talented Kenshi!")
+                    pbMessage("\\rUnforunately, you'll be going out in a blaze of glory!")
+                    pbMessage("\\rKatana of Nature, Komorei Style! Blazing Sunlight!!")
                     battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         TsukuShrineIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("Let's m-make this a fight worth remembering!")
+                    pbMessage("\\rLet's m-make this a fight worth remembering!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         TsukuShrineFinal = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("I told myself I wouldn't lose... I won't back down now!")
+                    pbMessage("\\rI told myself I wouldn't lose... I won't back down now!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         TsukuDuo1 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("I remember you having a shadow clone weakness!")
-                    pbMessage("Here, a reminder of the time we stole your katana!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
-                    battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3],false)
-                    battle.scene.appearBar
-                    pbMessage("And here, have some of these to add insult to injury!!")
-                    pbMessage("Akui Clan Technique, Venom Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
-                    end
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("I remember you having a shadow clone weakness!")
+                      pbMessage("Here, a reminder of the time we stole your katana!")
+                      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                      battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3],false)
+                      battle.scene.appearBar
+                      pbMessage("And here, have some of these to add insult to injury!!")
+                      pbMessage("Akui Clan Technique, Venom Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
 
-                    if battle.battlers[2].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
-                      battle.battlers[2].pbInflictStatus(PBStatuses::POISON,1,nil)
+                      if battle.battlers[2].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                        battle.battlers[2].pbInflictStatus(PBStatuses::POISON,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
+                      end
+                      battle.scene.pbHideOpponent
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Tsuku]\\rNow that we're f-finally fighting together, I'll do my best to m-make you proud!")
+                      pbMessage("\\xn[Tsuku]\\rWe have to give it our all!")
+                      pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Beetle Barrier!")
+                      battle.pbAnimation(getID(PBMoves,:WIDEGUARD),battle.battlers[2],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[2].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[2])
+                      battle.battlers[2].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[2],false)
+                      battle.battlers[0].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[0])
+                      battle.battlers[0].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[0],false)
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Tsuku]\\rLet's show these Akui Grunts the power of our bonds!")
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
+                      pbMessage("I remember you having a shadow clone weakness!")
+                      pbMessage("Here, a reminder of the time we stole your katana!")
+                      battle.scene.pbHideOpponent
+                      pbMessage("\\xn[Tsuku]\\rNow that we're f-finally fighting together, I'll do my best to m-make you proud!")
+                      pbMessage("\\xn[Tsuku]\\rLet's show these Akui Grunts the power of our bonds!")
                     end
-                    battle.scene.pbHideOpponent
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Tsuku]\\rNow that we're f-finally fighting together, I'll do my best to m-make you proud!")
-                    pbMessage("\\xn[Tsuku]\\rWe have to give it our all!")
-                    pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Beetle Barrier!")
-                    battle.pbAnimation(getID(PBMoves,:WIDEGUARD),battle.battlers[2],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.battlers[2].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[2])
-                    battle.battlers[2].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[2],false)
-                    battle.battlers[0].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[0])
-                    battle.battlers[0].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[0],false)
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Tsuku]\\rLet's show these Akui Grunts the power of our bonds!")
                     battle.scene.disappearBar
                   }
         TsukuDuo2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("You pesky insects! It's time we crushed you!")
-                    pbMessage("Akui Clan Technique, Fire Kunai!")
-                    battle.scene.disappearBar
-                    if !battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("You pesky insects! It's time we crushed you!")
+                      pbMessage("Akui Clan Technique, Fire Kunai!")
+                      battle.scene.disappearBar
+                      if !battle.battlers[1].fainted?
+                        battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                      else
+                        battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[3])
+                      end
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
+                      if battle.battlers[2].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[2].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
+                      battle.scene.disappearBar
+                      if !battle.battlers[1].fainted?
+                        battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
+                      else
+                        battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[3],battle.battlers[3])
+                      end
+                      if !battle.battlers[1].fainted?
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      end
+                      if !battle.battlers[3].fainted?
+                        battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[3])
+                        battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3],false)
+                      end
+                      battle.scene.appearBar
+                      pbMessage("We'll squash you like the bugs you are!")
+                      battle.scene.pbHideOpponent
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Tsuku]\\rYou need to learn some r-respect for bugs!")
+                      pbMessage("\\xn[Tsuku]\\rThey are some of the best Pokémon in the world! I'll never let you squash them!")
+                      pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Dragonfly Dance!")
+                      battle.scene.disappearBar
+                      if !battle.battlers[2].fainted?
+                        battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[2],battle.battlers[2])
+                      else
+                        battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[0],battle.battlers[0])
+                      end
+                      if !battle.battlers[2].fainted?
+                        battle.battlers[2].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[2])
+                        battle.battlers[2].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[2],false)
+                        battle.battlers[2].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[2],false)
+                      end
+                      if !battle.battlers[0].fainted?
+                        battle.battlers[0].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[0])
+                        battle.battlers[0].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                        battle.battlers[0].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[0],false)
+                      end
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Tsuku]\\rCome on, \\PN! We'll teach them to respect b-bugs!")
                     else
-                      battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[3])
+                      pbMessage("You pesky insects! It's time we crushed you!")
+                      pbMessage("We'll squash you like the bugs you are!")
+                      battle.scene.pbHideOpponent
+                      pbMessage("\\xn[Tsuku]\\rYou need to learn some r-respect for bugs!")
+                      pbMessage("\\xn[Tsuku]\\rThey are some of the best Pokémon in the world! I'll never let you squash them!")
                     end
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
-                    end
-                    if battle.battlers[2].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[2].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
-                    end
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
-                    battle.scene.disappearBar
-                    if !battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
-                    else
-                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[3],battle.battlers[3])
-                    end
-                    if !battle.battlers[1].fainted?
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                    end
-                    if !battle.battlers[3].fainted?
-                      battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[3])
-                      battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3],false)
-                    end
-                    battle.scene.appearBar
-                    pbMessage("We'll squash you like the bugs you are!")
-                    battle.scene.pbHideOpponent
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Tsuku]\\rYou need to learn some r-respect for bugs!")
-                    pbMessage("\\xn[Tsuku]\\rThey are some of the best Pokémon in the world! I'll never let you squash them!")
-                    pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Dragonfly Dance!")
-                    battle.scene.disappearBar
-                    if !battle.battlers[2].fainted?
-                      battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[2],battle.battlers[2])
-                    else
-                      battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[0],battle.battlers[0])
-                    end
-                    if !battle.battlers[2].fainted?
-                      battle.battlers[2].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[2])
-                      battle.battlers[2].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[2],false)
-                      battle.battlers[2].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[2],false)
-                    end
-                    if !battle.battlers[0].fainted?
-                      battle.battlers[0].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[0])
-                      battle.battlers[0].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
-                      battle.battlers[0].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[0],false)
-                    end
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Tsuku]\\rCome on, \\PN! We'll teach them to respect b-bugs!")
                     battle.scene.disappearBar
                   }
         TsukuPG1 = Proc.new{|battle|
@@ -697,12 +755,14 @@ module DialogueModule
                     pbMessage("\\xn[Tsuku]\\rIt feels like just the other day we both started our journies as Kenshi!")
                     pbMessage("\\xn[Tsuku]\\rLook at far we've come now!")
                     pbMessage("\\xn[Tsuku]\\rWe both should keep getting stronger, to protect Aisho together!")
-                    pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Beetle Barrier!")
-                    battle.pbAnimation(getID(PBMoves,:WIDEGUARD),battle.battlers[1],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[2])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[2],false)
-                    battle.scene.appearBar
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Beetle Barrier!")
+                      battle.pbAnimation(getID(PBMoves,:WIDEGUARD),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[2])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[2],false)
+                      battle.scene.appearBar
+                    end
                     pbMessage("\\xn[Tsuku]\\rLet's see if you have what it takes to overcome my new team, \\PN!")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
@@ -713,13 +773,15 @@ module DialogueModule
                       pbMessage("\\xn[Tsuku]\\rDang, I'm already down to my last Pokémon...")
                       pbMessage("\\xn[Tsuku]\\rNow's the time for me to give it me all!")
                       pbMessage("\\xn[Tsuku]\\rHere we c-come, \\PN!!")
-                      pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Dragonfly Dance!")
-                      battle.scene.disappearBar
-                      battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[1],battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
-                      battle.scene.appearBar
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("\\xn[Tsuku]\\rKatana of Life, Konchu Style! Dragonfly Dance!")
+                        battle.scene.disappearBar
+                        battle.pbAnimation(getID(PBMoves,:QUIVERDANCE),battle.battlers[1],battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                        battle.scene.appearBar
+                      end
                       pbMessage("\\xn[Tsuku]\\rI'll never give up! Just like y-you taught me!")
                       pbMessage("\\xn[Tsuku]\\rI'm stronger now, t-thanks to our bond!")
                       battle.scene.disappearBar
@@ -732,43 +794,56 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\bThe Iwa Clan mean business!")
                     pbMessage("\\bWe may be small, but our spirit is unbreakable!")
-                    pbMessage("\\bI draw my power from the earth!")
-                    pbMessage("\\bKatana of Earth, Iwa Style! Shifting Sands!")
-                    battle.pbCommonAnimation("Sandstorm",nil,nil)
-                    battle.scene.disappearBar
-                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\bI draw my power from the earth!")
+                      pbMessage("\\bKatana of Earth, Iwa Style! Shifting Sands!")
+                      battle.pbCommonAnimation("Sandstorm",nil,nil)
+                      battle.scene.disappearBar
+                      battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       Iwa2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\rIwa battle cry! Mountainous Roar!")
-                    battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
-                    battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
-                    battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
-                    battle.scene.appearBar
-                    pbMessage("\\rAnd now for my secret technique, Rocky Domain!")
-                    battle.pbAnimation(getID(PBMoves,:STEALTHROCK),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::StealthRock] = true
-                    pbMessage(_INTL("Pointed stones float in the air around {1}!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\rIwa battle cry! Mountainous Roar!")
+                      battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
+                      battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
+                      battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                      battle.scene.appearBar
+                      pbMessage("\\rAnd now for my secret technique, Rocky Domain!")
+                      battle.pbAnimation(getID(PBMoves,:STEALTHROCK),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::StealthRock] = true
+                      pbMessage(_INTL("Pointed stones float in the air around {1}!",battle.battlers[0].name))
+                    else
+                      pbMessage("\\rThe Iwa Clan is rock solid! Hiyaah!")
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       Iwa3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\rI'm one of the best trainers out there!")
-                    pbMessage("\\rKatana of Earth, Iwa Style! Shifting Sands!")
-                    battle.pbCommonAnimation("Sandstorm",nil,nil)
-                    battle.scene.disappearBar
-                    battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
-                    battle.pbAnimation(getID(PBMoves,:STEALTHROCK),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::StealthRock] = true
-                    pbMessage(_INTL("Pointed stones float in the air around {1}!",battle.battlers[0].name))
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\rKatana of Earth, Iwa Style! Shifting Sands!")
+                      battle.pbCommonAnimation("Sandstorm",nil,nil)
+                      battle.scene.disappearBar
+                      battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
+                      battle.pbAnimation(getID(PBMoves,:STEALTHROCK),battle.battlers[1],battle.battlers[0])
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::StealthRock] = true
+                      pbMessage(_INTL("Pointed stones float in the air around {1}!",battle.battlers[0].name))
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       # Raikami Clan intros
@@ -776,69 +851,88 @@ module DialogueModule
       Raikami1 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\xn[Rohan]\\bThe Raikami Clan act on the will of the gods!")
-                    pbMessage("\\xn[Rohan]\\bBy summoning lightning, we are channeling the energy of the heavens themselves!")
-                    pbMessage("\\xn[Rohan]\\bKatana of Lightning, Raikami Style! Thunderclap!")
-                    battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Rohan]\\bThe Raikami Clan act on the will of the gods!")
+                      pbMessage("\\xn[Rohan]\\bBy summoning lightning, we are channeling the energy of the heavens themselves!")
+                      pbMessage("\\xn[Rohan]\\bKatana of Lightning, Raikami Style! Thunderclap!")
+                      battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Rohan]\\bKatana of Lightning, Raikami Style! Heaven's Domain!")
+                      battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      pbMessage("\\xn[Rohan]\\bThe Raikami Clan act on the will of the gods!")
+                      pbMessage("\\xn[Rohan]\\bFear our electrifying Pokémon!")
+                      battle.scene.disappearBar
                     end
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Rohan]\\bKatana of Lightning, Raikami Style! Heaven's Domain!")
-                    battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       Raikami2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("The Raikami Clan act on the will of the gods!")
-                    pbMessage("By summoning lightning, we are channeling the energy of the heavens themselves!")
-                    pbMessage("Katana of Lightning, Raikami Style! Thunderclap!")
-                    battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("By summoning lightning, we are channeling the energy of the heavens themselves!")
+                      pbMessage("Katana of Lightning, Raikami Style! Thunderclap!")
+                      battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       Raikami3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\rThe Raikami Clan is the best clan of all!")
-                    pbMessage("\\rWe can summon lightning, like this!")
-                    battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\rWe can summon lightning, like this!")
+                      battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("\\rKatana of Lightning, Raikami Style! Heaven's Domain!")
+                      battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
-                    battle.scene.appearBar
-                    pbMessage("\\rKatana of Lightning, Raikami Style! Heaven's Domain!")
-                    battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       Raikami4 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("\\bKatana of Lightning, Raikami Style! Galvanizing Jolt!")
-                    battle.pbAnimation(getID(PBMoves,:THUNDER),battle.battlers[1],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,4,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\bKatana of Lightning, Raikami Style! Galvanizing Jolt!")
+                      battle.pbAnimation(getID(PBMoves,:THUNDER),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,4,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                    else
+                      pbMessage("\\bPrepare to be shocked by my strength!")
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       # Yuki Clan intros
@@ -847,31 +941,39 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Even though we're a minor clan, you should take us Yuki members seriously!")
                     pbMessage("We're well on our way to forming our own dojo soon!")
-                    pbMessage("Here, have a taste of what we can do!")
-                    pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
-                    battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Here, have a taste of what we can do!")
+                      pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
+                      battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       Yuki2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("The Yuki Clan controls the frozen domain!")
-                    pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
-                    battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
+                      battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       Yuki3 = Proc.new{|battle|
@@ -879,44 +981,57 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("I hope you'll prove to be a worthy opponent!")
                     pbMessage("Not many trainers can overcome the ice-cold Yuki Clan in battle!")
-                    pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
-                    battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
+                      battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
       Yuki4 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Let us have a good duel!")
-                    pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
-                    battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Katana of Ice, Yuki Style! Freezing Breath!")
+                      battle.pbAnimation(getID(PBMoves,:FROSTBREATH),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
       Yuki5 = Proc.new{|battle|
                   battle.scene.appearBar
                   battle.scene.pbShowOpponent(0)
-                  pbMessage("\\rKatana of Ice, Yuki Style! Frigid Hail!")
-                  battle.scene.disappearBar
-                  battle.pbCommonAnimation("Hail",battle.battlers[0],nil)
-                  battle.pbStartWeather(battle.battlers[1],PBWeather::Hail,true,false)
-                  battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                  if $PokemonSystem.enemyTechniques==0
+                    pbMessage("\\rKatana of Ice, Yuki Style! Frigid Hail!")
+                    battle.scene.disappearBar
+                    battle.pbCommonAnimation("Hail",battle.battlers[0],nil)
+                    battle.pbStartWeather(battle.battlers[1],PBWeather::Hail,true,false)
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                  else
+                    pbMessage("\\rWatch out for the Yuki Clan! We're stronger than you think!")
+                    battle.scene.disappearBar
+                  end
                   battle.scene.pbHideOpponent
                 }
       # Nensho intros
@@ -924,14 +1039,18 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("The way of the Nensho Clan is blazing through our opponents!")
-                    pbMessage("Katana of Fire, Nensho Style! Fire Vortex!")
-                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
-                    battle.battlers[0].effects[PBEffects::Trapping] = 5
-                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                    battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Katana of Fire, Nensho Style! Fire Vortex!")
+                      battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                      battle.battlers[0].effects[PBEffects::Trapping] = 5
+                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       Nensho2 = Proc.new{|battle|
@@ -942,21 +1061,27 @@ module DialogueModule
                     battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
       Nensho3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Nensho Clan! Hiyaaaah!")
-                    pbMessage("Katana of Fire, Nensho Style! Fire Vortex!")
-                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
-                    battle.battlers[0].effects[PBEffects::Trapping] = 5
-                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                    battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Katana of Fire, Nensho Style! Fire Vortex!")
+                      battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                      battle.battlers[0].effects[PBEffects::Trapping] = 5
+                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
         Nensho4 = Proc.new{|battle|
@@ -964,15 +1089,19 @@ module DialogueModule
                       battle.scene.pbShowOpponent(0)
                       pbMessage("The Nensho Clan is the strongest clan there is!")
                       pbMessage("Allow me to show you why we're the best clan!")
-                      pbMessage("Katana of Fire, Nensho Style! Flame Breath!")
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("Katana of Fire, Nensho Style! Flame Breath!")
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                          battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                        end
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                       else
-                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                        battle.scene.disappearBar
                       end
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                       battle.scene.pbHideOpponent
                     }
         Nensho5 = Proc.new{|battle|
@@ -983,52 +1112,67 @@ module DialogueModule
                       battle.pbCommonAnimation("Sunny",nil,nil)
                       battle.scene.disappearBar
                       battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                      end
                       battle.scene.pbHideOpponent
                     }
         Nensho6 = Proc.new{|battle|
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)
                       pbMessage("You're on the final stretch! Don't burn out on me now!")
-                      pbMessage("Katana of Fire, Nensho Style! Breath of Flames!")
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("Katana of Fire, Nensho Style! Breath of Flames!")
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                          battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                        end
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                       else
-                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                        battle.scene.disappearBar
                       end
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
                       battle.scene.pbHideOpponent
                     }
         Nensho7 = Proc.new{|battle|
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)
                       pbMessage("\\bNo ocean can extinquish the fire deep within my heart!")
-                      pbMessage("\\bKatana of Fire, Nensho Style! Breath of Flames!")
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("\\bKatana of Fire, Nensho Style! Breath of Flames!")
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                          battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                        end
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                       else
-                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                        battle.scene.disappearBar
                       end
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
                       battle.scene.pbHideOpponent
                     }
         Nensho8 = Proc.new{|battle|
                       battle.scene.appearBar
                       battle.scene.pbShowOpponent(0)
-                      pbMessage("\\rKatana of Fire, Nensho Style! Fire Vortex!")
-                      battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
-                      battle.battlers[0].effects[PBEffects::Trapping] = 5
-                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                      battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("\\rKatana of Fire, Nensho Style! Fire Vortex!")
+                        battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                        battle.battlers[0].effects[PBEffects::Trapping] = 5
+                        battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                        battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                      else
+                        pbMessage("\\rYou can't beat me! My soul blazes brightly!")
+                        battle.scene.disappearBar
+                      end
                       battle.scene.pbHideOpponent
                     }
         Nori1 = Proc.new{|battle|
@@ -1038,17 +1182,19 @@ module DialogueModule
                       pbMessage("\\xn[Nori]\\bI've been looking forward to this, \\PN!")
                       pbMessage("\\xn[Nori]\\bJust so you know, I'll be giving this battle my all.")
                       pbMessage("\\xn[Nori]\\bI expect you to do the same! Now, it's time to show you the true power of the Nensho Clan!")
-                      pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Breath of Flames!")
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
-                      else
-                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Breath of Flames!")
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                          battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                        end
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                        battle.scene.appearBar
                       end
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
-                      battle.scene.appearBar
                       pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Sunlight Beams!")
                       battle.pbCommonAnimation("Sunny",nil,nil)
                       battle.scene.disappearBar
@@ -1065,22 +1211,24 @@ module DialogueModule
                         pbMessage("\\xn[Nori]\\bYou are an excellent Kenshi, \\PN!")
                         pbMessage("\\xn[Nori]\\bYou've pushed me to my limits...")
                         pbMessage("\\xn[Nori]\\bBut the battle isn't over yet! Now it's time for me to get serious!")
-                        pbMessage("\\xn[Nori]\\bSecret Technique! Mountainous Roar!")
-                        battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[1],battle.battlers[0])
-                        battle.scene.disappearBar
-                        battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
-                        battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
-                        battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
-                        battle.scene.appearBar
-                        pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Flame Breath!")
-                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
-                        battle.scene.disappearBar
-                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                          battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
-                        else
-                          battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                        if $PokemonSystem.enemyTechniques==0
+                          pbMessage("\\xn[Nori]\\bSecret Technique! Mountainous Roar!")
+                          battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[1],battle.battlers[0])
+                          battle.scene.disappearBar
+                          battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
+                          battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
+                          battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                          battle.scene.appearBar
+                          pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Flame Breath!")
+                          battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                          battle.scene.disappearBar
+                          if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                            battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                          else
+                            battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                          end
+                          battle.scene.appearBar
                         end
-                        battle.scene.appearBar
                         pbMessage("\\xn[Nori]\\bLet's finish this duel in a blaze of glory, \\PN! Yaaah!")
                         battle.scene.disappearBar
                         battle.scene.pbHideOpponent
@@ -1094,7 +1242,9 @@ module DialogueModule
                   battle.scene.disappearBar
                   battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
                   battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
-                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                  if $PokemonSystem.enemyTechniques==0
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                  end
                   battle.scene.pbHideOpponent
                 }
         Shimizu2 = Proc.new{|battle|
@@ -1105,7 +1255,9 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         Shimizu3 = Proc.new{|battle|
@@ -1117,7 +1269,9 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         Shimizu4 = Proc.new{|battle|
@@ -1130,22 +1284,28 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbCommonAnimation("Hail",battle.battlers[0],nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Hail,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
         Shimizu5 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Chris and Eddie have got nothing on my skills!")
-                    pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
-                    battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
-                    battle.battlers[0].effects[PBEffects::Trapping] = 5
-                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                    battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
+                      battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
+                      battle.battlers[0].effects[PBEffects::Trapping] = 5
+                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
         Shimizu6 = Proc.new{|battle|
@@ -1157,36 +1317,47 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    end
                     battle.scene.pbHideOpponent
                   }
           Shimizu7 = Proc.new{|battle|
                         battle.scene.appearBar
                         battle.scene.pbShowOpponent(0)
                         pbMessage("Where do you think you're going?")
-                        pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
-                        battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
-                        battle.scene.disappearBar
-                        battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
-                        battle.battlers[0].effects[PBEffects::Trapping] = 5
-                        battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                        battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].pbThis(true)))
-                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        if $PokemonSystem.enemyTechniques==0
+                          pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
+                          battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
+                          battle.scene.disappearBar
+                          battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
+                          battle.battlers[0].effects[PBEffects::Trapping] = 5
+                          battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                          battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].pbThis(true)))
+                          battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        else
+                          battle.scene.disappearBar
+                        end
                         battle.scene.pbHideOpponent
                       }
           Shimizu8 = Proc.new{|battle|
                         battle.scene.appearBar
                         battle.scene.pbShowOpponent(0)
                         pbMessage("The Shimizu Clan draw their strength from the ocean!")
-                        pbMessage("It is the source of all life... It heals us with its love!")
-                        pbMessage("Katana of Water, Shimizu Style! Healing Ring!")
-                        battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
-                        battle.scene.disappearBar
-                        battle.battlers[1].effects[PBEffects::AquaRing] = true
-                        battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!",battle.battlers[1].name))
-                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                        if $PokemonSystem.enemyTechniques==0
+                          pbMessage("It is the source of all life... It heals us with its love!")
+                          pbMessage("Katana of Water, Shimizu Style! Healing Ring!")
+                          battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                          battle.scene.disappearBar
+                          battle.battlers[1].effects[PBEffects::AquaRing] = true
+                          battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!",battle.battlers[1].name))
+                          battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                        else
+                          pbMessage("It is the source of all life!")
+                          battle.scene.disappearBar
+                        end
                         battle.scene.pbHideOpponent
                       }
         Shimizu9 = Proc.new{|battle|
@@ -1197,9 +1368,11 @@ module DialogueModule
                       battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
                       battle.scene.disappearBar
                       battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      end
                       battle.scene.pbHideOpponent
                     }
         Shimizu10 = Proc.new{|battle|
@@ -1210,14 +1383,16 @@ module DialogueModule
                       battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
                       battle.scene.disappearBar
                       battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
-                      battle.scene.appearBar
-                      pbMessage("Katana of Water, Shimizu Style! Healing Ring!")
-                      battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      battle.battlers[1].effects[PBEffects::AquaRing] = true
-                      battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!",battle.battlers[1].name))
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.scene.appearBar
+                        pbMessage("Katana of Water, Shimizu Style! Healing Ring!")
+                        battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        battle.battlers[1].effects[PBEffects::AquaRing] = true
+                        battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!",battle.battlers[1].name))
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      end
                       battle.scene.appearBar
                       pbMessage("Come at me!")
                       battle.scene.disappearBar
@@ -1231,16 +1406,18 @@ module DialogueModule
                       battle.scene.disappearBar
                       battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
                       battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
-                      battle.scene.appearBar
-                      pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
-                      battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
-                      battle.battlers[0].effects[PBEffects::Trapping] = 5
-                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                      battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].name))
-                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.scene.appearBar
+                        pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
+                        battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
+                        battle.battlers[0].effects[PBEffects::Trapping] = 5
+                        battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                        battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].name))
+                        battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      end
                       battle.scene.appearBar
                       pbMessage("Now, the real test begins!")
                       battle.scene.disappearBar
@@ -1253,7 +1430,9 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
       Shimizu13 = Proc.new{|battle|
@@ -1263,9 +1442,11 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
-                    battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[1].effects[PBEffects::AquaRing] = true
-                    battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!",battle.battlers[1].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                      battle.battlers[1].effects[PBEffects::AquaRing] = true
+                      battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!",battle.battlers[1].name))
+                    end
                     battle.scene.pbHideOpponent
                   }
         Mai1 = Proc.new{|battle|
@@ -1279,19 +1460,21 @@ module DialogueModule
                       battle.scene.disappearBar
                       battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
                       battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
-                      battle.scene.appearBar
-                      pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Healing Ring!")
-                      battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      battle.battlers[1].effects[PBEffects::AquaRing] = true
-                      battle.pbDisplay(_INTL("Mai surrounded {1} with a veil of water!",battle.battlers[1].name))
-                      battle.scene.appearBar
-                      pbMessage("\\xn[Mai]\\rAnd now for my signature move!")
-                      pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Signature Technique! Water Meditation!")
-                      battle.pbAnimation(getID(PBMoves,:COSMICPOWER),battle.battlers[1],battle.battlers[1])
-                      battle.scene.disappearBar
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.scene.appearBar
+                        pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Healing Ring!")
+                        battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        battle.battlers[1].effects[PBEffects::AquaRing] = true
+                        battle.pbDisplay(_INTL("Mai surrounded {1} with a veil of water!",battle.battlers[1].name))
+                        battle.scene.appearBar
+                        pbMessage("\\xn[Mai]\\rAnd now for my signature move!")
+                        pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Signature Technique! Water Meditation!")
+                        battle.pbAnimation(getID(PBMoves,:COSMICPOWER),battle.battlers[1],battle.battlers[1])
+                        battle.scene.disappearBar
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1],false)
+                      end
                       battle.scene.appearBar
                       pbMessage("\\xn[Mai]\\rIf you think you can defeat me, go ahead and try!")
                       battle.scene.disappearBar
@@ -1307,23 +1490,27 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Healing Ring!")
-                    battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[1].effects[PBEffects::AquaRing] = true
-                    battle.pbDisplay(_INTL("Mai surrounded {1} with a veil of water!",battle.battlers[1].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Healing Ring!")
+                      battle.pbAnimation(getID(PBMoves,:AQUARING),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[1].effects[PBEffects::AquaRing] = true
+                      battle.pbDisplay(_INTL("Mai surrounded {1} with a veil of water!",battle.battlers[1].name))
+                    end
                     battle.scene.appearBar
                     pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Misty Terrain!")
                     battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Signature Technique! Water Meditation!")
-                    battle.pbAnimation(getID(PBMoves,:COSMICPOWER),battle.battlers[1],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Signature Technique! Water Meditation!")
+                      battle.pbAnimation(getID(PBMoves,:COSMICPOWER),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                    end
                     battle.scene.appearBar
                     pbMessage("\\xn[Mai]\\rLet's see if you can keep up with my waterfall of Shimizu techniques!")
                     battle.scene.disappearBar
@@ -1334,10 +1521,15 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[\\v[26]]\\pogPrepare to face the full force of my Pokémon!")
-                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Signature Technique! Hashimoto Might!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Signature Technique! Hashimoto Might!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[1],battle.battlers[0])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    else
+                      pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Feel the might of the Hashimoto Clan!")
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       RivalBurn = Proc.new{|battle|
@@ -1347,18 +1539,20 @@ module DialogueModule
                     pbMessage("\\xn[\\v[26]]\\pogI've grown a lot since our last battle, so don't underestimate me!")
                     pbMessage("\\xn[\\v[26]]\\pogNow, prepare to be burned to ashes!")
                     battle.scene.disappearBar
-                    #if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                    battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's technique!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      #if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.pbAnimation(getID(PBMoves,:EMBER),battle.battlers[1],battle.battlers[0])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's technique!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Signature Technique! Hashimoto Might!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[1],battle.battlers[0])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                     end
-                    battle.scene.appearBar
-                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Signature Technique! Hashimoto Might!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       RivalLast = Proc.new{|battle|
@@ -1367,23 +1561,30 @@ module DialogueModule
                     pbMessage("\\xn[\\v[26]]\\pogLooks like it's time to get serious!")
                     pbMessage("\\xn[\\v[26]]\\pogGo #{battle.battlers[1].pokemon.speciesName}, unleash your burning passion!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
       RivalDuel2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[\\v[26]]\\pogI've grown a lot since our last battle, so don't underestimate me!")
-                    pbMessage("\\xn[\\v[26]]\\pogNow, take a look at the new Katana Technique I learned!")
-                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Fire Vortex!")
-                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
-                    battle.battlers[0].effects[PBEffects::Trapping] = 7
-                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                    battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[\\v[26]]\\pogNow, take a look at the new Katana Technique I learned!")
+                      pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Fire Vortex!")
+                      battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                      battle.battlers[0].effects[PBEffects::Trapping] = 7
+                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    else
+                      pbMessage("\\xn[\\v[26]]\\pogWith my new Pokémon, I won't lose to you again!")
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       RivalDuel2Last = Proc.new{|battle|
@@ -1392,8 +1593,10 @@ module DialogueModule
                     pbMessage("\\xn[\\v[26]]\\pogLooks like it's time to get serious!")
                     pbMessage("\\xn[\\v[26]]\\pogGo #{battle.battlers[1].pokemon.speciesName}, unleash your burning passion!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    end
                     battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
                     battle.scene.pbHideOpponent
@@ -1405,15 +1608,17 @@ module DialogueModule
                     pbMessage("\\xn[\\v[26]]\\pogTo face you again... a battle against the Hero of Aisho!")
                     pbMessage("\\xn[\\v[26]]\\pogI'm going to give it my all, to open the heart of my Darmanitan!")
                     pbMessage("\\xn[\\v[26]]\\pogLet's go! Hiyaaaah!")
-                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Breath of Flames!")
-                    battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Breath of Flames!")
+                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's katana technique!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
                     end
-                    battle.scene.appearBar
                     pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Sunlight Beams!")
                     battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.scene.disappearBar
@@ -1421,8 +1626,10 @@ module DialogueModule
                     battle.scene.appearBar
                     pbMessage("\\xn[\\v[26]]\\pogCome at me with all you've got, \\PN! Hiyaaah!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    end
                     battle.scene.pbHideOpponent
                 }
       RivalPG2 = Proc.new{|battle|
@@ -1430,11 +1637,15 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[\\v[26]]\\pogWe're so close \\PN! Keep it up!")
                     pbMessage("\\xn[\\v[26]]\\pogGo #{battle.battlers[1].pokemon.speciesName}, give it all you got in this last battle!")
-                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[1],battle.battlers[0])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[1],battle.battlers[0])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       Ryo1 = Proc.new{|battle|
@@ -1447,8 +1658,10 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
                     battle.pbDisplay(_INTL("Ryo created a wall of light in front of {1}!",battle.battlers[1].name))
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                    end
                     battle.scene.appearBar
                     pbMessage("\\xn[Ryo]\\bLet's see the true strength of the Hero of Aisho!")
                     battle.scene.disappearBar
@@ -1460,17 +1673,23 @@ module DialogueModule
                     pbMessage("\\xn[Ryo]\\bYou really are talented, \\PN!")
                     pbMessage("\\xn[Ryo]\\bYou make me so proud as a father.")
                     pbMessage("\\xn[Ryo]\\bI hope you know that'll always love you.")
-                    pbMessage("\\xn[Ryo]\\bNow, witness my ultimate technique!")
-                    pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Blinding Radiance!")
-                    battle.pbAnimation(getID(PBMoves,:FLASH),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[0])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Ryo]\\bNow, witness my ultimate technique!")
+                      pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Blinding Radiance!")
+                      battle.pbAnimation(getID(PBMoves,:FLASH),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[0])
+                    else
+                      pbMessage("\\xn[Ryo]\\bNow, time to use another technique!")
+                    end
                     pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Brilliant Barrier!")
                     battle.pbAnimation(getID(PBMoves,:LIGHTSCREEN),battle.battlers[1],battle.battlers[1])
                     battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
                     battle.pbDisplay(_INTL("Ryo created a wall of light in front of {1}!",battle.battlers[1].name))
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                    end
                     battle.scene.appearBar
                     pbMessage("\\xn[Ryo]\\bLet's end this \\PN! Show me that you have what it takes to become the Royal Samurai!")
                     battle.scene.disappearBar
@@ -1487,10 +1706,14 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[Tsuku]\\rW-wah! This isn't looking good!")
-                    pbMessage("\\xn[Tsuku]\\rIt's time for defensive measures...")
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Tsuku]\\rIt's time for defensive measures...")
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       KayokoIntro = Proc.new{|battle|
@@ -1506,20 +1729,24 @@ module DialogueModule
                     pbMessage("\\xn[Kayoko]\\rI can't let my family down...")
                     pbMessage("\\xn[Kayoko]\\rTime to show you my true inner strength!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    end
                     battle.scene.pbHideOpponent
                   }
       KayokoB2Intro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[Kayoko]\\rPrepare yourself, \\PN. I'll be going all out.")
-                    pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
-                    battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
-                    battle.scene.appearBar
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
+                      battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      battle.scene.appearBar
+                    end
                     pbMessage("\\xn[Kayoko]\\rPlease, show me your true strength.")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
@@ -1533,12 +1760,14 @@ module DialogueModule
                     battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
-                    battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
+                      battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    end
                     battle.scene.appearBar
                     pbMessage("\\xn[Kayoko]\\rLet's see if you truly have what it takes to defeat me.")
                     battle.scene.disappearBar
@@ -1550,36 +1779,46 @@ module DialogueModule
                     pbMessage("\\xn[Kayoko]\\rEven if you've managed to defeat the Akui Clan, I still won't go easy!")
                     pbMessage("\\xn[Kayoko]\\rSignature Technique! Vaporized Terrain!")
                     battle.pbAnimation(getID(PBMoves,:MISTYTERRAIN),battle.battlers[1],battle.battlers[1])
-                    pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
-                    battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
+                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
+                      battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    end
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
-                    battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Misty)
                   }
       KayokoB3Last = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[Kayoko]\\rMy Hisuian partner will lead me to victory!")
-                    pbMessage("\\xn[Kayoko]\\r#{battle.battle.battlers[1].name}, Signature Technique! Malicious Boost!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Kayoko]\\r#{battle.battle.battlers[1].name}, Signature Technique! Malicious Boost!")
+                      battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    end
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
-                    battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
-                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
-                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
                   }
       # Akui intros, make them cheat a lot!
       ShadowIntroToxic = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("The Akui Clan never falters! Take this!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("The Akui Clan never falters! Take this!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    else
+                      pbMessage("The Akui Clan never falters! Prepare to lose!")
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowIntroToxic2 = Proc.new{|battle|
@@ -1587,15 +1826,19 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Stay out of our Akui Library!")
                     pbMessage("The secrets of our clan are not meant for outsiders!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
         ShadowIntroToxic3 = Proc.new{|battle|
@@ -1604,14 +1847,16 @@ module DialogueModule
                       pbMessage("The Katana of Light belongs to the Akui Clan now!")
                       pbMessage("Get lost, and never come back, you foolish Kenshi!")
                       battle.scene.disappearBar
-                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
-                      battle.scene.appearBar
-                      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness! Ultimate Evasion!")
-                      battle.scene.disappearBar
-                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,2,battle.battlers[1])
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                        battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                        battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                        battle.scene.appearBar
+                        pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness! Ultimate Evasion!")
+                        battle.scene.disappearBar
+                        battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,2,battle.battlers[1])
+                      end
                       battle.scene.pbHideOpponent
                     }
       ShadowIntroToxic4 = Proc.new{|battle|
@@ -1619,24 +1864,31 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You must be stopped... And I'll be the one to stop you!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowIntroSpikes = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("Let's make this battle interesting, shall we?")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Let's make this battle interesting, shall we?")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    else
+                      pbMessage("I'll teach you not to mess with the Akui Clan!")
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowIntroSpikes2 = Proc.new{|battle|
@@ -1644,17 +1896,19 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("I'm guarding this key with my life! Stay away, you disgusting kenshi!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Icicle Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Icicle Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -1663,17 +1917,19 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Stay out of my basement, you villain!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Shock Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Shock Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -1682,17 +1938,19 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Get out of here! We can't let you come and go as you please!")
                     battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Flame Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Flame Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -1700,38 +1958,50 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Looks like it's time to get serious!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowEvasion2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Invaders must be punished!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowEvasion3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You need to be eliminated!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Shock Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Shock Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -1739,18 +2009,22 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Hagane City is ours! Give up now!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Flame Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Flame Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -1758,28 +2032,36 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You'll never be able to catch up to us!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowSpeed2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Nobody sneaks up behind me and lives to the tell the tale!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Shock Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Shock Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -1787,18 +2069,22 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Outsiders must be eliminated! This is the way of the Akui Clan!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Icicle Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Icicle Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -1806,55 +2092,72 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You will never defeat the Akui Clan!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
-                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowPower = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("My strength is unmatched!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowPower2 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("It's time for our rematch! I've been working on my strength!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
-                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,3,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       ShadowFreeze = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("Prepare to be frozen, foolish Kenshi!")
-                    pbMessage("Akui Clan Technique, Icicle Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Prepare to be frozen, foolish Kenshi!")
+                      pbMessage("Akui Clan Technique, Icicle Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      pbMessage("Prepare to be destroyed, foolish Kenshi!")
+                      battle.scene.disappearBar
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -1862,43 +2165,57 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("To be in Akui Clan, you must have a heart as cold as ice!")
-                    pbMessage("Luckily for me, I also happen to have kunai that are as cold as ice!")
-                    pbMessage("Akui Clan Technique, Icicle Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Luckily for me, I also happen to have kunai that are as cold as ice!")
+                      pbMessage("Akui Clan Technique, Icicle Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen solid by the ice kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       ShadowShock = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("Prepare to be shocked, foolish Kenshi!")
-                    pbMessage("Akui Clan Technique, Shock Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Prepare to be shocked, foolish Kenshi!")
+                      pbMessage("Akui Clan Technique, Shock Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the shock kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      pbMessage("You don't stand a chance, foolish Kenshi!")
+                      battle.scene.disappearBar
                     end
                     battle.scene.pbHideOpponent
                   }
       ShadowBurn = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("If you try to mess with the Akui Clan, you're bound to get burned!")
-                    pbMessage("Akui Clan Technique, Flame Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("If you try to mess with the Akui Clan, you're bound to get burned!")
+                      pbMessage("Akui Clan Technique, Flame Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by the flame kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      pbMessage("Nobody messes with the Akui Clan!")
+                      battle.scene.disappearBar
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -1920,15 +2237,20 @@ module DialogueModule
       ShadowSleep = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("You're looking a little tired.")
-                    pbMessage("How about your Pokémon get some rest!")
-                    pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("You're looking a little tired.")
+                      pbMessage("How about your Pokémon get some rest!")
+                      pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      pbMessage("The Akui Clan won't rest until our enemies are destroyed!")
+                      battle.scene.disappearBar
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -1937,19 +2259,23 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("I'll be the one to put a stop to your reign of terror!")
                     pbMessage("The Akui Clan is counting on me to succeed! I can do this!")
-                    pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by the tranquilizer kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility! Ultimate Speed!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility! Ultimate Speed!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
                     battle.scene.pbHideOpponent
                   }
       ShadowDuo1 = Proc.new{|battle|
@@ -1957,136 +2283,46 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("The Akui Clan will be taking all the Hanatsium in this mine!")
                     pbMessage("Don't even bother trying to stop us, you little brats!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Multi-Clones of Darkness!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
-                    battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[3])
-                    battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3])
-                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the ground!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
-                    battle.scene.pbHideOpponent
-                    battle.scene.appearBar
-                    pbMessage("\\xn[\\v[26]]\\pogThose Akui guys aren't the only people who can use techniques to gain the edge in battle!")
-                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Fire Vortex!")
-                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[2],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.battlers[1].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
-                    battle.battlers[1].effects[PBEffects::Trapping] = 5
-                    battle.battlers[1].effects[PBEffects::TrappingUser] = 1
-                    battle.pbDisplay(_INTL("The enemy {1} was trapped in a fiery vortex!",battle.battlers[1].name))
-                    battle.scene.appearBar
-                    pbMessage("\\xn[\\v[26]]\\pogCome on \\PN, let's teach these jerks not to mess with the Nensho Clan!")
-                    pbMessage("\\xn[\\v[26]]\\pogNow for my signature technique! Hashimoto Might!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
-                    battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
-                    battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Multi-Clones of Darkness!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[3])
+                      battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3])
+                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the ground!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                      battle.scene.pbHideOpponent
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogThose Akui guys aren't the only people who can use techniques to gain the edge in battle!")
+                      pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Fire Vortex!")
+                      battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[2],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                      battle.battlers[1].effects[PBEffects::Trapping] = 5
+                      battle.battlers[1].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("The enemy {1} was trapped in a fiery vortex!",battle.battlers[1].name))
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogCome on \\PN, let's teach these jerks not to mess with the Nensho Clan!")
+                      pbMessage("\\xn[\\v[26]]\\pogNow for my signature technique! Hashimoto Might!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                      battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                      battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                    else
+                      battle.scene.pbHideOpponent
+                      pbMessage("\\xn[\\v[26]]\\pogThose Akui guys are real jerks!")
+                      pbMessage("\\xn[\\v[26]]\\pogCome on \\PN, let's teach them not to mess with the Nensho Clan!")
+                      battle.scene.disappearBar
+                    end
                   }
       ShadowDuo1Last = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Grr... You brats are actually pretty strong...")
                     pbMessage("You'll pay for crossing the Akui Clan!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
-                    battle.scene.disappearBar
-                    if battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[3],battle.battlers[3])
-                    else
-                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
-                    end
-                    if !battle.battlers[1].fainted?
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
-                    end
-                    if !battle.battlers[3].fainted?
-                      battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[3])
-                      battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[3],false)
-                    end
-                    battle.scene.pbHideOpponent
-                    battle.scene.appearBar
-                    pbMessage("\\xn[\\v[26]]\\pogOh no you don't! You're the one's who are going to pay!")
-                    pbMessage("\\xn[\\v[26]]\\pogGraaah! Katana of Fire, Nensho Style! Flame Breath!")
-                    if battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[3])
-                    else
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
-                    end
-                    battle.scene.disappearBar
-                    if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
-                    end
-                    if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
-                    end
-                    battle.scene.appearBar
-                    pbMessage("\\xn[\\v[26]]\\pogLet's finish these jerks off \\PN!")
-                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
-                    battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
-                    battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
-                  }
-        ShadowDuo2 = Proc.new{|battle|
-                      battle.scene.appearBar
-                      battle.scene.pbShowOpponent(0)
-                      pbMessage("You'll never be able to stop the plans of the Akui Clan!")
-                      pbMessage("You're nothing but pesky thorns in our sides!")
-                      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
-                      battle.scene.disappearBar
-                      battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
-                      battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[3])
-                      battle.scene.appearBar
-                      pbMessage("And that's not all! Get a load of this, you worthless children!")
-                      pbMessage("Akui Clan Technique, Shock Kunai!")
-                      battle.scene.disappearBar
-                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                      else
-                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
-                      end
-                      if battle.battlers[2].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                        battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                      else
-                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
-                      end
-                      battle.scene.pbHideOpponent
-                      battle.scene.appearBar
-                      pbMessage("\\xn[\\v[26]]\\pogThese Akui grunts will never play fair...")
-                      pbMessage("\\xn[\\v[26]]\\pogLuckily for us, I also have a few tricks up my sleeve!")
-                      pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Flame Breath!")
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
-                      battle.scene.disappearBar
-                      if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                        battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
-                      else
-                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
-                      end
-                      if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                        battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
-                      else
-                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
-                      end
-                      battle.scene.appearBar
-                      pbMessage("\\xn[\\v[26]]\\pogLet's go \\PN! We can take care of these Akui lowlifes!")
-                      pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
-                      battle.scene.disappearBar
-                      battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
-                      battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
-                      battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
-                    }
-        ShadowDuo2Last = Proc.new{|battle|
-                      battle.scene.appearBar
-                      battle.scene.pbShowOpponent(0)
-                      pbMessage("We've been given orders to stop you from going any further!")
-                      pbMessage("We will not fail! We cannot fail!")
+                    if $PokemonSystem.enemyTechniques==0
                       pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
                       battle.scene.disappearBar
                       if battle.battlers[1].fainted?
@@ -2102,79 +2338,203 @@ module DialogueModule
                         battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[3])
                         battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[3],false)
                       end
-                      pbMessage("Akui Clan Technique, Shock Kunai!")
-                      battle.scene.disappearBar
-                      if !battle.battlers[1].fainted?
-                        battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                      else
-                        battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[3])
-                      end
-                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                      else
-                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
-                      end
-                      if battle.battlers[2].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                        battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                      else
-                        battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
-                      end
                       battle.scene.pbHideOpponent
                       battle.scene.appearBar
-                      pbMessage("\\xn[\\v[26]]\\pog\\PN... I'm starting to feel pretty tired...")
-                      pbMessage("\\xn[\\v[26]]\\pogI can probably only use my katana techniques a couple more times...")
-                      pbMessage("\\xn[\\v[26]]\\pogBut, in times like these...")
-                      pbMessage("\\xn[\\v[26]]\\pogThat's when we really need to give it our all!")
-                      pbMessage("\\xn[\\v[26]]\\pogGraaaaaah! Hashimoto Might!")
+                      pbMessage("\\xn[\\v[26]]\\pogOh no you don't! You're the one's who are going to pay!")
+                      pbMessage("\\xn[\\v[26]]\\pogGraaah! Katana of Fire, Nensho Style! Flame Breath!")
+                      if battle.battlers[1].fainted?
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[3])
+                      else
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
+                      end
+                      battle.scene.disappearBar
+                      if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
+                      end
+                      if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogLet's finish these jerks off \\PN!")
+                      pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
                       battle.scene.disappearBar
                       battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
                       battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
                       battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                    else
+                      battle.scene.pbHideOpponent
+                      pbMessage("\\xn[\\v[26]]\\pogYou're the one's who are going to pay!")
+                      pbMessage("\\xn[\\v[26]]\\pogLet's finish these jerks off \\PN! Hiyaaah!")
+                      battle.scene.disappearBar
+                    end
+                  }
+        ShadowDuo2 = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("You'll never be able to stop the plans of the Akui Clan!")
+                      pbMessage("You're nothing but pesky thorns in our sides!")
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                        battle.scene.disappearBar
+                        battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                        battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[3])
+                        battle.scene.appearBar
+                        pbMessage("And that's not all! Get a load of this, you worthless children!")
+                        pbMessage("Akui Clan Technique, Shock Kunai!")
+                        battle.scene.disappearBar
+                        battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                          battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                        end
+                        if battle.battlers[2].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                          battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
+                        end
+                        battle.scene.pbHideOpponent
+                        battle.scene.appearBar
+                        pbMessage("\\xn[\\v[26]]\\pogThese Akui grunts will never play fair...")
+                        pbMessage("\\xn[\\v[26]]\\pogLuckily for us, I also have a few tricks up my sleeve!")
+                        pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Flame Breath!")
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
+                        battle.scene.disappearBar
+                        if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                          battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
+                        end
+                        if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                          battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                        end
+                        battle.scene.appearBar
+                        pbMessage("\\xn[\\v[26]]\\pogLet's go \\PN! We can take care of these Akui lowlifes!")
+                        pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
+                        battle.scene.disappearBar
+                        battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                        battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                        battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                      else
+                        battle.scene.pbHideOpponent
+                        pbMessage("\\xn[\\v[26]]\\pogLet's go \\PN! We can take care of these Akui lowlifes!")
+                        battle.scene.disappearBar
+                      end
+                    }
+        ShadowDuo2Last = Proc.new{|battle|
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("We've been given orders to stop you from going any further!")
+                      pbMessage("We will not fail! We cannot fail!")
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
+                        battle.scene.disappearBar
+                        if battle.battlers[1].fainted?
+                          battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[3],battle.battlers[3])
+                        else
+                          battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
+                        end
+                        if !battle.battlers[1].fainted?
+                          battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                          battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                        end
+                        if !battle.battlers[3].fainted?
+                          battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[3])
+                          battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[3],false)
+                        end
+                        pbMessage("Akui Clan Technique, Shock Kunai!")
+                        battle.scene.disappearBar
+                        if !battle.battlers[1].fainted?
+                          battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                        else
+                          battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[3])
+                        end
+                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                          battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[0].name))
+                        end
+                        if battle.battlers[2].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                          battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the enemy's kunai!",battle.battlers[2].name))
+                        end
+                        battle.scene.pbHideOpponent
+                        battle.scene.appearBar
+                        pbMessage("\\xn[\\v[26]]\\pog\\PN... I'm starting to feel pretty tired...")
+                        pbMessage("\\xn[\\v[26]]\\pogI can probably only use my katana techniques a couple more times...")
+                        pbMessage("\\xn[\\v[26]]\\pogBut, in times like these...")
+                        pbMessage("\\xn[\\v[26]]\\pogThat's when we really need to give it our all!")
+                        pbMessage("\\xn[\\v[26]]\\pogGraaaaaah! Hashimoto Might!")
+                        battle.scene.disappearBar
+                        battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                        battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                        battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                      else
+                        battle.scene.pbHideOpponent
+                        pbMessage("\\xn[\\v[26]]\\pog\\PN... I'm starting to feel pretty tired...")
+                        pbMessage("\\xn[\\v[26]]\\pogBut, in times like these...")
+                        pbMessage("\\xn[\\v[26]]\\pogThat's when we really need to give it our all!")
+                        battle.scene.disappearBar
+                      end
                     }
       ShadowDuo3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You two brats must be skilled to have made it this far into the mine...")
                     pbMessage("Too bad for you, this is the end of your journey!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
-                    battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[3])
-                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
-                    battle.scene.pbHideOpponent
-                    battle.scene.appearBar
-                    pbMessage("\\xn[\\v[26]]\\pogHey \\PN, I managed to pick up a few shock kunai off the ground after our last battle!")
-                    pbMessage("\\xn[\\v[26]]\\pogLet's see how the Akui Clan likes the taste of their own medicine!")
-                    pbMessage("\\xn[\\v[26]]\\pogAkui Clan Technique!\\wtnp[16] .\\wtnp[16].\\wtnp[16].\\wtnp[16]Shock Kunai?\\wtnp[30]")
-                    pbMessage("\\xn[\\v[26]]\\pogForget it... I'm just going to throw these kunai as hard I can!")
-                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    if battle.battlers[1].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[1].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      battle.battlers[3].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[3])
+                      battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                      battle.scene.pbHideOpponent
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogHey \\PN, I managed to pick up a few shock kunai off the ground after our last battle!")
+                      pbMessage("\\xn[\\v[26]]\\pogLet's see how the Akui Clan likes the taste of their own medicine!")
+                      pbMessage("\\xn[\\v[26]]\\pogAkui Clan Technique!\\wtnp[16] .\\wtnp[16].\\wtnp[16].\\wtnp[16]Shock Kunai?\\wtnp[30]")
+                      pbMessage("\\xn[\\v[26]]\\pogForget it... I'm just going to throw these kunai as hard I can!")
+                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[1].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[1].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
+                      end
+                      if battle.battlers[3].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[3].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogHaha! Yes, it worked!")
+                      pbMessage("\\xn[\\v[26]]\\pogTake that you Akui scumbags!")
+                      pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                      battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                      battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                      battle.scene.appearBar
+                      battle.scene.pbShowOpponent(0)
+                      pbMessage("Hey! You can't do that! That's cheating!")
+                      battle.scene.pbHideOpponent
+                      battle.scene.disappearBar
                     else
-                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
+                      battle.scene.pbHideOpponent
+                      pbMessage("\\xn[\\v[26]]\\pogYou Akui scumbags are going down!")
+                      battle.scene.disappearBar
                     end
-                    if battle.battlers[3].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[3].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
-                    end
-                    battle.scene.appearBar
-                    pbMessage("\\xn[\\v[26]]\\pogHaha! Yes, it worked!")
-                    pbMessage("\\xn[\\v[26]]\\pogTake that you Akui scumbags!")
-                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Hashimoto Might!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
-                    battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
-                    battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
-                    battle.scene.appearBar
-                    battle.scene.pbShowOpponent(0)
-                    pbMessage("Hey! You can't do that! That's cheating!")
-                    battle.scene.pbHideOpponent
-                    battle.scene.disappearBar
                   }
       ShadowDuo3Last = Proc.new{|battle|
                     battle.scene.appearBar
@@ -2182,53 +2542,61 @@ module DialogueModule
                     pbMessage("Hahaha... You kids fight dirty!")
                     pbMessage("Maybe you should join the Akui Clan after all!")
                     pbMessage("Come by Yami Island sometime... after we finish pulverizing you!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Multi-Clones of Darkness!!")
-                    battle.scene.disappearBar
-                    if battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[3])
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Shadow Style! Multi-Clones of Darkness!!")
+                      battle.scene.disappearBar
+                      if battle.battlers[1].fainted?
+                        battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[3])
+                      else
+                        battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
+                      end
+                      if !battle.battlers[1].fainted?
+                        battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
+                      end
+                      if !battle.battlers[3].fainted?
+                        battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3])
+                      end
+                      if !battle.battlers[1].fainted?
+                        battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                      else
+                        battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[3],battle.battlers[0])
+                      end
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                      battle.scene.pbHideOpponent
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogAlright \\PN! We're so close to the end of the mine!")
+                      pbMessage("\\xn[\\v[26]]\\pogLet's gather up all our strength...")
+                      pbMessage("\\xn[\\v[26]]\\pogAnd then let's blast through these losers!")
+                      pbMessage("\\xn[\\v[26]]\\pogGraaaah!\\wtnp[30] Hashimoto Might!\\wtnp[30]")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                      battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
+                      battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Flame Breath!")
+                      if battle.battlers[1].fainted?
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[3])
+                      else
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
+                      end
+                      battle.scene.disappearBar
+                      if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
+                      end
+                      if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                      end
                     else
-                      battle.pbAnimation(getID(PBMoves,:DOUBLETEAM),battle.battlers[0],battle.battlers[1])
-                    end
-                    if !battle.battlers[1].fainted?
-                      battle.battlers[1].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[1])
-                    end
-                    if !battle.battlers[3].fainted?
-                      battle.battlers[3].pbRaiseStatStage(PBStats::EVASION,1,battle.battlers[3])
-                    end
-                    if !battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    else
-                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[3],battle.battlers[0])
-                    end
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
-                    battle.scene.pbHideOpponent
-                    battle.scene.appearBar
-                    pbMessage("\\xn[\\v[26]]\\pogAlright \\PN! We're so close to the end of the mine!")
-                    pbMessage("\\xn[\\v[26]]\\pogLet's gather up all our strength...")
-                    pbMessage("\\xn[\\v[26]]\\pogAnd then let's blast through these losers!")
-                    pbMessage("\\xn[\\v[26]]\\pogGraaaah!\\wtnp[30] Hashimoto Might!\\wtnp[30]")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
-                    battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[2])
-                    battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[0],false)
-                    battle.scene.appearBar
-                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Flame Breath!")
-                    if battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[3])
-                    else
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
-                    end
-                    battle.scene.disappearBar
-                    if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
-                    end
-                    if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                      battle.scene.pbHideOpponent
+                      pbMessage("\\xn[\\v[26]]\\pogAlright \\PN! We're so close to the end of the mine!")
+                      pbMessage("\\xn[\\v[26]]\\pogLet's gather up all our strength...")
+                      pbMessage("\\xn[\\v[26]]\\pogAnd then let's blast through these losers!")
+                      battle.scene.disappearBar
                     end
                   }
       ShadowDuo4 = Proc.new{|battle|
@@ -2237,57 +2605,66 @@ module DialogueModule
                     pbMessage("Haha! You're too late!")
                     pbMessage("We were already able to take a piece of the Hanatsium Crystal!")
                     pbMessage("After we smash you two intruders, we'll steal even more!")
-                    pbMessage("Here, have a sneak peek at just how strong the Hanatsium Crystal is!")
-                    pbMessage("Akui Clan Technique, Shadow Style! Hanatsium Crystal Exposure!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,5,battle.battlers[1])
-                    battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[0],battle.battlers[3])
-                    battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,5,battle.battlers[3])
-                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
-                    battle.scene.pbHideOpponent
-                    pbMessage("\\xn[\\v[26]]\\pogHere we go \\PN! This is our final battle!")
-                    pbMessage("\\xn[\\v[26]]\\pogI'm going all out! 200% Power, here and now!")
-                    pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Fire Vortex!")
-                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[2],battle.battlers[1])
-                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[2],battle.battlers[3])
-                    battle.scene.disappearBar
-                    battle.battlers[1].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
-                    battle.battlers[1].effects[PBEffects::Trapping] = 5
-                    battle.battlers[1].effects[PBEffects::TrappingUser] = 1
-                    battle.battlers[3].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
-                    battle.battlers[3].effects[PBEffects::Trapping] = 5
-                    battle.battlers[3].effects[PBEffects::TrappingUser] = 1
-                    battle.pbDisplay(_INTL("The enemies were trapped in fiery vortexes!",battle.battlers[1].name))
-                    battle.scene.appearBar
-                    pbMessage("\\xn[\\v[26]]\\pogHiyaaah! 200% Hashimoto Might!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
-                    battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,4,battle.battlers[2])
-                    battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,4,battle.battlers[0],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Here, have a sneak peek at just how strong the Hanatsium Crystal is!")
+                      pbMessage("Akui Clan Technique, Shadow Style! Hanatsium Crystal Exposure!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,5,battle.battlers[1])
+                      battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[0],battle.battlers[3])
+                      battle.battlers[3].pbRaiseStatStage(PBStats::ATTACK,5,battle.battlers[3])
+                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                      battle.scene.pbHideOpponent
+                      pbMessage("\\xn[\\v[26]]\\pogHere we go \\PN! This is our final battle!")
+                      pbMessage("\\xn[\\v[26]]\\pogI'm going all out! 200% Power, here and now!")
+                      pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Fire Vortex!")
+                      battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[2],battle.battlers[1])
+                      battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[2],battle.battlers[3])
+                      battle.scene.disappearBar
+                      battle.battlers[1].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                      battle.battlers[1].effects[PBEffects::Trapping] = 5
+                      battle.battlers[1].effects[PBEffects::TrappingUser] = 1
+                      battle.battlers[3].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                      battle.battlers[3].effects[PBEffects::Trapping] = 5
+                      battle.battlers[3].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("The enemies were trapped in fiery vortexes!",battle.battlers[1].name))
+                      battle.scene.appearBar
+                      pbMessage("\\xn[\\v[26]]\\pogHiyaaah! 200% Hashimoto Might!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SWORDSDANCE),battle.battlers[2],battle.battlers[1])
+                      battle.battlers[2].pbRaiseStatStage(PBStats::ATTACK,4,battle.battlers[2])
+                      battle.battlers[0].pbRaiseStatStage(PBStats::ATTACK,4,battle.battlers[0],false)
+                    else
+                      battle.scene.pbHideOpponent
+                      pbMessage("\\xn[\\v[26]]\\pogHere we go \\PN! This is our final battle!")
+                      pbMessage("\\xn[\\v[26]]\\pogI'm going all out! 200% Power, here and now!")
+                      battle.scene.disappearBar
+                    end
                   }
       MashiroIntro = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Tch. We were so close to getting Virizion's power, but you all had to come mess it up.")
                     pbMessage("I'll show you who you're messing with!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Toxic Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by Mashiro's kunai!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Toxic Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by Mashiro's kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("I won't let you brats get in my way!")
                     end
-                    battle.scene.appearBar
-                    pbMessage("I won't let you brats get in my way!")
                     pbMessage("I'm going to put you in your place, you miserable worm!")
                     battle.scene.disappearBar
                     battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1])
@@ -2297,30 +2674,37 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Why are you so insistent on being annoying?!")
-                    pbMessage("Ugh... I don't have any Kunai anymore...")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Ugh... I don't have any Kunai anymore...")
+                    end
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
       Mashiro3 = Proc.new{|battle|
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
-                    pbMessage("Did you actually believe that I ran out of Kunai?")
-                    pbMessage("You're even more foolish than you look!")
-                    pbMessage("Akui Clan Technique, Shock Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Mashiro's kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Did you actually believe that I ran out of Kunai?")
+                      pbMessage("You're even more foolish than you look!")
+                      pbMessage("Akui Clan Technique, Shock Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Mashiro's kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("Do you see now why the codes of Bushido are worthless? Without honor and respect, I can do whatever I want.")
+                      battle.scene.disappearBar
+                      if battle.battlers[1].hasActiveAbility?(:CONTRARY)
+                        battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      else
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      end
                     else
-                      battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
-                    end
-                    battle.scene.appearBar
-                    pbMessage("Do you see now why the codes of Bushido are worthless? Without honor and respect, I can do whatever I want.")
-                    battle.scene.disappearBar
-                    if battle.battlers[1].hasActiveAbility?(:CONTRARY)
-                      battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1])
-                    else
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      pbMessage("The codes of Bushido are worthless, and I'll prove it to you!")
+                      battle.scene.disappearBar
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -2331,18 +2715,20 @@ module DialogueModule
                     pbMessage("Unfortunately for you, this is my strongest!")
                     pbMessage("Don't even bother trying to steal my Pokémon! I know all about your dirty tricks!")
                     pbMessage("We Akui Admins are a step above. We'll always be able to hit your Poké Balls away!")
-                    pbMessage("Now, you're lucky that I'm actually out of Kunai...")
-                    pbMessage("...")
-                    pbMessage("Just kidding, of course I have more Kunai!")
-                    pbMessage("Akui Clan Technique, Icicle Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen by Mashiro's kunai!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Now, you're lucky that I'm actually out of Kunai...")
+                      pbMessage("...")
+                      pbMessage("Just kidding, of course I have more Kunai!")
+                      pbMessage("Akui Clan Technique, Icicle Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen by Mashiro's kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
                     end
-                    battle.scene.appearBar
                     pbMessage("You'll never be able to defeat me!")
                     battle.scene.disappearBar
                     if battle.battlers[1].hasActiveAbility?(:CONTRARY)
@@ -2356,22 +2742,26 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("I won't let you humiliate me like last time!")
-                    pbMessage("You'll never be able to beat me again!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                    battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!"))
-                    battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
-                    battle.scene.appearBar
-                    pbMessage("Now, for a special surprise!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("You'll never be able to beat me again!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!"))
+                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                      battle.scene.appearBar
+                      pbMessage("Now, for a special surprise!")
+                    end
                     pbMessage("When we were in Tsuchi Village, I studied the katana techniques of the Komorei Clan.")
                     pbMessage("And now I've been able to perfect them as my own!")
                     pbMessage("Akui Admin Technique, Komorei Style! Lush Terrain!")
                     battle.pbAnimation(getID(PBMoves,:GRASSYTERRAIN),battle.battlers[1],battle.battlers[1])
                     battle.scene.disappearBar
                     battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Grassy)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    end
                     battle.scene.pbHideOpponent
                   }
       MashiroRematch2 = Proc.new{|battle|
@@ -2379,27 +2769,31 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("Grr... You've got some nerve.")
                     pbMessage("I won't allow you to annoy me any more!")
-                    pbMessage("Akui Clan Technique, Icicle Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen by Mashiro's kunai!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Icicle Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:ICICLESPEAR),battle.battlers[1],battle.battlers[0])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::FROZEN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::FROZEN,1,"Your Pokémon was frozen by Mashiro's kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
                     end
-                    battle.scene.appearBar
                     pbMessage("Akui Admin Technique, Komorei Style! Blazing Sunlight!")
                     battle.pbCommonAnimation("Sunny",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sun,true,false)
-                    if battle.battlers[1].hasActiveAbility?(:CONTRARY)
-                      battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                      battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1],false)
-                      battle.battlers[1].pbLowerStatStage(PBStats::SPATK,2,battle.battlers[1],false)
-                    else
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      if battle.battlers[1].hasActiveAbility?(:CONTRARY)
+                        battle.battlers[1].pbLowerStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                        battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                        battle.battlers[1].pbLowerStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                      else
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                      end
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -2407,21 +2801,25 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("You'll never defeat me! I won't allow it!")
-                    pbMessage("Akui Clan Technique, Venom Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by Mashiro's kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Venom Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was poisoned by Mashiro's kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
                     else
-                      battle.pbDisplay(_INTL("{1} resisted Mashiro's kunai!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
       HotokeIntro = Proc.new{|battle|
@@ -2433,11 +2831,13 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbCommonAnimation("Sandstorm",nil,nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
-                    if battle.battlers[3]
-                      battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
-                      battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      if battle.battlers[3]
+                        battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
+                        battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+                      end
                     end
                     battle.scene.appearBar
                     pbMessage("...")
@@ -2446,24 +2846,28 @@ module DialogueModule
                     battle.scene.pbHideOpponent
                     battle.scene.appearBar
                     pbMessage("\\xn[Nori]\\bCome on \\PN, let's show these cowards how a real Kenshi battles!")
-                    pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Breath of Flames!")
-                    if battle.battlers[2]
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
-                    else
-                      battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[0],battle.battlers[1])
-                    end
-                    battle.scene.disappearBar
-                    if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
-                    end
-                    if battle.battlers[3]
-                      if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                        battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Nori]\\bKatana of Fire, Nensho Style! Breath of Flames!")
+                      if battle.battlers[2]
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[2],battle.battlers[1])
                       else
-                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                        battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[0],battle.battlers[1])
                       end
+                      battle.scene.disappearBar
+                      if battle.battlers[1].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[1].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[1].name))
+                      end
+                      if battle.battlers[3]
+                        if battle.battlers[3].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                          battle.battlers[3].pbInflictStatus(PBStatuses::BURN,1,nil)
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted the katana technique!",battle.battlers[3].name))
+                        end
+                      end
+                    else
+                      battle.scene.disappearBar
                     end
                   }
       Hotoke2 = Proc.new{|battle|
@@ -2478,39 +2882,43 @@ module DialogueModule
                     else
                       battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
                     end
-                    if !battle.battlers[1].fainted?
-                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
-                    end
-                    if !battle.battlers[3].fainted?
-                      battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[3])
-                      battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[3],false)
-                    end
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique... Toxic Spikes...")
-                    battle.scene.disappearBar
-                    if battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[3],battle.battlers[0])
-                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                      battle.battlers[3].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
-                    else
-                      battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
-                      battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
-                      battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                    if $PokemonSystem.enemyTechniques==0
+                      if !battle.battlers[1].fainted?
+                        battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                      end
+                      if !battle.battlers[3].fainted?
+                        battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[3])
+                        battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[3],false)
+                      end
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique... Toxic Spikes...")
+                      battle.scene.disappearBar
+                      if battle.battlers[1].fainted?
+                        battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[3],battle.battlers[0])
+                        battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                        battle.battlers[3].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                      else
+                        battle.pbAnimation(getID(PBMoves,:TOXICSPIKES),battle.battlers[1],battle.battlers[0])
+                        battle.pbDisplay(_INTL("Toxic spikes were scattered all around the battlefield!!",battle.battlers[0].pbThis(true)))
+                        battle.battlers[1].pbOpposingSide.effects[PBEffects::ToxicSpikes] = 2
+                      end
                     end
                     battle.scene.appearBar
                     pbMessage("Get away...")
                     pbMessage("Get away from me! Get away!")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Nori]\\bIt's time to finish off these Akui clowns!")
-                    pbMessage("\\xn[Nori]\\bSecret Technique! Mountainous Roar!")
-                    battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[2],battle.battlers[1])
-                    battle.scene.disappearBar
-                    battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1])
-                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Nori]\\bIt's time to finish off these Akui clowns!")
+                      pbMessage("\\xn[Nori]\\bSecret Technique! Mountainous Roar!")
+                      battle.pbAnimation(getID(PBMoves,:HOWL),battle.battlers[2],battle.battlers[1])
+                      battle.scene.disappearBar
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[1])
+                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    end
                   }
       Hotoke3 = Proc.new{|battle|
                     battle.scene.appearBar
@@ -2519,31 +2927,33 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbCommonAnimation("Sandstorm",nil,nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
-                    if !battle.battlers[1].fainted?
-                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
-                    end
-                    if !battle.battlers[3].fainted?
-                      battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[3])
-                      battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[3],false)
-                    end
-                    battle.scene.appearBar
-                    pbMessage("Akui Clan Technique... Shock Kunai...")
-                    battle.scene.disappearBar
-                    if battle.battlers[1].fainted?
-                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[3])
-                    else
-                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    end
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Hotoke's kunai!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Hotoke's kunai!",battle.battlers[0].name))
-                    end
-                    if battle.battlers[2].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Hotoke's kunai!",battle.battlers[2].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      if !battle.battlers[1].fainted?
+                        battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                      end
+                      if !battle.battlers[3].fainted?
+                        battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[3])
+                        battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[3],false)
+                      end
+                      battle.scene.appearBar
+                      pbMessage("Akui Clan Technique... Shock Kunai...")
+                      battle.scene.disappearBar
+                      if battle.battlers[1].fainted?
+                        battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[3])
+                      else
+                        battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      end
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Hotoke's kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Hotoke's kunai!",battle.battlers[0].name))
+                      end
+                      if battle.battlers[2].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[2].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Hotoke's kunai!",battle.battlers[2].name))
+                      end
                     end
                     battle.scene.appearBar
                     pbMessage("Get away...")
@@ -2559,50 +2969,58 @@ module DialogueModule
                   battle.scene.disappearBar
                   battle.pbCommonAnimation("Sandstorm",nil,nil)
                   battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
-                  battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
-                  battle.scene.appearBar
-                  pbMessage("...")
-                  pbMessage("Now, for a new technique...")
-                  pbMessage("Akui Admin Technique... Nensho Style... Flame Breath...")
-                  battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
-                  battle.scene.disappearBar
-                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                  if $PokemonSystem.enemyTechniques==0
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("...")
+                    pbMessage("Now, for a new technique...")
+                    pbMessage("Akui Admin Technique... Nensho Style... Flame Breath...")
+                    battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Hotoke's technique!",battle.battlers[0].name))
+                    end
                   else
-                    battle.pbDisplay(_INTL("{1} resisted Hotoke's technique!",battle.battlers[0].name))
+                    battle.scene.disappearBar
                   end
                   battle.scene.pbHideOpponent
                 }
     HotokeRematch2 = Proc.new{|battle|
                   battle.scene.appearBar
                   battle.scene.pbShowOpponent(0)
-                  pbMessage("It's time to burn you again...")
-                  pbMessage("Akui Admin Technique... Nensho Style... Flame Breath...")
-                  battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
-                  battle.scene.disappearBar
-                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
-                  else
-                    battle.pbDisplay(_INTL("{1} resisted Hotoke's technique!",battle.battlers[0].name))
+                  if $PokemonSystem.enemyTechniques==0
+                    pbMessage("It's time to burn you again...")
+                    pbMessage("Akui Admin Technique... Nensho Style... Flame Breath...")
+                    battle.pbAnimation(getID(PBMoves,:FLAMETHROWER),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Hotoke's technique!",battle.battlers[0].name))
+                    end
+                    battle.scene.appearBar
+                    pbMessage("And now... Another new technique...")
+                    pbMessage("Akui Admin Technique... Nensho Style... Crimson Vortex...")
+                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                    battle.battlers[0].effects[PBEffects::Trapping] = 5
+                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                    battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                    battle.scene.appearBar
                   end
-                  battle.scene.appearBar
-                  pbMessage("And now... Another new technique...")
-                  pbMessage("Akui Admin Technique... Nensho Style... Crimson Vortex...")
-                  battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
-                  battle.scene.disappearBar
-                  battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
-                  battle.battlers[0].effects[PBEffects::Trapping] = 5
-                  battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                  battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
-                  battle.scene.appearBar
                   pbMessage("You'll never win...")
                   pbMessage("Never...")
                   battle.pbCommonAnimation("Sandstorm",nil,nil)
                   battle.scene.disappearBar
                   battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
-                  battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                  if $PokemonSystem.enemyTechniques==0
+                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                  end
                   battle.scene.pbHideOpponent
                 }
       HotokeRematchLast = Proc.new{|battle|
@@ -2611,29 +3029,35 @@ module DialogueModule
                     pbMessage("No...")
                     pbMessage("No! This can't happen!")
                     pbMessage("Get away from me!!")
-                    pbMessage("Akui Admin Technique, Nensho Style! Crimson Vortex!")
-                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
-                    battle.battlers[0].effects[PBEffects::Trapping] = 5
-                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                    battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
-                    battle.scene.appearBar
-                    pbMessage("You can't win...")
-                    pbMessage("You can never win!")
-                    pbMessage("Akui Clan Technique! Shock Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Hotoke's kunai!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Admin Technique, Nensho Style! Crimson Vortex!")
+                      battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                      battle.battlers[0].effects[PBEffects::Trapping] = 5
+                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                      battle.scene.appearBar
+                      pbMessage("You can't win...")
+                      pbMessage("You can never win!")
+                      pbMessage("Akui Clan Technique! Shock Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Hotoke's kunai!",battle.battlers[0].name))
+                      end
                     end
                     battle.pbCommonAnimation("Sandstorm",nil,nil)
                     battle.scene.disappearBar
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Sandstorm,true,false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    else
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    end
                     battle.scene.pbHideOpponent
                   }
       KuroIntro = Proc.new{|battle|
@@ -2641,18 +3065,20 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("I'm so looking forward to picking you apart, stupid Kenshi!")
                     pbMessage("Your obsession with honor and dignity will be your downfall!")
-                    pbMessage("Here, let me show you the benefits ignoring the Bushido code!")
-                    pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Here, let me show you the benefits ignoring the Bushido code!")
+                      pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
+                      pbMessage("Hahaha! Are you having fun yet?!")
+                      pbMessage("\\shBecause I sure am!")
                     end
-                    battle.scene.appearBar
-                    pbMessage("Hahaha! Are you having fun yet?!")
-                    pbMessage("\\shBecause I sure am!")
                     pbMessage("Now come on, show me what you're made of!")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
@@ -2662,23 +3088,29 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("I'm growing tired of playing with you, Kenshi.")
                     pbMessage("I think it's about time I started taking this battle seriously!")
-                    pbMessage("Akui Clan Technique! Berserker Dance!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:CLANGOROUSSOUL),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
-                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
-                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
-                    battle.scene.appearBar
-                    pbMessage("You can't possibly hope to defeat me!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique! Berserker Dance!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:CLANGOROUSSOUL),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                      battle.scene.appearBar
+                      pbMessage("You can't possibly hope to defeat me!")
+                    end
                     pbMessage("I am the Hound of Cruelty, the strongest of the Akui Admins!")
-                    pbMessage("Akui Clan Technique, Flame Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Kuro's Flame Kunai!")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("Akui Clan Technique, Flame Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Kuro's Flame Kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                      end
                     else
-                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
                     battle.scene.pbHideOpponent
                   }
@@ -2688,21 +3120,25 @@ module DialogueModule
                   pbMessage("\\shHow dare you?!")
                   pbMessage("Pawns of the Shogun need to be taught their place!")
                   pbMessage("And that place... is six feet underground!")
-                  pbMessage("Akui Clan Technique! Berserker Dance!")
-                  battle.scene.disappearBar
-                  battle.pbAnimation(getID(PBMoves,:CLANGOROUSSOUL),battle.battlers[0],battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
-                  battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
-                  battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
-                  battle.scene.appearBar
-                  pbMessage("Akui Clan Technique, Venom Kunai!")
-                  battle.scene.disappearBar
-                  battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
-                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was burned by Kuro's Venom Kunai!")
+                  if $PokemonSystem.enemyTechniques==0
+                    pbMessage("Akui Clan Technique! Berserker Dance!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:CLANGOROUSSOUL),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Venom Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,"Your Pokémon was burned by Kuro's Venom Kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    end
                   else
-                    battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    battle.scene.disappearBar
                   end
                   battle.scene.pbHideOpponent
                 }
@@ -2716,15 +3152,17 @@ module DialogueModule
                   battle.scene.disappearBar
                   battle.battlers[1].effects[PBEffects::AquaRing] = true
                   battle.pbDisplay(_INTL("Kuro surrounded {1} with a veil of water!",battle.battlers[1].name))
-                  battle.scene.appearBar
-                  pbMessage("And don't you dare forget about my signature move!")
-                  pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
-                  battle.scene.disappearBar
-                  battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
-                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
-                  else
-                    battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                  if $PokemonSystem.enemyTechniques==0
+                    battle.scene.appearBar
+                    pbMessage("And don't you dare forget about my signature move!")
+                    pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    end
                   end
                   battle.scene.appearBar
                   pbMessage("Hahaha! Now, isn't this fun?!")
@@ -2748,38 +3186,42 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.pbCommonAnimation("Rain",battle.battlers[0],nil)
                     battle.pbStartWeather(battle.battlers[1],PBWeather::Rain,true,false)
-                    battle.scene.appearBar
-                    pbMessage("Now, how should I torture you next?")
-                    pbMessage("Oh! I know! How about some more kunai?")
-                    pbMessage("Akui Clan Technique, Shock Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
-                    battle.scene.appearBar
-                    pbMessage("Actually... No, I don't think that's good enough!")
-                    pbMessage("How about I burn your Pokémon instead?")
-                    pbMessage("Akui Clan Technique, Flame Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
-                    battle.scene.appearBar
-                    pbMessage("You know, I still don't think this is good enough...")
-                    pbMessage("Hmm...")
-                    pbMessage("How about I just go back to using my favorite kunai?")
-                    pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
-                    battle.scene.appearBar
-                    pbMessage("Hahahahaha! Thank you for being such an obedient little puppet!")
-                    pbMessage("You really are my favorite plaything!")
-                    pbMessage("Akui Clan Technique! Berserker Dance!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
-                    battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
-                    battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.scene.appearBar
+                      pbMessage("Now, how should I torture you next?")
+                      pbMessage("Oh! I know! How about some more kunai?")
+                      pbMessage("Akui Clan Technique, Shock Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SHOCKKUNAI),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,nil)
+                      battle.scene.appearBar
+                      pbMessage("Actually... No, I don't think that's good enough!")
+                      pbMessage("How about I burn your Pokémon instead?")
+                      pbMessage("Akui Clan Technique, Flame Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      battle.scene.appearBar
+                      pbMessage("You know, I still don't think this is good enough...")
+                      pbMessage("Hmm...")
+                      pbMessage("How about I just go back to using my favorite kunai?")
+                      pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
+                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(2,4),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
+                      battle.scene.appearBar
+                      pbMessage("Hahahahaha! Thank you for being such an obedient little puppet!")
+                      pbMessage("You really are my favorite plaything!")
+                      pbMessage("Akui Clan Technique! Berserker Dance!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[1])
+                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                    else
+                      battle.scene.disappearBar
+                    end
                     battle.scene.pbHideOpponent
                   }
       KuroRematchLast = Proc.new{|battle|
@@ -2794,23 +3236,25 @@ module DialogueModule
                     battle.scene.disappearBar
                     battle.battlers[1].effects[PBEffects::AquaRing] = true
                     battle.pbDisplay(_INTL("Kuro surrounded {1} with a veil of water!",battle.battlers[1].name))
-                    battle.scene.appearBar
-                    pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
-                    battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
-                    battle.battlers[0].effects[PBEffects::Trapping] = 6
-                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                    battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].pbThis(true)))
-                    battle.scene.appearBar
-                    pbMessage("It's time for you to go to sleep forever!")
-                    pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(4,5),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.scene.appearBar
+                      pbMessage("Katana of Water, Shimizu Style! Raging Whirlpool!")
+                      battle.pbAnimation(getID(PBMoves,:WHIRLPOOL),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:WHIRLPOOL)
+                      battle.battlers[0].effects[PBEffects::Trapping] = 6
+                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("{1} was trapped in a whirlpool!",battle.battlers[0].pbThis(true)))
+                      battle.scene.appearBar
+                      pbMessage("It's time for you to go to sleep forever!")
+                      pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:SLEEPKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(4,5),"Your Pokémon was put to sleep by Kuro's Tranquilizer Kunai!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Kuro's kunai!",battle.battlers[0].name))
+                      end
                     end
                     battle.scene.appearBar
                     pbMessage("You don't stand a chance against me!")
@@ -2824,24 +3268,29 @@ module DialogueModule
                   pbMessage("\\xn[Hattori]\\rYou and Ryo will never be able stop me.")
                   pbMessage("\\xn[Hattori]\\rYou see, I'm not afraid of the Katana of Light at all...")
                   pbMessage("\\xn[Hattori]\\rIt's you who should fear my Katana of Shadows!")
-                  pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Nightmare Void!")
-                  battle.pbAnimation(getID(PBMoves,:DARKVOID),battle.battlers[1],battle.battlers[0])
-                  battle.scene.disappearBar
-                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
-                    battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(5,6),"Your Pokémon was put into a deep sleep by the Katana of Shadows!")
-                    battle.battlers[0].effects[PBEffects::Nightmare] = true
-                    battle.pbDisplay(_INTL("{1} began having a nightmare!",battle.battlers[0].name))
+                  if $PokemonSystem.enemyTechniques==0
+                    pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Nightmare Void!")
+                    battle.pbAnimation(getID(PBMoves,:DARKVOID),battle.battlers[1],battle.battlers[0])
+                    battle.scene.disappearBar
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(5,6),"Your Pokémon was put into a deep sleep by the Katana of Shadows!")
+                      battle.battlers[0].effects[PBEffects::Nightmare] = true
+                      battle.pbDisplay(_INTL("{1} began having a nightmare!",battle.battlers[0].name))
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Hattori's katana technique!",battle.battlers[0].name))
+                    end
+                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Hattori]\\rFoolish child, witness my true power! You'll never stop our plans!")
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                   else
-                    battle.pbDisplay(_INTL("{1} resisted Hattori's katana technique!",battle.battlers[0].name))
+                    battle.scene.disappearBar
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
                   end
-                  battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                  battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!",battle.battlers[0].pbThis(true)))
-                  battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
-                  battle.scene.appearBar
-                  pbMessage("\\xn[Hattori]\\rFoolish child, witness my true power! You'll never stop our plans!")
-                  battle.scene.disappearBar
-                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                   battle.scene.pbHideOpponent
                 }
     Hattori2 = Proc.new{|battle|
@@ -2855,19 +3304,23 @@ module DialogueModule
                   battle.scene.disappearBar
                   battle.field.effects[PBEffects::WonderRoom] = 6
                   battle.pbDisplay(_INTL("Hattori created a bizarre area in which the Defense and Sp. Def stats are swapped!"))
-                  battle.scene.appearBar
-                  pbMessage("\\xn[Hattori]\\rWeaklings like you and Ryo...")
-                  pbMessage("\\xn[Hattori]\\rYou have no place in my new world!")
-                  pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Venom Kunai!")
-                  battle.scene.disappearBar
-                  battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
-                  if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
-                    battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
+                  if $PokemonSystem.enemyTechniques==0
+                    battle.scene.appearBar
+                    pbMessage("\\xn[Hattori]\\rWeaklings like you and Ryo...")
+                    pbMessage("\\xn[Hattori]\\rYou have no place in my new world!")
+                    pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Venom Kunai!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:POISONKUNAI),battle.battlers[0],battle.battlers[1])
+                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::POISON,battle.battlers[1],false)
+                      battle.battlers[0].pbInflictStatus(PBStatuses::POISON,1,nil)
+                    else
+                      battle.pbDisplay(_INTL("{1} resisted Hattori's kunai!",battle.battlers[0].name))
+                    end
+                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                   else
-                    battle.pbDisplay(_INTL("{1} resisted Hattori's kunai!",battle.battlers[0].name))
+                    battle.scene.disappearBar
                   end
-                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                   battle.scene.pbHideOpponent
                 }
       Hattori3 = Proc.new{|battle|
@@ -2890,17 +3343,21 @@ module DialogueModule
                     battle.scene.appearBar
                     pbMessage("\\xn[Hattori]\\rI cannot stand to look at you any longer...")
                     pbMessage("\\xn[Hattori]\\rBegone, \\PN!")
-                    pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Flame Kunai!")
-                    battle.scene.disappearBar
-                    battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Flame Kunai!")
+                      battle.scene.disappearBar
+                      battle.pbAnimation(getID(PBMoves,:BURNKUNAI),battle.battlers[0],battle.battlers[1])
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,nil)
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Hattori's kunai!",battle.battlers[0].name))
+                      end
+                      battle.scene.pbHideOpponent
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                     else
-                      battle.pbDisplay(_INTL("{1} resisted Hattori's kunai!",battle.battlers[0].name))
+                      battle.scene.disappearBar
                     end
-                    battle.scene.pbHideOpponent
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
                     battle.scene.pbHideOpponent
                   }
         HattoriLast = Proc.new{|battle|
@@ -2911,7 +3368,7 @@ module DialogueModule
                       battle.pbAnimation(getID(PBMoves,:HAZE),battle.battlers[1],battle.battlers[0])
                       battle.eachBattler { |b| b.pbResetStatStages }
                       battle.pbDisplay(_INTL("All stat changes were eliminated!"))
-                      pbWait(14)
+                      pbWait(4)
                       pbBGMFade(3)
                       pbMessage("\\xn[Hattori]\\rYou've made a grave mistake now, my child.")
                       pbMessage("\\xn[Hattori]\\rYou cannot even begin to comprehend the power of my Shadow Lugia!")
@@ -2921,16 +3378,18 @@ module DialogueModule
                       pbSEPlay("249Cry")
                       pbWait(26)
                       pbMessage("\\xn[Hattori]\\rThe codes of Bushido will be dissolved after today!")
-                      pbMessage("\\xn[Hattori]\\rAkui Secret Technique! Hanatsium Crystal Exposure!")
-                      battle.scene.disappearBar
-                      battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
-                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
-                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
-                      battle.scene.appearBar
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("\\xn[Hattori]\\rAkui Secret Technique! Hanatsium Crystal Exposure!")
+                        battle.scene.disappearBar
+                        battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                        battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                        battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                        battle.scene.appearBar
+                      end
                       pbMessage("\\xn[Hattori]\\rYour journey ends here, my child!")
-                      pbMessage("\\xn[Hattori]\\rGoodbye,\\PN!")
+                      pbMessage("\\xn[Hattori]\\rGoodbye, \\PN!")
                       battle.scene.disappearBar
                       battle.scene.pbHideOpponent
                     }
@@ -2939,16 +3398,20 @@ module DialogueModule
                   battle.scene.appearBar
                   battle.scene.pbShowOpponent(0)
                   pbMessage("Kenshi scum like you are worth NOTHING. I'll take you out here and now.")
-                  pbMessage("It's time to unleash my full power.")
-                  battle.scene.disappearBar
-                  battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
-                  battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!",battle.battlers[0].pbThis(true)))
-                  battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
-                  battle.scene.appearBar
-                  pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
-                  battle.scene.disappearBar
-                  battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
-                  battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                  if $PokemonSystem.enemyTechniques==0
+                    pbMessage("It's time to unleash my full power.")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:SPIKES),battle.battlers[1],battle.battlers[0])
+                    battle.pbDisplay(_INTL("Spikes were scattered all around the battlefield!",battle.battlers[0].pbThis(true)))
+                    battle.battlers[1].pbOpposingSide.effects[PBEffects::Spikes] = 3
+                    battle.scene.appearBar
+                    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!!")
+                    battle.scene.disappearBar
+                    battle.pbAnimation(getID(PBMoves,:AGILITY),battle.battlers[0],battle.battlers[1])
+                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1])
+                  else
+                    battle.scene.disappearBar
+                  end
                   battle.scene.pbHideOpponent
                 }
     KatanaAwakens = Proc.new{|battle|
@@ -3020,7 +3483,9 @@ module DialogueModule
                       pbMessage("The correct answer is the \"Code of Honor,\" which all Kenshi are expected to follow.")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[0])
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[0])
+                      end
                     end
                   }
 
@@ -3042,7 +3507,9 @@ module DialogueModule
                       pbMessage("A Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[0])
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[0])
+                      end
                     end
                   }
 
@@ -3065,13 +3532,17 @@ module DialogueModule
                       pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
+                      end
                     else
                       pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
                       pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
                       battle.scene.pbHideOpponent
                       battle.scene.disappearBar
-                      battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.battlers[0].pbLowerStatStage(PBStats::SPEED,1,battle.battlers[0])
+                      end
                     end
                   }
       Sukiro4 = Proc.new{|battle|
@@ -3091,7 +3562,9 @@ module DialogueModule
                        pbMessage("Shimizu Clan members have a water affinity, so Electric would be the correct answer.")
                        battle.scene.pbHideOpponent
                        battle.scene.disappearBar
-                       battle.battlers[0].pbLowerStatStage(PBStats::SPATK,1,battle.battlers[0])
+                       if $PokemonSystem.enemyTechniques==0
+                         battle.battlers[0].pbLowerStatStage(PBStats::SPATK,1,battle.battlers[0])
+                       end
                      end
                    }
        Sukiro5 = Proc.new{|battle|
@@ -3116,29 +3589,39 @@ module DialogueModule
                         pbMessage("It is our purpose as righteous Kenshi to bring them to justice!")
                         battle.scene.pbHideOpponent
                         battle.scene.disappearBar
-                        battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[0])
+                        if $PokemonSystem.enemyTechniques==0
+                          battle.battlers[0].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[0])
+                        end
                       end
                     }
        Lugia = Proc.new{|battle|
                       battle.scene.appearBar
                       pbMessage("Lugia's soul is completely corrupted! It's driven only by hatred!")
-                      battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
-                      battle.scene.disappearBar
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
-                      battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
-                      battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.pbAnimation(getID(PBMoves,:DRAGONDANCE),battle.battlers[1],battle.battlers[1])
+                        battle.scene.disappearBar
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                        battle.battlers[1].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                        battle.battlers[1].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                      else
+                        battle.scene.disappearBar
+                      end
                       battle.scene.pbHideOpponent
                      }
        Hooh = Proc.new{|battle|
                       battle.scene.appearBar
                       pbMessage("Ho-Oh's pure soul blazes forward!")
-                      battle.pbAnimation(getID(PBMoves,:FOCUSENERGY),battle.battlers[1],battle.battlers[1])
-                      battle.scene.disappearBar
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.pbAnimation(getID(PBMoves,:FOCUSENERGY),battle.battlers[1],battle.battlers[1])
+                        battle.scene.disappearBar
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,1,battle.battlers[1],false)
+                      else
+                        battle.scene.disappearBar
+                      end
                       battle.scene.pbHideOpponent
                      }
        Celebi = Proc.new{|battle|
@@ -3146,9 +3629,13 @@ module DialogueModule
                       pbMessage("Celebi's pure soul grants it resolve!")
                       battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[1],battle.battlers[1])
                       battle.scene.disappearBar
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      else
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1])
+                      end
                       battle.scene.pbHideOpponent
                      }
         Virizion = Proc.new{|battle|
@@ -3189,22 +3676,30 @@ module DialogueModule
                        pbMessage("Shadow Dragonite is on a rampage!")
                        battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
                        battle.scene.disappearBar
-                       battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                       battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                       battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                       if $PokemonSystem.enemyTechniques==0
+                         battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                         battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                         battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                       else
+                         battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                       end
                        battle.scene.pbHideOpponent
                       }
         Darkrai = Proc.new{|battle|
                        battle.scene.appearBar
                        pbMessage("Darkrai's nightmare aura engulfs the battlefield!")
-                       battle.pbAnimation(getID(PBMoves,:NIGHTMAREVOID),battle.battlers[1],battle.battlers[1])
-                       battle.scene.disappearBar
-                       if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
-                         battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(5,6),"Your Pokémon was put into a deep sleep by the Katana of Shadows!")
-                         battle.battlers[0].effects[PBEffects::Nightmare] = true
-                         battle.pbDisplay(_INTL("{1} began having a nightmare!",battle.battlers[0].name))
+                       if $PokemonSystem.enemyTechniques==0
+                         battle.pbAnimation(getID(PBMoves,:NIGHTMAREVOID),battle.battlers[1],battle.battlers[1])
+                         battle.scene.disappearBar
+                         if battle.battlers[0].pbCanInflictStatus?(PBStatuses::SLEEP,battle.battlers[1],false)
+                           battle.battlers[0].pbInflictStatus(PBStatuses::SLEEP,rand(5,6),"Your Pokémon was put into a deep sleep by the Katana of Shadows!")
+                           battle.battlers[0].effects[PBEffects::Nightmare] = true
+                           battle.pbDisplay(_INTL("{1} began having a nightmare!",battle.battlers[0].name))
+                         else
+                           battle.pbDisplay(_INTL("{1} resisted Darkrai's aura!",battle.battlers[0].name))
+                         end
                        else
-                         battle.pbDisplay(_INTL("{1} resisted Darkrai's aura!",battle.battlers[0].name))
+                         battle.scene.disappearBar
                        end
                       }
         Cresselia = Proc.new{|battle|
@@ -3219,21 +3714,25 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[Cam]\\bI'm excited to face you in battle!")
-                    pbMessage("\\xn[Cam]\\bNow, let me show you my signature move!")
-                    pbMessage("\\xn[Cam]\\bThundaga Katana! Lightning Stream!")
-                    battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                      battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
-                    else
-                      battle.pbDisplay(_INTL("{1} resisted Cam's Thundaga technique!",battle.battlers[0].name))
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Cam]\\bNow, let me show you my signature move!")
+                      pbMessage("\\xn[Cam]\\bThundaga Katana! Lightning Stream!")
+                      battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
+                      else
+                        battle.pbDisplay(_INTL("{1} resisted Cam's Thundaga technique!",battle.battlers[0].name))
+                      end
+                      battle.scene.appearBar
                     end
-                    battle.scene.appearBar
                     pbMessage("\\xn[Cam]\\bI'm going to go all out!")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    end
                     battle.scene.pbHideOpponent
                   }
           CamLast = Proc.new{|battle|
@@ -3247,22 +3746,26 @@ module DialogueModule
                       battle.scene.appearBar
                       pbMessage("\\xn[Cam]\\bDon't get too comfortable though, \\PN!")
                       pbMessage("\\xn[Cam]\\bI'm still your opponent right now!")
-                      pbMessage("\\xn[Cam]\\bThundaga Katana! Lightning Stream!")
-                      battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
-                      else
-                        battle.pbDisplay(_INTL("{1} resisted Cam's Thundaga technique!",battle.battlers[0].name))
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("\\xn[Cam]\\bThundaga Katana! Lightning Stream!")
+                        battle.pbAnimation(getID(PBMoves,:THUNDERBOLT),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                          battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by the quality of Thundaga's stream!")
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted Cam's Thundaga technique!",battle.battlers[0].name))
+                        end
+                        battle.scene.appearBar
                       end
-                      battle.scene.appearBar
                       pbMessage("\\xn[Cam]\\bThundaga Katana! Electric Terrain!")
                       battle.pbAnimation(getID(PBMoves,:ELECTRICTERRAIN),battle.battlers[1],battle.battlers[1])
                       battle.scene.disappearBar
                       battle.pbStartTerrain(battle.battlers[1],PBBattleTerrains::Electric)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[1],false)
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      end
                       battle.scene.appearBar
                       pbMessage("\\xn[Cam]\\bLet's goooooo!")
                       pbMessage("\\sh\\xn[Cam]\\bBUSHIDO BOIS!")
@@ -3274,17 +3777,19 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[Lux]\\bGet ready, \\PN!")
                     pbMessage("\\xn[Lux]\\bI don't plan on going easy on you.")
-                    pbMessage("\\xn[Lux]\\bKatana of Demons, First Style! Berserk Inferno!")
-                    battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
-                    battle.battlers[0].effects[PBEffects::Trapping] = 5
-                    battle.battlers[0].effects[PBEffects::TrappingUser] = 1
-                    battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
-                    battle.scene.appearBar
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Lux]\\bKatana of Demons, First Style! Berserk Inferno!")
+                      battle.pbAnimation(getID(PBMoves,:FIRESPIN),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].effects[PBEffects::TrappingMove] = getID(PBMoves,:FIRESPIN)
+                      battle.battlers[0].effects[PBEffects::Trapping] = 5
+                      battle.battlers[0].effects[PBEffects::TrappingUser] = 1
+                      battle.pbDisplay(_INTL("{1} was trapped in a fiery vortex!",battle.battlers[0].pbThis(true)))
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      battle.scene.appearBar
+                    end
                     pbMessage("\\xn[Lux]\\bI'm always aiming for the top! And you're gonna have to go down.")
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
@@ -3293,17 +3798,21 @@ module DialogueModule
                     battle.scene.appearBar
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[Lux]\\bI must admit, you've taken me by surprise, \\PN.")
-                    pbMessage("\\xn[Lux]\\bLets' see how you deal with this!")
-                    pbMessage("\\xn[Lux]\\bKatana of Demons, Lux's Signature Style! Devil's Wrath!")
-                    battle.pbAnimation(getID(PBMoves,:SCARYFACE),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.battlers[0].pbLowerStatStage(PBStats::SPEED,3,battle.battlers[0])
-                    battle.scene.appearBar
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Lux]\\bLets' see how you deal with this!")
+                      pbMessage("\\xn[Lux]\\bKatana of Demons, Lux's Signature Style! Devil's Wrath!")
+                      battle.pbAnimation(getID(PBMoves,:SCARYFACE),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.battlers[0].pbLowerStatStage(PBStats::SPEED,3,battle.battlers[0])
+                      battle.scene.appearBar
+                    end
                     pbMessage("\\xn[Lux]\\bDon't get too cocky. I'm going to win this, of course.")
                     battle.scene.disappearBar
-                    battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    if $PokemonSystem.enemyTechniques==0
+                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                    end
                     battle.scene.pbHideOpponent
                   }
         TristanIntro = Proc.new{|battle|
@@ -3311,17 +3820,19 @@ module DialogueModule
                     battle.scene.pbShowOpponent(0)
                     pbMessage("\\xn[Tristan]\\bYou're in for a rude awakening if you think it's going to be easy, \\PN.")
                     pbMessage("\\xn[Tristan]\\bLet's dance!")
-                    pbMessage("\\xn[Tristan]\\bKatana of the Abyss, Signature Style! Maniacal Glare!")
-                    battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
-                    battle.scene.disappearBar
-                    battle.pbDisplay(_INTL("Tristan laid a curse on {1}!",battle.battlers[0].name))
-                    battle.battlers[0].effects[PBEffects::Curse] = true
-                    battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
-                    battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
-                    battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
-                    battle.scene.appearBar
-                    pbMessage("\\xn[Tristan]\\bHaha! How do you like that?")
+                    if $PokemonSystem.enemyTechniques==0
+                      pbMessage("\\xn[Tristan]\\bKatana of the Abyss, Signature Style! Maniacal Glare!")
+                      battle.pbAnimation(getID(PBMoves,:MEANLOOK),battle.battlers[1],battle.battlers[0])
+                      battle.scene.disappearBar
+                      battle.pbDisplay(_INTL("Tristan laid a curse on {1}!",battle.battlers[0].name))
+                      battle.battlers[0].effects[PBEffects::Curse] = true
+                      battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
+                      battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[1])
+                      battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[1],false)
+                      battle.scene.appearBar
+                      pbMessage("\\xn[Tristan]\\bHaha! How do you like that?")
+                    end
                     battle.scene.disappearBar
                     battle.scene.pbHideOpponent
                   }
@@ -3330,18 +3841,20 @@ module DialogueModule
                       battle.scene.pbShowOpponent(0)
                       pbMessage("\\xn[Tristan]\\bYou've tested the limits of my strength so far...")
                       pbMessage("\\xn[Tristan]\\bBut now Steelix and I are going to teach you why they call me Thunderfist!")
-                      pbMessage("\\xn[Tristan]\\bFists of Tristan, Signature Style! Thunder Fist!")
-                      battle.pbAnimation(getID(PBMoves,:THUNDERPUNCH),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
-                        battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Tristan's epic punch!")
-                      else
-                        battle.pbDisplay(_INTL("{1} resisted Tristan's Thunderfist!",battle.battlers[0].name))
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("\\xn[Tristan]\\bFists of Tristan, Signature Style! Thunder Fist!")
+                        battle.pbAnimation(getID(PBMoves,:THUNDERPUNCH),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::PARALYSIS,battle.battlers[1],false)
+                          battle.battlers[0].pbInflictStatus(PBStatuses::PARALYSIS,1,"Your Pokémon was paralyzed by Tristan's epic punch!")
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted Tristan's Thunderfist!",battle.battlers[0].name))
+                        end
+                        battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,3,battle.battlers[0])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                        battle.scene.appearBar
                       end
-                      battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,3,battle.battlers[0])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
-                      battle.scene.appearBar
                       pbMessage("\\xn[Tristan]\\bCome at me, \\PN!")
                       battle.scene.disappearBar
                       battle.scene.pbHideOpponent
@@ -3351,19 +3864,23 @@ module DialogueModule
                         battle.scene.pbShowOpponent(0)
                         pbMessage("\\xn[Haunted]\\bI've been waiting for this battle with you, \\PN!")
                         pbMessage("\\xn[Haunted]\\bNow, let me show you why they call me \"Haunted\" Art Studio!")
-                        pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Terrifying Stare!")
-                        battle.pbAnimation(getID(PBMoves,:SNARL),battle.battlers[1],battle.battlers[0])
-                        battle.scene.disappearBar
-                        battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
-                        battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
-                        battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
-                        battle.battlers[0].effects[PBEffects::MeanLook] = battle.battlers[1].index
-                        battle.pbDisplay(_INTL("{1} can no longer escape!",battle.battlers[0].name))
-                        battle.scene.appearBar
-                        pbMessage("\\xn[Haunted]\\bHahahaha! You should have seen your face!")
-                        battle.scene.disappearBar
-                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                        if $PokemonSystem.enemyTechniques==0
+                          pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Terrifying Stare!")
+                          battle.pbAnimation(getID(PBMoves,:SNARL),battle.battlers[1],battle.battlers[0])
+                          battle.scene.disappearBar
+                          battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
+                          battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
+                          battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                          battle.battlers[0].effects[PBEffects::MeanLook] = battle.battlers[1].index
+                          battle.pbDisplay(_INTL("{1} can no longer escape!",battle.battlers[0].name))
+                          battle.scene.appearBar
+                          pbMessage("\\xn[Haunted]\\bHahahaha! You should have seen your face!")
+                          battle.scene.disappearBar
+                          battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                          battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                        else
+                          battle.scene.disappearBar
+                        end
                         battle.scene.pbHideOpponent
                       }
           HauntedLast = Proc.new{|battle|
@@ -3374,26 +3891,32 @@ module DialogueModule
                       pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Terrifying Stare!")
                       battle.pbAnimation(getID(PBMoves,:SNARL),battle.battlers[1],battle.battlers[0])
                       battle.scene.disappearBar
-                      battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
-                      battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
-                      battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.battlers[0].pbLowerStatStage(PBStats::SPEED,2,battle.battlers[0])
+                        battle.battlers[0].pbLowerStatStage(PBStats::DEFENSE,2,battle.battlers[0],false)
+                        battle.battlers[0].pbLowerStatStage(PBStats::SPDEF,2,battle.battlers[0],false)
+                      end
                       battle.battlers[0].effects[PBEffects::MeanLook] = battle.battlers[1].index
                       battle.pbDisplay(_INTL("{1} can no longer escape!",battle.battlers[0].name))
                       battle.scene.appearBar
-                      pbMessage("\\xn[Haunted]\\bAnd that's not all, \\PN! Far from it!")
-                      pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Spirit Flames!")
-                      battle.pbAnimation(getID(PBMoves,:WILLOWISP),battle.battlers[1],battle.battlers[0])
-                      battle.scene.disappearBar
-                      if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
-                        battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Haunted's spirit flames!")
-                      else
-                        battle.pbDisplay(_INTL("{1} resisted Haunted's Spirit Flames!",battle.battlers[0].name))
+                      if $PokemonSystem.enemyTechniques==0
+                        pbMessage("\\xn[Haunted]\\bAnd that's not all, \\PN! Far from it!")
+                        pbMessage("\\xn[Haunted]\\bKatana of Fear, Signature Style! Spirit Flames!")
+                        battle.pbAnimation(getID(PBMoves,:WILLOWISP),battle.battlers[1],battle.battlers[0])
+                        battle.scene.disappearBar
+                        if battle.battlers[0].pbCanInflictStatus?(PBStatuses::BURN,battle.battlers[1],false)
+                          battle.battlers[0].pbInflictStatus(PBStatuses::BURN,1,"Your Pokémon was burned by Haunted's spirit flames!")
+                        else
+                          battle.pbDisplay(_INTL("{1} resisted Haunted's Spirit Flames!",battle.battlers[0].name))
+                        end
+                        battle.scene.appearBar
                       end
-                      battle.scene.appearBar
                       pbMessage("\\xn[Haunted]\\bCan you handle my haunting? Let's find out!")
                       battle.scene.disappearBar
-                      battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
-                      battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      if $PokemonSystem.enemyTechniques==0
+                        battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,2,battle.battlers[1])
+                        battle.battlers[1].pbRaiseStatStage(PBStats::SPEED,2,battle.battlers[1],false)
+                      end
                       battle.scene.pbHideOpponent
                     }
 # Post-Cresselia Double BATTLE
@@ -3407,21 +3930,28 @@ module DialogueModule
                 battle.scene.pbHideOpponent
                 battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
                 battle.pbDisplay(_INTL("Ryo created a wall of light in front of {1}!",battle.battlers[1].pbTeam))
-                battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
-                battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
-                battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
-                battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                if $PokemonSystem.enemyTechniques==0
+                  battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                  battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,3,battle.battlers[1])
+                  battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,3,battle.battlers[1],false)
+                end
                 battle.scene.appearBar
                 battle.scene.pbShowOpponent(1)
                 pbMessage("\\xn[Kayoko]\\rI can't lose now! This is my first step to  being a true Kenshi!")
                 pbMessage("\\xn[Kayoko]\\rSignature Technique! Focused Mind!")
                 battle.pbAnimation(getID(PBMoves,:CALMMIND),battle.battlers[3],battle.battlers[3])
                 battle.scene.disappearBar
+                if $PokemonSystem.enemyTechniques==0
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[3])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+                  battle.battlers[3].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[3])
+                  battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+                else
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[3])
+                  battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[3])
+                end
                 battle.scene.pbHideOpponent(1)
-                battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[3])
-                battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
-                battle.battlers[3].pbRaiseStatStage(PBStats::SPATK,2,battle.battlers[3])
-                battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
             }
 
   PostCress2 = Proc.new{|battle|
@@ -3432,8 +3962,13 @@ module DialogueModule
                 battle.pbAnimation(getID(PBMoves,:FLASH),battle.battlers[1],battle.battlers[0])
                 battle.scene.disappearBar
                 battle.scene.pbHideOpponent
-                battle.battlers[0].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[1])
-                battle.battlers[2].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[1])
+                if $PokemonSystem.enemyTechniques==0
+                  battle.battlers[0].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[1])
+                  battle.battlers[2].pbLowerStatStage(PBStats::ACCURACY,2,battle.battlers[1])
+                else
+                  battle.battlers[0].pbLowerStatStage(PBStats::ACCURACY,1,battle.battlers[1])
+                  battle.battlers[2].pbLowerStatStage(PBStats::ACCURACY,1,battle.battlers[1])
+                end
             }
 
   PostCress3 = Proc.new{|battle|
@@ -3446,10 +3981,12 @@ module DialogueModule
                 battle.pbDisplay(_INTL("Kayoko created a wall of light in front of {1}!",battle.battlers[3].name))
                 battle.scene.disappearBar
                 battle.scene.pbHideOpponent(1)
-                battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
-                battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
-                battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
-                battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+                if $PokemonSystem.enemyTechniques==0
+                  battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+                  battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,2,battle.battlers[3])
+                  battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,2,battle.battlers[3],false)
+                end
             }
 
   PostCressFinal = Proc.new{|battle|
@@ -3463,10 +4000,15 @@ module DialogueModule
                 battle.scene.disappearBar
                 battle.scene.pbHideOpponent(1)
                 battle.pbAnimation(getID(PBMoves,:WORKUP),battle.battlers[1],battle.battlers[1])
-                battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
-                battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
-                battle.battlers[3].pbLowerStatStage(PBStats::DEFENSE,1,battle.battlers[1])
-                battle.battlers[3].pbLowerStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                if $PokemonSystem.enemyTechniques==0
+                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                  battle.battlers[3].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                  battle.battlers[3].pbLowerStatStage(PBStats::SPATK,1,battle.battlers[1],false)
+                else
+                  battle.battlers[1].pbRaiseStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                  battle.battlers[3].pbLowerStatStage(PBStats::ATTACK,1,battle.battlers[1])
+                end
                 battle.scene.appearBar
                 battle.scene.pbShowOpponent(0)
                 pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Radiant Shield!")
@@ -3474,10 +4016,17 @@ module DialogueModule
                 battle.scene.disappearBar
                 battle.battlers[1].pbOwnSide.effects[PBEffects::LightScreen] = 8
                 battle.pbDisplay(_INTL("Ryo created a strong wall of light in front of {1}!",battle.battlers[1].name))
-                battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,5,battle.battlers[1])
-                battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,5,battle.battlers[1],false)
-                battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,5,battle.battlers[1])
-                battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,5,battle.battlers[1],false)
+                if $PokemonSystem.enemyTechniques==0
+                  battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,5,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,5,battle.battlers[1],false)
+                  battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,5,battle.battlers[1])
+                  battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,5,battle.battlers[1],false)
+                else
+                  battle.battlers[1].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                  battle.battlers[1].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                  battle.battlers[3].pbRaiseStatStage(PBStats::DEFENSE,1,battle.battlers[1])
+                  battle.battlers[3].pbRaiseStatStage(PBStats::SPDEF,1,battle.battlers[1],false)
+                end
                 battle.scene.pbHideOpponent
             }
 # DONT DELETE THIS END
