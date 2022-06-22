@@ -762,6 +762,7 @@ class PokeBattle_Battle
   end
 
   def pbAnimation(move,user,targets,hitNum=0)
+    move = getID(PBMoves, move) if move.is_a?(Symbol)
     @scene.pbAnimation(move,user,targets,hitNum) if @showAnims
   end
 

@@ -16,7 +16,7 @@
 #                                                                              #
 # THIS IS ONLY AN OPTIONAL WAY OF INPUTTING BATTLE DIALOGUE,IT'S NOT NECESSARY #
 #==============================================================================#
-
+=begin
 #DON'T DELETE THIS LINE
 module DialogueModule
 
@@ -4031,3 +4031,4 @@ module DialogueModule
             }
 # DONT DELETE THIS END
 end
+=end

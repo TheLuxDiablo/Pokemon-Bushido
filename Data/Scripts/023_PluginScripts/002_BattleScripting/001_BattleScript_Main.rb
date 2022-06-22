@@ -1193,7 +1193,7 @@ module TrainerDialogue
     when 2
       turnStart= TrainerDialogue.get(param)
       scene.sprites["messageWindow"].text = ""
-      turnStart.call(battle)
+      turnStart.call(battle, scene, battle.battlers)
       TrainerDialogue.setDone(param)
       TrainerDialogue.setInstance(parameter)
       return true
@@ -1369,10 +1369,12 @@ class PokeBattle_Scene
   end
 
   def appearBar
+    return if @bar_shown
     pbAddSprite("topBar",Graphics.width,0,"Graphics/Battle animations/blackbar_top",@viewport) if !@sprites["topBar"]
     pbAddSprite("bottomBar",0,Graphics.height,"Graphics/Battle animations/blackbar_bottom",@viewport) if !@sprites["bottomBar"]
     unfadeAnim = BlackBarAppearAnimation.new(@sprites,@viewport,@battle.battlers.length)
     @animations.push(unfadeAnim)
+    @bar_shown = true
     loop do
       unfadeAnim.update
       pbUpdate
@@ -1382,8 +1384,10 @@ class PokeBattle_Scene
   end
 
   def disappearBar
+    return if !@bar_shown
     unfadeAnim = BlackBarDisappearAnimation.new(@sprites,@viewport,@battle.battlers.length)
     @animations.push(unfadeAnim)
+    @bar_shown = false
     loop do
       unfadeAnim.update
       pbUpdate
