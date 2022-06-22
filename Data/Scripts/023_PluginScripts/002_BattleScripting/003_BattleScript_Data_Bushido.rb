@@ -912,7 +912,7 @@ module DialogueModule
     scene.appearBar
     if strong_katanas?
       pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Misty Terrain!")
-      scene.disappearBar)
+      scene.disappearBar
       battle.pbStartTerrainEx(user, :Misty)
       scene.appearBar
       pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Signature Technique! Water Meditation!")
@@ -2956,7 +2956,7 @@ module DialogueModule
     pbMessage("\\xn[]\\bLet's see how you handle this!")
     pbMessage("\\xn[Ryo]\\bKatana of Illumination, Masayoshi Style! Blinding Radiance!")
     scene.disappearBar
-    stat = (strong_katanas? 2 : 1)
+    stat = (strong_katanas? ? 2 : 1)
     ret = target.pbLowerStatStageEx(:ACCURACY, stat, :FLASH, user, forced: true)
     battlers[2].pbLowerStatStageEx(:ACCURACY, stat, ret || :FLASH, user, forced: true)
     scene.pbHideOpponent

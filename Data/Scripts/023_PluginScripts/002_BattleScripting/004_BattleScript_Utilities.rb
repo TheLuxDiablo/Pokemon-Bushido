@@ -152,7 +152,7 @@ class PokeBattle_Battler
     elsif isConst?(move, PBMoves, :WRAP)
       msg = _INTL("{1} was wrapped by {2}!", pbThis ,user.pbThis(true))
     else
-      msg = _INTL("{1} can no longer escape!", pbThis))
+      msg = _INTL("{1} can no longer escape!", pbThis)
     end
     @battle.pbDisplay(msg)
     return true
