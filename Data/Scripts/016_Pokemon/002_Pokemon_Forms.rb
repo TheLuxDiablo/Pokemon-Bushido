@@ -98,7 +98,8 @@ module MultipleForms
   end
 
   def self.call(func,pkmn,*args)
-    sp = @@formSpecies[pkmn.species]
+    spec = (pkmn.is_a?(Numeric)) ? pkmn : pkmn.species
+    sp = @@formSpecies[spec]
     return nil if !sp || !sp[func]
     return sp[func].call(pkmn,*args)
   end

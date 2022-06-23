@@ -262,28 +262,6 @@ if !defined?(EliteBattle)
     return ret
   end
 
-  class PokemonPokedexInfo_Scene
-    def pbUpdateDummyPokemon
-      @species = @dexlist[@index][0]
-      @gender  = ($Trainer.formlastseen[@species][0] rescue 0)
-      @form    = ($Trainer.formlastseen[@species][1] rescue 0)
-      @sprites["infosprite"].setSpeciesBitmap(@species,(@gender==1),@form)
-      if @sprites["formfront"]
-        @sprites["formfront"].setSpeciesBitmap(@species,(@gender==1),@form)
-      end
-      if @sprites["formback"]
-        @sprites["formback"].setSpeciesBitmap(@species,(@gender==1),@form,false,false,true)
-        @sprites["formback"].x = 380
-        @sprites["formback"].y = 158
-        fSpecies = pbGetFSpeciesFromForm(@species,@form)
-        @sprites["formback"].zoom_x = 0.66 #(FRONT_SCALE/BACK_SCALE) if BACK_SCALE > FRONT_SCALE
-        @sprites["formback"].zoom_y = 0.66 #(FRONT_SCALE/BACK_SCALE) if BACK_SCALE > FRONT_SCALE
-      end
-      if @sprites["formicon"]
-        @sprites["formicon"].pbSetParams(@species,@gender,@form)
-      end
-    end
-  end
 
   class PokeBattle_Scene
     def pbCreateTrainerFrontSprite(idxTrainer,trainerType,numTrainers=1)

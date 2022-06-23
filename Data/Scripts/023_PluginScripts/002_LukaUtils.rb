@@ -1363,6 +1363,50 @@ def drawBitmapOutline(bitmap, color, r = 2)
   # disposes temp outline bitmap
   out.dispose
 end
+
+#-----------------------------------------------------------------------------
+#  draws outline on bitmap
+#-----------------------------------------------------------------------------
+def create_outline(bitmap, color, thickness = 2)
+  return false if !bitmap
+  # creates temp outline bmp
+  alpha = 1
+  bmp = Bitmap.new(bitmap.width + (thickness * 2), bitmap.height + (thickness * 2))
+  clone = bitmap.clone
+  clone_2 = bitmap.clone
+  clone_cl = Bitmap.new(bitmap.width, bitmap.height)
+  # get pixels from bitmap
+  pixels = clone_2.raw_data.unpack('I*')
+  pixels.length.times do |i|
+    # get RGBA values from 24 bit INT
+    b  =  pixels[i] & 255
+    g  = (pixels[i] >> 8) & 255
+    r  = (pixels[i] >> 16) & 255
+    pa = (pixels[i] >> 24) & 255
+    # proceed only if alpha > 0
+    if pa > 0
+      # calculate new RGB values
+      r = alpha * color.red + (1 - alpha) * r
+      g = alpha * color.green + (1 - alpha) * g
+      b = alpha * color.blue + (1 - alpha) * b
+      # convert RGBA to 24 bit INT
+      pixels[i] = pa.to_i << 24 | b.to_i << 16 | g.to_i << 8 | r.to_i
+    end
+  end
+  # pack data
+  clone_cl.raw_data = pixels.pack('I*')
+  [[thickness, 0], [thickness, thickness], [0, thickness],
+   [-thickness, thickness], [-thickness, 0], [-thickness, -thickness],
+   [0, -thickness], [thickness, -thickness]].each do |x, y|
+    bmp.blt(x + thickness, y + thickness, clone_cl, Rect.new(0, 0, clone_cl.width, clone_cl.height))
+  end
+  bmp.blt(thickness, thickness, clone, Rect.new(0, 0, clone.width, clone.height))
+  clone.dispose
+  clone_2.dispose
+  clone_cl.dispose
+  bitmap.dispose
+  return bmp
+end
 #===============================================================================
 #  MTS utility
 #===============================================================================

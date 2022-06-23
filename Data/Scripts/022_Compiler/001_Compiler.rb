@@ -973,6 +973,10 @@ class WordArray
   def _dump(_depth=100)
     return @a.pack("v*")
   end
+
+  def empty?; return @a.empty?; end
+
+  def any?; return @a.any? { |a| yield a }; end
 end
 
 

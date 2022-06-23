@@ -5,8 +5,8 @@ class Window_Pokedex < Window_DrawableCommand
     @selarrow     = AnimatedBitmap.new("Graphics/Pictures/Pokedex/cursor_list")
     @pokeballOwn  = AnimatedBitmap.new("Graphics/Pictures/Pokedex/icon_own")
     @pokeballSeen = AnimatedBitmap.new("Graphics/Pictures/Pokedex/icon_seen")
-    self.baseColor   = Color.new(96,96,96)
-    self.shadowColor = Color.new(208,208,208)
+    self.baseColor   = Color.new(0, 0, 0)
+    self.shadowColor = Color.new(198, 175, 104)
     self.windowskin  = nil
     self.rowHeight = 36
   end
@@ -383,8 +383,8 @@ class PokemonPokedex_Scene
   def pbRefresh
     overlay = @sprites["overlay"].bitmap
     overlay.clear
-    base   = Color.new(72,72,72)
-    shadow = Color.new(208,208,208)
+    base   = Color.new(0,0,0)
+    shadow = Color.new(198, 175, 104)
     iconspecies = @sprites["pokedex"].species
     iconspecies = 0 if !$Trainer.seen[iconspecies]
     # Write various bits of text
@@ -396,15 +396,15 @@ class PokemonPokedex_Scene
       end
     end
     textpos = [
-       [dexname,Graphics.width/2,2,2,Color.new(208,208,208),Color.new(32,32,32)]
+       [dexname,Graphics.width/2,2,2,Color.new(255,248,229),Color.new(40, 23, 0)]
     ]
     textpos.push([PBSpecies.getName(iconspecies),112,52,2,base,shadow]) if iconspecies>0
     if @searchResults
       textpos.push([_INTL("Search results"),112,308,2,base,shadow])
       textpos.push([@dexlist.length.to_s,112,340,2,base,shadow])
     else
-      textpos.push([$Trainer.pokedexSeen(pbGetPokedexRegion).to_s,162,308,1,Color.new(248,248,248),Color.new(40,56,64)])
-      textpos.push([$Trainer.pokedexOwned(pbGetPokedexRegion).to_s,162,355,1,Color.new(248,248,248),Color.new(40,56,64)])
+      textpos.push([$Trainer.pokedexSeen(pbGetPokedexRegion).to_s,162,308,1,Color.new(255,248,229),Color.new(70,53,1)])
+      textpos.push([$Trainer.pokedexOwned(pbGetPokedexRegion).to_s,162,355,1,Color.new(255,248,229),Color.new(70,53,1)])
     end
     # Draw all text
     pbDrawTextPositions(overlay,textpos)
