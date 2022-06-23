@@ -8,7 +8,7 @@
 #===============================================================================
 #
 # To this script works, put it above main. On script section PScreen_RegionMap,
-# add line 'drawRoamingPosition(mapindex)' before line 
+# add line 'drawRoamingPosition(mapindex)' before line
 # 'if playerpos && mapindex==playerpos[0]'. For each roaming pokémon icon, put
 # an image on "Graphics/Pictures/mapPokemonXXX.png" changing XXX for species
 # number, where "Graphics/Pictures/mapPokemon000.png" is the default one.
@@ -20,13 +20,13 @@ class PokemonRegionMap_Scene
     for roamPos in $PokemonGlobal.roamPosition
       roamingData = RoamingSpecies[roamPos[0]]
       active = $game_switches[roamingData[2]] && (
-        $PokemonGlobal.roamPokemon.size <= roamPos[0] || 
+        $PokemonGlobal.roamPokemon.size <= roamPos[0] ||
         $PokemonGlobal.roamPokemon[roamPos[0]]!=true
       )
       next if !active
       species=getID(PBSpecies,roamingData[0])
       next if !species || species<=0
-      pokepos = $game_map ? pbGetMetadata(roamPos[1],MetadataMapPosition) : nil 
+      pokepos = $game_map ? pbGetMetadata(roamPos[1],MetadataMapPosition) : nil
       next if mapindex!=pokepos[0]
       x = pokepos[1]
       y = pokepos[2]
@@ -40,7 +40,7 @@ class PokemonRegionMap_Scene
       )/2
     end
   end
-  
+
   def getRoamingIcon(species)
     return nil if !species
     fileName = sprintf("Graphics/Pictures/mapPokemon%03d", species)
@@ -52,3 +52,8 @@ class PokemonRegionMap_Scene
     return ret
   end
 end
+
+PluginManager.register({
+  :name => "Roaming Pokemon Icons in Map",
+  :credits => "FL"
+})

@@ -10,8 +10,8 @@ module Randomizer
   # list of species to exclude from the randomizer
   EXCLUSIONS_SPECIES = [
     :LUGIA, :HOOH, :COBALION, :TERRAKION, :VIRIZION, :ZERAORA, :LANDORUS,
-    :TORNADUS, :THUNDURUS, :CELEBI, :ZORUA, :ZOROARK, :DREEPY, :DRAKOLAK,
-    :DRAGAPULT, :MILCERY, :ALCREMIE
+    :TORNADUS, :THUNDURUS, :ENAMORUS, :CELEBI, :DREEPY, :DRAKOLAK, :DRAGAPULT,
+    :MILCERY, :ALCREMIE
   ]
 
   # list of items to exclude from the randomizer (Automatically excludes Key Items)

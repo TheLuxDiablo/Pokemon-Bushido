@@ -543,3 +543,8 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   end
   return ret
 end
+
+PluginManager.register({
+  :name => "Name Windows",
+  :credits => "Mr. Gela"
+})

@@ -56,7 +56,7 @@ class PokemonStorage
   def initialize(maxBoxes=NUM_STORAGE_BOXES,maxPokemon=30)
     @boxes = []
     for i in 0...maxBoxes
-      @boxes[i] = PokemonBox.new(_INTL("Box {1}",i+1),maxPokemon)
+      @boxes[i] = PokemonBox.new(_INTL("Island {1}",i+1),maxPokemon)
       @boxes[i].background = i%BASICWALLPAPERQTY
     end
     @currentBox = 0

@@ -254,7 +254,7 @@ def pbStartOver(*args)
     data = Nuzlocke.rules; data = [] if data.nil?
     if resume && !data.include?(:NOWHITEOUT)
       while pbAllFainted
-        pbMessage(_INTL("\\c[12]\\w[]\\wm\\l[3]All your Pokémon have fainted. But you still have Pokémon on Sukiro's Island with which you can continue the challenge."))
+        pbMessage(_INTL("\\w[]\\wm\\l[3]All your Pokémon have fainted. But you still have Pokémon on Sukiro's Island with which you can continue the challenge."))
         pbFadeOutIn {
           scene = PokemonStorageScene.new
           screen = PokemonStorageScreen.new(scene, $PokemonStorage)
@@ -262,7 +262,7 @@ def pbStartOver(*args)
         }
       end
     else
-      pbMessage(_INTL("\\c[12]\\w[]\\wm\\l[3]All your Pokémon have fainted. You have lost the Nuzlocke challenge! Nuzlocke Mode will now be turned off."))
+      pbMessage(_INTL("\\w[]\\wm\\l[3]All your Pokémon have fainted. You have lost the Nuzlocke challenge! Nuzlocke Mode will now be turned off."))
       Nuzlocke.toggle(false)
       $PokemonGlobal.isNuzlocke = false
     end

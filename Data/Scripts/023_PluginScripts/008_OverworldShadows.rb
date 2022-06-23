@@ -103,3 +103,8 @@ class Sprite_Character
     @shadowoverworldbitmap.update if @shadowoverworldbitmap
   end
 end
+
+PluginManager.register({
+  :name => "Overworld Shadows EX",
+  :credits => "Golisopod User"
+})

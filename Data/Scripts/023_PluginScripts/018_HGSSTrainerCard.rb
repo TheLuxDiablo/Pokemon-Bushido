@@ -216,3 +216,8 @@ class PokemonTrainerCardScreen
     @scene.pbEndScene
   end
 end
+
+PluginManager.register({
+  :name => "Trainer Card",
+  :credits => "Mr Gela"
+})

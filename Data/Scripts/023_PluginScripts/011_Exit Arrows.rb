@@ -1,13 +1,3 @@
-
-################################################################################
-# Simple Exit Arrows - by Tustin2121
-#
-# To use, set the graphic of your exit warp event to an arrow with
-# the desired hue and name it "ExitArrow" (without the quotes).
-#
-# The below code will do the work of hiding and showing the arrow when needed.
-################################################################################
-
 def checkExitArrows(init=false)
   px = $game_player.x
   py = $game_player.y
@@ -36,3 +26,8 @@ Events.onChangeDirection += proc{|sender,e|
 Events.onStepTaken+=proc {|sender,e|
   checkExitArrows
 }
+
+PluginManager.register({
+  :name => "Exit Arrows",
+  :credits => "KleinStudio"
+})

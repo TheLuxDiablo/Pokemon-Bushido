@@ -166,7 +166,7 @@ class TalonflameFly
     pbMessage(_INTL("{1} and Talonflame used Fly!", $Trainer.name))
     pbTalonflameMoveAnimation(3)
     pbWait(20)
-    pbSEPlay("wind1")
+    pbSEPlay("Wind1")
     pbFadeOutIn(99999) {
       $game_temp.player_new_map_id    = $PokemonTemp.flydata[0]
       $game_temp.player_new_x         = $PokemonTemp.flydata[1]
@@ -208,7 +208,6 @@ class StorageSystemPC
   end
 
   def access
-    pbMessage(_INTL("The Pokémon Storage System was opened."))
     command = 0
     loop do
       command = pbShowCommandsWithHelp(nil,

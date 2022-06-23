@@ -103,3 +103,8 @@ def pbEnterText(*args)
   $CanToggle = old_toggle
   return ret
 end
+
+PluginManager.register({
+  :name => "Speedup Switch",
+  :credits => ["Golisopod User", "Marin"]
+})

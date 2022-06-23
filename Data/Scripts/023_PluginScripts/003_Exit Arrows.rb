@@ -12,6 +12,7 @@ def checkExitArrows(init=false)
   px = $game_player.x
   py = $game_player.y
   for event in $game_map.events.values
+    next if !event.should_update?
     next if event.name != "ExitArrow"
     case $game_player.direction
     when 2; event.transparent = !(px == event.x && py == event.y-1)

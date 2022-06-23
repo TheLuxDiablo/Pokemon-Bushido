@@ -146,3 +146,8 @@ def pbSearchAnimations(animations, cmdwin, canvas, animwin)
   window.dispose
   return
 end
+
+PluginManager.register({
+  :name => "Move Animations",
+  :credits => "Pokemon Reborn Team"
+})
