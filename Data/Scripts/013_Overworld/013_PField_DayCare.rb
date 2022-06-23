@@ -256,15 +256,10 @@ def pbDayCareGenerateEgg
      isConst?(babyspecies,PBSpecies,:GOOMY) ||
      isConst?(babyspecies,PBSpecies,:ZORUA) ||
      isConst?(babyspecies,PBSpecies,:VOLTORB)
-    if mother.form==1
-      egg.form = 1 if mother.hasItem?(:EVERSTONE)
-    elsif pbGetBabySpecies(father.species,mother.item,father.item)==babyspecies
-      egg.form = 1 if father.form==1 && father.hasItem?(:EVERSTONE)
-    end
-    if mother.form==2
-      egg.form = 2 if mother.hasItem?(:EVERSTONE)
-    elsif pbGetBabySpecies(father.species,mother.item,father.item)==babyspecies
-      egg.form = 2 if father.form==2 && father.hasItem?(:EVERSTONE)
+    if pbGetBabySpecies(father.species, mother.item, father.item) == babyspecies
+      egg.form = father.form if father.hasItem?(:EVERSTONE)
+    else
+      egg.form = mother.form if mother.hasItem?(:EVERSTONE)
     end
   end
   # Inheriting Moves
