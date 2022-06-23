@@ -92,3 +92,12 @@ class StarterSprite
     @bitmap.dispose
   end
 end
+
+# Always show starter overworlds
+Events.onMapSceneChange += proc{ |_sender, _e|
+  if $game_map.map_id == 81 && $game_switches[83]
+    pbChangeEventSpriteToMon(17, $game_variables[73])
+    pbChangeEventSpriteToMon(19, $game_variables[74])
+    pbChangeEventSpriteToMon(20, $game_variables[75])
+  end
+}

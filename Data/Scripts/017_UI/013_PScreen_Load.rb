@@ -346,21 +346,20 @@ class PokemonLoadScreen
     trainer       = nil
     framecount    = nil
     game_system   = nil
-    pokemonSystem = nil
     mapid         = nil
     File.open(savefile) { |f|
       trainer       = Marshal.load(f)
       framecount    = Marshal.load(f)
       game_system   = Marshal.load(f)
-      pokemonSystem = Marshal.load(f)
+      Marshal.load(f)
       mapid         = Marshal.load(f)
     }
     raise "Corrupted file" if !trainer.is_a?(PokeBattle_Trainer)
     raise "Corrupted file" if !framecount.is_a?(Numeric)
     raise "Corrupted file" if !game_system.is_a?(Game_System)
-    raise "Corrupted file" if !pokemonSystem.is_a?(PokemonSystem)
     raise "Corrupted file" if !mapid.is_a?(Numeric)
-    return [trainer,framecount,game_system,pokemonSystem,mapid]
+    raise "Corrupted file" if trainer.seen.length < PBSpecies.maxValue
+    return [trainer, framecount, game_system, mapid]
   end
 
   def pbStartDeleteScreen(slot)
@@ -393,28 +392,6 @@ class PokemonLoadScreen
       @scene.pbEndScene
       $scene = nil
       return
-    end
-    if System.platform[/Windows/]
-      old_save_data = File.join(RTP.getLegacySaveFolder, "Game.rxdata")
-      keybinds_file = RTP.getSaveFileName("keybindings.mkxp1")
-      if safeExists?(old_save_data)
-        File.rename(old_save_data, File.join(RTP.getLegacySaveFolder, "Game_old.rxdata"))
-        File.delete(keybinds_file) if safeExists?(keybinds_file)
-      end
-      File.copy("Data/keybindings.mkxp1", keybinds_file) if !safeExists?(keybinds_file)
-=begin
-      if safeExists?(oldfilename) && !safeExists?(RTP.getSaveFileName("Game_0.rxdata"))
-        pbMessage("The game has detected that you have a save file from an older version of the game.")
-        if pbConfirmMessage("Would you like to carry the old save file over?")
-          pbMessage("Retrieving old save data...\\wt[16] ...\\wt[16] ...\\wtnp[32]")
-          File.rename(oldfilename,RTP.getSaveFileName("Game_0.rxdata"))
-          pbMessage("Transferring old save data...\\wt[16] ...\\wt[16] ...\\wtnp[16]")
-          pbMessage("1, 2, and...\\wt[16] ...\\wt[16] ... Ta-da!\\se[Battle ball drop]\1\\wtnp[]")
-          pbMessage("\\se[]Your save file was transferred!\\se[Pkmn move learnt]")
-          pbMessage("Enjoy the new update!<ar>~Team Bushido</ar>")
-        end
-      end
-=end
     end
     commands = []
     cmdNewGame     = -1
@@ -601,16 +578,12 @@ class PokemonLoadScreen
       haveBackup   = false
       showContinue = false
       begin
-        old_system = $PokemonSystem
-        trainer, framecount, $game_system, $PokemonSystem, mapid = pbTryLoadFile(savefile)
-        $PokemonSystem = old_system
+        trainer, framecount, $game_system, mapid = pbTryLoadFile(savefile)
         showContinue = true
       rescue
         if safeExists?(savefile+".bak")
           begin
-            old_system = $PokemonSystem
-            trainer, framecount, $game_system, $PokemonSystem, mapid = pbTryLoadFile(savefile+".bak")
-            $PokemonSystem = old_system
+            trainer, framecount, $game_system, mapid = pbTryLoadFile(savefile+".bak")
             haveBackup   = true
             showContinue = true
           rescue
@@ -637,16 +610,16 @@ class PokemonLoadScreen
         end
       end
     end
-    return [trainer,framecount,mapid] if data
+    return [trainer, framecount, mapid] if data
     @scene.pbEndScene
     metadata = nil
     File.open(savefile) { |f|
-      Marshal.load(f)   # Trainer already loaded
+      Marshal.load(f)
+      Marshal.load(f)
+      Marshal.load(f)
+      Marshal.load(f)
+      Marshal.load(f)
       $Trainer             = trainer
-      Graphics.frame_count = Marshal.load(f)
-      $game_system         = Marshal.load(f)
-      Marshal.load(f)   # PokemonSystem already loaded
-      Marshal.load(f)   # Current map id no longer needed
       $game_switches       = Marshal.load(f)
       $game_variables      = Marshal.load(f)
       $game_self_switches  = Marshal.load(f)

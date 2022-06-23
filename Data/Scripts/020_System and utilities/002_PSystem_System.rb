@@ -30,6 +30,15 @@ def pbScreenCapture
 end
 
 def pbSetUpSystem
+  if System.platform[/Windows/]
+    old_save_data = File.join(RTP.getLegacySaveFolder, "Game.rxdata")
+    keybinds_file = RTP.getSaveFileName("keybindings.mkxp1")
+    if safeExists?(old_save_data)
+      File.rename(old_save_data, File.join(RTP.getLegacySaveFolder, "Game_old.rxdata"))
+#      File.delete(keybinds_file) if safeExists?(keybinds_file)
+    end
+#    File.copy("Data/keybindings.mkxp1", keybinds_file) if !safeExists?(keybinds_file)
+  end
   save_file = RTP.getSaveFileName("Game_0.rxdata")
   Dir.foreach(RTP.getSaveFolder) do |f|
     next if f == "." || f == ".."
