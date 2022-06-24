@@ -34,7 +34,7 @@ def old_save_restoration
     $Trainer.setSeen(pkmn.species)
     $Trainer.setOwned(pkmn.species)
     pbSeenForm(pkmn)
-    pkmn.level = 5
+    pkmn.level = 5 if pkmn.level >= 5
     pkmn.resetMoves
     pkmn.calcStats
     $PokemonStorage.pbStoreCaught(pkmn)
@@ -47,7 +47,7 @@ def old_save_restoration
       $Trainer.setSeen(pkmn.species)
       $Trainer.setOwned(pkmn.species)
       pbSeenForm(pkmn)
-      pkmn.level = 5
+      pkmn.level = 5 if pkmn.level >= 5
       pkmn.resetMoves
       pkmn.calcStats
       $PokemonStorage.pbStoreCaught(pkmn)
