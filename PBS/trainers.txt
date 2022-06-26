@@ -1518,3 +1518,11 @@ Pokemon = MRRIME,70
 	Moves = FREEZEDRY,DAZZLINGGLEAM,PSYCHICTERRAIN,EXPANDINGFORCE
 	IV = 31
 	EV = 4,0,128,248,0,128
+#-------------------------------	
+[ENLS,ENLS]
+LoseText = "Well that  was something, I wish I had never challenged you! That is my Last Wish!"
+Pokemon = ARCANINE,70
+	Item = LUMBERRY
+	Nature = ADAMANT
+	Ability = 0
+	IV = 31

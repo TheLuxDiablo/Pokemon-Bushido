@@ -3006,4 +3006,64 @@ module DialogueModule
     user.pbRaiseStatStageEx([:DEFENSE, :SPDEF], stat, true, battlers[1], forced: true)
     scene.pbHideOpponent
   }
+
+  GoliIntro = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    pbMessage("\\bGoli Intro Placeholder!")
+    scene.disappearBar
+    battler.pbRaiseStatStageEx(:ATK, 1)
+    scene.pbHideOpponent
+  }
+
+  GoliLast = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    pbMessage("\\bGoli Last Placeholder!")
+    scene.disappearBar
+    battler.pbRaiseStatStageEx(:ATK, 1)
+    scene.pbHideOpponent
+  }
+
+  ENLSIntro = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    pbMessage("\\bENLS Intro Placeholder!")
+    scene.disappearBar
+    battler.pbRaiseStatStageEx(:ATK, 1)
+    scene.pbHideOpponent
+  }
+
+  ENLSLast = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    pbMessage("\\bENLS Last Placeholder!")
+    scene.disappearBar
+    battler.pbRaiseStatStageEx(:ATK, 1)
+    scene.pbHideOpponent
+  }
+
+  VoltsIntro = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    pbMessage("\\bVoltseon Intro Placeholder!")
+    scene.disappearBar
+    battler.pbRaiseStatStageEx(:ATK, 1)
+    scene.pbHideOpponent
+  }
+
+  VoltsLast = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    pbMessage("\\bVoltseon Last Placeholder!")
+    scene.disappearBar
+    battler.pbRaiseStatStageEx(:ATK, 1)
+    scene.pbHideOpponent
+  }
 end
