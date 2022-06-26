@@ -736,7 +736,7 @@ def addBackgroundOrColoredPlane(sprites,planename,background,color,viewport=nil)
   bitmapName=pbResolveBitmap("Graphics/Pictures/#{background}")
   if bitmapName==nil
     # Plane should exist in any case
-    sprites[planename]=ColoredPlane.new(color,@viewport)
+    sprites[planename]=ColoredPlane.new(color,viewport)
   else
     sprites[planename]=AnimatedPlane.new(viewport)
     sprites[planename].setBitmap(bitmapName)

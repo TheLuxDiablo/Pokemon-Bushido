@@ -1,30 +1,33 @@
-def pbSave(safesave=false)
+def pbSave(safesave = false)
   $Trainer.metaID = $PokemonGlobal.playerID
+  $Trainer.set_last_save_time
   begin
-    File.open(RTP.getSaveFileName("Game_#{$PokemonTemp.saveSlot}.rxdata"),"wb") { |f|
-       Marshal.dump($Trainer,f)
-       Marshal.dump(Graphics.frame_count,f)
-       if $data_system.respond_to?("magic_number")
-         $game_system.magic_number = $data_system.magic_number
-       else
-         $game_system.magic_number = $data_system.version_id
-       end
-       $game_system.save_count+=1
-       Marshal.dump($game_system,f)
-       Marshal.dump($PokemonSystem,f)
-       Marshal.dump($game_map.map_id,f)
-       Marshal.dump($game_switches,f)
-       Marshal.dump($game_variables,f)
-       Marshal.dump($game_self_switches,f)
-       Marshal.dump($game_screen,f)
-       Marshal.dump($MapFactory,f)
-       Marshal.dump($game_player,f)
-       $PokemonGlobal.safesave=safesave
-       Marshal.dump($PokemonGlobal,f)
-       Marshal.dump($PokemonMap,f)
-       Marshal.dump($PokemonBag,f)
-       Marshal.dump($PokemonStorage,f)
-       Marshal.dump(ESSENTIALS_VERSION,f)
+    File.open(RTP.getSaveFileName("Game_#{$PokemonSystem.save_slot}.rxdata"),"wb") { |f|
+      Marshal.dump($Trainer, f)
+      Marshal.dump($game_map.map_id, f)
+      if $data_system.respond_to?("magic_number")
+        $game_system.magic_number = $data_system.magic_number
+      else
+        $game_system.magic_number = $data_system.version_id
+      end
+      Marshal.dump(Graphics.frame_count, f)
+      Marshal.dump($game_switches, f)
+      Marshal.dump($game_variables, f)
+      Marshal.dump($game_self_switches, f)
+      Marshal.dump($game_screen, f)
+      Marshal.dump($MapFactory, f)
+      Marshal.dump($game_player, f)
+      $PokemonGlobal.safesave = safesave
+      Marshal.dump($PokemonGlobal, f)
+      Marshal.dump($PokemonMap, f)
+      Marshal.dump($PokemonBag, f)
+      Marshal.dump($PokemonStorage, f)
+      Marshal.dump(ESSENTIALS_VERSION, f)
+    }
+    File.open(RTP.getSaveFileName("Settings.rxdata"), "wb") { |f|
+      Marshal.dump($PokemonSystem, f)
+      $game_system.save_count += 1
+      Marshal.dump($game_system, f)
     }
     Graphics.frame_reset
   rescue
@@ -95,7 +98,7 @@ class PokemonSave_Scene
 
   def pbEndScreen
     pbDisposeSpriteHash(@sprites)
-    @viewport.dispose
+    @viewport&.dispose
   end
 end
 
@@ -106,48 +109,20 @@ class PokemonSaveScreen
     @scene=scene
   end
 
-  def pbDisplay(text,brief=false)
-    @scene.pbDisplay(text,brief)
-  end
-
-  def pbDisplayPaused(text)
-    @scene.pbDisplayPaused(text)
-  end
-
-  def pbConfirm(text)
-    return @scene.pbConfirm(text)
-  end
-
   def pbSaveScreen
     ret=false
-    @scene.pbStartScreen
-    if pbConfirmMessage(_INTL("Would you like to save the game?"))
-      if safeExists?(RTP.getSaveFileName("Game_#{$PokemonTemp.saveSlot}.rxdata"))
-        if $PokemonTemp.begunNewGame
-          pbMessage(_INTL("WARNING!"))
-          pbMessage(_INTL("There is a different game file that is already saved."))
-          pbMessage(_INTL("If you save now, the other file's adventure, including items and Pokémon, will be entirely lost."))
-          if !pbConfirmMessageSerious(
-             _INTL("Are you sure you want to save now and overwrite the other save file?"))
-            pbSEPlay("GUI save choice")
-            @scene.pbEndScreen
-            return false
-          end
-        end
-      end
-      $PokemonTemp.begunNewGame=false
-      pbSEPlay("GUI save choice")
-      if pbSave
-        pbMessage(_INTL("\\se[]{1} saved the game.\\me[GUI save game]\\wtnp[30]",$Trainer.name))
-        ret=true
-      else
-        pbMessage(_INTL("\\se[]Save failed.\\wtnp[30]"))
-        ret=false
-      end
-    else
-      pbSEPlay("GUI save choice")
-    end
-    @scene.pbEndScreen
+    # @scene.pbStartScreen
+    slot = $PokemonSystem.save_slot
+    pbFadeOutIn(99999) {
+      scene = SaveSlot_Selection_Scene.new(true, true)
+      slot  = scene.get_save_slot
+      next scene.dispose if slot <= 0
+      $PokemonSystem.save_slot = slot
+      pbSave
+      scene.dispose
+      ret = true
+    }
+    # @scene.pbEndScreen
     return ret
   end
 end

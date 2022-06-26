@@ -39,44 +39,25 @@ def pbSetUpSystem
     end
 #    File.copy("Data/keybindings.mkxp1", keybinds_file) if !safeExists?(keybinds_file)
   end
-  save_file = RTP.getSaveFileName("Game_0.rxdata")
-  Dir.foreach(RTP.getSaveFolder) do |f|
-    next if f == "." || f == ".."
-    next if File.directory?(RTP.getSaveFileName("#{f}"))
-    next if !f[/Game_(\d+).rxdata/i]
-    save_file = File.join(RTP.getSaveFileName("#{f}"))
-    break
-  end
+  save_file = RTP.getSaveFileName("Settings.rxdata")
+  no_data = true
   if safeExists?(save_file)
-    trainer       = nil
-    framecount    = 0
     game_system   = nil
-    pokemonSystem = nil
-    havedata = false
-    begin
-      File.open(save_file) { |f|
-        trainer       = Marshal.load(f)
-        framecount    = Marshal.load(f)
-        game_system   = Marshal.load(f)
-        pokemonSystem = Marshal.load(f)
-      }
-      raise "Corrupted file" if !trainer.is_a?(PokeBattle_Trainer)
-      raise "Corrupted file" if !framecount.is_a?(Numeric)
-      raise "Corrupted file" if !game_system.is_a?(Game_System)
-      raise "Corrupted file" if !pokemonSystem.is_a?(PokemonSystem)
-      havedata = true
-    rescue
-      game_system   = Game_System.new
-      pokemonSystem = PokemonSystem.new
-    end
-  else
-    game_system   = Game_System.new
-    pokemonSystem = PokemonSystem.new
+    pokemon_system = nil
+    File.open(save_file) { |f|
+      pokemon_system = Marshal.load(f)
+      game_system    = Marshal.load(f)
+    }
+    no_data = false if game_system.is_a?(Game_System) && pokemon_system.is_a?(PokemonSystem)
+  end
+  if no_data
+    game_system    = Game_System.new
+    pokemon_system = PokemonSystem.new
   end
   if !$INEDITOR
+    $PokemonSystem = pokemon_system
     $game_system   = game_system
-    $PokemonSystem = pokemonSystem
-    pbSetResizeFactor([$PokemonSystem.screensize,4].min)
+    pbSetResizeFactor([$PokemonSystem.screensize, 4].min)
   else
     pbSetResizeFactor(1.0)
   end
@@ -89,11 +70,11 @@ def pbSetUpSystem
   end
   for script in consts
     next if !script
-    eval(Zlib::Inflate.inflate(script[2]),nil,script[1])
+    eval(Zlib::Inflate.inflate(script[2]), nil, script[1])
   end
-  if LANGUAGES.length>=2
-    pokemonSystem.language = pbChooseLanguage if !havedata
-    pbLoadMessages("Data/"+LANGUAGES[pokemonSystem.language][1])
+  if LANGUAGES.length >= 2
+    pokemon_system.language = pbChooseLanguage if !havedata
+    pbLoadMessages("Data/" + LANGUAGES[pokemon_system.language][1])
   end
 end
 

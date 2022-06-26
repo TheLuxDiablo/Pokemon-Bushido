@@ -14,7 +14,8 @@ module Input
         $game_temp.ff_timer = Graphics.frame_rate * 2
       end
     end
-    if $game_temp && $game_temp.ff_timer <= 0
+    return if !$game_temp
+    if $game_temp.ff_timer <= 0
       $game_temp.ff_sprite.opacity = 0
       $game_temp.ff_timer = 0
     end
@@ -27,11 +28,9 @@ class Game_Temp
   attr_accessor :ff_timer
 
   def ff_sprite
-    if !@ff_sprite || @ff_sprite.disposed?
-      @ff_sprite.dispose if @ff_sprite.respond_to?(:disposed?)
-      @ff_sprite = nil
+    if !@ff_sprite
       @ff_sprite = Sprite.new(self.ff_vp)
-      @ff_sprite.bitmap = Bitmap.new("Graphics/Pictures/ff_icon") rescue Bitmap.new(32, 32)
+      @ff_sprite.bitmap = RPG::Cache.load_bitmap("Graphics/Pictures/ff_icon") rescue Bitmap.new(32, 32)
       @ff_sprite.x = 8
       @ff_sprite.y = 8
       @ff_sprite.opacity = 0
@@ -42,7 +41,7 @@ class Game_Temp
 
   def ff_vp
     if !@ff_vp
-      @ff_vp = Viewport.new(0, 0, Graphics.width/4, Graphics.height/4)
+      @ff_vp = Viewport.new(0, 0, Graphics.width / 4, Graphics.height / 4)
       @ff_vp.z = 9999999
     end
     return @ff_vp
@@ -56,10 +55,10 @@ class Game_Temp
   def update_ff_sprite
     return if self.ff_timer <= 0
     self.ff_timer -= 1
-    if self.ff_timer >= (Graphics.frame_rate/4 * 7)
-      self.ff_sprite.opacity += (255/(Graphics.frame_rate/4))
-    elsif self.ff_timer <= (Graphics.frame_rate/4)
-      self.ff_sprite.opacity -= (255/(Graphics.frame_rate/4))
+    if self.ff_timer >= ((Graphics.frame_rate / 4) * 7)
+      self.ff_sprite.opacity += (255 / (Graphics.frame_rate / 4))
+    elsif self.ff_timer <= (Graphics.frame_rate / 4)
+      self.ff_sprite.opacity -= (255 / (Graphics.frame_rate / 4))
     else
       self.ff_sprite.opacity = 255
     end
@@ -75,14 +74,26 @@ $CanToggle = $DEBUG
 module Graphics
   class << self
     alias __fast_forward__update update unless method_defined?(:__fast_forward__update)
+    alias __fast_forward__snap_to_bitmap snap_to_bitmap unless method_defined?(:__fast_forward__snap_to_bitmap)
+  end
+
+  def self.snap_to_bitmap
+    old_timer = $game_temp&.ff_timer
+    old_opac  = $game_temp&.ff_sprite.opacity
+    $game_temp&.ff_timer = 0
+    $game_temp&.ff_sprite.opacity = 0
+    ret = __fast_forward__snap_to_bitmap
+    $game_temp&.ff_timer = old_timer
+    $game_temp&.ff_sprite.opacity = old_opac
+    return ret
   end
 
   def self.update
     $frame += 1
     return unless $frame % SPEEDUP_STAGES[$GameSpeed] == 0
     __fast_forward__update
-    $frame = 0
-    $game_temp.update_ff_sprite if $game_temp
+    # $frame = 0
+    $game_temp&.update_ff_sprite
   end
 end
 
@@ -93,14 +104,18 @@ end
 
 def pbAllowSpeedup
   $CanToggle = true
+  $CanToggle = false if !$DEBUG
 end
 
-alias speedup_pbEnterText pbEnterText unless defined?(speedup_pbEnterText)
+alias __speedup__pbEnterText pbEnterText unless defined?(__speedup__pbEnterText)
 def pbEnterText(*args)
   old_toggle = $CanToggle
+  old_speed  = $GameSpeed
   $CanToggle = false
-  ret = speedup_pbEnterText(*args)
+  $GameSpeed = 0
+  ret = __speedup__pbEnterText(*args)
   $CanToggle = old_toggle
+  $GameSpeed = old_speed
   return ret
 end
 

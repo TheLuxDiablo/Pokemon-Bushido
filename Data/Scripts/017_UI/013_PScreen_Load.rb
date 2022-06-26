@@ -121,8 +121,10 @@ class PokemonLoad_Scene
   def pbStartScene(commands,showContinue,trainer,framecount,mapid)
     @commands = commands
     @sprites = {}
-    @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
-    @viewport.z = 99998
+    if !@viewport
+      @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
+      @viewport.z = 99998
+    end
     addBackgroundOrColoredPlane(@sprites,"background","loadbg",Color.new(248,248,248),@viewport)
     y = 16*2
     for i in 0...commands.length
@@ -136,17 +138,6 @@ class PokemonLoad_Scene
     @sprites["cmdwindow"] = Window_CommandPokemon.new([])
     @sprites["cmdwindow"].viewport = @viewport
     @sprites["cmdwindow"].visible  = false
-    @sprites["loadPanel"] = PokemonLoadPanel.new(999,"Nil",false,trainer,framecount,mapid,@viewport)
-    @sprites["loadPanel"].x = 48
-    @sprites["loadPanel"].y = 32
-    @sprites["loadPanel"].visible = false
-    @sprites["messagebox"] = Window_AdvancedTextPokemon.new("C: Select                                                A: Delete")
-    @sprites["messagebox"].y = Graphics.height - @sprites["messagebox"].height
-    @sprites["messagebox"].x = (Graphics.width - @sprites["messagebox"].width)/2
-    @sprites["messagebox"].viewport       = @viewport
-    @sprites["messagebox"].visible        = false
-    @sprites["messagebox"].letterbyletter = false
-    @sprites["messagebox"].setSkin(MessageConfig.pbGetSystemFrame())
   end
 
   def pbStartScene2
@@ -158,99 +149,6 @@ class PokemonLoad_Scene
     @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z = 99998
     addBackgroundOrColoredPlane(@sprites,"background","loadbg",Color.new(248,248,248),@viewport)
-  end
-
-  def pbShowSlots(array,delete= false)
-    oldTitles = []
-    for i in 0...@commands.length
-      @sprites["panel#{i}"].visible = false
-      oldTitles.push(@sprites["panel#{i}"].title)
-    end
-    for i in 0...array.length
-      @sprites["panel#{i}"].visible = true
-      @sprites["panel#{i}"].title = array[i]
-      @sprites["panel#{i}"].selected = false
-    end
-    @sprites["panel0"].selected = true
-    ret = -1
-    index = 0
-    if delete
-      @sprites["messagebox"].visible = true
-    end
-    loop do
-      Graphics.update
-      Input.update
-      pbUpdateSpriteHash(@sprites)
-      if Input.trigger?(Input::C)
-        ret = index
-        break
-      elsif Input.trigger?(Input::B)
-        ret = -1
-        break
-      elsif Input.trigger?(Input::A) && delete
-        ret = -2 - index
-        pbPlayDecisionSE
-        break
-      elsif Input.trigger?(Input::UP)
-        pbPlayCursorSE
-        index -= 1
-        index = (array.length - 1) if index < 0
-        for i in 0...array.length
-          @sprites["panel#{i}"].selected = false
-        end
-        @sprites["panel#{index}"].selected = true
-        Graphics.update
-      elsif Input.trigger?(Input::DOWN)
-        pbPlayCursorSE
-        index += 1
-        index = 0 if index >= (array.length)
-        for i in 0...array.length
-          @sprites["panel#{i}"].selected = false
-        end
-        @sprites["panel#{index}"].selected = true
-        Graphics.update
-      end
-    end
-    for i in 0...@commands.length
-      @sprites["panel#{i}"].title = oldTitles[i] if delete
-    end
-    if ret < 0
-      for i in 0...@commands.length
-        @sprites["panel#{i}"].title = oldTitles[i]
-        @sprites["panel#{i}"].visible = true
-        @sprites["panel#{i}"].selected = false
-      end
-      @sprites["panel#{delete ? 0 : 1}"].selected = true
-      @sprites["cmdwindow"].index = delete ? 0 : 1
-    end
-    @sprites["messagebox"].visible = false
-    return ret
-  end
-
-  def pbShowLoadScreen(data,message)
-    for i in 0...@commands.length
-      @sprites["panel#{i}"].visible = false
-    end
-    @sprites["loadPanel"].visible = true
-    @sprites["loadPanel"].setData(data[0],data[1],data[2])
-    @sprites["loadPanel"].title = (message == "Would you like to load this file?") ? "Slot #{$PokemonTemp.saveSlot + 1}" : "Continue..."
-    @sprites["loadPanel"].isContinue = true
-    pbSetParty(data[0])
-    array = ["Yes","No"]
-    array.push("Delete") if message != "Would you like to load this file?"
-    ret = pbMessage(message,array) {pbUpdate}
-    if ret != 0
-      @sprites["loadPanel"].visible = false
-      pbHideParty(data[0])
-      for i in 0...@commands.length
-        @sprites["panel#{i}"].visible = true
-        @sprites["panel#{i}"].selected = false
-      end
-      @sprites["panel0"].selected = true
-      @sprites["cmdwindow"].index = 0
-      return ret
-    end
-    return 0
   end
 
   def pbUpdate
@@ -328,6 +226,13 @@ class PokemonLoad_Scene
     end
   end
 
+  def pbResetScene(commands)
+    Graphics.freeze
+    pbDisposeSpriteHash(@sprites)
+    pbStartScene(commands, false, nil, 0, 0)
+    Graphics.transition(0)
+  end
+
   def pbEndScene
     pbFadeOutAndHide(@sprites) { pbUpdate }
     pbDisposeSpriteHash(@sprites)
@@ -338,180 +243,171 @@ end
 
 
 class PokemonLoadScreen
+
+
   def initialize(scene)
-    @scene = scene
+    @scene      = scene
+    @load_scene = SaveSlot_Selection_Scene.new
+    @ng_scene   = SaveSlot_Selection_Scene.new(true)
   end
 
-  def pbTryLoadFile(savefile)
-    trainer       = nil
-    framecount    = nil
-    game_system   = nil
-    mapid         = nil
-    File.open(savefile) { |f|
-      trainer       = Marshal.load(f)
-      framecount    = Marshal.load(f)
-      game_system   = Marshal.load(f)
-      Marshal.load(f)
-      mapid         = Marshal.load(f)
-    }
-    raise "Corrupted file" if !trainer.is_a?(PokeBattle_Trainer)
-    raise "Corrupted file" if !framecount.is_a?(Numeric)
-    raise "Corrupted file" if !game_system.is_a?(Game_System)
-    raise "Corrupted file" if !mapid.is_a?(Numeric)
-    raise "Corrupted file" if trainer.seen.length < PBSpecies.maxValue
-    return [trainer, framecount, game_system, mapid]
+  def create_load_commands(reset = false)
+    @commands        = []
+    @cmd_new_game    = -1
+    @cmd_continue    = -1
+    @cmd_options     = -1
+    @cmd_language    = -1
+    @cmd_debug       = -1
+    @cmd_quit        = -1
+    @commands[@cmd_continue = @commands.length] = _INTL("Load Game") if !@load_scene.slots.empty?
+    @commands[@cmd_new_game = @commands.length] = _INTL("New Game")
+    @commands[@cmd_options = @commands.length]  = _INTL("Options")
+    @commands[@cmd_language = @commands.length] = _INTL("Language") if LANGUAGES.length >= 2
+    @commands[@cmd_debug = @commands.length]    = _INTL("Debug") if $DEBUG
+    @commands[@cmd_quit = @commands.length]     = _INTL("Quit Game")
+    return if !reset
+    @scene.pbResetScene(@commands)
+    @load_scene.refresh_save_slots($PokemonSystem.save_slot - 1)
+    @ng_scene.refresh_save_slots($PokemonSystem.save_slot - 1)
   end
 
-  def pbStartDeleteScreen(slot)
-    savefile = RTP.getSaveFileName("Game_#{slot}.rxdata")
-    if safeExists?(savefile)
-      if pbConfirmMessageSerious(_INTL("Delete all saved data from Slot #{slot + 1}?"))
-        pbMessage(_INTL("Once data has been deleted, there is no way to recover it.\1"))
-        if pbConfirmMessageSerious(_INTL("Delete the saved data anyway?"))
-          pbMessage(_INTL("Deleting all data. Don't turn off the power.\\wtnp[0]"))
-          begin; File.delete(savefile); rescue; end
-          begin; File.delete(savefile+".bak"); rescue; end
-          pbMessage(_INTL("The save file was deleted."))
-          return true
-        end
-      end
-    end
-    return false
+  def pbEndScene
+    @scene.pbEndScene
+    @load_scene.dispose
+    @ng_scene.dispose
   end
 
   def pbStartLoadScreen
-    $PokemonTemp   = PokemonTemp.new if !$PokemonTemp
     $game_temp     = Game_Temp.new
-    $game_system   = Game_System.new
+    $PokemonTemp   = PokemonTemp.new if !$PokemonTemp
+    $game_system   = Game_System.new if !$game_system
     $PokemonSystem = PokemonSystem.new if !$PokemonSystem
     data_system = load_data("Data/System.rxdata")
     mapfile = sprintf("Data/Map%03d.rxdata",data_system.start_map_id)
-    if data_system.start_map_id==0 || !pbRgssExists?(mapfile)
+    if data_system.start_map_id == 0 || !pbRgssExists?(mapfile)
       pbMessage(_INTL("No starting position was set in the map editor.\1"))
       pbMessage(_INTL("The game cannot continue."))
-      @scene.pbEndScene
+      pbEndScene
       $scene = nil
       return
     end
-    commands = []
-    cmdNewGame     = -1
-    cmdContinue    = -1
-    cmdOption      = -1
-    cmdLanguage    = -1
-    cmdDebug       = -1
-    cmdQuit        = -1
-    commands[cmdContinue = commands.length]    = _INTL("Load Game") if pbHasSave?(3)
-    commands[cmdNewGame = commands.length]     = _INTL("New Game")
-    commands[cmdOption = commands.length]        = _INTL("Options")
-    commands[cmdLanguage = commands.length]      = _INTL("Language") if LANGUAGES.length>=2
-    commands[cmdDebug = commands.length]         = _INTL("Debug") if $DEBUG
-    commands[cmdQuit = commands.length]          = _INTL("Quit Game")
-    @scene.pbStartScene(commands,false,nil,0,0)
+    create_load_commands
+    @scene.pbStartScene(@commands, false, nil, 0, 0)
     @scene.pbStartScene2
     loop do
-      command = @scene.pbChoose(commands)
-      slotArray = ["Slot 1","Slot 2","Slot 3"]
-      if cmdContinue>=0 && command==cmdContinue
-        displayArray = []
-        displayArray2 = []
-        for i in 0...slotArray.length
-          if pbHasSave?(i,true)
-            trainerName = pbGetSave(i,true)[0].name
-            displayArray.push(slotArray[i])
-            displayArray2.push(slotArray[i] + " . . . . . . Kenshi: #{trainerName}")
-          end
-        end
-        if displayArray.length == 1
-          value = 0
-          message = "Would you like to continue on your adventure?"
-        else
-          pbPlayDecisionSE
-          value = @scene.pbShowSlots(displayArray2,true)
-          message = "Would you like to load this file?"
-        end
-        if value < -1
-          pbPlayDecisionSE
-          pbStartDeleteScreen(slotArray.index(displayArray[-((value) + 2)]))
-          commands = []
-          cmdNewGame     = -1
-          cmdContinue    = -1
-          cmdOption      = -1
-          cmdLanguage    = -1
-          cmdDebug       = -1
-          cmdQuit        = -1
-          commands[cmdContinue = commands.length]    = _INTL("Load Game") if pbHasSave?(3)
-          commands[cmdNewGame = commands.length]     = _INTL("New Game")
-          commands[cmdOption = commands.length]      = _INTL("Options")
-          commands[cmdLanguage = commands.length]    = _INTL("Language") if LANGUAGES.length>=2
-          commands[cmdDebug = commands.length]       = _INTL("Debug") if $DEBUG
-          commands[cmdQuit = commands.length]        = _INTL("Quit Game")
-          @scene.pbEndScene
-          @scene.pbStartScene(commands,false,nil,0,0)
-          @scene.pbStartScene2
-          next
-        elsif value < 0
-          pbPlayCloseMenuSE
-          next
-        end
-        ret = slotArray.index(displayArray[value])
-        $PokemonTemp.saveSlot = ret
-        data = pbGetSave($PokemonTemp.saveSlot,true)
-        next if !data.is_a?(Array)
-        final = @scene.pbShowLoadScreen(data,message)
-        if final == 2
-          pbPlayDecisionSE
-          pbStartDeleteScreen($PokemonTemp.saveSlot)
-          commands = []
-          cmdNewGame     = -1
-          cmdContinue    = -1
-          cmdOption      = -1
-          cmdLanguage    = -1
-          cmdDebug       = -1
-          cmdQuit        = -1
-          commands[cmdContinue = commands.length]    = _INTL("Load Game") if pbHasSave?(3)
-          commands[cmdNewGame = commands.length]     = _INTL("New Game")
-          commands[cmdOption = commands.length]        = _INTL("Options")
-          commands[cmdLanguage = commands.length]      = _INTL("Language") if LANGUAGES.length>=2
-          commands[cmdDebug = commands.length]         = _INTL("Debug") if $DEBUG
-          commands[cmdQuit = commands.length]          = _INTL("Quit Game")
-          @scene.pbEndScene
-          @scene.pbStartScene(commands,false,nil,0,0)
-          @scene.pbStartScene2
-          next
-        elsif final != 0
-          pbPlayCloseMenuSE
-          next
-        end
-        pbGetSave($PokemonTemp.saveSlot)
-        return
-      elsif cmdNewGame>=0 && command==cmdNewGame
+      command = @scene.pbChoose(@commands)
+      case command
+      when @cmd_continue
         pbPlayDecisionSE
-        displayArray = slotArray
-        for i in 0...displayArray.length
-          if pbHasSave?(i,true)
-            trainerName = pbGetSave(i,true)[0].name
-            displayArray[i] += " . . . . . . Kenshi: #{trainerName}"
+        slot = @load_scene.get_save_slot
+        if slot <= 0
+          create_load_commands(true) if slot == -1
+          next
+        end
+        $PokemonSystem.save_slot = slot
+        save_file = RTP.getSaveFileName("Game_#{slot}.rxdata")
+        unless safeExists?(save_file)
+          pbPlayBuzzerSE
+          next
+        end
+        pbEndScene
+        metadata = nil
+        File.open(save_file) { |f|
+          $Trainer             = Marshal.load(f)
+          Marshal.load(f)   # Current map id no longer needed
+          Graphics.frame_count = Marshal.load(f)
+          $game_switches       = Marshal.load(f)
+          $game_variables      = Marshal.load(f)
+          $game_self_switches  = Marshal.load(f)
+          $game_screen         = Marshal.load(f)
+          $MapFactory          = Marshal.load(f)
+          $game_map            = $MapFactory.map
+          $game_player         = Marshal.load(f)
+          $PokemonGlobal       = Marshal.load(f)
+          metadata             = Marshal.load(f)
+          $PokemonBag          = Marshal.load(f)
+          $PokemonStorage      = Marshal.load(f)
+          $SaveVersion         = Marshal.load(f) unless f.eof?
+          magicNumberMatches = false
+          if $data_system.respond_to?("magic_number")
+            magicNumberMatches = ($game_system.magic_number == $data_system.magic_number)
           else
-            displayArray[i] += " . . . . . . EMPTY"
+            magicNumberMatches = ($game_system.magic_number == $data_system.version_id)
           end
+          if !magicNumberMatches || $PokemonGlobal.safesave
+            pbMapInterpreter.setup(nil, 0) if pbMapInterpreterRunning?
+            begin
+              $MapFactory.setup($game_map.map_id)   # calls setMapChanged
+            rescue Errno::ENOENT
+              end_game = true
+              if $DEBUG
+                pbMessage(_INTL("Map {1} was not found.", $game_map.map_id))
+                map = pbWarpToMap
+                if map
+                  end_game = false
+                  $MapFactory.setup(map[0])
+                  $game_player.moveto(map[1],map[2])
+                end
+              end
+              if end_game
+                $game_map = nil
+                $scene = nil
+                pbMessage(_INTL("The map was not found. The game cannot continue."))
+                return
+              end
+            end
+            $game_player.center($game_player.x, $game_player.y)
+          else
+            $MapFactory.setMapChanged($game_map.map_id)
+          end
+        }
+        if !$game_map.events   # Map wasn't set up
+          $game_map = nil
+          $scene = nil
+          pbMessage(_INTL("The map is corrupt. The game cannot continue."))
+          return
         end
-        value = @scene.pbShowSlots(displayArray)
-        if value < 0
-          pbPlayCloseMenuSE
+        $PokemonMap = metadata
+        $PokemonEncounters = PokemonEncounters.new
+        $PokemonEncounters.setup($game_map.map_id)
+        pbAutoplayOnSave
+        $game_map.update
+        $PokemonMap.updateMap
+        $scene = Scene_Map.new
+=begin
+        #Thundaga force fog onto map in chapter 6
+        if $game_variables[99]==6 && ($game_map.map_id==85 || $game_map.map_id==88)
+          $game_map.fog_name = 'clouds3'
+          $game_map.fog_hue = 0
+          $game_map.fog_opacity = 170
+          $game_map.fog_blend_type = 0
+          $game_map.fog_zoom = 150
+          $game_map.fog_sx = 8
+          $game_map.fog_sy = 2
+          if($game_map.map_id==88 and $game_player.x>55)
+            pbBGMPlay('PKMNMovie15-TruePower')
+          elsif $game_map.map_id==88
+            pbBGMPlay('Conquest-EventTheme05')
+          else
+            pbBGMPlay('Conquest-EventTheme03')
+          end
+          $game_map.update
+        end
+=end
+        return
+      when @cmd_new_game
+        pbPlayDecisionSE
+        slot = @ng_scene.get_save_slot
+        if slot <= 0
+          create_load_commands(true) if slot == -1
           next
         end
-        $PokemonTemp.saveSlot = value
-        pbPlayDecisionSE
-        @scene.pbEndScene
-        if $game_map && $game_map.events
-          for event in $game_map.events.values
-            event.clear_starting
-          end
-        end
+        $PokemonSystem.save_slot = slot
+        pbEndScene
+        $game_map.events.each_value { |e| e.clear_starting } if $game_map && $game_map.events
         $game_temp.common_event_id = 0 if $game_temp
         $scene               = Scene_Map.new
         Graphics.frame_count = 0
-        $game_system         = Game_System.new
         $game_switches       = Game_Switches.new
         $game_variables      = Game_Variables.new
         $game_self_switches  = Game_SelfSwitches.new
@@ -521,46 +417,42 @@ class PokemonLoadScreen
         $PokemonGlobal       = PokemonGlobalMetadata.new
         $PokemonStorage      = PokemonStorage.new
         $PokemonEncounters   = PokemonEncounters.new
-        $PokemonTemp.begunNewGame = pbHasSave?(value, true)
+        # $PokemonTemp.begunNewGame = true
         $data_system         = load_data("Data/System.rxdata")
         $MapFactory          = PokemonMapFactory.new($data_system.start_map_id)   # calls setMapChanged
         $game_player.moveto($data_system.start_x, $data_system.start_y)
         $game_player.refresh
         $game_map.autoplay
         $game_map.update
-        pbUpdateVehicle
         return
-      elsif cmdOption>=0 && command==cmdOption
+      when @cmd_options
         pbPlayDecisionSE
         pbFadeOutIn {
           scene = PokemonOption_Scene.new
           screen = PokemonOptionScreen.new(scene)
           screen.pbStartScreen(true)
         }
-      elsif cmdLanguage>=0 && command==cmdLanguage
+      when @cmd_language
         pbPlayDecisionSE
         @scene.pbEndScene
         $PokemonSystem.language = pbChooseLanguage
-        pbLoadMessages("Data/"+LANGUAGES[$PokemonSystem.language][1])
-        savedata = []
-        if safeExists?(savefile)
-          File.open(savefile,"rb") { |f|
-            16.times { savedata.push(Marshal.load(f)) }
-          }
-          savedata[3]=$PokemonSystem
+        pbLoadMessages("Data/" + LANGUAGES[$PokemonSystem.language][1])
+        save_data = []
+        settings  = RTP.getSaveFileName("Settings.rxdata")
+        if safeExists?(settings)
+          File.open(settings) { |f| 2.times { save_data.push(Marshal.load(f)) } }
+          save_data[0] = $PokemonSystem
           begin
-            File.open(RTP.getSaveFileName("Game_0.rxdata"),"wb") { |f|
-              16.times { |i| Marshal.dump(savedata[i],f) }
-            }
+            File.open(settings) { |f| 2.times { |i| Marshal.dump(save_data[i]) } }
           rescue
           end
         end
         $scene = pbCallTitle
         return
-      elsif cmdDebug>=0 && command==cmdDebug
+      when @cmd_debug
         pbPlayDecisionSE
         pbFadeOutIn { pbDebugMenu(false) }
-      elsif cmdQuit>=0 && command==cmdQuit
+      when @cmd_quit
         pbPlayCloseMenuSE
         @scene.pbEndScene
         $scene = nil
@@ -568,163 +460,13 @@ class PokemonLoadScreen
       end
     end
   end
-
-  def pbGetSave(slot,data = false)
-    savefile = RTP.getSaveFileName("Game_#{slot}.rxdata")
-    if safeExists?(savefile)
-      trainer      = nil
-      framecount   = 0
-      mapid        = 0
-      haveBackup   = false
-      showContinue = false
-      begin
-        trainer, framecount, $game_system, mapid = pbTryLoadFile(savefile)
-        showContinue = true
-      rescue
-        if safeExists?(savefile+".bak")
-          begin
-            trainer, framecount, $game_system, mapid = pbTryLoadFile(savefile+".bak")
-            haveBackup   = true
-            showContinue = true
-          rescue
-          end
-        end
-        if haveBackup
-          pbMessage(_INTL("The save file is corrupt. The previous save file will be loaded."))
-        else
-          pbMessage(_INTL("The save file is corrupt, or is incompatible with this game."))
-          if !pbConfirmMessageSerious(_INTL("Do you want to delete the save file and start anew?"))
-            $scene = nil
-            return false
-          end
-          begin; File.delete(savefile); rescue; end
-          begin; File.delete(savefile+".bak"); rescue; end
-          $game_system   = Game_System.new
-          $PokemonSystem = PokemonSystem.new if !$PokemonSystem
-          pbMessage(_INTL("The save file was deleted."))
-        end
-      end
-      if showContinue
-        if !haveBackup && safeExists?(savefile+".bak")
-          File.delete(savefile+".bak")
-        end
-      end
-    end
-    return [trainer, framecount, mapid] if data
-    @scene.pbEndScene
-    metadata = nil
-    File.open(savefile) { |f|
-      Marshal.load(f)
-      Marshal.load(f)
-      Marshal.load(f)
-      Marshal.load(f)
-      Marshal.load(f)
-      $Trainer             = trainer
-      $game_switches       = Marshal.load(f)
-      $game_variables      = Marshal.load(f)
-      $game_self_switches  = Marshal.load(f)
-      $game_screen         = Marshal.load(f)
-      $MapFactory          = Marshal.load(f)
-      $game_map            = $MapFactory.map
-      $game_player         = Marshal.load(f)
-      $PokemonGlobal       = Marshal.load(f)
-      metadata             = Marshal.load(f)
-      $PokemonBag          = Marshal.load(f)
-      $PokemonStorage      = Marshal.load(f)
-      $SaveVersion         = Marshal.load(f) unless f.eof?
-      magicNumberMatches = false
-      if $data_system.respond_to?("magic_number")
-        magicNumberMatches = ($game_system.magic_number==$data_system.magic_number)
-      else
-        magicNumberMatches = ($game_system.magic_number==$data_system.version_id)
-      end
-      if !magicNumberMatches || $PokemonGlobal.safesave
-        if pbMapInterpreterRunning?
-          pbMapInterpreter.setup(nil,0)
-        end
-        begin
-          $MapFactory.setup($game_map.map_id)   # calls setMapChanged
-        rescue Errno::ENOENT
-          if $DEBUG
-            pbMessage(_INTL("Map {1} was not found.",$game_map.map_id))
-            map = pbWarpToMap
-            if map
-              $MapFactory.setup(map[0])
-              $game_player.moveto(map[1],map[2])
-            else
-              $game_map = nil
-              $scene = nil
-              return
-            end
-          else
-            $game_map = nil
-            $scene = nil
-            pbMessage(_INTL("The map was not found. The game cannot continue."))
-          end
-        end
-        $game_player.center($game_player.x, $game_player.y)
-      else
-        $MapFactory.setMapChanged($game_map.map_id)
-      end
-    }
-    if !$game_map.events   # Map wasn't set up
-      $game_map = nil
-      $scene = nil
-      pbMessage(_INTL("The map is corrupt. The game cannot continue."))
-      return
-    end
-    $PokemonMap = metadata
-    $PokemonEncounters = PokemonEncounters.new
-    $PokemonEncounters.setup($game_map.map_id)
-    pbAutoplayOnSave
-    $game_map.update
-    $PokemonMap.updateMap
-    $scene = Scene_Map.new
-    return true
-  end
-
-  def pbHasSave?(number,limit = false)
-    ret = false
-    if limit
-      savefile = RTP.getSaveFileName("Game_#{number}.rxdata")
-      if safeExists?(savefile)
-        begin
-          ret = pbTryLoadFile(savefile)
-        rescue
-          if safeExists?(savefile+".bak")
-            begin
-              ret = pbTryLoadFile(savefile+".bak")
-            rescue
-            end
-          end
-        end
-      end
-    else
-      for i in 0...number
-        savefile = RTP.getSaveFileName("Game_#{i}.rxdata")
-        if safeExists?(savefile)
-          begin
-            ret = pbTryLoadFile(savefile)
-          rescue
-            if safeExists?(savefile+".bak")
-              begin
-                ret = pbTryLoadFile(savefile+".bak")
-              rescue
-              end
-            end
-          end
-        end
-      end
-    end
-    return true if ret
-  end
 end
 
-class PokemonTemp
-  attr_accessor :saveSlot
+class PokemonSystem
+  attr_accessor :save_slot
 
-  def saveSlot
-    @saveSlot = 0 if !@saveSlot
-    return @saveSlot
+  def save_slot
+    @save_slot = 0 if !@save_slot
+    return @save_slot
   end
 end
