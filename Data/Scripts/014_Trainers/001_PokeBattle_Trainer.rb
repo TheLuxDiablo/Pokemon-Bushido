@@ -106,6 +106,14 @@ class PokeBattle_Trainer
   end
 
   def chapter
+    if !@chapter
+      @chapter=1
+    end
+    begin
+      @chapter=$game_variables[99]
+    rescue
+      @chapter=@chapter
+    end
     return @chapter
   end
 
