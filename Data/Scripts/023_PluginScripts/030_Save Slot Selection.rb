@@ -1,12 +1,13 @@
 class SaveSlot_Selection_Scene
   class Save_Slot
 
-    attr_reader :name
     attr_reader :slot
     attr_reader :file_name
     attr_reader :trainer
     attr_reader :map_id
     attr_reader :frame_count
+
+    attr_accessor :name
 
 
     def initialize(file_name, new_game = false)
@@ -253,7 +254,12 @@ class SaveSlot_Selection_Scene
       end
     end
     cmd = pbMessage(message, commands, 2) { update }
-    pbMessage(_INTL("\\se[]{1} saved the game to Slot {2}.\\me[GUI save game]\\wtnp[30]", $Trainer.name, index)) { update } if cmd == 0 && @show_new_game && $Trainer
+    if cmd == 0 && @show_new_game && $Trainer
+      slot = Save_Slot.new(nil, true)
+      slot.name = _INTL("Slot {1}", index)
+      @sprites["load_panel"].data = slot
+      pbMessage(_INTL("\\se[]{1} saved the game to Slot {2}.\\me[GUI save game]\\wtnp[30]", $Trainer.name, index)) { update }
+    end
     if !($Trainer && single_slot?)
       @sprites.each_value { |s| s.visible = true }
       @sprites["load_panel"].visible = false
@@ -313,6 +319,7 @@ class PokemonSaveSlotPanel < Sprite
       @title       = @data.name
       @trainer     = !@data.valid? ? $Trainer : @data.trainer
       @frame_count = !@data.valid? ? Graphics.frame_count : @data.frame_count
+      @frame_count /= Graphics.frame_rate
       @map_id      = !@data.valid? ? $game_map.map_id : @data.map_id
       init_load_panel
       refresh
@@ -391,11 +398,11 @@ class PokemonSaveSlotPanel < Sprite
 
   def refresh_load
     textpos = []
-    # textpos.push([@title, 32, 8, 0, @base_color, @shadow_color])
-    textpos.push([_INTL("Badges:"), 32, 110, 0, @base_color, @shadow_color])
-    textpos.push([@trainer.numbadges.to_s, 206, 110, 1, @base_color, @shadow_color])
+    textpos.push([@title, 32, 8, 0, @base_color, @shadow_color])
+    textpos.push([_INTL("Chapter:"), 32, 110, 0, @base_color, @shadow_color])
+    textpos.push([@trainer.chapter.to_s, 206, 110, 1, @base_color, @shadow_color])
     textpos.push([_INTL("Pokédex:"), 32, 142, 0, @base_color, @shadow_color])
-    textpos.push([@trainer.pokedexOwned(2).to_s, 206, 142, 1, @base_color, @shadow_color])
+    textpos.push([@trainer.pokedexSeen.to_s, 206, 142, 1, @base_color, @shadow_color])
     textpos.push([_INTL("Time:"), 32, 172, 0, @base_color, @shadow_color])
     hour = @frame_count / 60 / 60
     min  = @frame_count / 60 % 60

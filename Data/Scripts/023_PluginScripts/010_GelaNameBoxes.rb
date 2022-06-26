@@ -548,6 +548,29 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   return ret
 end
 
+class Window_AdvancedTextPokemon
+  def textspeed=(value)
+    offset = Graphics.frame_rate / 40
+    @frameskipChanged = true if @frameskip != (value + offset)
+    @frameskip = (value + offset)
+  end
+end
+
+module MessageConfig
+  def self.pbGetTextSpeed
+    if !@@textSpeed
+      @@textSpeed = pbDefaultTextSpeed
+      @@textSpeed += Graphics.frame_rate / 40
+    end
+    return @@textSpeed
+  end
+
+  def self.pbSetTextSpeed(value)
+    @@textSpeed = (value + Graphics.frame_rate / 40)
+  end
+end
+
+
 PluginManager.register({
   :name => "Name Windows",
   :credits => "Mr. Gela"

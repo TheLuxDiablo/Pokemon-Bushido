@@ -1,6 +1,7 @@
 def pbSave(safesave = false)
   $Trainer.metaID = $PokemonGlobal.playerID
   $Trainer.set_last_save_time
+  $Trainer.chapter = $game_variables[99]
   begin
     File.open(RTP.getSaveFileName("Game_#{$PokemonSystem.save_slot}.rxdata"),"wb") { |f|
       Marshal.dump($Trainer, f)
