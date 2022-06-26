@@ -1274,7 +1274,7 @@ Pokemon = ARCANINE,73
 Pokemon = DECIDUEYE,74
     Form = 1
 #-------------------------------	
-[KAYOKO,Kayoko,2]
+[KAYOKO2,Kayoko,2]
 LoseText = "Hmph. Of course, you always remain triumphant."
 Pokemon = MASQUERAIN,72
 	Item = FOCUSSASH
@@ -1407,7 +1407,7 @@ Pokemon = CELEBI,82
 	Item = LEFTOVERS
 	Moves = GIGADRAIN,RECOVER,UTURN,PERISHSONG
 #-------------------------------	
-[KAYOKO,Kayoko,3]
+[KAYOKO2,Kayoko,3]
 LoseText = "What a battle! Is this what it feels like to be a true Kenshi?"
 Pokemon = MASQUERAIN,78
 	Item = FOCUSSASH
@@ -1523,6 +1523,7 @@ Pokemon = MRRIME,70
 LoseText = "Well that  was something, I wish I had never challenged you! That is my Last Wish!"
 Pokemon = ARCANINE,70
 	Item = LUMBERRY
+	Form = 0
 	Nature = ADAMANT
 	Ability = 0
 	IV = 31
