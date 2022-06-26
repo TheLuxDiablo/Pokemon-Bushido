@@ -85,6 +85,7 @@ class SaveSlot_Selection_Scene
     @sprites.each_value { |s| s.visible = false }
     pbDeactivateWindows(@sprites)
     refresh_save_slots($PokemonSystem.save_slot - 1)
+    @sprites["load_panel"].data  = @slots[0] if $Trainer && single_slot?
   end
 
   def refresh_save_slots(index = 0)
@@ -120,6 +121,7 @@ class SaveSlot_Selection_Scene
     end
     @slots.push(Save_Slot.new(nil, true)) if @show_new_game
     @sprites["slots"].commands = @slots
+    index                      = 0 if index < 0
     @sprites["slots"].index    = index
     loop do
       idx = @sprites["slots"].index
@@ -140,8 +142,15 @@ class SaveSlot_Selection_Scene
 
   def fade_sprites(reverse = false)
     return if @faded == reverse
-    @sprites.each_value { |s| s.visible = true } if reverse
-    @sprites["load_panel"].visible = false
+    if reverse
+      @sprites.each_value { |s| s.visible = true }
+      if !single_slot?
+        @sprites["load_panel"].visible = false
+      else
+        @sprites["slots"].visible = false
+        @sprites["messagebox"].visible = false
+      end
+    end
     alpha = reverse ? 255 : 0
     blk = Color.new(0, 0, 0, alpha)
     @sprites.each_value { |s| s.color = blk }
@@ -167,8 +176,6 @@ class SaveSlot_Selection_Scene
   def get_save_slot
     fade_sprites(true)
     index = $PokemonSystem.save_slot
-    @sprites["bg"].visible = true
-    @sprites["load_panel"].visible = false
     loop do
       index   = get_save_index(index)
       confirm = confirm_slot(index)
@@ -179,7 +186,10 @@ class SaveSlot_Selection_Scene
       elsif confirm == 2
         index = delete_slot
         single = @show_new_game ? 1 : 0
-        break if @slots.length <= single
+        if @slots.length <= single
+          index = -1
+          break
+        end
       end
       break if index > 0 && confirm == 0
     end
@@ -244,8 +254,10 @@ class SaveSlot_Selection_Scene
     end
     cmd = pbMessage(message, commands, 2) { update }
     pbMessage(_INTL("\\se[]{1} saved the game to Slot {2}.\\me[GUI save game]\\wtnp[30]", $Trainer.name, index)) { update } if cmd == 0 && @show_new_game && $Trainer
-    @sprites.each_value { |s| s.visible = true }
-    @sprites["load_panel"].visible = false
+    if !($Trainer && single_slot?)
+      @sprites.each_value { |s| s.visible = true }
+      @sprites["load_panel"].visible = false
+    end
     return cmd
   end
 

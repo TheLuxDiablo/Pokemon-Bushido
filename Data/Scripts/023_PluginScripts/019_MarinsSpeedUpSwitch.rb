@@ -104,7 +104,6 @@ end
 
 def pbAllowSpeedup
   $CanToggle = true
-  $CanToggle = false if !$DEBUG
 end
 
 alias __speedup__pbEnterText pbEnterText unless defined?(__speedup__pbEnterText)

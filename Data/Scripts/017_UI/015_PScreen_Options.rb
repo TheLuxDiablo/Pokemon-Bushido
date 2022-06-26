@@ -405,7 +405,7 @@ class Window_PokemonOption < Window_DrawableCommand
         @mustUpdateOptions = true
       end
     end
-    @mustUpdateOptions = true if Input.trigger?(Input::UP) || Input.trigger?(Input::DOWN)
+    @mustUpdateOptions = true if self.index != oldindex
     refresh if dorefresh
   end
 end

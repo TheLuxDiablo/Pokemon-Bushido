@@ -172,16 +172,15 @@ MenuHandlers.addEntry(:MGIFT,_INTL("Mystery Gift"),"menuMysteryGift",proc{|menu|
 },proc{ next $game_switches[69] })
 
 # Quit Game
-MenuHandlers.addEntry(:QUITGAME,_INTL("Title Screen"),"menuQuit",proc{|menu|
-  if pbConfirmMessage(_INTL("Are you sure you want to return to the Title Screen?"))
+MenuHandlers.addEntry(:QUITGAME,_INTL("Quit Game"),"menuQuit",proc{|menu|
+  if pbConfirmMessage(_INTL("Are you sure you want to quit the game?"))
     menu.pbHideMenu
     scene = PokemonSave_Scene.new
     screen = PokemonSaveScreen.new(scene)
-    menu.close=true
+    menu.close = true
     screen.pbSaveScreen
-    #$scene = nil
+    $scene = nil
     pbBGMStop(0.0)
-    $scene = pbCallTitle
   else
     menu.close = false
   end
