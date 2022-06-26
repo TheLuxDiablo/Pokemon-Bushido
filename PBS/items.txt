@@ -876,3 +876,6 @@
 840,LINKINGCORD,Linking Cord,Linking Cords,1,2100,"A string exuding a mysterious energy that makes you feel a strange sense of connection. It's loved by certain Pokémon.",1,0,7,
 #-------------------------------
 841,LUNARWING,Lunar Wing,Lunar Wings,8,0,"A feather that glows like the moon. It's said to possess the power to dispel nightmares.",0,0,6,
+842,GOLILETTER,Goli Certificate,Goli Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
+843,ENLSLETTER,ENLS Certificate,ENLS Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
+844,VOLTSLETTER,Voltseon Certificate,Voltseon Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
