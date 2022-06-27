@@ -24,6 +24,17 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
+  KenshiF3 = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    pbMessage("\\rYou don't stand a chance against me!")
+    scene.disappearBar
+    stat = (strong_katanas? ? 3 : 1)
+    battler.pbRaiseStatStageEx([:ATTACK, :SPATK], stat, forced: true)
+    scene.pbHideOpponent
+  }
+
   KenshiM1 = Proc.new{ |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
@@ -3013,7 +3024,8 @@ module DialogueModule
     battler = battlers[1]
     pbMessage("\\bGoli Intro Placeholder!")
     scene.disappearBar
-    battler.pbRaiseStatStageEx(:ATK, 1)
+    stat = (strong_katanas? ? 3 : 1)
+    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
     scene.pbHideOpponent
   }
 
@@ -3023,7 +3035,8 @@ module DialogueModule
     battler = battlers[1]
     pbMessage("\\bGoli Last Placeholder!")
     scene.disappearBar
-    battler.pbRaiseStatStageEx(:ATK, 1)
+    stat = (strong_katanas? ? 3 : 1)
+    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
     scene.pbHideOpponent
   }
 
@@ -3033,7 +3046,8 @@ module DialogueModule
     battler = battlers[1]
     pbMessage("\\bENLS Intro Placeholder!")
     scene.disappearBar
-    battler.pbRaiseStatStageEx(:ATK, 1)
+    stat = (strong_katanas? ? 3 : 1)
+    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
     scene.pbHideOpponent
   }
 
@@ -3043,7 +3057,8 @@ module DialogueModule
     battler = battlers[1]
     pbMessage("\\bENLS Last Placeholder!")
     scene.disappearBar
-    battler.pbRaiseStatStageEx(:ATK, 1)
+    stat = (strong_katanas? ? 3 : 1)
+    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
     scene.pbHideOpponent
   }
 
@@ -3053,7 +3068,8 @@ module DialogueModule
     battler = battlers[1]
     pbMessage("\\bVoltseon Intro Placeholder!")
     scene.disappearBar
-    battler.pbRaiseStatStageEx(:ATK, 1)
+    stat = (strong_katanas? ? 3 : 1)
+    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
     scene.pbHideOpponent
   }
 
@@ -3063,7 +3079,8 @@ module DialogueModule
     battler = battlers[1]
     pbMessage("\\bVoltseon Last Placeholder!")
     scene.disappearBar
-    battler.pbRaiseStatStageEx(:ATK, 1)
+    stat = (strong_katanas? ? 3 : 1)
+    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
     scene.pbHideOpponent
   }
 end

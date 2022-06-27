@@ -1274,6 +1274,12 @@ Pokemon = ARCANINE,73
 Pokemon = DECIDUEYE,74
     Form = 1
 #-------------------------------	
+[ELITEKENSHI_F,Naomi]
+LoseText = "No way! But I'm an elite Kenshi..."
+Pokemon = OVERQWIL,73
+Pokemon = SAMUROTT,74
+    Form = 1
+#-------------------------------	
 [KAYOKO2,Kayoko,2]
 LoseText = "Hmph. Of course, you always remain triumphant."
 Pokemon = MASQUERAIN,72
@@ -1384,6 +1390,13 @@ LoseText = "What a fight! I need to rest my Pokémon now!"
 Pokemon = TOXAPEX,72
 Pokemon = BLASTOISE,73
 Pokemon = GRENINJA,74
+#-------------------------------
+[KIMONOGIRL,Kushia]
+LoseText = "Oh! You're the Hero of Aisho! My apologies!"
+Pokemon = LUCARIO,64
+Pokemon = HARIYAMA,65
+Pokemon = LILLIGANT,66
+	Form = 1
 #-------------------------------	
 [RYO,Ryo,3]
 LoseText = "Well fought again, my child. I expect no less."

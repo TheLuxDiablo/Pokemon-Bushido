@@ -61,7 +61,7 @@
 58,SAGE,Sage,48,,,,Male,,
 59,ELDER,Elder,120,,,,Male,,
 60,MEDIUM,Medium,48,,,,Female,,
-61,KIMONOGIRL,Kimono Girl,120,,,,Female,,
+61,KIMONOGIRL,Kimono Girl,120,,,HGSSEncounter-KimonoGirl,Female,,
 62,BEAUTY,Beauty,56,,,,Female,,
 63,BEAUTY2,Beauty,56,,,,Female,,
 64,BEAUTY3,Beauty,56,,,,Female,,
