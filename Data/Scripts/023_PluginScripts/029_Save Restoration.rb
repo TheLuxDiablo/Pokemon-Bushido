@@ -17,7 +17,7 @@ def old_save_restoration
     Marshal.load(f)   # PokemonSystem already loaded
     Marshal.load(f)   # Current map id no longer needed
     Marshal.load(f)
-    Marshal.load(f)
+    variables = Marshal.load(f)
     Marshal.load(f)
     Marshal.load(f)
     Marshal.load(f)
@@ -28,9 +28,13 @@ def old_save_restoration
     storage = Marshal.load(f)
   }
   return false if !trainer.is_a?(PokeBattle_Trainer) || !storage.is_a?(PokemonStorage)
+  excl = Randomizer::EXCLUDED_SPECIES.clone
+  excl.delete(:ZORUA)
+  excl.delete(:ZOROARK)
+  excl.map! { |s| getID(PBSpecies, s) }
   trainer.party.each do |pkmn|
     next if !pkmn || pkmn.shadowPokemon?
-    next if Randomizer::EXCLUSIONS_SPECIES.include?(getID(PBSpecies, pkmn.species)) && !pkmn.shiny?
+    next if excl.include?(pkmn.species) && !pkmn.shiny?
     $Trainer.setSeen(pkmn.species)
     $Trainer.setOwned(pkmn.species)
     pbSeenForm(pkmn)
@@ -43,7 +47,7 @@ def old_save_restoration
     storage.maxPokemon(i).times do |j|
       pkmn = storage[i][j]
       next if !pkmn || pkmn.shadowPokemon?
-      next if Randomizer::EXCLUSIONS_SPECIES.any? { |s| getID(PBSpecies, s) == pkmn.species } && !pkmn.shiny?
+      next if excl.include?(pkmn.species) && !pkmn.shiny?
       $Trainer.setSeen(pkmn.species)
       $Trainer.setOwned(pkmn.species)
       pbSeenForm(pkmn)
@@ -54,6 +58,8 @@ def old_save_restoration
     end
   end
   $PokemonSystem.old_save_restored = true
+  # Beat Main Game in old save
+  $PokemonSystem.game_modes_won[6] = variables && variables[99] && variables[99] > 6
   $game_variables[1] = trainer.name
   return true
 end

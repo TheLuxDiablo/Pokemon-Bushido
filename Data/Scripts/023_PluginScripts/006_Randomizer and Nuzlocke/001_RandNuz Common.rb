@@ -5,23 +5,23 @@
 #===============================================================================
 module Randomizer
   # list of trainers to exclude from the randomizer
-  EXCLUSIONS_TRAINERS = []
+  EXCLUDED_TRAINERS = []
 
   # list of species to exclude from the randomizer
-  EXCLUSIONS_SPECIES = [
+  EXCLUDED_SPECIES = [
     :LUGIA, :HOOH, :COBALION, :TERRAKION, :VIRIZION, :ZERAORA, :LANDORUS,
     :TORNADUS, :THUNDURUS, :ENAMORUS, :CELEBI, :DREEPY, :DRAKOLAK, :DRAGAPULT,
-    :MILCERY, :ALCREMIE
+    :MILCERY, :ALCREMIE, :ZORUA, :ZOROARK
   ]
 
   # list of items to exclude from the randomizer (Automatically excludes Key Items)
-  EXCLUSIONS_ITEMS = [
+  EXCLUDED_ITEMS = [
     :HM01, :HM02, :HM03, :HM04, :HM05, :HM06, :RARECANDY, :LIGHTFLUTE,
     :GALARICACUFF, :GALARICAWREATH, :POKEBALL
   ]
 
   # list of moves to exclude from the randomizer (Automatically excludes shadow moves)
-  EXCLUSIONS_MOVES = [
+  EXCLUDED_MOVES = [
     :BURNKUNAI, :SHOCKKUNAI, :POISONKUNAI, :SLEEPKUNAI, :STRUGGLE
   ]
 end
@@ -41,15 +41,15 @@ end
 #===============================================================================
 #  entry to store state of battle (static or non-static)
 #===============================================================================
-class PokemonGlobalMetadata
-  attr_accessor :gameModesWon
+class PokemonSystem
+  attr_accessor :game_modes_won
 
-  def gameModesWon
-    if !@gameModesWon
-      @gameModesWon = []
-      @gameModesWon[0] = true if $game_variables[99] > 6
+  def game_modes_won
+    if !@game_modes_won
+      @game_modes_won = []
+      @game_modes_won[0] = true if $game_variables[99] > 6
     end
-    return @gameModesWon
+    return @game_modes_won
   end
 end
 

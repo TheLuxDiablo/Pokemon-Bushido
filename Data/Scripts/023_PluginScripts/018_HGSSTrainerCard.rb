@@ -177,7 +177,7 @@ class PokemonTrainerCard_Scene
     x = 462
     if $game_variables[99] != "Hattori"
       for i in 0...8
-        if $PokemonGlobal.gameModesWon[i]
+        if $PokemonSystem.game_modes_won[i]
           imagepos.push(["Graphics/Pictures/Trainer Card/icon_badges",x,10,i*32,0,32,32])
           x -= 36
         end

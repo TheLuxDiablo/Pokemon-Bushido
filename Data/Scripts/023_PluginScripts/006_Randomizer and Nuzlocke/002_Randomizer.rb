@@ -39,7 +39,7 @@ module Randomizer
     # iterates through each trainer
     for i in 0...data.length
       # if defined as an exclusion rule, trainer will not be randomized
-      excl = Randomizer::EXCLUSIONS_TRAINERS
+      excl = Randomizer::EXCLUDED_TRAINERS
       if !excl.nil? && excl.is_a?(Array)
         for ent in excl
           next if !ent.is_a?(Numeric) && !hasConst?(PBTrainers, ent)
@@ -87,7 +87,7 @@ module Randomizer
   #  randomize the pokedex
   #-----------------------------------------------------------------------------
   def self.randomizeRegionalDex(extreme = false)
-    excl = Randomizer::EXCLUSIONS_SPECIES.clone.map!{ |s|
+    excl = Randomizer::EXCLUDED_SPECIES.clone.map!{ |s|
       next getID(PBSpecies, s) if s.is_a?(Symbol)
       next s
     }
@@ -140,7 +140,7 @@ module Randomizer
     items.compact!
     items.uniq!
     4.times { items.shuffle! }
-    excl = Randomizer::EXCLUSIONS_ITEMS.clone.map! { |s|
+    excl = Randomizer::EXCLUDED_ITEMS.clone.map! { |s|
       next getID(PBItems, s) if s.is_a?(Symbol)
       next s
     }
@@ -187,7 +187,7 @@ module Randomizer
     moves.compact!
     moves.uniq!
     4.times { moves.shuffle! }
-    excl = Randomizer::EXCLUSIONS_MOVES.clone.map! { |s|
+    excl = Randomizer::EXCLUDED_MOVES.clone.map! { |s|
       next getID(PBMoves, s) if s.is_a?(Symbol)
       next s
     }
