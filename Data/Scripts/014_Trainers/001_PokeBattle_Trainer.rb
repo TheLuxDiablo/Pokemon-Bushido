@@ -5,7 +5,7 @@ class PokeBattle_Trainer
   attr_accessor :trainertype
   attr_writer   :outfit
   attr_accessor :badges
-  attr_accessor :cells
+  attr_accessor :nat_dex_show
   attr_accessor :chapter
   attr_reader   :money
   attr_accessor :seen
@@ -96,25 +96,6 @@ class PokeBattle_Trainer
     ret = 0
     @badges.each { |b| ret += 1 if b }
     return ret
-  end
-
-  #Thundaga
-  def cells
-    @cells=0 if !@cells
-    @cells=$game_variables[38]
-    return @cells
-  end
-
-  def chapter
-    if !@chapter
-      @chapter=1
-    end
-    begin
-      @chapter=$game_variables[99]
-    rescue
-      @chapter=@chapter
-    end
-    return @chapter
   end
 
   def gender

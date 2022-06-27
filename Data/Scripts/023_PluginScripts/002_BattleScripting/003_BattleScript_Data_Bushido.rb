@@ -3025,7 +3025,7 @@ module DialogueModule
     pbMessage("\\bGoli Intro Placeholder!")
     scene.disappearBar
     stat = (strong_katanas? ? 3 : 1)
-    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
+    battler.pbRaiseStatStageEx(:ATTACK, stat, forced: true)
     scene.pbHideOpponent
   }
 
@@ -3036,7 +3036,7 @@ module DialogueModule
     pbMessage("\\bGoli Last Placeholder!")
     scene.disappearBar
     stat = (strong_katanas? ? 3 : 1)
-    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
+    battler.pbRaiseStatStageEx(:ATTACK, stat, forced: true)
     scene.pbHideOpponent
   }
 
@@ -3047,7 +3047,7 @@ module DialogueModule
     pbMessage("\\bENLS Intro Placeholder!")
     scene.disappearBar
     stat = (strong_katanas? ? 3 : 1)
-    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
+    battler.pbRaiseStatStageEx(:ATTACK, stat, forced: true)
     scene.pbHideOpponent
   }
 
@@ -3058,7 +3058,7 @@ module DialogueModule
     pbMessage("\\bENLS Last Placeholder!")
     scene.disappearBar
     stat = (strong_katanas? ? 3 : 1)
-    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
+    battler.pbRaiseStatStageEx(:ATTACK, stat, forced: true)
     scene.pbHideOpponent
   }
 
@@ -3069,7 +3069,7 @@ module DialogueModule
     pbMessage("\\bVoltseon Intro Placeholder!")
     scene.disappearBar
     stat = (strong_katanas? ? 3 : 1)
-    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
+    battler.pbRaiseStatStageEx(:ATTACK, stat, forced: true)
     scene.pbHideOpponent
   }
 
@@ -3080,7 +3080,7 @@ module DialogueModule
     pbMessage("\\bVoltseon Last Placeholder!")
     scene.disappearBar
     stat = (strong_katanas? ? 3 : 1)
-    battler.pbRaiseStatStageEx([:ATTACK], stat, forced: true)
+    battler.pbRaiseStatStageEx(:ATTACK, stat, forced: true)
     scene.pbHideOpponent
   }
 end

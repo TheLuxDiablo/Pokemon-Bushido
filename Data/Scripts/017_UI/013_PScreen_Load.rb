@@ -299,9 +299,10 @@ class PokemonLoadScreen
       case command
       when @cmd_continue
         pbPlayDecisionSE
+        old_slot_length = @load_scene.slots.length
         slot = @load_scene.get_save_slot
         if slot <= 0
-          create_load_commands(true) if slot == -1
+          create_load_commands(true) if old_slot_length != @load_scene.slots.length
           next
         end
         $PokemonSystem.save_slot = slot
@@ -397,9 +398,10 @@ class PokemonLoadScreen
         return
       when @cmd_new_game
         pbPlayDecisionSE
+        old_slot_length = @ng_scene.slots.length
         slot = @ng_scene.get_save_slot
         if slot <= 0
-          create_load_commands(true) if slot == -1
+          create_load_commands(true) if old_slot_length != @ng_scene.slots.length
           next
         end
         $PokemonSystem.save_slot = slot

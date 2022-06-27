@@ -29071,7 +29071,6 @@ Height = 1.3
 Weight = 43.0
 Color = Gray
 Shape = 6
-RegionalNumbers = 0,218,0,144,252,0,0,91,326,292,0,28
 Kind = Free Climb
 Pokedex = Because of Sneasler's virulent poison and daunting physical prowess, no other species could hope to best it on the frozen highlands. Preferring solitude, this species does not form packs.
 WildItemUncommon = QUICKCLAW

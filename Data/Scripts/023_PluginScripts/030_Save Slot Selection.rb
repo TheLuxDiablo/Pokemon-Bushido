@@ -9,7 +9,6 @@ class SaveSlot_Selection_Scene
 
     attr_accessor :name
 
-
     def initialize(file_name, new_game = false)
       @file_name = file_name
       @state     = :Invalid
@@ -127,7 +126,7 @@ class SaveSlot_Selection_Scene
     loop do
       idx = @sprites["slots"].index
       break if idx == 0
-      break if @slots[idx] && !@slots[idx].new_game?
+      break if @slots[idx] && (!@slots[idx].new_game? || $Trainer)
       @sprites["slots"].index -= 1
     end
   end
@@ -328,7 +327,12 @@ class PokemonSaveSlotPanel < Sprite
 
   def visible=(value)
     super
-    pbUpdateSpriteHash(@sprites) if @sprites
+    @sprites.each_value { |s| s.visible = value } if @sprites
+  end
+
+  def color=(value)
+    super
+    @sprites.each_value { |s| s.color = value } if @sprites
   end
 
   def update
@@ -400,16 +404,18 @@ class PokemonSaveSlotPanel < Sprite
     textpos = []
     textpos.push([@title, 32, 8, 0, @base_color, @shadow_color])
     textpos.push([_INTL("Chapter:"), 32, 110, 0, @base_color, @shadow_color])
-    textpos.push([@trainer.chapter.to_s, 206, 110, 1, @base_color, @shadow_color])
-    textpos.push([_INTL("Pokédex:"), 32, 142, 0, @base_color, @shadow_color])
-    textpos.push([@trainer.pokedexSeen.to_s, 206, 142, 1, @base_color, @shadow_color])
+    textpos.push([@trainer.chapter.to_s, 226, 110, 1, @base_color, @shadow_color])
+    textpos.push([_INTL("Journal:"), 32, 142, 0, @base_color, @shadow_color])
+    dex_num = @trainer.nat_dex_show ? -1 : 2
+    dex_str = _INTL("{1} / {2}", @trainer.pokedexOwned(dex_num), pbGetRegionalDexLength(dex_num))
+    textpos.push([dex_str, 226, 142, 1, @base_color, @shadow_color])
     textpos.push([_INTL("Time:"), 32, 172, 0, @base_color, @shadow_color])
     hour = @frame_count / 60 / 60
     min  = @frame_count / 60 % 60
     if hour > 0
-      textpos.push([_INTL("{1}h {2}m", hour, min), 206, 172, 1, @base_color, @shadow_color])
+      textpos.push([_INTL("{1}h {2}m", hour, min), 226, 172, 1, @base_color, @shadow_color])
     else
-      textpos.push([_INTL("{1}m", min), 206, 172, 1, @base_color, @shadow_color])
+      textpos.push([_INTL("{1}m", min), 226, 172, 1, @base_color, @shadow_color])
     end
     if @trainer.male?
       textpos.push([@trainer.name, 114, 66, 0, Color.new(56, 160, 248), Color.new(56, 104, 168)])
