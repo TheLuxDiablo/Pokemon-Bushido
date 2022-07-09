@@ -606,9 +606,9 @@ class PokemonOption_Scene
         elsif Input.trigger?(Input::C)
           if @sprites["option"].index==@PokemonOptions.length
             break
-          elsif @sprites["option"].index == (@PokemonOptions.length - 1)
-            System.show_settings
           elsif @sprites["option"].index == (@PokemonOptions.length - 2)
+            System.show_settings
+          elsif @sprites["option"].index == (@PokemonOptions.length - 3)
             pbMessage("\\l[7]\\ts[]<u>Main Series:</u>\nB acts as the Run and Cancel button.\nA acts as the Menu button.\n\n<u>Custom:</u>\nB acts as the Menu and Cancel button.\nA acts as Run button.")
             pbMessage("You can look at/change what the A, B and other buttons are on your Keyboard/Controller under the \"Configure Controls\" Option.")
           end
