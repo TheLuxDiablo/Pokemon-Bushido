@@ -39,7 +39,6 @@ FLASH_ITEM = :KATANALIGHT
 FINAL_KATANA = :KATANALIGHT4
 
 
-
 # When true, this overrides the old surfing mechanics.
 USING_SURF_ITEM = true
 
@@ -118,7 +117,7 @@ if USING_SURF_ITEM
     if !$PokemonBag.pbHasItem?(SURF_ITEM) && !$DEBUG && !$PokemonBag.pbHasItem?(FINAL_KATANA)
       return false
     end
-    if pbConfirmMessage(_INTL("The water is a deep blue...\nWould you like to use the Water Walk technique?"))
+    #if pbConfirmMessage(_INTL("The water is a deep blue...\nWould you like to use the Water Walk technique?"))
       pbMessage(_INTL("{1} used the {2}, Water Walking Style!", $Trainer.name, PBItems.getName(getConst(PBItems,SURF_ITEM))))
       pbKatanaMoveAnimation(4)
       pbCancelVehicles
@@ -126,13 +125,17 @@ if USING_SURF_ITEM
       pbCueBGM(surfbgm,0.5) if surfbgm
       pbStartSurfing
       return true
-    end
-    return false
+    #end
+    #return false
   end
 
   ItemHandlers::UseInField.add(SURF_ITEM,proc{|item|
     cmd=0
-    cmd= pbMessage("It's the Katana of Light.\nIt is glowing brightly.",["Heal Pokémon","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+    if(!PLAYERKATANATECHNIQUES)
+        cmd= pbMessage("It's the Katana of Light.\nIt is glowing brightly.",["Heal Party","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+    else
+        cmd= pbMessage("It's the Katana of Light.\nIt is glowing brightly.",["Heal Party (3 SP)","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+    end
     if cmd == 0 # HEAL
       pbHealingVial()
       next 1
@@ -262,18 +265,27 @@ if USING_ROCK_SMASH_ITEM
       return false
     end
     item = PBItems.getName(getConst(PBItems,ROCK_SMASH_ITEM))
-    if pbConfirmMessage(_INTL("This rock appears to be breakable. Would you like to use the {1}?", item))
-      pbMessage(_INTL("{1} used the {2}, Solid Strike style!",$Trainer.name, item))
-      pbKatanaMoveAnimation(1)
-      pbSmashEvent($game_player.pbFacingEvent)
-      return true
-    end
-    return false
+    #Thundaga Make that rock smash instant yo
+    #if pbConfirmMessage(_INTL("This rock appears to be breakable. Would you like to use the {1}?", item))
+    #  pbMessage(_INTL("{1} used the {2}, Solid Strike style!",$Trainer.name, item))
+    #  pbKatanaMoveAnimation(1)
+    #  pbSmashEvent($game_player.pbFacingEvent)
+    #  return true
+    #end
+    #return false
+    pbMessage(_INTL("{1} used the {2}, Solid Strike style!",$Trainer.name, item))
+    pbKatanaMoveAnimation(1)
+    pbSmashEvent($game_player.pbFacingEvent)
+    return true
   end
 
   ItemHandlers::UseInField.add(ROCK_SMASH_ITEM,proc{|item|
     cmd=0
-    cmd= pbMessage("It's the Katana of Light.\nIt is glowing warmly.",["Heal Pokémon","Cut","Flash","Rock Smash","Put Away"],0,nil,0)
+    if(!PLAYERKATANATECHNIQUES)
+        cmd= pbMessage("It's the Katana of Light.\nIt is glowing warmly.",["Heal Party","Cut","Flash","Rock Smash","Put Away"],0,nil,0)
+    else
+        cmd= pbMessage("It's the Katana of Light.\nIt is glowing warmly.",["Heal Party (3 SP)","Cut","Flash","Rock Smash","Put Away"],0,nil,0)
+    end
     if cmd == 0 # HEAL
       pbHealingVial()
       next 1
@@ -380,19 +392,25 @@ if USING_CUT_ITEM
       pbMessage(_INTL("This tree looks like it can be cut down by a skilled warrior with a Katana."))
       return false
     end
-    pbMessage(_INTL("This tree looks like it can be cut down by a skilled warrior with a Katana.\1"))
-    if pbConfirmMessage(_INTL("Would you like to cut it down?"))
-      if $game_switches[67]
+    if(!HasChoppedDownOneTree?())
+        pbMessage(_INTL("This tree looks like it can be cut down by a skilled warrior with a Katana.\1"))
+        setChopDownOneTree()
+    end
+    #if pbConfirmMessage(_INTL("Would you like to cut it down?"))
+      if KatanaOfLightAwakened?()
         itemname = PBItems.getName(getConst(PBItems,FLASH_ITEM))
+      elsif ($PokemonBag.pbHasItem?(FINAL_KATANA))
+        itemname = PBItems.getName(getConst(PBItems,FINAL_KATANA))
       else
         itemname = PBItems.getName(getConst(PBItems,CUT_ITEM))
       end
+
       pbMessage(_INTL("{1} used the {2}!",$Trainer.name,itemname))
       pbKatanaMoveAnimation(2)
       pbSmashEvent($game_player.pbFacingEvent)
       return true
-    end
-    return false
+    #end
+    #return false
   end
 
   ItemHandlers::UseInField.add(CUT_ITEM, proc do
@@ -441,7 +459,11 @@ if USING_FLASH_ITEM
 
   ItemHandlers::UseInField.add(FLASH_ITEM,proc{|item|
     cmd=0
-    cmd= pbMessage("It's the Katana of Light.\nThough it has awakened, it appears weak.",["Heal Pokémon","Cut","Flash","Put Away"],0,nil,0)
+    if(!PLAYERKATANATECHNIQUES)
+        cmd= pbMessage("It's the Katana of Light.\nThough it has awakened, it appears weak.",["Heal Party","Cut","Flash","Put Away"],0,nil,0)
+    else
+        cmd= pbMessage("It's the Katana of Light.\nThough it has awakened, it appears weak.",["Heal Party (3 SP)","Cut","Flash","Put Away"],0,nil,0)
+    end
     if cmd == 0 # HEAL
       pbHealingVial()
       next 1
@@ -477,7 +499,11 @@ end
 
 ItemHandlers::UseInField.add(FINAL_KATANA,proc{|item|
   cmd=0
-  cmd= pbMessage("It's the true Katana of Light.\nIt shines brilliantly.",["Heal Pokémon","Purify","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+  if(!PLAYERKATANATECHNIQUES)
+    cmd= pbMessage("It's the true Katana of Light.\nIt shines brilliantly.",["Heal Party","Purify","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+  else
+    cmd= pbMessage("It's the true Katana of Light.\nIt shines brilliantly.",["Heal Party (3 SP)","Purify","Cut","Flash","Rock Smash","Surf","Put Away"],0,nil,0)
+  end
   if cmd == 0 # HEAL
     pbHealingVial()
     next 1

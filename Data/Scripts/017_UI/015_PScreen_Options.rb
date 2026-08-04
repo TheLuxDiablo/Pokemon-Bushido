@@ -525,7 +525,7 @@ class PokemonOption_Scene
         proc { },
         proc { }
       ),
-      EnumOption.new(_INTL("Weaker Techniques"),[_INTL("Off"),_INTL("On")],
+      EnumOption.new(_INTL("Enemy Kat. Tech."),[_INTL("\Strong"),_INTL("Weakened")],
         proc { $PokemonSystem.enemyTechniques },
         proc { |value| $PokemonSystem.enemyTechniques = value }
       ),
@@ -541,7 +541,7 @@ class PokemonOption_Scene
       _INTL("Change the size of the Game Window."),
       _INTL("Change the default method of movement."),
       _INTL("Match the controls to the main series.\n(Press C for more details)"),
-      _INTL("Weakens enemy Katana Techniques. Prevents statuses and most stat changes."),
+      _INTL("Change enemy Katana Technique strength. Weakened prevents most negative effects."),
       _INTL("Reconfigure the game's controls."),
       _INTL("Close the Options Menu.")
     ]

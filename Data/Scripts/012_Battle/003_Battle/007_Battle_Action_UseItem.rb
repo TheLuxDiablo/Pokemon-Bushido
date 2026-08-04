@@ -74,14 +74,20 @@ class PokeBattle_Battle
     end
   end
 
-  def pbUseItemMessage(item,trainerName)
-    itemName = PBItems.getName(item)
-    if itemName.starts_with_vowel?
-      pbDisplayBrief(_INTL("{1} used an {2}.",trainerName,itemName))
-    else
-      pbDisplayBrief(_INTL("{1} used a {2}.",trainerName,itemName))
+    def pbUseItemMessage(item,trainerName)
+      itemName = PBItems.getName(item)
+      if(isItemAPKT(item))
+        # FIXED: Cleanly strips "KT - " from the start and " (X SP)" from the end using RegEx
+        cleanName = itemName.gsub(/^KT\s*-\s*/i, "").gsub(/\s*\(.*\)/, "")
+    
+        text = (_INTL("Katana Technique: {1}!", cleanName))
+        pbDisplayBrief(text)
+      elsif itemName.starts_with_vowel?
+        pbDisplayBrief(_INTL("{1} used an {2}.",trainerName,itemName))
+      else
+        pbDisplayBrief(_INTL("{1} used a {2}.",trainerName,itemName))
+      end
     end
-  end
 
   # Uses an item on a Pokémon in the trainer's party.
   def pbUseItemOnPokemon(item,idxParty,userBattler)

@@ -12,8 +12,6 @@ ITEM_BATTLE_USE  = 7
 ITEM_TYPE        = 8
 ITEM_MACHINE     = 9
 
-
-
 class PokemonTemp
   attr_accessor :itemsData
 end

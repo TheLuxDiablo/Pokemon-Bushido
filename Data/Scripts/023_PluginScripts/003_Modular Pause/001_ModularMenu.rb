@@ -142,9 +142,12 @@ class PokemonPauseMenu_Scene
     else
       content.push($game_map.name)
       content.push(pbGetTimeNow.strftime("%I:%M %p"))
-      content.push(_INTL("Chapter: {1}",$game_variables[99]))
+      content.push(_INTL("Chapter: {1}", $game_variables[99]))
       if $game_switches[68]
-        content.push(_INTL("Purified: {1}",$game_variables[94]))
+        content.push(_INTL("Purified: {1}", $game_variables[94]))
+      end
+      if PLAYERKATANATECHNIQUES == true && KatanaOfLightAwakened?() # Thundaga showing spirit energy here for PKT, only do afet katana awakened
+        content.push(_INTL("SP: {1}", getPlayerCurrentEnergy()))
       end
     end
     for i in 0...content.length

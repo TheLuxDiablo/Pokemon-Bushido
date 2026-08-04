@@ -170,6 +170,7 @@ Naruto: Clash of Ninja 4 and Naruto: Clash of Ninja Revolution 3 (they share a l
 - Konoha Gate (they’re different songs I swear)
 - Leaf Village (Day)
 - Hokage’s Monument
+- Main Menu (Clash of Ninja Revolution: Special)
 
 Pokemon Conquest
 - Dark Battle

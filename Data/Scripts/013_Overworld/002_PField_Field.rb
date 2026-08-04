@@ -681,8 +681,27 @@ module InterpreterFieldMixin
     return true
   end
 
+  # Thundaga new method to disable XP gain
+  def pbDisableXPGain
+    $game_variables[200] = true
+  end
+
+  def pbEnableXPGain
+    $game_variables[200] = false
+  end
+
+  def pbDisableMoneyGain
+    $game_variables[201] = true
+  end
+
+  def pbEnableMoneyGain
+    $game_variables[201] = false
+  end
+
   def pbTrainerEnd
     pbGlobalUnlock
+    pbEnableXPGain
+    pbEnableMoneyGain
     e = get_character(0)
     e.erase_route if e
   end

@@ -35,6 +35,40 @@ class PokeBattle_Battler
     return !failed
   end
 
+  # Special stat raising method for Player Katana Techniques
+  def pbRaiseStatStagePKT(stats, incs, anim = true, user = nil, forced: false)
+    user = self if user.nil?
+    yield if block_given?
+    stats    = [stats] if !stats.is_a?(Array)
+    incs     = [incs] if !incs.is_a?(Array)
+    failed   = true
+    shown    = false
+    stats.each_with_index do |stat, i|
+      increment = incs[i] || incs[0]
+      stat      = getID(PBStats, stat) if stat.is_a?(Symbol)
+      showAnim  = false
+      next if !pbCanRaiseStatStage?(stat, user)
+      if !shown
+        case anim
+        when Symbol
+          @battle.pbAnimation(getID(PBMoves, anim), user, self)
+          showAnim = true
+          shown    = true
+        when String
+          @battle.pbCommonAnimation(anim, user, self)
+          showAnim = true
+          shown    = true
+        when TrueClass
+          showAnim = true
+          shown    = true
+        end
+      end
+      pbRaiseStatStage(stat, increment, user, showAnim, true)
+      failed = false
+    end
+    return !failed
+  end
+
   # Special stat lowering method for Katana Techniques (covers the weak katana toggle)
   def pbLowerStatStageEx(stats, incs, anim = true, user = nil, forced: false)
     user = self if user.nil?
@@ -70,10 +104,62 @@ class PokeBattle_Battler
     return !failed
   end
 
-  # Special status inflicting method for Katana Techniques (covers the weak katana toggle)
-  def pbInflictStatusEx(newStatus, newStatusCount = 0, anim = nil, user = nil, ignoreStatus = false, msg = nil, move = nil, forced: false)
+  # Special stat lowering method for PKT
+  def pbLowerStatStagePKT(stats, incs, anim = true, user = nil, forced: false)
     user = self if user.nil?
+    yield if block_given?
+    stats    = [stats] if !stats.is_a?(Array)
+    incs     = [incs] if !incs.is_a?(Array)
+    failed   = true
+    shown    = false
+    stats.each_with_index do |stat, i|
+      increment = incs[i] || incs[0]
+      stat      = getID(PBStats, stat) if stat.is_a?(Symbol)
+      showAnim  = false
+      next if !pbCanLowerStatStage?(stat, user)
+      if !shown
+        case anim
+        when Symbol
+          @battle.pbAnimation(getID(PBMoves, anim), user, self)
+          showAnim = true
+          shown    = true
+        when String
+          @battle.pbCommonAnimation(anim, user, self)
+          showAnim = true
+          shown    = true
+        when TrueClass
+          showAnim = true
+          shown    = true
+        end
+      end
+      pbLowerStatStage(stat, increment, user, showAnim, true, true)
+      failed = false
+    end
+    return !failed
+  end
+
+  # Special status inflicting method for Katana Techniques (covers the weak katana toggle)
+  def pbInflictStatusEx(stat, newStatusCount = 0, anim = nil, user = nil, ignoreStatus = false, msg = nil, move = nil, targets = nil, forced: false)
+    user = self if user.nil?
+    targets = self if targets.nil?
+
     return false if !forced && opposes?(user) && !strong_katanas?
+    return false if !strong_katanas?
+    yield if block_given?
+    case anim
+    when Symbol
+      @battle.pbAnimation(getID(PBMoves, anim), user, targets) if !fainted? && !user.fainted?
+    when String
+      @battle.pbCommonAnimation(anim, user, targets) if !fainted? && !user.fainted?
+    end
+    newStatus = getID(PBStatuses, stat) if stat.is_a?(Symbol)
+    return false if !pbCanInflictStatus?(newStatus, user, true, move, ignoreStatus)
+    return pbInflictStatus(newStatus, newStatusCount, msg, user)
+  end
+
+    # Special status inflicting method for PKT
+  def pbInflictStatusPKT(stat, newStatusCount = 0, anim = nil, user = nil, ignoreStatus = false, msg = nil, move = nil, forced: false)
+    user = self if user.nil?
     yield if block_given?
     case anim
     when Symbol
@@ -88,9 +174,9 @@ class PokeBattle_Battler
 
   # Special entry hazard setting method for Katana Techniques (covers the weak katana toggle)
   def pbSetHazards(move, user, harsh = strong_katanas?, forced: false)
-    return false if !forced && opposes?(user) && !strong_katanas
+    return false if !forced && opposes?(user) && !strong_katanas?
     yield if block_given?
-    @battle.pbAnimation(getID(PBMoves, anim), user, self) if !fainted? && !user.fainted?
+    @battle.pbAnimation(getID(PBMoves, move), user, self) if !fainted? && !user.fainted?
     case move
     when :STEALTHROCK
       @battle.pbDisplay(_INTL("Pointed stones float in the air around {1}!", pbTeam(true)))
@@ -168,7 +254,15 @@ class PokeBattle_Battle
   def pbStartTerrainEx(user, terrain, anim = true)
     @field.terrain = PBBattleTerrains::None
     terr_id = (terrain.to_s.upcase + "TERRAIN").to_sym
-    @battle.pbAnimation(getID(PBMoves, terr_id), user, nil) if anim
+    anim_id = getID(PBMoves, terr_id)
+
+    # Check if @battle exists, otherwise try to extract it from the user (the Pokémon object)
+    battle_obj = @battle || (user.respond_to?(:battle) ? user.battle : nil)
+  
+    if anim && anim_id && battle_obj
+        battle_obj.pbAnimation(anim_id, user, nil)
+    end
+
     pbStartTerrain(user, getID(PBBattleTerrains, terrain), true)
   end
 end

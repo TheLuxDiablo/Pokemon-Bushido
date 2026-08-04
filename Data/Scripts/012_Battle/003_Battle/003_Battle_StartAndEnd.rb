@@ -339,7 +339,7 @@ class PokeBattle_Battle
   # End of battle
   #=============================================================================
   def pbGainMoney
-    return if !@internalBattle || !@moneyGain
+    return if !@internalBattle || !@moneyGain || $game_variables[201] == true
     # Money rewarded from opposing trainers
     if trainerBattle?
       tMoney = 0

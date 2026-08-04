@@ -61,6 +61,17 @@ class PokemonBag_Scene
   POCKETNAMESHADOWCOLOR = Color.new(96, 96, 96)
   ITEMSVISIBLE          = 7
 
+  def pbDrawGaugeSP(bitmap, rect, color, value, maxValue)
+  return if !bitmap
+    #bitmap.fill_rect(rect.x, rect.y, rect.width, rect.height, Color.black)
+    bitmap.fill_rect(rect.x, rect.y, rect.width, rect.height, Color.new(106, 106, 104))
+    width = (maxValue <= 0) ? 0 : (rect.width - 4) * value / maxValue
+    if rect.width >= 4 && rect.height >= 4
+      bitmap.fill_rect(rect.x + 2, rect.y + 2, rect.width - 4, rect.height - 4, Color.new(106, 106, 104))
+      bitmap.fill_rect(rect.x + 2, rect.y + 2, width, rect.height - 4, color)
+    end
+  end
+
   def pbStartScene(bag,choosing=false,filterproc=nil,resetpocket=true)
     @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z = 99999
@@ -135,6 +146,33 @@ class PokemonBag_Scene
     @sprites["itemtext"].shadowColor = ITEMTEXTSHADOWCOLOR
     @sprites["itemtext"].visible     = true
     @sprites["itemtext"].windowskin  = nil
+
+    # Thundaga energy text in bag
+    if(PLAYERKATANATECHNIQUES == true && KatanaOfLightAwakened?())
+        @sprites["energytext"] = Window_UnformattedTextPokemon.newWithSize(_INTL("SP {1}", energyRatio()), -14, 180, 140, 100, @viewport)
+        @sprites["energytext"].contents.font.size = 16
+        @sprites["energytext"].contents.font.bold = true
+        #@sprites["energytext"].baseColor   = ITEMTEXTBASECOLOR
+        @sprites["energytext"].baseColor   = Color.new(106, 106, 104)
+        #@sprites["energytext"].shadowColor = ITEMTEXTSHADOWCOLOR
+        @sprites["energytext"].shadowColor   = Color.new(0, 0, 0, 0)
+        @sprites["energytext"].visible     = true
+        @sprites["energytext"].windowskin  = nil
+
+        # Do an energy meter here as well
+        @sprites["energy_gauge"] = Sprite.new(@viewport)
+        @sprites["energy_gauge"].x = 0 # Adjust these coordinates to line up 
+        @sprites["energy_gauge"].y = 0 # perfectly with your "energytext" sprite frame
+
+        # 2. Assign a blank bitmap workspace to it matching your UI box boundaries
+        @sprites["energy_gauge"].bitmap = Bitmap.new(Graphics.width, Graphics.height)
+
+        # 3. Call your draw method using THIS specific sprite's bitmap instead of the main bg
+        gauge_rect = Rect.new(0, 214, 188, 10) # Set your custom X, Y, Width, and Height
+        pbDrawGaugeSP(@sprites["energy_gauge"].bitmap, gauge_rect, Color.new(240, 184, 56), getPlayerCurrentEnergy(), getPlayerMaxEnergy())
+    end
+    # ==============================
+
     @sprites["tm_compat"] = TMCompatibilityPanel.new(@viewport)
     @sprites["tm_compat"].bitmap = pbBitmap("Graphics/Pictures/Bag/tm_panel")
     @sprites["tm_compat"].x      = 2

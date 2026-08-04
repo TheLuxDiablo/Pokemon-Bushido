@@ -164,6 +164,10 @@ def pbKatanaMoveAnimation(color=1)
     bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg5")
   elsif color == 6
     bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg6")
+  elsif color == 7 # LIGHT
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg7")
+  elsif color == 8 # Haze
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg8")
   else
     bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg")
   end
@@ -294,6 +298,208 @@ def pbKatanaMoveAnimation(color=1)
     strobe.dispose
   end
   strobes.clear
+  bg.dispose
+  viewport.dispose
+  return true
+end
+
+# Anim for PKT
+def pbKatanaMoveAnimationPKT(color=1)
+  viewport=Viewport.new(0,0,0,0)
+  viewport.z=99999
+
+  # This viewport sits on top of everything else and handles only the bars
+  bar_viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
+  bar_viewport.z = 100000 
+
+  bg=Sprite.new(viewport)
+  if color == 1
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg1")
+  elsif color == 2
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg2")
+  elsif color == 3
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg3")
+  elsif color == 4
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg4")
+  elsif color == 5
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg5")
+  elsif color == 6
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg6")
+  elsif color == 7 # LIGHT
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg7")
+  elsif color == 8 # Haze
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg8")
+  elsif color == 9 # Fire
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg9")
+  else
+    bg.bitmap=RPG::Cache.load_bitmap("Graphics/Pictures/hiddenMovebg")
+  end
+
+  sprite = IconSprite.new(viewport)
+  sprite.setBitmap(pbPlayerSpriteFile($Trainer.trainertype))
+  sprite.ox = (sprite.bitmap.width/2)
+  sprite.oy = (sprite.bitmap.height/2) + 4
+  sprite.z = 1
+  sprite.visible=false
+
+  light = AnimatedPlane.new(viewport)
+  light.bitmap = pbBitmap("Graphics/Transitions/vsSpecialLight2")
+  light.opacity = 0
+
+  # --- CINEMATIC BLACK BARS SETUP ---
+  bar_height = 140 # Total thickness of the bars when fully extended
+  slide_speed = bar_height / 18.0 # Calculates how many pixels to slide per frame (approx 4px)
+  bonusSpacing = 14
+  
+  # Top Bar (Starts completely off-screen above: -60)
+  top_bar = Sprite.new(bar_viewport)
+  top_bar.bitmap = Bitmap.new(Graphics.width, bar_height)
+  top_bar.bitmap.fill_rect(0, 0, Graphics.width, bar_height, Color.new(0, 0, 0))
+  top_bar.y = -bar_height - bonusSpacing
+  
+  # Bottom Bar (Starts completely off-screen below: Graphics.height)
+  bottom_bar = Sprite.new(bar_viewport)
+  bottom_bar.bitmap = Bitmap.new(Graphics.width, bar_height)
+  bottom_bar.bitmap.fill_rect(0, 0, Graphics.width, bar_height, Color.new(0, 0, 0))
+  bottom_bar.y = Graphics.height + bonusSpacing
+  # ----------------------------------
+
+  strobebitmap=AnimatedBitmap.new("Graphics/Pictures/hiddenMoveStrobes")
+  strobes=[]
+  15.times do |i|
+    strobe=BitmapSprite.new(26*2,8*2,viewport)
+    strobe.bitmap.blt(0,0,strobebitmap.bitmap,Rect.new(0,(i%2)*8*2,26*2,8*2))
+    strobe.z=((i%2)==0 ? 2 : 0)
+    strobe.visible=false
+    strobes.push(strobe)
+    light.opacity+=12.8
+    light.ox += 24
+  end
+  strobebitmap.dispose
+  interp=RectInterpolator.new(
+     Rect.new(0,Graphics.height/2,Graphics.width,0),
+     Rect.new(0,(Graphics.height-bg.bitmap.height)/2,Graphics.width,bg.bitmap.height),
+     Graphics.frame_rate/4)
+  ptinterp=nil
+  phase=1
+  frames=0
+  strobeSpeed = 64*20/Graphics.frame_rate
+  loop do
+    Graphics.update
+    Input.update
+    sprite.update
+    case phase
+    when 1   # Expand viewport height from zero to full
+      interp.update
+      interp.set(viewport.rect)
+      bg.oy=(bg.bitmap.height-viewport.rect.height)/2
+
+      # Slides the bars into view smoothly frame-by-frame
+      top_bar.y += slide_speed
+      bottom_bar.y -= slide_speed
+
+      if interp.done?
+        phase=2
+        ptinterp=PointInterpolator.new(
+           Graphics.width+(sprite.bitmap.width/2),bg.bitmap.height/2,
+           Graphics.width/2,bg.bitmap.height/2,
+           Graphics.frame_rate*4/10)
+      end
+    when 2   # Slide Player sprite in from right to centre
+      ptinterp.update
+      sprite.x=ptinterp.x
+      sprite.y=ptinterp.y
+      sprite.visible=true
+      if ptinterp.done?
+        phase=3
+        # Add trainer grunt SFX
+        i = rand(4)
+        if $Trainer.gender==0 # Male grunts = Marth
+          case i
+          when 0
+            pbSEPlay("Marth0",100)
+          when 1
+            pbSEPlay("Marth1",100)
+          when 2
+            pbSEPlay("Marth2",100)
+          else
+            pbSEPlay("Marth3",100)
+          end
+        else  # Female grunts = Lucina
+          case i
+          when 0
+            pbSEPlay("Lucina0",100)
+          when 1
+            pbSEPlay("Lucina1",100)
+          when 2
+            pbSEPlay("Lucina2",100)
+          else
+            pbSEPlay("Lucina3",100)
+          end
+        end
+        frames=0
+      end
+    when 3   # Wait
+      frames+=1
+      if frames>Graphics.frame_rate*3/4
+        phase=4
+        ptinterp=PointInterpolator.new(
+           Graphics.width/2,bg.bitmap.height/2,
+           -(sprite.bitmap.width/2),bg.bitmap.height/2,
+           Graphics.frame_rate*4/10)
+        frames=0
+      end
+    when 4   # Slide Player sprite off from centre to left
+      ptinterp.update
+      sprite.x=ptinterp.x
+      sprite.y=ptinterp.y
+      if ptinterp.done?
+        phase=5
+        sprite.visible=false
+        interp=RectInterpolator.new(
+           Rect.new(0,(Graphics.height-bg.bitmap.height)/2,Graphics.width,bg.bitmap.height),
+           Rect.new(0,Graphics.height/2,Graphics.width,0),
+           Graphics.frame_rate/4)
+      end
+    when 5   # Shrink viewport height from full to zero
+      interp.update
+      interp.set(viewport.rect)
+      bg.oy=(bg.bitmap.height-viewport.rect.height)/2
+
+      # Slides the bars smoothly out of frame
+      top_bar.y -= slide_speed
+      bottom_bar.y += slide_speed
+
+      phase=6 if interp.done?
+    end
+    # Constantly stream the strobes across the screen
+    for strobe in strobes
+      strobe.ox=strobe.viewport.rect.x
+      strobe.oy=strobe.viewport.rect.y
+      if !strobe.visible   # Initial placement of strobes
+        randomY = 16*(1+rand(bg.bitmap.height/16-2))
+        strobe.y = randomY+(Graphics.height-bg.bitmap.height)/2
+        strobe.x = rand(Graphics.width)
+        strobe.visible = true
+      elsif strobe.x<Graphics.width   # Move strobe right
+        strobe.x += strobeSpeed
+      else   # Strobe is off the screen, reposition it to the left of the screen
+        randomY = 16*(1+rand(bg.bitmap.height/16-2))
+        strobe.y = randomY+(Graphics.height-bg.bitmap.height)/2
+        strobe.x = -strobe.bitmap.width-rand(Graphics.width/4)
+      end
+    end
+    pbUpdateSceneMap
+    break if phase==6
+  end
+  sprite.dispose
+  for strobe in strobes
+    strobe.dispose
+  end
+  strobes.clear
+  top_bar.dispose
+  bottom_bar.dispose
+  light.dispose
   bg.dispose
   viewport.dispose
   return true

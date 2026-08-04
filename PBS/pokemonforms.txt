@@ -450,7 +450,7 @@ Pokedex = Because Galarian Slowpoke eat the seeds of a plant that grows only in 
 BattlerPlayerY = 62
 BattlerEnemyX = 2
 BattlerEnemyY = 38
-Evolutions = SLOWBRO,Item,GALARICACUFF,SLOWKING,Item,GALARICAWREATH
+Evolutions = SLOWKING,Item,GALARICAWREATH,SLOWKING,Item,GALARICAWREATH
 #-------------------------------
 [SLOWBRO,1]
 FormName = Galarian
@@ -2920,6 +2920,8 @@ BattlerShadowX = -1
 [BASCULEGION,1]
 FormName = Female
 BaseStats = 120,92,65,78,100,75
+BattlerPlayerY = 54
+BattlerEnemyX = 0
 #-------------------------------
 [ENAMORUS,1]
 FormName = Therian Forme

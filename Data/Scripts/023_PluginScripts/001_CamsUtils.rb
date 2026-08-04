@@ -172,35 +172,62 @@ def pbGetTotalPurified
   return totalPurified
 end
 
+def getCurrentVialCharges()
+    return $game_variables[50]
+end
+
+def getMaxVialCharges()
+    return $game_variables[52]
+end
+
+def refillVial()
+    return $game_variables[50] = getMaxVialCharges()
+end
+
 def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
-  if $game_variables[maxChargeVar] == 0 #Thundaga, making it so the healing can always be used initially.
-    $game_variables[currentChargeVar] = 1
-    $game_variables[maxChargeVar] = 1
-  end
-  case $game_variables[currentChargeVar]
-  when 0
-    pbMessage(_INTL("\\se[SwShIncorrect]You do not have any healing energy left..."))
-  when 1
-    pbMessage("You have 1 charge of healing energy left.")
-    if pbConfirmMessage("Would you like to heal your Pokémon?")
-      $game_variables[currentChargeVar] -= 1
-      for i in $Trainer.party
-       i.heal
-      end
-      pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
-      pbMessage(_INTL("You have no more healing energy left."))
-     end
+  if(PLAYERKATANATECHNIQUES)
+    # Do logic A (Spirit Energy)
+    energyCost = 3
+    if(hasEnoughEnergy(energyCost))
+        decrementPlayerCurrentEnergy(energyCost)
+        for i in $Trainer.party
+          i.heal
+        end
+        pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+    else
+        pbMessage(_INTL("\\se[SwShIncorrect]You need at least {1} Spirit Energy...", energyCost))
+    end
   else
-    pbMessage(_INTL("You have {1} charges of healing energy left.",$game_variables[currentChargeVar]))
-    if pbConfirmMessage("Would you like to heal your Pokémon?")
-      $game_variables[currentChargeVar] -= 1
-      for i in $Trainer.party
-       i.heal
+    # Do Logic B (Charges)
+      if $game_variables[maxChargeVar] == 0 #Thundaga, making it so the healing can always be used initially.
+        $game_variables[currentChargeVar] = 1
+        $game_variables[maxChargeVar] = 1
       end
-      pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
-      pbMessage(_INTL("{1} charge(s) remain.",$game_variables[currentChargeVar]))
-     end
-   end
+      case $game_variables[currentChargeVar]
+      when 0
+        pbMessage(_INTL("\\se[SwShIncorrect]You do not have any healing energy left..."))
+      when 1
+        pbMessage("You have 1 charge of healing energy left.")
+        if pbConfirmMessage("Would you like to heal your Pokémon?")
+          $game_variables[currentChargeVar] -= 1
+          for i in $Trainer.party
+           i.heal
+          end
+          pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+          pbMessage(_INTL("You have no more healing energy left."))
+         end
+      else
+        pbMessage(_INTL("You have {1} charges of healing energy left.",$game_variables[currentChargeVar]))
+        if pbConfirmMessage("Would you like to heal your Pokémon?")
+          $game_variables[currentChargeVar] -= 1
+          for i in $Trainer.party
+           i.heal
+          end
+          pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+          pbMessage(_INTL("{1} charge(s) remain.",$game_variables[currentChargeVar]))
+         end
+       end
+    end
 end
 
 # More like GolisopodUser's utilities am i right? He's great, to be honest though
@@ -305,3 +332,178 @@ def shadowCheckAndSwitch(poke,switch)
     vSST(switch)
   end
 end
+
+def KatanaOfLightAwakened?()
+    return $game_switches[67] == true
+end
+
+def KatanaLevel()
+    return $game_variables[100]
+end
+
+def HasChoppedDownOneTree?()
+    return $game_switches[180] == true
+end
+
+def setChopDownOneTree()
+    $game_switches[180] = true
+end
+
+# ===================================================================
+# Player Katana Techniques
+# ===================================================================
+# New bag pocket for them???
+# Receive them from each dojo, and/or at pivotal moments
+
+# Kaifuku: Heal the whole party out of battle: COST = 3
+# DONE - Hikari: Lower Enemy accuracy 2 levels, restore 25% HP, Protect for 1 turn. COST = 1
+# DONE - Sakuryaku: Set up Trick Room (5 turns), boost Def/Spdef. Cost = 1
+# DONE - Moya: Clear stat changes from all. Cost = 1
+# DONE - Komorei: HealStatus, Half HP, and Setup Grassy Terrain. COST = 2
+# DONE - Nensho: Burn Enemy, Setup Sun, raise our ATK/SPATK one stage. COST = 3
+# DONE - Shimizu: Rain, Setup Aqua Ring on self, setup Misty Terrain. COST = 2
+# Tsume: Shadow Cleave all enemies, cut HP in half (never kill), then put to Sleep. COST = 4. WAY OP, POSTGAME
+# Masayoshi: Reflect + LightScreen, same as Ryo. Cost = 1
+# Akui: Shadow Clone for Evasion and Speed, Toxic Spikes. Cost = 3.
+# paralyze, elec Terrain. Cost = 2.
+# stealth rocks + sandstorm + spdefUP. Cost = 2.
+# Hail, freeze. Cost = 3.
+# Hattori: Wonder Room, 
+#      :Gravity         => "Gravity",
+#      :NeutralizingGas => "Neutralizing Gas"
+
+#How to set energy, perhaps based on chapter or badge for old save files we force set max EN
+
+def restorePlayerEnergy()
+    $game_variables[226] = getPlayerMaxEnergy()
+end
+
+def getPlayerCurrentEnergy()
+    return $game_variables[226]
+end
+
+def getPlayerMaxEnergy()
+    return $game_variables[227]
+end
+
+def hasEnoughEnergy(enCheck)
+    return (getPlayerCurrentEnergy() >= enCheck)
+end
+
+def healPlayerEnergy(incAmt)
+    $game_variables[226] = ($game_variables[226] + incAmt)
+    if($game_variables[226] > getPlayerMaxEnergy())
+        $game_variables[226] = getPlayerMaxEnergy()
+    end
+end
+
+def fullyRecoverEnergy()
+    healPlayerEnergy(getPlayerMaxEnergy())
+end
+
+def increaseMaxEnergy(increaseAmt)
+    $game_variables[227] = (getPlayerMaxEnergy() + increaseAmt)
+    healPlayerEnergy(increaseAmt)
+end
+
+def decrementPlayerCurrentEnergy(decAmt)
+    if(getPlayerCurrentEnergy() >= decAmt)
+        # We have enough energy and can return true
+        $game_variables[226] = (getPlayerCurrentEnergy() - decAmt)
+        return true
+    else
+        # Message for not enough energy and return false
+        pbMessage(_INTL("Not enough Spirit to use this Technique!"))
+        return false
+    end
+end
+
+def doesPlayerHaveEnoughEnergy(energyCheck)
+    if(getPlayerCurrentEnergy() >= energyCheck)
+        return true
+    else
+        pbMessage(_INTL("Not enough Spirit to use this Technique!"))
+        return false
+    end
+end
+
+def isPlayerAtMaxEnergy()
+    return getPlayerMaxEnergy() == getPlayerCurrentEnergy()
+end
+
+def energyRatio()
+  return _INTL("{1}/{2}", getPlayerCurrentEnergy(), getPlayerMaxEnergy())
+end
+
+def printEnergyValues()
+  pbMessage(_INTL("Spirit: {1}", energyRatio()))
+end
+
+def initializePlayerEnergy()
+    $game_variables[227] = INITIAL_ENERGY
+    restorePlayerEnergy()
+end
+
+def camsHackyInitMethod()
+    # early out if we're disabling PKT
+    if (PLAYERKATANATECHNIQUES == false)
+        return
+    end
+
+    # call on load, if no energy then initialize it (old save files would have no energy, so init them)
+    if(getPlayerMaxEnergy() <= 0)
+        initializePlayerEnergy()
+        #pbMessage(_INTL("No energy set yet, so initializing now."))
+    end
+
+    # Then check progress to determine roughly what techniques player should have and silently add them to our inventory
+    # if katana level 1 then
+    # if katana level 2 then etc
+end
+
+def pbHotSpringRecovery()
+    if(PLAYERKATANATECHNIQUES)
+        fullyRecoverEnergy()
+        pbMessage(_INTL("Your Spirit Energy was fully restored!"))
+    else
+        if(KatanaOfLightAwakened?())
+            if(getCurrentVialCharges() < getMaxVialCharges())
+                refillVial()
+                pbMessage(_INTL("The healing energy in the Katana of Light has also been refilled!"))
+            end
+        end
+    end
+end
+
+def getPKTCost(item)
+  if PLAYERKATANATECHNIQUES == false
+    pbMessage(_INTL("Don't use PKT when they're disabled! Returning a cost of 999!"))
+    return 999
+  end
+
+  def getPKTTechniqueName(string)
+        str = string.gsub("KT - ","")
+        str = str.sub(/\(.*/, '')
+        str = str.delete("-")
+        str = str.rstrip
+        return str
+  end
+  
+  item_display_name = ""
+  if item && item > 0
+    item_display_name = PBItems.getName(item).to_s rescue ""
+  end
+
+  if item_display_name.include?("Technique") || item_display_name.include?("KT")
+    return pbGetItemData(item, ITEM_PRICE)
+  else
+    return 10
+  end
+end
+
+def isItemAPKT(item)
+  item_display_name = PBItems.getName(item).to_s rescue ""
+  
+  return item_display_name.include?("Technique") || item_display_name.include?("KT")
+end
+

@@ -53,7 +53,7 @@ class PokeBattle_Battle
           return 1
         end
       elsif @internalBattle
-        pbDisplayPaused(_INTL("No! There's no running from a Trainer battle!"))
+        pbDisplayPaused(_INTL("Fight with honor! You cannot run from a Kenshi duel!"))
       elsif pbDisplayConfirm(_INTL("Would you like to forfeit the match and quit now?"))
         pbSEPlay("Battle flee")
         pbDisplay(_INTL("{1} forfeited the match!",self.pbPlayer.name))

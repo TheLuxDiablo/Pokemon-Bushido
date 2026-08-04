@@ -94,14 +94,15 @@ class PokemonStatsPage
     effects_side.each do |effect, name|
       e = getConst(PBEffects, effect)
       next if [nil, 0, -1, false].include?(side_effects[e])
-      new_str = (nil_or_empty?(effects_str) ? "" : ", ") + name
+      new_str = (nil_or_empty?(effects_str) ? "" : ", ") + name + " (" + side_effects[e].to_s + ")"
       effects_str += new_str
     end
+
     field_effects = @battle.field.effects
     effects_field.each do |effect, name|
       e = getConst(PBEffects, effect)
       next if [nil, 0, -1, false].include?(field_effects[e])
-      new_str = (nil_or_empty?(effects_str) ? "" : ", ") + name
+      new_str = (nil_or_empty?(effects_str) ? "" : ", ") + name + " (" + field_effects[e].to_s + ")"
       effects_str += new_str
     end
     effects_str = "None" if nil_or_empty?(effects_str)
@@ -137,8 +138,7 @@ class PokemonStatsPage
     if battler.status > 0
       s = battler.status
       s = 6 if s == PBStatuses::POISON && battler.statusCount > 0 # Badly poisoned
-      imagepos.push(["Graphics/Pictures/Battle/icon_statuses", 238, 97,
-                     0, (s - 1) * 16, -1, 16])
+      imagepos.push(["Graphics/Pictures/Battle/icon_statuses", 220, 99, 0, (s - 1) * 16, -1, 16])
     end
     imagepos.push(["Graphics/Pictures/Battle/Stats Screen/icon_weather", 8, 322,
                    0, @battle.field.weather * 50, 86, 50])

@@ -126,7 +126,8 @@ class PokemonLoad_Scene
       @viewport.z = 99998
     end
     addBackgroundOrColoredPlane(@sprites,"background","loadbg",Color.new(248,248,248),@viewport)
-    y = 16*2
+    y = 36*2
+    #y = 16*2
     for i in 0...commands.length
       @sprites["panel#{i}"] = PokemonLoadPanel.new(i,commands[i],
          (showContinue) ? (i==0) : false,trainer,framecount,mapid,@viewport)
@@ -138,6 +139,7 @@ class PokemonLoad_Scene
     @sprites["cmdwindow"] = Window_CommandPokemon.new([])
     @sprites["cmdwindow"].viewport = @viewport
     @sprites["cmdwindow"].visible  = false
+    pbBGMPlay("CONS-MainMenu", 80, 100)
   end
 
   def pbStartScene2

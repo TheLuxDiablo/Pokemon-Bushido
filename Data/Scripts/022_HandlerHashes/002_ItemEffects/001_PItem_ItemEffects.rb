@@ -1233,7 +1233,11 @@ ItemHandlers::UseOnPokemon.add(:ABILITYPATCH,proc { |item,pkmn,scene|
 
 ItemHandlers::UseFromBag.add(:KATANALIGHT,proc{|item|
   cmd=0
-  cmd= pbMessage("It's the Katana of Light.\nIt appears quite weak...",["Heal Pokémon","Cut","Put Away"],0,nil,0)
+  if(!PLAYERKATANATECHNIQUES)
+    cmd= pbMessage("It's the Katana of Light.\nIt appears quite weak...",["Heal Party","Cut","Put Away"],0,nil,0)
+  else
+    cmd= pbMessage("It's the Katana of Light.\nIt appears quite weak...",["Heal Party (3 SP)","Cut","Put Away"],0,nil,0)
+  end
   if cmd == 0
     pbHealingVial()
     next 1
@@ -1252,7 +1256,11 @@ ItemHandlers::UseFromBag.add(:KATANALIGHT,proc{|item|
 
 ItemHandlers::UseInField.add(:KATANALIGHT,proc{|item|
   cmd=0
-  cmd= pbMessage("It's the Katana of Light.\nIt appears quite weak...",["Heal Pokémon","Cut","Put Away"],0,nil,0)
+  if(!PLAYERKATANATECHNIQUES)
+    cmd= pbMessage("It's the Katana of Light.\nIt appears quite weak...",["Heal Party","Cut","Put Away"],0,nil,0)
+  else
+    cmd= pbMessage("It's the Katana of Light.\nIt appears quite weak...",["Heal Party (3 SP)","Cut","Put Away"],0,nil,0)
+  end
   if cmd == 0
     pbHealingVial()
     next 1

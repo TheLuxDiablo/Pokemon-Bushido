@@ -439,7 +439,12 @@ class PokeBattle_Battle
       ch[1] = 0   # Delete item from choice
       return
     end
-    pbDisplay(_INTL("But it had no effect!"))
+    #Thundaga, custom messaging for PKT
+    if(isItemAPKT(item))
+        pbDisplay(_INTL("The Katana Technique failed!"))
+    else
+        pbDisplay(_INTL("But it had no effect!"))
+    end
     # Return unused item to Bag
     pbReturnUnusedItemToBag(item,userBattler.index)
   end

@@ -286,6 +286,184 @@ ItemHandlers::UseInBattle.add(:GUARDSPEC,proc { |item,battler,battle|
   battler.pokemon.changeHappiness("battleitem")
 })
 
+#===================================================================================================================================================
+# Thundaga, Player Katana Techniques
+#===================================================================================================================================================
+ItemHandlers::CanUseInBattle.add(:PKT_Test1,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
+    energycost = getPKTCost(item)
+    next doesPlayerHaveEnoughEnergy(energycost)
+})
+
+ItemHandlers::CanUseInBattle.copy(:PKT_Test1,:PKT_Hikari, :PKT_Sakuryaku, :PKT_Moya, :PKT_Komorei, :PKT_Nensho, :PKT_Shimizu, :PKT_Tsume)
+
+ItemHandlers::UseInBattle.add(:PKT_Test1,proc { |item,battler,battle|
+  energycost = getPKTCost(item)
+  decrementPlayerCurrentEnergy(energycost)
+  #battle.pbCommonAnimation("StatUp", battler, nil)
+  #battle.pbDisplay(_INTL("{1} began to power up!",battler.pbTeam))
+  #battler.pbRaiseStatStagePKT([:ATTACK, :DEFENSE, :SPEED], 2, :FOCUSENERGY)
+  hpGain = (battler.totalhp/4.0).round
+  battler.pbRecoverHP(hpGain)
+})
+
+ItemHandlers::UseInBattle.add(:PKT_Hikari, proc { |item, battler, battle|
+  # Hikari: Lower Enemy accuracy 1 level, restore 25% HP, Protect for 1 turn. COST = 1
+  energycost = getPKTCost(item)
+  decrementPlayerCurrentEnergy(energycost)
+  pbKatanaMoveAnimationPKT(7)
+  
+  opposing_index = (battler.index.even?) ? battler.index + 1 : battler.index - 1
+  target = battle.battlers[opposing_index]
+
+  if target && !target.fainted?
+    target.pbLowerStatStagePKT(:ACCURACY, 1, :FLASH, battler)
+  end
+  
+  # Restore 25% of battler's Max HP
+  battle.pbAnimation(:RECOVER, battler, battler)
+  heal_amount = (battler.totalhp / 4).floor
+  battler.pbRecoverHP(heal_amount)
+  battle.pbDisplay(_INTL("{1}'s health was restored by 25%!", battler.name))
+  
+  # Apply the 1-turn Protect shield flag
+  battle.pbAnimation(:PROTECT, battler, battler)
+  battler.effects[PBEffects::Protect] = true
+  battle.pbDisplay(_INTL("Spirit energy protects {1}!", battler.name))
+})
+
+ItemHandlers::UseInBattle.add(:PKT_Sakuryaku, proc { |item, battler, battle|
+  # Sakuryaku: Set up Trick Room (5 turns), boost Def/Spdef. Cost = 1
+  energycost = getPKTCost(item)
+  decrementPlayerCurrentEnergy(energycost)
+  pbKatanaMoveAnimationPKT(5)
+
+  battle.pbAnimation(:TRICKROOM, battler, battler)
+  battle.field.effects[PBEffects::TrickRoom] = 6
+  battle.pbDisplay(_INTL("The dimensions were twisted for 5 turns!"))
+  
+  # Raise stats
+  battler.pbRaiseStatStagePKT([:DEFENSE, :SPDEF], 1, :STOCKPILE)
+})
+
+ItemHandlers::UseInBattle.add(:PKT_Moya, proc { |item, battler, battle|
+  # Moya: Clear stat changes from all. Cost = 1
+  energycost = getPKTCost(item)
+  decrementPlayerCurrentEnergy(energycost)
+  pbKatanaMoveAnimationPKT(8)
+
+  battle.pbAnimation(:HAZE, battler, battler)
+  battle.eachBattler { |b| b.pbResetStatStages }
+  battle.pbDisplay(_INTL("All stat changes were eliminated!"))
+})
+
+ItemHandlers::UseInBattle.add(:PKT_Komorei, proc { |item, battler, battle|
+  # Komorei: HealStatus, Half HP, and Setup Grassy Terrain. COST = 2
+  energycost = getPKTCost(item)
+  decrementPlayerCurrentEnergy(energycost)
+  pbKatanaMoveAnimationPKT(2)
+
+  # Heal status
+  battle.pbAnimation(:GROWTH, battler, battler)
+  battler.pbCureStatus
+
+  # Restore 50% of battler's Max HP
+  heal_amount = (battler.totalhp / 2).floor
+  battler.pbRecoverHP(heal_amount)
+  battle.pbDisplay(_INTL("{1}'s health was restored by 50%!", battler.name))
+
+  battle.pbAnimation(:GRASSYTERRAIN, battler, battler)
+  battle.pbStartTerrainEx(battler, :Grassy, false)
+})
+
+ItemHandlers::UseInBattle.add(:PKT_Nensho, proc { |item, battler, battle| 
+  # Nensho: Burn ALL active enemies, Setup Sun, raise our ATK/SPATK one stage. COST = 3 
+  energycost = getPKTCost(item) 
+  decrementPlayerCurrentEnergy(energycost)
+  pbKatanaMoveAnimationPKT(9) 
+  
+  # Loops through all active battle slots
+  battle.pbAnimation(:OVERHEAT, battler, battler)
+  battle.battlers.each do |target|
+    next if target.nil? || target.fainted?
+    
+    is_user_even = (battler.index % 2 == 0)
+    is_target_even = (target.index % 2 == 0)
+    next if is_user_even == is_target_even
+
+    # Burn them
+    if target.pbCanBurn?(battler, false)
+        target.pbBurn(battler)
+    else
+        battle.pbDisplay(_INTL("{1} cannot be burned!", target.name))
+    end
+  end
+  
+  # Start sun weather 
+  battle.pbStartWeatherEx(battler, :Sun) 
+  
+  # Raise our ATK and SPATK 
+  battler.pbRaiseStatStagePKT([:ATTACK, :SPATK], 1, :WORKUP) 
+})
+
+ItemHandlers::UseInBattle.add(:PKT_Shimizu, proc { |item, battler, battle|
+  # Shimizu: Rain, Setup Aqua Ring on self, setup Misty Terrain. COST = 2
+  energycost = getPKTCost(item)
+  decrementPlayerCurrentEnergy(energycost)
+  pbKatanaMoveAnimationPKT(4)
+
+  # Aqua Ring on self
+  battle.pbAnimation(:AQUARING, battler, battler)
+  battler.effects[PBEffects::AquaRing] = true
+  battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!", battler.name))
+
+  # Rain weather
+  battle.pbStartWeatherEx(battler, :Rain) 
+
+  # Misty terrain
+  battle.pbAnimation(:MISTYTERRAIN, battler, battler)
+  battle.pbStartTerrainEx(battler, :Misty, false)
+})
+
+ItemHandlers::UseInBattle.add(:PKT_Tsume, proc { |item, battler, battle|
+# Tsume: Shadow Cleave into enemy, cut HP in half (never kill), then put to Sleep. COST = 4.
+# Currently broken and damaging self, dont bully me
+  energycost = getPKTCost(item)
+  decrementPlayerCurrentEnergy(energycost)
+  pbKatanaMoveAnimationPKT(4)
+
+  # Loops through all active battle slots
+  battle.battlers.each do |target|
+    next if target.nil? || target.fainted?
+    
+    is_user_even = (battler.index % 2 == 0)
+    is_target_even = (target.index % 2 == 0)
+    next if is_user_even == is_target_even
+
+    # Cleave HP in half if they have HP to cleave
+    if target.hp <= 1
+        battle.pbDisplay(_INTL("HP cannot be cut any lower with Tsume!"))
+    else
+        amt = (target.hp / 2).floor
+        amt = 1 if amt < 1
+
+        battle.pbAnimation(:SHADOWCLAW, battler, battler)
+        target.hp -= amt
+        battle.scene.pbHPChanged(target, target.hp)
+    
+        battle.pbDisplay(_INTL("{1}'s HP was cut in half!", target.name))
+    end
+
+    # Put to sleep
+    if target.pbCanSleep?(target, false)
+        target.pbSleep(target)
+    else
+        battle.pbDisplay(_INTL("{1} cannot be put to Sleep!", target.name))
+    end
+  end
+})
+
+#===================================================================================================================================================
+
 ItemHandlers::UseInBattle.add(:POKEDOLL,proc { |item,battler,battle|
   battle.decision = 3
   battle.pbDisplayPaused(_INTL("You got away safely!"))

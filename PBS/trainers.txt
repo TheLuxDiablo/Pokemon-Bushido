@@ -176,6 +176,11 @@ Pokemon = SNIVY,5
 LoseText = "Well played!"
 Pokemon = COTTONEE,5
 #-------------------------------
+[SHIMIZU_M,TestShi]
+LoseText = "Well played!"
+Pokemon = TURTWIG,10
+Pokemon = FENNEKIN,10
+#-------------------------------
 [KENSHI_F,Saki]
 LoseText = "You fight with great honor. Well done!"
 Pokemon = CHERUBI,5
