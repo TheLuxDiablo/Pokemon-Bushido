@@ -331,6 +331,11 @@ Events.onStepTakenFieldMovement += proc { |_sender,e|
   event = e[0] # Get the event affected by field movement
   if $scene.is_a?(Scene_Map)
     currentTag = pbGetTerrainTag(event)
+    slopeCurveX = 2
+    slopeCurveY = 1
+    slopeYPos = 1
+    slopeYHeight = 1
+    slopeOffset = 6
     if PBTerrain.isJustGrass?(pbGetTerrainTag(event,true))  # Won't show if under bridge
       $scene.spriteset.addUserAnimation(GRASS_ANIMATION_ID,event.x,event.y,true,1)
     elsif event==$game_player
@@ -339,6 +344,21 @@ Events.onStepTakenFieldMovement += proc { |_sender,e|
         pbDescendWaterfall(event)
       elsif PBTerrain.isIce?(currentTag) && !$PokemonGlobal.sliding
         pbSlideOnIce(event)
+      elsif PBTerrain.isSlopeTile?(currentTag) && currentTag==PBTerrain::SlopeUpRight # Thundaga, making terrain tags for slope do things
+        setSlopeData(slopeCurveX,-slopeCurveY,slopeYPos,slopeYHeight,slopeOffset)
+        #pbMessage(_INTL("Bridge On"))
+        pbBridgeOn
+      elsif PBTerrain.isSlopeTile?(currentTag) && currentTag==PBTerrain::SlopeDownLeft
+        setSlopeData(-slopeCurveX,slopeCurveY,slopeYPos,slopeYHeight,slopeOffset)
+      elsif PBTerrain.isSlopeTile?(currentTag) && currentTag==PBTerrain::SlopeDownRight
+        setSlopeData(slopeCurveX,slopeCurveY,slopeYPos,slopeYHeight,slopeOffset)
+      elsif PBTerrain.isSlopeTile?(currentTag) && currentTag==PBTerrain::SlopeUpLeft
+        setSlopeData(-slopeCurveX,-slopeCurveY,slopeYPos,slopeYHeight,slopeOffset)
+        #pbMessage(_INTL("Bridge On"))
+        pbBridgeOn
+      elsif PBTerrain.isBridgeOffTile?(currentTag)
+        pbBridgeOff
+        #pbMessage(_INTL("Bridge Off"))
       end
     end
   end

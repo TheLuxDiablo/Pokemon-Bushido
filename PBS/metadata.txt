@@ -894,3 +894,28 @@ MapPosition = 2,4,12
 # Jinsu Wavelands
 Outdoor = true
 ShowArea = true
+#-------------------------------
+[168]
+# Hagane City
+Outdoor = true
+ShowArea = true
+MapPosition = 2,15,10
+#-------------------------------
+[169]
+# Hagane City
+Outdoor = true
+ShowArea = true
+MapPosition = 2,15,10
+#-------------------------------
+[170]
+# Hagane City
+Outdoor = true
+ShowArea = true
+MapPosition = 2,15,10
+#-------------------------------
+[171]
+# Hagane City
+Outdoor = true
+ShowArea = true
+HealingSpot = 85,64,26
+MapPosition = 2,15,10

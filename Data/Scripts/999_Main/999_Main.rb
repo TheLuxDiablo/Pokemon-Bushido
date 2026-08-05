@@ -2,6 +2,17 @@ pbCompiler
 
 Input.text_input = false
 
+=begin
+map_data = Marshal.load(File.open('Data/Map171.rxdata'))
+map_data.width = 10
+map_data.height = 24
+file = File.open('Data/Map171.rxdata', 'wb')
+Marshal.dump(map_data, file)
+file.close
+
+p 'Reduced the size! Please reopen your project.'
+=end
+
 class Scene_DebugIntro
   def main
     Graphics.transition(0)

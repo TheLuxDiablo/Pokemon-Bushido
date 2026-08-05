@@ -25,6 +25,11 @@ module PBTerrain
   RightArrow      = 21
   FallHole        = 22
   HotSpring       = 23
+  SlopeUpRight    = 24
+  SlopeDownLeft   = 25
+  SlopeDownRight  = 26
+  SlopeUpLeft     = 27
+  TurnOffBridge   = 28
 
   def self.isSurfable?(tag)
     return PBTerrain.isWater?(tag)
@@ -110,6 +115,21 @@ module PBTerrain
 
   def self.isBridge?(tag)
     return tag==PBTerrain::Bridge
+           #tag==PBTerrain::SlopeUpRight ||
+           #tag==PBTerrain::SlopeDownLeft ||
+           #tag==PBTerrain::SlopeDownRight ||
+           #tag==PBTerrain::SlopeUpLeft
+  end
+
+  def self.isSlopeTile?(tag)
+    return tag==PBTerrain::SlopeUpRight ||
+           tag==PBTerrain::SlopeDownLeft ||
+           tag==PBTerrain::SlopeDownRight ||
+           tag==PBTerrain::SlopeUpLeft
+  end
+
+  def self.isBridgeOffTile?(tag)
+    return tag==PBTerrain::TurnOffBridge
   end
 
   def self.hasReflections?(tag)

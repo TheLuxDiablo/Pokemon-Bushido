@@ -3,9 +3,9 @@
     "",
     "\\Data",
     "\\Data\\Scripts",
-    "\\Data\\Scripts\\011_Data",
-    "\\Data\\Scripts\\023_PluginScripts",
+    "\\Data\\Scripts\\999_Main",
     "\\PBS"
   ],
+  "SelectedNode": "\\Data\\Classes.rxdata",
   "PreviewInSolutionExplorer": false
 }
