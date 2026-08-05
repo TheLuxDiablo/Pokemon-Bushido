@@ -229,11 +229,20 @@ module BushidoStarterSelection
 
     POSITION_SPEED = 0.16
     ZOOM_SPEED     = 0.13
-    DIM_SPEED      = 0.12
+    DIM_SPEED      = 0.16
 
     SETTLE_POSITION_EPSILON = 0.75
     SETTLE_ZOOM_EPSILON     = 0.01
     SETTLE_DIM_EPSILON      = 2.0
+
+    # Feedback can start once the Pokémon looks revealed. We do not need to
+    # wait for every animation value to mathematically reach its final target.
+    REVEAL_FEEDBACK_ALPHA = 35
+
+    # The screen fades in first, then the starter row rises into place.
+    INTRO_FADE_FRAMES   = 28
+    INTRO_SETTLE_FRAMES = 34
+    INTRO_START_OFFSET  = 24
 
     #---------------------------------------------------------------------------
     # Text and type badges
@@ -257,7 +266,7 @@ module BushidoStarterSelection
 
     SHINY_SE = "Battle shiny"
 
-    SHINY_FEEDBACK_FRAMES = 36
+    SHINY_FEEDBACK_FRAMES = 24
     SHINY_SPARKLE_COUNT   = 10
 
     #---------------------------------------------------------------------------
@@ -294,7 +303,14 @@ module BushidoStarterSelection
       @selected_index = 0
       @chosen_pokemon = nil
       @pending_reveal_feedback = false
-      @input_locked = false
+
+      # Shiny feedback runs alongside the menu instead of blocking input.
+      @shiny_feedback_active = false
+      @shiny_feedback_frame = 0
+      @shiny_feedback_index = nil
+
+      @input_locked = true
+      @intro_active = true
       @white_out_complete = false
 
       @target_x    = {}
@@ -312,9 +328,72 @@ module BushidoStarterSelection
       refreshStarterTargets(true)
       refreshStarterInfo
 
-      # Freeze the map before drawing the new scene, then transition into it.
-      Graphics.transition(24)
+      # Start with every Pokémon lowered and hidden as a silhouette. The map was
+      # frozen by Screen before this scene was built, so the transition begins
+      # cleanly without showing a half-drawn menu.
+      prepareIntroPositions
+      Graphics.transition(INTRO_FADE_FRAMES)
+      playIntroAnimation
+
+      @intro_active = false
+      @input_locked = false
+
       playRevealFeedback
+    end
+
+    #---------------------------------------------------------------------------
+    # Intro
+    #---------------------------------------------------------------------------
+
+    def prepareIntroPositions
+      @starter_pokemon.each_with_index do |_pokemon, index|
+        sprite = @sprites["starter_#{index}"]
+        next if !sprite
+
+        sprite.y = @target_y[index] + INTRO_START_OFFSET
+
+        # Everyone begins hidden. The selected Pokémon is revealed as the row
+        # settles into place.
+        @current_dim[index] = SIDE_DIM_ALPHA
+        applySpriteDim(sprite, SIDE_DIM_ALPHA)
+      end
+    end
+
+    def playIntroAnimation
+      INTRO_SETTLE_FRAMES.times do |frame|
+        progress = frame / (INTRO_SETTLE_FRAMES - 1).to_f
+
+        # Smoothstep gives the motion a soft start and finish.
+        eased = progress * progress * (3.0 - 2.0 * progress)
+
+        @starter_pokemon.each_with_index do |_pokemon, index|
+          sprite = @sprites["starter_#{index}"]
+          next if !sprite
+
+          start_y = @target_y[index] + INTRO_START_OFFSET
+          target_y = @target_y[index]
+
+          sprite.y =
+            start_y +
+            (target_y - start_y) * eased
+
+          start_dim = SIDE_DIM_ALPHA
+          target_dim = @target_dim[index]
+
+          current_dim =
+            start_dim +
+            (target_dim - start_dim) * eased
+
+          @current_dim[index] = current_dim
+          applySpriteDim(sprite, current_dim)
+        end
+
+        Graphics.update
+        Input.update
+        pbUpdateSpriteHash(@sprites)
+      end
+
+      refreshStarterTargets(true)
     end
 
     #---------------------------------------------------------------------------
@@ -587,23 +666,19 @@ module BushidoStarterSelection
       sprite.color = Color.new(0, 0, 0, alpha.to_i)
     end
 
-    def selectedStarterSettled?
+    def selectedStarterReady?
       index = @selected_index
       sprite = @sprites["starter_#{index}"]
       return false if !sprite
 
-      position_done =
-        (sprite.x - @target_x[index]).abs < SETTLE_POSITION_EPSILON &&
-        (sprite.y - @target_y[index]).abs < SETTLE_POSITION_EPSILON
+      position_ready =
+        (sprite.x - @target_x[index]).abs < 3.0 &&
+        (sprite.y - @target_y[index]).abs < 3.0
 
-      zoom_done =
-        (sprite.zoom_x - @target_zoom[index]).abs < SETTLE_ZOOM_EPSILON
+      reveal_ready =
+        @current_dim[index] <= REVEAL_FEEDBACK_ALPHA
 
-      reveal_done =
-        (@current_dim[index] - SELECTED_DIM_ALPHA).abs <
-        SETTLE_DIM_EPSILON
-
-      return position_done && zoom_done && reveal_done
+      return position_ready && reveal_ready
     end
 
     #---------------------------------------------------------------------------
@@ -629,16 +704,18 @@ module BushidoStarterSelection
     end
 
     def selectionChanged
+      stopShinyFeedback
+
       refreshStarterTargets
       refreshStarterInfo
 
-      # Wait until the Pokémon is centered and fully revealed before feedback.
+      # Wait until the Pokémon is readable before playing its cry and sparkle.
       @pending_reveal_feedback = true
     end
 
     def updatePendingRevealFeedback
       return if !@pending_reveal_feedback
-      return if !selectedStarterSettled?
+      return if !selectedStarterReady?
 
       @pending_reveal_feedback = false
       playRevealFeedback
@@ -649,42 +726,75 @@ module BushidoStarterSelection
       return if !pokemon
 
       pbPlayCry(pokemon)
-      playShinyFeedback if pokemon.shiny?
+      startShinyFeedback if pokemon.shiny?
     end
 
     #---------------------------------------------------------------------------
     # Shiny feedback
     #---------------------------------------------------------------------------
 
-    def playShinyFeedback
+    def startShinyFeedback
       pokemon = @starter_pokemon[@selected_index]
       return if !pokemon || !pokemon.shiny?
+
+      @shiny_feedback_active = true
+      @shiny_feedback_frame = 0
+      @shiny_feedback_index = @selected_index
+
+      feedback = @sprites["shiny_feedback"]
+      feedback.bitmap.clear
+      feedback.visible = true
 
       begin
         pbSEPlay(SHINY_SE)
       rescue
         # A missing optional SFX should not break starter selection.
       end
+    end
+
+    def updateShinyFeedback
+      return if !@shiny_feedback_active
+
+      # Moving to another starter immediately cancels the old sparkle.
+      if @shiny_feedback_index != @selected_index
+        stopShinyFeedback
+        return
+      end
 
       feedback = @sprites["shiny_feedback"]
       bitmap = feedback.bitmap
-      feedback.visible = true
 
-      SHINY_FEEDBACK_FRAMES.times do |frame|
-        bitmap.clear
+      progress =
+        @shiny_feedback_frame /
+        (SHINY_FEEDBACK_FRAMES - 1).to_f
 
-        progress = frame / (SHINY_FEEDBACK_FRAMES - 1).to_f
-        drawShinySparkles(
-          bitmap,
-          CENTER_X,
-          POKEMON_ROW_Y - 16,
-          progress
-        )
-
-        updateSceneFrame(false)
-      end
+      # The burst moves quickly at first and eases out near the end.
+      eased_progress = 1.0 - (1.0 - progress) ** 3
 
       bitmap.clear
+
+      drawShinySparkles(
+        bitmap,
+        CENTER_X,
+        POKEMON_ROW_Y - 16,
+        eased_progress
+      )
+
+      @shiny_feedback_frame += 1
+
+      stopShinyFeedback if
+        @shiny_feedback_frame >= SHINY_FEEDBACK_FRAMES
+    end
+
+    def stopShinyFeedback
+      @shiny_feedback_active = false
+      @shiny_feedback_frame = 0
+      @shiny_feedback_index = nil
+
+      feedback = @sprites["shiny_feedback"]
+      return if !feedback
+
+      feedback.bitmap.clear
       feedback.visible = false
     end
 
@@ -758,6 +868,7 @@ module BushidoStarterSelection
     def playConfirmationSequence
       @input_locked = true
       @pending_reveal_feedback = false
+      stopShinyFeedback
 
       sprite = @sprites["starter_#{@selected_index}"]
       pokemon = @starter_pokemon[@selected_index]
@@ -845,6 +956,7 @@ module BushidoStarterSelection
       pbUpdateSpriteHash(@sprites)
 
       updateStarterAnimation if update_carousel
+      updateShinyFeedback
     end
 
     def waitFrames(frames)
