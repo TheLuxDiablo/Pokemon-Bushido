@@ -89,8 +89,8 @@
     "smoothScaling": 1,
     "integerScalingActive": true,
     "integerScalingLastMile": true,
-    "vsync": true,
-    "syncToRefreshrate": true,
+    "vsync": false,
+    "syncToRefreshrate": false,
     "bitmapSmoothScalingDown": 1,
     "smoothScalingMipmaps": true,
 
