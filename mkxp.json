@@ -86,7 +86,13 @@
     // 4: xBRZ
     // (default: 0)
     //
-    // "smoothScaling": 0,
+    "smoothScaling": 1,
+    "integerScalingActive": true,
+    "integerScalingLastMile": true,
+    "vsync": true,
+    "syncToRefreshrate": true,
+    "bitmapSmoothScalingDown": 1,
+    "smoothScalingMipmaps": true,
 
 
     // Apply smooth interpolation when game screen
@@ -222,10 +228,11 @@
     // A list of fonts to render without alpha blending.
     // (default: none)
     //
-    // "solidFonts": [
-    //     "Arial",
-    //     "Times New Roman",
-    // ],
+    "solidFonts": [
+        "Arial",
+        "Times New Roman",
+        "TAKOYAKI"
+    ],
 
 
     // Prefer the use of Metal over OpenGL on macOS.
@@ -432,7 +439,7 @@
     // If you think text tends to be too large or too small,
     // try fiddling with this.
     // (default: 1.0)
-    // "fontScale": 1.0,
+    "fontScale": 1.1,
 
     // Kerning adjusts the spacing between individual letters or characters.
     // Enabling it generally looks nicer, but RGSS doesn't use it,
@@ -456,7 +463,7 @@
     // 0: Nominal (TTF_FontHeight); matches RGSS behavior; may cut off bottoms of some characters.
     // 1: Rendered (TTF_SizeUTF8); deviates from RGSS; may look better.
     // (default: 0)
-    // "fontHeightReporting": 0,
+    "fontHeightReporting": 1,
 
     // Crops top row and left column of text that has an outline.
     // Disabling it generally looks nicer, but RGSS enables it, so enabling it
