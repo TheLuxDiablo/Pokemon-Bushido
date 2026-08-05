@@ -3,6 +3,50 @@
   "WorkspaceRootPath": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\003_BattleScript_Data_Bushido.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\003_BattleScript_Data_Bushido.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\PBS\\metadata.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:PBS\\metadata.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\021_Debug\\001_Debug_Menu.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\021_Debug\\001_Debug_Menu.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\001_CamsUtils.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\023_PluginScripts\\001_CamsUtils.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\002_PField_Field.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\013_Overworld\\002_PField_Field.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\009_EnhancedStaircases.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\023_PluginScripts\\009_EnhancedStaircases.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\001_PBTerrain.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\013_Overworld\\001_PBTerrain.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\003_Game classes\\007_Game_Player.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\003_Game classes\\007_Game_Player.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\999_Main\\999_Main.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\999_Main\\999_Main.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\015_Items\\001_PItem_Items.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\015_Items\\001_PItem_Items.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\001_Settings.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\001_Settings.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\022_HandlerHashes\\002_ItemEffects\\002_PItem_BattleItemEffects.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\022_HandlerHashes\\002_ItemEffects\\002_PItem_BattleItemEffects.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
@@ -13,14 +57,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\PBS\\items.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:PBS\\items.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\001_CamsUtils.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\023_PluginScripts\\001_CamsUtils.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\015_Items\\001_PItem_Items.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\015_Items\\001_PItem_Items.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\012_Battle\\003_Battle\\007_Battle_Action_UseItem.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
@@ -43,14 +79,6 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\023_PluginScripts\\005_EBS VS Animations\\001_EBS Vs Animations.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\001_Settings.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\001_Settings.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\003_BattleScript_Data_Bushido.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\003_BattleScript_Data_Bushido.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\004_BattleScript_Utilities.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\004_BattleScript_Utilities.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
@@ -69,10 +97,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\022_HandlerHashes\\002_ItemEffects\\001_PItem_ItemEffects.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\022_HandlerHashes\\002_ItemEffects\\001_PItem_ItemEffects.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\002_PField_Field.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\013_Overworld\\002_PField_Field.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\003_Modular Pause\\001_ModularMenu.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
@@ -107,10 +131,6 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\006_Game processing\\001_Interpreter.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\001_PBTerrain.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\013_Overworld\\001_PBTerrain.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\012_Battle\\003_Battle\\004_Battle_ExpAndMoveLearning.rb||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Data\\Scripts\\012_Battle\\003_Battle\\004_Battle_ExpAndMoveLearning.rb||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
@@ -134,7 +154,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
@@ -144,11 +164,10 @@
               "RelativeDocumentMoniker": "Data\\Scripts\\001_Settings.rb",
               "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\001_Settings.rb",
               "RelativeToolTip": "Data\\Scripts\\001_Settings.rb",
-              "ViewState": "AgIAAE0BAAAAAAAAAIAwwGcBAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-02T17:07:35.193Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -158,7 +177,7 @@
               "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\001_CamsUtils.rb",
               "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\001_CamsUtils.rb",
               "RelativeToolTip": "Data\\Scripts\\023_PluginScripts\\001_CamsUtils.rb",
-              "ViewState": "AgIAAFgBAAAAAAAAAAAAAGwBAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAEwBAAAAAAAAAAAAAGcBAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-02T17:10:21.732Z",
               "IsPinned": true,
@@ -166,13 +185,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 0,
               "Title": "003_BattleScript_Data_Bushido.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\003_BattleScript_Data_Bushido.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\003_BattleScript_Data_Bushido.rb",
               "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\003_BattleScript_Data_Bushido.rb",
               "RelativeToolTip": "Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\003_BattleScript_Data_Bushido.rb",
-              "ViewState": "AgIAAEYDAAAAAAAAAAAAAFkDAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAhwHEAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-01T20:25:00.181Z",
               "IsPinned": true,
@@ -180,7 +199,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 19,
               "Title": "004_BattleScript_Utilities.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\004_BattleScript_Utilities.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\004_BattleScript_Utilities.rb",
@@ -189,12 +208,11 @@
               "ViewState": "AgIAAOkAAAAAAAAAAAAhwP0AAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-01T20:26:40.929Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 32,
               "Title": "004_Battle_ExpAndMoveLearning.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\012_Battle\\003_Battle\\004_Battle_ExpAndMoveLearning.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\012_Battle\\003_Battle\\004_Battle_ExpAndMoveLearning.rb",
@@ -207,7 +225,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 30,
               "Title": "030_Save Slot Selection.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\030_Save Slot Selection.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\030_Save Slot Selection.rb",
@@ -220,7 +238,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 29,
               "Title": "015_PScreen_Options.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\017_UI\\015_PScreen_Options.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\017_UI\\015_PScreen_Options.rb",
@@ -233,7 +251,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 25,
               "Title": "021_FRLG Bag.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\021_FRLG Bag.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\021_FRLG Bag.rb",
@@ -246,7 +264,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 13,
               "Title": "items.txt",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\PBS\\items.txt",
               "RelativeDocumentMoniker": "PBS\\items.txt",
@@ -255,26 +273,24 @@
               "ViewState": "AgIAAGMDAAAAAAAAAAAAAHkDAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
               "WhenOpened": "2026-08-02T20:07:48.985Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 11,
               "Title": "002_PItem_BattleItemEffects.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\022_HandlerHashes\\002_ItemEffects\\002_PItem_BattleItemEffects.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\022_HandlerHashes\\002_ItemEffects\\002_PItem_BattleItemEffects.rb",
               "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\022_HandlerHashes\\002_ItemEffects\\002_PItem_BattleItemEffects.rb",
               "RelativeToolTip": "Data\\Scripts\\022_HandlerHashes\\002_ItemEffects\\002_PItem_BattleItemEffects.rb",
-              "ViewState": "AgIAAJ4BAAAAAAAAAAAAAK4BAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAAJ4BAAAAAAAAAAAAALwBAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-03T02:01:19.332Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "001_PItem_Items.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\015_Items\\001_PItem_Items.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\015_Items\\001_PItem_Items.rb",
@@ -283,12 +299,11 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-03T03:22:59.932Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 18,
               "Title": "001_EBS Vs Animations.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\005_EBS VS Animations\\001_EBS Vs Animations.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\005_EBS VS Animations\\001_EBS Vs Animations.rb",
@@ -297,12 +312,11 @@
               "ViewState": "AgIAAO4BAAAAAAAAAAAAAAACAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-04T01:47:13.311Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 17,
               "Title": "011_PField_FieldMoves.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\011_PField_FieldMoves.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\013_Overworld\\011_PField_FieldMoves.rb",
@@ -311,12 +325,11 @@
               "ViewState": "AgIAAC0BAAAAAAAAAAAhwE4BAABGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-03T04:16:19.655Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 16,
               "Title": "023_BattleStatVisual.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\023_BattleStatVisual.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\023_BattleStatVisual.rb",
@@ -325,12 +338,11 @@
               "ViewState": "AgIAAHcAAAAAAAAAAAAhwJQAAABZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-04T02:43:36.487Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 14,
               "Title": "007_Battle_Action_UseItem.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\012_Battle\\003_Battle\\007_Battle_Action_UseItem.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\012_Battle\\003_Battle\\007_Battle_Action_UseItem.rb",
@@ -339,12 +351,11 @@
               "ViewState": "AgIAACoAAAAAAAAAAAAhwD4AAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-03T03:24:29.412Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 15,
               "Title": "001_BattleScript_Main.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\001_BattleScript_Main.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\002_BattleScripting\\001_BattleScript_Main.rb",
@@ -353,12 +364,108 @@
               "ViewState": "AgIAAKUBAAAAAAAAAAAiwL8BAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-08-04T16:47:28.671Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "999_Main.rb",
+              "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\999_Main\\999_Main.rb",
+              "RelativeDocumentMoniker": "Data\\Scripts\\999_Main\\999_Main.rb",
+              "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\999_Main\\999_Main.rb",
+              "RelativeToolTip": "Data\\Scripts\\999_Main\\999_Main.rb",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-08-04T23:22:14.808Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "009_EnhancedStaircases.rb",
+              "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\009_EnhancedStaircases.rb",
+              "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\009_EnhancedStaircases.rb",
+              "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\009_EnhancedStaircases.rb",
+              "RelativeToolTip": "Data\\Scripts\\023_PluginScripts\\009_EnhancedStaircases.rb",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAB0AAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-08-05T00:47:13.279Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 6,
+              "Title": "001_PBTerrain.rb",
+              "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\001_PBTerrain.rb",
+              "RelativeDocumentMoniker": "Data\\Scripts\\013_Overworld\\001_PBTerrain.rb",
+              "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\001_PBTerrain.rb",
+              "RelativeToolTip": "Data\\Scripts\\013_Overworld\\001_PBTerrain.rb",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAhwHQAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-08-02T18:11:45.995Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "002_PField_Field.rb",
+              "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\002_PField_Field.rb",
+              "RelativeDocumentMoniker": "Data\\Scripts\\013_Overworld\\002_PField_Field.rb",
+              "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\002_PField_Field.rb",
+              "RelativeToolTip": "Data\\Scripts\\013_Overworld\\002_PField_Field.rb",
+              "ViewState": "AgIAAEIBAAAAAAAAAAAAAGQBAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-08-01T20:20:12.472Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "001_Debug_Menu.rb",
+              "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\021_Debug\\001_Debug_Menu.rb",
+              "RelativeDocumentMoniker": "Data\\Scripts\\021_Debug\\001_Debug_Menu.rb",
+              "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\021_Debug\\001_Debug_Menu.rb",
+              "RelativeToolTip": "Data\\Scripts\\021_Debug\\001_Debug_Menu.rb",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAAAJ4AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-08-05T03:01:27.857Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{c6f34f0d-7ae5-4f3a-be61-fe0c21ae9eb8}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "007_Game_Player.rb",
+              "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\003_Game classes\\007_Game_Player.rb",
+              "RelativeDocumentMoniker": "Data\\Scripts\\003_Game classes\\007_Game_Player.rb",
+              "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\003_Game classes\\007_Game_Player.rb",
+              "RelativeToolTip": "Data\\Scripts\\003_Game classes\\007_Game_Player.rb",
+              "ViewState": "AgIAABQAAAAAAAAAAAAiwCkAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-08-05T01:50:11.918Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "metadata.txt",
+              "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\PBS\\metadata.txt",
+              "RelativeDocumentMoniker": "PBS\\metadata.txt",
+              "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\PBS\\metadata.txt",
+              "RelativeToolTip": "PBS\\metadata.txt",
+              "ViewState": "AgIAAMoBAAAAAAAAAAAiwN4BAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2026-08-05T00:36:51.072Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
               "Title": "004_Battler_Statuses.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\012_Battle\\001_Battler\\004_Battler_Statuses.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\012_Battle\\001_Battler\\004_Battler_Statuses.rb",
@@ -366,12 +473,11 @@
               "RelativeToolTip": "Data\\Scripts\\012_Battle\\001_Battler\\004_Battler_Statuses.rb",
               "ViewState": "AgIAAEkAAAAAAAAAAAAiwF0AAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-08-04T16:52:28.023Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-04T16:52:28.023Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 12,
               "Title": "moves.txt",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\PBS\\moves.txt",
               "RelativeDocumentMoniker": "PBS\\moves.txt",
@@ -379,12 +485,11 @@
               "RelativeToolTip": "PBS\\moves.txt",
               "ViewState": "AgIAAJEBAAAAAAAAAAAiwKIBAABZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2026-08-03T05:37:49.311Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-03T05:37:49.311Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 23,
               "Title": "001_PItem_ItemEffects.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\022_HandlerHashes\\002_ItemEffects\\001_PItem_ItemEffects.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\022_HandlerHashes\\002_ItemEffects\\001_PItem_ItemEffects.rb",
@@ -396,19 +501,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "002_PField_Field.rb",
-              "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\002_PField_Field.rb",
-              "RelativeDocumentMoniker": "Data\\Scripts\\013_Overworld\\002_PField_Field.rb",
-              "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\002_PField_Field.rb",
-              "RelativeToolTip": "Data\\Scripts\\013_Overworld\\002_PField_Field.rb",
-              "ViewState": "AgIAACgFAAAAAAAAAIAwwD4FAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-08-01T20:20:12.472Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 24,
               "Title": "001_ModularMenu.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\003_Modular Pause\\001_ModularMenu.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\003_Modular Pause\\001_ModularMenu.rb",
@@ -420,7 +513,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 26,
               "Title": "014_PScreen_Save.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\017_UI\\014_PScreen_Save.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\017_UI\\014_PScreen_Save.rb",
@@ -432,7 +525,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 27,
               "Title": "013_PScreen_Load.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\017_UI\\013_PScreen_Load.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\017_UI\\013_PScreen_Load.rb",
@@ -444,7 +537,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 28,
               "Title": "018_HGSSTrainerCard.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\023_PluginScripts\\018_HGSSTrainerCard.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\023_PluginScripts\\018_HGSSTrainerCard.rb",
@@ -456,7 +549,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 31,
               "Title": "001_Interpreter.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\006_Game processing\\001_Interpreter.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\006_Game processing\\001_Interpreter.rb",
@@ -468,7 +561,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 22,
               "Title": "002_Scene_Map.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\006_Game processing\\002_Scene_Map.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\006_Game processing\\002_Scene_Map.rb",
@@ -480,19 +573,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "001_PBTerrain.rb",
-              "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\001_PBTerrain.rb",
-              "RelativeDocumentMoniker": "Data\\Scripts\\013_Overworld\\001_PBTerrain.rb",
-              "ToolTip": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\001_PBTerrain.rb",
-              "RelativeToolTip": "Data\\Scripts\\013_Overworld\\001_PBTerrain.rb",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-08-02T18:11:45.995Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 21,
               "Title": "trainers.txt",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\PBS\\trainers.txt",
               "RelativeDocumentMoniker": "PBS\\trainers.txt",
@@ -500,12 +581,11 @@
               "RelativeToolTip": "PBS\\trainers.txt",
               "ViewState": "AgIAAJ4AAAAAAAAAAAAiwLQAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2026-08-01T21:23:57.971Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-01T21:23:57.971Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 33,
               "Title": "003_Battle_StartAndEnd.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\012_Battle\\003_Battle\\003_Battle_StartAndEnd.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\012_Battle\\003_Battle\\003_Battle_StartAndEnd.rb",
@@ -517,7 +597,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 35,
               "Title": "006_PField_Battles.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\013_Overworld\\006_PField_Battles.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\013_Overworld\\006_PField_Battles.rb",
@@ -529,7 +609,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 34,
               "Title": "008_Battle_Action_Running.rb",
               "DocumentMoniker": "D:\\Pokemon Stuff\\Bushido\\Pokemon-Bushido\\Data\\Scripts\\012_Battle\\003_Battle\\008_Battle_Action_Running.rb",
               "RelativeDocumentMoniker": "Data\\Scripts\\012_Battle\\003_Battle\\008_Battle_Action_Running.rb",

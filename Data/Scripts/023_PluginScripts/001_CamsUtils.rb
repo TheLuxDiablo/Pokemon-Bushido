@@ -349,6 +349,18 @@ def setChopDownOneTree()
     $game_switches[180] = true
 end
 
+  def setSlopeData(xincline, yincline, ypos, yheight, offset)
+    $game_player.slope(xincline, yincline, ypos, yheight, offset)
+  end
+
+  def currentChapter()
+    return $game_variables[99]
+  end
+
+  def setChapter(int)
+    $game_variables[99] = int
+  end
+
 # ===================================================================
 # Player Katana Techniques
 # ===================================================================
