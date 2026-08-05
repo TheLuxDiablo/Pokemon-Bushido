@@ -5,27 +5,30 @@
 #
 # Current features:
 # - Toggle with F10.
-# - Display current FPS.
-# - Display current map ID and name.
-# - Display player coordinates.
-# - Uses Bushido's configured in-game font.
-# - Modular HUD layout for future performance sections.
+# - Current, rolling average, and recent-low FPS.
+# - Current map ID, name, and player coordinates.
+# - Loaded connected-map inspection.
+# - Lightweight event-category counts.
 #
-# Remove this file to remove the monitor completely.
+# This tool only reads existing game state. It does not modify map or event
+# behavior. Remove this file to remove the monitor completely.
 #===============================================================================
 
 
 #===============================================================================
 # BushidoPerformanceSampler
 #-------------------------------------------------------------------------------
-# Reads lightweight information from the current game state.
+# Collects lightweight performance and map information.
 #
-# FPS is calculated over short 0.25-second windows. This is more readable than
-# displaying 1 / frame time directly, which would fluctuate every frame.
+# FPS updates every 0.25 seconds.
+# Map/event inspection also updates every 0.25 seconds rather than every frame.
 #===============================================================================
 
 class BushidoPerformanceSampler
-  FPS_SAMPLE_INTERVAL = 0.25
+  FPS_SAMPLE_INTERVAL  = 0.25
+  DATA_SAMPLE_INTERVAL = 0.25
+  AVERAGE_WINDOW       = 1.0
+  LOW_WINDOW           = 5.0
 
   def initialize
     @cached_map_id   = nil
@@ -33,25 +36,28 @@ class BushidoPerformanceSampler
 
     @fps_elapsed = 0.0
     @fps_frames  = 0
+    @fps_time    = 0.0
+
     @current_fps = nil
+    @average_fps = nil
+    @lowest_fps  = nil
+
+    @fps_samples = []
+
+    @data_elapsed = DATA_SAMPLE_INTERVAL
+    @map_stats    = []
+    @event_stats  = empty_event_stats
   end
 
-  def update_fps
-    delta = Graphics.delta_s
-    return if delta <= 0
-
-    @fps_elapsed += delta
-    @fps_frames += 1
-
-    if @fps_elapsed >= FPS_SAMPLE_INTERVAL
-      @current_fps = @fps_frames.to_f / @fps_elapsed
-      @fps_elapsed = 0.0
-      @fps_frames  = 0
-    end
-  end
+  #-----------------------------------------------------------------------------
+  # Public sampling
+  #-----------------------------------------------------------------------------
 
   def sample
-    update_fps
+    delta = safe_delta
+
+    update_fps(delta)
+    update_inspection_data(delta)
 
     map_id   = 0
     map_name = ""
@@ -74,16 +80,191 @@ class BushidoPerformanceSampler
       player_y = $game_player.y
     end
 
-    fps_text = "--"
-    fps_text = sprintf("%.1f", @current_fps) if @current_fps
-
     return {
-      :fps      => fps_text,
-      :map_id   => map_id,
-      :map_name => map_name,
-      :player_x => player_x,
-      :player_y => player_y
+      :current_fps => format_fps(@current_fps),
+      :average_fps => format_fps(@average_fps),
+      :lowest_fps  => format_fps(@lowest_fps),
+
+      :map_id      => map_id,
+      :map_name    => map_name,
+      :player_x    => player_x,
+      :player_y    => player_y,
+
+      :loaded_maps => @map_stats,
+      :event_stats => @event_stats
     }
+  end
+
+  #-----------------------------------------------------------------------------
+  # Frame timing
+  #-----------------------------------------------------------------------------
+
+  def safe_delta
+    delta = Graphics.delta_s
+    return 0.0 if !delta
+    return 0.0 if delta <= 0
+    return delta
+  rescue
+    return 0.0
+  end
+
+  def update_fps(delta)
+    return if delta <= 0
+
+    @fps_elapsed += delta
+    @fps_time    += delta
+    @fps_frames  += 1
+
+    return if @fps_elapsed < FPS_SAMPLE_INTERVAL
+
+    fps = @fps_frames.to_f / @fps_elapsed
+
+    @current_fps = fps
+    @fps_samples.push([@fps_time, fps])
+
+    @fps_elapsed = 0.0
+    @fps_frames  = 0
+
+    remove_old_fps_samples
+    calculate_fps_windows
+  end
+
+  def remove_old_fps_samples
+    cutoff = @fps_time - LOW_WINDOW
+
+    while @fps_samples.length > 0 &&
+          @fps_samples[0][0] < cutoff
+      @fps_samples.shift
+    end
+  end
+
+  def calculate_fps_windows
+    return if @fps_samples.length == 0
+
+    average_cutoff = @fps_time - AVERAGE_WINDOW
+    average_total  = 0.0
+    average_count  = 0
+    lowest         = nil
+
+    for sample in @fps_samples
+      sample_time = sample[0]
+      sample_fps  = sample[1]
+
+      if sample_time >= average_cutoff
+        average_total += sample_fps
+        average_count += 1
+      end
+
+      lowest = sample_fps if !lowest || sample_fps < lowest
+    end
+
+    if average_count > 0
+      @average_fps = average_total / average_count
+    else
+      @average_fps = @current_fps
+    end
+
+    @lowest_fps = lowest
+  end
+
+  def format_fps(value)
+    return "--" if !value
+    return sprintf("%.1f", value)
+  end
+
+  #-----------------------------------------------------------------------------
+  # Loaded-map and event inspection
+  #-----------------------------------------------------------------------------
+
+  def update_inspection_data(delta)
+    @data_elapsed += delta
+    return if @data_elapsed < DATA_SAMPLE_INTERVAL
+
+    @data_elapsed = 0.0
+
+    collect_loaded_maps
+    collect_event_stats
+  end
+
+  def collect_loaded_maps
+    results = []
+
+    if $MapFactory && $MapFactory.maps
+      for map in $MapFactory.maps
+        next if !map
+
+        map_id    = map.map_id
+        map_name  = pbGetBasicMapNameFromId(map_id)
+        width     = 0
+        height    = 0
+        event_count = 0
+
+        if map.data
+          width  = map.data.xsize
+          height = map.data.ysize
+        end
+
+        event_count = map.events.length if map.events
+
+        results.push({
+          :map_id      => map_id,
+          :map_name    => map_name,
+          :width       => width,
+          :height      => height,
+          :event_count => event_count
+        })
+      end
+    end
+
+    results.sort! { |a, b| a[:map_id] <=> b[:map_id] }
+    @map_stats = results
+  rescue
+    @map_stats = []
+  end
+
+  def empty_event_stats
+    return {
+      :total        => 0,
+      :active       => 0,
+      :parallel     => 0,
+      :autorun      => 0,
+      :moving       => 0,
+      :interpreters => 0
+    }
+  end
+
+  def collect_event_stats
+    stats = empty_event_stats
+
+    if $MapFactory && $MapFactory.maps
+      for map in $MapFactory.maps
+        next if !map || !map.events
+
+        for event in map.events.values
+          next if !event
+
+          stats[:total] += 1
+
+          # should_update? without an argument returns the event's cached
+          # update decision from its most recent Game_Event#update call.
+          stats[:active] += 1 if event.should_update?
+
+          stats[:parallel] += 1 if event.trigger == 4
+          stats[:autorun]  += 1 if event.trigger == 3
+          stats[:moving]   += 1 if event.moving?
+
+          interpreter = event.instance_variable_get(:@interpreter)
+
+          if interpreter && interpreter.running?
+            stats[:interpreters] += 1
+          end
+        end
+      end
+    end
+
+    @event_stats = stats
+  rescue
+    @event_stats = empty_event_stats
   end
 end
 
@@ -91,43 +272,38 @@ end
 #===============================================================================
 # BushidoPerformanceOverlay
 #-------------------------------------------------------------------------------
-# Owns and draws the visible performance HUD.
-#
-# The layout is built from reusable methods:
-# - draw_header
-# - draw_section
-# - draw_line
-# - draw_divider
-#
-# Each method advances @cursor_y automatically.
+# Draws the visible developer HUD.
 #===============================================================================
 
 class BushidoPerformanceOverlay
-  WIDTH  = 320
-  HEIGHT = 168
+  WIDTH  = 404
+  HEIGHT = 372
 
   PANEL_PADDING  = 10
   HEADER_HEIGHT  = 32
   SECTION_HEIGHT = 22
-  LINE_HEIGHT    = 22
-  DIVIDER_MARGIN = 4
+  LINE_HEIGHT    = 21
+  MAP_LINE_HEIGHT = 18
+  DIVIDER_MARGIN = 3
+
+  MAX_VISIBLE_MAPS = 6
 
   def initialize
     @sprite = Sprite.new
     @sprite.z = 99999
-    @sprite.x = 8
-    @sprite.y = 8
+    @sprite.x = 6
+    @sprite.y = 4
     @sprite.bitmap = Bitmap.new(WIDTH, HEIGHT)
     @sprite.visible = false
 
     @last_data = nil
-    @cursor_y = 0
+    @cursor_y  = 0
 
     create_colors
   end
 
   #-----------------------------------------------------------------------------
-  # Color setup
+  # Colors
   #-----------------------------------------------------------------------------
 
   def create_colors
@@ -135,10 +311,15 @@ class BushidoPerformanceOverlay
     @header_color     = Color.new(36, 42, 52, 245)
     @divider_color    = Color.new(110, 120, 135, 180)
 
-    @title_color      = Color.new(255, 255, 255)
-    @section_color    = Color.new(150, 180, 220)
-    @label_color      = Color.new(175, 190, 210)
-    @value_color      = Color.new(255, 255, 255)
+    @title_color   = Color.new(255, 255, 255)
+    @section_color = Color.new(150, 180, 220)
+    @label_color   = Color.new(175, 190, 210)
+    @value_color   = Color.new(255, 255, 255)
+    @muted_color   = Color.new(150, 160, 175)
+
+    @good_color    = Color.new(130, 235, 145)
+    @warning_color = Color.new(245, 210, 105)
+    @bad_color     = Color.new(245, 125, 115)
   end
 
   #-----------------------------------------------------------------------------
@@ -148,8 +329,20 @@ class BushidoPerformanceOverlay
   def update(data)
     return if data == @last_data
 
-    @last_data = data.clone
+    @last_data = clone_display_data(data)
     redraw(data)
+  end
+
+  def clone_display_data(data)
+    copy = data.clone
+
+    copy[:loaded_maps] = []
+    for map_data in data[:loaded_maps]
+      copy[:loaded_maps].push(map_data.clone)
+    end
+
+    copy[:event_stats] = data[:event_stats].clone
+    return copy
   end
 
   #-----------------------------------------------------------------------------
@@ -160,7 +353,6 @@ class BushidoPerformanceOverlay
     bitmap = @sprite.bitmap
     bitmap.clear
 
-    # Use Bushido's configured in-game font and fallback settings.
     pbSetSystemFont(bitmap)
 
     bitmap.fill_rect(
@@ -174,12 +366,31 @@ class BushidoPerformanceOverlay
     @cursor_y = 0
 
     draw_header("Bushido Performance Monitor")
-
-    draw_section("PERFORMANCE")
-    draw_line("Current FPS", data[:fps])
-
+    draw_performance(data)
     draw_divider
+    draw_player(data)
+    draw_divider
+    draw_loaded_maps(data)
+    draw_divider
+    draw_events(data)
+  end
 
+  #-----------------------------------------------------------------------------
+  # Major sections
+  #-----------------------------------------------------------------------------
+
+  def draw_performance(data)
+    draw_section("PERFORMANCE")
+
+    current_value = data[:current_fps]
+    current_color = fps_color(current_value)
+
+    draw_line("Current FPS", current_value, current_color)
+    draw_line("Average FPS", data[:average_fps])
+    draw_line("Lowest (5 sec)", data[:lowest_fps])
+  end
+
+  def draw_player(data)
     draw_section("PLAYER")
 
     map_text = sprintf(
@@ -198,6 +409,55 @@ class BushidoPerformanceOverlay
     draw_line("Position", position_text)
   end
 
+  def draw_loaded_maps(data)
+    maps = data[:loaded_maps]
+
+    draw_section("LOADED MAPS")
+    draw_line("Count", maps.length.to_s)
+
+    visible_count = [maps.length, MAX_VISIBLE_MAPS].min
+
+    for i in 0...visible_count
+      draw_map_line(maps[i])
+    end
+
+    if maps.length > MAX_VISIBLE_MAPS
+      hidden_count = maps.length - MAX_VISIBLE_MAPS
+      draw_small_text(
+        sprintf("+%d additional loaded map(s)", hidden_count),
+        @muted_color
+      )
+    end
+  end
+
+  def draw_events(data)
+    stats = data[:event_stats]
+
+    draw_section("EVENTS")
+
+    left_text = sprintf(
+      "Total %d    Active %d",
+      stats[:total],
+      stats[:active]
+    )
+
+    right_text = sprintf(
+      "Parallel %d    Autorun %d",
+      stats[:parallel],
+      stats[:autorun]
+    )
+
+    movement_text = sprintf(
+      "Moving %d    Interpreters %d",
+      stats[:moving],
+      stats[:interpreters]
+    )
+
+    draw_small_text(left_text, @value_color)
+    draw_small_text(right_text, @value_color)
+    draw_small_text(movement_text, @value_color)
+  end
+
   #-----------------------------------------------------------------------------
   # Header
   #-----------------------------------------------------------------------------
@@ -213,8 +473,8 @@ class BushidoPerformanceOverlay
       @header_color
     )
 
-    bitmap.font.size = 17
-    bitmap.font.bold = true
+    bitmap.font.size  = 17
+    bitmap.font.bold  = true
     bitmap.font.color = @title_color
 
     bitmap.draw_text(
@@ -236,8 +496,8 @@ class BushidoPerformanceOverlay
   def draw_section(text)
     bitmap = @sprite.bitmap
 
-    bitmap.font.size = 14
-    bitmap.font.bold = true
+    bitmap.font.size  = 14
+    bitmap.font.bold  = true
     bitmap.font.color = @section_color
 
     bitmap.draw_text(
@@ -253,17 +513,17 @@ class BushidoPerformanceOverlay
   end
 
   #-----------------------------------------------------------------------------
-  # Label/value line
+  # Standard label/value row
   #-----------------------------------------------------------------------------
 
   def draw_line(label, value, value_color = nil)
     bitmap = @sprite.bitmap
 
-    label_width = 108
-    value_x = PANEL_PADDING + label_width
+    label_width = 134
+    value_x     = PANEL_PADDING + label_width
 
-    bitmap.font.size = 15
-    bitmap.font.bold = false
+    bitmap.font.size  = 15
+    bitmap.font.bold  = false
     bitmap.font.color = @label_color
 
     bitmap.draw_text(
@@ -288,6 +548,74 @@ class BushidoPerformanceOverlay
   end
 
   #-----------------------------------------------------------------------------
+  # Loaded-map row
+  #-----------------------------------------------------------------------------
+
+  def draw_map_line(map_data)
+    bitmap = @sprite.bitmap
+
+    map_text = sprintf(
+      "%03d  %s",
+      map_data[:map_id],
+      map_data[:map_name]
+    )
+
+    detail_text = sprintf(
+      "%dx%d   %d ev",
+      map_data[:width],
+      map_data[:height],
+      map_data[:event_count]
+    )
+
+    bitmap.font.size  = 13
+    bitmap.font.bold  = false
+    bitmap.font.color = @value_color
+
+    bitmap.draw_text(
+      PANEL_PADDING + 8,
+      @cursor_y + 2,
+      236,
+      MAP_LINE_HEIGHT,
+      map_text
+    )
+
+    bitmap.font.color = @muted_color
+
+    bitmap.draw_text(
+      250,
+      @cursor_y + 2,
+      WIDTH - 260,
+      MAP_LINE_HEIGHT,
+      detail_text,
+      2
+    )
+
+    @cursor_y += MAP_LINE_HEIGHT
+  end
+
+  #-----------------------------------------------------------------------------
+  # Compact text row
+  #-----------------------------------------------------------------------------
+
+  def draw_small_text(text, color)
+    bitmap = @sprite.bitmap
+
+    bitmap.font.size  = 13
+    bitmap.font.bold  = false
+    bitmap.font.color = color
+
+    bitmap.draw_text(
+      PANEL_PADDING + 8,
+      @cursor_y + 2,
+      WIDTH - (PANEL_PADDING * 2) - 8,
+      MAP_LINE_HEIGHT,
+      text
+    )
+
+    @cursor_y += MAP_LINE_HEIGHT
+  end
+
+  #-----------------------------------------------------------------------------
   # Divider
   #-----------------------------------------------------------------------------
 
@@ -308,16 +636,25 @@ class BushidoPerformanceOverlay
   end
 
   #-----------------------------------------------------------------------------
-  # Visibility
+  # FPS coloring
+  #-----------------------------------------------------------------------------
+
+  def fps_color(fps_text)
+    fps = fps_text.to_f
+
+    return @value_color if fps <= 0
+    return @good_color if fps >= 55
+    return @warning_color if fps >= 40
+    return @bad_color
+  end
+
+  #-----------------------------------------------------------------------------
+  # Visibility and cleanup
   #-----------------------------------------------------------------------------
 
   def visible=(value)
     @sprite.visible = value
   end
-
-  #-----------------------------------------------------------------------------
-  # Cleanup
-  #-----------------------------------------------------------------------------
 
   def dispose
     return if !@sprite
@@ -337,7 +674,7 @@ end
 #===============================================================================
 # BushidoPerformanceMonitor
 #-------------------------------------------------------------------------------
-# Controls monitor state, input, sampling, and overlay updates.
+# Controls input, monitor state, sampling, and drawing.
 #===============================================================================
 
 module BushidoPerformanceMonitor
@@ -376,7 +713,6 @@ module BushidoPerformanceMonitor
     return if !$DEBUG
 
     toggle if Input.triggerex?(TOGGLE_KEY)
-
     return if !@enabled
 
     ensure_components
@@ -398,7 +734,7 @@ end
 #===============================================================================
 # Update Hook
 #-------------------------------------------------------------------------------
-# Scene_Map triggers this event once during each overworld update.
+# Scene_Map triggers this once during each overworld update.
 #===============================================================================
 
 Events.onMapUpdate += proc { |_sender|
