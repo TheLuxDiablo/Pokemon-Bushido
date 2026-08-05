@@ -75,6 +75,4 @@ def pbSetResizeFactor(factor)
   end
 end
 
-ESSENTIALS_VERSION = "Bushido"
 ERROR_TEXT = ""
-GAME_VERSION = "2.0.0"
