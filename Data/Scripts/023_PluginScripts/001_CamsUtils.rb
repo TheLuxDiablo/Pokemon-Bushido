@@ -361,6 +361,10 @@ end
     $game_variables[99] = int
   end
 
+  def rematchSukiro()
+    pbMessage(_INTL("\\bWould you like to spar?"))
+  end
+
 # ===================================================================
 # Player Katana Techniques
 # ===================================================================

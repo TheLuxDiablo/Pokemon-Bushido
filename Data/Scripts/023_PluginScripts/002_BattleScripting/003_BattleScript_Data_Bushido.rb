@@ -2601,17 +2601,17 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Question time, \\PN!")
+    pbMessage("\\bQuestion time, \\PN!")
     # Choice Box Stuff
-    cmd = pbMessage("What is a Kenshi's most important moral code?", ["The Code of Honor", "The Code of Power", "The Code of Intelligence"])
+    cmd = pbMessage("\\bWhat is a Kenshi's most important moral code?", ["The Code of Honor", "The Code of Power", "The Code of Intelligence"])
     if cmd == 0
-      pbMessage("\\se[SwShCorrect]As expected of my student! Brilliant!")
+      pbMessage("\\se[SwShCorrect]\\bAs expected of my student! Brilliant!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbRaiseStatStageEx(:ATTACK, 1, true, user)
     else
-      pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
-      pbMessage("The correct answer is the \"Code of Honor,\" which all Kenshi are expected to follow.")
+      pbMessage("\\se[SwShIncorrect]\\bHmm... It seems like we still have some work to do.")
+      pbMessage("\\bThe correct answer is the \"Code of Honor,\" which all Kenshi are expected to follow.")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:ATTACK, 1, true, user)
@@ -2623,18 +2623,18 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Prepare yourself for another question \\PN!")
-    cmd= pbMessage("What is a Kenshi's source of power?", ["Spear", "Pokémon", "Katana"])
+    pbMessage("\\bPrepare yourself for another question \\PN!")
+    cmd= pbMessage("\\bWhat is a Kenshi's source of power?", ["Spear", "Pokémon", "Katana"])
     if cmd == 1
-      pbMessage("\\se[SwShCorrect]Well done! You have been paying attention!")
-      pbMessage("A Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
+      pbMessage("\\se[SwShCorrect]\\bWell done! You have been paying attention!")
+      pbMessage("\\bA Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbRaiseStatStageEx(:DEFENSE, 1, true, user)
     else
-      pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
-      pbMessage("While Katanas and Spears are effective weapons in their own right...")
-      pbMessage("A Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
+      pbMessage("\\se[SwShIncorrect]\\bHmm... It seems like we still have some work to do.")
+      pbMessage("\\bWhile Katanas and Spears are effective weapons in their own right...")
+      pbMessage("\\bA Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:DEFENSE, 1, true, user)
@@ -2646,25 +2646,25 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("You're doing well \\PN. But are you prepared for another question?")
-    pbMessage("Answer me this...")
-    cmd = pbMessage("What determines the clan that a Kenshi will join?", ["Affinity", "Money", "Family"])
+    pbMessage("\\bYou're doing well \\PN. But are you prepared for another question?")
+    pbMessage("\\bAnswer me this...")
+    cmd = pbMessage("\\bWhat determines the clan that a Kenshi will join?", ["Affinity", "Money", "Family"])
     if cmd == 0
-      pbMessage("\\se[SwShCorrect]Well done, \\PN!")
-      pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
+      pbMessage("\\se[SwShCorrect]\\bWell done, \\PN!")
+      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbRaiseStatStageEx(:SPEED, 1, true, user)
     elsif cmd == 1
-      pbMessage("\\se[SwShIncorrect]That is incorrect!")
-      pbMessage("It would be incredibly shameful for a Kenshi to attempt to buy their way into a clan!")
-      pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
+      pbMessage("\\se[SwShIncorrect]\\bThat is incorrect!")
+      pbMessage("\\bIt would be incredibly shameful for a Kenshi to attempt to buy their way into a clan!")
+      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:SPEED, 2, true, user)
     else
-      pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
-      pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
+      pbMessage("\\se[SwShIncorrect]\\bHmm... It seems like we still have some work to do.")
+      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:SPEED, 1, true, user)
@@ -2676,17 +2676,17 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Alright \\PN! Prepare yourself for my hardest question yet!")
-    cmd = pbMessage("What type of Pokémon is strongest against the Shimizu Clan?", ["Rock", "Electric", "Fire"])
+    pbMessage("\\bAlright \\PN! Prepare yourself for my hardest question yet!")
+    cmd = pbMessage("\\bWhat type of Pokémon is strongest against the Shimizu Clan?", ["Rock", "Electric", "Fire"])
     if cmd == 1
-      pbMessage("\\se[SwShCorrect]Haha! That is correct! Excellent work, \\PN!")
-      pbMessage("Shimizu Clan members have a water affinity, so Electric is the correct answer!")
+      pbMessage("\\se[SwShCorrect]\\bHaha! That is correct! Excellent work, \\PN!")
+      pbMessage("\\bShimizu Clan members have a water affinity, so Electric is the correct answer!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbRaiseStatStageEx(:SPATK, 1, true, user)
     else
-      pbMessage("\\se[SwShIncorrect]Hmm... that is incorrect.")
-      pbMessage("Shimizu Clan members have a water affinity, so Electric would be the correct answer.")
+      pbMessage("\\se[SwShIncorrect]\\bHmm... that is incorrect.")
+      pbMessage("\\bShimizu Clan members have a water affinity, so Electric would be the correct answer.")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:SPATK, 1, true, user)
@@ -2698,17 +2698,17 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("A truly honorable Kenshi must never forget their teachings.")
-    pbMessage("Now, answer me this, \\PN.")
-    cmd = pbMessage("What is the most important moral code of the Kenshi?", ["The Code of Power", "The Code of Honor", "The Code of Wisdom"])
+    pbMessage("\\bA truly honorable Kenshi must never forget their teachings.")
+    pbMessage("\\bNow, answer me this, \\PN.")
+    cmd = pbMessage("\\bWhat is the most important moral code of the Kenshi?", ["The Code of Power", "The Code of Honor", "The Code of Wisdom"])
     if cmd == 1
-      pbMessage("\\se[SwShCorrect]Correct!")
+      pbMessage("\\se[SwShCorrect]\\bCorrect!")
     else
-      pbMessage("\\se[SwShIncorrect]Hmm... that is incorrect.")
+      pbMessage("\\se[SwShIncorrect]\\bHmm... that is incorrect.")
     end
-    pbMessage("\\PN, you must never forget that the codes of honor and Bushido are what guide us.")
-    pbMessage("Those in the Akui Clan have forgetten this message, and have lost their way.")
-    pbMessage("It is our purpose as righteous Kenshi to bring them to justice!")
+    pbMessage("\\b\\PN, you must never forget that the codes of honor and Bushido are what guide us.")
+    pbMessage("\\bThose in the Akui Clan have forgetten this message, and have lost their way.")
+    pbMessage("\\bIt is our purpose as righteous Kenshi to bring them to justice!")
     scene.pbHideOpponent
     scene.disappearBar
     if cmd == 1
