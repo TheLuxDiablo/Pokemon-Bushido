@@ -219,8 +219,6 @@ class Scene_Map
   def main
     createSpritesets
     Graphics.transition(20)
-    # Thundaga, calling init Energy here on load_data
-    camsHackyInitMethod()
     loop do
       Graphics.update
       Input.update

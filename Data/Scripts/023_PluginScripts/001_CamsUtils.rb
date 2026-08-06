@@ -368,7 +368,7 @@ end
 # Receive them from each dojo, and/or at pivotal moments
 
 # Kaifuku: Heal the whole party out of battle: COST = 3
-# DONE - Hikari: Lower Enemy accuracy 2 levels, restore 25% HP, Protect for 1 turn. COST = 1
+# DONE - Hikari: Lower Enemy accuracy 1 level, restore 25% HP, Protect for 1 turn. COST = 1
 # DONE - Sakuryaku: Set up Trick Room (5 turns), boost Def/Spdef. Cost = 1
 # DONE - Moya: Clear stat changes from all. Cost = 1
 # DONE - Komorei: HealStatus, Half HP, and Setup Grassy Terrain. COST = 2
@@ -377,9 +377,9 @@ end
 # Tsume: Shadow Cleave all enemies, cut HP in half (never kill), then put to Sleep. COST = 4. WAY OP, POSTGAME
 # Masayoshi: Reflect + LightScreen, same as Ryo. Cost = 1
 # Akui: Shadow Clone for Evasion and Speed, Toxic Spikes. Cost = 3.
-# paralyze, elec Terrain. Cost = 2.
-# stealth rocks + sandstorm + spdefUP. Cost = 2.
-# Hail, freeze. Cost = 3.
+# Raikami: paralyze, elec Terrain. Cost = 2.
+# Iwa: stealth rocks + sandstorm + spdefUP. Cost = 2.
+# Yuki: Hail, freeze. Cost = 3.
 # Hattori: Wonder Room, 
 #      :Gravity         => "Gravity",
 #      :NeutralizingGas => "Neutralizing Gas"
@@ -458,6 +458,7 @@ end
 
 def camsHackyInitMethod()
     # early out if we're disabling PKT
+    pbMessage(_INTL("hacky init start!"))
     if (PLAYERKATANATECHNIQUES == false)
         return
     end
