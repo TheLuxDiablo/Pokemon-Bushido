@@ -195,6 +195,7 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   text.gsub!(/\\pog/i, "")
   text.gsub!(/\\b/i,   "<c3=3050C8,D0D0C8>")
   text.gsub!(/\\r/i,   "<c3=E00808,D0D0C8>")
+  text.gsub!(/’/i,   "'")
   text.gsub!(/\\[Ww]\[([^\]]*)\]/) {
     w = $1.to_s
     if w==""
