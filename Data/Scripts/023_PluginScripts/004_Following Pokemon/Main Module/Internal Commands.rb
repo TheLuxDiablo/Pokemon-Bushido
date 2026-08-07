@@ -51,7 +51,7 @@ module FollowingPkmn
     pocket = pbGetPocket(item)
     move   = pbGetMachine(item)
     if $PokemonBag.pbStoreItem(item, quantity)   # If item can be picked up
-      meName = (item.is_key_item?) ? "Key item get" : "Item get"
+      meName = (item.is_key_item?) ? "PLA 036 Obtained a Key Item!" : "PLA 010 Level Up!"
       if isConst?(item,PBItems,:LEFTOVERS)
         pbMessage(_INTL("\\me[{1}]{3} found some \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname, pokename))
       elsif item.is_machine?   # TM or HM

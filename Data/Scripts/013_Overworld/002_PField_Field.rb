@@ -1299,7 +1299,7 @@ def pbItemBall(item,quantity=1)
   itemname = (quantity>1) ? PBItems.getNamePlural(item) : PBItems.getName(item)
   pocket = pbGetPocket(item)
   if $PokemonBag.pbStoreItem(item,quantity)   # If item can be picked up
-    meName = (pbIsKeyItem?(item)) ? "Key item get" : "Item get"
+    meName = (pbIsKeyItem?(item)) ? "PLA 036 Obtained a Key Item!" : "PLA 010 Level Up!"
     if isConst?(item,PBItems,:LEFTOVERS)
       pbMessage(_INTL("\\me[{1}]You found some \\c[1]{2}\\c[0]!\\wtnp[30]",meName,itemname))
     elsif pbIsMachine?(item)   # TM or HM
@@ -1341,7 +1341,7 @@ def pbReceiveItem(item,quantity=1)
   return false if !item || item<=0 || quantity<1
   itemname = (quantity>1) ? PBItems.getNamePlural(item) : PBItems.getName(item)
   pocket = pbGetPocket(item)
-  meName = (pbIsKeyItem?(item)) ? "placeholder" : "Item get"
+  meName = (pbIsKeyItem?(item)) ? "PLA 036 Obtained a Key Item!" : "PLA 010 Level Up!"
   if isConst?(item,PBItems,:LEFTOVERS)
     pbMessage(_INTL("\\me[{1}]You obtained some \\c[1]{2}\\c[0]!\\wtnp[30]",meName,itemname))
   elsif isConst?(item,PBItems,:KATANABASIC)

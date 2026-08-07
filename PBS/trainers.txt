@@ -156,6 +156,13 @@ Pokemon = TALONFLAME,58
 Pokemon = GOREBYSS,58
 Pokemon = SIRFETCHD,59
 #-------------------------------
+[SENSEI,Sukiro,2]
+LoseText = "That was an excellent sparring session."
+Pokemon = ROCKRUFF,5
+Pokemon = SLUGMA,5
+Pokemon = FARFETCHD,5
+    Form = 1
+#-------------------------------
 [NENSHO_M,Grunta]
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = TORCHIC,5

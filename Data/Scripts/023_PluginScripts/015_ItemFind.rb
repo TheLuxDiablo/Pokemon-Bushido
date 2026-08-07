@@ -148,7 +148,7 @@ def pbItemBall(item, quantity = 1)
   return false if !item || item<=0 || quantity<1
   itemname = (quantity>1) ? PBItems.getNamePlural(item) : PBItems.getName(item)
   pocket = pbGetPocket(item)
-  meName = $PokemonBag.pbCanStore?(item,quantity) ? ((pbIsKeyItem?(item)) ? "HGSSGetKeyItem" : "HGSSGetItem") : ""
+  meName = $PokemonBag.pbCanStore?(item,quantity) ? ((pbIsKeyItem?(item)) ? "PLA 036 Obtained a Key Item!" : "PLA 010 Level Up!") : ""
   if $PokemonBag.pbCanStore?(item,quantity)
     scene = $game_player.addFoundItem(item)
   else

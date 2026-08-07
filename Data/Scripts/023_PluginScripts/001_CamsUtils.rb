@@ -361,8 +361,99 @@ end
     $game_variables[99] = int
   end
 
+  def incrementGameVariable(varNum, incAmt)
+    $game_variables[varNum] = $game_variables[varNum]+incAmt
+  end
+
+  def prayAtHokora()
+    if(KatanaOfLightAwakened?() == false || PLAYERKATANATECHNIQUES == false)
+        pbMessage("It's a Hokora, a small shrine dedicated to the gods.")
+    elsif($game_self_switches[[@map_id, @event_id, "A"]])
+        pbMessage("It's a Hokora, a small shrine dedicated to the gods.")
+        pbMessage("You have already prayed at this Hokora to increase your Spiritual Energy.")
+    else
+        vSS(@event_id)
+        pbMessage("You prayed at the Hokora...")
+        pbMessage("Spiritual energy flows all around...")
+        pbMessage("You can feel your Spiritual Energy increasing!")
+        increaseMaxEnergy(1)
+        #fullyRecoverEnergy()
+        pbMessage(_INTL("\\me[PLA 028 Request Start!]Your Max SP increased to {1}!\\wtnp[50]", getPlayerMaxEnergy()))
+    end
+  end
+
+  # Hokora locations
+  # Base SP = 3
+  # Total Hokora = 12
+  # SP after all Hokora = 15
+
+  # DONE - Sakura Pass (Ch 2)
+  # DONE - Kaiyo Sea start (Ch 2 can reach early)
+  # DONE - Tsuchi Village (Ch 2)
+  # DONE - Jonetsu Pass (Ch 3)
+  # DONE - Hanatsu Village (Ch 3)
+  # DONE - Chikyu Village (Ch 4)
+  # DONE - Fubuki Bay (Ch 4) - Pretty well hidden
+  # DONE - Izumi Village (Ch 4)
+  # DONE - Yami Pass (Ch 5)
+  # DONE - Kaminari Pass (POSTGAME)
+  # DONE - Jinsu Island (POSTGAME)
+  # DONE - Jinsu Forest (POSTGAME)
+
+  def getARandomStat()
+    randStatNum = rand(5)
+    case randStatNum
+    when 0; return :ATTACK
+    when 1; return :DEFENSE
+    when 2; return :SPEED
+    when 3; return :SPDEF
+    when 4; return :SPATK
+    else; return :ATTACK
+    end
+  end
+
+  def correctAnswerGenericResponse(scene, target, statToBuff)
+    pbMessage("\\se[SwShCorrect]\\bWell done! That is correct!")
+    scene.pbHideOpponent
+    scene.disappearBar
+    target.pbRaiseStatStageEx(statToBuff, 1, true, target)
+  end
+
+  def incorrectAnswerGenericResponse(scene, target, statToBuff)
+    pbMessage("\\se[SwShIncorrect]\\bHmm... that is incorrect.")
+    scene.pbHideOpponent
+    scene.disappearBar
+    target.pbLowerStatStageEx(statToBuff, 1, true, target)
+  end
+  
   def rematchSukiro()
-    pbMessage(_INTL("\\bWould you like to spar?"))
+    if (pbMessage(_INTL("\\xn[Sukiro]\\b\\PN, would you like to train with a sparring session?"), [_INTL("Yes"), _INTL("No")]) == 0)
+        battleResult = $game_variables[190]
+        if(battleResult == 0)
+            pbMessage(_INTL("\\xn[Sukiro]\\bAlright, \\PN. This will be our first sparring session!"))
+        elsif(battleResult == 1)
+            pbMessage(_INTL("\\xn[Sukiro]\\bAlright, \\PN. You may have won last time, but this time will be different!"))
+        else
+            pbMessage(_INTL("\\xn[Sukiro]\\bFIGHT ME, \\PN!"))
+        end
+        BattleScripting.setInScript("turnStart0",:SukiroTrainingIntro)
+        vTB("Sensei","Sukiro","That was an excellent sparring session!",false,2,true,190) #1 who says "Darn!" after he loses, that you can lose and result is stored in variable 2.
+        battleResult = $game_variables[190]
+        if(battleResult == 1)
+            pbMessage(_INTL("\\xn[Sukiro]\\bWell fought, \\PN! You are becoming stronger with every battle."))
+            incrementGameVariable(191,1)
+            pbMessage(_INTL("\\xn[Sukiro]\\bYour number of sparring wins is: {1}.", $game_variables[191]))
+        elsif(battleResult == 2)
+            pbMessage(_INTL("\\xn[Sukiro]\\bThat was a valiant effort, \\PN!"))
+            incrementGameVariable(192,1)
+            pbMessage(_INTL("\\xn[Sukiro]\\bMy number of sparring wins is: {1}.", $game_variables[192]))
+        else
+            pbMessage(_INTL("\\xn[Sukiro]\\bGG boyoooo: {}.", $game_variables[192]))
+        end
+        pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record now stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
+    else
+        pbMessage(_INTL("\\xn[Sukiro]\\bAlright, \\PN. If you wish to train your Pokémon in battle, I'll be waiting."))
+    end
   end
 
 # ===================================================================
@@ -394,6 +485,19 @@ def restorePlayerEnergy()
     $game_variables[226] = getPlayerMaxEnergy()
 end
 
+def emptyPlayerEnergy()
+    $game_variables[226] = 0
+end
+
+def reducePlayerEnergyDownToNumber(setNum)
+    if($game_variables[226] > setNum)
+        $game_variables[226] = setNum
+        pbMessage(_INTL("Your SP was reduced down to {1}!", setNum))
+    else
+        pbMessage(_INTL("Your SP was already below {1}!", setNum))
+    end
+end
+
 def getPlayerCurrentEnergy()
     return $game_variables[226]
 end
@@ -406,10 +510,28 @@ def hasEnoughEnergy(enCheck)
     return (getPlayerCurrentEnergy() >= enCheck)
 end
 
+def isEnergyFull?()
+    return getPlayerCurrentEnergy() == getPlayerMaxEnergy()
+end
+
 def healPlayerEnergy(incAmt)
     $game_variables[226] = ($game_variables[226] + incAmt)
     if($game_variables[226] > getPlayerMaxEnergy())
         $game_variables[226] = getPlayerMaxEnergy()
+    end
+end
+
+def playerEnergyRecoveryItem(resAmt)
+    healPlayerEnergy(resAmt)
+    pbMessage(_INTL("SP was restored by {1}!", resAmt))
+end
+
+def canUsePlayerRecoveryItem?(resAmt)
+    if(isEnergyFull?())
+        pbMessage(_INTL("SP is already full!", resAmt))
+        return false
+    else
+        return true
     end
 end
 
@@ -466,6 +588,8 @@ def camsHackyInitMethod()
     if (PLAYERKATANATECHNIQUES == false)
         return
     end
+    pbMessage(_INTL("Force init energy to 3"))
+    initializePlayerEnergy()
 
     # call on load, if no energy then initialize it (old save files would have no energy, so init them)
     if(getPlayerMaxEnergy() <= 0)

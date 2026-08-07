@@ -22,6 +22,39 @@ ItemHandlers::UseFromBag.add(:HONEY,proc { |item|
   next 2
 })
 
+ItemHandlers::UseFromBag.add(:SP_RES_S,proc { |item|
+    resAmt = 3
+    if(canUsePlayerRecoveryItem?(resAmt))
+        pbUseItemMessage(item)
+        playerEnergyRecoveryItem(resAmt)
+        next 3
+    else
+        next 0
+    end
+})
+
+ItemHandlers::UseFromBag.add(:SP_RES_M,proc { |item|
+    resAmt = 6
+    if(canUsePlayerRecoveryItem?(resAmt))
+        pbUseItemMessage(item)
+        playerEnergyRecoveryItem(resAmt)
+        next 3
+    else
+        next 0
+    end
+})
+
+ItemHandlers::UseFromBag.add(:SP_RES_L,proc { |item|
+    resAmt = 10
+    if(canUsePlayerRecoveryItem?(resAmt))
+        pbUseItemMessage(item)
+        playerEnergyRecoveryItem(resAmt)
+        next 3
+    else
+        next 0
+    end
+})
+
 ItemHandlers::UseFromBag.add(:ESCAPEROPE,proc { |item|
   if $game_player.pbHasDependentEvents?
     pbMessage(_INTL("It can't be used when you have someone with you."))

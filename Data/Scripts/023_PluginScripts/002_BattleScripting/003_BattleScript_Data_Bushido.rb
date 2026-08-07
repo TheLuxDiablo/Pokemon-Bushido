@@ -1735,7 +1735,7 @@ module DialogueModule
     if strong_katanas?
       pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!")
       scene.disappearBar
-      ret = user.pbRaiseStatStageEx(:SPEED, 2, :AGILITY)
+      ret = user.pbRaiseStatStageEx(:SPEED, 2, (user.hp>0 || :AGILITY))
       battlers[3].pbRaiseStatStageEx(:SPEED, 2, (ret || :AGILITY), user)
       scene.appearBar
       pbMessage("And that's not all! Get a load of this, you worthless children!")
@@ -1768,13 +1768,14 @@ module DialogueModule
     user    = battlers[1]
     target  = battlers[0]
     target2 = battlers[2]
+    user2   = battlers[3]
     pbMessage("We've been given orders to stop you from going any further!")
     pbMessage("We will not fail! We cannot fail!")
     if strong_katanas?
       pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
       scene.disappearBar
       ret = user.pbRaiseStatStageEx([:ATTACK, :SPEED], 1, :DRAGONDANCE)
-      battlers[3].pbRaiseStatStageEx([:ATTACK, :SPEED], 1, (ret || :DRAGONDANCE), user)
+      user2.pbRaiseStatStageEx([:ATTACK, :SPEED], 1, (ret || :DRAGONDANCE), user)
       pbMessage("Akui Clan Technique, Shock Kunai!")
       scene.disappearBar
       move_user = (user&.fainted? ? battlers[3] : user)
@@ -3149,5 +3150,69 @@ module DialogueModule
     stat = (strong_katanas? ? 3 : 1)
     battler.pbRaiseStatStageEx(:ATTACK, stat, forced: true)
     scene.pbHideOpponent
+  }
+
+  SukiroTrainingIntro = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    ally1 = battlers[0]
+    enemy1 = battlers[1]
+    currentTurn = battle.turnCount
+    nextTurnNum = (battle.turnCount + 2)
+    pbMessage("\\bLet's begin training, \\PN.")
+    pbMessage("\\bI'll also be quizzing you through this battle to test your mind!")
+    #pbMessage(_INTL("Current turn: {2}. Next quiz on {1}", nextTurnNum, currentTurn))
+    battle.RandomSukiroQuiz(rand(SUKIRO_SPAR_QUIZ_QUESTIONS+1), battle, scene, ally1, enemy1)
+    BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:SukiroTrainingRepeating)
+  }
+
+  SukiroTrainingRepeating = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    ally1 = battlers[0]
+    enemy1 = battlers[1]
+    nextTurnNum = (battle.turnCount + 2)
+    #pbMessage(_INTL("It is now turn {1}", nextTurnNum))
+    battle.RandomSukiroQuiz(rand(SUKIRO_SPAR_QUIZ_QUESTIONS+1), battle, scene, ally1, enemy1)
+    BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:SukiroTrainingRepeating)
+  }
+
+  TestEvilIntro = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    ally1 = battlers[0]
+    ally2 = battlers[2]
+    enemy1 = battlers[1]
+    enemy2 = battlers[3]
+    nextTurnNum = (battle.turnCount + 1)
+    pbMessage("I am a test version of the SUPER BOSS! I'm going to drain your SP and then do a random action every turn.")
+    pbMessage(_INTL("Current turn: {2}. Next MBD on start of turn {1}", nextTurnNum, nextTurnNum-1))
+    scene.disappearBar
+    if(ally1.fainted?)
+        battle.pbAnimation(:FLASH, ally1, ally1)
+    else
+        battle.pbAnimation(:FLASH, ally2, ally2)
+    end
+    reducePlayerEnergyDownToNumber(3)
+    enemy1.pbRaiseStatStageEx(:ATTACK, 2, forced: true)
+    enemy2.pbRaiseStatStageEx(:ATTACK, 2, forced: true)
+    scene.pbHideOpponent
+    BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:TestEvilRepeating)
+  }
+
+  TestEvilRepeating = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    ally1 = battlers[0]
+    ally2 = battlers[2]
+    enemy1 = battlers[1]
+    enemy2 = battlers[3]
+    numOfTech = 5
+    nextTurnNum = (battle.turnCount + 1)
+    pbMessage(_INTL("It is now turn {1}", nextTurnNum))
+    scene.disappearBar
+    battle.EvilRandomEffect(rand(numOfTech), battle, scene, ally1, ally2, enemy1, enemy2)
+    scene.pbHideOpponent
+    BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:TestEvilRepeating)
   }
 end
