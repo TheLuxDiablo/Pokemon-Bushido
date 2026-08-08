@@ -782,3 +782,5 @@
 762,BURNKUNAI,Flame Kunai,007,70,ELECTRIC,Physical,100,15,30,NearOther,0,bef,"The user throws kunai charged with electricity. It may also cause paralysis."
 763,POISONKUNAI,Toxic Kunai,007,70,ELECTRIC,Physical,100,15,30,NearOther,0,bef,"The user throws kunai charged with electricity. It may also cause paralysis."
 764,SLEEPKUNAI,Tranquilizer Kunai,007,70,ELECTRIC,Physical,100,15,30,NearOther,0,bef,"The user throws kunai charged with electricity. It may also cause paralysis."
+#-----------------------------------------------------------
+765,KOWTOWCLEAVE,Kowtow Cleave,0A5,85,DARK,Physical,0,10,0,AllNearFoes,0,befj,"The user kowtows to make the target lower its guard, then slashes. This attack never misses."

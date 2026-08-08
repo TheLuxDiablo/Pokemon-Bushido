@@ -226,6 +226,10 @@ class PokeBattle_Battler
     return lowerCase ? _INTL("the opposing team") : _INTL("The opposing team")
   end
 
+  def num_fainted_allies
+    return @battle.pbFaintedAllyCount(self)
+  end
+
   #=============================================================================
   # Calculated properties
   #=============================================================================
