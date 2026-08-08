@@ -35,7 +35,7 @@ module BushidoStarterSelection
   # :BOTH   - Force random species and shininess
   #
   # Put this back to :OFF before release.
-  DEBUG_MODE = :BOTH
+  DEBUG_MODE = :OFF
 
   #=============================================================================
   # Regional forms
