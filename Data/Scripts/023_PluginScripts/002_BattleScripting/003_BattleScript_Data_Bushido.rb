@@ -3160,7 +3160,7 @@ module DialogueModule
     currentTurn = battle.turnCount
     nextTurnNum = (battle.turnCount + 2)
     pbMessage("\\bLet's begin training, \\PN.")
-    pbMessage("\\bI'll also be quizzing you through this battle to test your mind!")
+    pbMessage("\\bI'll be quizzing you through this battle to also test your mind!")
     #pbMessage(_INTL("Current turn: {2}. Next quiz on {1}", nextTurnNum, currentTurn))
     battle.RandomSukiroQuiz(rand(SUKIRO_SPAR_QUIZ_QUESTIONS+1), battle, scene, ally1, enemy1)
     BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:SukiroTrainingRepeating)
