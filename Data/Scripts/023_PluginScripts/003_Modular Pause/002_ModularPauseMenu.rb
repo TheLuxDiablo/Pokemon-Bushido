@@ -98,6 +98,14 @@ MenuHandlers.addEntry(:BAG,_INTL("Bag"),"menuBag",proc{|menu|
     menu.close = true
   end
 },proc{ next true })
+# Habitat Scroll
+MenuHandlers.addEntry(:HABITAT,_INTL("Habitat"),"menuBag",proc{|menu|
+  pbFadeOutIn(99999) {
+    pbEncounterListUI
+  }
+},proc{
+  next $PokemonBag.pbQuantity(:HABITATSCROLL) > 0
+})
 # PokeGear
 MenuHandlers.addEntry(:POKEGEAR,_INTL("Pokégear"),"menuPokegear",proc{|menu|
   scene = PokemonPokegear_Scene.new
