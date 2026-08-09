@@ -370,6 +370,14 @@ end
     $game_variables[varNum] = $game_variables[varNum]+incAmt
   end
 
+  def getNameOfPokemonFromID(id)
+    return PBSpecies.getName(id)
+  end
+
+  def saveStarterSpeciesName(varID,starterID)
+    $game_variables[varID] = getNameOfPokemonFromID(BushidoStarterSelection::DEFAULT_STARTERS[starterID])
+  end
+
   def prayAtHokora()
     if(KatanaOfLightAwakened?() == false || PLAYERKATANATECHNIQUES == false)
         pbMessage("It's a Hokora, a small shrine dedicated to the gods.")
@@ -382,6 +390,7 @@ end
         pbMessage("Spiritual energy flows all around...")
         pbMessage("You can feel your Spiritual Energy increasing!")
         increaseMaxEnergy(1)
+        incrementGameVariable(193,1) # Track the number of Hokora prayed at in variable 193
         #fullyRecoverEnergy()
         pbMessage(_INTL("\\me[PLA 028 Request Start!]Your Max SP increased to {1}!\\wtnp[50]", getPlayerMaxEnergy()))
     end

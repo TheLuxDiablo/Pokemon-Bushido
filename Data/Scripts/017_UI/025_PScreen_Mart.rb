@@ -770,10 +770,12 @@ class PokemonMartScreen
           end
         end
         @stock.compact!
-        pbDisplayPaused(_INTL("Here you are! Thank you!")) { pbSEPlay("Mart buy item") }
+        pbSEPlay("SV 013 Obtained an Item!")
+        pbDisplayPaused(_INTL("Here you are! Thank you!"))
         if $PokemonBag
           if quantity>=10 && pbIsPokeBall?(item) && hasConst?(PBItems,:PREMIERBALL)
             if @adapter.addItem(getConst(PBItems,:PREMIERBALL))
+              pbSEPlay("SV 012 Obtained a Berry!")
               pbDisplayPaused(_INTL("I'll throw in a Premier Ball, too."))
             end
           end
