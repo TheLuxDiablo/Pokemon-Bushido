@@ -3,10 +3,10 @@ pbCompiler
 Input.text_input = false
 
 =begin
-map_data = Marshal.load(File.open('Data/Map171.rxdata'))
-map_data.width = 10
-map_data.height = 24
-file = File.open('Data/Map171.rxdata', 'wb')
+map_data = Marshal.load(File.open('Data/Map172.rxdata'))
+map_data.width = 74
+map_data.height = 10
+file = File.open('Data/Map172.rxdata', 'wb')
 Marshal.dump(map_data, file)
 file.close
 
