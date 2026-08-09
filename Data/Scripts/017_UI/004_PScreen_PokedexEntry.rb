@@ -546,7 +546,7 @@ class PokemonPokedexInfo_Scene
   end
 
   def pbSceneBrief
-    duration = getPlayTime("Pkmn exp gain") * Graphics.frame_rate / (125 / 100.0)
+    duration = [(getPlayTime("Pkmn exp gain") * Graphics.frame_rate / (125 / 100.0)).round, 1].max
     pbSEPlay("Pkmn exp gain", 125)
     @sprites["infosprite"].color.alpha = 255
     @sprites["formicon"].color.alpha   = 255
@@ -557,7 +557,7 @@ class PokemonPokedexInfo_Scene
       @sprites["formicon"].color.alpha = 255 * (1 - factor)
     end
     pbSEPlay("Pkmn exp full")
-    duration = getPlayTime("Pkmn exp full") * Graphics.frame_rate
+    duration = [(getPlayTime("Pkmn exp full") * Graphics.frame_rate).round, 1].max
     duration.times do |i|
       Graphics.update
       factor = f = (i + 1).to_f / duration
