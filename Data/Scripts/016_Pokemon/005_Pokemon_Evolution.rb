@@ -760,17 +760,3 @@ PBEvolution.register(:TradeSpecies, {
     next pkmn.species == parameter && !other_pkmn.hasItem?(:EVERSTONE)
   }
 })
-
-PBEvolution.register({
-  :id            => :LevelDefeatItsKindWithItem,
-  :parameter     => :Item,
-  :any_level_up  => true,   # Needs any level up
-  :level_up_proc => proc { |pkmn, parameter|
-    next pkmn.evo_crest_count(parameter) >= 3
-  },
-  :after_evolution_proc => proc { |pkmn, new_species, parameter, evo_species|
-    next false if evo_species != new_species || pkmn.evo_crest_count(parameter) < 3
-    pkmn.set_evo_crest_count(parameter,0)
-    next true
-  }
-})

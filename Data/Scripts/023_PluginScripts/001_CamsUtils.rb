@@ -193,7 +193,8 @@ def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
         for i in $Trainer.party
           i.heal
         end
-        pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+        pbMessage(_INTL("\\me[PLA 014 Caught a Pokemon!]Your Pokémon were fully healed by the Katana of Light!"))
+        pbMessage(_INTL("You have {1} SP remaining.", getPlayerCurrentEnergy()))
     else
         pbMessage(_INTL("\\se[SwShIncorrect]You need at least {1} Spirit Energy...", energyCost))
     end
@@ -213,7 +214,7 @@ def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
           for i in $Trainer.party
            i.heal
           end
-          pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+          pbMessage(_INTL("\\me[PLA 014 Caught a Pokemon!]Your Pokémon were fully healed by the Katana of Light!"))
           pbMessage(_INTL("You have no more healing energy left."))
          end
       else
@@ -223,7 +224,7 @@ def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
           for i in $Trainer.party
            i.heal
           end
-          pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+          pbMessage(_INTL("\\me[PLA 014 Caught a Pokemon!]Your Pokémon were fully healed by the Katana of Light!"))
           pbMessage(_INTL("{1} charge(s) remain.",$game_variables[currentChargeVar]))
          end
        end
@@ -361,6 +362,10 @@ end
     $game_variables[99] = int
   end
 
+  def getRivalsName()
+    return $game_variables[26]
+  end
+
   def incrementGameVariable(varNum, incAmt)
     $game_variables[varNum] = $game_variables[varNum]+incAmt
   end
@@ -416,21 +421,36 @@ end
     pbMessage("\\se[SwShCorrect]\\bWell done! That is correct!")
     scene.pbHideOpponent
     scene.disappearBar
-    target.pbRaiseStatStageEx(statToBuff, 1, true, target)
+    target.pbRaiseStatStagePKT(statToBuff, 1, true, target)
   end
 
-  def incorrectAnswerGenericResponse(scene, target, statToBuff)
+  def incorrectAnswerGenericResponse(scene, target, statToBuff, enemy)
     pbMessage("\\se[SwShIncorrect]\\bHmm... that is incorrect.")
     scene.pbHideOpponent
     scene.disappearBar
-    target.pbLowerStatStageEx(statToBuff, 1, true, target)
+    target.pbLowerStatStageEx(statToBuff, 1, true, target) if strong_katanas?
+    enemy.pbRaiseStatStageEx(statToBuff, 1, true, enemy) if strong_katanas?
+  end
+
+  def pbGetHighestLevelInParty(party)
+      return 0 if !party || party.length == 0
+      max_level = 0
+      party.each do |pkmn|
+        next if !pkmn
+        max_level = pkmn.level if pkmn.level > max_level
+      end
+      return max_level
+  end
+
+  def pbGetFirstDigitOfHighestLevel(party)
+      return pbGetHighestLevelInParty(party).to_s[0].to_i
   end
   
   def rematchSukiro()
     if (pbMessage(_INTL("\\xn[Sukiro]\\b\\PN, would you like to train with a sparring session?"), [_INTL("Yes"), _INTL("No")]) == 0)
         battleResult = $game_variables[190]
         if(battleResult == 0)
-            pbMessage(_INTL("\\xn[Sukiro]\\bAlright, \\PN. This will be our first sparring session!"))
+            pbMessage(_INTL("\\xn[Sukiro]\\bAlright, \\PN. This will be our first sparring session. Here I come!"))
         elsif(battleResult == 1)
             pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record currently stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
             pbMessage(_INTL("\\xn[Sukiro]\\bGet ready \\PN. You may have won last time, but this time will be different!"))
@@ -440,36 +460,51 @@ end
         else
             pbMessage(_INTL("\\xn[Sukiro]\\bWe had an excellent battle last time, may this battle also be excellent!"))
         end
+        baseRematchForm = 2
         chapter = currentChapter()
+        highestLevel = pbGetHighestLevelInParty($Trainer.party)
+        highestLevelOnTeamFirstDigit = pbGetFirstDigitOfHighestLevel($Trainer.party)
         BattleScripting.setInScript("turnStart0",:SukiroTrainingIntro)
-        if(chapter <= 1)
-            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,2,true,190) #Battle 1 (Chapter 1, Form 2)
-        elsif(chapter == 2)
-            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,3,true,190) #Battle 2 (Chapter 2, Form 3)
-        elsif(chapter == 3)
-            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,4,true,190) #Battle 3 (Chapter 3, Form 4)
-        elsif(chapter == 4)
-            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,5,true,190) #Battle 4 (Chapter 4, Form 5)
-        elsif(chapter == 5 || chapter == 6)
-            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,6,true,190) #Battle 5 (Chapter 5/6, Form 6)
-        elsif(chapter >= 7) # Postgame
-            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,7,true,190) #Battle 6 (Chapter 7 Postgame, Form 7)
+        if(SUKIRO_REMATCH_CHAPTERBASED == true) #Make rematch forms based on chapter
+            if(chapter <= 1)
+                vTB("Sensei","Sukiro","That was an excellent sparring session!",false,baseRematchForm,true,190) # Battle 1 (Chapter 1, Form 2)
+            elsif(chapter >= 7)
+                if(highestLevel >= 80) # Allow a harder battle for higher levels in postgame
+                    vTB("Sensei","Sukiro","You truly have become an incredible Kenshi!",false,12,true,190) # Ultimate Sukiro battles, form 10, all level 85
+                else
+                    vTB("Sensei","Sukiro","You truly have become an incredible Kenshi!",false,9,true,190) # Ultimate Sukiro battle for chapter based, form 9, all level 75
+                end
+            else
+                vTB("Sensei","Sukiro","That was an excellent sparring session!",false,baseRematchForm+chapter,true,190) # Form based on our chapter, so CH 5 = form 7 (2 base + CH 5)
+            end
+        else # Make rematch forms based on chapter
+            if(highestLevel <= 10)
+                vTB("Sensei","Sukiro","That was an excellent sparring session!",false,baseRematchForm,true,190) # Battle 1 (Chapter 1, Form 2)
+            elsif(highestLevel >= 100)
+                vTB("Sensei","Sukiro","You truly have become an incredible Kenshi!",false,12,true,190) # Ultimate Sukiro battle, form 12, all level 100
+            else
+                vTB("Sensei","Sukiro","That was an excellent sparring session!",false,baseRematchForm+highestLevelOnTeamFirstDigit,true,190) # Form based on our highest digit when 10-99, so if we have a level 30 we should fight form 5 (2 base + 3 highestdigit)
+            end
         end
         battleResult = $game_variables[190]
         if(battleResult == 1)
             pbMessage(_INTL("\\xn[Sukiro]\\bWell fought, \\PN! You are becoming stronger with every battle."))
             incrementGameVariable(191,1)
-            pbMessage(_INTL("\\xn[Sukiro]\\bYour number of sparring wins is: {1}.", $game_variables[191]))
+            pbMessage(_INTL("\\xn[Sukiro]\\bYour number of sparring wins is now {1}.", $game_variables[191]))
         elsif(battleResult == 2)
             pbMessage(_INTL("\\xn[Sukiro]\\bThat was a valiant effort, \\PN!"))
             incrementGameVariable(192,1)
-            pbMessage(_INTL("\\xn[Sukiro]\\bMy number of sparring wins is: {1}.", $game_variables[192]))
+            pbMessage(_INTL("\\xn[Sukiro]\\bMy number of sparring wins is now {1}.", $game_variables[192]))
         else
             pbMessage(_INTL("\\xn[Sukiro]\\bWell played \\PN, that was quite a duel."))
         end
         pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record now stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
+        # Full heal at the end
+        for i in $Trainer.party
+          i.heal
+        end
     else
-        pbMessage(_INTL("\\xn[Sukiro]\\bAlright, \\PN. If you wish to train your Pokémon in battle, I'll be waiting."))
+        pbMessage(_INTL("\\xn[Sukiro]\\bIf you wish to train your Pokémon in battle again, I'll be waiting \\PN."))
     end
   end
 

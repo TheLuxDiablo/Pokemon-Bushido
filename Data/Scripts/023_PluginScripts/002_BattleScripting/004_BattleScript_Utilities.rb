@@ -301,21 +301,21 @@ class PokeBattle_Battle
         if cmd == 1
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 1
         cmd= pbMessage("\\bWhat is the name of our village?", ["Eco", "Edo", "Ezo", "Evo"])
         if cmd == 2
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 2
         cmd= pbMessage("\\bWhat is the name of the capitol city in Aisho?", ["Hagane", "Tsuchi", "Izumi", "Hanatsu"])
         if cmd == 0
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 3
         cmd= pbMessage("\\bHow old am I?", ["67", "69", "70", "90"])
@@ -323,14 +323,15 @@ class PokeBattle_Battle
           pbMessage("\\se[SwShCorrect]\\bCorrect! I am 70 years old.")
           scene.pbHideOpponent
           scene.disappearBar
-          ally.pbRaiseStatStageEx(statToBuff, 1, true, ally)
+          ally.pbRaiseStatStagePKT(statToBuff, 1, true, ally)
         elsif cmd == 3
           pbMessage("\\se[SwShIncorrect]\\bI don't look that old... Do I, \\PN?!")
           scene.pbHideOpponent
           scene.disappearBar
-          ally.pbLowerStatStageEx(statToBuff, 1, true, ally)
+          ally.pbLowerStatStageEx(statToBuff, 1, true, ally) if strong_katanas?
+          enemy.pbRaiseStatStageEx(statToBuff, 1, true, enemy) if strong_katanas?
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 4
         cmd= pbMessage("\\bWhich type is most effective against the Konchu Clan?", ["Water", "Electric", "Psychic", "Fire"])
@@ -339,86 +340,163 @@ class PokeBattle_Battle
           pbMessage("\\bFire moves would tend to be most effective against the Bug-Types of the Konchu Clan!")
           scene.pbHideOpponent
           scene.disappearBar
-          ally.pbRaiseStatStageEx(statToBuff, 1, true, ally)
+          ally.pbRaiseStatStagePKT(statToBuff, 1, true, ally)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 5
         cmd= pbMessage("\\bWhat rare resource are they known for mining in Hanatsu Cave?", ["Gold", "Silver", "Orichalcum", "Hanatsium"])
         if cmd == 3
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 6
         cmd= pbMessage("\\bWhat is the name of the clan that uses Ice-Type Pokémon?", ["Kori", "Yuki", "Hyo", "Fubuki"])
         if cmd == 1
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 7
         cmd= pbMessage("\\bWhich type is most effective against the Komorei Clan?", ["Flying", "Bug", "Fighting", "Dark"])
         if cmd == 0
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 8
         cmd= pbMessage("\\bWhich type is most effective against the Nensho Clan?", ["Steel", "Ground", "Electric", "Normal"])
         if cmd == 1
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 9
         cmd= pbMessage("\\bWhich type is most effective against the Shimizu Clan?", ["Fairy", "Dark", "Ice", "Grass"])
         if cmd == 3
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 10
         cmd= pbMessage("\\bWhich type is most effective against the Chikyu Clan?", ["Poison", "Steel", "Water", "Flying"])
         if cmd == 2
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 11
         cmd= pbMessage("\\bWhich type is most effective against the Yuki Clan?", ["Electric", "Fighting", "Fairy", "Ground"])
         if cmd == 1
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 12
         cmd= pbMessage("\\bWhat do you call the small shrines that Kenshi pray at throughout the region?", ["Honden", "Torii", "Tsukiyomi", "Hokora"])
         if cmd == 3
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 13
         cmd= pbMessage("\\bWhat is the name of the sea to the west of Hagane City?", ["Kaiyo", "Chikyu", "Hagane", "Umi"])
         if cmd == 0
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 14
         cmd= pbMessage("\\bWhat is the name of the forest to the south of Hagane City?", ["Tsuchi", "Kusa", "Shizen", "Mori"])
         if cmd == 2
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 15
+        cmd= pbMessage("\\bWhich of these Pokémon is the fastest?", ["Lucario", "Greninja", "Sharpedo", "Mienshao"])
+        if cmd == 1
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 16
+        cmd= pbMessage("\\bWhich of these Pokémon has the highest Attack?", ["Pangoro", "Tyranitar", "Conkeldurr", "Garchomp"])
+        if cmd == 2
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 17
+        cmd= pbMessage("\\bWhich of these Pokémon has the highest Special Attack?", ["Froslass", "Slowking", "Ninetales", "Jolteon"])
+        if cmd == 3
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 18
+        cmd= pbMessage("\\bWhat is the name of my favorite place to eat in Hagane City?", ["Kogeta Yakitori", "Kimoi Tempura", "Oishi Sushi", "Raku Raku Ramen"])
+        if cmd == 3
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 19
+        cmd= pbMessage("\\bWhat is the name of the region we live in?", ["Aisho", "Ashiro", "Sekai", "Heiwa"])
+        if cmd == 0
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 20
+        cmd= pbMessage("\\bWhat is the name of the clan that uses Fire-Type Pokémon?", ["Nensho", "Moyasu", "Kaji", "Kogeru"])
+        if cmd == 0
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 21
+        cmd= pbMessage(_INTL("\\bWhat is the name of {1}'s clan?", getRivalsName()), ["Hadouken", "Hakuho", "Hashimoto", "Uzumaki"])
+        if cmd == 2
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 22
+        cmd= pbMessage("\\bWhat is the name of the clan that uses Water-Type Pokémon?", ["Mizu", "Taki", "Sui", "Shimizu"])
+        if cmd == 3
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 23
+        cmd= pbMessage("\\bWhat is the name of the clan that uses Grass-Type Pokémon?", ["Komorei", "Taima", "Mori", "Tsurukusa"])
+        if cmd == 0
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 24
+        cmd= pbMessage("\\bWhen a Pokémon's heart is shrouded in darkness, what are they called?", ["Oni Pokémon", "Evil Pokémon", "Dark Pokémon", "Shadow Pokémon"])
+        if cmd == 3
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 25
+        cmd= pbMessage("\\bWhat type of trees grow on the route to the west of Ezo Village?", ["Cypress", "Bonsai", "Sakura", "Gingko"])
+        if cmd == 2
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     else # Default Question
         cmd= pbMessage("\\bWhat is a Kenshi's source of power?", ["Spear", "Pokémon", "Katana"])
         if cmd == 1
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
-          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     end
   end

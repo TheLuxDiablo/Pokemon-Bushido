@@ -173,40 +173,114 @@ Pokemon = FARFETCHD,15
 #-------------------------------
 [SENSEI,Sukiro,4]
 LoseText = "That was an excellent sparring session."
-Pokemon = LYCANROC,30
+Pokemon = LYCANROC,25
 	Form = 2
-Pokemon = SLUGMA,30
-Pokemon = FLETCHINDER,30
-Pokemon = FARFETCHD,30
+Pokemon = SLUGMA,25
+Pokemon = FLETCHINDER,25
+Pokemon = FARFETCHD,25
     Form = 1
 #-------------------------------
 [SENSEI,Sukiro,5]
 LoseText = "That was an excellent sparring session."
-Pokemon = LYCANROC,40
+Pokemon = LYCANROC,35
 	Form = 2
-Pokemon = MAGCARGO,40
-Pokemon = TALONFLAME,40
-Pokemon = SIRFETCHD,40
+Pokemon = MAGCARGO,35
+Pokemon = TALONFLAME,35
+Pokemon = SIRFETCHD,35
 #-------------------------------
 [SENSEI,Sukiro,6]
 LoseText = "That was an excellent sparring session."
-Pokemon = LYCANROC,55
+Pokemon = LYCANROC,45
 	Form = 2
-Pokemon = MAGCARGO,55
-Pokemon = GOREBYSS,55
-Pokemon = TALONFLAME,55
-Pokemon = SIRFETCHD,55
+Pokemon = MAGCARGO,45
+Pokemon = GOREBYSS,45
+Pokemon = TALONFLAME,45
+Pokemon = SIRFETCHD,45
 #-------------------------------
 [SENSEI,Sukiro,7]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,57
+	Form = 2
+Pokemon = MAGCARGO,57
+Pokemon = GOREBYSS,58
+Pokemon = TALONFLAME,58
+Pokemon = SIRFETCHD,59
+#-------------------------------
+[SENSEI,Sukiro,8]
 LoseText = "That was an excellent sparring session."
 Pokemon = LYCANROC,65
 	Form = 2
 Pokemon = MAGCARGO,65
 Pokemon = GOREBYSS,65
 Pokemon = TALONFLAME,65
-	Moves = BRAVEBIRD, FLAREBLITZ, ROOST, PROTECT
 Pokemon = SIRFETCHD,65
-Pokemon = KINGAMBIT,70
+Pokemon = BISHARP,65
+#-------------------------------
+[SENSEI,Sukiro,9]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,75
+	Form = 2
+	Moves = ACCELEROCK, CRUNCH, FIREFANG, STONEEDGE
+Pokemon = MAGCARGO,75
+	Moves = STEALTHROCK, TOXIC, RECOVER, LAVAPLUME
+Pokemon = GOREBYSS,75
+	Moves = SHELLSMASH, HYDROPUMP, ICEBEAM, HIDDENPOWER
+Pokemon = TALONFLAME,75
+	Moves = BRAVEBIRD, FLAREBLITZ, ROOST, SWORDSDANCE
+Pokemon = SIRFETCHD,75
+	Moves = CLOSECOMBAT, BRAVEBIRD, KNOCKOFF, FIRSTIMPRESSION
+Pokemon = KINGAMBIT,75
+	Ability = 1
+	Moves = SUCKERPUNCH, SWORDSDANCE, IRONHEAD, LOWKICK
+#-------------------------------
+[SENSEI,Sukiro,10]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,85
+	Form = 2
+	Moves = ACCELEROCK, CRUNCH, FIREFANG, STONEEDGE
+Pokemon = MAGCARGO,85
+	Moves = STEALTHROCK, TOXIC, RECOVER, LAVAPLUME
+Pokemon = GOREBYSS,85
+	Moves = SHELLSMASH, HYDROPUMP, ICEBEAM, HIDDENPOWER
+Pokemon = TALONFLAME,85
+	Moves = BRAVEBIRD, FLAREBLITZ, ROOST, SWORDSDANCE
+Pokemon = SIRFETCHD,85
+	Moves = CLOSECOMBAT, BRAVEBIRD, KNOCKOFF, FIRSTIMPRESSION
+Pokemon = KINGAMBIT,85
+	Ability = 1
+	Moves = SUCKERPUNCH, SWORDSDANCE, IRONHEAD, LOWKICK
+#-------------------------------
+[SENSEI,Sukiro,11]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,95
+	Form = 2
+	Moves = ACCELEROCK, CRUNCH, FIREFANG, STONEEDGE
+Pokemon = MAGCARGO,95
+	Moves = STEALTHROCK, TOXIC, RECOVER, LAVAPLUME
+Pokemon = GOREBYSS,95
+	Moves = SHELLSMASH, HYDROPUMP, ICEBEAM, HIDDENPOWER
+Pokemon = TALONFLAME,95
+	Moves = BRAVEBIRD, FLAREBLITZ, ROOST, SWORDSDANCE
+Pokemon = SIRFETCHD,95
+	Moves = CLOSECOMBAT, BRAVEBIRD, KNOCKOFF, FIRSTIMPRESSION
+Pokemon = KINGAMBIT,95
+	Ability = 1
+	Moves = SUCKERPUNCH, SWORDSDANCE, IRONHEAD, LOWKICK
+#-------------------------------
+[SENSEI,Sukiro,12]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,100
+	Form = 2
+	Moves = ACCELEROCK, CRUNCH, FIREFANG, STONEEDGE
+Pokemon = MAGCARGO,100
+	Moves = STEALTHROCK, TOXIC, RECOVER, LAVAPLUME
+Pokemon = GOREBYSS,100
+	Moves = SHELLSMASH, HYDROPUMP, ICEBEAM, HIDDENPOWER
+Pokemon = TALONFLAME,100
+	Moves = BRAVEBIRD, FLAREBLITZ, ROOST, SWORDSDANCE
+Pokemon = SIRFETCHD,100
+	Moves = CLOSECOMBAT, BRAVEBIRD, KNOCKOFF, FIRSTIMPRESSION
+Pokemon = KINGAMBIT,100
 	Ability = 1
 	Moves = SUCKERPUNCH, SWORDSDANCE, IRONHEAD, LOWKICK
 #-------------------------------

@@ -919,3 +919,9 @@ Outdoor = true
 ShowArea = true
 HealingSpot = 85,64,26
 MapPosition = 2,15,10
+#-------------------------------
+[172]
+# Hanatsu Village
+Outdoor = true
+ShowArea = true
+MapPosition = 2,14,5
