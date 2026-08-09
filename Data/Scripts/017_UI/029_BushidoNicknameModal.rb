@@ -1,33 +1,8 @@
-#===============================================================================
-# Bushido Naming Scroll
-# Pokémon Bushido v2.0.0 / Pokémon Essentials v18.1
-#
-# Drop-in replacement for the stock full-screen naming UI.
-#
-# Goals:
-# - True modal over the current map/battle screen
-# - Pixel-art parchment scroll with obvious curled side rolls
-# - Keyboard-first text entry
-# - No stock red/white textbox
-# - Pokémon sprite + gender when naming a Pokémon
-# - Clean keycap controls: [ENTER] Confirm   [ESC] Cancel
-# - Custom-drawn text/cursor so typed text can NEVER be clipped by a Window
-# - Works with the normal pbEnterText/pbEnterPokemonName/etc. call chain
-#
-# INSTALL:
-# Put this script AFTER the original naming/text-entry scripts in 017_UI.
-# Disable/remove any older experimental Bushido nickname modal scripts.
-#
-# TEST EVENT:
-#   pbBushidoNamingTest
-#
-# Normal game calls to pbEnterPokemonName will automatically use this UI.
-#===============================================================================
+# Bushido naming scroll
+# replacement keyboard naming UI for Essentials v18.1
 
 module BushidoNaming
-  #-----------------------------------------------------------------------------
-  # Layout
-  #-----------------------------------------------------------------------------
+  # layout values are all in one place so I can tweak the screen without hunting through the drawing code
   PANEL_WIDTH        = 440
   PANEL_HEIGHT       = 224
   PANEL_Y_OFFSET     = -4
@@ -50,17 +25,11 @@ module BushidoNaming
   UNDERLINE_Y        = 139
   CONTROLS_Y         = 163
 
-  #-----------------------------------------------------------------------------
-  # Modal behavior
-  #-----------------------------------------------------------------------------
   DIM_ALPHA          = 112
+  # short enough to feel snappy, but still sells the scroll opening/closing
   OPEN_FRAMES        = 10
   CLOSE_FRAMES       = 8
 
-  #-----------------------------------------------------------------------------
-  # Bushido parchment palette
-  # Kept close to the Habitat Scroll palette.
-  #-----------------------------------------------------------------------------
   PARCHMENT_LIGHT    = Color.new(244, 226, 190)
   PARCHMENT          = Color.new(227, 206, 165)
   PARCHMENT_MID      = Color.new(212, 184, 136)
@@ -75,9 +44,6 @@ module BushidoNaming
   MALE_COLOR         = Color.new(55, 104, 170)
   FEMALE_COLOR       = Color.new(176, 72, 79)
 
-  #-----------------------------------------------------------------------------
-  # Helpers
-  #-----------------------------------------------------------------------------
   def self.clamp(value, min_value, max_value)
     value = min_value if value < min_value
     value = max_value if value > max_value
@@ -85,7 +51,6 @@ module BushidoNaming
   end
 
   def self.ease_out(t)
-    # Smooth, simple easing that works fine on old Ruby.
     return 1.0 - ((1.0 - t) * (1.0 - t))
   end
 
@@ -95,14 +60,7 @@ module BushidoNaming
 end
 
 
-#===============================================================================
-# Invisible keyboard input buffer
-#
-# We deliberately do NOT render the Window_TextEntry_Keyboard itself.
-# It only handles keyboard editing. The actual name and caret are drawn by the
-# Bushido scene, which eliminates the clipping/padding/windowskin problems that
-# happen when making the stock input window transparent.
-#===============================================================================
+# using the stock keyboard entry for editing only; the visible text is drawn separately below
 class BushidoNameInput < Window_TextEntry_Keyboard
   def cursor_index
     begin
@@ -114,15 +72,9 @@ class BushidoNameInput < Window_TextEntry_Keyboard
 end
 
 
-#===============================================================================
-# Bushido naming scene
-#===============================================================================
 class PokemonEntryScene
   USEKEYBOARD = true
 
-  #-----------------------------------------------------------------------------
-  # Scene start
-  #-----------------------------------------------------------------------------
   def pbStartScene(helptext, minlength, maxlength, initialText,
                    subject = 0, pokemon = nil)
     @sprites     = {}
@@ -137,6 +89,8 @@ class PokemonEntryScene
 
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99999
+
+    # don't fade out the map here, this is meant to read as a modal
 
     @panelX = (Graphics.width - BushidoNaming::PANEL_WIDTH) / 2
     @panelY = (Graphics.height - BushidoNaming::PANEL_HEIGHT) / 2 +
@@ -154,9 +108,6 @@ class PokemonEntryScene
     playOpenAnimation
   end
 
-  #-----------------------------------------------------------------------------
-  # Dark modal backing
-  #-----------------------------------------------------------------------------
   def createDimmer
     @sprites["dimmer"] = BitmapSprite.new(
       Graphics.width,
@@ -174,9 +125,6 @@ class PokemonEntryScene
     @sprites["dimmer"].opacity = 0
   end
 
-  #-----------------------------------------------------------------------------
-  # Scroll sprite
-  #-----------------------------------------------------------------------------
   def createScroll
     @sprites["scroll"] = Sprite.new(@viewport)
     @sprites["scroll"].bitmap = Bitmap.new(
@@ -184,7 +132,7 @@ class PokemonEntryScene
       BushidoNaming::PANEL_HEIGHT
     )
 
-    # Center-origin lets zoom_x look like the parchment is unfurling.
+    # centered origin makes zoom_x look like the scroll is unfurling from the middle
     @sprites["scroll"].ox = BushidoNaming::PANEL_WIDTH / 2
     @sprites["scroll"].oy = BushidoNaming::PANEL_HEIGHT / 2
     @sprites["scroll"].x  = Graphics.width / 2
@@ -193,9 +141,6 @@ class PokemonEntryScene
     drawScroll(@sprites["scroll"].bitmap)
   end
 
-  #-----------------------------------------------------------------------------
-  # Full-screen UI overlay. Text is drawn here rather than in a Window.
-  #-----------------------------------------------------------------------------
   def createOverlay
     @sprites["overlay"] = BitmapSprite.new(
       Graphics.width,
@@ -206,12 +151,8 @@ class PokemonEntryScene
     @sprites["overlay"].opacity = 0
   end
 
-  #-----------------------------------------------------------------------------
-  # Hidden input buffer
-  #-----------------------------------------------------------------------------
   def createInput(initialText)
-    # The input object is intentionally invisible. Its dimensions therefore do
-    # not affect the visible text in any way.
+    # keep this offscreen/invisible; it only handles typing, backspace and cursor movement
     @sprites["entry"] = BushidoNameInput.new(
       initialText,
       -500,
@@ -227,14 +168,8 @@ class PokemonEntryScene
     @sprites["entry"].active    = true
   end
 
-  #=============================================================================
-  # Scroll art
-  #
-  # Everything is hard-edged and aligned to integer pixels so it reads like a
-  # deliberately pixel-art interpretation of an old parchment scroll rather
-  # than a smooth UI rectangle.
-  #=============================================================================
   def drawScroll(bmp)
+    # all of this is drawn on integer pixels so it stays consistent with the rest of Bushido's UI
     bmp.clear
 
     w = BushidoNaming::PANEL_WIDTH
@@ -247,22 +182,14 @@ class PokemonEntryScene
     deep  = BushidoNaming::PARCHMENT_DEEP
     ink   = BushidoNaming::INK
 
-    #-------------------------------------------------------------------------
-    # Soft blocky drop shadow
-    #-------------------------------------------------------------------------
     bmp.fill_rect(30, 22, w - 52, h - 30, Color.new(0, 0, 0, 34))
     bmp.fill_rect(24, 28, w - 40, h - 34, Color.new(0, 0, 0, 26))
 
-    #-------------------------------------------------------------------------
-    # Main paper body
-    #-------------------------------------------------------------------------
     bmp.fill_rect(28, 20, w - 56, h - 40, dark)
     bmp.fill_rect(31, 23, w - 62, h - 46, body)
     bmp.fill_rect(35, 27, w - 70, h - 54, light)
 
-    #-------------------------------------------------------------------------
-    # Irregular/torn top edge
-    #-------------------------------------------------------------------------
+    # break up the paper edge a little so it doesn't read as a perfect rectangle
     top_blocks = [
       [36, 23, 25, 4], [64, 20, 31, 7], [99, 22, 22, 5],
       [124, 19, 37, 8], [165, 21, 20, 6], [189, 18, 39, 9],
@@ -273,15 +200,11 @@ class PokemonEntryScene
       bmp.fill_rect(r[0], r[1], r[2], r[3], light)
     end
 
-    # Small dark nicks/notches.
     [[70,23,3,6],[119,23,2,5],[180,22,3,7],[260,23,2,5],
      [332,23,3,6],[397,23,2,5]].each do |r|
       bmp.fill_rect(r[0], r[1], r[2], r[3], dark)
     end
 
-    #-------------------------------------------------------------------------
-    # Irregular/torn bottom edge
-    #-------------------------------------------------------------------------
     bottom_y = h - 27
     bottom_blocks = [
       [36, bottom_y, 30, 5], [70, bottom_y + 2, 24, 3],
@@ -299,36 +222,25 @@ class PokemonEntryScene
       bmp.fill_rect(r[0], r[1], r[2], r[3], dark)
     end
 
-    #-------------------------------------------------------------------------
-    # LEFT wooden/paper roll
-    #
-    # Wide outer lip + narrow core + highlight creates an unmistakable curled
-    # cylinder instead of a flat decorative bar.
-    #-------------------------------------------------------------------------
+    # layered highlights/shadows are doing most of the work to make the side read as a rolled piece of paper
     bmp.fill_rect(9, 13, 23, h - 26, deep)
     bmp.fill_rect(12, 10, 17, h - 20, dark)
     bmp.fill_rect(15, 13, 11, h - 26, mid)
     bmp.fill_rect(18, 15, 5, h - 30, light)
 
-    # Top-left cap/curl
     bmp.fill_rect(5, 8, 28, 9, deep)
     bmp.fill_rect(8, 5, 22, 9, dark)
     bmp.fill_rect(11, 7, 16, 5, light)
     bmp.fill_rect(7, 14, 10, 5, deep)
 
-    # Bottom-left cap/curl
     bmp.fill_rect(5, h - 17, 28, 9, deep)
     bmp.fill_rect(8, h - 14, 22, 9, dark)
     bmp.fill_rect(11, h - 12, 16, 5, light)
     bmp.fill_rect(7, h - 19, 10, 5, deep)
 
-    # Inner curl shadow where paper wraps around rod
     bmp.fill_rect(26, 26, 6, h - 52, deep)
     bmp.fill_rect(29, 30, 4, h - 60, dark)
 
-    #-------------------------------------------------------------------------
-    # RIGHT roll, mirrored
-    #-------------------------------------------------------------------------
     rx = w - 32
     bmp.fill_rect(rx, 13, 23, h - 26, deep)
     bmp.fill_rect(rx + 3, 10, 17, h - 20, dark)
@@ -348,13 +260,10 @@ class PokemonEntryScene
     bmp.fill_rect(w - 33, 26, 6, h - 52, deep)
     bmp.fill_rect(w - 33, 30, 4, h - 60, dark)
 
-    #-------------------------------------------------------------------------
-    # Subtle paper shading
-    #-------------------------------------------------------------------------
     bmp.fill_rect(39, 31, w - 78, 3, Color.new(255, 245, 217, 90))
     bmp.fill_rect(39, h - 35, w - 78, 3, Color.new(139, 101, 66, 40))
 
-    # Sparse pixel fibers/creases. Deliberate and quiet, not noisy.
+    # keep these sparse, too many makes the parchment look noisy
     fibers = [
       [63,55,22,1], [104,74,17,1], [294,54,31,1], [349,89,18,1],
       [70,146,28,1], [263,151,20,1], [329,139,25,1],
@@ -364,23 +273,16 @@ class PokemonEntryScene
       bmp.fill_rect(r[0], r[1], r[2], r[3], Color.new(188,151,102,48))
     end
 
-    #-------------------------------------------------------------------------
-    # Decorative Bushido corner strokes inside the writable body
-    #-------------------------------------------------------------------------
     bmp.fill_rect(49, 42, 28, 2, BushidoNaming::GOLD)
     bmp.fill_rect(49, 42, 2, 10, BushidoNaming::GOLD)
 
     bmp.fill_rect(w - 77, 42, 28, 2, BushidoNaming::GOLD)
     bmp.fill_rect(w - 51, 42, 2, 10, BushidoNaming::GOLD)
 
-    # Divider above controls
     bmp.fill_rect(55, 151, w - 110, 2, dark)
     bmp.fill_rect(55, 153, w - 110, 1, Color.new(255, 245, 217, 80))
   end
 
-  #=============================================================================
-  # Subject graphics
-  #=============================================================================
   def createSubject(subject, pokemon)
     case subject
     when 1
@@ -414,11 +316,10 @@ class PokemonEntryScene
   end
 
   def createPokemonSubject(pokemon)
+    # the little backing card keeps the icon readable without bringing back the old textbox look
     return if !pokemon
 
     begin
-      # Small backing card gives the icon a deliberate home without turning
-      # into another "textbox".
       @sprites["subjectBack"] = BitmapSprite.new(76, 76, @viewport)
       @sprites["subjectBack"].x = @panelX + 64
       @sprites["subjectBack"].y = @panelY + 82
@@ -433,7 +334,6 @@ class PokemonEntryScene
       @sprites["subject"].x = @panelX + 102
       @sprites["subject"].y = @panelY + 122
 
-      # Gender sits near the portrait, not near the typed text.
       @sprites["gender"] = BitmapSprite.new(28, 28, @viewport)
       @sprites["gender"].x = @panelX + 122
       @sprites["gender"].y = @panelY + 80
@@ -459,7 +359,7 @@ class PokemonEntryScene
       @sprites["subject"].opacity     = 0
       @sprites["gender"].opacity      = 0
     rescue
-      # Naming should never fail just because a decorative subject couldn't load.
+      # the naming screen should still work even if a decorative sprite fails to load
       @sprites.delete("subjectBack")
       @sprites.delete("subject")
       @sprites.delete("gender")
@@ -495,14 +395,7 @@ class PokemonEntryScene
     end
   end
 
-  #=============================================================================
-  # Exact text drawing helpers
-  #
-  # Bushido's MKXP Bitmap#draw_text override forces the draw height to the
-  # font's measured height. That means "fake" rectangles and y-offset hacks are
-  # unreliable for vertical centering. These helpers measure the actual glyph
-  # height and draw from an explicit top-left pixel position instead.
-  #=============================================================================
+  # draw_text in our MKXP setup ignores the height we pass it, so positioning from the measured font height is way more reliable
   def drawExactText(bmp, text, x, y, width,
                     baseColor = BushidoNaming::INK,
                     shadowColor = BushidoNaming::SHADOW,
@@ -526,9 +419,6 @@ class PokemonEntryScene
     return bmp.text_size("Ag").height
   end
 
-  #=============================================================================
-  # UI drawing
-  #=============================================================================
   def refreshUI(force = false)
     entry = @sprites["entry"]
     return if !entry
@@ -574,18 +464,16 @@ class PokemonEntryScene
     y = @panelY + BushidoNaming::NAME_Y
     lineY = @panelY + BushidoNaming::UNDERLINE_Y
 
-    # Character count lives on the SAME baseline as the nickname, at the far
-    # right. Reserve real space for it instead of drawing it on top of the line.
     chars = text.scan(/./m)
     countText = _INTL("{1}/{2}", chars.length, @maxlength)
 
+    # reserve actual room for the count so a long nickname can't draw underneath it
     countW = bmp.text_size(countText).width
     countGap = 12
 
     textRight = fullRight - countW - countGap
     textWidth = textRight - x
 
-    # Underline spans the whole name region, including the count.
     bmp.fill_rect(
       x,
       lineY,
@@ -594,7 +482,6 @@ class PokemonEntryScene
       BushidoNaming::PARCHMENT_DARK
     )
 
-    # Name: normal Bushido font, explicit top coordinate.
     drawExactText(
       bmp,
       text,
@@ -606,7 +493,6 @@ class PokemonEntryScene
       0
     )
 
-    # Count: same font and baseline, just muted and right-aligned.
     drawExactText(
       bmp,
       countText,
@@ -618,7 +504,6 @@ class PokemonEntryScene
       2
     )
 
-    # Caret at the real edit cursor.
     cursor = 0 if cursor < 0
     cursor = chars.length if cursor > chars.length
     before = chars[0, cursor].join("")
@@ -644,12 +529,8 @@ class PokemonEntryScene
     end
   end
 
-  # Draw one keyboard keycap plus its action.
-  #
-  # Everything uses the normal system font. The box dimensions are derived
-  # from text_size, so the letters are genuinely centered rather than visually
-  # "nudged" into a hardcoded rectangle.
   def drawKeyPair(bmp, x, y, keyText, actionText)
+    # size the keycap from the real text dimensions instead of eyeballing the box
     textH = measuredTextHeight(bmp)
 
     keyTextW = bmp.text_size(keyText).width
@@ -661,7 +542,6 @@ class PokemonEntryScene
     keyW = keyTextW + (padX * 2)
     keyH = textH + (padY * 2)
 
-    # Pixel shadow.
     bmp.fill_rect(
       x + 2,
       y + 2,
@@ -670,7 +550,6 @@ class PokemonEntryScene
       Color.new(83, 55, 33, 45)
     )
 
-    # Keycap border + face.
     bmp.fill_rect(
       x,
       y,
@@ -687,7 +566,6 @@ class PokemonEntryScene
       BushidoNaming::PARCHMENT_LIGHT
     )
 
-    # Explicit top coordinate: exactly padY pixels from the cap's top.
     drawExactText(
       bmp,
       keyText,
@@ -699,7 +577,6 @@ class PokemonEntryScene
       0
     )
 
-    # Keep action tightly attached to its keycap.
     actionGap = 7
     actionX = x + keyW + actionGap
 
@@ -738,8 +615,7 @@ class PokemonEntryScene
       escActW = bmp.text_size(escAct).width
       escTotal = escKeyW + 7 + escActW
 
-      # Pair gap is the ONLY large gap. Inside each pair, key and action are
-      # intentionally close together.
+      # only the two commands get a larger gap; the key and its action should stay visually paired
       pairGap = 24
       total = enterTotal + pairGap + escTotal
       startX = (Graphics.width - total) / 2
@@ -772,9 +648,6 @@ class PokemonEntryScene
     end
   end
 
-  #=============================================================================
-  # Input
-  #=============================================================================
   def pbEntry
     ret = ""
 
@@ -782,14 +655,12 @@ class PokemonEntryScene
       Graphics.update
       Input.update
 
-      # Escape/cancel is only valid when minlength permits an empty result.
       if Input.triggerex?(0x1B) && @minlength == 0
         pbPlayCancelSE()
         ret = ""
         break
       end
 
-      # Enter/confirm.
       if Input.triggerex?(0x0D)
         if @sprites["entry"].text.length >= @minlength &&
            @sprites["entry"].text.length <= @maxlength
@@ -801,14 +672,11 @@ class PokemonEntryScene
         end
       end
 
-      # Hidden stock keyboard editor handles:
-      # typing, Backspace, Left, Right, repeat timing and max length.
+      # stock entry window handles typing/backspace/arrows, we just never render the window itself
       @sprites["entry"].update
 
-      # Subject animation.
       @sprites["subject"].update if @sprites["subject"]
 
-      # We redraw only if text/cursor changed, plus during caret blink boundaries.
       blinkFrame = (Graphics.frame_count % 15 == 0)
       refreshUI(blinkFrame)
     end
@@ -821,9 +689,6 @@ class PokemonEntryScene
     @sprites["subject"].update if @sprites["subject"]
   end
 
-  #=============================================================================
-  # Animations
-  #=============================================================================
   def playOpenAnimation
     frames = BushidoNaming::OPEN_FRAMES
     frames = 1 if frames < 1
@@ -881,9 +746,6 @@ class PokemonEntryScene
     @sprites["gender"].opacity      = value if @sprites["gender"]
   end
 
-  #=============================================================================
-  # Scene end
-  #=============================================================================
   def pbEndScene
     Input.text_input = false
     playCloseAnimation
@@ -894,19 +756,13 @@ class PokemonEntryScene
       @viewport.dispose
     end
 
-    # Bushido modification from the original naming scene.
+    # naming used to manage this in Bushido already, so make sure speed-up is restored on the way out
     pbAllowSpeedup()
   end
 end
 
 
-#===============================================================================
-# Entry-point overrides
-#
-# The stock v18 pbEnterText wraps the naming scene in pbFadeOutIn, which is what
-# makes it full-screen/black before the naming UI appears. We intentionally
-# remove that wrapper so the current scene remains visible beneath the modal.
-#===============================================================================
+# stock v18 fades before opening this scene; skipping that fade is what lets the map stay visible underneath
 def pbEnterText(helptext, minlength, maxlength, initialText = "",
                 mode = 0, pokemon = nil, nofadeout = false)
   scene  = PokemonEntryScene.new
@@ -955,15 +811,7 @@ def pbEnterBoxName(helptext, minlength, maxlength,
 end
 
 
-#===============================================================================
-# Debug/test helpers
-#===============================================================================
-
-# Test the actual first Pokémon in the player's party.
-#
-# Event Script:
-#   pbBushidoNamingTest
-#
+# quick event test: pbBushidoNamingTest
 def pbBushidoNamingTest
   if !$Trainer || !$Trainer.party || $Trainer.party.length == 0
     pbMessage(_INTL("Put a Pokémon in your party first."))
@@ -973,7 +821,6 @@ def pbBushidoNamingTest
   pokemon = $Trainer.party[0]
   oldName = pokemon.name
 
-  # Prefer the project's own name-size constant if available.
   maxLength = 12
   begin
     maxLength = Pokemon::MAX_NAME_SIZE
@@ -995,11 +842,6 @@ def pbBushidoNamingTest
 end
 
 
-# Raw modal test without requiring a party Pokémon.
-#
-# Event Script:
-#   pbBushidoNamingTextTest
-#
 def pbBushidoNamingTextTest
   result = pbEnterText(
     _INTL("Name this Pokémon."),

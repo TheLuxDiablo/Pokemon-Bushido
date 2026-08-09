@@ -1,6 +1,5 @@
 #===============================================================================
 # Pokémon Bushido - Custom Starter Selection
-# Pokémon Essentials v18.1 / MKXP
 #===============================================================================
 
 module BushidoStarterSelection
