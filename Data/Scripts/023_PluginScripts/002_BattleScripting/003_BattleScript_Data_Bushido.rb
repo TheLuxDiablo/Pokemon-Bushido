@@ -2652,20 +2652,20 @@ module DialogueModule
     cmd = pbMessage("\\bWhat determines the clan that a Kenshi will join?", ["Affinity", "Money", "Family"])
     if cmd == 0
       pbMessage("\\se[SwShCorrect]\\bWell done, \\PN!")
-      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
+      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the nature of a Kenshi's spirit!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbRaiseStatStageEx(:SPEED, 1, true, user)
     elsif cmd == 1
       pbMessage("\\se[SwShIncorrect]\\bThat is incorrect!")
       pbMessage("\\bIt would be incredibly shameful for a Kenshi to attempt to buy their way into a clan!")
-      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
+      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the nature of a Kenshi's spirit!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:SPEED, 2, true, user)
     else
       pbMessage("\\se[SwShIncorrect]\\bHmm... It seems like we still have some work to do.")
-      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
+      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the nature of a Kenshi's spirit!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:SPEED, 1, true, user)
