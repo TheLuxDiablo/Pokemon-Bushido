@@ -405,7 +405,7 @@ class LocationWindow
     #Thundaga custom font for signpost
     @sprites["Image"].bitmap.font.name = "TAKOYAKI"
     @sprites["Image"].bitmap.font.size = 34
-    pbDrawTextPositions(@sprites["Image"].bitmap,[[name,20,@sprites["Image"].bitmap.height-44,0,@baseColor,@shadowColor,true]])
+    pbDrawTextPositions(@sprites["Image"].bitmap,[[name,20,@sprites["Image"].bitmap.height-46,0,@baseColor,@shadowColor,true]])
     @currentmap = $game_map.map_id
     @frames = 0
   end
@@ -423,7 +423,7 @@ class LocationWindow
     if $game_temp.message_window_showing || @currentmap != $game_map.map_id
       @sprites["Image"].dispose
       return
-    elsif @frames > 180
+    elsif @frames > 120
       @sprites["Image"].y-= ((@sprites["Image"].bitmap.height)/20)
       @sprites["Image"].dispose if @sprites["Image"].y + @height < 0
     elsif $game_temp.in_menu == true

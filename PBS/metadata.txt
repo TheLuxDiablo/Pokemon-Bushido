@@ -536,6 +536,11 @@ BattleBack = YamiIsland
 Outdoor = true
 ShowArea = false
 #-------------------------------
+[101]
+# Test Events
+Outdoor = true
+ShowArea = true
+#-------------------------------
 [102]
 # Jonetsu Pass
 Outdoor = true

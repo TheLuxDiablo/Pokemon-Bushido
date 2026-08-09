@@ -59,9 +59,11 @@ class Scene_Intro
 
   def closeTitle
     # Play Pokemon cry
-    pbSEPlay(@cry,100,100) if @cry
+    #pbSEPlay(@cry,100,100) if @cry
+    # Thundaga remove the cry and fade out that BGM a little faster, play a basic confirm SE here instead
+    pbSEPlay("GUI sel decision",100,100)
     # Fade out
-    pbBGMStop(1.0)
+    pbBGMStop(0.5)
     # disposes current title screen
     disposeTitle
     # initializes load screen
