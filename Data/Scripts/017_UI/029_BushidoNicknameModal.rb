@@ -12,18 +12,18 @@ module BushidoNaming
   BODY_TOP           = 24
   BODY_BOTTOM        = 24
 
-  PROMPT_Y           = 36
+  PROMPT_Y           = 40
 
   SUBJECT_X          = 96
-  SUBJECT_Y          = 111
+  SUBJECT_Y          = 103
 
   NAME_X_WITH_ICON   = 164
   NAME_X_NO_ICON     = 86
-  NAME_Y             = 104
+  NAME_Y             = 101
   NAME_RIGHT_MARGIN  = 54
 
-  UNDERLINE_Y        = 139
-  CONTROLS_Y         = 163
+  UNDERLINE_Y        = 132
+  CONTROLS_Y         = 160
 
   DIM_ALPHA          = 112
   # short enough to feel snappy, but still sells the scroll opening/closing
@@ -169,7 +169,6 @@ class PokemonEntryScene
   end
 
   def drawScroll(bmp)
-    # all of this is drawn on integer pixels so it stays consistent with the rest of Bushido's UI
     bmp.clear
 
     w = BushidoNaming::PANEL_WIDTH
@@ -180,49 +179,94 @@ class PokemonEntryScene
     mid   = BushidoNaming::PARCHMENT_MID
     dark  = BushidoNaming::PARCHMENT_DARK
     deep  = BushidoNaming::PARCHMENT_DEEP
-    ink   = BushidoNaming::INK
 
-    bmp.fill_rect(30, 22, w - 52, h - 30, Color.new(0, 0, 0, 34))
-    bmp.fill_rect(24, 28, w - 40, h - 34, Color.new(0, 0, 0, 26))
+    # draw the paper as an actual silhouette instead of stacking rectangles.
+    # this makes the rough top/bottom edges the real edge of the bitmap.
+    paper_left  = 31
+    paper_right = w - 32
+    top_base    = 22
+    bottom_base = h - 24
 
-    bmp.fill_rect(28, 20, w - 56, h - 40, dark)
-    bmp.fill_rect(31, 23, w - 62, h - 46, body)
-    bmp.fill_rect(35, 27, w - 70, h - 54, light)
-
-    # break up the paper edge a little so it doesn't read as a perfect rectangle
-    top_blocks = [
-      [36, 23, 25, 4], [64, 20, 31, 7], [99, 22, 22, 5],
-      [124, 19, 37, 8], [165, 21, 20, 6], [189, 18, 39, 9],
-      [233, 21, 29, 6], [266, 19, 42, 8], [312, 22, 25, 5],
-      [341, 20, 34, 7], [379, 22, 25, 5]
+    top_profile = [
+      3,3,3,2,2,2,1,1,1,0,0,0,
+      2,2,1,1,0,0,0,1,1,1,3,3,
+      2,2,2,1,0,0,1,1,2,2,1,1,
+      0,0,0,2,2,2,3,3,1,1,0,0
     ]
-    top_blocks.each do |r|
-      bmp.fill_rect(r[0], r[1], r[2], r[3], light)
+
+    bottom_profile = [
+      0,0,1,1,2,2,3,3,2,2,1,1,
+      3,3,4,4,2,2,1,1,0,0,2,2,
+      3,3,1,1,0,0,2,2,4,4,3,3,
+      1,1,2,2,3,3,1,1,0,0,2,2
+    ]
+
+    x = paper_left
+    while x <= paper_right
+      index = (x - paper_left) % top_profile.length
+
+      top_y    = top_base + top_profile[index]
+      bottom_y = bottom_base - bottom_profile[index]
+      column_h = bottom_y - top_y + 1
+
+      if column_h > 0
+        bmp.fill_rect(x, top_y, 1, column_h, dark)
+
+        inner_top    = top_y + 2
+        inner_bottom = bottom_y - 2
+
+        if inner_bottom >= inner_top
+          bmp.fill_rect(
+            x,
+            inner_top,
+            1,
+            inner_bottom - inner_top + 1,
+            light
+          )
+        end
+
+        shade_top = bottom_y - 8
+        if shade_top > inner_top
+          bmp.fill_rect(
+            x,
+            shade_top,
+            1,
+            [6, bottom_y - shade_top].min,
+            body
+          )
+        end
+      end
+
+      x += 1
     end
 
-    [[70,23,3,6],[119,23,2,5],[180,22,3,7],[260,23,2,5],
-     [332,23,3,6],[397,23,2,5]].each do |r|
+    # a few little cuts keep the edge from looking too procedural
+    top_nicks = [
+      [71,24,3,6],
+      [119,23,2,5],
+      [181,24,3,7],
+      [261,23,2,5],
+      [333,24,3,6],
+      [397,23,2,5]
+    ]
+
+    top_nicks.each do |r|
       bmp.fill_rect(r[0], r[1], r[2], r[3], dark)
     end
 
-    bottom_y = h - 27
-    bottom_blocks = [
-      [36, bottom_y, 30, 5], [70, bottom_y + 2, 24, 3],
-      [99, bottom_y - 1, 32, 6], [135, bottom_y + 1, 28, 4],
-      [168, bottom_y - 2, 38, 7], [211, bottom_y + 1, 23, 4],
-      [239, bottom_y - 1, 35, 6], [279, bottom_y + 2, 29, 3],
-      [312, bottom_y - 1, 41, 6], [358, bottom_y + 1, 44, 4]
+    bottom_nicks = [
+      [79,bottom_base - 8,3,6],
+      [151,bottom_base - 6,2,5],
+      [226,bottom_base - 9,3,7],
+      [299,bottom_base - 7,2,5],
+      [368,bottom_base - 8,3,6]
     ]
-    bottom_blocks.each do |r|
-      bmp.fill_rect(r[0], r[1], r[2], r[3], light)
-    end
 
-    [[80,bottom_y-1,3,6],[153,bottom_y-1,2,5],[227,bottom_y-1,3,6],
-     [300,bottom_y-1,2,5],[369,bottom_y-1,3,6]].each do |r|
+    bottom_nicks.each do |r|
       bmp.fill_rect(r[0], r[1], r[2], r[3], dark)
     end
 
-    # layered highlights/shadows are doing most of the work to make the side read as a rolled piece of paper
+    # left roll
     bmp.fill_rect(9, 13, 23, h - 26, deep)
     bmp.fill_rect(12, 10, 17, h - 20, dark)
     bmp.fill_rect(15, 13, 11, h - 26, mid)
@@ -241,7 +285,9 @@ class PokemonEntryScene
     bmp.fill_rect(26, 26, 6, h - 52, deep)
     bmp.fill_rect(29, 30, 4, h - 60, dark)
 
+    # right roll
     rx = w - 32
+
     bmp.fill_rect(rx, 13, 23, h - 26, deep)
     bmp.fill_rect(rx + 3, 10, 17, h - 20, dark)
     bmp.fill_rect(rx + 6, 13, 11, h - 26, mid)
@@ -260,17 +306,21 @@ class PokemonEntryScene
     bmp.fill_rect(w - 33, 26, 6, h - 52, deep)
     bmp.fill_rect(w - 33, 30, 4, h - 60, dark)
 
-    bmp.fill_rect(39, 31, w - 78, 3, Color.new(255, 245, 217, 90))
-    bmp.fill_rect(39, h - 35, w - 78, 3, Color.new(139, 101, 66, 40))
-
-    # keep these sparse, too many makes the parchment look noisy
+    # keep the parchment texture quiet
     fibers = [
       [63,55,22,1], [104,74,17,1], [294,54,31,1], [349,89,18,1],
       [70,146,28,1], [263,151,20,1], [329,139,25,1],
       [143,47,1,12], [222,60,1,9], [312,111,1,13]
     ]
+
     fibers.each do |r|
-      bmp.fill_rect(r[0], r[1], r[2], r[3], Color.new(188,151,102,48))
+      bmp.fill_rect(
+        r[0],
+        r[1],
+        r[2],
+        r[3],
+        BushidoNaming::PARCHMENT_DARK
+      )
     end
 
     bmp.fill_rect(49, 42, 28, 2, BushidoNaming::GOLD)
@@ -279,8 +329,8 @@ class PokemonEntryScene
     bmp.fill_rect(w - 77, 42, 28, 2, BushidoNaming::GOLD)
     bmp.fill_rect(w - 51, 42, 2, 10, BushidoNaming::GOLD)
 
-    bmp.fill_rect(55, 151, w - 110, 2, dark)
-    bmp.fill_rect(55, 153, w - 110, 1, Color.new(255, 245, 217, 80))
+    bmp.fill_rect(55, 154, w - 110, 2, dark)
+    bmp.fill_rect(55, 156, w - 110, 1, light)
   end
 
   def createSubject(subject, pokemon)
@@ -322,7 +372,7 @@ class PokemonEntryScene
     begin
       @sprites["subjectBack"] = BitmapSprite.new(76, 76, @viewport)
       @sprites["subjectBack"].x = @panelX + 64
-      @sprites["subjectBack"].y = @panelY + 82
+      @sprites["subjectBack"].y = @panelY + 72
 
       b = @sprites["subjectBack"].bitmap
       b.fill_rect(0, 0, 76, 76, BushidoNaming::PARCHMENT_DARK)
@@ -332,11 +382,11 @@ class PokemonEntryScene
       @sprites["subject"] = PokemonIconSprite.new(pokemon, @viewport)
       @sprites["subject"].setOffset(PictureOrigin::Center)
       @sprites["subject"].x = @panelX + 102
-      @sprites["subject"].y = @panelY + 122
+      @sprites["subject"].y = @panelY + 112
 
       @sprites["gender"] = BitmapSprite.new(28, 28, @viewport)
       @sprites["gender"].x = @panelX + 122
-      @sprites["gender"].y = @panelY + 80
+      @sprites["gender"].y = @panelY + 70
       pbSetSystemFont(@sprites["gender"].bitmap)
 
       genderText = []
@@ -547,7 +597,7 @@ class PokemonEntryScene
       y + 2,
       keyW,
       keyH,
-      Color.new(83, 55, 33, 45)
+      Color.new(139, 101, 66)
     )
 
     bmp.fill_rect(
