@@ -432,12 +432,29 @@ end
         if(battleResult == 0)
             pbMessage(_INTL("\\xn[Sukiro]\\bAlright, \\PN. This will be our first sparring session!"))
         elsif(battleResult == 1)
-            pbMessage(_INTL("\\xn[Sukiro]\\bAlright, \\PN. You may have won last time, but this time will be different!"))
+            pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record currently stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
+            pbMessage(_INTL("\\xn[Sukiro]\\bGet ready \\PN. You may have won last time, but this time will be different!"))
+        elsif(battleResult == 2)
+            pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record currently stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
+            pbMessage(_INTL("\\xn[Sukiro]\\bGet ready \\PN. I may have won last time, but I know you'll try harder than before."))
         else
-            pbMessage(_INTL("\\xn[Sukiro]\\bFIGHT ME, \\PN!"))
+            pbMessage(_INTL("\\xn[Sukiro]\\bWe had an excellent battle last time, may this battle also be excellent!"))
         end
+        chapter = currentChapter()
         BattleScripting.setInScript("turnStart0",:SukiroTrainingIntro)
-        vTB("Sensei","Sukiro","That was an excellent sparring session!",false,2,true,190) #1 who says "Darn!" after he loses, that you can lose and result is stored in variable 2.
+        if(chapter <= 1)
+            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,2,true,190) #Battle 1 (Chapter 1, Form 2)
+        elsif(chapter == 2)
+            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,3,true,190) #Battle 2 (Chapter 2, Form 3)
+        elsif(chapter == 3)
+            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,4,true,190) #Battle 3 (Chapter 3, Form 4)
+        elsif(chapter == 4)
+            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,5,true,190) #Battle 4 (Chapter 4, Form 5)
+        elsif(chapter == 5 || chapter == 6)
+            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,6,true,190) #Battle 5 (Chapter 5/6, Form 6)
+        elsif(chapter >= 7) # Postgame
+            vTB("Sensei","Sukiro","That was an excellent sparring session!",false,7,true,190) #Battle 6 (Chapter 7 Postgame, Form 7)
+        end
         battleResult = $game_variables[190]
         if(battleResult == 1)
             pbMessage(_INTL("\\xn[Sukiro]\\bWell fought, \\PN! You are becoming stronger with every battle."))
@@ -448,7 +465,7 @@ end
             incrementGameVariable(192,1)
             pbMessage(_INTL("\\xn[Sukiro]\\bMy number of sparring wins is: {1}.", $game_variables[192]))
         else
-            pbMessage(_INTL("\\xn[Sukiro]\\bGG boyoooo: {}.", $game_variables[192]))
+            pbMessage(_INTL("\\xn[Sukiro]\\bWell played \\PN, that was quite a duel."))
         end
         pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record now stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
     else

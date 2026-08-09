@@ -385,6 +385,34 @@ class PokeBattle_Battle
         else
           incorrectAnswerGenericResponse(scene, ally, statToBuff)
         end
+    when 11
+        cmd= pbMessage("\\bWhich type is most effective against the Yuki Clan?", ["Electric", "Fighting", "Fairy", "Ground"])
+        if cmd == 1
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+        end
+    when 12
+        cmd= pbMessage("\\bWhat do you call the small shrines that Kenshi pray at throughout the region?", ["Honden", "Torii", "Tsukiyomi", "Hokora"])
+        if cmd == 3
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+        end
+    when 13
+        cmd= pbMessage("\\bWhat is the name of the sea to the west of Hagane City?", ["Kaiyo", "Chikyu", "Hagane", "Umi"])
+        if cmd == 0
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+        end
+    when 14
+        cmd= pbMessage("\\bWhat is the name of the forest to the south of Hagane City?", ["Tsuchi", "Kusa", "Shizen", "Mori"])
+        if cmd == 2
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff)
+        end
     else # Default Question
         cmd= pbMessage("\\bWhat is a Kenshi's source of power?", ["Spear", "Pokémon", "Katana"])
         if cmd == 1

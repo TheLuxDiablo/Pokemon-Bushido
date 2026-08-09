@@ -1045,6 +1045,25 @@ BattleHandlers::DamageCalcUserAbility.add(:SANDFORCE,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:SUPREMEOVERLORD,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    bonus = user.effects[PBEffects::SupremeOverlord]
+    next if bonus <= 0
+    mults[:power_multiplier] *= (1 + (0.1 * bonus))
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SUPREMEOVERLORD,
+  proc { |ability,battler,battle|
+    numFainted = [5, battler.num_fainted_allies].min
+    next if numFainted <= 0
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} gained strength from the fallen!", battler.pbThis))
+    battler.effects[PBEffects::SupremeOverlord] = numFainted
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 BattleHandlers::DamageCalcUserAbility.add(:SHEERFORCE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     mults[BASE_DMG_MULT] *= 1.3 if move.addlEffect>0

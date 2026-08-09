@@ -163,6 +163,53 @@ Pokemon = SLUGMA,5
 Pokemon = FARFETCHD,5
     Form = 1
 #-------------------------------
+[SENSEI,Sukiro,3]
+LoseText = "That was an excellent sparring session."
+Pokemon = ROCKRUFF,15
+Pokemon = SLUGMA,15
+Pokemon = FLETCHLING,15
+Pokemon = FARFETCHD,15
+    Form = 1
+#-------------------------------
+[SENSEI,Sukiro,4]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,30
+	Form = 2
+Pokemon = SLUGMA,30
+Pokemon = FLETCHINDER,30
+Pokemon = FARFETCHD,30
+    Form = 1
+#-------------------------------
+[SENSEI,Sukiro,5]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,40
+	Form = 2
+Pokemon = MAGCARGO,40
+Pokemon = TALONFLAME,40
+Pokemon = SIRFETCHD,40
+#-------------------------------
+[SENSEI,Sukiro,6]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,55
+	Form = 2
+Pokemon = MAGCARGO,55
+Pokemon = GOREBYSS,55
+Pokemon = TALONFLAME,55
+Pokemon = SIRFETCHD,55
+#-------------------------------
+[SENSEI,Sukiro,7]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,65
+	Form = 2
+Pokemon = MAGCARGO,65
+Pokemon = GOREBYSS,65
+Pokemon = TALONFLAME,65
+	Moves = BRAVEBIRD, FLAREBLITZ, ROOST, PROTECT
+Pokemon = SIRFETCHD,65
+Pokemon = KINGAMBIT,70
+	Ability = 1
+	Moves = SUCKERPUNCH, SWORDSDANCE, IRONHEAD, LOWKICK
+#-------------------------------
 [NENSHO_M,Grunta]
 LoseText = "What! There's no way someone like you could beat me!"
 Pokemon = TORCHIC,5
@@ -187,6 +234,8 @@ Pokemon = COTTONEE,5
 LoseText = "Well played!"
 Pokemon = TURTWIG,10
 Pokemon = FENNEKIN,10
+Pokemon = KINGAMBIT,1
+	Ability = 1
 #-------------------------------
 [KENSHI_F,Saki]
 LoseText = "You fight with great honor. Well done!"

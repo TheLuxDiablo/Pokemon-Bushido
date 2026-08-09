@@ -893,3 +893,4 @@
 853,SP_RES_S,SP RES Small,SP RES Smalls,1,400,"Restores 3 SP. Cannot be used in battle.",2,0,0,
 854,SP_RES_M,SP RES Med,SP RES Meds,1,800,"Restores 6 SP. Cannot be used in battle.",2,0,0,
 855,SP_RES_L,SP RES Large,SP RES Larges,1,1200,"Restores 10 SP. Cannot be used in battle.",2,0,0,
+856,LEADERSCREST,Leader's Crest,Leader's Crests,1,3000,"A shard of what appears to be an old blade of some sort. It is held only by a head of certain Pokémon group.",0,0,1,
