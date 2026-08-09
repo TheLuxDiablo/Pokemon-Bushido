@@ -5,7 +5,7 @@
 PluginManager.register({
   :name    => "Bushido Habitat Scroll",
   :version => "4.0",
-  :credits => ["Rose Quartz Games", "raZ", "Nuri Yuri", "Vendily",
+  :credits => ["theluxdiablo", "raZ", "Nuri Yuri", "Vendily",
                "Savordez", "Marin", "PurpleZaffre", "ThatWelshOne_"]
 })
 
