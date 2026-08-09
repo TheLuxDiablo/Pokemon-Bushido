@@ -86,7 +86,7 @@
     // 4: xBRZ
     // (default: 0)
     //
-    "smoothScaling": 1,
+    "smoothScaling": 0,
     "integerScalingActive": true,
     "integerScalingLastMile": true,
     "vsync": false,
@@ -439,7 +439,7 @@
     // If you think text tends to be too large or too small,
     // try fiddling with this.
     // (default: 1.0)
-    "fontScale": 1.1,
+    "fontScale": 1.0,
 
     // Kerning adjusts the spacing between individual letters or characters.
     // Enabling it generally looks nicer, but RGSS doesn't use it,
