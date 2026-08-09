@@ -57,7 +57,7 @@ class PokemonEggHatch_Scene
   end
 
   def pbMain
-    pbBGMPlay("Evolution")
+    pbBGMPlay("PLA 039 Evolution")
     # Egg animation
     updateScene(Graphics.frame_rate*15/10)
     pbPositionHatchMask(0)
@@ -104,7 +104,7 @@ class PokemonEggHatch_Scene
     pbPlayCry(@pokemon)
     updateScene(frames)
     pbBGMStop()
-    pbMEPlay("Evolution success")
+    pbMEPlay("PLA 040 Congratulations, Your Pokemon Evolved!")
     pbMessage(_INTL("\\se[]{1} hatched from the Egg!\\wt[80]",@pokemon.name)) { update }
     if Nuzlocke.on? || pbConfirmMessage(
         _INTL("Would you like to nickname the newly hatched {1}?",@pokemon.name)) { update }

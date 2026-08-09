@@ -2,8 +2,8 @@
 #-------------------------------
 [000]
 Home = 83,31,7,8
-WildBattleBGM = Conquest-BattleNormal.ogg
-TrainerBattleBGM = CON-LeafVillageDay.ogg
+WildBattleBGM = PLA 013 Battle! (Wild Pokemon)
+TrainerBattleBGM = CON-LeafVillageDay
 WildVictoryME = CON2_BattleWin
 TrainerVictoryME = CON2_BattleWin
 SurfBGM = CON_BGM_Story13.ogg
@@ -535,6 +535,11 @@ BattleBack = YamiIsland
 # Yami Island
 Outdoor = true
 ShowArea = false
+#-------------------------------
+[101]
+# Test Events
+Outdoor = true
+ShowArea = true
 #-------------------------------
 [102]
 # Jonetsu Pass

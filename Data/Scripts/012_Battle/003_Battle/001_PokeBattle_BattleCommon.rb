@@ -149,7 +149,7 @@ module PokeBattle_BattleCommon
       pbDisplay(_INTL("Gah! It was so close, too!"))
       BallHandlers.onFailCatch(ball,self,battler)
     when 4
-      pbMEPlay("HGSSLevelUp")
+      pbMEPlay("PLA 008 Obtained a Pokemon!")
       pbDisplayBrief(_INTL("Gotcha! {1} was caught!",pkmn.name))
       #@scene.pbThrowSuccess   # Play capture success jingle
       pbRemoveFromParty(battler.index,battler.pokemonIndex)
