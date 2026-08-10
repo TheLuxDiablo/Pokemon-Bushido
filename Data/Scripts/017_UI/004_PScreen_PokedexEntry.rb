@@ -103,6 +103,7 @@ class PokemonPokedexInfo_Scene
     @typebitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Pokedex/icon_types"))
     @sprites = {}
     @sprites["background"] = IconSprite.new(0,0,@viewport)
+    @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_info_brief"))
     @sprites["infosprite"] = PokemonSprite.new(@viewport)
     @sprites["infosprite"].tone = Tone.new(-255,-255,-255)
     @sprites["infosprite"].setOffset(PictureOrigin::Center)
@@ -235,7 +236,11 @@ class PokemonPokedexInfo_Scene
   end
 
   def drawPageInfo
-    @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_info"))
+    if @brief
+        @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_info_brief"))
+    else
+        @sprites["background"].setBitmap(_INTL("Graphics/Pictures/Pokedex/bg_info"))
+    end
     overlay = @sprites["overlay"].bitmap
     base   = Color.new(0, 0, 0)
     shadow = Color.new(198, 175, 104)
@@ -546,18 +551,23 @@ class PokemonPokedexInfo_Scene
   end
 
   def pbSceneBrief
-    duration = [(getPlayTime("Pkmn exp gain") * Graphics.frame_rate / (125 / 100.0)).round, 1].max
+    duration = (getPlayTime("Audio/SE/Pkmn exp gain") * Graphics.frame_rate / (225 / 100.0))
     pbSEPlay("Pkmn exp gain", 125)
     @sprites["infosprite"].color.alpha = 255
     @sprites["formicon"].color.alpha   = 255
+    #pbMessage(_INTL("Duration: {1}",duration))
+    duration = duration.floor
     duration.times do |i|
       Graphics.update
       factor = (i + 1).to_f / duration
       @sprites["infosprite"].color.alpha = 255 * (1 - factor)
+      @sprites["infosprite"].tone = Tone.new(0 + (3 * factor), 0 + (3 * factor), 0 + (3 * factor))
       @sprites["formicon"].color.alpha = 255 * (1 - factor)
+      @sprites["formicon"].tone = Tone.new(0 + (3 * factor), 0 + (3 * factor), 0 + (3 * factor))
     end
     pbSEPlay("Pkmn exp full")
-    duration = [(getPlayTime("Pkmn exp full") * Graphics.frame_rate).round, 1].max
+    duration = (getPlayTime("Audio/SE/Pkmn exp full") * Graphics.frame_rate / (250 / 100.0))
+    duration = duration.floor
     duration.times do |i|
       Graphics.update
       factor = f = (i + 1).to_f / duration
@@ -568,10 +578,12 @@ class PokemonPokedexInfo_Scene
     duration.times do |i|
       Graphics.update
       factor = f = (i + 1).to_f / duration
-      @sprites["infosprite"].tone = Tone.new(230 - (230 * f), 200 - (200 * f), 30 * (30 - f))
+      #@sprites["infosprite"].tone = Tone.new(230 - (230 * f), 200 - (200 * f), 30 * (30 - f))
+      @sprites["infosprite"].tone = Tone.new(0 + (3 * f), 0 + (3 * f), 0 + (3 * f))
       @sprites["infosprite"].zoom_x = 1.2 - (0.2 * factor)
       @sprites["infosprite"].zoom_y = 1.2 - (0.2 * factor)
     end
+    #@sprites["formicon"].color.alpha   = 255
     pbWait(Graphics.frame_rate / 5)
     pbPlayCrySpecies(@species, @form)
     loop do
