@@ -664,7 +664,7 @@ def camsHackyInitMethod()
 end
 
 def pbHotSpringRecovery()
-    if(PLAYERKATANATECHNIQUES)
+    if(PLAYERKATANATECHNIQUES && KatanaOfLightAwakened?())
         fullyRecoverEnergy()
         pbMessage(_INTL("Your Spirit Energy was fully restored!"))
     else

@@ -261,7 +261,7 @@ def pbDownloadMysteryGift(trainer)
     $game_system.bgm_pause
     $game_system.bgs_pause
   end
-  pbBGMPlay("MysteryGift")
+  pbBGMPlay("PLA 089 Mystery Gift")
   sprites={}
   viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
   viewport.z=99999
