@@ -235,7 +235,14 @@ module BushidoStarterSelection
     CARD_WIDTH    = 142
     CARD_HEIGHT   = 220
     CARD_CENTER_Y = 166
-    SIDE_DISTANCE = 158
+
+    # Exact visual thirds across a 512px screen:
+    # left  = 1/6 width  -> 85
+    # center= 1/2 width  -> 256
+    # right = 5/6 width  -> 427
+    LEFT_CARD_X   = (SCREEN_W / 6.0).round
+    CENTER_CARD_X = (SCREEN_W / 2.0).round
+    RIGHT_CARD_X  = (SCREEN_W * 5.0 / 6.0).round
 
     CARD_BITMAP_HEIGHT    = CARD_HEIGHT + 12
     CARD_RING_LOCAL_Y     = 99
@@ -267,6 +274,23 @@ module BushidoStarterSelection
 
     SELECTED_CARD_ZOOM = 1.00
     SIDE_CARD_ZOOM     = 0.92
+
+    # Navigation arrows are deliberately tiny enough to live in the actual
+    # 10px gap between the selected card and each side card.
+    ARROW_W       = 9
+    ARROW_H       = 15
+    ARROW_Y       = CARD_CENTER_Y - 3
+    ARROW_BOB_MAX = 2
+
+    # Falling leaf field. The PNGs are reused as texture sprites rather than
+    # drawing leaves in code.
+    LEAF_COUNT        = 22
+    LEAF_MARGIN       = 18
+    LEAF_MIN_SPEED_Y  = 0.45
+    LEAF_MAX_SPEED_Y  = 1.15
+    LEAF_MAX_DRIFT_X  = 0.32
+    LEAF_SWAY_MIN     = 0.20
+    LEAF_SWAY_MAX     = 0.75
 
     SELECTED_DIM_ALPHA = 0
     SIDE_DIM_ALPHA     = 170
@@ -326,6 +350,8 @@ module BushidoStarterSelection
     #---------------------------------------------------------------------------
 
     TYPE_BADGE_PATH   = "Graphics/Pictures/types"
+
+    UI_ASSET_ROOT = "Graphics/Pictures/StarterSelection"
     TYPE_BADGE_WIDTH  = 64
     TYPE_BADGE_HEIGHT = 28
     TYPE_BADGE_GAP    = 8
@@ -380,7 +406,8 @@ module BushidoStarterSelection
       @viewport.z = 99999
 
       @sprites = {}
-      @petals  = []
+      @petals = []
+      @arrow_frame = 0
 
       @selected_index = 0
       @chosen_pokemon = nil
@@ -410,6 +437,7 @@ module BushidoStarterSelection
       createBackground
       createAmbientPetals
       createChrome
+      createNavigationArrows
       createStarterCards
       createStarterSprites
       createStarterInfo
@@ -490,30 +518,26 @@ module BushidoStarterSelection
       bitmap.fill_rect(x + width - 2, y + height - length, 2, length, color)
     end
 
-    def drawCenteredText(bitmap, text, y, base, shadow, size = 22, bold = false)
-      old_size = bitmap.font.size
-      old_bold = bitmap.font.bold
-
-      bitmap.font.size = size
+    # Use Essentials' native font presets rather than manually shrinking the
+    # system font. "Small" UI copy uses pbSetSmallFont; primary copy uses
+    # pbSetSystemFont.
+    def setTextFont(bitmap, small = false, bold = false)
+      if small
+        pbSetSmallFont(bitmap)
+      else
+        pbSetSystemFont(bitmap)
+      end
       bitmap.font.bold = bold
-
-      pbDrawTextPositions(bitmap, [[text, CENTER_X, y, 2, base, shadow]])
-
-      bitmap.font.size = old_size
-      bitmap.font.bold = old_bold
     end
 
-    def drawLeftText(bitmap, text, x, y, base, shadow, size = 20, bold = false)
-      old_size = bitmap.font.size
-      old_bold = bitmap.font.bold
+    def drawCenteredText(bitmap, text, y, base, shadow, small = false, bold = false)
+      setTextFont(bitmap, small, bold)
+      pbDrawTextPositions(bitmap, [[text, CENTER_X, y, 2, base, shadow]])
+    end
 
-      bitmap.font.size = size
-      bitmap.font.bold = bold
-
+    def drawLeftText(bitmap, text, x, y, base, shadow, small = false, bold = false)
+      setTextFont(bitmap, small, bold)
       pbDrawTextPositions(bitmap, [[text, x, y, 0, base, shadow]])
-
-      bitmap.font.size = old_size
-      bitmap.font.bold = old_bold
     end
 
     def safePokemonName(pokemon)
@@ -638,154 +662,96 @@ module BushidoStarterSelection
     # Scene graphics
     #---------------------------------------------------------------------------
 
+    def uiAsset(name)
+      return "#{UI_ASSET_ROOT}/#{name}"
+    end
+
+    def primaryTypeKey(pokemon)
+      return "normal" if !pokemon
+      return safeTypeName(pokemon.type1).downcase
+    rescue
+      return "normal"
+    end
+
     def createBackground
       sprite = Sprite.new(@viewport)
-      sprite.bitmap = Bitmap.new(SCREEN_W, SCREEN_H)
+      sprite.bitmap = Bitmap.new(uiAsset("background"))
       sprite.z = 0
-
-      bitmap = sprite.bitmap
-
-      SCREEN_H.times do |y|
-        t = y / [SCREEN_H - 1, 1].max.to_f
-        r = (238 - 32 * t).to_i
-        g = (228 - 38 * t).to_i
-        b = (207 - 41 * t).to_i
-        bitmap.fill_rect(0, y, SCREEN_W, 1, Color.new(r, g, b))
-      end
-
-      drawRing(
-        bitmap,
-        CENTER_X,
-        BACKGROUND_RING_Y,
-        105,
-        4,
-        Color.new(131, 47, 44, 54)
-      )
-      drawRing(
-        bitmap,
-        CENTER_X,
-        BACKGROUND_RING_Y,
-        98,
-        1,
-        Color.new(131, 47, 44, 38)
-      )
-
-      bitmap.fill_rect(0, 64, 112, 5, Color.new(28, 24, 27, 32))
-      bitmap.fill_rect(0, 72, 78, 2, Color.new(28, 24, 27, 25))
-      bitmap.fill_rect(SCREEN_W - 126, 58, 126, 4, Color.new(28, 24, 27, 30))
-      bitmap.fill_rect(SCREEN_W - 84, 66, 84, 2, Color.new(28, 24, 27, 24))
-
       @sprites["background"] = sprite
     end
 
+    #---------------------------------------------------------------------------
+    # Repeating leaf texture
+    #
+    # The previous version created many independent leaf sprites. That made the
+    # edges feel noisy and caused half-leaves to visibly drift in from outside
+    # the frame. This version builds one small tile from the existing leaf_1
+    # artwork and lets an RGSS Plane repeat it seamlessly across the screen.
+    #---------------------------------------------------------------------------
+
+    #---------------------------------------------------------------------------
+    # Falling leaf field
+    #
+    # Uses the existing leaf_1/leaf_2/leaf_3 PNGs as reusable sprite textures.
+    # Leaves always move downward, get a little randomized horizontal drift and
+    # sine-wave sway, and are fully recycled once they leave the screen.
+    #---------------------------------------------------------------------------
+
     def createAmbientPetals
-      PETAL_COUNT.times do |index|
+      @petals = []
+
+      LEAF_COUNT.times do |i|
         sprite = Sprite.new(@viewport)
-        sprite.bitmap = createLeafBitmap(index)
+        sprite.bitmap = Bitmap.new(uiAsset("leaf_#{(i % 3) + 1}"))
         sprite.ox = sprite.bitmap.width / 2
         sprite.oy = sprite.bitmap.height / 2
-
         sprite.z = LEAF_Z
 
         data = {
-          :sprite => sprite,
-          :speed  => randomLeafRange(LEAF_MIN_SPEED, LEAF_MAX_SPEED),
-          :drift  => randomLeafRange(LEAF_MIN_DRIFT, LEAF_MAX_DRIFT),
-          :spin   => randomLeafRange(-2.4, 2.4),
-          :sway   => randomLeafRange(0.10, 0.32),
-          :phase  => rand(360),
-          :scale  => 0.90 + rand(71) / 100.0
+          :sprite     => sprite,
+          :x          => 0.0,
+          :y          => 0.0,
+          :base_vx    => 0.0,
+          :vy         => 0.0,
+          :phase      => 0.0,
+          :phase_step => 0.0,
+          :sway       => 0.0
         }
 
-        sprite.zoom_x = data[:scale]
-        sprite.zoom_y = data[:scale]
-
-        resetPetal(data, true, index)
-        @petals.push(data)
+        resetAmbientPetal(data, true)
+        @petals << data
       end
     end
 
-    def createLeafBitmap(index)
-      bitmap = Bitmap.new(11, 11)
-
-      palettes = [
-        [
-          Color.new(151, 24, 30),
-          Color.new(191, 42, 41),
-          Color.new(111, 16, 24)
-        ],
-        [
-          Color.new(176, 36, 31),
-          Color.new(211, 61, 42),
-          Color.new(124, 22, 23)
-        ],
-        [
-          Color.new(128, 24, 33),
-          Color.new(173, 39, 46),
-          Color.new(91, 18, 26)
-        ]
-      ]
-
-      palette = palettes[index % palettes.length]
-      base    = palette[0]
-      light   = palette[1]
-      dark    = palette[2]
-
-      bitmap.fill_rect(5, 1, 1, 8, dark)
-
-      bitmap.fill_rect(4, 2, 3, 1, base)
-      bitmap.fill_rect(3, 3, 5, 1, base)
-      bitmap.fill_rect(2, 4, 7, 1, base)
-      bitmap.fill_rect(1, 5, 9, 1, base)
-      bitmap.fill_rect(3, 6, 5, 1, base)
-      bitmap.fill_rect(4, 7, 3, 1, base)
-
-      bitmap.fill_rect(0, 4, 3, 1, base)
-      bitmap.fill_rect(8, 4, 3, 1, base)
-      bitmap.fill_rect(2, 2, 2, 1, base)
-      bitmap.fill_rect(7, 2, 2, 1, base)
-      bitmap.fill_rect(2, 6, 2, 1, dark)
-      bitmap.fill_rect(7, 6, 2, 1, dark)
-
-      bitmap.fill_rect(4, 3, 2, 1, light)
-      bitmap.fill_rect(3, 4, 2, 1, light)
-
-      bitmap.fill_rect(5, 8, 1, 3, dark)
-
-      return bitmap
-    end
-
-    def randomLeafRange(minimum, maximum)
-      return minimum + rand(1001) / 1000.0 * (maximum - minimum)
-    end
-
-    def resetPetal(data, initial = false, index = 0)
+    def resetAmbientPetal(data, initial = false)
       sprite = data[:sprite]
 
-      if initial
-        sprite.x = rand(SCREEN_W + 60) - 20
-        sprite.y = rand(SCREEN_H + 70) - 40
-      else
-        if rand(100) < 30
-          sprite.x = SCREEN_W + 8 + rand(42)
-          sprite.y = rand((SCREEN_H * 0.72).to_i)
-        else
-          sprite.x = rand(SCREEN_W + 70)
-          sprite.y = -14 - rand(70)
-        end
-      end
+      # Spawn anywhere vertically on the first frame so the scene starts full.
+      # Recycled leaves always spawn safely above the top edge.
+      data[:x] = rand(SCREEN_W + LEAF_MARGIN * 2) - LEAF_MARGIN
+      data[:y] = initial ? rand(SCREEN_H + LEAF_MARGIN * 2) - LEAF_MARGIN :
+                           -(LEAF_MARGIN + rand(36))
 
-      sprite.opacity =
-        LEAF_MIN_OPACITY +
-        rand(LEAF_MAX_OPACITY - LEAF_MIN_OPACITY + 1)
+      # Every leaf has its own fall speed and small prevailing drift.
+      data[:vy] = LEAF_MIN_SPEED_Y +
+                  rand(1000) / 1000.0 *
+                  (LEAF_MAX_SPEED_Y - LEAF_MIN_SPEED_Y)
 
-      sprite.angle = rand(360)
+      data[:base_vx] =
+        (rand(2001) / 1000.0 - 1.0) * LEAF_MAX_DRIFT_X
 
-      if initial && index % 4 == 0
-        sprite.x = SCREEN_W - rand(140)
-      end
+      # Independent sine-wave flutter prevents identical diagonal movement.
+      data[:phase] = rand(628) / 100.0
+      data[:phase_step] = 0.025 + rand(45) / 1000.0
+      data[:sway] = LEAF_SWAY_MIN +
+                    rand(1000) / 1000.0 *
+                    (LEAF_SWAY_MAX - LEAF_SWAY_MIN)
 
-      updateLeafVisibility(data)
+      sprite.opacity = 90 + rand(111)
+      sprite.mirror = (rand(2) == 0)
+
+      sprite.x = data[:x].round
+      sprite.y = data[:y].round
     end
 
     def updateAmbientPetals
@@ -793,58 +759,52 @@ module BushidoStarterSelection
         sprite = data[:sprite]
         next if !sprite || sprite.disposed?
 
-        frame = Graphics.frame_count + data[:phase]
+        data[:phase] += data[:phase_step]
 
-        sprite.y += data[:speed]
-        sprite.x +=
-          data[:drift] +
-          Math.sin(frame / 22.0) * data[:sway]
+        # Gravity direction is always positive Y. Horizontal movement gets
+        # randomized drift plus a gentle flutter.
+        flutter_x = Math.sin(data[:phase]) * data[:sway]
+        data[:x] += data[:base_vx] + flutter_x
+        data[:y] += data[:vy]
 
-        sprite.angle += data[:spin]
+        sprite.x = data[:x].round
+        sprite.y = data[:y].round
 
-        flutter = 0.82 + Math.sin(frame / 13.0).abs * 0.18
-        sprite.zoom_x = data[:scale] * flutter
-        sprite.zoom_y = data[:scale]
-
-        if sprite.y > SCREEN_H + 16 ||
-           sprite.x < -12 ||
-           sprite.x > SCREEN_W + 55
-          resetPetal(data)
-          next
+        # Never let a leaf linger against an edge. If it exits too far left or
+        # right, or falls fully below the screen, recycle it above the top.
+        if data[:y] > SCREEN_H + LEAF_MARGIN ||
+           data[:x] < -LEAF_MARGIN * 3 ||
+           data[:x] > SCREEN_W + LEAF_MARGIN * 3
+          resetAmbientPetal(data, false)
         end
-
-        updateLeafVisibility(data)
       end
     end
 
-    def updateLeafVisibility(data)
-      sprite = data[:sprite]
-      return if !sprite || sprite.disposed?
-      sprite.visible = true
-    end
-
     def createChrome
-      @sprites["chrome"] = BitmapSprite.new(SCREEN_W, SCREEN_H, @viewport)
+      @sprites["chrome_static"] = Sprite.new(@viewport)
+      @sprites["chrome_static"].bitmap = Bitmap.new(uiAsset("chrome_static"))
+      @sprites["chrome_static"].z = 3
 
-      @sprites["chrome"].z = 3
-      pbSetSystemFont(@sprites["chrome"].bitmap)
+      @sprites["chrome_accent"] = Sprite.new(@viewport)
+      @sprites["chrome_accent"].z = 4
+
+      @sprites["chrome_text"] = BitmapSprite.new(SCREEN_W, SCREEN_H, @viewport)
+      @sprites["chrome_text"].z = 5
+      pbSetSystemFont(@sprites["chrome_text"].bitmap)
     end
 
     def refreshChrome
-      bitmap = @sprites["chrome"].bitmap
-      bitmap.clear
+      pokemon = @starter_pokemon[@selected_index]
+      type_key = primaryTypeKey(pokemon)
 
-      global_frame_bottom = INFO_PANEL_Y + INFO_PANEL_H
-      global_frame_height = global_frame_bottom - 8 + 1
-      drawCornerMarks(
-        bitmap,
-        9,
-        8,
-        SCREEN_W - 18,
-        global_frame_height,
-        INK_FAINT,
-        17
-      )
+      accent_sprite = @sprites["chrome_accent"]
+      if accent_sprite.bitmap && !accent_sprite.bitmap.disposed?
+        accent_sprite.bitmap.dispose
+      end
+      accent_sprite.bitmap = Bitmap.new(uiAsset("chrome_accent_#{type_key}"))
+
+      bitmap = @sprites["chrome_text"].bitmap
+      bitmap.clear
 
       drawCenteredText(
         bitmap,
@@ -852,100 +812,108 @@ module BushidoStarterSelection
         SUBHEADER_Y,
         INK,
         PAPER_DARK,
-        24,
+        false,
         true
       )
 
-      bitmap.fill_rect(
-        CENTER_X - 116,
-        DIVIDER_Y,
-        232,
-        1,
-        Color.new(93, 74, 65, 150)
-      )
-      drawDiamond(
-        bitmap,
-        CENTER_X,
-        DIVIDER_Y,
-        4,
-        pokemonAccentColor(@starter_pokemon[@selected_index])
-      )
-      drawDiamond(bitmap, CENTER_X - 123, DIVIDER_Y, 2, GOLD)
-      drawDiamond(bitmap, CENTER_X + 123, DIVIDER_Y, 2, GOLD)
+    end
 
-      # Navigation arrows stay fixed while the companions/cards rotate through.
-      drawLeftText(bitmap, "<", CENTER_X - 91, 165, INK, PAPER_DARK, 28, true)
-      drawLeftText(bitmap, ">", CENTER_X + 80, 165, INK, PAPER_DARK, 28, true)
+    #---------------------------------------------------------------------------
+    # Dynamic navigation arrows
+    #
+    # These are real sprites rather than text drawn into the chrome. They sit
+    # exactly inside the gap between the selected card and the side cards, so
+    # they never cover the card artwork.
+    #---------------------------------------------------------------------------
 
-      # ------------------------------------------------------------------------
-      # Bottom companion information panel
-      # ------------------------------------------------------------------------
+    def createNavigationArrows
+      @sprites["arrow_left"] = Sprite.new(@viewport)
+      @sprites["arrow_left"].bitmap = Bitmap.new(ARROW_W, ARROW_H)
+      @sprites["arrow_left"].ox = ARROW_W / 2
+      @sprites["arrow_left"].oy = ARROW_H / 2
+      @sprites["arrow_left"].z = 15
+
+      @sprites["arrow_right"] = Sprite.new(@viewport)
+      @sprites["arrow_right"].bitmap = Bitmap.new(ARROW_W, ARROW_H)
+      @sprites["arrow_right"].ox = ARROW_W / 2
+      @sprites["arrow_right"].oy = ARROW_H / 2
+      @sprites["arrow_right"].z = 15
+
+      @arrow_frame = 0
+      refreshNavigationArrows
+      updateNavigationArrows(true)
+    end
+
+    def refreshNavigationArrows
       pokemon = @starter_pokemon[@selected_index]
-      accent = pokemonAccentColor(pokemon)
-      accent_soft = pokemonAccentColor(pokemon, 92)
+      accent = pokemon ? pokemonAccentColor(pokemon) : INK
 
-      panel_x = 28
-      panel_y = INFO_PANEL_Y
-      panel_w = SCREEN_W - 56
-      panel_h = INFO_PANEL_H
+      drawPixelArrow(@sprites["arrow_left"].bitmap,  :left,  accent)
+      drawPixelArrow(@sprites["arrow_right"].bitmap, :right, accent)
+    end
 
-      drawPanel(
-        bitmap,
-        panel_x,
-        panel_y,
-        panel_w,
-        panel_h,
-        Color.new(242, 233, 215, 238),
-        Color.new(76, 62, 58, 175),
-        1
-      )
+    def drawPixelArrow(bitmap, direction, color)
+      bitmap.clear
 
-      inset = 4
-      drawPanel(
-        bitmap,
-        panel_x + inset,
-        panel_y + inset,
-        panel_w - inset * 2,
-        panel_h - inset * 2,
-        Color.new(0, 0, 0, 0),
-        Color.new(122, 102, 88, 72),
-        1
-      )
+      # 3px stair-step chevrons. The whole graphic is only 7px wide, which
+      # comfortably fits in the card gap without touching either card.
+      if direction == :left
+        bitmap.fill_rect(5, 2, 2, 3, color)
+        bitmap.fill_rect(3, 4, 2, 3, color)
+        bitmap.fill_rect(1, 6, 2, 3, color)
+        bitmap.fill_rect(3, 8, 2, 3, color)
+        bitmap.fill_rect(5, 10, 2, 3, color)
+      else
+        bitmap.fill_rect(2, 2, 2, 3, color)
+        bitmap.fill_rect(4, 4, 2, 3, color)
+        bitmap.fill_rect(6, 6, 2, 3, color)
+        bitmap.fill_rect(4, 8, 2, 3, color)
+        bitmap.fill_rect(2, 10, 2, 3, color)
+      end
+    end
 
-      rule_y = panel_y + 9
-      rule_margin = 18
-      rule_w = panel_w - rule_margin * 2
-      bitmap.fill_rect(
-        panel_x + rule_margin,
-        rule_y,
-        rule_w,
-        2,
-        accent
-      )
+    def updateNavigationArrows(instant = false)
+      left = @sprites["arrow_left"]
+      right = @sprites["arrow_right"]
+      return if !left || !right
 
-      bitmap.fill_rect(CENTER_X - 8, rule_y - 1, 16, 4,
-                       Color.new(242, 233, 215, 255))
-      drawDiamond(bitmap, CENTER_X, rule_y, 3, GOLD)
-      drawDiamond(bitmap, CENTER_X, rule_y, 1, accent)
+      @arrow_frame += 1 if !instant
 
-      drawCornerMarks(
-        bitmap,
-        panel_x + 7,
-        panel_y + 7,
-        panel_w - 14,
-        panel_h - 14,
-        Color.new(accent.red, accent.green, accent.blue, 125),
-        9
-      )
+      # Calculate the *actual empty gaps* between card edges.
+      selected_half = (CARD_WIDTH + 12) * SELECTED_CARD_ZOOM / 2.0
+      side_half     = (CARD_WIDTH + 12) * SIDE_CARD_ZOOM / 2.0
 
-      ornament_y = panel_y + panel_h - 17
-      bitmap.fill_rect(panel_x + 18, ornament_y, 24, 1, accent_soft)
-      drawDiamond(bitmap, panel_x + 46, ornament_y, 2, GOLD)
-      bitmap.fill_rect(panel_x + 50, ornament_y, 16, 1, accent_soft)
+      left_side_center  = LEFT_CARD_X
+      right_side_center = RIGHT_CARD_X
 
-      bitmap.fill_rect(panel_x + panel_w - 42, ornament_y, 24, 1, accent_soft)
-      drawDiamond(bitmap, panel_x + panel_w - 46, ornament_y, 2, GOLD)
-      bitmap.fill_rect(panel_x + panel_w - 66, ornament_y, 16, 1, accent_soft)
+      left_gap_left   = left_side_center + side_half
+      left_gap_right  = CENTER_X - selected_half
+      right_gap_left  = CENTER_X + selected_half
+      right_gap_right = right_side_center - side_half
+
+      left_base_x  = ((left_gap_left + left_gap_right) / 2.0).round
+      right_base_x = ((right_gap_left + right_gap_right) / 2.0).round
+
+      # A restrained 0..2px breathing motion. LEFT makes the left arrow press
+      # outward, RIGHT does the same on the right.
+      pulse = ((Math.sin(@arrow_frame / 7.0) + 1.0) * 0.5 * ARROW_BOB_MAX).round
+
+      left_press  = Input.press?(Input::LEFT)  ? 2 : 0
+      right_press = Input.press?(Input::RIGHT) ? 2 : 0
+
+      left.x  = left_base_x  - pulse - left_press
+      right.x = right_base_x + pulse + right_press
+      left.y  = ARROW_Y
+      right.y = ARROW_Y
+
+      # Gentle pulse keeps them alive without flashing.
+      opacity = 190 + ((Math.sin(@arrow_frame / 10.0) + 1.0) * 24).round
+      left.opacity  = opacity
+      right.opacity = opacity
+
+      visible = @starter_pokemon.length > 1
+      left.visible  = visible
+      right.visible = visible
     end
 
     #---------------------------------------------------------------------------
@@ -955,9 +923,7 @@ module BushidoStarterSelection
     def createStarterCards
       @starter_pokemon.each_with_index do |pokemon, index|
         sprite = Sprite.new(@viewport)
-        sprite.bitmap = Bitmap.new(CARD_WIDTH + 12, CARD_HEIGHT + 12)
-        sprite.ox = sprite.bitmap.width / 2
-        sprite.oy = sprite.bitmap.height / 2
+        sprite.bitmap = nil
         sprite.x = CENTER_X
         sprite.y = CARD_CENTER_Y
         sprite.z = 5
@@ -976,49 +942,19 @@ module BushidoStarterSelection
     def refreshStarterCard(index, selected)
       sprite = @sprites["card_#{index}"]
       pokemon = @starter_pokemon[index]
-      return if !sprite || !sprite.bitmap
+      return if !sprite || !pokemon
 
-      bitmap = sprite.bitmap
-      bitmap.clear
+      type_key = primaryTypeKey(pokemon)
+      state = selected ? "selected" : "side"
+      path = uiAsset("card_#{state}_#{type_key}")
 
-      pad = 6
-      x = pad
-      y = pad
-      width = CARD_WIDTH
-      height = CARD_HEIGHT
+      if sprite.bitmap && !sprite.bitmap.disposed?
+        sprite.bitmap.dispose
+      end
 
-      accent = pokemonAccentColor(pokemon)
-      muted_accent = pokemonAccentColor(pokemon, selected ? 118 : 62)
-
-      fill = selected ?
-        Color.new(246, 239, 223, 230) :
-        Color.new(229, 218, 197, 150)
-
-      border = selected ? accent : Color.new(89, 73, 67, 105)
-      border_size = selected ? 3 : 1
-
-      drawPanel(bitmap, x, y, width, height, fill, border, border_size)
-      drawCornerMarks(
-        bitmap,
-        x + 5, y + 5, width - 10, height - 10,
-        selected ? accent : Color.new(93, 78, 70, 92),
-        selected ? 14 : 9
-      )
-
-      ring_cx = sprite.bitmap.width / 2
-      ring_cy = CARD_RING_LOCAL_Y
-      ring_radius = selected ? 68 : 62
-      drawRing(bitmap, ring_cx, ring_cy, ring_radius, 2, muted_accent)
-      drawRing(bitmap, ring_cx, ring_cy, ring_radius - 5, 1,
-               pokemonAccentColor(pokemon, selected ? 72 : 30)) if selected
-
-      drawDiamond(bitmap, ring_cx, 21, selected ? 7 : 5,
-                  selected ? accent : pokemonAccentColor(pokemon, 145))
-
-      ornament_y = height - 8
-      bitmap.fill_rect(ring_cx - 23, ornament_y, 46, 1,
-                       selected ? accent : Color.new(93, 78, 70, 72))
-      drawDiamond(bitmap, ring_cx, ornament_y, 2, selected ? GOLD : Color.new(130, 112, 87, 100))
+      sprite.bitmap = Bitmap.new(path)
+      sprite.ox = sprite.bitmap.width / 2
+      sprite.oy = sprite.bitmap.height / 2
     end
 
     def createStarterSprites
@@ -1105,7 +1041,7 @@ module BushidoStarterSelection
         INFO_NAME_Y,
         INK,
         PAPER_DARK,
-        23,
+        false,
         true
       )
 
@@ -1115,7 +1051,7 @@ module BushidoStarterSelection
         INFO_CATEGORY_Y,
         TEXT_BASE_COLOR,
         Color.new(0, 0, 0, 0),
-        15,
+        true,
         false
       )
 
@@ -1190,7 +1126,7 @@ module BushidoStarterSelection
         TYPE_BADGE_Y + 3,
         pokemonAccentColor(pokemon),
         PAPER_DARK,
-        16,
+        true,
         true
       )
     end
@@ -1217,36 +1153,36 @@ module BushidoStarterSelection
         end
 
         if relative_position == 0
-          @target_x[index] = CENTER_X
+          @target_x[index] = CENTER_CARD_X
           @target_y[index] = POKEMON_ROW_Y + SELECTED_Y_OFFSET
           @target_zoom[index] = SELECTED_ZOOM
           @target_dim[index] = SELECTED_DIM_ALPHA
 
-          @target_card_x[index] = CENTER_X
+          @target_card_x[index] = CENTER_CARD_X
           @target_card_y[index] = CARD_CENTER_Y - 3
           @target_card_zoom[index] = SELECTED_CARD_ZOOM
 
           sprite.z = 12
           card.z = 7 if card
         elsif relative_position < 0
-          @target_x[index] = CENTER_X - SIDE_DISTANCE
+          @target_x[index] = LEFT_CARD_X
           @target_y[index] = POKEMON_ROW_Y + SIDE_Y_OFFSET
           @target_zoom[index] = SIDE_ZOOM
           @target_dim[index] = SIDE_DIM_ALPHA
 
-          @target_card_x[index] = CENTER_X - SIDE_DISTANCE
+          @target_card_x[index] = LEFT_CARD_X
           @target_card_y[index] = CARD_CENTER_Y + 5
           @target_card_zoom[index] = SIDE_CARD_ZOOM
 
           sprite.z = 8
           card.z = 4 if card
         else
-          @target_x[index] = CENTER_X + SIDE_DISTANCE
+          @target_x[index] = RIGHT_CARD_X
           @target_y[index] = POKEMON_ROW_Y + SIDE_Y_OFFSET
           @target_zoom[index] = SIDE_ZOOM
           @target_dim[index] = SIDE_DIM_ALPHA
 
-          @target_card_x[index] = CENTER_X + SIDE_DISTANCE
+          @target_card_x[index] = RIGHT_CARD_X
           @target_card_y[index] = CARD_CENTER_Y + 5
           @target_card_zoom[index] = SIDE_CARD_ZOOM
 
@@ -1390,6 +1326,7 @@ module BushidoStarterSelection
 
       refreshStarterTargets
       refreshChrome
+      refreshNavigationArrows
       refreshStarterInfo
 
       @pending_reveal_feedback = true
@@ -1648,6 +1585,7 @@ module BushidoStarterSelection
 
       updateAmbientPetals
       updateStarterAnimation if update_carousel
+      updateNavigationArrows
       updateShinyFeedback
     end
 

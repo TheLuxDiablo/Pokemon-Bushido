@@ -26,6 +26,8 @@ module BushidoNaming
   CONTROLS_Y         = 160
 
   DIM_ALPHA          = 112
+
+  UI_ASSET_ROOT       = "Graphics/Pictures/Naming"
   # short enough to feel snappy, but still sells the scroll opening/closing
   OPEN_FRAMES        = 10
   CLOSE_FRAMES       = 8
@@ -125,20 +127,19 @@ class PokemonEntryScene
     @sprites["dimmer"].opacity = 0
   end
 
+  def namingAsset(name)
+    return "#{BushidoNaming::UI_ASSET_ROOT}/#{name}"
+  end
+
   def createScroll
     @sprites["scroll"] = Sprite.new(@viewport)
-    @sprites["scroll"].bitmap = Bitmap.new(
-      BushidoNaming::PANEL_WIDTH,
-      BushidoNaming::PANEL_HEIGHT
-    )
+    @sprites["scroll"].bitmap = Bitmap.new(namingAsset("scroll"))
 
     # centered origin makes zoom_x look like the scroll is unfurling from the middle
     @sprites["scroll"].ox = BushidoNaming::PANEL_WIDTH / 2
     @sprites["scroll"].oy = BushidoNaming::PANEL_HEIGHT / 2
     @sprites["scroll"].x  = Graphics.width / 2
     @sprites["scroll"].y  = @panelY + BushidoNaming::PANEL_HEIGHT / 2
-
-    drawScroll(@sprites["scroll"].bitmap)
   end
 
   def createOverlay
@@ -166,171 +167,6 @@ class PokemonEntryScene
     @sprites["entry"].maxlength = @maxlength
     @sprites["entry"].visible   = false
     @sprites["entry"].active    = true
-  end
-
-  def drawScroll(bmp)
-    bmp.clear
-
-    w = BushidoNaming::PANEL_WIDTH
-    h = BushidoNaming::PANEL_HEIGHT
-
-    light = BushidoNaming::PARCHMENT_LIGHT
-    body  = BushidoNaming::PARCHMENT
-    mid   = BushidoNaming::PARCHMENT_MID
-    dark  = BushidoNaming::PARCHMENT_DARK
-    deep  = BushidoNaming::PARCHMENT_DEEP
-
-    # draw the paper as an actual silhouette instead of stacking rectangles.
-    # this makes the rough top/bottom edges the real edge of the bitmap.
-    paper_left  = 31
-    paper_right = w - 32
-    top_base    = 22
-    bottom_base = h - 24
-
-    top_profile = [
-      3,3,3,2,2,2,1,1,1,0,0,0,
-      2,2,1,1,0,0,0,1,1,1,3,3,
-      2,2,2,1,0,0,1,1,2,2,1,1,
-      0,0,0,2,2,2,3,3,1,1,0,0
-    ]
-
-    bottom_profile = [
-      0,0,1,1,2,2,3,3,2,2,1,1,
-      3,3,4,4,2,2,1,1,0,0,2,2,
-      3,3,1,1,0,0,2,2,4,4,3,3,
-      1,1,2,2,3,3,1,1,0,0,2,2
-    ]
-
-    x = paper_left
-    while x <= paper_right
-      index = (x - paper_left) % top_profile.length
-
-      top_y    = top_base + top_profile[index]
-      bottom_y = bottom_base - bottom_profile[index]
-      column_h = bottom_y - top_y + 1
-
-      if column_h > 0
-        bmp.fill_rect(x, top_y, 1, column_h, dark)
-
-        inner_top    = top_y + 2
-        inner_bottom = bottom_y - 2
-
-        if inner_bottom >= inner_top
-          bmp.fill_rect(
-            x,
-            inner_top,
-            1,
-            inner_bottom - inner_top + 1,
-            light
-          )
-        end
-
-        shade_top = bottom_y - 8
-        if shade_top > inner_top
-          bmp.fill_rect(
-            x,
-            shade_top,
-            1,
-            [6, bottom_y - shade_top].min,
-            body
-          )
-        end
-      end
-
-      x += 1
-    end
-
-    # a few little cuts keep the edge from looking too procedural
-    top_nicks = [
-      [71,24,3,6],
-      [119,23,2,5],
-      [181,24,3,7],
-      [261,23,2,5],
-      [333,24,3,6],
-      [397,23,2,5]
-    ]
-
-    top_nicks.each do |r|
-      bmp.fill_rect(r[0], r[1], r[2], r[3], dark)
-    end
-
-    bottom_nicks = [
-      [79,bottom_base - 8,3,6],
-      [151,bottom_base - 6,2,5],
-      [226,bottom_base - 9,3,7],
-      [299,bottom_base - 7,2,5],
-      [368,bottom_base - 8,3,6]
-    ]
-
-    bottom_nicks.each do |r|
-      bmp.fill_rect(r[0], r[1], r[2], r[3], dark)
-    end
-
-    # left roll
-    bmp.fill_rect(9, 13, 23, h - 26, deep)
-    bmp.fill_rect(12, 10, 17, h - 20, dark)
-    bmp.fill_rect(15, 13, 11, h - 26, mid)
-    bmp.fill_rect(18, 15, 5, h - 30, light)
-
-    bmp.fill_rect(5, 8, 28, 9, deep)
-    bmp.fill_rect(8, 5, 22, 9, dark)
-    bmp.fill_rect(11, 7, 16, 5, light)
-    bmp.fill_rect(7, 14, 10, 5, deep)
-
-    bmp.fill_rect(5, h - 17, 28, 9, deep)
-    bmp.fill_rect(8, h - 14, 22, 9, dark)
-    bmp.fill_rect(11, h - 12, 16, 5, light)
-    bmp.fill_rect(7, h - 19, 10, 5, deep)
-
-    bmp.fill_rect(26, 26, 6, h - 52, deep)
-    bmp.fill_rect(29, 30, 4, h - 60, dark)
-
-    # right roll
-    rx = w - 32
-
-    bmp.fill_rect(rx, 13, 23, h - 26, deep)
-    bmp.fill_rect(rx + 3, 10, 17, h - 20, dark)
-    bmp.fill_rect(rx + 6, 13, 11, h - 26, mid)
-    bmp.fill_rect(rx + 9, 15, 5, h - 30, light)
-
-    bmp.fill_rect(w - 33, 8, 28, 9, deep)
-    bmp.fill_rect(w - 30, 5, 22, 9, dark)
-    bmp.fill_rect(w - 27, 7, 16, 5, light)
-    bmp.fill_rect(w - 17, 14, 10, 5, deep)
-
-    bmp.fill_rect(w - 33, h - 17, 28, 9, deep)
-    bmp.fill_rect(w - 30, h - 14, 22, 9, dark)
-    bmp.fill_rect(w - 27, h - 12, 16, 5, light)
-    bmp.fill_rect(w - 17, h - 19, 10, 5, deep)
-
-    bmp.fill_rect(w - 33, 26, 6, h - 52, deep)
-    bmp.fill_rect(w - 33, 30, 4, h - 60, dark)
-
-    # keep the parchment texture quiet
-    fibers = [
-      [63,55,22,1], [104,74,17,1], [294,54,31,1], [349,89,18,1],
-      [70,146,28,1], [263,151,20,1], [329,139,25,1],
-      [143,47,1,12], [222,60,1,9], [312,111,1,13]
-    ]
-
-    fibers.each do |r|
-      bmp.fill_rect(
-        r[0],
-        r[1],
-        r[2],
-        r[3],
-        BushidoNaming::PARCHMENT_DARK
-      )
-    end
-
-    bmp.fill_rect(49, 42, 28, 2, BushidoNaming::GOLD)
-    bmp.fill_rect(49, 42, 2, 10, BushidoNaming::GOLD)
-
-    bmp.fill_rect(w - 77, 42, 28, 2, BushidoNaming::GOLD)
-    bmp.fill_rect(w - 51, 42, 2, 10, BushidoNaming::GOLD)
-
-    bmp.fill_rect(55, 154, w - 110, 2, dark)
-    bmp.fill_rect(55, 156, w - 110, 1, light)
   end
 
   def createSubject(subject, pokemon)
@@ -370,14 +206,12 @@ class PokemonEntryScene
     return if !pokemon
 
     begin
-      @sprites["subjectBack"] = BitmapSprite.new(76, 76, @viewport)
+      @sprites["subjectBack"] = Sprite.new(@viewport)
+      @sprites["subjectBack"].bitmap = Bitmap.new(
+        namingAsset("pokemon_subject_back")
+      )
       @sprites["subjectBack"].x = @panelX + 64
       @sprites["subjectBack"].y = @panelY + 72
-
-      b = @sprites["subjectBack"].bitmap
-      b.fill_rect(0, 0, 76, 76, BushidoNaming::PARCHMENT_DARK)
-      b.fill_rect(3, 3, 70, 70, BushidoNaming::PARCHMENT_LIGHT)
-      b.fill_rect(9, 69, 52, 2, BushidoNaming::GOLD)
 
       @sprites["subject"] = PokemonIconSprite.new(pokemon, @viewport)
       @sprites["subject"].setOffset(PictureOrigin::Center)
@@ -579,6 +413,59 @@ class PokemonEntryScene
     end
   end
 
+  def drawKeycapBackground(bmp, x, y, width, height)
+    source = Bitmap.new(namingAsset("keycap"))
+
+    # Preserve the authored corners while stretching only the center/edges.
+    corner = 6
+    srcW = source.width
+    srcH = source.height
+
+    # corners
+    bmp.blt(x, y, source, Rect.new(0, 0, corner, corner))
+    bmp.blt(x + width - corner, y,
+            source, Rect.new(srcW - corner, 0, corner, corner))
+    bmp.blt(x, y + height - corner,
+            source, Rect.new(0, srcH - corner, corner, corner))
+    bmp.blt(x + width - corner, y + height - corner,
+            source, Rect.new(srcW - corner, srcH - corner, corner, corner))
+
+    # edges + center
+    bmp.stretch_blt(
+      Rect.new(x + corner, y, width - corner * 2, corner),
+      source,
+      Rect.new(corner, 0, srcW - corner * 2, corner)
+    )
+    bmp.stretch_blt(
+      Rect.new(x + corner, y + height - corner,
+               width - corner * 2, corner),
+      source,
+      Rect.new(corner, srcH - corner,
+               srcW - corner * 2, corner)
+    )
+    bmp.stretch_blt(
+      Rect.new(x, y + corner, corner, height - corner * 2),
+      source,
+      Rect.new(0, corner, corner, srcH - corner * 2)
+    )
+    bmp.stretch_blt(
+      Rect.new(x + width - corner, y + corner,
+               corner, height - corner * 2),
+      source,
+      Rect.new(srcW - corner, corner,
+               corner, srcH - corner * 2)
+    )
+    bmp.stretch_blt(
+      Rect.new(x + corner, y + corner,
+               width - corner * 2, height - corner * 2),
+      source,
+      Rect.new(corner, corner,
+               srcW - corner * 2, srcH - corner * 2)
+    )
+
+    source.dispose
+  end
+
   def drawKeyPair(bmp, x, y, keyText, actionText)
     # size the keycap from the real text dimensions instead of eyeballing the box
     textH = measuredTextHeight(bmp)
@@ -592,28 +479,12 @@ class PokemonEntryScene
     keyW = keyTextW + (padX * 2)
     keyH = textH + (padY * 2)
 
-    bmp.fill_rect(
-      x + 2,
-      y + 2,
-      keyW,
-      keyH,
-      Color.new(139, 101, 66)
-    )
-
-    bmp.fill_rect(
+    drawKeycapBackground(
+      bmp,
       x,
       y,
       keyW,
-      keyH,
-      BushidoNaming::PARCHMENT_DARK
-    )
-
-    bmp.fill_rect(
-      x + 2,
-      y + 2,
-      keyW - 4,
-      keyH - 4,
-      BushidoNaming::PARCHMENT_LIGHT
+      keyH
     )
 
     drawExactText(

@@ -1,15 +1,7 @@
 #===============================================================================
-# Bushido Party UI v13.2
+# Bushido Party UI
 # Pokemon Bushido / Essentials v18.1
-#
-# custom party screen override
-# keep this after the stock Essentials party scripts
-#
-# most of the stock PokemonPartyScreen logic is still doing the actual work.
-# this file mostly owns drawing, navigation feel, and the extra Rename action.
-#
-# quick test: pbBushidoPartyTest
-#===============================================================================
+#===========================================
 
 # Set this to false to use the original Essentials party screen.
 BUSHIDO_PARTY_UI_ENABLED = true unless defined?(BUSHIDO_PARTY_UI_ENABLED)
@@ -34,6 +26,10 @@ module BushidoPartyUI
   HP_YELLOW   = Color.new(220, 174, 53)
   HP_RED      = Color.new(198, 59, 56)
   HP_BG       = Color.new(45, 39, 36)
+  EXP_BLUE     = Color.new(64, 144, 224)
+  HEART_PURPLE = Color.new(144, 78, 188)
+
+  UI_ASSET_ROOT = "Graphics/Pictures/Party/Bushido"
 
   DOCK_Y       = 302
   SLOT_W       = 75
@@ -130,6 +126,88 @@ module BushidoPartyUI
     end
   end
 
+  # Draw a 50/50 type accent for dual types.
+  def self.draw_type_bar(bitmap, x, y, w, h, pokemon)
+    return if !pokemon
+    c1 = type_color(pokemon.type1)
+    dual = pokemon.type2 && pokemon.type2 != pokemon.type1
+    if dual
+      half = floor2(w / 2)
+      fill2(bitmap, x, y, half, h, c1)
+      fill2(bitmap, x + half, y, w - half, h, type_color(pokemon.type2))
+    else
+      fill2(bitmap, x, y, w, h, c1)
+    end
+  end
+
+  # Essentials normally stores type badges in Graphics/Pictures/types.png.
+  def self.draw_type_icon(bitmap, type_id, x, y)
+    begin
+      sheet = pbBitmap("Graphics/Pictures/types")
+      icon_w = 64
+      icon_h = 28
+      if sheet.height < (type_id + 1) * icon_h
+        count = 18
+        icon_h = sheet.height / count if sheet.height >= count
+      end
+      src = Rect.new(0, type_id * icon_h, icon_w, icon_h)
+      bitmap.blt(x, y, sheet, src)
+      return true
+    rescue
+      return false
+    end
+  end
+
+  # Keep Shadow compatibility checks in one place because forks name these differently.
+  def self.shadow_pokemon?(pokemon)
+    return false if !pokemon
+    begin
+      return pokemon.shadowPokemon? if pokemon.respond_to?(:shadowPokemon?)
+    rescue
+    end
+    begin
+      return pokemon.shadow? if pokemon.respond_to?(:shadow?)
+    rescue
+    end
+    begin
+      return pokemon.isShadow? if pokemon.respond_to?(:isShadow?)
+    rescue
+    end
+    return false
+  end
+
+  def self.shadow_heart_value(pokemon)
+    return nil if !pokemon
+    [:heartgauge, :heartGauge, :heart_gauge].each do |method_name|
+      begin
+        return pokemon.send(method_name) if pokemon.respond_to?(method_name)
+      rescue
+      end
+    end
+    return nil
+  end
+
+  def self.shadow_heart_max(pokemon)
+    return nil if !pokemon
+    [:maxheartgauge, :maxHeartGauge, :heartgaugemax, :heartGaugeMax].each do |method_name|
+      begin
+        return pokemon.send(method_name) if pokemon.respond_to?(method_name)
+      rescue
+      end
+    end
+    return 3840
+  end
+
+  def self.asset(name)
+    return "#{UI_ASSET_ROOT}/#{name}"
+  end
+
+  def self.blit_asset(bitmap, name, x=0, y=0)
+    source = Bitmap.new(asset(name))
+    bitmap.blt(x, y, source, Rect.new(0, 0, source.width, source.height))
+    source.dispose
+  end
+
   def self.slot_x(index)
     SLOT_START_X + index * (SLOT_W + SLOT_GAP)
   end
@@ -142,10 +220,36 @@ module BushidoPartyUI
     HP_GREEN
   end
 
+  def self.status_icon_color(pokemon)
+    return nil if !pokemon || pokemon.hp <= 0 || pokemon.status <= 0
+
+    name = ""
+    begin
+      name = PBStatuses.getName(pokemon.status).to_s.upcase
+    rescue
+      name = ""
+    end
+
+    case name
+    when "POISON", "BADLY POISONED"
+      Color.new(164, 76, 184)
+    when "BURN"
+      Color.new(224, 92, 54)
+    when "PARALYSIS", "PARALYZED"
+      Color.new(236, 198, 58)
+    when "SLEEP"
+      Color.new(100, 112, 190)
+    when "FROZEN", "FREEZE"
+      Color.new(104, 202, 228)
+    else
+      Color.new(180, 180, 180)
+    end
+  end
+
   # Only the party-row icon gets this wash. The big battler stays untouched.
   def self.status_tint(pokemon)
     return Color.new(0,0,0,0) if !pokemon
-    return Color.new(0,0,0,0) if pokemon.hp <= 0
+    return Color.new(0,0,0,150) if pokemon.hp <= 0
 
     name = ""
     begin
@@ -236,48 +340,12 @@ end
 class BushidoPartyBackground < SpriteWrapper
   def initialize(viewport=nil)
     super(viewport)
-    self.bitmap = Bitmap.new(Graphics.width, Graphics.height)
-    draw_background
+    self.bitmap = Bitmap.new(BushidoPartyUI.asset("background"))
   end
 
-  def rounded_rect(b, x, y, w, h, border, fill)
-    x = BushidoPartyUI.floor2(x)
-    y = BushidoPartyUI.floor2(y)
-    w = BushidoPartyUI.floor2(w)
-    h = BushidoPartyUI.floor2(h)
-
-    BushidoPartyUI.fill2(b, x + 4, y,     w - 8, h,     border)
-    BushidoPartyUI.fill2(b, x,     y + 4, w,     h - 8, border)
-    BushidoPartyUI.fill2(b, x + 2, y + 2, w - 4, h - 4, border)
-
-    BushidoPartyUI.fill2(b, x + 6, y + 4, w - 12, h - 8, fill)
-    BushidoPartyUI.fill2(b, x + 4, y + 6, w - 8,  h - 12, fill)
-  end
-
-  def draw_background
-    b = self.bitmap
-    b.clear
-
-    BushidoPartyUI.fill2(
-      b, 0, 0, Graphics.width, Graphics.height,
-      BushidoPartyUI::BG_DARK
-    )
-
-    rounded_rect(
-      b, 22, 14, 468, 274,
-      BushidoPartyUI::WHITE, BushidoPartyUI::BG
-    )
-
-    # Build the spotlight from literal 2x2 cells. The old sqrt strip method
-    # could produce odd-width steps around the edge.
-    BushidoPartyUI.circle2(
-      b, 144, 116, 96,
-      BushidoPartyUI::PANEL_LIGHT
-    )
-
-    BushidoPartyUI.fill2(b, 0, 294, Graphics.width, 4, BushidoPartyUI::WHITE)
-    BushidoPartyUI.fill2(b, 0, 298, Graphics.width, 4, BushidoPartyUI::BG_DARK)
-    BushidoPartyUI.fill2(b, 0, 302, Graphics.width, 82, BushidoPartyUI::PANEL_DARK)
+  def dispose
+    self.bitmap.dispose if self.bitmap && !self.bitmap.disposed?
+    super
   end
 end
 
@@ -316,8 +384,11 @@ class BushidoPartySlot < SpriteWrapper
     @icon.z = self.z + 2
     @icon.color = BushidoPartyUI.status_tint(@pokemon)
 
-    @item = HeldItemIconSprite.new(0, 0, @pokemon, viewport)
+    @item = ItemIconSprite.new(0, 0, @pokemon.item, viewport)
+    @item.zoom_x = 0.25
+    @item.zoom_y = 0.25
     @item.z = self.z + 3
+    @item.visible = (@pokemon.item && @pokemon.item != 0)
 
     refresh
   end
@@ -337,7 +408,13 @@ class BushidoPartySlot < SpriteWrapper
       @icon.color = BushidoPartyUI.status_tint(value)
     end
 
-    @item.pokemon = value if @item && !@item.disposed?
+    if @item && !@item.disposed?
+      begin
+        @item.item = value.item
+      rescue
+      end
+      @item.visible = (value.item && value.item != 0)
+    end
     refresh
   end
 
@@ -377,41 +454,12 @@ class BushidoPartySlot < SpriteWrapper
     b = self.bitmap
     b.clear
 
-    # Selection and switch-source are deliberately different.
-    # Red = where the cursor is now. Gold = Pokemon being moved from.
-    if @selected
-      left = 8
-      top  = 14
-      w    = 60
-      h    = 48
+    # Selection/switch-source art is authored as PNG overlays.
+    BushidoPartyUI.blit_asset(b, "party_slot_selected") if @selected
+    BushidoPartyUI.blit_asset(b, "party_slot_preselected") if @preselected
 
-      BushidoPartyUI.fill2(b, left,     top,     w,     h,     BushidoPartyUI::RED)
-      BushidoPartyUI.fill2(b, left + 2, top + 2, w - 4, h - 4, BushidoPartyUI::PANEL)
-
-      BushidoPartyUI.fill2(b, 34, 8, 8, 2, BushidoPartyUI::RED)
-      BushidoPartyUI.fill2(b, 36, 10, 4, 2, BushidoPartyUI::RED)
-    end
-
-    if @preselected
-      gold = BushidoPartyUI::GOLD
-      left   = 6
-      right  = 68
-      top    = 12
-      bottom = 62
-
-      BushidoPartyUI.fill2(b, left,       top,        12, 2,  gold)
-      BushidoPartyUI.fill2(b, left,       top,        2,  12, gold)
-      BushidoPartyUI.fill2(b, right - 10, top,        12, 2,  gold)
-      BushidoPartyUI.fill2(b, right,      top,        2,  12, gold)
-
-      BushidoPartyUI.fill2(b, left,       bottom,     12, 2,  gold)
-      BushidoPartyUI.fill2(b, left,       bottom - 10,2,  12, gold)
-      BushidoPartyUI.fill2(b, right - 10, bottom,     12, 2,  gold)
-      BushidoPartyUI.fill2(b, right,      bottom - 10,2,  12, gold)
-
-      BushidoPartyUI.fill2(b, 36, 8, 4, 2, gold)
-      BushidoPartyUI.fill2(b, 34, 10, 8, 2, gold)
-    end
+    # Static HP/EXP tracks are authored in party_slot_base.png.
+    BushidoPartyUI.blit_asset(b, "party_slot_base")
 
     # Small HP bar under each party icon.
     bw = 50
@@ -419,9 +467,6 @@ class BushidoPartySlot < SpriteWrapper
 
     # HP
     hp_y = 62
-    BushidoPartyUI.fill2(b, bx, hp_y, bw, 6, BushidoPartyUI::HP_BG)
-    BushidoPartyUI.fill2(b, bx+2, hp_y+2, bw-4, 2, Color.new(34,31,29))
-
     if @pokemon && @pokemon.totalhp>0 && @pokemon.hp>0
       fill=((bw-4)*@pokemon.hp.to_f/@pokemon.totalhp).round
       fill=2 if fill<2
@@ -432,29 +477,35 @@ class BushidoPartySlot < SpriteWrapper
       )
     end
 
-    # EXP
+    # EXP / Shadow heart meter
     exp_y = 70
-    BushidoPartyUI.fill2(b, bx, exp_y, bw, 6, BushidoPartyUI::HP_BG)
-    BushidoPartyUI.fill2(b, bx+2, exp_y+2, bw-4, 2, Color.new(34,31,29))
-
     if @pokemon && !@pokemon.egg?
-      begin
-        start_exp = PBExperience.pbGetStartExperience(@pokemon.level, @pokemon.growthrate)
-        end_exp   = PBExperience.pbGetStartExperience(@pokemon.level + 1, @pokemon.growthrate)
-        current   = @pokemon.exp - start_exp
-        span      = [end_exp - start_exp, 1].max
+      meter_fill = 0
+      meter_color = BushidoPartyUI::EXP_BLUE
 
-        exp_fill = ((bw-4) * current.to_f / span).round
-        exp_fill = BushidoPartyUI.floor2(exp_fill)
-        exp_fill = 0 if exp_fill < 0
-        exp_fill = bw-4 if exp_fill > bw-4
-
-        BushidoPartyUI.fill2(
-          b, bx+2, exp_y+2, exp_fill, 2,
-          Color.new(64, 144, 224)
-        )
-      rescue
+      if BushidoPartyUI.shadow_pokemon?(@pokemon)
+        meter_color = BushidoPartyUI::HEART_PURPLE
+        value = BushidoPartyUI.shadow_heart_value(@pokemon)
+        max_value = BushidoPartyUI.shadow_heart_max(@pokemon)
+        if value && max_value && max_value > 0
+          meter_fill = ((bw-4) * value.to_f / max_value).round
+        end
+      else
+        begin
+          start_exp = PBExperience.pbGetStartExperience(@pokemon.level, @pokemon.growthrate)
+          end_exp   = PBExperience.pbGetStartExperience(@pokemon.level + 1, @pokemon.growthrate)
+          current   = @pokemon.exp - start_exp
+          span      = [end_exp - start_exp, 1].max
+          meter_fill = ((bw-4) * current.to_f / span).round
+        rescue
+          meter_fill = 0
+        end
       end
+
+      meter_fill = BushidoPartyUI.floor2(meter_fill)
+      meter_fill = 0 if meter_fill < 0
+      meter_fill = bw-4 if meter_fill > bw-4
+      BushidoPartyUI.fill2(b, bx+2, exp_y+2, meter_fill, 2, meter_color)
     end
 
     update_icon_position
@@ -469,8 +520,8 @@ class BushidoPartySlot < SpriteWrapper
     @icon.y = self.y + 40 - lift
 
     if @item
-      @item.x = self.x + 58
-      @item.y = self.y + 46 - lift
+      @item.x = self.x + 60
+      @item.y = self.y + 48 - lift
     end
   end
 
@@ -569,7 +620,7 @@ class BushidoPartyInfoPanel < SpriteWrapper
     super(viewport)
     self.bitmap = Bitmap.new(PANEL_W, PANEL_H)
     self.x = 43
-    self.y = 202
+    self.y = 212
     self.z = 9
     @pokemon = nil
   end
@@ -580,9 +631,7 @@ class BushidoPartyInfoPanel < SpriteWrapper
   end
 
   def draw_panel_frame(b)
-    BushidoPartyUI.fill2(b, 4, 0, PANEL_W-8, 72, BushidoPartyUI::WHITE)
-    BushidoPartyUI.fill2(b, 0, 4, PANEL_W,   64, BushidoPartyUI::WHITE)
-    BushidoPartyUI.fill2(b, 4, 4, PANEL_W-8, 64, BushidoPartyUI::PANEL)
+    BushidoPartyUI.blit_asset(b, "info_panel")
   end
 
   def refresh
@@ -593,7 +642,7 @@ class BushidoPartyInfoPanel < SpriteWrapper
 
     pkmn = @pokemon
     accent = BushidoPartyUI.type_accent(pkmn)
-    BushidoPartyUI.fill2(b, 8, 6, PANEL_W-16, 2, accent)
+    BushidoPartyUI.draw_type_bar(b, 8, 6, PANEL_W-16, 2, pkmn)
 
     # Name, gender and level.
     BushidoPartyUI.set_primary_font(b)
@@ -633,39 +682,11 @@ class BushidoPartyInfoPanel < SpriteWrapper
         BushidoPartyUI::WHITE, BushidoPartyUI::SHADOW
       )
 
-      # HP strip.
-      strip_y = 31
-      strip_h = 15
-      strip_dark = Color.new(74, 69, 78)
-      BushidoPartyUI.fill2(b, 4, 32, PANEL_W-8, 14, strip_dark)
-
-      # Compact custom HP mark with visible spacing between H and P.
-      hp_x = 8
-      hp_y = strip_y + 4
-      c = BushidoPartyUI::WHITE
-
-      # H/P are made from 2x2 chunks as well.
-      hp_x = 8
-      hp_y = 34
-
-      BushidoPartyUI.fill2(b, hp_x,   hp_y,   2, 10, c)
-      BushidoPartyUI.fill2(b, hp_x+6, hp_y,   2, 10, c)
-      BushidoPartyUI.fill2(b, hp_x,   hp_y+4, 8, 2,  c)
-
-      p_x = hp_x + 10
-      BushidoPartyUI.fill2(b, p_x,   hp_y,   2, 10, c)
-      BushidoPartyUI.fill2(b, p_x,   hp_y,   8, 2,  c)
-      BushidoPartyUI.fill2(b, p_x+6, hp_y+2, 2, 4,  c)
-      BushidoPartyUI.fill2(b, p_x,   hp_y+6, 8, 2,  c)
+      # The strip, HP mark, casing and track are authored in info_panel.png.
       bx = 30
       by = 32
       bw = 178
       bh = 14
-
-      casing = Color.new(46, 43, 49)
-      track  = Color.new(36, 35, 39)
-      BushidoPartyUI.fill2(b, bx,   by,   bw,   bh,   casing)
-      BushidoPartyUI.fill2(b, bx+2, by+2, bw-4, bh-4, track)
 
       if pkmn.totalhp > 0 && pkmn.hp > 0
         fill = ((bw-4) * pkmn.hp.to_f / pkmn.totalhp).round
@@ -732,13 +753,13 @@ end
 #===============================================================================
 class BushidoPartyDetailPanel < SpriteWrapper
   PANEL_W = 194
-  PANEL_H = 210
+  PANEL_H = 241
 
   def initialize(viewport=nil)
     super(viewport)
     self.bitmap = Bitmap.new(PANEL_W, PANEL_H)
     self.x = 276
-    self.y = 34
+    self.y = 44
     self.z = 8
     @pokemon = nil
   end
@@ -756,67 +777,221 @@ class BushidoPartyDetailPanel < SpriteWrapper
     end
   end
 
-  def draw_label(b, text, y)
-    BushidoPartyUI.set_ui_font(b)
-    pbDrawShadowText(
-      b, 12, y, PANEL_W-24, 20, text,
-      BushidoPartyUI::GOLD, BushidoPartyUI::SHADOW, 0
-    )
+  # All rows live in explicit rectangles. There are intentionally no visible
+  # divider lines here; spacing is doing the grouping instead.
+  def layout
+    return {
+      :header     => Rect.new(8,   8, 178, 34),
+      :type       => Rect.new(10,  50, 174, 32),
+      :ability    => Rect.new(10,  86, 174, 32),
+      :item       => Rect.new(10, 122, 174, 32),
+      :meter      => Rect.new(10, 160, 174, 30),
+      :traits     => Rect.new(10, 198, 174, 30)
+    }
   end
 
-  def draw_value(b, text, y, color=nil)
-    color ||= BushidoPartyUI::WHITE
+  def draw_box_text(b, rect, text, align=0, base=nil, shadow=nil)
+    base ||= BushidoPartyUI::WHITE
+    shadow ||= BushidoPartyUI::SHADOW
     BushidoPartyUI.set_ui_font(b)
-    pbDrawShadowText(
-      b, 12, y, PANEL_W-24, 24, text.to_s,
-      color, BushidoPartyUI::SHADOW, 0
-    )
+    th = b.text_size("Ag").height
+    ty = rect.y + ((rect.height - th) / 2) + 2
+    pbDrawShadowText(b, rect.x, ty, rect.width, th, text.to_s,
+                     base, shadow, align)
   end
 
-  def draw_types(b, pkmn, y)
-    type1_name = _INTL("Unknown")
-    type2_name = nil
-    type1_color = BushidoPartyUI::WHITE
-    type2_color = BushidoPartyUI::WHITE
+  def draw_condition_icons(b, pkmn, name_x, name_y)
+    BushidoPartyUI.set_primary_font(b)
+    text_w = b.text_size(species_name(pkmn)).width
+    x = name_x + text_w + 8
+    y = name_y + 8
 
-    begin
-      type1_name = PBTypes.getName(pkmn.type1)
-      type1_color = BushidoPartyUI.type_color(pkmn.type1)
+    status_color = BushidoPartyUI.status_icon_color(pkmn)
+    if status_color
+      BushidoPartyUI.fill2(b, x+2, y,   4, 2, status_color)
+      BushidoPartyUI.fill2(b, x,   y+2, 8, 4, status_color)
+      BushidoPartyUI.fill2(b, x+2, y+6, 4, 2, status_color)
+      x += 12
+    end
 
-      if pkmn.type2 && pkmn.type2 != pkmn.type1
-        type2_name = PBTypes.getName(pkmn.type2)
-        type2_color = BushidoPartyUI.type_color(pkmn.type2)
+    if BushidoPartyUI.shadow_pokemon?(pkmn)
+      c = BushidoPartyUI::HEART_PURPLE
+      BushidoPartyUI.fill2(b, x+2, y,   4, 2, c)
+      BushidoPartyUI.fill2(b, x,   y+2, 2, 4, c)
+      BushidoPartyUI.fill2(b, x+6, y+2, 2, 4, c)
+      BushidoPartyUI.fill2(b, x+2, y+6, 4, 2, c)
+    end
+  end
+
+  def draw_type_row(b, pkmn, rect)
+    draw_box_text(
+      b, Rect.new(rect.x, rect.y, 44, rect.height),
+      _INTL("TYPE"), 0, BushidoPartyUI::GOLD
+    )
+
+    icon_y = rect.y + 2
+    first_x = rect.x + 48
+
+    drawn1 = BushidoPartyUI.draw_type_icon(b, pkmn.type1, first_x, icon_y)
+
+    if pkmn.type2 && pkmn.type2 != pkmn.type1
+      second_x = first_x + 64
+      drawn2 = BushidoPartyUI.draw_type_icon(b, pkmn.type2, second_x, icon_y)
+
+      if !drawn1
+        draw_box_text(
+          b, Rect.new(first_x, rect.y, 60, rect.height),
+          PBTypes.getName(pkmn.type1), 1,
+          BushidoPartyUI.type_color(pkmn.type1)
+        )
       end
+
+      if !drawn2
+        draw_box_text(
+          b, Rect.new(second_x, rect.y, 60, rect.height),
+          PBTypes.getName(pkmn.type2), 1,
+          BushidoPartyUI.type_color(pkmn.type2)
+        )
+      end
+    elsif !drawn1
+      draw_box_text(
+        b, Rect.new(first_x, rect.y, 116, rect.height),
+        PBTypes.getName(pkmn.type1), 0,
+        BushidoPartyUI.type_color(pkmn.type1)
+      )
+    end
+  end
+
+  def draw_label_value(b, rect, label, value)
+    label_w = 66
+    draw_box_text(
+      b, Rect.new(rect.x, rect.y, label_w, rect.height),
+      label, 0, BushidoPartyUI::GOLD
+    )
+    draw_box_text(
+      b, Rect.new(rect.x + label_w, rect.y, rect.width-label_w, rect.height),
+      value, 0, BushidoPartyUI::WHITE
+    )
+  end
+
+  def item_name(pkmn)
+    begin
+      return PBItems.getName(pkmn.item) if pkmn.item && pkmn.item != 0
     rescue
     end
+    return _INTL("None")
+  end
 
-    BushidoPartyUI.set_ui_font(b)
+  def ability_name(pkmn)
+    begin
+      return PBAbilities.getName(pkmn.ability)
+    rescue
+    end
+    return _INTL("None")
+  end
 
-    if !type2_name
-      pbDrawShadowText(
-        b, 12, y, PANEL_W-24, 24, type1_name,
-        type1_color, BushidoPartyUI::SHADOW, 0
-      )
-      return
+  def nature_name(pkmn)
+    begin
+      return PBNatures.getName(pkmn.nature)
+    rescue
+    end
+    begin
+      return pkmn.natureName if pkmn.respond_to?(:natureName)
+    rescue
+    end
+    return _INTL("—")
+  end
+
+  def friendship_value(pkmn)
+    [:happiness, :friendship].each do |m|
+      begin
+        return pkmn.send(m).to_i if pkmn.respond_to?(m)
+      rescue
+      end
+    end
+    return 0
+  end
+
+  # Five tiny 2px-grid hearts. This is intentionally qualitative rather than
+  # printing the raw happiness number, which keeps the party screen glanceable.
+  def draw_friendship_hearts(b, x, y, pkmn)
+    value = friendship_value(pkmn)
+    filled = ((value * 5) / 255.0).round
+    filled = 0 if filled < 0
+    filled = 5 if filled > 5
+
+    5.times do |i|
+      c = i < filled ? BushidoPartyUI::GOLD : BushidoPartyUI::PANEL_DARK
+      hx = x + i * 12
+      BushidoPartyUI.fill2(b, hx,   y,   4, 2, c)
+      BushidoPartyUI.fill2(b, hx+6, y,   4, 2, c)
+      BushidoPartyUI.fill2(b, hx,   y+2, 10, 4, c)
+      BushidoPartyUI.fill2(b, hx+2, y+6, 6, 2, c)
+      BushidoPartyUI.fill2(b, hx+4, y+8, 2, 2, c)
+    end
+  end
+
+  def draw_meter(b, rect, pkmn)
+    shadow = BushidoPartyUI.shadow_pokemon?(pkmn)
+    label = shadow ? _INTL("HEART") : _INTL("EXP")
+    color = shadow ? BushidoPartyUI::HEART_PURPLE : BushidoPartyUI::EXP_BLUE
+
+    draw_box_text(
+      b, Rect.new(rect.x, rect.y, 46, rect.height),
+      label, 0,
+      shadow ? BushidoPartyUI::HEART_PURPLE : BushidoPartyUI::GOLD
+    )
+
+    x = rect.x + 50
+    y = rect.y + 10
+    w = rect.width - 56
+    h = 8
+
+    BushidoPartyUI.fill2(b, x, y, w, h, BushidoPartyUI::HP_BG)
+    BushidoPartyUI.fill2(b, x+2, y+2, w-4, h-4, Color.new(34,31,29))
+
+    fill = 0
+
+    if shadow
+      value = BushidoPartyUI.shadow_heart_value(pkmn)
+      max_value = BushidoPartyUI.shadow_heart_max(pkmn)
+      if value && max_value && max_value > 0
+        fill = ((w-4) * value.to_f / max_value).round
+      end
+    else
+      begin
+        start_exp = PBExperience.pbGetStartExperience(pkmn.level, pkmn.growthrate)
+        end_exp   = PBExperience.pbGetStartExperience(pkmn.level + 1, pkmn.growthrate)
+        current   = pkmn.exp - start_exp
+        span      = [end_exp - start_exp, 1].max
+        fill      = ((w-4) * current.to_f / span).round
+      rescue
+        fill = 0
+      end
     end
 
-    # Measure each chunk so the slash stays neutral while both type names keep
-    # their own color.
-    slash = " / "
-    w1 = b.text_size(type1_name).width
-    ws = b.text_size(slash).width
+    fill = BushidoPartyUI.floor2(fill)
+    fill = 0 if fill < 0
+    fill = w-4 if fill > w-4
+    BushidoPartyUI.fill2(b, x+2, y+2, fill, h-4, color)
+  end
 
-    pbDrawShadowText(
-      b, 12, y, w1 + 4, 24, type1_name,
-      type1_color, BushidoPartyUI::SHADOW, 0
+  def draw_traits(b, rect, pkmn)
+    # No label here. The nature name itself is the useful information, and the
+    # hearts read as a separate compact friendship indicator.
+    draw_box_text(
+      b,
+      Rect.new(rect.x, rect.y, 104, rect.height),
+      nature_name(pkmn),
+      0,
+      BushidoPartyUI::WHITE
     )
-    pbDrawShadowText(
-      b, 12 + w1, y, ws + 4, 24, slash,
-      BushidoPartyUI::WHITE, BushidoPartyUI::SHADOW, 0
-    )
-    pbDrawShadowText(
-      b, 12 + w1 + ws, y, PANEL_W - 24 - w1 - ws, 24, type2_name,
-      type2_color, BushidoPartyUI::SHADOW, 0
+
+    draw_friendship_hearts(
+      b,
+      rect.x + 112,
+      rect.y + 10,
+      pkmn
     )
   end
 
@@ -826,74 +1001,34 @@ class BushidoPartyDetailPanel < SpriteWrapper
     return if !@pokemon
 
     pkmn = @pokemon
-    accent = BushidoPartyUI.type_accent(pkmn)
+    boxes = layout
 
-    BushidoPartyUI.fill2(b, 0, 0, PANEL_W, PANEL_H, BushidoPartyUI::WHITE)
-    BushidoPartyUI.fill2(b, 4, 4, PANEL_W-8, PANEL_H-8, BushidoPartyUI::PANEL_DARK)
-    BushidoPartyUI.fill2(b, 6, 6, PANEL_W-12, PANEL_H-12, BushidoPartyUI::PANEL)
+    # Static card shell/header are authored in detail_panel.png.
+    BushidoPartyUI.blit_asset(b, "detail_panel")
 
-    # Header is species, not nickname. The nickname is already visible on the
-    # lower-left card, so this gives us new information instead of repeating it.
-    BushidoPartyUI.fill2(b, 8, 8, PANEL_W-16, 32, BushidoPartyUI::BG_DARK)
-    BushidoPartyUI.fill2(b, 8, 40, PANEL_W-16, 2, accent)
+    header = boxes[:header]
+    BushidoPartyUI.draw_type_bar(
+      b, header.x, header.y+header.height-2,
+      header.width, 2, pkmn
+    )
 
     BushidoPartyUI.set_primary_font(b)
+    th = b.text_size("Ag").height
+    ty = header.y + ((header.height-th)/2) + 2
     pbDrawShadowText(
-      b, 18, 16, PANEL_W-30, 28, species_name(pkmn),
+      b, header.x+10, ty, header.width-20, th,
+      species_name(pkmn),
       BushidoPartyUI::WHITE, BushidoPartyUI::SHADOW, 0
     )
+    draw_condition_icons(b, pkmn, header.x+10, ty)
 
     return if pkmn.egg?
 
-    draw_label(b, _INTL("TYPE"), 48)
-    draw_types(b, pkmn, 66)
-
-    ability_name = _INTL("None")
-    begin
-      ability_name = PBAbilities.getName(pkmn.ability)
-    rescue
-    end
-    draw_label(b, _INTL("ABILITY"), 92)
-    draw_value(b, ability_name, 112)
-
-    item_name = _INTL("None")
-    begin
-      item_name = PBItems.getName(pkmn.item) if pkmn.item && pkmn.item != 0
-    rescue
-    end
-    draw_label(b, _INTL("ITEM"), 134)
-    draw_value(b, item_name, 154)
-
-    draw_label(b, _INTL("EXP"), 176)
-
-    exp_x = 46
-    exp_y = 184
-    exp_w = 136
-    exp_h = 8
-
-    BushidoPartyUI.fill2(b, exp_x, exp_y, exp_w, exp_h, BushidoPartyUI::HP_BG)
-    BushidoPartyUI.fill2(
-      b, exp_x+2, exp_y+2, exp_w-4, exp_h-4,
-      Color.new(34,31,29)
-    )
-
-    begin
-      start_exp = PBExperience.pbGetStartExperience(pkmn.level, pkmn.growthrate)
-      end_exp   = PBExperience.pbGetStartExperience(pkmn.level + 1, pkmn.growthrate)
-      current   = pkmn.exp - start_exp
-      span      = [end_exp - start_exp, 1].max
-
-      fill = ((exp_w - 4) * current.to_f / span).round
-      fill = BushidoPartyUI.floor2(fill)
-      fill = 0 if fill < 0
-      fill = exp_w - 4 if fill > exp_w - 4
-
-      BushidoPartyUI.fill2(
-        b, exp_x+2, exp_y+2, fill, exp_h-4,
-        Color.new(64, 144, 224)
-      )
-    rescue
-    end 
+    draw_type_row(b, pkmn, boxes[:type])
+    draw_label_value(b, boxes[:ability], _INTL("ABILITY"), ability_name(pkmn))
+    draw_label_value(b, boxes[:item], _INTL("ITEM"), item_name(pkmn))
+    draw_meter(b, boxes[:meter], pkmn)
+    draw_traits(b, boxes[:traits], pkmn)
   end
 
   def dispose
@@ -1061,10 +1196,7 @@ class PokemonParty_Scene
 
     ib = @sprites["focusItemBack"].bitmap
     ib.clear
-    BushidoPartyUI.circle2(
-      ib, 20, 20, 18,
-      BushidoPartyUI::WHITE
-    )
+    BushidoPartyUI.blit_asset(ib, "focus_item_back")
 
     @sprites["focusItem"] = ItemIconSprite.new(0, 0, @party[0].item, @viewport)
     @sprites["focusItem"].x = 225
@@ -1400,25 +1532,25 @@ class PokemonParty_Scene
     return if @command_mode
     return if !selectedPokemon
 
+    # Keep this completely above the detail card. The previous version was
+    # technically overlapping it, which is why the bottom edge could disappear
+    # depending on fade/order.
+    box_x = 330
+    box_y = 8
+    box_w = 140
+    box_h = 32
+
+    BushidoPartyUI.blit_asset(b, "browse_hint", box_x, box_y)
+
     BushidoPartyUI.set_ui_font(b)
 
-    key = "C"
-    text = _INTL("View Options")
-    gap = 8
-
-    key_w = b.text_size(key).width
-    text_w = b.text_size(text).width
-    total_w = key_w + gap + text_w
-    x = 470 - total_w
-
+    # Draw this as one centered string so the font metrics can't make the two
+    # halves drift apart. It sits a little low on purpose; this font reads high
+    # when mathematically centered.
     pbDrawShadowText(
-      b, x, 252, key_w + 4, 22, key,
-      BushidoPartyUI::GOLD, BushidoPartyUI::SHADOW, 0
-    )
-
-    pbDrawShadowText(
-      b, x + key_w + gap, 252, text_w + 4, 22, text,
-      BushidoPartyUI::WHITE, BushidoPartyUI::SHADOW, 0
+      b, box_x, box_y+8, box_w, 24,
+      _INTL("ENTER: Actions"),
+      BushidoPartyUI::WHITE, BushidoPartyUI::SHADOW, 1
     )
   end
 
@@ -1462,8 +1594,7 @@ class PokemonParty_Scene
 
   def drawMessage(b, text)
     # Temporary message in place of the action list.
-    b.fill_rect(320, 78, 150, 116, BushidoPartyUI::PANEL_DARK)
-    b.fill_rect(323, 81, 144, 110, BushidoPartyUI::PANEL_LIGHT)
+    BushidoPartyUI.blit_asset(b, "message_panel", 320, 78)
     BushidoPartyUI.set_primary_font(b)
 
     # Basic word wrap that works with this old Ruby version.
@@ -1533,7 +1664,19 @@ class PokemonParty_Scene
     rename_index = -1
 
     pkmn = selectedPokemon
-    if pkmn && !pkmn.egg?
+
+    # Rename belongs only to the Pokemon's BASE action menu.
+    #
+    # pbShowCommands is also reused for nested menus such as Item, Mail,
+    # confirmations, etc. Adding Rename to every call made it leak into all of
+    # those submenus. "Summary" is part of the base Pokemon action list, so use
+    # that as the reliable marker that we're actually opening the root menu.
+    base_action_menu = shown_commands.any? do |cmd|
+      label = cmd.is_a?(Array) ? cmd[0] : cmd
+      label.to_s == _INTL("Summary").to_s
+    end
+
+    if pkmn && !pkmn.egg? && base_action_menu
       cancel_index = shown_commands.length - 1
       rename_index = cancel_index
       shown_commands.insert(rename_index, _INTL("Rename"))
