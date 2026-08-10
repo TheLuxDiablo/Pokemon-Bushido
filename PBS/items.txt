@@ -880,6 +880,8 @@
 843,ENLSLETTER,ENLS Certificate,ENLS Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
 844,VOLTSLETTER,Voltseon Certificate,Voltseon Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
 #-------------------------------
+# Player Katana Techniques
+#-------------------------------
 845,PKT_Test1,KT - Speed (2 SP),KT - Speed (2 SP),8,2,"2 SP. Raises speed",0,10,6
 846,PKT_Hikari,KT - Hikari (1 SP),KT - Hikari (1 SP),8,1,"1 SP. Protect for 1 turn, Lower enemy accuracy, Restore 25% HP.",0,10,6
 847,PKT_Sakuryaku,KT - Sakuryaku (2 SP),KT - Sakuryaku (2 SP),8,2,"2 SP. Sets up Trick Room for 5 turns, boost Def and SpDef.",0,10,6
@@ -888,3 +890,7 @@
 850,PKT_Nensho,KT - Nensho (3 SP),KT - Nensho (3 SP),8,3,"3 SP. Burns all opposing Pokémon, Sets up Sun, and Boosts Atk and SpAtk.",0,10,6
 851,PKT_Shimizu,KT - Shimizu (2 SP),KT - Shimizu (2 SP),8,2,"2 SP. Applies the Aqua Ring effect, Sets up Rain and Misty Terrain.",0,10,6
 852,PKT_Tsume,KT - Tsume (4 SP),KT - Tsume (4 SP),8,4,"4 SP. Cut all enemy HP in half, and then put them Sleep.",0,9,6
+853,SP_RES_S,SP RES Small,SP RES Smalls,1,400,"Restores 3 SP. Cannot be used in battle.",2,0,0,
+854,SP_RES_M,SP RES Med,SP RES Meds,1,800,"Restores 6 SP. Cannot be used in battle.",2,0,0,
+855,SP_RES_L,SP RES Large,SP RES Larges,1,1200,"Restores 10 SP. Cannot be used in battle.",2,0,0,
+856,LEADERSCREST,Leader's Crest,Leader's Crests,1,3000,"A shard of what appears to be an old blade of some sort. It is held only by a head of certain Pokémon group.",0,0,1,

@@ -132,12 +132,12 @@ Pokemon = ELECTABUZZ,5
 #-------------------------------
 [RIVALBUSHIDO_M,Yakeru,1]
 LoseText = "What?! There's no way you could beat me so easily!"
-Pokemon = DARUMAKA,4
+Pokemon = DARUMAKA,5
 	Moves = TACKLE,EMBER
 #-------------------------------
 [RIVALBUSHIDO_F,Akane,1]
 LoseText = "What?! There's no way you could beat me so easily!"
-Pokemon = DARUMAKA,4
+Pokemon = DARUMAKA,5
 	Moves = TACKLE,EMBER
 #-------------------------------
 [SENSEI,Sukiro]
@@ -155,6 +155,134 @@ Pokemon = MAGCARGO,57
 Pokemon = TALONFLAME,58
 Pokemon = GOREBYSS,58
 Pokemon = SIRFETCHD,59
+#-------------------------------
+[SENSEI,Sukiro,2]
+LoseText = "That was an excellent sparring session."
+Pokemon = ROCKRUFF,5
+Pokemon = SLUGMA,5
+Pokemon = FARFETCHD,5
+    Form = 1
+#-------------------------------
+[SENSEI,Sukiro,3]
+LoseText = "That was an excellent sparring session."
+Pokemon = ROCKRUFF,15
+Pokemon = SLUGMA,15
+Pokemon = FLETCHLING,15
+Pokemon = FARFETCHD,15
+    Form = 1
+#-------------------------------
+[SENSEI,Sukiro,4]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,25
+	Form = 2
+Pokemon = SLUGMA,25
+Pokemon = FLETCHINDER,25
+Pokemon = FARFETCHD,25
+    Form = 1
+#-------------------------------
+[SENSEI,Sukiro,5]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,35
+	Form = 2
+Pokemon = MAGCARGO,35
+Pokemon = TALONFLAME,35
+Pokemon = SIRFETCHD,35
+#-------------------------------
+[SENSEI,Sukiro,6]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,45
+	Form = 2
+Pokemon = MAGCARGO,45
+Pokemon = GOREBYSS,45
+Pokemon = TALONFLAME,45
+Pokemon = SIRFETCHD,45
+#-------------------------------
+[SENSEI,Sukiro,7]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,57
+	Form = 2
+Pokemon = MAGCARGO,57
+Pokemon = GOREBYSS,58
+Pokemon = TALONFLAME,58
+Pokemon = SIRFETCHD,59
+#-------------------------------
+[SENSEI,Sukiro,8]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,65
+	Form = 2
+Pokemon = MAGCARGO,65
+Pokemon = GOREBYSS,65
+Pokemon = TALONFLAME,65
+Pokemon = SIRFETCHD,65
+Pokemon = BISHARP,65
+#-------------------------------
+[SENSEI,Sukiro,9]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,75
+	Form = 2
+	Moves = ACCELEROCK, CRUNCH, FIREFANG, STONEEDGE
+Pokemon = MAGCARGO,75
+	Moves = STEALTHROCK, TOXIC, RECOVER, LAVAPLUME
+Pokemon = GOREBYSS,75
+	Moves = SHELLSMASH, HYDROPUMP, ICEBEAM, HIDDENPOWER
+Pokemon = TALONFLAME,75
+	Moves = BRAVEBIRD, FLAREBLITZ, ROOST, SWORDSDANCE
+Pokemon = SIRFETCHD,75
+	Moves = CLOSECOMBAT, BRAVEBIRD, KNOCKOFF, FIRSTIMPRESSION
+Pokemon = KINGAMBIT,75
+	Ability = 1
+	Moves = SUCKERPUNCH, SWORDSDANCE, IRONHEAD, LOWKICK
+#-------------------------------
+[SENSEI,Sukiro,10]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,85
+	Form = 2
+	Moves = ACCELEROCK, CRUNCH, FIREFANG, STONEEDGE
+Pokemon = MAGCARGO,85
+	Moves = STEALTHROCK, TOXIC, RECOVER, LAVAPLUME
+Pokemon = GOREBYSS,85
+	Moves = SHELLSMASH, HYDROPUMP, ICEBEAM, HIDDENPOWER
+Pokemon = TALONFLAME,85
+	Moves = BRAVEBIRD, FLAREBLITZ, ROOST, SWORDSDANCE
+Pokemon = SIRFETCHD,85
+	Moves = CLOSECOMBAT, BRAVEBIRD, KNOCKOFF, FIRSTIMPRESSION
+Pokemon = KINGAMBIT,85
+	Ability = 1
+	Moves = SUCKERPUNCH, SWORDSDANCE, IRONHEAD, LOWKICK
+#-------------------------------
+[SENSEI,Sukiro,11]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,95
+	Form = 2
+	Moves = ACCELEROCK, CRUNCH, FIREFANG, STONEEDGE
+Pokemon = MAGCARGO,95
+	Moves = STEALTHROCK, TOXIC, RECOVER, LAVAPLUME
+Pokemon = GOREBYSS,95
+	Moves = SHELLSMASH, HYDROPUMP, ICEBEAM, HIDDENPOWER
+Pokemon = TALONFLAME,95
+	Moves = BRAVEBIRD, FLAREBLITZ, ROOST, SWORDSDANCE
+Pokemon = SIRFETCHD,95
+	Moves = CLOSECOMBAT, BRAVEBIRD, KNOCKOFF, FIRSTIMPRESSION
+Pokemon = KINGAMBIT,95
+	Ability = 1
+	Moves = SUCKERPUNCH, SWORDSDANCE, IRONHEAD, LOWKICK
+#-------------------------------
+[SENSEI,Sukiro,12]
+LoseText = "That was an excellent sparring session."
+Pokemon = LYCANROC,100
+	Form = 2
+	Moves = ACCELEROCK, CRUNCH, FIREFANG, STONEEDGE
+Pokemon = MAGCARGO,100
+	Moves = STEALTHROCK, TOXIC, RECOVER, LAVAPLUME
+Pokemon = GOREBYSS,100
+	Moves = SHELLSMASH, HYDROPUMP, ICEBEAM, HIDDENPOWER
+Pokemon = TALONFLAME,100
+	Moves = BRAVEBIRD, FLAREBLITZ, ROOST, SWORDSDANCE
+Pokemon = SIRFETCHD,100
+	Moves = CLOSECOMBAT, BRAVEBIRD, KNOCKOFF, FIRSTIMPRESSION
+Pokemon = KINGAMBIT,100
+	Ability = 1
+	Moves = SUCKERPUNCH, SWORDSDANCE, IRONHEAD, LOWKICK
 #-------------------------------
 [NENSHO_M,Grunta]
 LoseText = "What! There's no way someone like you could beat me!"
@@ -180,6 +308,8 @@ Pokemon = COTTONEE,5
 LoseText = "Well played!"
 Pokemon = TURTWIG,10
 Pokemon = FENNEKIN,10
+Pokemon = KINGAMBIT,1
+	Ability = 1
 #-------------------------------
 [KENSHI_F,Saki]
 LoseText = "You fight with great honor. Well done!"

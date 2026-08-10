@@ -61,8 +61,9 @@ module PBEvolution
   TradeNight        = 57
   TradeItem         = 58
   TradeSpecies      = 59
+  LevelDefeatItsKindWithItem = 60
 
-  def self.maxValue; return 59; end
+  def self.maxValue; return 60; end
 
   @@evolution_methods = HandlerHash.new(:PBEvolution)
 

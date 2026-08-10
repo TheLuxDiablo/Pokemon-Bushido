@@ -48,14 +48,20 @@
 124,West,0,127,East,19
 # Izumi Village (127) - Izumi Pass (132)
 127,West,14,132,East,0
+# Jonetsu Pass (102) - Hanatsu Village (172)
+102,North,0,172,South,6
+# Hanatsu Village (103) - Hanatsu Village (172)
+103,South,1,172,North,0
+# Hagane City (169) - Jonetsu Pass (102)
+169,North,0,102,South,40
+# Hagane City (85) - Hagane City (169)
+85,North,13,169,South,0
 # Hagane City (168) - Hagane City (85)
 168,North,0,85,South,24
 # Hagane City (171) - Hagane City (85)
 171,West,0,85,East,16
 # Hagane City (170) - Hagane City (85)
 170,East,0,85,West,27
-# Hagane City (169) - Hagane City (85)
-169,South,0,85,North,13
 # Shizen Trail (90) - Hagane City (168)
 90,North,24,168,South,0
 # Yami Pass (98) - Shizen Trail (90)
@@ -84,7 +90,3 @@
 157,East,0,156,West,16
 # Jinsu Island (158) - Kowai Pass (157)
 158,East,16,157,West,0
-# Jonetsu Pass (102) - Hagane City (169)
-102,South,40,169,North,0
-# Hanatsu Village (103) - Jonetsu Pass (102)
-103,South,7,102,North,0

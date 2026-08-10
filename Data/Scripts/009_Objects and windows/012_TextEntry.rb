@@ -749,7 +749,8 @@ class PokemonEntryScene
     @sprites["helpwindow"].visible=USEKEYBOARD
     @sprites["helpwindow"].baseColor=Color.new(16,24,32)
     @sprites["helpwindow"].shadowColor=Color.new(168,184,184)
-    addBackgroundPlane(@sprites,"background","Naming/bg_2",@viewport)
+    
+    #addBackgroundPlane(@sprites,"background","Naming/bg_2",@viewport)
     case subject
     when 1   # Player
       meta=pbGetMetadata(0,MetadataPlayerA+$PokemonGlobal.playerID)

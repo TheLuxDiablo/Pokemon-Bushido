@@ -1,5 +1,5 @@
 def strong_katanas?
-  return $PokemonSystem.enemyTechniques == 0
+  return $PokemonGlobal.enemyTechniques == 0
 end
 
 module DialogueModule
@@ -1331,6 +1331,24 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
+    ShadowIntroIntimidate = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    user   = battlers[1]
+    target = battlers[0]
+    if strong_katanas?
+      pbMessage("You don't stand a chance against our powerful Pokémon!")
+      pbMessage("Now hand over all your Pokémon you little brat!")
+      scene.disappearBar
+      target.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, :SCREECH, user)
+    else
+      pbMessage("You don't stand a chance against our powerful Pokémon!")
+      pbMessage("Now hand over all your Pokémon you little brat!")
+      battle.scene.disappearBar
+    end
+    scene.pbHideOpponent
+  }
+
   ShadowIntroSpikes = Proc.new { |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
@@ -1735,7 +1753,7 @@ module DialogueModule
     if strong_katanas?
       pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!")
       scene.disappearBar
-      ret = user.pbRaiseStatStageEx(:SPEED, 2, :AGILITY)
+      ret = user.pbRaiseStatStageEx(:SPEED, 2, (user.hp>0 || :AGILITY))
       battlers[3].pbRaiseStatStageEx(:SPEED, 2, (ret || :AGILITY), user)
       scene.appearBar
       pbMessage("And that's not all! Get a load of this, you worthless children!")
@@ -1768,13 +1786,14 @@ module DialogueModule
     user    = battlers[1]
     target  = battlers[0]
     target2 = battlers[2]
+    user2   = battlers[3]
     pbMessage("We've been given orders to stop you from going any further!")
     pbMessage("We will not fail! We cannot fail!")
     if strong_katanas?
       pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
       scene.disappearBar
       ret = user.pbRaiseStatStageEx([:ATTACK, :SPEED], 1, :DRAGONDANCE)
-      battlers[3].pbRaiseStatStageEx([:ATTACK, :SPEED], 1, (ret || :DRAGONDANCE), user)
+      user2.pbRaiseStatStageEx([:ATTACK, :SPEED], 1, (ret || :DRAGONDANCE), user)
       pbMessage("Akui Clan Technique, Shock Kunai!")
       scene.disappearBar
       move_user = (user&.fainted? ? battlers[3] : user)
@@ -2601,17 +2620,17 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Question time, \\PN!")
+    pbMessage("\\bQuestion time, \\PN!")
     # Choice Box Stuff
-    cmd = pbMessage("What is a Kenshi's most important moral code?", ["The Code of Honor", "The Code of Power", "The Code of Intelligence"])
+    cmd = pbMessage("\\bWhat is a Kenshi's most important moral code?", ["The Code of Honor", "The Code of Power", "The Code of Intelligence"])
     if cmd == 0
-      pbMessage("\\se[SwShCorrect]As expected of my student! Brilliant!")
+      pbMessage("\\se[SwShCorrect]\\bAs expected of my student! Brilliant!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbRaiseStatStageEx(:ATTACK, 1, true, user)
     else
-      pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
-      pbMessage("The correct answer is the \"Code of Honor,\" which all Kenshi are expected to follow.")
+      pbMessage("\\se[SwShIncorrect]\\bHmm... It seems like we still have some work to do.")
+      pbMessage("\\bThe correct answer is the \"Code of Honor,\" which all Kenshi are expected to follow.")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:ATTACK, 1, true, user)
@@ -2623,18 +2642,18 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Prepare yourself for another question \\PN!")
-    cmd= pbMessage("What is a Kenshi's source of power?", ["Spear", "Pokémon", "Katana"])
+    pbMessage("\\bPrepare yourself for another question \\PN!")
+    cmd= pbMessage("\\bWhat is a Kenshi's source of power?", ["Spear", "Pokémon", "Katana"])
     if cmd == 1
-      pbMessage("\\se[SwShCorrect]Well done! You have been paying attention!")
-      pbMessage("A Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
+      pbMessage("\\se[SwShCorrect]\\bWell done! You have been paying attention!")
+      pbMessage("\\bA Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbRaiseStatStageEx(:DEFENSE, 1, true, user)
     else
-      pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
-      pbMessage("While Katanas and Spears are effective weapons in their own right...")
-      pbMessage("A Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
+      pbMessage("\\se[SwShIncorrect]\\bHmm... It seems like we still have some work to do.")
+      pbMessage("\\bWhile Katanas and Spears are effective weapons in their own right...")
+      pbMessage("\\bA Kenshi's true strength, comes from the bonds they establish with their Pokémon!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:DEFENSE, 1, true, user)
@@ -2646,25 +2665,25 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("You're doing well \\PN. But are you prepared for another question?")
-    pbMessage("Answer me this...")
-    cmd = pbMessage("What determines the clan that a Kenshi will join?", ["Affinity", "Money", "Family"])
+    pbMessage("\\bYou're doing well \\PN. But are you prepared for another question?")
+    pbMessage("\\bAnswer me this...")
+    cmd = pbMessage("\\bWhat determines the clan that a Kenshi will join?", ["Affinity", "Money", "Family"])
     if cmd == 0
-      pbMessage("\\se[SwShCorrect]Well done, \\PN!")
-      pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
+      pbMessage("\\se[SwShCorrect]\\bWell done, \\PN!")
+      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the nature of a Kenshi's spirit!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbRaiseStatStageEx(:SPEED, 1, true, user)
     elsif cmd == 1
-      pbMessage("\\se[SwShIncorrect]That is incorrect!")
-      pbMessage("It would be incredibly shameful for a Kenshi to attempt to buy their way into a clan!")
-      pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
+      pbMessage("\\se[SwShIncorrect]\\bThat is incorrect!")
+      pbMessage("\\bIt would be incredibly shameful for a Kenshi to attempt to buy their way into a clan!")
+      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the nature of a Kenshi's spirit!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:SPEED, 2, true, user)
     else
-      pbMessage("\\se[SwShIncorrect]Hmm... It seems like we still have some work to do.")
-      pbMessage("The correct answer is \"Affinity\", which is determined by the strength of a Kenshi's soul!")
+      pbMessage("\\se[SwShIncorrect]\\bHmm... It seems like we still have some work to do.")
+      pbMessage("\\bThe correct answer is \"Affinity\", which is determined by the nature of a Kenshi's spirit!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:SPEED, 1, true, user)
@@ -2676,17 +2695,17 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Alright \\PN! Prepare yourself for my hardest question yet!")
-    cmd = pbMessage("What type of Pokémon is strongest against the Shimizu Clan?", ["Rock", "Electric", "Fire"])
+    pbMessage("\\bAlright \\PN! Prepare yourself for my hardest question yet!")
+    cmd = pbMessage("\\bWhat type of Pokémon is strongest against the Shimizu Clan?", ["Rock", "Electric", "Fire"])
     if cmd == 1
-      pbMessage("\\se[SwShCorrect]Haha! That is correct! Excellent work, \\PN!")
-      pbMessage("Shimizu Clan members have a water affinity, so Electric is the correct answer!")
+      pbMessage("\\se[SwShCorrect]\\bHaha! That is correct! Excellent work, \\PN!")
+      pbMessage("\\bShimizu Clan members have a water affinity, so Electric is the correct answer!")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbRaiseStatStageEx(:SPATK, 1, true, user)
     else
-      pbMessage("\\se[SwShIncorrect]Hmm... that is incorrect.")
-      pbMessage("Shimizu Clan members have a water affinity, so Electric would be the correct answer.")
+      pbMessage("\\se[SwShIncorrect]\\bHmm... that is incorrect.")
+      pbMessage("\\bShimizu Clan members have a water affinity, so Electric would be the correct answer.")
       scene.pbHideOpponent
       scene.disappearBar
       target.pbLowerStatStageEx(:SPATK, 1, true, user)
@@ -2698,17 +2717,17 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("A truly honorable Kenshi must never forget their teachings.")
-    pbMessage("Now, answer me this, \\PN.")
-    cmd = pbMessage("What is the most important moral code of the Kenshi?", ["The Code of Power", "The Code of Honor", "The Code of Wisdom"])
+    pbMessage("\\bA truly honorable Kenshi must never forget their teachings.")
+    pbMessage("\\bNow, answer me this, \\PN.")
+    cmd = pbMessage("\\bWhat is the most important moral code of the Kenshi?", ["The Code of Power", "The Code of Honor", "The Code of Wisdom"])
     if cmd == 1
-      pbMessage("\\se[SwShCorrect]Correct!")
+      pbMessage("\\se[SwShCorrect]\\bCorrect!")
     else
-      pbMessage("\\se[SwShIncorrect]Hmm... that is incorrect.")
+      pbMessage("\\se[SwShIncorrect]\\bHmm... that is incorrect.")
     end
-    pbMessage("\\PN, you must never forget that the codes of honor and Bushido are what guide us.")
-    pbMessage("Those in the Akui Clan have forgetten this message, and have lost their way.")
-    pbMessage("It is our purpose as righteous Kenshi to bring them to justice!")
+    pbMessage("\\b\\PN, you must never forget that the codes of honor and Bushido are what guide us.")
+    pbMessage("\\bThose in the Akui Clan have forgetten this message, and have lost their way.")
+    pbMessage("\\bIt is our purpose as righteous Kenshi to bring them to justice!")
     scene.pbHideOpponent
     scene.disappearBar
     if cmd == 1
@@ -3149,5 +3168,69 @@ module DialogueModule
     stat = (strong_katanas? ? 3 : 1)
     battler.pbRaiseStatStageEx(:ATTACK, stat, forced: true)
     scene.pbHideOpponent
+  }
+
+  SukiroTrainingIntro = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    ally1 = battlers[0]
+    enemy1 = battlers[1]
+    currentTurn = battle.turnCount
+    nextTurnNum = (battle.turnCount + 2)
+    pbMessage("\\bLet's begin training, \\PN.")
+    pbMessage("\\bI'll be quizzing you through this battle to also test your mind!")
+    #pbMessage(_INTL("Current turn: {2}. Next quiz on {1}", nextTurnNum, currentTurn))
+    battle.RandomSukiroQuiz(rand(SUKIRO_SPAR_QUIZ_QUESTIONS+1), battle, scene, ally1, enemy1)
+    BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:SukiroTrainingRepeating)
+  }
+
+  SukiroTrainingRepeating = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    ally1 = battlers[0]
+    enemy1 = battlers[1]
+    nextTurnNum = (battle.turnCount + 2)
+    #pbMessage(_INTL("It is now turn {1}", nextTurnNum))
+    battle.RandomSukiroQuiz(rand(SUKIRO_SPAR_QUIZ_QUESTIONS+1), battle, scene, ally1, enemy1)
+    BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:SukiroTrainingRepeating)
+  }
+
+  TestEvilIntro = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    ally1 = battlers[0]
+    ally2 = battlers[2]
+    enemy1 = battlers[1]
+    enemy2 = battlers[3]
+    nextTurnNum = (battle.turnCount + 1)
+    pbMessage("I am a test version of the SUPER BOSS! I'm going to drain your SP and then do a random action every turn.")
+    pbMessage(_INTL("Current turn: {2}. Next MBD on start of turn {1}", nextTurnNum, nextTurnNum-1))
+    scene.disappearBar
+    if(ally1.fainted?)
+        battle.pbAnimation(:FLASH, ally1, ally1)
+    else
+        battle.pbAnimation(:FLASH, ally2, ally2)
+    end
+    reducePlayerEnergyDownToNumber(3)
+    enemy1.pbRaiseStatStageEx(:ATTACK, 2, forced: true)
+    enemy2.pbRaiseStatStageEx(:ATTACK, 2, forced: true)
+    scene.pbHideOpponent
+    BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:TestEvilRepeating)
+  }
+
+  TestEvilRepeating = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    ally1 = battlers[0]
+    ally2 = battlers[2]
+    enemy1 = battlers[1]
+    enemy2 = battlers[3]
+    numOfTech = 5
+    nextTurnNum = (battle.turnCount + 1)
+    pbMessage(_INTL("It is now turn {1}", nextTurnNum))
+    scene.disappearBar
+    battle.EvilRandomEffect(rand(numOfTech), battle, scene, ally1, ally2, enemy1, enemy2)
+    scene.pbHideOpponent
+    BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:TestEvilRepeating)
   }
 end

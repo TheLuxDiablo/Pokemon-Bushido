@@ -261,7 +261,7 @@ def pbDownloadMysteryGift(trainer)
     $game_system.bgm_pause
     $game_system.bgs_pause
   end
-  pbBGMPlay("MysteryGift")
+  pbBGMPlay("PLA 089 Mystery Gift")
   sprites={}
   viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
   viewport.z=99999
@@ -412,7 +412,7 @@ def pbReceiveMysteryGift(id)
       gift[2].obtainLevel=gift[2].level
     end
     if pbAddPokemonSilent(gift[2])
-      pbMessage(_INTL("\\me[Pkmn get]{1} received {2}!",$Trainer.name,gift[2].name))
+      pbMessage(_INTL("\\me[PLA 008 Obtained a Pokemon!]{1} received {2}!",$Trainer.name,gift[2].name))
       $Trainer.mysterygift[index]=[id]
       return true
     end
@@ -422,15 +422,15 @@ def pbReceiveMysteryGift(id)
       item=gift[2]; qty=gift[1]
       itemname=(qty>1) ? PBItems.getNamePlural(item) : PBItems.getName(item)
       if isConst?(item,PBItems,:LEFTOVERS)
-        pbMessage(_INTL("\\me[Item get]You obtained some \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+        pbMessage(_INTL("\\me[PLA 010 Level Up!]You obtained some \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
       elsif pbIsMachine?(item)   # TM or HM
-        pbMessage(_INTL("\\me[Item get]You obtained \\c[1]{1} {2}\\c[0]!\\wtnp[30]",itemname,PBMoves.getName(pbGetMachine(item))))
+        pbMessage(_INTL("\\me[PLA 010 Level Up!]You obtained \\c[1]{1} {2}\\c[0]!\\wtnp[30]",itemname,PBMoves.getName(pbGetMachine(item))))
       elsif qty>1
-        pbMessage(_INTL("\\me[Item get]You obtained {1} \\c[1]{2}\\c[0]!\\wtnp[30]",qty,itemname))
+        pbMessage(_INTL("\\me[PLA 010 Level Up!]You obtained {1} \\c[1]{2}\\c[0]!\\wtnp[30]",qty,itemname))
       elsif itemname.starts_with_vowel?
-        pbMessage(_INTL("\\me[Item get]You obtained an \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+        pbMessage(_INTL("\\me[PLA 010 Level Up!]You obtained an \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
       else
-        pbMessage(_INTL("\\me[Item get]You obtained a \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
+        pbMessage(_INTL("\\me[PLA 010 Level Up!]You obtained a \\c[1]{1}\\c[0]!\\wtnp[30]",itemname))
       end
       $Trainer.mysterygift[index]=[id]
       return true

@@ -652,7 +652,7 @@ class MiningGameScene
     if @itemswon.length>0
       for i in @itemswon
         if $PokemonBag.pbStoreItem(i)
-          pbMessage(_INTL("One {1} was obtained.\\se[Mining item get]\\wtnp[30]",
+          pbMessage(_INTL("One {1} was obtained.\\se[PLA 010 Level Up!]\\wtnp[30]",
              PBItems.getName(i)))
         else
           pbMessage(_INTL("One {1} was found, but you have no room for it.",

@@ -193,7 +193,8 @@ def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
         for i in $Trainer.party
           i.heal
         end
-        pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+        pbMessage(_INTL("\\me[PLA 014 Caught a Pokemon!]Your Pokémon were fully healed by the Katana of Light!"))
+        pbMessage(_INTL("You have {1} SP remaining.", getPlayerCurrentEnergy()))
     else
         pbMessage(_INTL("\\se[SwShIncorrect]You need at least {1} Spirit Energy...", energyCost))
     end
@@ -213,7 +214,7 @@ def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
           for i in $Trainer.party
            i.heal
           end
-          pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+          pbMessage(_INTL("\\me[PLA 014 Caught a Pokemon!]Your Pokémon were fully healed by the Katana of Light!"))
           pbMessage(_INTL("You have no more healing energy left."))
          end
       else
@@ -223,7 +224,7 @@ def pbHealingVial(currentChargeVar=50,maxChargeVar=52)
           for i in $Trainer.party
            i.heal
           end
-          pbMessage(_INTL("\\me[HGSSGetItem]Your Pokémon were fully healed by the Katana of Light!"))
+          pbMessage(_INTL("\\me[PLA 014 Caught a Pokemon!]Your Pokémon were fully healed by the Katana of Light!"))
           pbMessage(_INTL("{1} charge(s) remain.",$game_variables[currentChargeVar]))
          end
        end
@@ -361,6 +362,161 @@ end
     $game_variables[99] = int
   end
 
+  def getRivalsName()
+    return $game_variables[26]
+  end
+
+  def incrementGameVariable(varNum, incAmt)
+    $game_variables[varNum] = $game_variables[varNum]+incAmt
+  end
+
+  def getNameOfPokemonFromID(id)
+    return PBSpecies.getName(id)
+  end
+
+  def saveStarterSpeciesName(varID,starterID)
+    $game_variables[varID] = getNameOfPokemonFromID(BushidoStarterSelection::DEFAULT_STARTERS[starterID])
+  end
+
+  def prayAtHokora()
+    if(KatanaOfLightAwakened?() == false || PLAYERKATANATECHNIQUES == false)
+        pbMessage("It's a Hokora, a small shrine dedicated to the gods.")
+    elsif($game_self_switches[[@map_id, @event_id, "A"]])
+        pbMessage("It's a Hokora, a small shrine dedicated to the gods.")
+        pbMessage("You have already prayed at this Hokora to increase your Spiritual Energy.")
+    else
+        vSS(@event_id)
+        pbMessage("You prayed at the Hokora...")
+        pbMessage("Spiritual energy flows all around...")
+        pbMessage("You can feel your Spiritual Energy increasing!")
+        increaseMaxEnergy(1)
+        incrementGameVariable(193,1) # Track the number of Hokora prayed at in variable 193
+        #fullyRecoverEnergy()
+        pbMessage(_INTL("\\me[PLA 028 Request Start!]Your Max SP increased to {1}!\\wtnp[50]", getPlayerMaxEnergy()))
+    end
+  end
+
+  # Hokora locations
+  # Base SP = 3
+  # Total Hokora = 12
+  # SP after all Hokora = 15
+
+  # DONE - Sakura Pass (Ch 2)
+  # DONE - Kaiyo Sea start (Ch 2 can reach early)
+  # DONE - Tsuchi Village (Ch 2)
+  # DONE - Jonetsu Pass (Ch 3)
+  # DONE - Hanatsu Village (Ch 3)
+  # DONE - Chikyu Village (Ch 4)
+  # DONE - Fubuki Bay (Ch 4) - Pretty well hidden
+  # DONE - Izumi Village (Ch 4)
+  # DONE - Yami Pass (Ch 5)
+  # DONE - Kaminari Pass (POSTGAME)
+  # DONE - Jinsu Island (POSTGAME)
+  # DONE - Jinsu Forest (POSTGAME)
+
+  def getARandomStat()
+    randStatNum = rand(5)
+    case randStatNum
+    when 0; return :ATTACK
+    when 1; return :DEFENSE
+    when 2; return :SPEED
+    when 3; return :SPDEF
+    when 4; return :SPATK
+    else; return :ATTACK
+    end
+  end
+
+  def correctAnswerGenericResponse(scene, target, statToBuff)
+    pbMessage("\\se[SwShCorrect]\\bWell done! That is correct!")
+    scene.pbHideOpponent
+    scene.disappearBar
+    target.pbRaiseStatStagePKT(statToBuff, 1, true, target)
+  end
+
+  def incorrectAnswerGenericResponse(scene, target, statToBuff, enemy)
+    pbMessage("\\se[SwShIncorrect]\\bHmm... that is incorrect.")
+    scene.pbHideOpponent
+    scene.disappearBar
+    target.pbLowerStatStageEx(statToBuff, 1, true, target) if strong_katanas?
+    enemy.pbRaiseStatStageEx(statToBuff, 1, true, enemy) if strong_katanas?
+  end
+
+  def pbGetHighestLevelInParty(party)
+      return 0 if !party || party.length == 0
+      max_level = 0
+      party.each do |pkmn|
+        next if !pkmn
+        max_level = pkmn.level if pkmn.level > max_level
+      end
+      return max_level
+  end
+
+  def pbGetFirstDigitOfHighestLevel(party)
+      return pbGetHighestLevelInParty(party).to_s[0].to_i
+  end
+  
+  def rematchSukiro()
+    if (pbMessage(_INTL("\\xn[Sukiro]\\b\\PN, would you like to train with a sparring session?"), [_INTL("Yes"), _INTL("No")]) == 0)
+        battleResult = $game_variables[190]
+        if(battleResult == 0)
+            pbMessage(_INTL("\\xn[Sukiro]\\bAlright, \\PN. This will be our first sparring session. Here I come!"))
+        elsif(battleResult == 1)
+            pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record currently stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
+            pbMessage(_INTL("\\xn[Sukiro]\\bGet ready \\PN. You may have won last time, but this time will be different!"))
+        elsif(battleResult == 2)
+            pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record currently stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
+            pbMessage(_INTL("\\xn[Sukiro]\\bGet ready \\PN. I may have won last time, but I know you'll try harder than before."))
+        else
+            pbMessage(_INTL("\\xn[Sukiro]\\bWe had an excellent battle last time, may this battle also be excellent!"))
+        end
+        baseRematchForm = 2
+        chapter = currentChapter()
+        highestLevel = pbGetHighestLevelInParty($Trainer.party)
+        highestLevelOnTeamFirstDigit = pbGetFirstDigitOfHighestLevel($Trainer.party)
+        BattleScripting.setInScript("turnStart0",:SukiroTrainingIntro)
+        if(SUKIRO_REMATCH_CHAPTERBASED == true) #Make rematch forms based on chapter
+            if(chapter <= 1)
+                vTB("Sensei","Sukiro","That was an excellent sparring session!",false,baseRematchForm,true,190) # Battle 1 (Chapter 1, Form 2)
+            elsif(chapter >= 7)
+                if(highestLevel >= 80) # Allow a harder battle for higher levels in postgame
+                    vTB("Sensei","Sukiro","You truly have become an incredible Kenshi!",false,12,true,190) # Ultimate Sukiro battles, form 10, all level 85
+                else
+                    vTB("Sensei","Sukiro","You truly have become an incredible Kenshi!",false,9,true,190) # Ultimate Sukiro battle for chapter based, form 9, all level 75
+                end
+            else
+                vTB("Sensei","Sukiro","That was an excellent sparring session!",false,baseRematchForm+chapter,true,190) # Form based on our chapter, so CH 5 = form 7 (2 base + CH 5)
+            end
+        else # Make rematch forms based on chapter
+            if(highestLevel <= 10)
+                vTB("Sensei","Sukiro","That was an excellent sparring session!",false,baseRematchForm,true,190) # Battle 1 (Chapter 1, Form 2)
+            elsif(highestLevel >= 100)
+                vTB("Sensei","Sukiro","You truly have become an incredible Kenshi!",false,12,true,190) # Ultimate Sukiro battle, form 12, all level 100
+            else
+                vTB("Sensei","Sukiro","That was an excellent sparring session!",false,baseRematchForm+highestLevelOnTeamFirstDigit,true,190) # Form based on our highest digit when 10-99, so if we have a level 30 we should fight form 5 (2 base + 3 highestdigit)
+            end
+        end
+        battleResult = $game_variables[190]
+        if(battleResult == 1)
+            pbMessage(_INTL("\\xn[Sukiro]\\bWell fought, \\PN! You are becoming stronger with every battle."))
+            incrementGameVariable(191,1)
+            pbMessage(_INTL("\\xn[Sukiro]\\bYour number of sparring wins is now {1}.", $game_variables[191]))
+        elsif(battleResult == 2)
+            pbMessage(_INTL("\\xn[Sukiro]\\bThat was a valiant effort, \\PN!"))
+            incrementGameVariable(192,1)
+            pbMessage(_INTL("\\xn[Sukiro]\\bMy number of sparring wins is now {1}.", $game_variables[192]))
+        else
+            pbMessage(_INTL("\\xn[Sukiro]\\bWell played \\PN, that was quite a duel."))
+        end
+        pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record now stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
+        # Full heal at the end
+        for i in $Trainer.party
+          i.heal
+        end
+    else
+        pbMessage(_INTL("\\xn[Sukiro]\\bIf you wish to train your Pokémon in battle again, I'll be waiting \\PN."))
+    end
+  end
+
 # ===================================================================
 # Player Katana Techniques
 # ===================================================================
@@ -368,7 +524,7 @@ end
 # Receive them from each dojo, and/or at pivotal moments
 
 # Kaifuku: Heal the whole party out of battle: COST = 3
-# DONE - Hikari: Lower Enemy accuracy 2 levels, restore 25% HP, Protect for 1 turn. COST = 1
+# DONE - Hikari: Lower Enemy accuracy 1 level, restore 25% HP, Protect for 1 turn. COST = 1
 # DONE - Sakuryaku: Set up Trick Room (5 turns), boost Def/Spdef. Cost = 1
 # DONE - Moya: Clear stat changes from all. Cost = 1
 # DONE - Komorei: HealStatus, Half HP, and Setup Grassy Terrain. COST = 2
@@ -377,9 +533,9 @@ end
 # Tsume: Shadow Cleave all enemies, cut HP in half (never kill), then put to Sleep. COST = 4. WAY OP, POSTGAME
 # Masayoshi: Reflect + LightScreen, same as Ryo. Cost = 1
 # Akui: Shadow Clone for Evasion and Speed, Toxic Spikes. Cost = 3.
-# paralyze, elec Terrain. Cost = 2.
-# stealth rocks + sandstorm + spdefUP. Cost = 2.
-# Hail, freeze. Cost = 3.
+# Raikami: paralyze, elec Terrain. Cost = 2.
+# Iwa: stealth rocks + sandstorm + spdefUP. Cost = 2.
+# Yuki: Hail, freeze. Cost = 3.
 # Hattori: Wonder Room, 
 #      :Gravity         => "Gravity",
 #      :NeutralizingGas => "Neutralizing Gas"
@@ -388,6 +544,19 @@ end
 
 def restorePlayerEnergy()
     $game_variables[226] = getPlayerMaxEnergy()
+end
+
+def emptyPlayerEnergy()
+    $game_variables[226] = 0
+end
+
+def reducePlayerEnergyDownToNumber(setNum)
+    if($game_variables[226] > setNum)
+        $game_variables[226] = setNum
+        pbMessage(_INTL("Your SP was reduced down to {1}!", setNum))
+    else
+        pbMessage(_INTL("Your SP was already below {1}!", setNum))
+    end
 end
 
 def getPlayerCurrentEnergy()
@@ -402,10 +571,28 @@ def hasEnoughEnergy(enCheck)
     return (getPlayerCurrentEnergy() >= enCheck)
 end
 
+def isEnergyFull?()
+    return getPlayerCurrentEnergy() == getPlayerMaxEnergy()
+end
+
 def healPlayerEnergy(incAmt)
     $game_variables[226] = ($game_variables[226] + incAmt)
     if($game_variables[226] > getPlayerMaxEnergy())
         $game_variables[226] = getPlayerMaxEnergy()
+    end
+end
+
+def playerEnergyRecoveryItem(resAmt)
+    healPlayerEnergy(resAmt)
+    pbMessage(_INTL("SP was restored by {1}!", resAmt))
+end
+
+def canUsePlayerRecoveryItem?(resAmt)
+    if(isEnergyFull?())
+        pbMessage(_INTL("SP is already full!", resAmt))
+        return false
+    else
+        return true
     end
 end
 
@@ -458,9 +645,12 @@ end
 
 def camsHackyInitMethod()
     # early out if we're disabling PKT
+    pbMessage(_INTL("hacky init start!"))
     if (PLAYERKATANATECHNIQUES == false)
         return
     end
+    pbMessage(_INTL("Force init energy to 3"))
+    initializePlayerEnergy()
 
     # call on load, if no energy then initialize it (old save files would have no energy, so init them)
     if(getPlayerMaxEnergy() <= 0)
@@ -474,7 +664,7 @@ def camsHackyInitMethod()
 end
 
 def pbHotSpringRecovery()
-    if(PLAYERKATANATECHNIQUES)
+    if(PLAYERKATANATECHNIQUES && KatanaOfLightAwakened?())
         fullyRecoverEnergy()
         pbMessage(_INTL("Your Spirit Energy was fully restored!"))
     else

@@ -130,6 +130,7 @@ begin
     OctolockUser        = 126
     BlunderPolicy       = 127
     SwitchedAlly        = 128
+    SupremeOverlord     = 128
 
     #===========================================================================
     # These effects apply to a battler position

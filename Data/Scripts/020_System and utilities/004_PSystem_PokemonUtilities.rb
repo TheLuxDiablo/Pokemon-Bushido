@@ -77,7 +77,7 @@ def pbAddPokemon(pokemon,level=nil,seeform=true)
     pokemon = pbNewPkmn(pokemon,level)
   end
   speciesname = PBSpecies.getName(pokemon.species)
-  pbMessage(_INTL("\\me[Pkmn get]{1} obtained {2}!\1",$Trainer.name,speciesname))
+  pbMessage(_INTL("\\me[PLA 008 Obtained a Pokemon!]{1} obtained {2}!\1",$Trainer.name,speciesname))
   pbNicknameAndStore(pokemon)
   pbSeenForm(pokemon) if seeform
   return true
@@ -113,7 +113,7 @@ def pbAddToParty(pokemon,level=nil,seeform=true)
     pokemon = pbNewPkmn(pokemon,level)
   end
   speciesname = PBSpecies.getName(pokemon.species)
-  pbMessage(_INTL("\\me[Pkmn get]{1} obtained {2}!\1",$Trainer.name,speciesname))
+  pbMessage(_INTL("\\me[PLA 008 Obtained a Pokemon!]{1} obtained {2}!\1",$Trainer.name,speciesname))
   pbNicknameAndStore(pokemon)
   pbSeenForm(pokemon) if seeform
   return true
@@ -150,9 +150,9 @@ def pbAddForeignPokemon(pokemon,level=nil,ownerName=nil,nickname=nil,ownerGender
   # Recalculate stats
   pokemon.calcStats
   if ownerName
-    pbMessage(_INTL("\\me[Pkmn get]{1} received a Pokémon from {2}.\1",$Trainer.name,ownerName))
+    pbMessage(_INTL("\\me[PLA 008 Obtained a Pokemon!]{1} received a Pokémon from {2}.\1",$Trainer.name,ownerName))
   else
-    pbMessage(_INTL("\\me[Pkmn get]{1} received a Pokémon.\1",$Trainer.name))
+    pbMessage(_INTL("\\me[PLA 008 Obtained a Pokemon!]{1} received a Pokémon.\1",$Trainer.name))
   end
   pbStorePokemon(pokemon)
   $Trainer.seen[pokemon.species]  = true
@@ -200,9 +200,9 @@ def pbAddForeignPokemonBetter(pokemon,level=nil,ownerName=nil,nickname=nil,
   # Recalculate stats
   pokemon.calcStats
   if ownerName
-    pbMessage(_INTL("\\me[Pkmn get]{1} received a Pokémon from {2}.\1",$Trainer.name,ownerName))
+    pbMessage(_INTL("\\me[PLA 008 Obtained a Pokemon!]{1} received a Pokémon from {2}.\1",$Trainer.name,ownerName))
   else
-    pbMessage(_INTL("\\me[Pkmn get]{1} received a Pokémon.\1",$Trainer.name))
+    pbMessage(_INTL("\\me[PLA 008 Obtained a Pokemon!]{1} received a Pokémon.\1",$Trainer.name))
   end
   pbStorePokemon(pokemon)
   $Trainer.seen[pokemon.species]  = true

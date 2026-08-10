@@ -539,8 +539,8 @@ class PokemonEvolutionScene
     pbPlayDecisionSE
     oldstate  = pbSaveSpriteState(@sprites["rsprite1"])
     oldstate2 = pbSaveSpriteState(@sprites["rsprite2"])
-    pbMEPlay("Evolution start")
-    pbBGMPlay("Evolution")
+    #pbMEPlay("Evolution start")
+    pbBGMPlay("PLA 039 Evolution")
     canceled = false
     begin
       pbUpdateNarrowScreen
@@ -575,7 +575,7 @@ class PokemonEvolutionScene
       pbUpdate
     end
     # Success jingle/message
-    pbMEPlay("Evolution success")
+    pbMEPlay("PLA 040 Congratulations, Your Pokemon Evolved!")
     newspeciesname = PBSpecies.getName(@newspecies)
     oldspeciesname = PBSpecies.getName(@pokemon.species)
     pbMessageDisplay(@sprites["msgwindow"],

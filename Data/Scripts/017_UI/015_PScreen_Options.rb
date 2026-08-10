@@ -10,9 +10,7 @@ class PokemonSystem
   attr_writer   :runstyle
   attr_writer   :bgmvolume
   attr_writer   :sevolume
-  attr_writer   :textinput
   attr_accessor :controlScheme
-  attr_accessor :enemyTechniques
 
   def initialize
     @textspeed   = 1     # Text speed (0=slow, 1=normal, 2=fast)
@@ -28,7 +26,6 @@ class PokemonSystem
     @sevolume    = 100   # Volume of sound effects
     @textinput   = 1     # Text input mode (0=cursor, 1=keyboard)
     @controlScheme = 0
-    @enemyTechniques = 0     # Disable enemy katana techniques (0=No, 1=Yes)
   end
 
   def textskin;  return @textskin || 0;    end
@@ -36,12 +33,17 @@ class PokemonSystem
   def runstyle;  return @runstyle || 0;    end
   def bgmvolume; return @bgmvolume || 100; end
   def sevolume;  return @sevolume || 100;  end
-  def textinput; return @textinput || 0;   end
+  def textinput; return 1;   end
   def tilemap;   return MAP_VIEW_MODE;     end
   def controlScheme; return @controlScheme || 0; end
-  def enemyTechniques; return @enemyTechniques || 0;   end
 end
 
+#===============================================================================
+# Save-specific Bushido options
+#===============================================================================
+class PokemonGlobalMetadata
+  attr_accessor :enemyTechniques
+end
 
 
 #===============================================================================
@@ -525,9 +527,9 @@ class PokemonOption_Scene
         proc { },
         proc { }
       ),
-      EnumOption.new(_INTL("Enemy Kat. Tech."),[_INTL("\Strong"),_INTL("Weakened")],
-        proc { $PokemonSystem.enemyTechniques },
-        proc { |value| $PokemonSystem.enemyTechniques = value }
+      EnumOption.new(_INTL("Enemy Kat. Tech."),[_INTL("Strong"),_INTL("Weakened")],
+        proc { $PokemonGlobal.enemyTechniques || 0 },
+        proc { |value| $PokemonGlobal.enemyTechniques = value }
       ),
     ]
     @PokemonOptions = pbAddOnOptions(@PokemonOptions)
@@ -537,7 +539,6 @@ class PokemonOption_Scene
       _INTL("Change the font used for the text ingame."),
       _INTL("Change the Windowskin for Text Boxes."),
       _INTL("Change the Windowskin for Choice Boxes."),
-      _INTL("Change the Text Input to use your PC's Keyboard or an on-screen keyboard."),
       _INTL("Change the size of the Game Window."),
       _INTL("Change the default method of movement."),
       _INTL("Match the controls to the main series.\n(Press C for more details)"),

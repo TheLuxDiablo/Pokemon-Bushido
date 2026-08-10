@@ -425,40 +425,31 @@ ItemHandlers::UseInBattle.add(:PKT_Shimizu, proc { |item, battler, battle|
 })
 
 ItemHandlers::UseInBattle.add(:PKT_Tsume, proc { |item, battler, battle|
-# Tsume: Shadow Cleave into enemy, cut HP in half (never kill), then put to Sleep. COST = 4.
+# Tsume: Shadow Cleave into 1 enemy, cut HP in half (never kill), then put to Sleep. COST = 4.
 # Currently broken and damaging self, dont bully me
   energycost = getPKTCost(item)
   decrementPlayerCurrentEnergy(energycost)
   pbKatanaMoveAnimationPKT(4)
 
-  # Loops through all active battle slots
-  battle.battlers.each do |target|
-    next if target.nil? || target.fainted?
+  # Cleave HP in half if they have HP to cleave
+  if battler.hp <= 1
+    battle.pbDisplay(_INTL("HP cannot be cut any lower with Tsume!"))
+  else
+    amt = (battler.hp / 2).floor
+    amt = 1 if amt < 1
+
+    battle.pbAnimation(:SHADOWCLAW, battler, battler)
+    battler.hp -= amt
+    battle.scene.pbHPChanged(battler, battler.hp)
     
-    is_user_even = (battler.index % 2 == 0)
-    is_target_even = (target.index % 2 == 0)
-    next if is_user_even == is_target_even
+    battle.pbDisplay(_INTL("{1}'s HP was cut in half!", battler.name))
+  end
 
-    # Cleave HP in half if they have HP to cleave
-    if target.hp <= 1
-        battle.pbDisplay(_INTL("HP cannot be cut any lower with Tsume!"))
-    else
-        amt = (target.hp / 2).floor
-        amt = 1 if amt < 1
-
-        battle.pbAnimation(:SHADOWCLAW, battler, battler)
-        target.hp -= amt
-        battle.scene.pbHPChanged(target, target.hp)
-    
-        battle.pbDisplay(_INTL("{1}'s HP was cut in half!", target.name))
-    end
-
-    # Put to sleep
-    if target.pbCanSleep?(target, false)
-        target.pbSleep(target)
-    else
-        battle.pbDisplay(_INTL("{1} cannot be put to Sleep!", target.name))
-    end
+  # Put to sleep
+  if battler.pbCanSleep?(battler, false)
+    battler.pbSleep()
+  else
+    battle.pbDisplay(_INTL("{1} cannot be put to Sleep!", battler.name))
   end
 })
 

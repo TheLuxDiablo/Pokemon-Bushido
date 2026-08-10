@@ -205,6 +205,7 @@ class PokeBattle_Battler
     @effects[PBEffects::HelpingHand]         = false
     @effects[PBEffects::HyperBeam]           = 0
     @effects[PBEffects::Illusion]            = nil
+    @effects[PBEffects::SupremeOverlord]     = 0
     if hasActiveAbility?(:ILLUSION)
       idxLastParty = @battle.pbLastInTeam(@index)
       if idxLastParty!=@pokemonIndex
