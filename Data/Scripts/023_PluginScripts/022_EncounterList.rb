@@ -13,7 +13,12 @@ PluginManager.register({
 # Configuration
 #===============================================================================
 module BushidoHabitat
-  BACKGROUND = "Graphics/Pictures/HabitatScroll/bg"
+  ASSET_ROOT = "Graphics/Pictures/HabitatScroll"
+  BACKGROUND = "#{ASSET_ROOT}/bg"
+
+  def self.asset(name)
+    return "#{ASSET_ROOT}/#{name}"
+  end
 
   COLUMNS        = 2
   ROWS           = 4
@@ -75,26 +80,6 @@ module BushidoHabitat
 
   UNKNOWN_SHOW_PRIMARY_TYPE = true
 
-  TYPE_BADGE_COLORS = {
-    :NORMAL   => Color.new(156, 146, 124),
-    :FIGHTING => Color.new(156, 92, 73),
-    :FLYING   => Color.new(145, 139, 180),
-    :POISON   => Color.new(139, 94, 145),
-    :GROUND   => Color.new(185, 146, 88),
-    :ROCK     => Color.new(154, 130, 76),
-    :BUG      => Color.new(137, 148, 77),
-    :GHOST    => Color.new(105, 91, 130),
-    :STEEL    => Color.new(139, 141, 143),
-    :FIRE     => Color.new(184, 101, 66),
-    :WATER    => Color.new(89, 126, 164),
-    :GRASS    => Color.new(93, 140, 83),
-    :ELECTRIC => Color.new(190, 156, 64),
-    :PSYCHIC  => Color.new(173, 95, 120),
-    :ICE      => Color.new(113, 157, 164),
-    :DRAGON   => Color.new(112, 88, 158),
-    :DARK     => Color.new(92, 78, 67),
-    :FAIRY    => Color.new(180, 125, 145)
-  }
 
 
   #--------------------------------------------------------------------------
@@ -152,10 +137,6 @@ module BushidoHabitat
     end
   end
 
-  def self.type_badge_color(type)
-    sym = self.type_symbol(type)
-    return TYPE_BADGE_COLORS[sym] || PARCHMENT_DIM
-  end
 
   #--------------------------------------------------------------------------
   #--------------------------------------------------------------------------
@@ -414,35 +395,7 @@ class EncounterListUI
 
   def create_background
     @sprites["background"] = Sprite.new(@viewport)
-
-    resolved = BushidoHabitat.resolve_bitmap(BushidoHabitat::BACKGROUND)
-    if resolved
-      @sprites["background"].bitmap = pbBitmap(BushidoHabitat::BACKGROUND)
-    else
-      bmp = Bitmap.new(Graphics.width, Graphics.height)
-
-      bmp.fill_rect(0, 0, Graphics.width, Graphics.height, BushidoHabitat::BG)
-
-      bmp.fill_rect(6, 6, Graphics.width - 12, Graphics.height - 12, BushidoHabitat::INK)
-      bmp.fill_rect(9, 9, Graphics.width - 18, Graphics.height - 18, BushidoHabitat::PARCHMENT)
-      bmp.fill_rect(13, 13, Graphics.width - 26, Graphics.height - 26, BushidoHabitat::PANEL)
-
-      bmp.fill_rect(18, 16, Graphics.width - 36, 66, BushidoHabitat::PARCHMENT)
-
-      bmp.fill_rect(24, 80, Graphics.width - 48, 2, BushidoHabitat::PARCHMENT_DIM)
-
-      bmp.fill_rect(18, 88, Graphics.width - 36, 205, BushidoHabitat::PANEL_DARK)
-
-      bmp.fill_rect(18, 300, Graphics.width - 36, 68, BushidoHabitat::PARCHMENT)
-      bmp.fill_rect(18, 298, Graphics.width - 36, 2, BushidoHabitat::PARCHMENT_DIM)
-
-      bmp.fill_rect(13, 13, 26, 2, BushidoHabitat::GOLD)
-      bmp.fill_rect(13, 13, 2, 13, BushidoHabitat::GOLD)
-      bmp.fill_rect(Graphics.width - 39, 13, 26, 2, BushidoHabitat::GOLD)
-      bmp.fill_rect(Graphics.width - 15, 13, 2, 13, BushidoHabitat::GOLD)
-
-      @sprites["background"].bitmap = bmp
-    end
+    @sprites["background"].bitmap = Bitmap.new(BushidoHabitat::BACKGROUND)
   end
 
   def create_overlay
@@ -451,6 +404,12 @@ class EncounterListUI
   end
 
   def create_arrows
+  end
+
+  def blit_habitat_asset(bmp, name, x, y)
+    source = Bitmap.new(BushidoHabitat.asset(name))
+    bmp.blt(x, y, source, Rect.new(0, 0, source.width, source.height))
+    source.dispose
   end
 
   #-----------------------------------------------------------------------------
@@ -582,19 +541,16 @@ class EncounterListUI
       selected = (absolute_index == @selected)
       entry = @entries[absolute_index]
 
-      border = selected ? BushidoHabitat::GOLD : BushidoHabitat::PARCHMENT_DIM
-
-      bmp.fill_rect(x, y, cell_w, cell_h, border)
-      bmp.fill_rect(x + 2, y + 2, cell_w - 4, cell_h - 4,
-                    BushidoHabitat::PARCHMENT)
+      blit_habitat_asset(
+        bmp,
+        selected ? "habitat_card_selected" : "habitat_card",
+        x,
+        y
+      )
 
       divider_screen_x = x + divider_x
 
       if selected
-        bmp.fill_rect(x, y, cell_w, 2, BushidoHabitat::GOLD)
-        bmp.fill_rect(x, y + cell_h - 2, cell_w, 2, BushidoHabitat::GOLD)
-        bmp.fill_rect(x, y, 2, cell_h, BushidoHabitat::GOLD)
-        bmp.fill_rect(x + cell_w - 2, y, 2, cell_h, BushidoHabitat::GOLD)
         selected_rect = [x, y, cell_w, cell_h, col, row]
       end
 
@@ -640,10 +596,9 @@ class EncounterListUI
       end
 
       if owned
-        bmp.fill_rect(x + cell_w - 12, y + 7, 5, 5, BushidoHabitat::GOLD)
+        blit_habitat_asset(bmp, "pip_caught", x + cell_w - 12, y + 7)
       elsif seen
-        bmp.fill_rect(x + cell_w - 12, y + 7, 5, 5,
-                      BushidoHabitat::PARCHMENT_DIM)
+        blit_habitat_asset(bmp, "pip_seen", x + cell_w - 12, y + 7)
       end
     end
 
@@ -655,26 +610,52 @@ class EncounterListUI
 
   def draw_unknown_type_badge(bmp, entry, x, y, w, h)
     type = BushidoHabitat.primary_type(entry[:species], entry[:form])
-    type_name = BushidoHabitat.type_name(type).upcase
-    color = BushidoHabitat.type_badge_color(type)
 
-    badge_w = [w - 4, 56].min
-    badge_h = 20
-    bx = x + (w - badge_w) / 2
-    by = y + (h - badge_h) / 2
+    # Use the exact same type badge sheet as the rest of Essentials/Bushido.
+    # Graphics/Pictures/types.png is a vertical sheet of 64x28 badges.
+    if BushidoHabitat::UNKNOWN_SHOW_PRIMARY_TYPE && !type.nil?
+      begin
+        type_id = type
 
-    bmp.fill_rect(bx, by, badge_w, badge_h, BushidoHabitat::INK)
-    bmp.fill_rect(bx + 2, by + 2, badge_w - 4, badge_h - 4, color)
+        # primary_type normally returns the numeric Essentials v18 type ID.
+        # Keep a Symbol fallback in case this helper is ever used by a fork
+        # that returns symbols instead.
+        if type_id.is_a?(Symbol)
+          begin
+            type_id = getID(PBTypes, type_id)
+          rescue
+            type_id = nil
+          end
+        end
 
-    old_size = bmp.font.size
-    bmp.font.size = 16
+        if !type_id.nil?
+          type_sheet = pbBitmap("Graphics/Pictures/types")
+          badge_w = 64
+          badge_h = 28
+          source = Rect.new(0, type_id * badge_h, badge_w, badge_h)
+
+          # Center the real 64x28 badge in the unknown Pokémon icon lane.
+          bx = x + ((w - badge_w) / 2)
+          by = y + ((h - badge_h) / 2)
+
+          bmp.blt(bx, by, type_sheet, source)
+          return
+        end
+      rescue
+      end
+    end
+
+    # Safe fallback only. No custom badge art is drawn here.
+    pbSetSmallFont(bmp)
     pbDrawTextPositions(bmp, [[
-      type_name,
-      bx + badge_w / 2, by - 1, 2,
-      BushidoHabitat::WHITE,
+      _INTL("???"),
+      x + (w / 2),
+      y + ((h - 28) / 2),
+      2,
+      BushidoHabitat::MUTED,
       BushidoHabitat::SHADOW
     ]])
-    bmp.font.size = old_size
+    pbSetSystemFont(bmp)
   end
 
   def draw_selection_arrows(bmp, rect)
@@ -691,47 +672,10 @@ class EncounterListUI
     has_up    = local_index - 2 >= 0
     has_down  = local_index + 2 < page_count
 
-    arrow = BushidoHabitat::GOLD
-
-    if has_left
-      cx = x - 10
-      cy = y + h / 2
-      bmp.fill_rect(cx + 4, cy - 6, 3, 3, arrow)
-      bmp.fill_rect(cx + 2, cy - 3, 3, 3, arrow)
-      bmp.fill_rect(cx,     cy,     3, 3, arrow)
-      bmp.fill_rect(cx + 2, cy + 3, 3, 3, arrow)
-      bmp.fill_rect(cx + 4, cy + 6, 3, 3, arrow)
-    end
-
-    if has_right
-      cx = x + w + 4
-      cy = y + h / 2
-      bmp.fill_rect(cx,     cy - 6, 3, 3, arrow)
-      bmp.fill_rect(cx + 2, cy - 3, 3, 3, arrow)
-      bmp.fill_rect(cx + 4, cy,     3, 3, arrow)
-      bmp.fill_rect(cx + 2, cy + 3, 3, 3, arrow)
-      bmp.fill_rect(cx,     cy + 6, 3, 3, arrow)
-    end
-
-    if has_up
-      cx = x + w / 2
-      cy = y - 8
-      bmp.fill_rect(cx - 6, cy + 4, 3, 3, arrow)
-      bmp.fill_rect(cx - 3, cy + 2, 3, 3, arrow)
-      bmp.fill_rect(cx,     cy,     3, 3, arrow)
-      bmp.fill_rect(cx + 3, cy + 2, 3, 3, arrow)
-      bmp.fill_rect(cx + 6, cy + 4, 3, 3, arrow)
-    end
-
-    if has_down
-      cx = x + w / 2
-      cy = y + h + 3
-      bmp.fill_rect(cx - 6, cy,     3, 3, arrow)
-      bmp.fill_rect(cx - 3, cy + 2, 3, 3, arrow)
-      bmp.fill_rect(cx,     cy + 4, 3, 3, arrow)
-      bmp.fill_rect(cx + 3, cy + 2, 3, 3, arrow)
-      bmp.fill_rect(cx + 6, cy,     3, 3, arrow)
-    end
+    blit_habitat_asset(bmp, "arrow_left",  x - 13, y + h / 2 - 7) if has_left
+    blit_habitat_asset(bmp, "arrow_right", x + w + 1, y + h / 2 - 7) if has_right
+    blit_habitat_asset(bmp, "arrow_up",    x + w / 2 - 7, y - 12) if has_up
+    blit_habitat_asset(bmp, "arrow_down",  x + w / 2 - 7, y + h) if has_down
   end
 
   def draw_page_dots(bmp, pages)
@@ -747,13 +691,7 @@ class EncounterListUI
     y = rail_y + (84 - total_h) / 2
 
     if @page > 0
-      cx = rail_x
-      cy = y - 13
-      bmp.fill_rect(cx - 6, cy + 4, 3, 3, BushidoHabitat::GOLD)
-      bmp.fill_rect(cx - 3, cy + 2, 3, 3, BushidoHabitat::GOLD)
-      bmp.fill_rect(cx,     cy,     3, 3, BushidoHabitat::GOLD)
-      bmp.fill_rect(cx + 3, cy + 2, 3, 3, BushidoHabitat::GOLD)
-      bmp.fill_rect(cx + 6, cy + 4, 3, 3, BushidoHabitat::GOLD)
+      blit_habitat_asset(bmp, "arrow_up", rail_x - 7, y - 13)
     end
 
     for i in 0...pages
@@ -765,13 +703,7 @@ class EncounterListUI
     end
 
     if @page < pages - 1
-      cx = rail_x
-      cy = y + 2
-      bmp.fill_rect(cx - 6, cy,     3, 3, BushidoHabitat::GOLD)
-      bmp.fill_rect(cx - 3, cy + 2, 3, 3, BushidoHabitat::GOLD)
-      bmp.fill_rect(cx,     cy + 4, 3, 3, BushidoHabitat::GOLD)
-      bmp.fill_rect(cx + 3, cy + 2, 3, 3, BushidoHabitat::GOLD)
-      bmp.fill_rect(cx + 6, cy,     3, 3, BushidoHabitat::GOLD)
+      blit_habitat_asset(bmp, "arrow_down", rail_x - 7, y + 2)
     end
   end
 

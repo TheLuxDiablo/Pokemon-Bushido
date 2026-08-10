@@ -1,5 +1,5 @@
 def strong_katanas?
-  return $PokemonSystem.enemyTechniques == 0
+  return $PokemonGlobal.enemyTechniques == 0
 end
 
 module DialogueModule
