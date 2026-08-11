@@ -663,8 +663,12 @@ def camsHackyInitMethod()
     # if katana level 2 then etc
 end
 
+def strong_katanas?
+  return $PokemonGlobal.enemyTechniques == 0
+end
+
 def pbHotSpringRecovery()
-    if(PLAYERKATANATECHNIQUES)
+    if(PLAYERKATANATECHNIQUES && KatanaOfLightAwakened?())
         fullyRecoverEnergy()
         pbMessage(_INTL("Your Spirit Energy was fully restored!"))
     else

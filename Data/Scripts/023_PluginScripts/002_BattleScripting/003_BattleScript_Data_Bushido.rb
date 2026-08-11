@@ -1331,6 +1331,24 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
+    ShadowIntroIntimidate = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    user   = battlers[1]
+    target = battlers[0]
+    if strong_katanas?
+      pbMessage("You don't stand a chance against our powerful Pokémon!")
+      pbMessage("Now hand over all your Pokémon you little brat!")
+      scene.disappearBar
+      target.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, :SCREECH, user)
+    else
+      pbMessage("You don't stand a chance against our powerful Pokémon!")
+      pbMessage("Now hand over all your Pokémon you little brat!")
+      battle.scene.disappearBar
+    end
+    scene.pbHideOpponent
+  }
+
   ShadowIntroSpikes = Proc.new { |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
