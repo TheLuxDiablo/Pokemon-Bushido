@@ -158,8 +158,8 @@ Pokemon = SIRFETCHD,59
 #-------------------------------
 [SENSEI,Sukiro,2]
 LoseText = "That was an excellent sparring session."
-Pokemon = ROCKRUFF,5
-Pokemon = SLUGMA,5
+Pokemon = ROCKRUFF,3
+Pokemon = SLUGMA,4
 Pokemon = FARFETCHD,5
     Form = 1
 #-------------------------------
