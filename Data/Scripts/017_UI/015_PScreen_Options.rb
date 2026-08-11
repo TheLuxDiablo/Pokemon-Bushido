@@ -525,12 +525,16 @@ class PokemonOption_Scene
       EnumOption.new(_INTL("Configure Controls"),[_INTL(""),_INTL("")],
         proc { },
         proc { }
-      ),
-      EnumOption.new(_INTL("Enemy Kat. Tech."),[_INTL("Strong"),_INTL("Weakened")],
+      )
+    ]
+
+    if $PokemonGlobal
+      @PokemonOptions.insert(-2, EnumOption.new(_INTL("Enemy Kat. Tech."),[_INTL("Strong"),_INTL("Weakened")],
         proc { $PokemonGlobal.enemyTechniques || 0 },
         proc { |value| $PokemonGlobal.enemyTechniques = value }
-      ),
-    ]
+      ))
+      @Descriptions.insert(-2, _INTL("Change enemy Katana Technique strength. Weakened prevents most negative effects."))
+    end
     @PokemonOptions = pbAddOnOptions(@PokemonOptions)
     @Descriptions = [_INTL("Change the volume of the ingame music."),_INTL("Change the volume of the ingame sound effects."),
       _INTL("Change the speed of the text being displayed."),_INTL("Toggle Battle Animations On or Off."),
@@ -541,7 +545,6 @@ class PokemonOption_Scene
       _INTL("Change the size of the Game Window."),
       _INTL("Change the default method of movement."),
       _INTL("Match the controls to the main series.\n(Press C for more details)"),
-      _INTL("Change enemy Katana Technique strength. Weakened prevents most negative effects."),
       _INTL("Reconfigure the game's controls."),
       _INTL("Close the Options Menu.")
     ]

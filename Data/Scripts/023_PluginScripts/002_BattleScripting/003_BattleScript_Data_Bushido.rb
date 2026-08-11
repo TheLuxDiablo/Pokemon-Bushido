@@ -1,7 +1,3 @@
-def strong_katanas?
-  return $PokemonGlobal.enemyTechniques == 0
-end
-
 module DialogueModule
   # Basic trainer intros
   KenshiF1 = Proc.new { |battle, scene, battlers|
