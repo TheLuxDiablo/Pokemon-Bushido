@@ -25,20 +25,12 @@ class ButtonEventScene < EventScene
     addImageForScreen(2, 36, 90, "Graphics/Pictures/Controls/help_c")
     addImageForScreen(2, 36, 252, "Graphics/Pictures/Controls/help_b")
     addLabelForScreen(2, 138, 64, 342, _INTL("Used to confirm a choice, interact with people and things, and move through text.\n(Default: C)"))
-    if $PokemonSystem && $PokemonSystem.controlScheme == 1
-      addLabelForScreen(2, 138, 222, 342, _INTL("Used to exit or cancel a choice. While moving around, hold to move at a different speed. (Default: X)"))
-    else
-      addLabelForScreen(2, 138, 222, 342, _INTL("Used to exit, cancel a choice, and cancel a mode. Also used to open the Pause Menu. (Default: X)"))
-    end
+    addLabelForScreen(2, 138, 222, 342, _INTL("Used to exit or cancel a choice. While moving around, hold to move at a different speed. (Default: X)"))
 
     addImageForScreen(3, 0, 0, "Graphics/Pictures/Controls/help_bg")
     addImageForScreen(3, 36, 90, "Graphics/Pictures/Controls/help_a")
     addImageForScreen(3, 36, 252, "Graphics/Pictures/Controls/help_x")
-    if $PokemonSystem && $PokemonSystem.controlScheme == 1
-      addLabelForScreen(3, 138, 64, 342, _INTL("Has various functions depending on context. Opens the pause menu, when in the overworld. (Default: Z)"))
-    else
-      addLabelForScreen(3, 138, 64, 342, _INTL("Has various functions depending on context. While moving around, hold to move at a different speed. (Default: Z)"))
-    end
+    addLabelForScreen(3, 138, 64, 342, _INTL("Has various functions depending on context. Opens the pause menu, when in the overworld. (Default: Z)"))
     addLabelForScreen(3, 138, 222, 342, _INTL("Press to open the Ready Menu, where registered items and can be used. (Default: A)"))
 
 

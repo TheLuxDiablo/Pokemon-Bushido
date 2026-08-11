@@ -184,8 +184,8 @@ class Scene_Map
     if !pbMapInterpreterRunning?
       if Input.trigger?(Input::C)
         $PokemonTemp.hiddenMoveEventCalling = true
-      elsif (Input.trigger?(Input::B) && $PokemonSystem.controlScheme == 0) || (Input.trigger?(Input::A) && $PokemonSystem.controlScheme == 1)
-        unless $game_system.menu_disabled or ($game_player.moving? && $PokemonSystem.controlScheme == 0)
+      elsif Input.trigger?(Input::A)
+        unless $game_system.menu_disabled
           $game_temp.menu_calling = true
           $game_temp.menu_beep = true
         end

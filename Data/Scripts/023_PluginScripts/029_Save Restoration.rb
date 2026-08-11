@@ -63,7 +63,3 @@ def old_save_restoration
   $game_variables[1] = trainer.name
   return true
 end
-
-class ControlConfig
-
-end

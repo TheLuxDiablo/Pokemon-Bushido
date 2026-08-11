@@ -25,7 +25,7 @@ class PokemonSystem
     @bgmvolume   = 100   # Volume of background music and ME
     @sevolume    = 100   # Volume of sound effects
     @textinput   = 1     # Text input mode (0=cursor, 1=keyboard)
-    @controlScheme = 0
+    @controlScheme = 1
   end
 
   def textskin;  return @textskin || 0;    end
@@ -35,7 +35,7 @@ class PokemonSystem
   def sevolume;  return @sevolume || 100;  end
   def textinput; return 1;   end
   def tilemap;   return MAP_VIEW_MODE;     end
-  def controlScheme; return @controlScheme || 0; end
+  def controlScheme; return 1; end
 end
 
 #===============================================================================
@@ -516,38 +516,35 @@ class PokemonOption_Scene
         proc { $PokemonSystem.runstyle },
         proc { |value| $PokemonSystem.runstyle = value }
       ),
-      EnumOption.new(_INTL("Control Scheme"),[_INTL("Custom"),_INTL("Main Series")],
-        proc { $PokemonSystem.controlScheme },
-        proc { |value|
-          $PokemonSystem.controlScheme = value
-        }
-      ),
       EnumOption.new(_INTL("Configure Controls"),[_INTL(""),_INTL("")],
         proc { },
         proc { }
       )
     ]
 
-    if $PokemonGlobal
-      @PokemonOptions.insert(-2, EnumOption.new(_INTL("Enemy Kat. Tech."),[_INTL("Strong"),_INTL("Weakened")],
-        proc { $PokemonGlobal.enemyTechniques || 0 },
-        proc { |value| $PokemonGlobal.enemyTechniques = value }
-      ))
-      @Descriptions.insert(-2, _INTL("Change enemy Katana Technique strength. Weakened prevents most negative effects."))
-    end
-    @PokemonOptions = pbAddOnOptions(@PokemonOptions)
-    @Descriptions = [_INTL("Change the volume of the ingame music."),_INTL("Change the volume of the ingame sound effects."),
-      _INTL("Change the speed of the text being displayed."),_INTL("Toggle Battle Animations On or Off."),
+    @Descriptions = [
+      _INTL("Change the volume of the ingame music."),
+      _INTL("Change the volume of the ingame sound effects."),
+      _INTL("Change the speed of the text being displayed."),
+      _INTL("Toggle Battle Animations On or Off."),
       _INTL("Toggle the option to switch out your Pokémon after fainting the Opponent."),
       _INTL("Change the font used for the text ingame."),
       _INTL("Change the Windowskin for Text Boxes."),
       _INTL("Change the Windowskin for Choice Boxes."),
       _INTL("Change the size of the Game Window."),
       _INTL("Change the default method of movement."),
-      _INTL("Match the controls to the main series.\n(Press C for more details)"),
       _INTL("Reconfigure the game's controls."),
       _INTL("Close the Options Menu.")
     ]
+    if $PokemonGlobal
+      idx = @PokemonOptions.length - 1
+      @PokemonOptions.insert(idx, EnumOption.new(_INTL("Enemy Kat. Tech."),[_INTL("Strong"),_INTL("Weakened")],
+        proc { $PokemonGlobal.enemyTechniques || 0 },
+        proc { |value| $PokemonGlobal.enemyTechniques = value }
+      ))
+      @Descriptions.insert(idx, _INTL("Change enemy Katana Technique strength. Weakened prevents most negative effects."))
+    end
+    @PokemonOptions = pbAddOnOptions(@PokemonOptions)
     @sprites["option"] = Window_PokemonOption.new(@PokemonOptions,0,
        @sprites["title"].height,Graphics.width,
        Graphics.height-@sprites["title"].height-@sprites["textbox"].height)
@@ -607,13 +604,10 @@ class PokemonOption_Scene
         if Input.trigger?(Input::B)
           break
         elsif Input.trigger?(Input::C)
-          if @sprites["option"].index==@PokemonOptions.length
+          if @sprites["option"].index == @PokemonOptions.length
             break
-          elsif @sprites["option"].index == (@PokemonOptions.length - 2)
+          elsif @PokemonOptions[@sprites["option"].index] && @PokemonOptions[@sprites["option"].index].name == _INTL("Configure Controls")
             System.show_settings
-          elsif @sprites["option"].index == (@PokemonOptions.length - 3)
-            pbMessage("\\l[7]\\ts[]<u>Main Series:</u>\nB acts as the Run and Cancel button.\nA acts as the Menu button.\n\n<u>Custom:</u>\nB acts as the Menu and Cancel button.\nA acts as Run button.")
-            pbMessage("You can look at/change what the A, B and other buttons are on your Keyboard/Controller under the \"Configure Controls\" Option.")
           end
         end
       end
