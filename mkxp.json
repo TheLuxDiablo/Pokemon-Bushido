@@ -91,8 +91,8 @@
     "integerScalingLastMile": true,
     "vsync": false,
     "syncToRefreshrate": false,
-    "bitmapSmoothScalingDown": 1,
-    "smoothScalingMipmaps": true,
+    "bitmapSmoothScalingDown": 0,
+    "smoothScalingMipmaps": false,
 
 
     // Apply smooth interpolation when game screen
@@ -388,7 +388,7 @@
     // (emulates windows case insensitivity)
     // (default: enabled)
     //
-    // "pathCache": true,
+    "pathCache": false,
 
     // Add 'rtp1', 'rtp2.zip' and 'game.rgssad' to the asset search path
     // (multiple allowed). You can use folders, RGSS archives, and any archive

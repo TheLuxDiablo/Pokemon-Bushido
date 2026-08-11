@@ -404,7 +404,7 @@ end
 # Sets a bitmap's font to the system narrow font.
 def pbSetNarrowFont(bitmap)
   bitmap.font.name = pbNarrowFontName
-  bitmap.font.size = 29
+  bitmap.font.size = 31
 end
 
 #===============================================================================
