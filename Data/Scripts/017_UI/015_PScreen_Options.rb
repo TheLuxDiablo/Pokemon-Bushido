@@ -45,7 +45,6 @@ class PokemonGlobalMetadata
   attr_accessor :enemyTechniques
 end
 
-
 #===============================================================================
 # Stores game options
 # Default options are at the top of script section SpriteWindow.
