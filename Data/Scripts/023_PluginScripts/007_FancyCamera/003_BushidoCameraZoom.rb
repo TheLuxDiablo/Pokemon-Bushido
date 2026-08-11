@@ -9,10 +9,13 @@
 # No screenshots.
 # No dialogue hooks.
 # No UI scaling.
+#
+# v1.3: pixel-snaps source and transformed positions during live zoom to reduce
+# FancyCamera/Essentials v18 jitter on overworld scenery.
 #===============================================================================
 
 module BushidoCameraZoom
-  VERSION     = "1.2.0"
+  VERSION     = "1.3.0"
   ALLOWED_ZOOMS = [1.0, 2.0, 4.0]
   DEFAULT_ZOOM = 1.0
 
@@ -124,21 +127,29 @@ module BushidoCameraZoom
     end
 
     z  = value
-    cx = Graphics.width / 2.0
-    cy = Graphics.height / 2.0
 
-    new_x = cx + ((state[0].to_f - cx) * z)
-    new_y = cy + ((state[1].to_f - cy) * z)
+    # RMXP/Essentials v18 is fundamentally pixel-positioned. FancyCamera can
+    # occasionally hand sprites fractional screen coordinates while moving,
+    # and feeding those fractions into another fractional zoom transform can
+    # make scenery appear to shimmer or jitter relative to the tilemap.
+    #
+    # Treat the frame's Essentials-computed position as authoritative, but
+    # snap that source position to the pixel grid before applying our zoom.
+    source_x = state[0].to_f.round
+    source_y = state[1].to_f.round
 
-    # While moving between tiers, preserve smooth subpixel motion.
-    # At rest, lock back onto whole pixels.
-    if @zoom_frames && @zoom_frames > 0
-      sprite.x = new_x
-      sprite.y = new_y
-    else
-      sprite.x = new_x.round
-      sprite.y = new_y.round
-    end
+    cx = (Graphics.width  / 2.0).round
+    cy = (Graphics.height / 2.0).round
+
+    new_x = cx + ((source_x - cx) * z)
+    new_y = cy + ((source_y - cy) * z)
+
+    # Always render on whole pixels, including during the transition. Fractional
+    # sprite positions are the main source of visible pixel-art wobble here.
+    # The zoom value itself may still interpolate smoothly between tiers.
+    sprite.x = new_x.round
+    sprite.y = new_y.round
+
     sprite.zoom_x = state[2].to_f * z
     sprite.zoom_y = state[3].to_f * z
   end

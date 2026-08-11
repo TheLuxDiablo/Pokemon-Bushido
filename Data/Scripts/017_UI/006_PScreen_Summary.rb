@@ -362,23 +362,38 @@ class PokemonSummary_Scene
     @party      = party
     @partyindex = partyindex
     @pokemon    = @party[@partyindex]
-    @page = 4
+    @page       = 4
+
+    # The move-learning screen can contain a fifth entry. Keep that state
+    # separate from normal Summary move reordering.
+    @move_to_learn     = moveToLearn
+    @move_scroll_offset = 0
+
     @typebitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/types"))
     @sprites = {}
+
     @sprites["background"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
     @sprites["background"].z = 0
+
     @sprites["overlay"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
     pbSetSystemFont(@sprites["overlay"].bitmap)
+
     @sprites["pokeicon"] = PokemonIconSprite.new(@pokemon,@viewport)
     @sprites["pokeicon"].setOffset(PictureOrigin::Center)
-    @sprites["pokeicon"].x       = 46
-    @sprites["pokeicon"].y       = 92
-    @sprites["movesel"] = MoveSelectionSprite.new(@viewport,moveToLearn>0)
-    @sprites["movesel"].visible = false
+    @sprites["pokeicon"].x = 46
+    @sprites["pokeicon"].y = 92
+
+    # IMPORTANT: use the Bushido cursor here. The old Essentials
+    # MoveSelectionSprite assumes the stock 64px move rows and is much too
+    # large for this custom layout.
+    @sprites["movesel"] = BushidoMoveCursor.new(@viewport)
     @sprites["movesel"].visible = true
-    @sprites["movesel"].index   = 0
+    @sprites["movesel"].index = 0
+
+    positionMoveCursors(0)
     drawSelectedMove(moveToLearn,@pokemon.moves[0].id)
-    pbFadeInAndShow(@sprites)
+
+    pbFadeInAndShow(@sprites) { pbUpdate }
   end
 
   def pbEndScene
@@ -387,6 +402,8 @@ class PokemonSummary_Scene
     @typebitmap.dispose
     @markingbitmap.dispose if @markingbitmap
     @viewport.dispose
+    @move_to_learn = nil
+    @move_scroll_offset = 0
   end
 
   def pbDisplay(text)
@@ -1473,16 +1490,27 @@ class PokemonSummary_Scene
 
     list = layout[:list]
     row_h = layout[:row_height]
-    y = list.y
 
     entries = []
     @pokemon.moves.each do |move|
       entries.push(move) if move && move.id > 0
     end
-    entries.push(PBMove.new(moveToLearn)) if moveToLearn && moveToLearn > 0
 
-    entries[0,4].each do |move|
-      row = Rect.new(list.x, y, list.width, row_h)
+    learning_move = moveToLearn && moveToLearn > 0
+    entries.push(PBMove.new(moveToLearn)) if learning_move
+
+    # Four rows fit the authored Bushido move-detail background. When learning
+    # a fifth move, scroll the list instead of squeezing five rows together.
+    offset = learning_move ? (@move_scroll_offset || 0) : 0
+    visible_entries = entries[offset,4] || []
+
+    visible_entries.each_with_index do |move,i|
+      row = Rect.new(
+        list.x,
+        list.y + (i * row_h),
+        list.width,
+        row_h
+      )
 
       begin
         type_rect = Rect.new(0, move.type * 28, 64, 28)
@@ -1495,8 +1523,6 @@ class PokemonSummary_Scene
       rescue
       end
 
-      # One line instead of name + separate PP line. The move list remains
-      # readable while giving the description tray much more room.
       drawSummaryBoxText(
         overlay,
         Rect.new(row.x + 82, row.y, 112, row.height),
@@ -1506,7 +1532,7 @@ class PokemonSummary_Scene
         shadow
       )
 
-      pp_text = sprintf("%d/%d", move.pp, move.totalpp)
+      pp_text = sprintf("%d/%d",move.pp,move.totalpp)
 
       drawSummaryBoxText(
         overlay,
@@ -1516,8 +1542,6 @@ class PokemonSummary_Scene
         base,
         shadow
       )
-
-      y += row_h
     end
   end
 
@@ -1690,9 +1714,22 @@ class PokemonSummary_Scene
     list = layout[:list]
     row_h = layout[:row_height]
 
+    # The learning screen shows four rows at once and scrolls when the fifth
+    # "new move" entry is selected. Normal move reordering has no scroll.
+    offset =
+      if @move_to_learn && @move_to_learn > 0
+        @move_scroll_offset || 0
+      else
+        0
+      end
+
     if @sprites["movesel"]
+      display_index = selmove - offset
+      display_index = 0 if display_index < 0
+      display_index = 3 if display_index > 3
+
       @sprites["movesel"].x = list.x
-      @sprites["movesel"].y = list.y + (selmove * row_h)
+      @sprites["movesel"].y = list.y + (display_index * row_h)
       @sprites["movesel"].index = selmove
     end
 
@@ -2016,39 +2053,72 @@ class PokemonSummary_Scene
   def pbChooseMoveToForget(moveToLearn)
     selmove = 0
     maxmove = (moveToLearn>0) ? 4 : 3
+
+    @move_to_learn = moveToLearn
+    @move_scroll_offset = 0
+
+    positionMoveCursors(selmove)
+
     loop do
       Graphics.update
       Input.update
       pbUpdate
+
       if Input.trigger?(Input::B)
         selmove = 4
         pbPlayCloseMenuSE if moveToLearn>0
         break
+
       elsif Input.trigger?(Input::C)
         pbPlayDecisionSE
         break
+
       elsif Input.trigger?(Input::UP)
         selmove -= 1
         selmove = maxmove if selmove<0
+
         if selmove<4 && selmove>=@pokemon.numMoves
           selmove = @pokemon.numMoves-1
         end
+
+        # Keep four visible rows. The fifth entry appears by scrolling the
+        # window down one row; scrolling back to the first entry restores it.
+        if moveToLearn>0
+          @move_scroll_offset = 1 if selmove==4
+          @move_scroll_offset = 0 if selmove==0
+        end
+
         @sprites["movesel"].index = selmove
-        positionMoveCursors(selmove, oldselmove)
+        positionMoveCursors(selmove)
+
         newmove = (selmove==4) ? moveToLearn : @pokemon.moves[selmove].id
+
+        pbPlayCursorSE
         drawSelectedMove(moveToLearn,newmove)
+
       elsif Input.trigger?(Input::DOWN)
         selmove += 1
         selmove = 0 if selmove>maxmove
+
         if selmove<4 && selmove>=@pokemon.numMoves
           selmove = (moveToLearn>0) ? maxmove : 0
         end
+
+        if moveToLearn>0
+          @move_scroll_offset = 1 if selmove==4
+          @move_scroll_offset = 0 if selmove==0
+        end
+
         @sprites["movesel"].index = selmove
-        positionMoveCursors(selmove, oldselmove)
+        positionMoveCursors(selmove)
+
         newmove = (selmove==4) ? moveToLearn : @pokemon.moves[selmove].id
+
+        pbPlayCursorSE
         drawSelectedMove(moveToLearn,newmove)
       end
     end
+
     return (selmove==4) ? -1 : selmove
   end
 
