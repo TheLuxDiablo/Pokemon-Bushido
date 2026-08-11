@@ -1682,9 +1682,6 @@ module BushidoStarterSelection
       # Save which starter slot was chosen
       pbSet(STARTER_CHOICE_VARIABLE_ID, selected_index + 1)
 
-      # Add the chosen starter to the player's party
-      $Trainer.party.push(chosen_pokemon)
-
       # Save the starter's name into variable 90
       $game_variables[90] = PBSpecies.getName(chosen_pokemon.species)
     end
