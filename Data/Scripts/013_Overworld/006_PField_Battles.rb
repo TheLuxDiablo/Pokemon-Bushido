@@ -470,8 +470,7 @@ end
 # Used by most trainer events, which can be positioned in such a way that
 # multiple trainer events spot the player at once. The extra code in this method
 # deals with that case and can cause a double trainer battle instead.
-def pbTrainerBattle(trainerID, trainerName, endSpeech=nil,
-                    doubleBattle=false, trainerPartyID=0, canLose=false, outcomeVar=1, bushidoRivalBattle=false)
+def pbTrainerBattle(trainerID, trainerName, endSpeech=nil,doubleBattle=false,trainerPartyID=0,canLose=false,outcomeVar=1,bushidoRivalBattle=false)
   # If there is another NPC trainer who spotted the player at the same time, and
   # it is possible to have a double battle (the player has 2+ able Pokémon or
   # has a partner trainer), then record this first NPC trainer into
@@ -491,14 +490,6 @@ def pbTrainerBattle(trainerID, trainerName, endSpeech=nil,
       otherEvent.push(i)
     end
     # Load the trainer's data, and call an event which might modify it
-    if(bushidoRivalBattle == true) # For bushido rivals, load the trainer type and name depending on our Gender in Variable 28. Rival name is stored in variable 26
-        if($game_variables[28]==0) # Male, so we fight Akane (RIVALBUSHIDO_F)
-            trainerID = :RIVALBUSHIDO_F
-        else # Female, so we fight Yakeru (RIVALBUSHIDO_M)
-            trainerID = :RIVALBUSHIDO_M
-        end
-        trainerName = $game_variables[26]
-    end
     trainer = pbLoadTrainer(trainerID,trainerName,trainerPartyID)
     pbMissingTrainer(trainerID,trainerName,trainerPartyID) if !trainer
     return false if !trainer
@@ -514,9 +505,12 @@ def pbTrainerBattle(trainerID, trainerName, endSpeech=nil,
   # Set some battle rules
   setBattleRule("outcomeVar",outcomeVar) if outcomeVar!=1
   setBattleRule("canLose") if canLose
+  #setBattleRule("backdrop","champion1") if bushidoRivalBattle==true
   setBattleRule("double") if doubleBattle || $PokemonTemp.waitingTrainer
   # Perform the battle
-  if $PokemonTemp.waitingTrainer
+  if(bushidoRivalBattle == true)
+    decision = pbTrainerBattleCore([returnRivalIDBasedOnPlayerGender,$game_variables[26],trainerPartyID,endSpeech])
+  elsif $PokemonTemp.waitingTrainer
     waitingTrainer = $PokemonTemp.waitingTrainer
     decision = pbTrainerBattleCore(
        [waitingTrainer[0][0],waitingTrainer[0][2],waitingTrainer[1],waitingTrainer[0][1]],

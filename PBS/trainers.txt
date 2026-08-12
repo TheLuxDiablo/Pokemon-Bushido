@@ -133,12 +133,12 @@ Pokemon = ELECTABUZZ,5
 [RIVALBUSHIDO_M,Yakeru,1]
 LoseText = "What?! There's no way you could beat me so easily!"
 Pokemon = DARUMAKA,5
-	Moves = TACKLE,EMBER
+Moves = TACKLE,EMBER
 #-------------------------------
 [RIVALBUSHIDO_F,Akane,1]
 LoseText = "What?! There's no way you could beat me so easily!"
 Pokemon = DARUMAKA,5
-	Moves = TACKLE,EMBER
+Moves = TACKLE,EMBER
 #-------------------------------
 [SENSEI,Sukiro]
 LoseText = "Well done! You are an excellent student."
