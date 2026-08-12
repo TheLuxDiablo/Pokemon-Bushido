@@ -527,8 +527,8 @@ class PokemonOption_Scene
         proc { }
       ),
       EnumOption.new(_INTL("Enemy Kat. Tech."),[_INTL("Strong"),_INTL("Weakened")],
-        proc { $PokemonGlobal.enemyTechniques || 0 },
-        proc { |value| $PokemonGlobal.enemyTechniques = value }
+        proc { $PokemonGlobal ? ($PokemonGlobal.enemyTechniques || 0) : 0 },
+        proc { |value| $PokemonGlobal.enemyTechniques = value if $PokemonGlobal }
       ),
     ]
     @PokemonOptions = pbAddOnOptions(@PokemonOptions)
