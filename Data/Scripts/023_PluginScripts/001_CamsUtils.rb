@@ -667,6 +667,16 @@ def strong_katanas?
   return $PokemonGlobal.enemyTechniques == 0
 end
 
+def returnRivalIDBasedOnPlayerGender()
+    if($game_variables[28]==0)
+        #pbMessage("Male player, female rival")
+        return :RIVALBUSHIDO_F
+    else
+        #pbMessage("Female player, male rival")
+        return :RIVALBUSHIDO_M
+    end
+end
+
 def pbHotSpringRecovery()
     if(PLAYERKATANATECHNIQUES && KatanaOfLightAwakened?())
         fullyRecoverEnergy()

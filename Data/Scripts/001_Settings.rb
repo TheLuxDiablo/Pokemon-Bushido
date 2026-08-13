@@ -353,6 +353,16 @@ LANGUAGES = [
 #  ["Deutsch", "deutsch.dat"]
 ]
 
+#===============================================================================
+# Game version and overriden Essentials version.
+# Update this ONLY when you are releasing a new version of the game!
+#===============================================================================
+ESSENTIALS_VERSION = "Bushido"
+GAME_VERSION = "2.0.0"
+
+#===============================================================================
+# Misc Options
+#===============================================================================
 DYNAMIC_PRIORITY = true
 SOFTRESETFIX = true
 

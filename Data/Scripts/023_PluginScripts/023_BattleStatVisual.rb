@@ -4,6 +4,14 @@ class PokemonStatsPage
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99999
     @idx_battler = idx_battler
+    if !@battle.battlers[@idx_battler] || @battle.battlers[@idx_battler].fainted?
+      @battle.battlers.each_with_index do |b, i|
+        if b && !b.fainted?
+          @idx_battler = i
+          break
+        end
+      end
+    end
     @sprites = {}
     @type_bmp = AnimatedBitmap.new("Graphics/Pictures/types")
     @sprites["background"] = IconSprite.new(0, 0, @viewport)
@@ -13,7 +21,8 @@ class PokemonStatsPage
       @sprites["background"].setBitmap("Graphics/Pictures/Battle/Stats Screen/stat_0")
     end
     @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
-    @sprites["icon"] = PokemonIconSprite.new(@battle.battlers[idx_battler].pokemon, @viewport)
+    pkmn = @battle.battlers[@idx_battler] ? @battle.battlers[@idx_battler].pokemon : nil
+    @sprites["icon"] = PokemonIconSprite.new(pkmn, @viewport)
     @sprites["icon"].x = 2
     @sprites["icon"].y = 4
     pbSetSystemFont(@sprites["overlay"].bitmap)
@@ -46,6 +55,7 @@ class PokemonStatsPage
   def drawPage
     @sprites["overlay"].bitmap.clear
     battler = @battle.battlers[@idx_battler]
+    return if !battler
     if pbResolveBitmap("Graphics/Pictures/Battle/Stats Screen/stat_#{@idx_battler}")
       @sprites["background"].setBitmap("Graphics/Pictures/Battle/Stats Screen/stat_#{@idx_battler}")
     else
@@ -124,16 +134,21 @@ class PokemonStatsPage
     ]
     pbSetNarrowFont(@sprites["overlay"].bitmap)
     pbDrawTextPositions(@sprites["overlay"].bitmap, textpos)
-    imagepos.push(["Graphics/Pictures/Battle/Stats Screen/stat_box_2", 0, 16, 0, 0, 36, 36])
+
+    unfainted_battlers = []
     @battle.battlers.each_with_index do |b, i|
-      next if !b || b.fainted?
-      if i == @idx_battler
-        @sprites["icon"].x = 36 + (i * 66)
+      unfainted_battlers.push(i) if b && !b.fainted?
+    end
+
+    imagepos.push(["Graphics/Pictures/Battle/Stats Screen/stat_box_2", 0, 16, 0, 0, 36, 36])
+    unfainted_battlers.each_with_index do |b_idx, slot_idx|
+      if b_idx == @idx_battler
+        @sprites["icon"].x = 36 + (slot_idx * 66)
       else
-        imagepos.push(["Graphics/Pictures/Battle/Stats Screen/stat_box", 36 + (i * 66), 2, 0, 0, 64, 64])
+        imagepos.push(["Graphics/Pictures/Battle/Stats Screen/stat_box", 36 + (slot_idx * 66), 2, 0, 0, 64, 64])
       end
     end
-    imagepos.push(["Graphics/Pictures/Battle/Stats Screen/stat_box_2", 36 + (66 * @battle.battlers.length), 16, 36, 0, 36, 36])
+    imagepos.push(["Graphics/Pictures/Battle/Stats Screen/stat_box_2", 36 + (66 * unfainted_battlers.length), 16, 36, 0, 36, 36])
     # Draw status icon
     if battler.status > 0
       s = battler.status
@@ -181,22 +196,24 @@ class PokemonStatsPage
       Graphics.update
       Input.update
       pbUpdateSpriteHash(@sprites)
-      if Input.trigger?(Input::LEFT)
-        loop do
-          @idx_battler -= 1
-          @idx_battler = @battle.battlers.length - 1 if @idx_battler < 0
-          break if @battle.battlers[@idx_battler]
+      unfainted_battlers = []
+      @battle.battlers.each_with_index do |b, i|
+        unfainted_battlers.push(i) if b && !b.fainted?
+      end
+      if unfainted_battlers.length > 1
+        if Input.trigger?(Input::LEFT)
+          curr_idx = unfainted_battlers.index(@idx_battler) || 0
+          curr_idx = (curr_idx - 1) % unfainted_battlers.length
+          @idx_battler = unfainted_battlers[curr_idx]
+          pbSEPlay("GUI summary change page")
+          drawPage
+        elsif Input.trigger?(Input::RIGHT)
+          curr_idx = unfainted_battlers.index(@idx_battler) || 0
+          curr_idx = (curr_idx + 1) % unfainted_battlers.length
+          @idx_battler = unfainted_battlers[curr_idx]
+          pbSEPlay("GUI summary change page")
+          drawPage
         end
-        pbSEPlay("GUI summary change page")
-        drawPage
-      elsif Input.trigger?(Input::RIGHT)
-        loop do
-          @idx_battler += 1
-          @idx_battler =  0 if @idx_battler >= @battle.battlers.length
-          break if @battle.battlers[@idx_battler]
-        end
-        pbSEPlay("GUI summary change page")
-        drawPage
       end
       if Input.trigger?(Input::B) || Input.trigger?(Input::C) || Input.pressex?(0x1B)
         pbSEPlay("GUI menu close")

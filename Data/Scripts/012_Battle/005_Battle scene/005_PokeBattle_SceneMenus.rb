@@ -125,9 +125,21 @@ class CommandMenuDisplay < BattleMenuBase
     addSprite("msgBox",@msgBox)
     if USE_GRAPHICS
       # Create background graphic
-      background = IconSprite.new(self.x ,self.y - 52,viewport)
+      background = IconSprite.new(self.x, self.y, viewport)
       background.setBitmap("Graphics/Pictures/Battle/overlay_command")
-      addSprite("background",background)
+      addSprite("background", background)
+      # Create stats button
+      if pbResolveBitmap("Graphics/Pictures/Battle/cursor_stats")
+        @stat_btn_bmp = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_stats"))
+        @stat_btn = SpriteWrapper.new(viewport)
+        @stat_btn.bitmap = @stat_btn_bmp.bitmap
+        @stat_btn.src_rect.height = @stat_btn_bmp.height / 2
+        @stat_btn.src_rect.width  = @stat_btn_bmp.width
+        @stat_btn.x = self.x + 8
+        @stat_btn.y = self.y - @stat_btn_bmp.height / 2 - 4
+        @stat_btn.z = self.z + 1
+        addSprite("aButton", @stat_btn)
+      end
       # Create bitmaps
       @buttonBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_command"))
       # Create action buttons
@@ -159,12 +171,14 @@ class CommandMenuDisplay < BattleMenuBase
   def dispose
     super
     @buttonBitmap.dispose if @buttonBitmap
+    @stat_btn_bmp.dispose if @stat_btn_bmp
   end
 
   def z=(value)
     super
     @msgBox.z    += 1
     @cmdWindow.z += 1 if @cmdWindow
+    @stat_btn.z   += 1 if @stat_btn
   end
 
   def setTexts(value)
@@ -178,9 +192,9 @@ class CommandMenuDisplay < BattleMenuBase
   end
 
   def pressAButton
-    @sprites["background"].setBitmap("Graphics/Pictures/Battle/overlay_command_1")
+    @stat_btn.src_rect.y = @stat_btn_bmp.height / 2
     yield if block_given?
-    @sprites["background"].setBitmap("Graphics/Pictures/Battle/overlay_command")
+    @stat_btn.src_rect.y = 0
   end
 
   def refreshButtons

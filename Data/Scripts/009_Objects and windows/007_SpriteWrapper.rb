@@ -65,6 +65,11 @@ class SpriteWrapper < Sprite
     blend_type = @sprite.blend_type
     color      = @sprite.color
     tone       = @sprite.tone
+    pat        = @sprite.pattern rescue nil
+    pat_op     = @sprite.pattern_opacity rescue nil
+    pat_x      = @sprite.pattern_scroll_x rescue nil
+    pat_y      = @sprite.pattern_scroll_y rescue nil
+    pat_t      = @sprite.pattern_type rescue nil
     @sprite.dispose
     @sprite = Sprite.new(value)
     @sprite.bitmap     = bitmap
@@ -84,6 +89,11 @@ class SpriteWrapper < Sprite
     @sprite.blend_type = blend_type
     @sprite.color      = color
     @sprite.tone       = tone
+    @sprite.pattern          = pat if pat
+    @sprite.pattern_opacity  = pat_op if pat_op
+    @sprite.pattern_scroll_x = pat_x if pat_x
+    @sprite.pattern_scroll_y = pat_y if pat_y
+    @sprite.pattern_type     = pat_t if pat_t
   end
 end
 
