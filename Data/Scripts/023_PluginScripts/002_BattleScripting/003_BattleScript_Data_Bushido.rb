@@ -1268,9 +1268,11 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("The Akui Clan never falters! Take this!")
+    pbMessage("Just give up now! You can't stop us from snagging that Celebi!")
+    pbMessage("Akui Clan Technique, Venom Kunai!") if strong_katanas?
     scene.disappearBar
-    target.pbSetHazards(:TOXICSPIKES, user)
+    target.pbInflictStatusEx(:POISON, 0, :POISONKUNAI, target, false, nil, nil, user)
+    target.pbSetHazards(:TOXICSPIKES, user) if strong_katanas?
     scene.pbHideOpponent
   }
 
@@ -1333,13 +1335,14 @@ module DialogueModule
     user   = battlers[1]
     target = battlers[0]
     if strong_katanas?
-      pbMessage("You don't stand a chance against our powerful Pokémon!")
-      pbMessage("Now hand over all your Pokémon you little brat!")
+      pbMessage("You don't stand a chance against the Akui Clan's special Pokémon!")
+      pbMessage("Now hand over your Pokémon you little brat!")
       scene.disappearBar
       target.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, :SCREECH, user)
+      target.pbSetHazards(:SPIKES, user)
     else
-      pbMessage("You don't stand a chance against our powerful Pokémon!")
-      pbMessage("Now hand over all your Pokémon you little brat!")
+      pbMessage("You don't stand a chance against the Akui Clan's special Pokémon!")
+      pbMessage("Now hand over your Pokémon you little brat!")
       battle.scene.disappearBar
     end
     scene.pbHideOpponent
@@ -1351,11 +1354,18 @@ module DialogueModule
     user   = battlers[1]
     target = battlers[0]
     if strong_katanas?
-      pbMessage("Let's make this battle interesting, shall we?")
+      pbMessage("You're just a little brat!")
+      pbMessage(_INTL("You and that pathetic {1} are no match for the Akui Clan!", target.name))
+      pbMessage("Let me show you why! Playing fair is for losers!")
       scene.disappearBar
+      target.pbLowerStatStageEx([:ACCURACY], 1, :SANDATTACK, user)
       target.pbSetHazards(:SPIKES, user)
+      scene.appearBar
+      pbMessage("Watch your step, idiot! Hahaha!")
+      battle.scene.disappearBar
     else
-      pbMessage("I'll teach you not to mess with the Akui Clan!")
+      pbMessage("You're just a little brat!")
+      pbMessage(_INTL("You and that pathetic {1} are no match for the Akui Clan!", target.name))
       battle.scene.disappearBar
     end
     scene.pbHideOpponent
@@ -1416,10 +1426,12 @@ module DialogueModule
     scene.appearBar
     scene.pbShowOpponent(0)
     user = battlers[1]
-    pbMessage("Looks like it's time to get serious!")
+    target = battlers[0]
+    pbMessage("You're pretty good kid! It's starting to piss me off!")
     pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!") if strong_katanas?
     scene.disappearBar
     user.pbRaiseStatStageEx(:EVASION, 1, :DOUBLETEAM)
+    target.pbInflictStatusEx(:POISON, 1, :POISONKUNAI, target, false, nil, nil, user)
     scene.pbHideOpponent
   }
 

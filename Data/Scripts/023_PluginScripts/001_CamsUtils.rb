@@ -509,13 +509,29 @@ end
         end
         pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record now stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
         # Full heal at the end
-        for i in $Trainer.party
-          i.heal
-        end
+        fullyHealPokemonParty()
     else
         pbMessage(_INTL("\\xn[Sukiro]\\bIf you wish to train your Pokémon in battle again, I'll be waiting \\PN."))
     end
   end
+
+  def fullyHealPokemonParty()
+    # Full heal at the end
+    for i in $Trainer.party
+        i.heal
+    end
+  end
+
+  def prayAtShrineHeal()
+    pbMessage(_INTL("You prayed to the Shrine.\\wtnp[6].\\wtnp[6].\\wtnp[6]"))
+    pbMessage(_INTL("\\se[PLA 031 Request Fulfilled!]You and your Pokémon feel relaxed after praying to the Shrine!"))
+    fullyHealPokemonParty()
+    $PokemonTemp.dependentEvents.come_back(false)
+    if(KatanaOfLightAwakened? == true && isEnergyFull?() == false)
+        fullyRecoverEnergy()
+        pbMessage(_INTL("Your Spirit Energy was refilled from praying to the Shrine!"))
+    end
+end
 
 # ===================================================================
 # Player Katana Techniques
@@ -641,26 +657,6 @@ end
 def initializePlayerEnergy()
     $game_variables[227] = INITIAL_ENERGY
     restorePlayerEnergy()
-end
-
-def camsHackyInitMethod()
-    # early out if we're disabling PKT
-    pbMessage(_INTL("hacky init start!"))
-    if (PLAYERKATANATECHNIQUES == false)
-        return
-    end
-    pbMessage(_INTL("Force init energy to 3"))
-    initializePlayerEnergy()
-
-    # call on load, if no energy then initialize it (old save files would have no energy, so init them)
-    if(getPlayerMaxEnergy() <= 0)
-        initializePlayerEnergy()
-        #pbMessage(_INTL("No energy set yet, so initializing now."))
-    end
-
-    # Then check progress to determine roughly what techniques player should have and silently add them to our inventory
-    # if katana level 1 then
-    # if katana level 2 then etc
 end
 
 def strong_katanas?
