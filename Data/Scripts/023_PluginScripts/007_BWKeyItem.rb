@@ -25,7 +25,7 @@ class GetKeyItemScene
     @sprites["bg"].zoom_x = 0
     @sprites["bg"].opacity = 0
     if !@item.is_a?(String)
-      iconname = format("Graphics/Icons/item%03dkey", @item)
+      iconname = format("Graphics/Icons/item%03dKey", @item)
       iconname = format("Graphics/Icons/item%03d", @item) unless pbResolveBitmap(iconname)
     else
       iconname = _INTL("Graphics/Icons/{1}", @item)
