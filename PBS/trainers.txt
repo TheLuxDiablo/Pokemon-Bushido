@@ -875,6 +875,47 @@ Pokemon = HAKAMOO,41
 Pokemon = VOLCARONA,42
 	Moves = QUIVERDANCE,FLAMETHROWER,SAFEGUARD,ROOST
 	Item = HEAVYDUTYBOOTS
+#-------------------------------	
+[NENSHO_M,Kindan]
+LoseText = "Our flame of love can't be extinguished that easily!"
+Pokemon = SIMISEAR,46
+	Ability = 0
+	Moves = ERUPTION
+	Item = CHARCOAL
+Pokemon = CHARIZARD,47
+	Ability = 2
+	Moves = HEATWAVE,WEATHERBALL,SOLARBEAM,PROTECT
+	Item = CHARTIBERRY
+#-------------------------------	
+[KOMOREI_F,Suki]
+LoseText = "Don't tell anyone about our secret spot!"
+Pokemon = SIMISAGE,46
+	Ability = 0
+	Moves = HELPINGHAND
+	Item = SITRUSBERRY
+Pokemon = VENUSAUR,47
+	Ability = 2
+	Moves = SLUDGEBOMB,SLEEPPOWDER,EARTHPOWER,PROTECT
+	Item = WIDELENS
+#-------------------------------	
+[SHIMIZU_M,Suiro]
+Pokemon = PLUSLE,45
+	Ability = 2
+	Moves = DISCHARGE
+	Item = SITRUSBERRY
+Pokemon = LANTURN,46
+	Ability = 0
+	Moves = DISCHARGE,THUNDER,SCALD
+#-------------------------------
+[RAIKAMI_F,Raiha]
+Pokemon = MINUN,45
+	Ability = 2
+	Moves = DISCHARGE
+	Item = SITRUSBERRY
+Pokemon = JOLTEON,46
+	Ability = 0
+	Moves = DISCHARGE,THUNDER
+	Item = MAGNET
 #-------------------------------
 [AKUICLAN_F,Kiki]
 LoseText = "This isn't good! Yami Island is in danger!"

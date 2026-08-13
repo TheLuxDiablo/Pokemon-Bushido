@@ -1262,6 +1262,66 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
+    KenshiLovers1 = Proc.new { |battle, scene, battlers|
+      user1 = battlers[1]
+      user2 = battlers[3]
+      target1 = battlers[0]
+      target3 = battlers[2]
+
+      scene.appearBar
+      scene.pbShowOpponent(0)
+      pbMessage(_INTL("\\bThrough our combined training, we've developed an unbreakable bond!"))
+      pbMessage(_INTL("\\bNensho Style! Blazing Sunlight!"))
+      scene.disappearBar
+      battle.pbStartWeatherEx(user1, :Sun)
+      scene.pbHideOpponent(1)
+
+      if user2
+        scene.pbShowOpponent(1)
+        scene.appearBar
+        pbMessage(_INTL("\\rKomorei Style! Lush Terrain!"))
+        scene.disappearBar
+        battle.pbStartTerrainEx(user2, :Grassy)
+    
+        user1.pbRaiseStatStageEx([:SPEED], 2, :AGILITY)
+        user2.pbRaiseStatStageEx([:SPEED], 2, :AGILITY)
+    
+        pbMessage(_INTL("\\rTogether, we'll overcome any challenge!"))
+        scene.pbHideOpponent(2)
+      end
+    }
+
+    KenshiLovers2 = Proc.new { |battle, scene, battlers|
+      user1 = battlers[1]
+      user2 = battlers[3]
+      target1 = battlers[0]
+      target3 = battlers[2]
+
+      scene.appearBar
+      scene.pbShowOpponent(1)
+      pbMessage(_INTL("\\rWe've got team synergy as a couple!"))
+      pbMessage("\\rKatana of Lightning, Raikami Style! Heaven's Domain!")
+      scene.disappearBar
+      battle.pbStartTerrainEx(user1, :Electric)
+      user1.pbRaiseStatStageEx(:SPATK, 1)
+      scene.pbHideOpponent(2)
+
+      if user2
+        scene.pbShowOpponent(0)
+        scene.appearBar
+        pbMessage(_INTL("\\bWe've developed this super couple's strategy together!"))
+        pbMessage("\\bKatana of Water, Shimizu Style! Torrential Downpour!")
+        scene.disappearBar
+        battle.pbStartWeatherEx(user2, :Rain)
+        user2.pbRaiseStatStageEx([:SPDEF], 1)
+        scene.appearBar
+        pbMessage(_INTL("\\bLet's do this, honey!"))
+        scene.disappearBar
+        scene.pbHideOpponent(1)
+      end
+    }
+
+
   # Akui intros, make them cheat a lot!
   ShadowIntroToxic = Proc.new { |battle, scene, battlers|
     scene.appearBar
