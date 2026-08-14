@@ -533,7 +533,7 @@ end
 #===============================================================================
 def pbCreatePokemon
   party = []
-  species = [:TYRANITAR,:HOUNDOOM,:PIKACHU,:GYARADOS,:DUGTRIO,:BLISSEY]
+  species = [:HOUNDOOM,:LAPRAS,:LYCANROC,:LURANTIS,:GIRATINA,:LUXRAY]
   for id in species
     party.push(getConst(PBSpecies,id)) if hasConst?(PBSpecies,id)
   end

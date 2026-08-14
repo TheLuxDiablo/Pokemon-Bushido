@@ -132,7 +132,7 @@ module BushidoSummaryUI
       :accuracy    => Rect.new(28, 160, 160, 30),
 
       # Long prose gets a full-width tray beneath BOTH columns.
-      :description => Rect.new(28, 266, 456, 88)
+      :description => Rect.new(28, 258, 456, 112)
     }
   end
 
@@ -561,6 +561,21 @@ class PokemonSummary_Scene
       base,
       shadow,
       align
+    )
+  end
+
+  def drawMoveDescription(bitmap, x, y, width, text, base, shadow)
+    pbSetSmallFont(bitmap)
+
+    drawTextEx(
+      bitmap,
+      x,
+      y,
+      width,
+      4,
+      text,
+      base,
+      shadow
     )
   end
 
@@ -1441,22 +1456,14 @@ class PokemonSummary_Scene
     )
 
     # DESCRIPTION
-    # Give the prose almost the entire remaining height. drawTextEx will wrap
-    # inside this width and now has enough vertical room for long move copy.
     desc = layout[:description]
-
     move_desc = pbGetMessage(MessageTypes::MoveDescriptions, moveid)
 
-    # Use Essentials' native small-font preset for move descriptions.
-    # This keeps the font crisp and avoids custom/manual scaling.
-    pbSetSmallFont(overlay)
-
-    drawTextEx(
+    drawMoveDescription(
       overlay,
       desc.x + 6,
-      desc.y + 6,
+      desc.y + 8,
       desc.width - 12,
-      4,
       move_desc,
       base,
       shadow
