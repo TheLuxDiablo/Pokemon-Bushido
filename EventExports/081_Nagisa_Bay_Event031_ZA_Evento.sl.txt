@@ -1,0 +1,232 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Nagisa Bay
+Map ID: 81
+
+Event: ZA Evento.sl
+Event ID: 31
+Position: X=19, Y=14
+Pages: 2
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Approach
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Autorun
+Move Type: Fixed
+Move Speed: 5
+Move Frequency: 3
+Walk Animation: true
+Step Animation: true
+Direction Fix: false
+Through: true
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Script: followingMoveRoute([PBMoveRoute::TurnUp])
+[002] ◆ Wait: 20 frame(s)
+[003] ◆ Text: \xn[Sukiro]\bI see, so you have chosen \v[90].
+[004] ◆ Text: \xn[Sukiro]\bA wise choice. Hopefully this Pokemon shall lead you to victory in your upcoming battle in the Kenshi Tournament.
+[005] ◆ Text: \xn[Sukiro]\bBefore you depart, there are a few things you will need to take with you.
+[006] ◆ Comment: Set our pokes level to 5
+[007] ◆ Script: pkmn = $Trainer.party[0]
+      pkmn.level = 5
+      pkmn.calcStats
+[010] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x00000175fc9a3738>]
+[011] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a36e8>]
+[012] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a3698>]
+[013] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a3648>]
+[014] ◆ Wait for Move Completion
+[015] ◆ Script: Kernel.pbReceiveItem(:JAM1,10)
+[016] ◆ Script: Kernel.pbReceiveItem(:POKEBALL,10)
+[017] ◆ Text: \xn[Sukiro]\bI trust that you know how to use the Pokeballs and Healing Jam that I have entrusted to you.
+[018] ◆ Text: \xn[Sukiro]\bIf you ever catch too many Pokémon, one of my special Talonflame can take it to storage for you.
+[019] ◆ Text: \xn[Sukiro]\bMy Talonflame can also fly you to towns throughout the region, once you discover them for yourself.
+[020] ◆ Text: \xn[Sukiro]\bAnd one more gift for you.
+[021] ◆ Text: \xn[Sukiro]\bYou will need this to get into the Kenshi Tournament in Hagane City.
+[022] ◆ Script: pbGetKeyItem(PBItems::SUKIROLETTER,1)
+[023] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x00000175fc9a3058>]
+[024] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a3008>]
+[025] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2fb8>]
+[026] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2f68>]
+[027] ◆ Wait for Move Completion
+[028] ◆ Text: \xn[Sukiro]\b\PN, should you ever wish to train your Pokemon, you can always return to my dojo for a sparring session.
+[029] ◆ Text: \xn[Sukiro]\bI will bid you farewell, for now.
+[030] ◆ Set Move Route: [28, #<RPG::MoveRoute:0x00000175fc9a2c48>]
+[031] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2bf8>]
+[032] ◆ Set Move Route: [29, #<RPG::MoveRoute:0x00000175fc9a2ab8>]
+[033] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2a68>]
+[034] ◆ Text: \xn[\v[26]]\pogAlright! Let’s go, Darumaka!
+[035] ◆ Script: vCry(554)
+[036] ◆ Show Animation: [29, 94]
+[037] ◆ Wait: 5 frame(s)
+[038] ◆ Script: pbSetSelfSwitch(29,"A",false)
+[039] ◆ Set Move Route: [28, #<RPG::MoveRoute:0x00000175fc9a2720>]
+[040] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a26d0>]
+[041] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2680>]
+[042] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2630>]
+[043] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a25e0>]
+[044] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2590>]
+[045] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2540>]
+[046] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a24f0>]
+[047] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a24a0>]
+[048] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2450>]
+[049] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2400>]
+[050] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a23b0>]
+[051] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2360>]
+[052] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2310>]
+[053] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a22c0>]
+[054] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2270>]
+[055] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2220>]
+[056] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a21d0>]
+[057] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a2180>]
+[058] ◆ Wait: 30 frame(s)
+[059] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x00000175fc9a1aa0>]
+[060] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a1a50>]
+[061] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a1a00>]
+[062] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a19b0>]
+[063] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a1960>]
+[064] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a1910>]
+[065] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a18c0>]
+[066] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a1870>]
+[067] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a1820>]
+[068] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a17d0>]
+[069] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a1780>]
+[070] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a1730>]
+[071] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a16e0>]
+[072] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a1690>]
+[073] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a1640>]
+[074] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a15f0>]
+[075] ◆ Wait for Move Completion
+[076] ◆ Scroll Map: [2, 1, 2]
+[077] ◆ Script: pbSetSelfSwitch(28,"A",true)
+[078] ◆ Script: pbSetSelfSwitch(27,"A",true)
+[079] ◆ Move Picture: [1, 10, 0, 0, 0, 32, 100, 100, 255, 0]
+[080] ◆ Move Picture: [2, 10, 0, 0, 0, -32, 100, 100, 255, 0]
+[081] ◆ Wait: 30 frame(s)
+[082] ◆ Erase Picture: [1]
+[083] ◆ Erase Picture: [2]
+[084] ◆ Control Switches: 069 StartersChosen = ON
+[085] ◆ Script: $Trainer.mysterygiftaccess=true
+[086] ◆ Control Switches: 081 FlyStationsUnlocked = ON
+[087] ◆ Conditional Branch: Script: old_save_restoration
+  [088] ◆ Set Event Location: [0, 0, 26, 15, 4]
+  [089] ◆ Script: pbPlayCrySpecies(:TALONFLAME)
+  [090] ◆ Wait: 20 frame(s)
+  [091] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x00000175fc9a0a88>]
+  [092] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a0a38>]
+  [093] ◆ Show Animation: [-1, 8]
+  [094] ◆ Wait: 20 frame(s)
+  [095] ◆ Play SE: Wind1 (Volume 80, Pitch 100)
+  [096] ◆ Set Move Route: [0, #<RPG::MoveRoute:0x00000175fc9a07b8>]
+  [097] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a0768>]
+  [098] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a06f0>]
+  [099] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a06a0>]
+  [100] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a0650>]
+  [101] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a0600>]
+  [102] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a05b0>]
+  [103] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc9a0560>]
+  [104] ◆ Wait for Move Completion
+  [105] ◆ Wait: 8 frame(s)
+  [106] ◆ Text: It's Sukiro's Talonflame!
+  [107] ◆ Show Animation: [-1, 9]
+  [108] ◆ Wait: 20 frame(s)
+  [109] ◆ Text: The Talonflame is carrying a parcel for you.
+  [110] ◆ Text: It's a worn-out box. It must be from a far away land.
+  [111] ◆ Text: The name of its sender is scrawled on its torn label.
+  [112] ◆ Text: "From \v[1]"
+  [113] ◆ Text: You opened the parcel...
+  [114] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 30]
+  [115] ◆ Wait: 35 frame(s)
+  [116] ◆ Text: \w[]\wm\l[4]Since there were alot of engine changes since the last version of this game, we were unable to maintain compatibility for save files from older 
+        versions.
+  [118] ◆ Text: \w[]\wm\l[2]We did however manage to restore your old Pokémon.
+  [119] ◆ Text: \w[]\wm\l[3]All the Pokemon from your party and from  \v[1]'s islands have been restored. They have been transferred to Sukiro's Islands.
+  [120] ◆ Text: \w[]\wm\l[3]This doesn't include any non-shiny legendary Pokémon or shadow Pokémon, for obvious story reasons.
+  [121] ◆ Text: \w[]\wm\l[2]The levels of these Pokémon has been lowered to Lv. 5 and their movesets have been reset.
+  [122] ◆ Text: \w[]\wm\l[2]This is so that they obey you in battle and don't have any illegal moves in their moveset.
+  [123] ◆ Text: \w[]\wm\l[2]But their EVs, IVs, Nature, Shininess and everything else is intact.
+  [124] ◆ Text: \w[]\wm\l[2]Thank you for your constant support. We truly appreciate it.
+  [125] ◆ Text: \w[]\wm\l[1]We hope you enjoy the new update of Bushido!
+  [126] ◆ Text: \w[]\wm\l[2]Good luck on your journey, brave Kenshi!\n<r>- From Team Bushido
+  [127] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 30]
+  [128] ◆ Wait: 35 frame(s)
+  [129] ◆ Play SE: Wind1 (Volume 80, Pitch 100)
+  [130] ◆ Set Move Route: [0, #<RPG::MoveRoute:0x00000175fc98f850>]
+  [131] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc98f800>]
+  [132] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc98f7b0>]
+  [133] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc98f760>]
+  [134] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc98f710>]
+  [135] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc98f6c0>]
+  [136] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc98f670>]
+  [137] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc98f620>]
+  [138] ◆ Wait: 10 frame(s)
+  [139] ◆ Script: pbPlayCrySpecies(:TALONFLAME)
+  [140] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x00000175fc98f120>]
+  [141] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc98f0d0>]
+  [142] ◆ Wait for Move Completion
+  [143] ◆ Wait: 30 frame(s)
+  [144] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x00000175fc98eef0>]
+  [145] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000175fc98eea0>]
+  [146] ◆ Set Event Location: [0, 0, 19, 14, 2]
+[148] ◆ Else
+[150] ◆ Branch End
+[151] ◆ Control Self Switch: A = OFF

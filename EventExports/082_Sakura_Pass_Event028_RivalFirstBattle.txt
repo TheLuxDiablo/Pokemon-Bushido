@@ -1,0 +1,162 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Sakura Pass
+Map ID: 82
+
+Event: RivalFirstBattle
+Event ID: 28
+Position: X=61, Y=25
+Pages: 2
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Player Touch
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Text: \xn[\v[26]]\pog\PN! I knew I’d catch you here. Well uh, obviously… considering there’s no other route to get to Hagane City. But that’s besides the point!
+[002] ◆ Show Animation: [27, 10]
+[003] ◆ Wait: 26 frame(s)
+[004] ◆ Text: \xn[\v[26]]\pogBefore leaving, I wanted to take care of something first.
+[005] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x00000225ee2b4448>]
+[006] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2b43f8>]
+[007] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2b43a8>]
+[008] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2b4358>]
+[009] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x00000225ee2b4178>]
+[010] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2b4128>]
+[011] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2b40d8>]
+[012] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2b4088>]
+[013] ◆ Wait for Move Completion
+[014] ◆ Show Animation: [29, 93]
+[015] ◆ Wait: 4 frame(s)
+[016] ◆ Script: vSST(29)
+[017] ◆ Script:      followingMoveRoute([
+               PBMoveRoute::Up,
+               PBMoveRoute::Left,
+               PBMoveRoute::TurnRight,
+           ])
+[022] ◆ Show Picture: [1, "bar1", 0, 0, 0, 32, 100, 100, 255, 0]
+[023] ◆ Show Picture: [2, "bar2", 0, 0, 0, -32, 100, 100, 255, 0]
+[024] ◆ Move Picture: [1, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[025] ◆ Move Picture: [2, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[026] ◆ Wait: 10 frame(s)
+[027] ◆ Fade Out BGM: [2]
+[028] ◆ Text: \xn[\v[26]]\pogThat’s right! You and I are going to battle! I hope you’re ready to feel the flames of my passion!
+[029] ◆ Play SE: JapaneseDuelIntro (Volume 90, Pitch 100)
+[030] ◆ Wait: 90 frame(s)
+[031] ◆ Text: \xn[\v[26]]\pogHere we come!\wtnp[20]
+[032] ◆ Erase Picture: [1]
+[033] ◆ Erase Picture: [2]
+[034] ◆ Script: BattleScripting.setInScript("turnStart0",:RivalFirstIntro)
+[035] ◆ Conditional Branch: Script: pbTrainerBattle(:RIVALBUSHIDO_F,"Akane",nil,false,1,false,1,true)
+  [036] ◆ Play BGM: SV 504 Mossui Town (Volume 80, Pitch 100)
+  [037] ◆ Script: vSSF(29)
+  [038] ◆ Text: \xn[\v[26]]\pogNice! I can already tell you have potential as a Kenshi. I can’t wait to see what affinity you have.
+  [039] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x00000225ee2af3a8>]
+  [040] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2af358>]
+  [041] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2af308>]
+  [042] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2af2b8>]
+  [043] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2af268>]
+  [044] ◆ Wait for Move Completion
+  [045] ◆ Wait: 20 frame(s)
+  [046] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x00000225ee2aef98>]
+  [047] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2aef48>]
+  [048] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x00000225ee2aee08>]
+  [049] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2aedb8>]
+  [050] ◆ Script: followingMoveRoute([PBMoveRoute::Left,PBMoveRoute::TurnRight])
+  [051] ◆ Text: \xn[\v[26]]\pogWhat are you waiting for?
+  [052] ◆ Text: \xn[\v[26]]\pogHere, I'll heal your Pokémon real quick!
+  [053] ◆ Recover All: [0]
+  [054] ◆ Play ME: Pkmn healing (Volume 80, Pitch 100)
+  [055] ◆ Wait: 30 frame(s)
+  [056] ◆ Show Animation: [27, 12]
+  [057] ◆ Wait: 24 frame(s)
+  [058] ◆ Text: \xn[\v[26]]\pogNow c'mon! Let's go to Hagane City!
+  [059] ◆ Script: pbBridgeOn
+  [060] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x00000225ee2ae840>]
+  [061] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2ae7f0>]
+  [062] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2ae7a0>]
+  [063] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2ae750>]
+  [064] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2ae700>]
+  [065] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2ae6b0>]
+  [066] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2ae660>]
+  [067] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2ae610>]
+  [068] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2ae5c0>]
+  [069] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2ae570>]
+  [070] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000225ee2ae520>]
+  [071] ◆ Wait for Move Completion
+  [072] ◆ Script: pbBridgeOff
+  [073] ◆ Script: followingMoveRoute([PBMoveRoute::Down,PBMoveRoute::TurnRight])
+  [074] ◆ Script: pbSetSelfSwitch(27,"A",true)
+  [075] ◆ Control Self Switch: A = ON
+[077] ◆ Else
+  [078] ◆ Erase Picture: [1]
+  [079] ◆ Erase Picture: [2]
+[081] ◆ Branch End
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------

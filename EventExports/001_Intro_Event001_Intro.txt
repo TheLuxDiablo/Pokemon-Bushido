@@ -1,0 +1,264 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Intro
+Map ID: 1
+
+Event: Intro
+Event ID: 1
+Position: X=0, Y=0
+Pages: 2
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Autorun
+Move Type: Random
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Conditional Branch: Script: $DEBUG && Input.press?(Input::CTRL)
+  [002] ◆ Text: Are you a boy or a girl?
+  [003] ◆ Show Choices: Boy / Girl
+  [004] ◆ When [Boy]
+    [005] ◆ Script: pbChangePlayer(0)
+    [006] ◆ Script: pbTrainerName("Lux")
+    [007] ◆ Script: $game_variables[26] = "Akane"
+  [009] ◆ When [Girl]
+    [010] ◆ Script: pbChangePlayer(1)
+    [011] ◆ Script: pbTrainerName("Luxie")
+    [012] ◆ Script: $game_variables[26] = "Yakeru"
+  [014] ◆ Choice End
+  [015] ◆ Script: $PokemonGlobal.runningShoes=true
+  [016] ◆ Control Self Switch: A = ON
+  [017] ◆ Script: pbToneChangeAll(
+           Tone.new(-255,-255,-255,0),0)
+  [019] ◆ Transfer Player: 087 Sukiro's Dojo (12,13)
+  [020] ◆ Script: pbBGMStop(0.0)
+        # pbEventScreen(ButtonEventScene)
+        pbSelectGameMode
+        $game_map.autoplay
+  [024] ◆ Script: pbToneChangeAll(Tone.new(0,0,0,0),10)
+  [025] ◆ Script: $game_variables[27]="Sukiro"
+  [026] ◆ Script: $game_variables[28]=$Trainer.gender
+  [027] ◆ Script: $PokemonGlobal.snagMachine=true
+  [028] ◆ Script: $Trainer.mysterygiftaccess = true
+  [029] ◆ Wait: 10 frame(s)
+  [030] ◆ Exit Event Processing
+[032] ◆ Branch End
+[033] ◆ Script: $PokemonGlobal.snagMachine=false
+[034] ◆ Script: pbEventScreen(ButtonEventScene) if !$DEBUG
+[035] ◆ Label: kattech
+[036] ◆ Text: Set Enemy Katana Techniques to \c[10]Strong\c[0] or \rWeakened\c[0].
+[037] ◆ Show Choices: Strong / Weakened / Explain
+[038] ◆ When [Strong]
+  [039] ◆ Script: $PokemonGlobal.enemyTechniques = 0
+  [040] ◆ Text: Enemy Katana Techniques are \c[10]Strong\c[0]. This can be changed in Options at any time.
+[042] ◆ When [Weakened]
+  [043] ◆ Script: $PokemonGlobal.enemyTechniques = 1
+  [044] ◆ Text: Enemy Katana Techniques are \rWeakened\c[0]. This can be changed in Options at any time.
+[046] ◆ When [Explain]
+  [047] ◆ Text: Enemies can use \c[10]Katana Techniques\c[0] in battle. These may apply effects such as status conditions or stat drops to your Pokemon.
+  [048] ◆ Text: If you wish to disable these for an easier experience, then you can set Enemy Katana Techniques to \rWeakened\c[0].
+  [049] ◆ Text: By default, Enemy Katana Techniques are \c[10]Strong\c[0]. This is the original Bushido experience.
+  [050] ◆ Jump to Label: kattech
+[052] ◆ Choice End
+[053] ◆ Script: pbSelectGameMode
+[054] ◆ Fade Out BGM: [2]
+[055] ◆ Script: initializePlayerEnergy()
+[056] ◆ Script: $game_variables[27]="Sukiro"
+[057] ◆ Change Text Options: [1, 1]
+[058] ◆ Wait: 30 frame(s)
+[059] ◆ Text: <ac>\c[12]Long ago, in the feudal era of the Pokemon universe...
+[060] ◆ Text: <ac>There was a time before the existence of trainers.
+[061] ◆ Text: <ac>Instead, Kenshi roamed the regions, training both their Pokemon and their swordsmanship.
+[062] ◆ Text: <ac>Among the Kenshi, the prospect of honor and respect were of utmost importance.
+[063] ◆ Text: <ac>The codes that taught these virtues to the people were known as...
+[064] ◆ Text: <ac>The codes of Bushido.\c[0]</ac>
+[065] ◆ Change Text Options: [2, 0]
+[066] ◆ Wait: 40 frame(s)
+[067] ◆ Play BGM: Conquest-EpisodeOpening (Volume 80, Pitch 100)
+[068] ◆ Show Picture: [1, "mapRegion2_FLASHBACK", 0, 0, 0, 0, 100, 100, 0, 0]
+[069] ◆ Move Picture: [1, 20, 0, 0, 0, 0, 100, 100, 255, 0]
+[070] ◆ Wait: 18 frame(s)
+[071] ◆ Show Picture: [2, "mapRegion2_EMPTY", 0, 0, 0, 0, 100, 100, 0, 0]
+[072] ◆ Show Picture: [3, "introbase", 1, 0, 256, 256, 200, 120, 0, 0]
+[073] ◆ Show Picture: [4, "introSukiro", 1, 0, 250, 180, 100, 100, 0, 0]
+[074] ◆ Show Picture: [5, "introKomorei", 1, 0, 152, 176, 100, 100, 0, 0]
+[075] ◆ Show Picture: [6, "introNensho", 1, 0, 254, 184, 100, 100, 0, 0]
+[076] ◆ Show Picture: [7, "introShimizu", 1, 0, 354, 180, 100, 100, 0, 0]
+[077] ◆ Show Picture: [8, "introRyo", 1, 0, 256, 172, 100, 100, 0, 0]
+[078] ◆ Change Text Options: [2, 1]
+[079] ◆ Show Picture: [20, "vignette", 0, 0, 0, 0, 100, 100, 0, 0]
+[080] ◆ Move Picture: [20, 20, 0, 0, 0, 0, 100, 100, 255, 0]
+[081] ◆ Wait: 20 frame(s)
+[082] ◆ Text: <ac>Since the time of our ancestors, the prosperous Aisho region has survived due to the clans that protect us.
+[083] ◆ Text: <ac>When young children come of age, they are sorted into a clan in accordance with their affinity and compatibility with specific Pokemon typings.</ac>
+[084] ◆ Move Picture: [2, 10, 0, 0, 0, 0, 100, 100, 150, 0]
+[085] ◆ Wait: 10 frame(s)
+[086] ◆ Text: <ac>The three major clans protect us and fight for us, acting as our sword and shield.</ac>
+[087] ◆ Move Picture: [3, 10, 1, 0, 256, 256, 200, 120, 255, 0]
+[088] ◆ Wait: 10 frame(s)
+[089] ◆ Move Picture: [5, 10, 1, 0, 152, 176, 100, 100, 255, 0]
+[090] ◆ Wait: 10 frame(s)
+[091] ◆ Text: <ac>The Grass-type Komorei Clan...</ac>
+[092] ◆ Move Picture: [6, 10, 1, 0, 254, 184, 100, 100, 255, 0]
+[093] ◆ Wait: 10 frame(s)
+[094] ◆ Text: <ac>The Fire-type Nensho Clan...</ac>
+[095] ◆ Move Picture: [7, 10, 1, 0, 354, 180, 100, 100, 255, 0]
+[096] ◆ Wait: 10 frame(s)
+[097] ◆ Text: <ac>And the Water-type Shimizu Clan.</ac>
+[098] ◆ Text: <ac>They all work in harmony to protect us.</ac>
+[099] ◆ Text: <ac>Underneath these clans are the minor clans, representing the lesser types.</ac>
+[100] ◆ Move Picture: [5, 10, 1, 0, 152, 176, 100, 100, 0, 0]
+[101] ◆ Move Picture: [6, 10, 1, 0, 254, 184, 100, 100, 0, 0]
+[102] ◆ Move Picture: [7, 10, 1, 0, 354, 180, 100, 100, 0, 0]
+[103] ◆ Wait: 6 frame(s)
+[104] ◆ Move Picture: [3, 10, 1, 0, 256, 256, 200, 120, 0, 0]
+[105] ◆ Wait: 10 frame(s)
+[106] ◆ Move Picture: [3, 1, 1, 0, 256, 256, 100, 100, 0, 0]
+[107] ◆ Text: <ac>All of the clans work together and live in peace, due to the Bushido Code of Honor that has been established in Aisho society.</ac>
+[108] ◆ Move Picture: [3, 10, 1, 0, 256, 256, 100, 100, 255, 0]
+[109] ◆ Wait: 10 frame(s)
+[110] ◆ Move Picture: [8, 10, 1, 0, 256, 172, 100, 100, 255, 0]
+[111] ◆ Wait: 10 frame(s)
+[112] ◆ Text: <ac>But the most important and honorable Kenshi of all, Ryo Masayoshi, has final authority over the clans.
+[113] ◆ Text: <ac>Known as the "Royal Samurai", he is given the opportunity to directly protect the Shogun and the nobles.</ac>
+[114] ◆ Move Picture: [8, 10, 1, 0, 256, 172, 100, 100, 0, 0]
+[115] ◆ Move Picture: [3, 10, 1, 0, 256, 256, 100, 100, 0, 0]
+[116] ◆ Wait: 20 frame(s)
+[117] ◆ Move Picture: [4, 10, 1, 0, 250, 180, 100, 100, 255, 0]
+[118] ◆ Move Picture: [3, 10, 1, 0, 256, 256, 100, 100, 255, 0]
+[119] ◆ Wait: 10 frame(s)
+[120] ◆ Change Text Options: [2, 0]
+[121] ◆ Text: \xn[Sukiro]\bNow, the time has come for the two of you to join these clans and serve the glorious Aisho region!
+[122] ◆ Text: \xn[Sukiro]\bVery soon, you will both graduate past my instruction and participate in the Kenshi Tournament to prove your abilities.
+[123] ◆ Text: \xn[Sukiro]\bNow, as a formality, I will need you to provide your name and gender to participate in the tournament.
+[124] ◆ Move Picture: [4, 10, 1, 0, 250, 180, 100, 100, 0, 0]
+[125] ◆ Text: \xn[Sukiro]\bAre you a boy or a girl?
+[126] ◆ Show Choices: Boy / Girl
+[127] ◆ When [Boy]
+  [128] ◆ Script: pbChangePlayer(0)
+  [129] ◆ Show Picture: [10, "introBoy", 0, 0, 220, 100, 100, 100, 0, 0]
+[131] ◆ When [Girl]
+  [132] ◆ Comment: initializes player 1 (PlayerB)
+  [133] ◆ Script: pbChangePlayer(1)
+  [134] ◆ Show Picture: [10, "introGirl", 0, 0, 220, 100, 100, 100, 0, 0]
+[136] ◆ Choice End
+[137] ◆ Move Picture: [10, 10, 0, 0, 220, 100, 100, 100, 255, 0]
+[138] ◆ Wait: 16 frame(s)
+[139] ◆ Text: \xn[Sukiro]\bAnd your name?
+[140] ◆ Label: Enter Name
+[141] ◆ Comment: Opens the name entry screen and initializes the 
+      trainer object
+[143] ◆ Script: pbTrainerName
+[144] ◆ Wait: 5 frame(s)
+[145] ◆ Text: \xn[Sukiro]\bSo you're \PN?
+[146] ◆ Show Choices: Yes / No
+[147] ◆ When [Yes]
+[149] ◆ When [No]
+  [150] ◆ Text: \xn[Sukiro]\bAnd your name?
+  [151] ◆ Jump to Label: Enter Name
+[153] ◆ Choice End
+[154] ◆ Text: \xn[Sukiro]\b \PN. I have high expectations for you. You are the child of Ryo Masayoshi, and you will bring honor to the Masayoshi name.
+[155] ◆ Fade Out BGM: [3]
+[156] ◆ Control Self Switch: A = ON
+[157] ◆ Script: pbToneChangeAll(
+         Tone.new(-255,-255,-255,0),10)
+[159] ◆ Wait: 10 frame(s)
+[160] ◆ Erase Picture: [1]
+[161] ◆ Erase Picture: [2]
+[162] ◆ Erase Picture: [3]
+[163] ◆ Erase Picture: [4]
+[164] ◆ Erase Picture: [10]
+[165] ◆ Erase Picture: [20]
+[166] ◆ Conditional Branch: Script: $Trainer.gender==0
+  [167] ◆ Script: $game_variables[26]="Akane"
+[169] ◆ Else
+  [170] ◆ Script: $game_variables[26]="Yakeru"
+[172] ◆ Branch End
+[173] ◆ Script: $game_variables[28]=$Trainer.gender
+[174] ◆ Script: $PokemonGlobal.runningShoes=true
+[175] ◆ Wait: 20 frame(s)
+[176] ◆ Show Picture: [2, "chapter1", 0, 0, 0, 0, 100, 100, 0, 0]
+[177] ◆ Show Picture: [1, "backgroundbushido", 0, 0, 0, 0, 100, 100, 0, 0]
+[178] ◆ Move Picture: [1, 30, 0, 0, 0, 0, 100, 100, 255, 0]
+[179] ◆ Move Picture: [2, 30, 0, 0, 0, 0, 100, 100, 255, 0]
+[180] ◆ Play SE: BOTW-ChampionAbility (Volume 100, Pitch 100)
+[181] ◆ Wait: 120 frame(s)
+[182] ◆ Control Variables: 099 CHAPTER = 1
+[183] ◆ Move Picture: [1, 20, 0, 0, 0, 0, 100, 100, 0, 0]
+[184] ◆ Move Picture: [2, 20, 0, 0, 0, 0, 100, 100, 0, 0]
+[185] ◆ Wait: 20 frame(s)
+[186] ◆ Erase Picture: [1]
+[187] ◆ Erase Picture: [2]
+[188] ◆ Transfer Player: 087 Sukiro's Dojo (12,13)
+[189] ◆ Scroll Map: [6, 1, 6]
+[190] ◆ Scroll Map: [8, 1, 6]
+[191] ◆ Control Switches: 077 PhenomenonSwitch = ON
+[192] ◆ Script: pbToneChangeAll(Tone.new(0,0,0,0),10)
+[193] ◆ Wait: 10 frame(s)
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------

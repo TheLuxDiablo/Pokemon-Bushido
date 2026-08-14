@@ -1,0 +1,65 @@
+#===============================================================================
+# Pokémon Bushido - Tournaments
+# File: PBS/tournaments.txt
+#
+# Each tournament is data-driven.
+#
+# Required:
+#   Name
+#   Participants
+#
+# Optional:
+#   Description
+#   Mode              = PRESET or RANDOM
+#   PlayerSlot        = 1-8
+#   Pool              = comma-separated trainer IDs for RANDOM tournaments
+#   EntryCount        = currently 8
+#   HealBetweenRounds = true/false
+#
+# PresetWinnerXY means:
+#   X = round number (1 = quarterfinals, 2 = semifinals)
+#   Y = match number within that round
+#
+# Value is the entrant ID that must win that NPC-only match.
+#
+# The player's own matches are NEVER forced by PresetWinner fields.
+#===============================================================================
+
+[KENSHI_STORY]
+Name = Kenshi Tournament
+Description = The story Kenshi Tournament held before the Aisho Shogun.
+Mode = PRESET
+EntryCount = 8
+HealBetweenRounds = true
+
+# Slot order determines the opening bracket:
+#   Match 1: slots 1 vs 2
+#   Match 2: slots 3 vs 4
+#   Match 3: slots 5 vs 6
+#   Match 4: slots 7 vs 8
+#
+# PLAYER is a reserved entrant ID generated from the current save.
+Participants = PLAYER,KAYOKO,KENSHI_A,TSUKU,RIVAL,KENSHI_B,KENSHI_C,KENSHI_D
+
+# Story route:
+#   Quarterfinal: PLAYER vs KAYOKO
+#   Semifinal:   PLAYER vs TSUKU
+#   Final:       PLAYER vs RIVAL
+PresetWinner12 = TSUKU
+PresetWinner13 = RIVAL
+PresetWinner14 = KENSHI_C
+PresetWinner22 = RIVAL
+
+#------------------------------------------------------------------------------
+# Example postgame tournament.
+# The engine selects 7 unique entrants from Pool and inserts PLAYER.
+#------------------------------------------------------------------------------
+
+[KENSHI_OPEN]
+Name = Kenshi Open
+Description = A replayable postgame tournament featuring Kenshi from across Aisho.
+Mode = RANDOM
+EntryCount = 8
+PlayerSlot = RANDOM
+HealBetweenRounds = true
+Pool = KAYOKO,TSUKU,RIVAL,KENSHI_A,KENSHI_B,KENSHI_C,KENSHI_D

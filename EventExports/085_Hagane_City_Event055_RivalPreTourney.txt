@@ -1,0 +1,187 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Hagane City
+Map ID: 85
+
+Event: RivalPreTourney
+Event ID: 55
+Position: X=19, Y=25
+Pages: 4
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: trchar180
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Text: \xn[\v[26]]\pog\PN! Took you long enough!
+[002] ◆ Text: \xn[\v[26]]\pogOh, you went to a shrine? Makes sense that you’d want to pray before the tournament.
+[003] ◆ Wait: 20 frame(s)
+[004] ◆ Show Animation: [0, 8]
+[005] ◆ Wait: 26 frame(s)
+[006] ◆ Text: \xn[\v[26]]\pogYou saw Celebi? What?
+[007] ◆ Text: \xn[\v[26]]\pogAnd Ryo was in trouble!? Oh man, that's not good...
+[008] ◆ Show Animation: [0, 10]
+[009] ◆ Wait: 26 frame(s)
+[010] ◆ Text: \xn[\v[26]]\pogHmm... We’ll have to talk about what you saw later!
+[011] ◆ Text: \xn[\v[26]]\pogRight now the Kenshi Initiation Tournament is starting! Come on, \PN!
+[012] ◆ Set Move Route: [0, #<RPG::MoveRoute:0x000001f24e888758>]
+[013] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f24e888708>]
+[014] ◆ Wait for Move Completion
+[015] ◆ Control Self Switch: A = ON
+[016] ◆ Play SE: Door exit (Volume 80, Pitch 100)
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: 028 PlayerGender >= 1
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: trchar179
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Text: \xn[\v[26]]\pog\PN! Took you long enough!
+[002] ◆ Text: \xn[\v[26]]\pogOh, you went to a shrine? Makes sense that you’d want to pray before the tournament.
+[003] ◆ Wait: 20 frame(s)
+[004] ◆ Show Animation: [0, 8]
+[005] ◆ Wait: 26 frame(s)
+[006] ◆ Text: \xn[\v[26]]\pogYou saw Celebi? What?
+[007] ◆ Text: \xn[\v[26]]\pogAnd Ryo was in trouble!? Oh man, that's not good...
+[008] ◆ Show Animation: [0, 10]
+[009] ◆ Wait: 26 frame(s)
+[010] ◆ Text: \xn[\v[26]]\pogHmm... We’ll have to talk about what you saw later!
+[011] ◆ Text: \xn[\v[26]]\pogRight now the Kenshi Initiation Tournament is starting! Come on, \PN!
+[012] ◆ Set Move Route: [0, #<RPG::MoveRoute:0x000001f24e883dc0>]
+[013] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f24e883d70>]
+[014] ◆ Wait for Move Completion
+[015] ◆ Control Self Switch: A = ON
+[016] ◆ Play SE: Door exit (Volume 80, Pitch 100)
+
+============================================================
+PAGE 3
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: true
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+
+============================================================
+PAGE 4
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: 099 CHAPTER >= 6
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: true
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------

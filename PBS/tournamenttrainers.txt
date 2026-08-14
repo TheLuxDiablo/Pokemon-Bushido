@@ -1,0 +1,67 @@
+#===============================================================================
+# Pokémon Bushido - Tournament Trainers
+# File: PBS/tournamenttrainers.txt
+#===============================================================================
+
+[KAYOKO]
+Name = Kayoko
+TrainerType = KAYOKO
+TrainerName = Kayoko
+Party = 0
+LoseText = Thank you for this fight. I will continue to grow under my clan.
+IntroScript = KayokoIntro
+LastScript = KayokoLast
+Ace = 2
+Strength = 55
+Graphic = trchar195
+
+[TSUKU]
+Name = Tsuku
+TrainerType = TSUKU
+TrainerName = Tsuku
+Party = 0
+LoseText = W- wow! You're really strong.
+IntroScript = TsukuIntro
+LastScript = TsukuLast
+Ace = 2
+Strength = 60
+Graphic = trchar196
+
+# Dynamic rival. Bushido already establishes:
+#   male player   -> Akane  / RIVALBUSHIDO_F
+#   female player -> Yakeru / RIVALBUSHIDO_M
+[RIVAL]
+Dynamic = RIVAL
+Name = Rival
+FemaleName = Akane
+MaleName = Yakeru
+FemaleTrainerType = RIVALBUSHIDO_F
+MaleTrainerType = RIVALBUSHIDO_M
+Party = 2
+IntroScript = RivalBurn
+LastScript = RivalLast
+Ace = 2
+Strength = 70
+Graphic = Rival
+FemaleGraphic = trchar180
+MaleGraphic = trchar179
+
+[KENSHI_A]
+Name = Kenshi A
+Strength = 42
+Graphic = trchar193
+
+[KENSHI_B]
+Name = Kenshi B
+Strength = 45
+Graphic = trchar194
+
+[KENSHI_C]
+Name = Kenshi C
+Strength = 48
+Graphic = trchar193
+
+[KENSHI_D]
+Name = Kenshi D
+Strength = 40
+Graphic = trchar194

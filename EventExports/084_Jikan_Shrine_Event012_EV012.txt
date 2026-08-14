@@ -1,0 +1,238 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Jikan Shrine
+Map ID: 84
+
+Event: EV012
+Event ID: 12
+Position: X=25, Y=22
+Pages: 2
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: 075 FlashbackEnd
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Autorun
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Fade Out BGM: [2]
+[002] ◆ Text: \xn[???]Eheheh, looks like we made it in time!
+[003] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x0000019d7ac23b48>]
+[004] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac23af8>]
+[005] ◆ Scroll Map: [2, 8, 4]
+[006] ◆ Wait: 40 frame(s)
+[007] ◆ Script: pbSetSelfSwitch(13,"A",true)
+[008] ◆ Script: pbSetSelfSwitch(14,"A",true)
+[009] ◆ Play SE: Door exit (Volume 80, Pitch 100)
+[010] ◆ Show Picture: [1, "bar1", 0, 0, 0, 32, 100, 100, 255, 0]
+[011] ◆ Show Picture: [2, "bar2", 0, 0, 0, -32, 100, 100, 255, 0]
+[012] ◆ Move Picture: [1, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[013] ◆ Move Picture: [2, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[014] ◆ Wait: 20 frame(s)
+[015] ◆ Play BGM: MarioBowserCastle (Volume 80, Pitch 100)
+[016] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x0000019d7ac23508>]
+[017] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac234b8>]
+[018] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac23468>]
+[019] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac23418>]
+[020] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac233c8>]
+[021] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac23378>]
+[022] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac23328>]
+[023] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac232d8>]
+[024] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac23288>]
+[025] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x0000019d7ac22f18>]
+[026] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22ec8>]
+[027] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22e78>]
+[028] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22e28>]
+[029] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22dd8>]
+[030] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22d88>]
+[031] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22d38>]
+[032] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22ce8>]
+[033] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22c98>]
+[034] ◆ Scroll Map: [8, 8, 4]
+[035] ◆ Wait for Move Completion
+[036] ◆ Text: \xn[Akui Kenshi 1]A little birdie told us Celebi would be showing up here!
+[037] ◆ Text: \xn[Akui Kenshi 2]It’s not what we were looking for specifically, but who would pass on the chance to snag a Celebi?
+[038] ◆ Text: \xn[Akui Kenshi 1]Shadow Celebi… that has a nice ring to it!
+[039] ◆ Text: \xn[Akui Kenshi 2]Let’s just get rid of this meddlesome child.
+[040] ◆ Text: \xn[Akui Kenshi 1]Let’s.
+[041] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x0000019d7ac22630>]
+[042] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac225e0>]
+[043] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22590>]
+[044] ◆ Wait for Move Completion
+[045] ◆ Wait: 4 frame(s)
+[046] ◆ Recover All: [0]
+[047] ◆ Script: BattleScripting.setInScript("turnStart0",:ShadowIntroSpikes)
+[048] ◆ Script: BattleScripting.setInScript("lastOpp",:ShadowIntroIntimidate)
+[049] ◆ Conditional Branch: Script: pbTrainerBattle(:AKUICLAN_M,"Taki")
+  [050] ◆ Text: \xn[Akui Kenshi 1]Impossible...
+  [051] ◆ Text: \xn[Akui Kenshi 2]Ugh. I have to do everything around here, huh?
+  [052] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x0000019d7ac220b8>]
+  [053] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22068>]
+  [054] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac22018>]
+  [055] ◆ Wait: 6 frame(s)
+  [056] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x0000019d7ac21e38>]
+  [057] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac21de8>]
+  [058] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac21d98>]
+  [059] ◆ Wait: 8 frame(s)
+  [060] ◆ Recover All: [0]
+  [061] ◆ Script: BattleScripting.setInScript("turnStart0",:ShadowIntroToxic)
+  [062] ◆ Script: BattleScripting.setInScript("lastOpp",:ShadowEvasion)
+  [063] ◆ Conditional Branch: Script: pbTrainerBattle(:AKUICLAN_F,"Kumiko")
+    [064] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x0000019d7ac21a00>]
+    [065] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac219b0>]
+    [066] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x0000019d7ac21870>]
+    [067] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac21820>]
+    [068] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac217d0>]
+    [069] ◆ Text: \xn[Akui Kenshi 2]Y- you know what? Maybe Celebi isn't worth it.
+    [070] ◆ Text: \xn[Akui Kenshi 1]Yeah, doesn't it belong to the Royal Samurai? Definitely don't wanna mess with nobility...
+    [071] ◆ Show Animation: [13, 10]
+    [072] ◆ Show Animation: [14, 10]
+    [073] ◆ Wait: 20 frame(s)
+    [074] ◆ Text: \xn[Akui Kenshi 2]Let’s scram!
+    [075] ◆ Fade Out BGM: [2]
+    [076] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x0000019d7ac21370>]
+    [077] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac21320>]
+    [078] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac212d0>]
+    [079] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac21208>]
+    [080] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac211b8>]
+    [081] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac21168>]
+    [082] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac21118>]
+    [083] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac210c8>]
+    [084] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac21078>]
+    [085] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac21028>]
+    [086] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac20fd8>]
+    [087] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x0000019d7ac20ba0>]
+    [088] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac20b50>]
+    [089] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac20b00>]
+    [090] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac20ab0>]
+    [091] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac20a60>]
+    [092] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac20a10>]
+    [093] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac209c0>]
+    [094] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac20970>]
+    [095] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac20920>]
+    [096] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac208d0>]
+    [097] ◆ Scroll Map: [2, 8, 5]
+    [098] ◆ Wait for Move Completion
+    [099] ◆ Script: pbSetSelfSwitch(13,"A",false)
+    [100] ◆ Script: pbSetSelfSwitch(14,"A",false)
+    [101] ◆ Play BGM: CON-ForestOfDeath-SHORT (Volume 100, Pitch 100)
+    [102] ◆ Scroll Map: [8, 8, 4]
+    [103] ◆ Wait: 40 frame(s)
+    [104] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x0000019d7ac20240>]
+    [105] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000019d7ac201f0>]
+    [106] ◆ Text: Celebi is holding a rusty Katana...
+    [107] ◆ Script: pbGetKeyItem(PBItems::KATANABASIC,1)
+    [108] ◆ Script: pbRegisterItemOutOfBag(:KATANABASIC)
+    [109] ◆ Control Variables: 100 KatanaLevel = 1
+    [110] ◆ Wait: 20 frame(s)
+    [111] ◆ Script: vCry(251)
+    [112] ◆ Wait: 20 frame(s)
+    [113] ◆ Screen Flash: [(192.000000, 224.000000, 112.000000, 238.000000), 30]
+    [114] ◆ Control Switches: 061 JikanCompleted = ON
+    [115] ◆ Script: vSST(11)
+    [116] ◆ Play SE: Door exit (Volume 85, Pitch 75)
+    [117] ◆ Wait: 34 frame(s)
+    [118] ◆ Text: Celebi teleported away...
+    [119] ◆ Move Picture: [1, 10, 0, 0, 0, 32, 100, 100, 255, 0]
+    [120] ◆ Move Picture: [2, 10, 0, 0, 0, -32, 100, 100, 255, 0]
+    [121] ◆ Wait: 30 frame(s)
+    [122] ◆ Erase Picture: [1]
+    [123] ◆ Erase Picture: [2]
+    [124] ◆ Control Self Switch: A = ON
+    [125] ◆ Script: pbToggleFollowingPokemon("on",true)
+    [126] ◆ Text: You feel a strong spiritual energy coming from the shrine...
+  [128] ◆ Else
+    [129] ◆ Move Picture: [1, 10, 0, 0, 0, 32, 100, 100, 255, 0]
+    [130] ◆ Move Picture: [2, 10, 0, 0, 0, -32, 100, 100, 255, 0]
+    [131] ◆ Wait: 30 frame(s)
+    [132] ◆ Erase Picture: [1]
+    [133] ◆ Erase Picture: [2]
+    [134] ◆ Control Switches: 075 FlashbackEnd = OFF
+    [135] ◆ Script: pbSetSelfSwitch(10,"A",false)
+    [136] ◆ Script: pbSetSelfSwitch(4,"A",false)
+    [137] ◆ Script: pbSetSelfSwitch(13,"A",false)
+    [138] ◆ Script: pbSetSelfSwitch(14,"A",false)
+    [139] ◆ Set Event Location: [13, 0, 18, 30, 8]
+    [140] ◆ Set Event Location: [14, 0, 20, 30, 8]
+    [141] ◆ Set Event Location: [4, 0, 19, 17, 2]
+  [143] ◆ Branch End
+[145] ◆ Else
+  [146] ◆ Control Switches: 075 FlashbackEnd = OFF
+  [147] ◆ Script: pbSetSelfSwitch(10,"A",false)
+  [148] ◆ Script: pbSetSelfSwitch(4,"A",false)
+  [149] ◆ Script: pbSetSelfSwitch(13,"A",false)
+  [150] ◆ Script: pbSetSelfSwitch(14,"A",false)
+  [151] ◆ Set Event Location: [13, 0, 18, 30, 8]
+  [152] ◆ Set Event Location: [14, 0, 20, 30, 8]
+  [153] ◆ Set Event Location: [4, 0, 19, 17, 2]
+  [154] ◆ Erase Picture: [1]
+  [155] ◆ Erase Picture: [2]
+[157] ◆ Branch End
+[158] ◆ Erase Picture: [1]
+[159] ◆ Erase Picture: [2]
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
