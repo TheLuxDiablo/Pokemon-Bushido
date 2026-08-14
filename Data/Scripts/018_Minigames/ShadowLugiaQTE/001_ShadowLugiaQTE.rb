@@ -23,7 +23,7 @@
 # External asset:
 #   Graphics/Characters/249_shadow.png
 #
-# Generated UI follows strict 2px pixel density.
+# QTE UI assets live in Graphics/Pictures/ShadowLugiaQTE.
 #===============================================================================
 
 module ShadowLugiaQTE
@@ -33,6 +33,11 @@ module ShadowLugiaQTE
   #=============================================================================
 
   LUGIA_CHARACTER = "249_shadow"
+  UI_PATH = "Graphics/Pictures/ShadowLugiaQTE/"
+
+  def self.ui_bitmap(name)
+    return Bitmap.new(UI_PATH + name + ".png")
+  end
 
   #-----------------------------------------------------------------------------
   # Timing
@@ -112,14 +117,14 @@ module ShadowLugiaQTE
   # nor scaling can clip it.
   HEART_WIDTH   = 32
   HEART_HEIGHT  = 32
-  HEART_SPACING = 2
+  HEART_SPACING = 6
 
   # Tiny pre-attack settle so the player always reaches a clean idle frame.
   PLAYER_SETTLE_MAX_FRAMES  = 8
   PLAYER_IDLE_HOLD_FRAMES   = 2
 
   HEART_RIGHT_MARGIN = 18
-  HEART_TOP_MARGIN   = 40
+  HEART_TOP_MARGIN   = 18
 
   #-----------------------------------------------------------------------------
   # Death / blackout
@@ -408,8 +413,8 @@ module ShadowLugiaQTE
       rescue
       end
 
-      # The Shadow Lugia sequence always stages the player looking upward.
-      # This changes facing only, never map coordinates.
+      # Face the player up before the attack starts.
+      
       begin
         $game_player.direction = 8
       rescue
@@ -422,7 +427,7 @@ module ShadowLugiaQTE
         end
       end
 
-      # Lock to the normal standing frame for that direction.
+      # Reset to the standing frame.
       begin
         $game_player.straighten
       rescue
@@ -444,7 +449,7 @@ module ShadowLugiaQTE
 
       update_map_spriteset
 
-      # A tiny planted-feet beat makes the transition read intentionally.
+      # Give the idle frame a couple frames to settle.
       PLAYER_IDLE_HOLD_FRAMES.times do
         Graphics.update
         Input.update
@@ -655,11 +660,7 @@ module ShadowLugiaQTE
           38
         )
 
-      draw_vignette(
-        @vignette.bitmap,
-        @vignette_color,
-        @vignette_progress
-      )
+      swap_asset(@vignette, "vignette_threat_00")
 
       flash(
         Color.new(
@@ -1084,8 +1085,8 @@ module ShadowLugiaQTE
         120
       ) rescue nil
 
-      # The danger has been avoided. The closing threat vignette should release
-      # immediately so success never reads like damage.
+      # Clear the vignette on a successful dodge.
+      
       release_vignette_on_dodge
 
       dodge_axis =
@@ -1512,8 +1513,8 @@ module ShadowLugiaQTE
         80
       ) rescue nil
 
-      # The warning closes all the way in and turns red on a real hit.
-      # This visually connects the slow-mo danger state to the damage result.
+      # Close the vignette on a hit.
+      
       consume_vignette_on_hit
 
       #-----------------------------------------------------------------------
@@ -1785,11 +1786,7 @@ module ShadowLugiaQTE
           38
         )
 
-      draw_vignette(
-        @vignette.bitmap,
-        @vignette_color,
-        @vignette_progress
-      )
+      swap_asset(@vignette, "vignette_threat_00")
 
       @vignette.opacity = 115
 
@@ -1815,14 +1812,7 @@ module ShadowLugiaQTE
         total_width
 
       MAX_HEARTS.times do |i|
-        heart =
-          pixel_sprite(
-            HEART_WIDTH,
-            HEART_HEIGHT,
-            450
-          )
-
-        draw_heart(heart.bitmap)
+        heart = asset_sprite("heart_full", 450)
 
         heart.ox = HEART_WIDTH / 4
         heart.oy = HEART_HEIGHT / 4
@@ -1844,7 +1834,7 @@ module ShadowLugiaQTE
         @heart_sprites << heart
       end
 
-      # Pop the three hearts in from left to right.
+      # Heart intro.
       @heart_sprites.each do |heart|
         heart.zoom_x = 0.0
         heart.zoom_y = 0.0
@@ -1869,141 +1859,6 @@ module ShadowLugiaQTE
       @heart_sprites.each do |heart|
         heart.zoom_x = 2.0
         heart.zoom_y = 2.0
-      end
-    end
-
-    #---------------------------------------------------------------------------
-    # Clean compact pixel heart.
-    #
-    # Internal bitmap: 16x16.
-    # Displayed at 2x: 32x32 screen pixels.
-    #
-    # This is intentionally simple. The heart itself never touches the bitmap
-    # edge, which prevents the white/dark outlines from being cropped.
-    #---------------------------------------------------------------------------
-
-    def draw_heart(bitmap)
-      bitmap.clear
-
-      white  = Color.new(255, 255, 255)
-      border = Color.new(46, 24, 32)
-      red    = Color.new(225, 48, 60)
-      light  = Color.new(255, 120, 130)
-      dark   = Color.new(164, 25, 39)
-
-      # Each row is exactly 16 logical pixels wide.
-      #
-      # W = white outer outline
-      # K = dark inner outline
-      # R = red fill
-      # L = highlight
-      # D = lower shadow
-      rows = [
-        "................",
-        "...WWW..WWW.....",
-        "..WKKKWWKKKW....",
-        ".WKRRRKKRRRKW...",
-        ".WKLRRRRRRRKW...",
-        ".WKRRRRRRRRKW...",
-        "..WKRRRRRRKW....",
-        "...WKRRRRKW.....",
-        "....WKRRKW......",
-        ".....WKKW.......",
-        "......WW........",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................"
-      ]
-
-      colors = {
-        "W" => white,
-        "K" => border,
-        "R" => red,
-        "L" => light,
-        "D" => dark
-      }
-
-      rows.each_with_index do |row, y|
-        row.length.times do |x|
-          key = row[x, 1]
-          color = colors[key]
-          next if !color
-
-          bitmap.set_pixel(
-            x,
-            y,
-            color
-          )
-        end
-      end
-
-      # Symmetrical lower shading that stays entirely inside the red body.
-      [
-        [5, 7], [10, 7],
-        [6, 8], [9, 8]
-      ].each do |xy|
-        x, y = xy
-
-        bitmap.set_pixel(
-          x,
-          y,
-          dark
-        )
-      end
-    end
-
-
-    def draw_empty_heart(bitmap)
-      bitmap.clear
-
-      white = Color.new(255, 255, 255)
-      black = Color.new(28, 22, 26)
-
-      # Same exact silhouette as the filled heart so losing health never changes
-      # the spacing or shape of the HUD. Only the fill state changes.
-      rows = [
-        "................",
-        "...WWW..WWW.....",
-        "..WKKKWWKKKW....",
-        ".WKKKKKKKKKKW...",
-        ".WKKKKKKKKKKW...",
-        ".WKKKKKKKKKKW...",
-        "..WKKKKKKKKW....",
-        "...WKKKKKKW.....",
-        "....WKKKKW......",
-        ".....WKKW.......",
-        "......WW........",
-        "................",
-        "................",
-        "................",
-        "................",
-        "................"
-      ]
-
-      rows.each_with_index do |row, y|
-        row.length.times do |x|
-          key = row[x, 1]
-
-          color =
-            case key
-            when "W"
-              white
-            when "K"
-              black
-            else
-              nil
-            end
-
-          next if !color
-
-          bitmap.set_pixel(
-            x,
-            y,
-            color
-          )
-        end
       end
     end
 
@@ -2035,7 +1890,7 @@ module ShadowLugiaQTE
         heart.y
 
       #-----------------------------------------------------------------------
-      # Damage punch.
+      # Heart hit.
       #-----------------------------------------------------------------------
 
       3.times do |frame|
@@ -2064,7 +1919,7 @@ module ShadowLugiaQTE
       end
 
       #-----------------------------------------------------------------------
-      # Collapse the filled heart.
+      # Shrink the filled heart.
       #-----------------------------------------------------------------------
 
       5.times do |frame|
@@ -2103,9 +1958,7 @@ module ShadowLugiaQTE
 
       # Swap the art while small so the state change reads like the heart
       # burned out rather than simply vanishing.
-      draw_empty_heart(
-        heart.bitmap
-      )
+      swap_asset(heart, "heart_empty")
 
       heart.x =
         original_x
@@ -2114,7 +1967,7 @@ module ShadowLugiaQTE
         original_y
 
       #-----------------------------------------------------------------------
-      # Empty heart pops back into its permanent HUD slot.
+      # Bring the empty heart back in.
       #-----------------------------------------------------------------------
 
       5.times do |frame|
@@ -2154,7 +2007,7 @@ module ShadowLugiaQTE
       heart.x = original_x
       heart.y = original_y
 
-      # Remaining live hearts give a small sympathetic pulse.
+      # Pulse the remaining hearts.
       if @hearts > 0
         4.times do |frame|
           pulse =
@@ -2238,22 +2091,7 @@ module ShadowLugiaQTE
       # Use impact overlay because it sits above hearts and cinematic UI.
       #-----------------------------------------------------------------------
 
-      bmp =
-        @impact_overlay.bitmap
-
-      bmp.clear
-
-      bmp.fill_rect(
-        0,
-        0,
-        Graphics.width / 2,
-        Graphics.height / 2,
-        Color.new(
-          0,
-          0,
-          0
-        )
-      )
+      swap_asset(@impact_overlay, "overlay_black")
 
       @impact_overlay.opacity = 0
 
@@ -2403,11 +2241,7 @@ module ShadowLugiaQTE
           38
         )
 
-      draw_vignette(
-        @vignette.bitmap,
-        @vignette_color,
-        @vignette_progress
-      )
+      swap_asset(@vignette, "vignette_threat_00")
 
       start_vignette =
         @vignette.opacity
@@ -3088,27 +2922,26 @@ module ShadowLugiaQTE
     # 2PX GRAPHICS
     #===========================================================================
 
-    def pixel_sprite(width, height, z)
-      bitmap =
-        Bitmap.new(
-          width / 2,
-          height / 2
-        )
-
-      sprite =
-        Sprite.new(
-          @viewport
-        )
-
-      sprite.bitmap =
-        bitmap
-
+    def asset_sprite(name, z)
+      sprite = Sprite.new(@viewport)
+      sprite.bitmap = ShadowLugiaQTE.ui_bitmap(name)
       sprite.zoom_x = 2.0
       sprite.zoom_y = 2.0
-
       sprite.z = z
-
       return sprite
+    end
+
+    def screen_asset(name, z)
+      sprite = asset_sprite(name, z)
+      sprite.x = 0
+      sprite.y = 0
+      return sprite
+    end
+
+    def swap_asset(sprite, name)
+      old_bitmap = sprite.bitmap
+      sprite.bitmap = ShadowLugiaQTE.ui_bitmap(name)
+      old_bitmap.dispose if old_bitmap && !old_bitmap.disposed?
     end
 
     def snap2(value)
@@ -3123,66 +2956,18 @@ module ShadowLugiaQTE
     #===========================================================================
 
     def create_overlays
-      @dark_overlay =
-        pixel_sprite(
-          Graphics.width,
-          Graphics.height,
-          200
-        )
-
-      @dark_overlay.bitmap.fill_rect(
-        0,
-        0,
-        Graphics.width / 2,
-        Graphics.height / 2,
-        Color.new(
-          16,
-          6,
-          24
-        )
-      )
-
+      @dark_overlay = screen_asset("overlay_dark", 200)
       @dark_overlay.opacity = 0
 
-      @vignette =
-        pixel_sprite(
-          Graphics.width,
-          Graphics.height,
-          210
-        )
-
       @vignette_progress = 0.0
-      @vignette_color =
-        Color.new(
-          28,
-          8,
-          38
-        )
-
-      draw_vignette(
-        @vignette.bitmap,
-        @vignette_color,
-        @vignette_progress
-      )
-
+      @vignette_color = Color.new(28, 8, 38)
+      @vignette = screen_asset("vignette_threat_00", 210)
       @vignette.opacity = 0
 
-      @flash_overlay =
-        pixel_sprite(
-          Graphics.width,
-          Graphics.height,
-          500
-        )
-
+      @flash_overlay = screen_asset("overlay_white", 500)
       @flash_overlay.opacity = 0
 
-      @impact_overlay =
-        pixel_sprite(
-          Graphics.width,
-          Graphics.height,
-          600
-        )
-
+      @impact_overlay = screen_asset("overlay_black", 600)
       @impact_overlay.opacity = 0
     end
 
@@ -3190,232 +2975,37 @@ module ShadowLugiaQTE
     # VIGNETTE
     #===========================================================================
 
-    def draw_vignette(bitmap, color, progress = 0.0)
-      bitmap.clear
-
-      w =
-        Graphics.width / 2
-
-      h =
-        Graphics.height / 2
-
-      progress = 0.0 if
-        progress < 0.0
-
-      progress = 1.0 if
-        progress > 1.0
-
-      # The danger starts as a modest edge vignette and steadily closes toward
-      # the center during slow motion.
-      min_depth =
-        [VIGNETTE_DEPTH / 4, 6].max
-
-      max_depth =
-        ([w, h].min / 2) + 2
-
-      depth =
-        lerp(
-          min_depth,
-          max_depth,
-          ease_in_cubic(progress)
-        ).to_i
-
-      depth = 1 if
-        depth < 1
-
-      # At full progress, consume the entire screen. This is used only for a
-      # confirmed hit, never for a successful dodge.
-      if progress >= 1.0
-        bitmap.fill_rect(
-          0,
-          0,
-          w,
-          h,
-          Color.new(
-            color.red,
-            color.green,
-            color.blue,
-            255
-          )
-        )
-
-        return
-      end
-
-      depth.times do |i|
-        edge_t =
-          1.0 -
-          (i.to_f / depth)
-
-        alpha =
-          (
-            VIGNETTE_OPACITY *
-            (0.42 + (0.58 * progress)) *
-            edge_t *
-            edge_t
-          ).to_i
-
-        c =
-          Color.new(
-            color.red,
-            color.green,
-            color.blue,
-            alpha
-          )
-
-        inner_w =
-          w - (i * 2)
-
-        inner_h =
-          h - (i * 2)
-
-        break if
-          inner_w <= 0 ||
-          inner_h <= 0
-
-        bitmap.fill_rect(
-          i,
-          i,
-          inner_w,
-          1,
-          c
-        )
-
-        bitmap.fill_rect(
-          i,
-          h - i - 1,
-          inner_w,
-          1,
-          c
-        )
-
-        bitmap.fill_rect(
-          i,
-          i,
-          1,
-          inner_h,
-          c
-        )
-
-        bitmap.fill_rect(
-          w - i - 1,
-          i,
-          1,
-          inner_h,
-          c
-        )
-      end
+    def vignette_frame(progress)
+      index = (progress * 32).round
+      index = 0 if index < 0
+      index = 32 if index > 32
+      return sprintf("vignette_threat_%02d", index)
     end
 
     def update_threat_vignette(progress)
-      @vignette_progress =
-        progress
-
-      @vignette_color =
-        Color.new(
-          28,
-          8,
-          38
-        )
-
-      draw_vignette(
-        @vignette.bitmap,
-        @vignette_color,
-        @vignette_progress
-      )
-
-      # The bitmap itself carries the increasing density. Keep sprite opacity
-      # stable so the effect reads as the edges closing in, not a red damage cue.
-      @vignette.opacity =
-        225
+      @vignette_progress = progress
+      swap_asset(@vignette, vignette_frame(progress))
+      @vignette.opacity = 225
     end
 
     def release_vignette_on_dodge
-      start_opacity =
-        @vignette.opacity
+      start_opacity = @vignette.opacity
 
       6.times do |frame|
-        t =
-          frame.to_f /
-          5.0
-
-        eased =
-          ease_out_cubic(t)
-
-        @vignette.opacity =
-          lerp(
-            start_opacity,
-            0,
-            eased
-          ).to_i
-
+        t = frame.to_f / 5.0
+        @vignette.opacity = lerp(start_opacity, 0, ease_out_cubic(t)).to_i
         qte_update
       end
 
       @vignette.opacity = 0
       @vignette_progress = 0.0
+      swap_asset(@vignette, "vignette_threat_00")
     end
 
     def consume_vignette_on_hit
-      start_progress =
-        @vignette_progress
-
       7.times do |frame|
-        t =
-          frame.to_f /
-          6.0
-
-        eased =
-          ease_in_cubic(t)
-
-        progress =
-          lerp(
-            start_progress,
-            1.0,
-            eased
-          )
-
-        # Shift smoothly from the neutral purple threat color into damage red.
-        r =
-          lerp(
-            28,
-            145,
-            t
-          ).to_i
-
-        g =
-          lerp(
-            8,
-            0,
-            t
-          ).to_i
-
-        b =
-          lerp(
-            38,
-            18,
-            t
-          ).to_i
-
-        @vignette_progress =
-          progress
-
-        @vignette_color =
-          Color.new(
-            r,
-            g,
-            b
-          )
-
-        draw_vignette(
-          @vignette.bitmap,
-          @vignette_color,
-          progress
-        )
-
-        @vignette.opacity =
-          255
-
+        swap_asset(@vignette, sprintf("vignette_hit_%02d", frame))
+        @vignette.opacity = 255
         update_camera
         qte_update
       end
@@ -3425,14 +3015,7 @@ module ShadowLugiaQTE
     end
 
     def recolor_vignette(color)
-      @vignette_color =
-        color
-
-      draw_vignette(
-        @vignette.bitmap,
-        color,
-        @vignette_progress
-      )
+      # Compatibility hook.
     end
 
     #===========================================================================
@@ -3440,49 +3023,11 @@ module ShadowLugiaQTE
     #===========================================================================
 
     def create_letterbox
-      @letterbox_top =
-        pixel_sprite(
-          Graphics.width,
-          LETTERBOX_HEIGHT,
-          400
-        )
+      @letterbox_top = asset_sprite("letterbox", 400)
+      @letterbox_top.y = -LETTERBOX_HEIGHT
 
-      @letterbox_top.bitmap.fill_rect(
-        0,
-        0,
-        Graphics.width / 2,
-        LETTERBOX_HEIGHT / 2,
-        Color.new(
-          0,
-          0,
-          0
-        )
-      )
-
-      @letterbox_top.y =
-        -LETTERBOX_HEIGHT
-
-      @letterbox_bottom =
-        pixel_sprite(
-          Graphics.width,
-          LETTERBOX_HEIGHT,
-          400
-        )
-
-      @letterbox_bottom.bitmap.fill_rect(
-        0,
-        0,
-        Graphics.width / 2,
-        LETTERBOX_HEIGHT / 2,
-        Color.new(
-          0,
-          0,
-          0
-        )
-      )
-
-      @letterbox_bottom.y =
-        Graphics.height
+      @letterbox_bottom = asset_sprite("letterbox", 400)
+      @letterbox_bottom.y = Graphics.height
     end
 
     #===========================================================================
@@ -3490,106 +3035,21 @@ module ShadowLugiaQTE
     #===========================================================================
 
     def create_speed_lines
-      @speed_lines =
-        pixel_sprite(
-          Graphics.width,
-          Graphics.height,
-          160
-        )
-
+      @speed_lines = screen_asset("speed_vertical_slow_00", 160)
       @speed_lines.opacity = 0
     end
 
     def animate_speed_lines_directional(frame, direction, fast)
-      bitmap =
-        @speed_lines.bitmap
+      orientation = vertical_attack?(direction) ? "vertical" : "horizontal"
+      speed = fast ? "fast" : "slow"
+      index = frame % 32
 
-      bitmap.clear
+      swap_asset(
+        @speed_lines,
+        sprintf("speed_%s_%s_%02d", orientation, speed, index)
+      )
 
-      w =
-        Graphics.width / 2
-
-      h =
-        Graphics.height / 2
-
-      count =
-        fast ? 14 : 8
-
-      count.times do |i|
-        if vertical_attack?(
-             direction
-           )
-
-          x =
-            (
-              (i * 37) +
-              (frame *
-              (fast ? 7 : 1))
-            ) % w
-
-          y =
-            (
-              (i * 23) +
-              (frame *
-              (fast ? 5 : 1))
-            ) % h
-
-          length =
-            fast ?
-            18 +
-            ((i * 5) % 28) :
-            8 +
-            ((i * 3) % 14)
-
-          bitmap.fill_rect(
-            x,
-            y,
-            1,
-            length,
-            Color.new(
-              235,
-              225,
-              255
-            )
-          )
-        else
-          x =
-            (
-              (i * 23) +
-              (frame *
-              (fast ? 5 : 1))
-            ) % w
-
-          y =
-            (
-              (i * 37) +
-              (frame *
-              (fast ? 7 : 1))
-            ) % h
-
-          length =
-            fast ?
-            18 +
-            ((i * 5) % 28) :
-            8 +
-            ((i * 3) % 14)
-
-          bitmap.fill_rect(
-            x,
-            y,
-            length,
-            1,
-            Color.new(
-              235,
-              225,
-              255
-            )
-          )
-        end
-      end
-
-      @speed_lines.opacity =
-        fast ? 180 : 48
+      @speed_lines.opacity = fast ? 180 : 48
     end
 
     #===========================================================================
@@ -3612,87 +3072,7 @@ module ShadowLugiaQTE
           METER_HEIGHT
         )
 
-      @meter =
-        pixel_sprite(
-          METER_WIDTH,
-          METER_HEIGHT,
-          300
-        )
-
-      bmp =
-        @meter.bitmap
-
-      w =
-        METER_WIDTH / 2
-
-      h =
-        METER_HEIGHT / 2
-
-      zone_w =
-        SUCCESS_ZONE_WIDTH / 2
-
-      zone_x =
-        (w - zone_w) / 2
-
-      bmp.fill_rect(
-        0,
-        0,
-        w,
-        h,
-        Color.new(
-          245,
-          245,
-          255
-        )
-      )
-
-      bmp.fill_rect(
-        1,
-        1,
-        w - 2,
-        h - 2,
-        Color.new(
-          20,
-          12,
-          30
-        )
-      )
-
-      bmp.fill_rect(
-        zone_x - 2,
-        1,
-        zone_w + 4,
-        h - 2,
-        Color.new(
-          100,
-          48,
-          138
-        )
-      )
-
-      bmp.fill_rect(
-        zone_x,
-        2,
-        zone_w,
-        h - 4,
-        Color.new(
-          230,
-          214,
-          242
-        )
-      )
-
-      bmp.fill_rect(
-        (w / 2) - 1,
-        0,
-        2,
-        h,
-        Color.new(
-          255,
-          255,
-          255
-        )
-      )
+      @meter = asset_sprite("meter", 300)
 
       @meter.x =
         meter_x
@@ -3717,36 +3097,7 @@ module ShadowLugiaQTE
         qte_update
       end
 
-      @marker =
-        pixel_sprite(
-          MARKER_WIDTH,
-          MARKER_HEIGHT,
-          312
-        )
-
-      @marker.bitmap.fill_rect(
-        0,
-        0,
-        MARKER_WIDTH / 2,
-        MARKER_HEIGHT / 2,
-        Color.new(
-          255,
-          255,
-          255
-        )
-      )
-
-      @marker.bitmap.fill_rect(
-        1,
-        1,
-        (MARKER_WIDTH / 2) - 2,
-        (MARKER_HEIGHT / 2) - 2,
-        Color.new(
-          98,
-          30,
-          128
-        )
-      )
+      @marker = asset_sprite("marker", 312)
 
       @marker.ox =
         MARKER_WIDTH / 4
@@ -3761,15 +3112,7 @@ module ShadowLugiaQTE
         meter_y +
         (METER_HEIGHT / 2)
 
-      #-----------------------------------------------------------------------
-      # Prompt text is rendered at native resolution.
-      #
-      # The rest of the generated UI follows the 2px-density rule, but text
-      # should NOT be rendered into a half-resolution bitmap and then scaled
-      # up. That makes the font look blurry/rasterized. We keep its position
-      # snapped to the 2px grid while letting the font renderer draw cleanly.
-      #-----------------------------------------------------------------------
-
+      # Keep text native-res so the font stays crisp.
       @prompt =
         Sprite.new(
           @viewport
@@ -4030,39 +3373,31 @@ module ShadowLugiaQTE
     #===========================================================================
 
     def impact_frame(color, opacity)
-      bmp =
-        @impact_overlay.bitmap
+      name =
+        if color.red < 20 && color.green < 20 && color.blue < 20
+          "overlay_black"
+        elsif color.red > 240 && color.green > 240 && color.blue > 240
+          "overlay_white"
+        else
+          "overlay_impact_red"
+        end
 
-      bmp.clear
-
-      bmp.fill_rect(
-        0,
-        0,
-        Graphics.width / 2,
-        Graphics.height / 2,
-        color
-      )
-
-      @impact_overlay.opacity =
-        opacity
+      swap_asset(@impact_overlay, name)
+      @impact_overlay.opacity = opacity
     end
 
     def flash(color, opacity)
-      bmp =
-        @flash_overlay.bitmap
+      name =
+        if color.red > 240 && color.green > 240 && color.blue > 240
+          "overlay_white"
+        elsif color.red > 180 && color.green < 40
+          "overlay_red"
+        else
+          "overlay_purple"
+        end
 
-      bmp.clear
-
-      bmp.fill_rect(
-        0,
-        0,
-        Graphics.width / 2,
-        Graphics.height / 2,
-        color
-      )
-
-      @flash_overlay.opacity =
-        opacity
+      swap_asset(@flash_overlay, name)
+      @flash_overlay.opacity = opacity
     end
 
     def fade_flash(amount)
