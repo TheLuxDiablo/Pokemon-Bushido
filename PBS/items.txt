@@ -390,6 +390,7 @@
 623,TM97,Scroll 97,Scroll 97s,4,10000,"The user swings its body around violently to inflict damage on everything in its vicinity.",3,0,0,BRUTALSWING
 624,TM98,Scroll 98,Scroll 98s,4,10000,"The user attacks frustratedly. If the user's previous move has failed, the power of this move doubles.",3,0,0,STOMPINGTANTRUM
 625,TM99,Scroll 99,Scroll 99s,4,10000,"The user swings its tough tail wildly at the opposing Pokemon. This also lowers their Attack stats.",3,0,0,BREAKINGSWIPE
+857,TM100,Scroll 100,Scroll 100s,4,10000,"Attacks with its psychic power. Power increases and damages all opponents on Psychic Terrain.",3,0,0,EXPANDINGFORCE
 383,HM01,HM01,HM01s,4,0,"The target is cut with a scythe or claw. It can also be used to cut down thin trees.",4,0,0,CUT
 384,HM02,HM02,HM02s,4,0,"The user soars, then strikes on the second turn. It can also be used to fly to any familiar town.",4,0,0,FLY
 385,HM03,HM03,HM03s,4,0,"It swamps the area around the user with a giant wave. It can also be used for crossing water.",4,0,0,SURF

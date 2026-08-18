@@ -1262,7 +1262,7 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
-    KenshiLovers1 = Proc.new { |battle, scene, battlers|
+    KenshiLovers_FireGrass_1 = Proc.new { |battle, scene, battlers|
       user1 = battlers[1]
       user2 = battlers[3]
       target1 = battlers[0]
@@ -1274,6 +1274,7 @@ module DialogueModule
       pbMessage(_INTL("\\bNensho Style! Blazing Sunlight!"))
       scene.disappearBar
       battle.pbStartWeatherEx(user1, :Sun)
+      user1.pbRaiseStatStageEx([:SPEED], 2, :AGILITY)
       scene.pbHideOpponent(1)
 
       if user2
@@ -1283,7 +1284,6 @@ module DialogueModule
         scene.disappearBar
         battle.pbStartTerrainEx(user2, :Grassy)
     
-        user1.pbRaiseStatStageEx([:SPEED], 2, :AGILITY)
         user2.pbRaiseStatStageEx([:SPEED], 2, :AGILITY)
     
         pbMessage(_INTL("\\rTogether, we'll overcome any challenge!"))
@@ -1291,7 +1291,37 @@ module DialogueModule
       end
     }
 
-    KenshiLovers2 = Proc.new { |battle, scene, battlers|
+    KenshiLovers_FireGrass_Solo_G = Proc.new { |battle, scene, battlers|
+      user1 = battlers[1]
+      target1 = battlers[0]
+
+      scene.appearBar
+      scene.pbShowOpponent(0)
+      pbMessage(_INTL("\\rWe're stronger together, but that doesn't mean that alone we're weak!"))
+      pbMessage(_INTL("\\rKomorei Style! Lush Terrain!"))
+      scene.disappearBar
+      battle.pbStartTerrainEx(user2, :Grassy)
+      user2.pbRaiseStatStageEx([:SPEED], 2, :AGILITY)
+      scene.pbHideOpponent
+    }
+    
+
+    KenshiLovers_FireGrass_Solo_F = Proc.new { |battle, scene, battlers|
+      user1 = battlers[1]
+      target1 = battlers[0]
+
+      scene.appearBar
+      scene.pbShowOpponent(0)
+      pbMessage(_INTL("\\bI have to look cool in front of my girlfriend! Let me win this one!"))
+      pbMessage(_INTL("\\bNensho Style! Blazing Sunlight!"))
+      scene.disappearBar
+      battle.pbStartWeatherEx(user1, :Sun)
+      user1.pbRaiseStatStageEx([:SPEED], 2, :AGILITY)
+      target1.pbInflictStatusEx(:BURN, 0, :FLAMETHROWER, user1, false, nil, nil, target1)
+      scene.pbHideOpponent
+    }
+
+    KenshiLovers_WaterElec_1 = Proc.new { |battle, scene, battlers|
       user1 = battlers[1]
       user2 = battlers[3]
       target1 = battlers[0]
@@ -1319,6 +1349,91 @@ module DialogueModule
         scene.disappearBar
         scene.pbHideOpponent(1)
       end
+    }
+
+    KenshiLovers_Old_1 = Proc.new { |battle, scene, battlers|
+        user1 = battlers[1]
+        user2 = battlers[3]
+        target1 = battlers[0]
+        target3 = battlers[2]
+
+        scene.appearBar
+        scene.pbShowOpponent(1)
+        pbMessage(_INTL("\\rWe've always worked best as a couple!"))
+        scene.disappearBar
+        user2.pbRaiseStatStageEx(:ATTACK, 1)
+        user2.pbInflictStatusEx(:BURN, 0, :EMBER, user1, false, nil, nil, user2)
+        scene.appearBar
+        pbMessage(_INTL("\\rIt takes guts to challenge us!"))
+        scene.disappearBar
+        scene.pbHideOpponent(2)
+
+        scene.pbShowOpponent(0)
+        scene.appearBar
+        pbMessage(_INTL("\\bWatch as your speed and youth betrays you!"))
+        scene.disappearBar
+        user1.pbRaiseStatStageEx(:ATTACK, 1)
+        battle.pbAnimation(:TRICKROOM, user1, target1)
+        battle.field.effects[PBEffects::TrickRoom] = 6
+        battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        scene.appearBar
+        pbMessage(_INTL("\\bLet's see you get through this, young Kenshi!"))
+        scene.disappearBar
+        scene.pbHideOpponent(1)
+    }
+
+    KenshiLovers_Old_2 = Proc.new { |battle, scene, battlers|
+        user1 = battlers[1]
+        user2 = battlers[3]
+        target1 = battlers[0]
+        target3 = battlers[2]
+
+        scene.pbShowOpponent(0)
+        scene.appearBar
+        pbMessage(_INTL("\\bWe've come back and won harder battles than this..."))
+        pbMessage(_INTL("\\bThis duel isn't over yet!"))
+        scene.disappearBar
+        user1.pbRaiseStatStageEx(:SPATK, 2)
+        battle.pbStartTerrainEx(user1, :Psychic)
+        if(target1)
+            battle.pbAnimation(:TRICKROOM, user1, target1)
+        else
+            battle.pbAnimation(:TRICKROOM, user1, target2)
+        end
+        battle.field.effects[PBEffects::TrickRoom] = 6
+        battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        scene.pbHideOpponent(1)
+    }
+
+        KenshiLovers_Old_Solo_1 = Proc.new { |battle, scene, battlers|
+        user1 = battlers[1]
+        target1 = battlers[0]
+
+        scene.pbShowOpponent(0)
+        scene.appearBar
+        pbMessage(_INTL("\\bMy Pokémon may be slow, but with this technique that becomes an advantage!"))
+        scene.disappearBar
+        battle.pbAnimation(:TRICKROOM, user1, target1)
+        battle.field.effects[PBEffects::TrickRoom] = 6
+        battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        user1.pbRaiseStatStageEx(:ATTACK, 2)
+        scene.pbHideOpponent
+    }
+
+        KenshiLovers_Old_Solo_2 = Proc.new { |battle, scene, battlers|
+        user1 = battlers[1]
+        target1 = battlers[0]
+
+        scene.pbShowOpponent(0)
+        scene.appearBar
+        pbMessage(_INTL("\\rI bet you've never done something crazy like this before!"))
+        scene.disappearBar
+        user1.pbInflictStatusEx(:BURN, 0, :EMBER, user1, false, nil, nil, user1)
+        battle.pbAnimation(:TRICKROOM, user1, target1)
+        battle.field.effects[PBEffects::TrickRoom] = 6
+        battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        user1.pbRaiseStatStageEx(:ATTACK, 1)
+        scene.pbHideOpponent
     }
 
 
