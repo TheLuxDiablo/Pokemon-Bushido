@@ -1,0 +1,1255 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Shogun's Tower
+Map ID: 88
+
+Event: Akui Ambush
+Event ID: 3
+Position: X=3, Y=5
+Pages: 4
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Autorun
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Text: \xn[Shogun]\bAnd now, after careful assessment of your ability in battle, it is time for your clan assignments. Come forth, Musharna!
+[002] ◆ Set Event Location: [5, 0, 14, 14, 2]
+[003] ◆ Show Animation: [5, 93]
+[004] ◆ Wait: 4 frame(s)
+[005] ◆ Script: pbSetSelfSwitch(5,"A",true)
+[006] ◆ Script: vCry(518)
+[007] ◆ Text: \xn[Shogun]\bWhen I say your name, step forward. 
+[008] ◆ Text: \xn[Shogun]\bFirst! Kayoko Sawaki.
+[009] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb1eb90>]
+[010] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1eb40>]
+[011] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1eaf0>]
+[012] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1eaa0>]
+[013] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1ea50>]
+[014] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1ea00>]
+[015] ◆ Wait for Move Completion
+[016] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb1e730>]
+[017] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1e6e0>]
+[018] ◆ Text: \xn[Shogun]\bMusharna, if you will.
+[019] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb1e528>]
+[020] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1e4d8>]
+[021] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb1e398>]
+[022] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1e348>]
+[023] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1e2f8>]
+[024] ◆ Wait for Move Completion
+[025] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb1e118>]
+[026] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1e0c8>]
+[027] ◆ Script: vCry(518)
+[028] ◆ Wait: 20 frame(s)
+[029] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb1dec0>]
+[030] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1de70>]
+[031] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1de20>]
+[032] ◆ Wait for Move Completion
+[033] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb1dc40>]
+[034] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1dbf0>]
+[035] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb1dab0>]
+[036] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1da60>]
+[037] ◆ Wait for Move Completion
+[038] ◆ Wait: 20 frame(s)
+[039] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb1d880>]
+[040] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1d830>]
+[041] ◆ Text: \xn[Shogun]\bYour affinity aligns with that of the dark shadows who work in secret.
+[042] ◆ Text: \xn[Shogun]\bYou have been assigned to the Akui Clan!
+[043] ◆ Text: \xn[Kayoko]\rY- Yes, my lord...
+[044] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb1d588>]
+[045] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1d538>]
+[046] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1d4e8>]
+[047] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1d498>]
+[048] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1d448>]
+[049] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1d3f8>]
+[050] ◆ Wait for Move Completion
+[051] ◆ Text: \xn[Bystander 1]The Akui Clan?!
+[052] ◆ Text: \xn[Bystander 1]That's an unfortunate assignment...
+[053] ◆ Text: \xn[Bystander 2]Yeah, they're pretty scary… I hear that the Akui Clan is up to no good...
+[054] ◆ Text: \xn[Shogun]\bNext! \v[26] Hashimoto! 
+[055] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb1cf48>]
+[056] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1cef8>]
+[057] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1cea8>]
+[058] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1ce58>]
+[059] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1ce08>]
+[060] ◆ Wait for Move Completion
+[061] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb1cb88>]
+[062] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1cb38>]
+[063] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1cae8>]
+[064] ◆ Wait for Move Completion
+[065] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb1c908>]
+[066] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1c890>]
+[067] ◆ Script: vCry(518)
+[068] ◆ Wait: 20 frame(s)
+[069] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb1c688>]
+[070] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1c638>]
+[071] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1c5e8>]
+[072] ◆ Wait for Move Completion
+[073] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb1c408>]
+[074] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1c3b8>]
+[075] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb1c278>]
+[076] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb1c228>]
+[077] ◆ Wait for Move Completion
+[078] ◆ Wait: 20 frame(s)
+[079] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb1c048>]
+[080] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb14190>]
+[081] ◆ Text: \xn[Shogun]\bYour fiery passion for battling is unrivaled! Your heart burns with the flames of courage. You have been assigned to the Nensho Clan!
+[082] ◆ Text: \xn[\v[26]]\pogYes, my lord!
+[083] ◆ Text: \xn[Bystander 1]Now that's a good clan assignment! Nensho Clan sure is lucky!
+[084] ◆ Text: \xn[Bystander 2]I know right? It's a perfect match! Even their hair is red!
+[085] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb17d40>]
+[086] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb17cf0>]
+[087] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb17ca0>]
+[088] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb17c50>]
+[089] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb17c00>]
+[090] ◆ Text: \xn[Shogun]\bNext! \PN Masayoshi!
+[091] ◆ Text: \xn[Bystander 1]Ooh, the Royal Samurai’s kid!
+[092] ◆ Text: \xn[Bystander 2]This should be interesting...
+[093] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb17868>]
+[094] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb17818>]
+[095] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb177c8>]
+[096] ◆ Wait for Move Completion
+[097] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb175e8>]
+[098] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb17598>]
+[099] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb17548>]
+[100] ◆ Wait for Move Completion
+[101] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb17368>]
+[102] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb17318>]
+[103] ◆ Script: vCry(518)
+[104] ◆ Wait: 20 frame(s)
+[105] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb17110>]
+[106] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb170c0>]
+[107] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb17070>]
+[108] ◆ Wait for Move Completion
+[109] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb16e90>]
+[110] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb16e40>]
+[111] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb16d00>]
+[112] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb16cb0>]
+[113] ◆ Wait for Move Completion
+[114] ◆ Wait: 20 frame(s)
+[115] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb16ad0>]
+[116] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb16a80>]
+[117] ◆ Text: \xn[Shogun]\bY- you… Musharna, are you sure this is correct?
+[118] ◆ Show Animation: [20, 10]
+[119] ◆ Wait: 26 frame(s)
+[120] ◆ Text: \xn[Shogun]\bWell… it seems your affinity is undetected. Your compatibility cannot be measured.
+[121] ◆ Text: \xn[Bystander 1]No affinity?!
+[122] ◆ Text: \xn[Bystander 2]What? That’s never happened before!
+[123] ◆ Fade Out BGM: [3]
+[124] ◆ Text: \xn[Shogun]\bPlease, be silent! \PN, please return to the line.
+[125] ◆ Text: \xn[Shogun]\bNext, we will have-\wtnp[26]
+[126] ◆ Text: \xn[???]Forretress, use Explosion!\wtnp[30]
+[127] ◆ Script: vCry(205)
+[128] ◆ Wait: 16 frame(s)
+[129] ◆ Play SE: Explosion (Volume 90, Pitch 85)
+[130] ◆ Screen Shake: [8, 6, 20]
+[131] ◆ Screen Flash: [(255.000000, 204.000000, 136.000000, 238.000000), 18]
+[132] ◆ Wait: 20 frame(s)
+[133] ◆ Script: pbSetSelfSwitch(21,"A",true)
+[134] ◆ Script: pbSetSelfSwitch(22,"A",true)
+[135] ◆ Script: pbSetSelfSwitch(23,"A",true)
+[136] ◆ Script: pbSetSelfSwitch(24,"A",true)
+[137] ◆ Script: pbSetSelfSwitch(25,"A",true)
+[138] ◆ Script: pbSetSelfSwitch(26,"A",true)
+[139] ◆ Play BGM: MarioBowserCastle (Volume 80, Pitch 100)
+[140] ◆ Scroll Map: [8, 2, 4]
+[141] ◆ Scroll Map: [6, 8, 4]
+[142] ◆ Wait: 36 frame(s)
+[143] ◆ Show Picture: [1, "bar1", 0, 0, 0, 32, 100, 100, 255, 0]
+[144] ◆ Show Picture: [2, "bar2", 0, 0, 0, -32, 100, 100, 255, 0]
+[145] ◆ Move Picture: [1, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[146] ◆ Move Picture: [2, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[147] ◆ Wait: 20 frame(s)
+[148] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb15c20>]
+[149] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15bd0>]
+[150] ◆ Text: \xn[Akui Kenshi]Excellent work Forretress, now get back in your Poké Ball!
+[151] ◆ Script: vCry(205)
+[152] ◆ Show Animation: [26, 94]
+[153] ◆ Script: vSSF(26)
+[154] ◆ Wait: 12 frame(s)
+[155] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb15888>]
+[156] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15838>]
+[157] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb157e8>]
+[158] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15798>]
+[159] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15748>]
+[160] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb156f8>]
+[161] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb156a8>]
+[162] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15658>]
+[163] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15608>]
+[164] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb15298>]
+[165] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15248>]
+[166] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb151f8>]
+[167] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb151a8>]
+[168] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15158>]
+[169] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15108>]
+[170] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb150b8>]
+[171] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15068>]
+[172] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb15018>]
+[173] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb14fc8>]
+[174] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb14f78>]
+[175] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb14f28>]
+[176] ◆ Script: pbSetSelfSwitch(5,"A",false)
+[177] ◆ Scroll Map: [4, 8, 4]
+[178] ◆ Scroll Map: [2, 2, 4]
+[179] ◆ Wait for Move Completion
+[180] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb14910>]
+[181] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb148c0>]
+[182] ◆ Text: \xn[Akui Kenshi 1]Surrender your Pokemon! The Akui Clan strikes!
+[183] ◆ Text: \xn[Akui Kenshi 2]Looks like you were having such a nice tourn-\wtnp[30]
+[184] ◆ Show Animation: [25, 8]
+[185] ◆ Wait: 20 frame(s)
+[186] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb145c8>]
+[187] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb14578>]
+[188] ◆ Text: \xn[Akui Kenshi 2]Hey! It’s that kid from earlier!
+[189] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb143c0>]
+[190] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb14370>]
+[191] ◆ Text: \xn[Akui Kenshi 1]Oh yeah?
+[192] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb141b8>]
+[193] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb14140>]
+[194] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb0ffc8>]
+[195] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0ff78>]
+[196] ◆ Text: \xn[Akui Kenshi 1]We didn’t want that stupid Celebi anyways!
+[197] ◆ Text: \xn[Akui Kenshi 2]That's right! The real reason we came here was to crash this tournament and get some Shadow Pokemon for ourselves!
+[198] ◆ Text: \xn[Akui Kenshi 2]Now, just hand over all your Pokémon, so we can close their hearts and make them stronger!
+[199] ◆ Show Animation: [13, 9]
+[200] ◆ Wait: 26 frame(s)
+[201] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb0fc30>]
+[202] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0fbe0>]
+[203] ◆ Text: \xn[\v[26]]\pog\PN! Do you know these scumbags?
+[204] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb0fa28>]
+[205] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0f9d8>]
+[206] ◆ Text: \xn[Shogun]Someone call the local Samurai at once!
+[207] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb0f820>]
+[208] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0f7d0>]
+[209] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb0f690>]
+[210] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0f640>]
+[211] ◆ Text: \xn[Akui Kenshi 1]Yeah right! We buffed our Pokémon up, so there’s no way we’re losing again!
+[212] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb0f488>]
+[213] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0f438>]
+[214] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0f3e8>]
+[215] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0f398>]
+[216] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0f348>]
+[217] ◆ Wait for Move Completion
+[218] ◆ Wait: 6 frame(s)
+[219] ◆ Text: \xn[\v[26]]\pogI’ll take out this one, \PN. Take care of the other one for me!
+[220] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb0f000>]
+[221] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0efb0>]
+[222] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb0ee70>]
+[223] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0ee20>]
+[224] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0edd0>]
+[225] ◆ Wait: 8 frame(s)
+[226] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb0ebf0>]
+[227] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0eba0>]
+[228] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0eb50>]
+[229] ◆ Text: \xn[Akui Kenshi 2]I’m not losing this time! You Kenshi and your "Bushido" codes of honor...
+[230] ◆ Text: \xn[Akui Kenshi 2]They're all a load of crap! I’ll prove you wrong here and now!
+[231] ◆ Conditional Branch: 028 PlayerGender == 1
+  [232] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb0e880>]
+  [233] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e830>]
+  [234] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e790>]
+  [235] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e718>]
+  [236] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e6c8>]
+  [237] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e650>]
+  [238] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e600>]
+  [239] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e588>]
+  [240] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e538>]
+  [241] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e4c0>]
+  [242] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e470>]
+  [243] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e3f8>]
+  [244] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e3a8>]
+  [245] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e330>]
+  [246] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e2e0>]
+  [247] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e268>]
+  [248] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e218>]
+  [249] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e1a0>]
+  [250] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0e150>]
+[252] ◆ Else
+  [253] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb0d9f8>]
+  [254] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d9a8>]
+  [255] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d908>]
+  [256] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d890>]
+  [257] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d840>]
+  [258] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d7c8>]
+  [259] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d778>]
+  [260] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d700>]
+  [261] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d6b0>]
+  [262] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d638>]
+  [263] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d5e8>]
+  [264] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d570>]
+  [265] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d520>]
+  [266] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d4a8>]
+  [267] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d458>]
+  [268] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d3e0>]
+  [269] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d390>]
+  [270] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d318>]
+  [271] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0d2c8>]
+[273] ◆ Branch End
+[274] ◆ Wait for Move Completion
+[275] ◆ Show Animation: [25, 9]
+[276] ◆ Wait: 24 frame(s)
+[277] ◆ Text: \xn[Akui Kenshi 2]What the-
+[278] ◆ Text: \xn[Akui Kenshi 2]What was that glow!?
+[279] ◆ Text: \xn[Akui Kenshi 2]They said you were a Masayoshi...
+[280] ◆ Text: \xn[Akui Kenshi 2]Gah! That doesn’t matter! Our shadows will eclipse your light!
+[281] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb0c8a0>]
+[282] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0c850>]
+[283] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb0c710>]
+[284] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0c6c0>]
+[285] ◆ Text: \xn[Shogun]\b\PN! Is that Ryo's Katana in your hand?
+[286] ◆ Text: \xn[Shogun]\bYou really are his child! Quick, throw these at their Shadow Pokémon!
+[287] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb0c490>]
+[288] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0c440>]
+[289] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0c3f0>]
+[290] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0c3a0>]
+[291] ◆ Wait: 14 frame(s)
+[292] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb0c170>]
+[293] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb0c120>]
+[294] ◆ Wait: 4 frame(s)
+[295] ◆ Script: vRI("GREATBALL",5)
+[296] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb07f30>]
+[297] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb07ee0>]
+[298] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb07e90>]
+[299] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb07e40>]
+[300] ◆ Wait: 14 frame(s)
+[301] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb07c10>]
+[302] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb07bc0>]
+[303] ◆ Text: \xn[Akui Kenshi 2]Hahaha! You really are fools, aren't you?
+[304] ◆ Text: \xn[Akui Kenshi 2]Our Shadow Pokémon are unstoppable!
+[305] ◆ Text: \xn[Akui Kenshi 2]Now, prepare to be destroyed!
+[306] ◆ Recover All: [0]
+[307] ◆ Script: BattleScripting.setInScript("turnStart0",:KatanaIntro,true)
+[308] ◆ Script: BattleScripting.setInScript("lastOpp",:KatanaAwakens,true)
+[309] ◆ Script: BattleScripting.setTrainerAce(2)
+[310] ◆ Conditional Branch: Script: pbTrainerBattle(:AKUICLAN_F,"Kumiko",nil,nil,2,nil,36)
+  [311] ◆ Fade Out BGM: [1]
+  [312] ◆ Wait: 4 frame(s)
+  [313] ◆ Recover All: [0]
+  [314] ◆ Script: pbRegisterItemOutOfBag(:KATANALIGHT)
+  [315] ◆ Screen Flash: [(255.000000, 255.000000, 255.000000, 204.000000), 6]
+  [316] ◆ Play SE: Battle damage super (Volume 90, Pitch 100)
+  [317] ◆ Wait: 4 frame(s)
+  [318] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb073f0>]
+  [319] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb073a0>]
+  [320] ◆ Conditional Branch: Script: $Trainer.owned[PBSpecies::NICKIT]
+    [321] ◆ Text: \xn[Akui Kenshi 2]What the...
+    [322] ◆ Text: \xn[Akui Kenshi 2]You… you can’t be serious…
+    [323] ◆ Text: \xn[Akui Kenshi 2]How did you catch my Pokémon?
+    [324] ◆ Text: \xn[Akui Kenshi 2]Return my Nickit at once! I won't let you purify my shadow Pokémon!
+  [326] ◆ Else
+    [327] ◆ Text: \xn[Akui Kenshi 2]What the...
+    [328] ◆ Text: \xn[Akui Kenshi 2]You… you can’t be serious…
+    [329] ◆ Text: \xn[Akui Kenshi 2]Your strength... that light... it can't be....
+  [331] ◆ Branch End
+  [332] ◆ Text: \xn[Shogun]\bVery good, \PN. You seem to have the same abilities as your father.
+  [333] ◆ Text: \xn[Akui Kenshi 1]We- we’re not done yet!
+  [334] ◆ Text: \xn[???]\rThat’s enough, both of you.
+  [335] ◆ Show Animation: [24, 8]
+  [336] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb06b80>]
+  [337] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb06b30>]
+  [338] ◆ Show Animation: [25, 8]
+  [339] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb069a0>]
+  [340] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb06950>]
+  [341] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb06900>]
+  [342] ◆ Wait: 20 frame(s)
+  [343] ◆ Screen Flash: [(170.000000, 85.000000, 255.000000, 255.000000), 10]
+  [344] ◆ Script: pbSetSelfSwitch(27,"A",true)
+  [345] ◆ Play BGM: Conquest-EventTheme05 (Volume 100, Pitch 100)
+  [346] ◆ Scroll Map: [4, 1, 4]
+  [347] ◆ Scroll Map: [8, 2, 4]
+  [348] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb064c8>]
+  [349] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb06478>]
+  [350] ◆ Text: \xn[???]\rTch, I’ll never understand you Kenshi and your formalities.
+  [351] ◆ Text: \xn[Shogun]\bY- you’re…
+  [352] ◆ Text: \xn[???]\rI suppose I should introduce myself… what a pain.
+  [353] ◆ Text: \xn[Mashiro]\rThe name’s Mashiro Nato, Senior Kenshi of the Akui Clan. They call me the Hound of Disrespect.
+  [354] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb06158>]
+  [355] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb06108>]
+  [356] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb060b8>]
+  [357] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb05f28>]
+  [358] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb05ed8>]
+  [359] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb05e88>]
+  [360] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x000001925cb05cf8>]
+  [361] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb05ca8>]
+  [362] ◆ Wait for Move Completion
+  [363] ◆ Text: \xn[Mashiro]\rLook at you, Mr. High-and-Mighty. You look as bad as ever.
+  [364] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb05aa0>]
+  [365] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb05a50>]
+  [366] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb05a00>]
+  [367] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb059b0>]
+  [368] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb05960>]
+  [369] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb05910>]
+  [370] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb058c0>]
+  [371] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb05870>]
+  [372] ◆ Wait for Move Completion
+  [373] ◆ Text: \xn[Kayoko]\rHow dare you talk to the Shogun like that?!
+  [374] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x000001925cb05488>]
+  [375] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb05438>]
+  [376] ◆ Text: \xn[Mashiro]\rOh? How cute. Isn’t it a bit hypocritical? You preach respect, and yet this is how you talk to your superior?
+  [377] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x000001925cb05280>]
+  [378] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb05230>]
+  [379] ◆ Text: \xn[Mashiro]\rSee, this is why I detest the codes of Bushido. They’re so… restricting.
+  [380] ◆ Text: \xn[Mashiro]\rSometimes, you just have to let yourself be free! Then you can truly experience the greatness of life.
+  [381] ◆ Text: \xn[Mashiro]\rShadow Pokémon are uninhibited by nonsense like honor and emotions.
+  [382] ◆ Text: \xn[Mashiro]\rAllow me to demonstrate!
+  [383] ◆ Text: \xn[Mashiro]\rKatana of Shadows, Corrupt Style!
+  [384] ◆ Screen Flash: [(170.000000, 85.000000, 255.000000, 255.000000), 30]
+  [385] ◆ Play SE: Cut (Volume 100, Pitch 100)
+  [386] ◆ Wait: 4 frame(s)
+  [387] ◆ Play SE: shadowkatana (Volume 100, Pitch 100)
+  [388] ◆ Script: vSST(28)
+  [389] ◆ Script: vSST(29)
+  [390] ◆ Script: vSST(30)
+  [391] ◆ Script: vSST(31)
+  [392] ◆ Script: vSST(32)
+  [393] ◆ Wait: 30 frame(s)
+  [394] ◆ Scroll Map: [2, 1, 4]
+  [395] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb04970>]
+  [396] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb04920>]
+  [397] ◆ Text: \xn[\v[26]]\pogDarumaka??
+  [398] ◆ Text: \xn[\v[26]]\pogAre you okay?
+  [399] ◆ Set Move Route: [32, #<RPG::MoveRoute:0x000001925cb046f0>]
+  [400] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb046a0>]
+  [401] ◆ Play SE: 554Cry (Volume 80, Pitch 65)
+  [402] ◆ Wait: 20 frame(s)
+  [403] ◆ Play SE: Battle damage normal (Volume 90, Pitch 100)
+  [404] ◆ Screen Flash: [(153.000000, 119.000000, 187.000000, 136.000000), 10]
+  [405] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb04330>]
+  [406] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb042e0>]
+  [407] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb04290>]
+  [408] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb04240>]
+  [409] ◆ Wait: 14 frame(s)
+  [410] ◆ Text: \xn[\v[26]]\pogD- Darumaka...
+  [411] ◆ Text: \xn[Mashiro]\rLook! This is what liberation truly is!
+  [412] ◆ Fade Out BGM: [2]
+  [413] ◆ Text: \xn[Mashiro]\rWell, I’m afraid I must take my leave. Bye-bye now! Hahahah! 
+  [414] ◆ Screen Flash: [(170.000000, 85.000000, 255.000000, 255.000000), 10]
+  [415] ◆ Script: vSSF(27)
+  [416] ◆ Script: vSSF(28)
+  [417] ◆ Script: vSSF(29)
+  [418] ◆ Script: vSSF(30)
+  [419] ◆ Script: vSSF(31)
+  [420] ◆ Script: vSSF(32)
+  [421] ◆ Wait: 10 frame(s)
+  [422] ◆ Script: vSSF(26)
+  [423] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb5f9b0>]
+  [424] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f960>]
+  [425] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f910>]
+  [426] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f8c0>]
+  [427] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f870>]
+  [428] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f820>]
+  [429] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f7d0>]
+  [430] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f780>]
+  [431] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f730>]
+  [432] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb5f3c0>]
+  [433] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f370>]
+  [434] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f320>]
+  [435] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f2d0>]
+  [436] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f280>]
+  [437] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f230>]
+  [438] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f1b8>]
+  [439] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f168>]
+  [440] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f118>]
+  [441] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f0c8>]
+  [442] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5f050>]
+  [443] ◆ Wait for Move Completion
+  [444] ◆ Play SE: Door exit (Volume 100, Pitch 100)
+  [445] ◆ Script: vSSF(24)
+  [446] ◆ Script: vSSF(25)
+  [447] ◆ Wait: 28 frame(s)
+  [448] ◆ Play BGM: Conquest-EpisodeEnding (Volume 80, Pitch 100)
+  [449] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb5e970>]
+  [450] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5e920>]
+  [451] ◆ Wait: 6 frame(s)
+  [452] ◆ Text: \xn[\v[26]]...
+  [453] ◆ Scroll Map: [2, 7, 4]
+  [454] ◆ Wait: 50 frame(s)
+  [455] ◆ Script: vSST(33)
+  [456] ◆ Play SE: Door exit (Volume 100, Pitch 100)
+  [457] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb5e538>]
+  [458] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5e4e8>]
+  [459] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb5e3a8>]
+  [460] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5e358>]
+  [461] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb5e1f0>]
+  [462] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5e1a0>]
+  [463] ◆ Text: \xn[Sukiro]\bIs everyone alright?!
+  [464] ◆ Set Move Route: [33, #<RPG::MoveRoute:0x000001925cb5dfe8>]
+  [465] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5df98>]
+  [466] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5df48>]
+  [467] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5def8>]
+  [468] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5dea8>]
+  [469] ◆ Scroll Map: [8, 4, 4]
+  [470] ◆ Wait: 40 frame(s)
+  [471] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb5dbd8>]
+  [472] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5db88>]
+  [473] ◆ Text: \xn[Shogun]\bAh, Sukiro. No worries, your two pupils have fended off the attackers. You have raised them well.
+  [474] ◆ Text: \xn[Sukiro]\bI humbly accept your praise my lord!
+  [475] ◆ Text: \xn[Shogun]\bUnfortunately, there have been some damages as well… It seems the Akui Clan are stealing Pokémon and corrupting them.
+  [476] ◆ Text: \xn[Shogun]\bHowever…
+  [477] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb5d868>]
+  [478] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5d818>]
+  [479] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5d7c8>]
+  [480] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb5d638>]
+  [481] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5d5e8>]
+  [482] ◆ Scroll Map: [6, 1, 4]
+  [483] ◆ Scroll Map: [8, 2, 4]
+  [484] ◆ Wait: 20 frame(s)
+  [485] ◆ Text: \xn[Shogun]\b\PN. It’s curious. Your father has been missing ever since I sent him to a mission on Yami Island, home to the Akui Clan.
+  [486] ◆ Text: \xn[Shogun]\bAnd now, here you show up with Ryo’s katana, followed by two Kenshi of the Akui Clan.
+  [487] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb5d2c8>]
+  [488] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5d278>]
+  [489] ◆ Text: \xn[\v[26]]\pogDidn’t you mention something about Celebi too?
+  [490] ◆ Set Move Route: [33, #<RPG::MoveRoute:0x000001925cb5d0c0>]
+  [491] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5d070>]
+  [492] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5d020>]
+  [493] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb5ce90>]
+  [494] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5ce40>]
+  [495] ◆ Text: \xn[Sukiro]\bOh, I see! Celebi must have come from the island to give you the katana.
+  [496] ◆ Text: \xn[Shogun]\bHmm, this means two things. First, Ryo is in danger. Second, Celebi has recognized you as the one to go save him.
+  [497] ◆ Set Move Route: [33, #<RPG::MoveRoute:0x000001925cb5cc10>]
+  [498] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5cbc0>]
+  [499] ◆ Text: \xn[Sukiro]\bBut my lord…
+  [500] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb5ca08>]
+  [501] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5c9b8>]
+  [502] ◆ Text: \xn[Shogun]\bYes, Sukiro. I am aware that your pupils have yet to be trained.
+  [503] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb5c800>]
+  [504] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb5c7b0>]
+  [505] ◆ Text: \xn[Shogun]\bIn that case, \PN, I ask that you travel the Aisho region.
+  [506] ◆ Text: \xn[Shogun]\bDue to your… unusual affinity, I cannot assign you to a clan at present.
+  [507] ◆ Text: \xn[Shogun]\bBy travelling to the three major cities, you will be able to learn the ways of the Katana of Light.
+  [508] ◆ Text: \xn[Shogun]\bThen you will be the one to bring an end to the Akui Clan’s misdoings.
+  [509] ◆ Label: Accept
+  [510] ◆ Text: \xn[Shogun]\bDo you accept?
+  [511] ◆ Show Choices: Yes / No
+  [512] ◆ When [Yes]
+    [513] ◆ Text: \xn[Shogun]\bGood. Very good.
+  [515] ◆ When [No]
+    [516] ◆ Text: \xn[Shogun]\bI will ask you again. Do not dishonour me this time.
+    [517] ◆ Jump to Label: Accept
+  [519] ◆ Choice End
+  [520] ◆ Text: \xn[Shogun]\bYour first destination will be Tsuchi Village, home to the Komorei Clan of Grass.
+  [521] ◆ Text: \xn[Shogun]\bGo south, through the forest, and speak to the Komorei Clan leader on my behalf.
+  [522] ◆ Text: \xn[Shogun]\bThere is a special shrine there, and if you pray to it, you should awaken the Katana of Light further.
+  [523] ◆ Show Animation: [20, 10]
+  [524] ◆ Wait: 24 frame(s)
+  [525] ◆ Text: \xn[Shogun]\bNow, \PN. Since you do not have an affinity that I can measure...
+  [526] ◆ Text: \xn[Shogun]\bI'm afraid that you will be unable to use special katana techniques in battle.
+  [527] ◆ Text: \xn[Shogun]\bYou are the wielder of the Katana of Light now, however. A pure soul begets an instrument of purity.
+  [528] ◆ Text: \xn[Shogun]\bYou must understand that the Katana of Light is meant to be used properly.
+  [529] ◆ Text: \xn[Shogun]\bA katana is said to be the soul of a samurai. Do not tarnish your soul.
+  [530] ◆ Text: \xn[Shogun]\bUse that katana for justice, as your father did.
+  [531] ◆ Set Move Route: [33, #<RPG::MoveRoute:0x000001925cb57bc0>]
+  [532] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb57b70>]
+  [533] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb57a30>]
+  [534] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb579e0>]
+  [535] ◆ Text: \xn[Sukiro]\bThank you, my lord.
+  [536] ◆ Text: \xn[Sukiro]\bI shall help \PN make preparations immediately.
+  [537] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 20]
+  [538] ◆ Wait: 20 frame(s)
+  [539] ◆ Control Switches: 082 ShogunDone = ON
+  [540] ◆ Transfer Player: 085 Hagane City (19,25)
+  [541] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 20]
+  [542] ◆ Wait: 20 frame(s)
+  [543] ◆ Control Self Switch: A = OFF
+[545] ◆ Else
+  [546] ◆ Script: vSSF(24)
+  [547] ◆ Script: vSSF(25)
+  [548] ◆ Script: vSSF(26)
+  [549] ◆ Move Picture: [1, 10, 0, 0, 0, 32, 100, 100, 255, 0]
+  [550] ◆ Move Picture: [2, 10, 0, 0, 0, -32, 100, 100, 255, 0]
+  [551] ◆ Wait: 30 frame(s)
+  [552] ◆ Erase Picture: [1]
+  [553] ◆ Erase Picture: [2]
+  [554] ◆ Set Event Location: [20, 0, 13, 14, 2]
+  [555] ◆ Set Event Location: [20, 0, 13, 14, 2]
+[557] ◆ Branch End
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: 036 Kayoko >= 2
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Autorun
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Script: pbToggleFollowingPokemon("off",true)
+[002] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb56d88>]
+[003] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb56d38>]
+[004] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb56ce8>]
+[005] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb56c98>]
+[006] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb56c48>]
+[007] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb56bf8>]
+[008] ◆ Wait for Move Completion
+[009] ◆ Scroll Map: [8, 2, 4]
+[010] ◆ Wait: 20 frame(s)
+[011] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb56888>]
+[012] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb56838>]
+[013] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb567e8>]
+[014] ◆ Wait for Move Completion
+[015] ◆ Text: \xn[Shogun]And now, after careful assessment of your ability in battle, it is time for your clan assignments. Come forth, Musharna!
+[016] ◆ Set Event Location: [5, 0, 14, 14, 2]
+[017] ◆ Show Animation: [5, 93]
+[018] ◆ Wait: 4 frame(s)
+[019] ◆ Script: pbSetSelfSwitch(5,"A",true)
+[020] ◆ Script: vCry(518)
+[021] ◆ Text: \xn[Shogun]When I say your name, step forward. 
+[022] ◆ Text: \xn[Shogun]First! Kayoko Sawaki.
+[023] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb562c0>]
+[024] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb56270>]
+[025] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb56220>]
+[026] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb561d0>]
+[027] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb56180>]
+[028] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb56130>]
+[029] ◆ Wait for Move Completion
+[030] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb55e60>]
+[031] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb55e10>]
+[032] ◆ Text: \xn[Shogun]Musharna, if you will.
+[033] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb55c30>]
+[034] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb55be0>]
+[035] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb55a78>]
+[036] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb55a28>]
+[037] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb559d8>]
+[038] ◆ Wait for Move Completion
+[039] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb557d0>]
+[040] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb55780>]
+[041] ◆ Script: vCry(518)
+[042] ◆ Wait: 20 frame(s)
+[043] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb55578>]
+[044] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb55528>]
+[045] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb554d8>]
+[046] ◆ Wait for Move Completion
+[047] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb552d0>]
+[048] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb55280>]
+[049] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb55140>]
+[050] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb550f0>]
+[051] ◆ Wait for Move Completion
+[052] ◆ Wait: 20 frame(s)
+[053] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb54f10>]
+[054] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54ec0>]
+[055] ◆ Text: \xn[Shogun]Your affinity aligns with that of the dark shadows who work in secret. You have been assigned to the Akui Clan!
+[056] ◆ Text: \xn[Kayoko]Y- Yes, my lord.
+[057] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb54c90>]
+[058] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54c40>]
+[059] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54bf0>]
+[060] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54ba0>]
+[061] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54b50>]
+[062] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54b00>]
+[063] ◆ Wait for Move Completion
+[064] ◆ Text: \xn[Bystander 1]Akui Clan?!
+[065] ◆ Text: \xn[Bystander 2]Scary… I hear that clan is up to no good...
+[066] ◆ Text: \xn[Shogun]Next! \v[26] Hashimoto! 
+[067] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb546c8>]
+[068] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54678>]
+[069] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54628>]
+[070] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb545d8>]
+[071] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54588>]
+[072] ◆ Wait for Move Completion
+[073] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb542e0>]
+[074] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54290>]
+[075] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54240>]
+[076] ◆ Wait for Move Completion
+[077] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb54060>]
+[078] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb54010>]
+[079] ◆ Script: vCry(518)
+[080] ◆ Wait: 20 frame(s)
+[081] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb4fe20>]
+[082] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4fdd0>]
+[083] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4fd80>]
+[084] ◆ Wait for Move Completion
+[085] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb4fba0>]
+[086] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4fb50>]
+[087] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb4fa10>]
+[088] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4f9c0>]
+[089] ◆ Wait for Move Completion
+[090] ◆ Wait: 20 frame(s)
+[091] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb4f7e0>]
+[092] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4f790>]
+[093] ◆ Text: \xn[Shogun]Your fiery passion for battling is unrivaled! Your heart burns with the flames of courage. You have been assigned to the Nensho Clan!
+[094] ◆ Text: \xn[\v[26]]Yes, my lord!
+[095] ◆ Text: \xn[Bystander 1]Now that's a good clan assignment! Nensho Clan sure is lucky!
+[096] ◆ Text: \xn[Bystander 2]I know right? It's a perfect match! Even their hair is red!
+[097] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb4f470>]
+[098] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4f420>]
+[099] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4f3d0>]
+[100] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4f380>]
+[101] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4f330>]
+[102] ◆ Text: \xn[Shogun]Next! \PN Masayoshi!
+[103] ◆ Text: \xn[Bystander 1]Ooo, the Royal Samurai’s kid!
+[104] ◆ Text: \xn[Bystander 2]This should be interesting.
+[105] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb4ef98>]
+[106] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4ef48>]
+[107] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4eef8>]
+[108] ◆ Wait for Move Completion
+[109] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb4ed18>]
+[110] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4ecc8>]
+[111] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4ec78>]
+[112] ◆ Wait for Move Completion
+[113] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb4ea98>]
+[114] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4ea48>]
+[115] ◆ Script: vCry(518)
+[116] ◆ Wait: 20 frame(s)
+[117] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x000001925cb4e840>]
+[118] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4e7f0>]
+[119] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4e7a0>]
+[120] ◆ Wait for Move Completion
+[121] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb4e5c0>]
+[122] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4e570>]
+[123] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb4e430>]
+[124] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4e3e0>]
+[125] ◆ Wait for Move Completion
+[126] ◆ Wait: 20 frame(s)
+[127] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb4e200>]
+[128] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4e1b0>]
+[129] ◆ Text: \xn[Shogun]Y- you… Musharna, are you sure this is correct?
+[130] ◆ Text: \xn[Shogun]Well… it seems your affinity is undetected. Your compatibility cannot be measured.
+[131] ◆ Text: \xn[Bystander 1]No affinity?!
+[132] ◆ Text: \xn[Bystander 2]That’s never happened before!
+[133] ◆ Fade Out BGM: [3]
+[134] ◆ Text: \xn[Shogun]Please, be silent! \PN, please return to the line.
+[135] ◆ Text: \xn[Shogun]Next, we will have-\wtnp[26]
+[136] ◆ Text: \xn[???]Forretress, use Explosion!\wtnp[30]
+[137] ◆ Script: vCry(205)
+[138] ◆ Wait: 16 frame(s)
+[139] ◆ Play SE: Explosion (Volume 90, Pitch 85)
+[140] ◆ Screen Shake: [8, 6, 20]
+[141] ◆ Screen Flash: [(255.000000, 204.000000, 136.000000, 238.000000), 18]
+[142] ◆ Wait: 20 frame(s)
+[143] ◆ Script: pbSetSelfSwitch(21,"A",true)
+[144] ◆ Script: pbSetSelfSwitch(22,"A",true)
+[145] ◆ Script: pbSetSelfSwitch(23,"A",true)
+[146] ◆ Script: pbSetSelfSwitch(24,"A",true)
+[147] ◆ Script: pbSetSelfSwitch(25,"A",true)
+[148] ◆ Script: pbSetSelfSwitch(26,"A",true)
+[149] ◆ Play BGM: MarioBowserCastle (Volume 80, Pitch 100)
+[150] ◆ Scroll Map: [8, 2, 4]
+[151] ◆ Scroll Map: [6, 8, 4]
+[152] ◆ Wait: 36 frame(s)
+[153] ◆ Show Picture: [1, "bar1", 0, 0, 0, 32, 100, 100, 255, 0]
+[154] ◆ Show Picture: [2, "bar2", 0, 0, 0, -32, 100, 100, 255, 0]
+[155] ◆ Move Picture: [1, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[156] ◆ Move Picture: [2, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[157] ◆ Wait: 20 frame(s)
+[158] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb4d3c8>]
+[159] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4d378>]
+[160] ◆ Text: Excellent work Forretress, now get back in your Poké Ball!
+[161] ◆ Script: vCry(205)
+[162] ◆ Show Animation: [26, 94]
+[163] ◆ Script: vSSF(26)
+[164] ◆ Wait: 12 frame(s)
+[165] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb4d030>]
+[166] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4cfe0>]
+[167] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4cf90>]
+[168] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4cf40>]
+[169] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4cef0>]
+[170] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4cea0>]
+[171] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4ce50>]
+[172] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4ce00>]
+[173] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4cdb0>]
+[174] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb4ca40>]
+[175] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c9f0>]
+[176] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c9a0>]
+[177] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c950>]
+[178] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c900>]
+[179] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c8b0>]
+[180] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c860>]
+[181] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c810>]
+[182] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c7c0>]
+[183] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c770>]
+[184] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c720>]
+[185] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c6d0>]
+[186] ◆ Script: pbSetSelfSwitch(5,"A",false)
+[187] ◆ Scroll Map: [4, 8, 4]
+[188] ◆ Scroll Map: [2, 2, 4]
+[189] ◆ Wait for Move Completion
+[190] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb4c108>]
+[191] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb4c0b8>]
+[192] ◆ Text: \xn[Akui Kenshi 1]Surrender your Pokemon! The Akui Clan strikes!
+[193] ◆ Text: \xn[Akui Kenshi 2]Looks like you were having such a nice tourn-\wtnp[30]
+[194] ◆ Show Animation: [25, 8]
+[195] ◆ Wait: 20 frame(s)
+[196] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb47e00>]
+[197] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb47db0>]
+[198] ◆ Text: \xn[Akui Kenshi 2]Hey! It’s that kid from earlier!
+[199] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb47bf8>]
+[200] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb47ba8>]
+[201] ◆ Text: \xn[Akui Kenshi 1]Oh yeah?
+[202] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb479f0>]
+[203] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb479a0>]
+[204] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb47860>]
+[205] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb47810>]
+[206] ◆ Text: \xn[Akui Kenshi 1]We didn’t want that stupid Celebi anyways!
+[207] ◆ Text: \xn[Akui Kenshi 2]That's right! The real reason we came here was to crash this tournament and get some Shadow Pokemon for ourselves!
+[208] ◆ Text: \xn[Akui Kenshi 2]Now, just hand over all your Pokémon, so we can close their hearts and make them stronger!
+[209] ◆ Show Animation: [13, 9]
+[210] ◆ Wait: 26 frame(s)
+[211] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb474c8>]
+[212] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb47478>]
+[213] ◆ Text: \xn[\v[26]]\pog\PN! Do you know these scumbags?
+[214] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb472c0>]
+[215] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb47270>]
+[216] ◆ Text: \xn[Shogun]Someone call the local Samurai at once!
+[217] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb470b8>]
+[218] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb47068>]
+[219] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb46f28>]
+[220] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb46ed8>]
+[221] ◆ Text: \xn[Akui Kenshi 1]Yeah right! We buffed our Pokémon up, so there’s no way we’re losing again!
+[222] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb46d20>]
+[223] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb46cd0>]
+[224] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb46c80>]
+[225] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb46c30>]
+[226] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb46be0>]
+[227] ◆ Wait for Move Completion
+[228] ◆ Wait: 6 frame(s)
+[229] ◆ Text: \xn[\v[26]]\pogI’ll take out this one, \PN. Take care of the other one for me!
+[230] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb46870>]
+[231] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb467f8>]
+[232] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb466b8>]
+[233] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb46668>]
+[234] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb46618>]
+[235] ◆ Wait: 8 frame(s)
+[236] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb46438>]
+[237] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb463e8>]
+[238] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb46398>]
+[239] ◆ Text: \xn[Akui Kenshi 2]I’m not losing this time! You Kenshi and your "Bushido" codes of honor...
+[240] ◆ Text: \xn[Akui Kenshi 2]They're all a load of crap! I’ll prove you wrong here and now!
+[241] ◆ Conditional Branch: 028 PlayerGender == 1
+  [242] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb460c8>]
+  [243] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb46078>]
+  [244] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45fd8>]
+  [245] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45f60>]
+  [246] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45f10>]
+  [247] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45e98>]
+  [248] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45e48>]
+  [249] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45dd0>]
+  [250] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45d80>]
+  [251] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45d08>]
+  [252] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45cb8>]
+  [253] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45c40>]
+  [254] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45bf0>]
+  [255] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45b78>]
+  [256] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45b28>]
+  [257] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45ab0>]
+  [258] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45a60>]
+  [259] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb459e8>]
+  [260] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45998>]
+[262] ◆ Else
+  [263] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb45240>]
+  [264] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb451f0>]
+  [265] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45150>]
+  [266] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb450d8>]
+  [267] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45088>]
+  [268] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb45010>]
+  [269] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44fc0>]
+  [270] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44f48>]
+  [271] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44ef8>]
+  [272] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44e80>]
+  [273] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44e30>]
+  [274] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44db8>]
+  [275] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44d68>]
+  [276] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44cf0>]
+  [277] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44ca0>]
+  [278] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44c28>]
+  [279] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44bd8>]
+  [280] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44b60>]
+  [281] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44b10>]
+[283] ◆ Branch End
+[284] ◆ Wait for Move Completion
+[285] ◆ Show Animation: [25, 9]
+[286] ◆ Wait: 24 frame(s)
+[287] ◆ Text: \xn[Akui Kenshi 2]What the-
+[288] ◆ Text: \xn[Akui Kenshi 2]What was that glow!?
+[289] ◆ Text: \xn[Akui Kenshi 2]They said you were a Masayoshi...
+[290] ◆ Text: \xn[Akui Kenshi 2]Gah! That doesn’t matter! Our shadows will eclipse your light!
+[291] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb440e8>]
+[292] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb44098>]
+[293] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb3ff48>]
+[294] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3fef8>]
+[295] ◆ Text: \xn[Shogun]\PN! Is that Ryo's Katana in your hand?
+[296] ◆ Text: \xn[Shogun]You really are his child! Quick, throw these at their Shadow Pokémon!
+[297] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb3fcc8>]
+[298] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3fc78>]
+[299] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3fc28>]
+[300] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3fbd8>]
+[301] ◆ Wait: 14 frame(s)
+[302] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb3f980>]
+[303] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3f930>]
+[304] ◆ Wait: 4 frame(s)
+[305] ◆ Script: vRI("GREATBALL",5)
+[306] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb3f728>]
+[307] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3f6d8>]
+[308] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3f688>]
+[309] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3f638>]
+[310] ◆ Wait: 14 frame(s)
+[311] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb3f408>]
+[312] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3f3b8>]
+[313] ◆ Text: \xn[Akui Kenshi 2]Hahaha! You really are fools, aren't you?
+[314] ◆ Text: \xn[Akui Kenshi 2]Our Shadow Pokémon are unstoppable!
+[315] ◆ Text: \xn[Akui Kenshi 2]Now, prepare to be destroyed!
+[316] ◆ Recover All: [0]
+[317] ◆ Script: BattleScripting.setInScript("turnStart0",:KatanaIntro)
+[318] ◆ Script: BattleScripting.setInScript("lastOpp",:KatanaAwakens)
+[319] ◆ Script: BattleScripting.setTrainerAce(2)
+[320] ◆ Conditional Branch: Script: pbTrainerBattle(:AKUICLAN_F,"Kumiko",nil,nil,2,nil,36)
+  [321] ◆ Fade Out BGM: [1]
+  [322] ◆ Wait: 4 frame(s)
+  [323] ◆ Script: pbRegisterItemOutOfBag(:KATANALIGHT)
+  [324] ◆ Screen Flash: [(255.000000, 255.000000, 255.000000, 204.000000), 6]
+  [325] ◆ Play SE: Battle damage super (Volume 90, Pitch 100)
+  [326] ◆ Wait: 4 frame(s)
+  [327] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb3ec38>]
+  [328] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3ebe8>]
+  [329] ◆ Conditional Branch: Script: $Trainer.owned[PBSpecies::NICKIT]
+    [330] ◆ Text: \xn[Akui Kenshi 2]What the...
+    [331] ◆ Text: \xn[Akui Kenshi 2]You… you can’t be serious…
+    [332] ◆ Text: \xn[Akui Kenshi 2]How did you catch my Pokémon?
+    [333] ◆ Text: \xn[Akui Kenshi 2]Return my Nickit at once! won't let you purify my shadow Pokémon!
+  [335] ◆ Else
+    [336] ◆ Text: \xn[Akui Kenshi 2]What the...
+    [337] ◆ Text: \xn[Akui Kenshi 2]You… you can’t be serious…
+    [338] ◆ Text: \xn[Akui Kenshi 2]Your strength... that light... it can't be....
+  [340] ◆ Branch End
+  [341] ◆ Text: \xn[Shogun]Very good, \PN. You seem to have the same abilities as your father.
+  [342] ◆ Text: \xn[Akui Kenshi 1]We- we’re not done yet!
+  [343] ◆ Text: \xn[???]That’s enough, both of you.
+  [344] ◆ Show Animation: [24, 8]
+  [345] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb3e3f0>]
+  [346] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3e3a0>]
+  [347] ◆ Show Animation: [25, 8]
+  [348] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb3e210>]
+  [349] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3e1c0>]
+  [350] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3e170>]
+  [351] ◆ Wait: 20 frame(s)
+  [352] ◆ Screen Flash: [(170.000000, 85.000000, 255.000000, 255.000000), 10]
+  [353] ◆ Script: pbSetSelfSwitch(27,"A",true)
+  [354] ◆ Play BGM: Conquest-EventTheme05 (Volume 100, Pitch 100)
+  [355] ◆ Scroll Map: [4, 1, 4]
+  [356] ◆ Scroll Map: [8, 2, 4]
+  [357] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb3dd38>]
+  [358] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3dce8>]
+  [359] ◆ Text: \xn[???]Tch, I’ll never understand you Kenshi and your formalities.
+  [360] ◆ Text: \xn[Shogun]Y- you’re…
+  [361] ◆ Text: \xn[???]I suppose I should introduce myself… what a pain.
+  [362] ◆ Text: \xn[Mashiro]The name’s Mashiro Nato, Senior Kenshi of the Akui Clan. They call me the Hound of Disrespect.
+  [363] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb3d9c8>]
+  [364] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d978>]
+  [365] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d928>]
+  [366] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb3d798>]
+  [367] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d748>]
+  [368] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d6f8>]
+  [369] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x000001925cb3d568>]
+  [370] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d518>]
+  [371] ◆ Wait for Move Completion
+  [372] ◆ Text: \xn[Mashiro]Look at you, Mr. High-and-Mighty. You look as bad as ever.
+  [373] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb3d310>]
+  [374] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d2c0>]
+  [375] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d270>]
+  [376] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d220>]
+  [377] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d1d0>]
+  [378] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d180>]
+  [379] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d130>]
+  [380] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3d0e0>]
+  [381] ◆ Wait for Move Completion
+  [382] ◆ Text: \xn[Kayoko]How dare you talk to the Shogun like that?!
+  [383] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x000001925cb3ccf8>]
+  [384] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3cca8>]
+  [385] ◆ Text: \xn[Mashiro]Oh? How cute. Isn’t it a bit hypocritical? You preach respect, and yet this is how you talk to your superior?
+  [386] ◆ Set Move Route: [27, #<RPG::MoveRoute:0x000001925cb3caf0>]
+  [387] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3caa0>]
+  [388] ◆ Text: \xn[Mashiro]See, this is why I detest the codes of Bushido. They’re so… restricting. Sometimes, you just have to let yourself be free! Then you can truly experience 
+        the greatness of life.
+  [390] ◆ Text: \xn[Mashiro]Shadow Pokémon are uninhibited by nonsense like honor and emotions.
+  [391] ◆ Text: \xn[Mashiro]Allow me to demonstrate!
+  [392] ◆ Text: \xn[Mashiro]Katana of Shadows, Corrupt Style!
+  [393] ◆ Screen Flash: [(170.000000, 85.000000, 255.000000, 255.000000), 30]
+  [394] ◆ Play SE: Cut (Volume 100, Pitch 100)
+  [395] ◆ Wait: 4 frame(s)
+  [396] ◆ Play SE: shadowkatana (Volume 100, Pitch 100)
+  [397] ◆ Script: vSST(28)
+  [398] ◆ Script: vSST(29)
+  [399] ◆ Script: vSST(30)
+  [400] ◆ Script: vSST(31)
+  [401] ◆ Script: vSST(32)
+  [402] ◆ Wait: 30 frame(s)
+  [403] ◆ Scroll Map: [2, 1, 4]
+  [404] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb3c1e0>]
+  [405] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb3c190>]
+  [406] ◆ Text: \xn[\v[26]]Darumaka??
+  [407] ◆ Text: \xn[\v[26]]Are you okay?
+  [408] ◆ Set Move Route: [32, #<RPG::MoveRoute:0x000001925cb37f78>]
+  [409] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb37f28>]
+  [410] ◆ Play SE: 554Cry (Volume 80, Pitch 65)
+  [411] ◆ Wait: 20 frame(s)
+  [412] ◆ Play SE: Battle damage normal (Volume 90, Pitch 100)
+  [413] ◆ Screen Flash: [(153.000000, 119.000000, 187.000000, 136.000000), 10]
+  [414] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb37bb8>]
+  [415] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb37b68>]
+  [416] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb37b18>]
+  [417] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb37ac8>]
+  [418] ◆ Wait: 14 frame(s)
+  [419] ◆ Text: \xn[\v[26]]D- Darumaka...
+  [420] ◆ Text: \xn[Mashiro]Look! This is what liberation truly is!
+  [421] ◆ Fade Out BGM: [2]
+  [422] ◆ Text: \xn[Mashiro]Well, I’m afraid I must take my leave. Bye-bye now! Hahahah! 
+  [423] ◆ Screen Flash: [(170.000000, 85.000000, 255.000000, 255.000000), 10]
+  [424] ◆ Script: vSSF(27)
+  [425] ◆ Script: vSSF(28)
+  [426] ◆ Script: vSSF(29)
+  [427] ◆ Script: vSSF(30)
+  [428] ◆ Script: vSSF(31)
+  [429] ◆ Script: vSSF(32)
+  [430] ◆ Wait: 10 frame(s)
+  [431] ◆ Script: vSSF(26)
+  [432] ◆ Set Move Route: [25, #<RPG::MoveRoute:0x000001925cb372a8>]
+  [433] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb37258>]
+  [434] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb37208>]
+  [435] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb371b8>]
+  [436] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb37168>]
+  [437] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb37118>]
+  [438] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb370c8>]
+  [439] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb37078>]
+  [440] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb37028>]
+  [441] ◆ Set Move Route: [24, #<RPG::MoveRoute:0x000001925cb36cb8>]
+  [442] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb36c68>]
+  [443] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb36c18>]
+  [444] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb36bc8>]
+  [445] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb36b78>]
+  [446] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb36b28>]
+  [447] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb36ad8>]
+  [448] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb36a88>]
+  [449] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb36a38>]
+  [450] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb369e8>]
+  [451] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb36998>]
+  [452] ◆ Wait for Move Completion
+  [453] ◆ Play SE: Door exit (Volume 100, Pitch 100)
+  [454] ◆ Play BGM: Conquest-EpisodeEnding (Volume 80, Pitch 100)
+  [455] ◆ Wait: 20 frame(s)
+  [456] ◆ Script: vSSF(24)
+  [457] ◆ Script: vSSF(25)
+  [458] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb362b8>]
+  [459] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb36268>]
+  [460] ◆ Wait: 6 frame(s)
+  [461] ◆ Text: \xn[\v[26]]...
+  [462] ◆ Scroll Map: [2, 7, 4]
+  [463] ◆ Wait: 50 frame(s)
+  [464] ◆ Script: vSST(33)
+  [465] ◆ Play SE: Door exit (Volume 100, Pitch 100)
+  [466] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb35ea8>]
+  [467] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb35e58>]
+  [468] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x000001925cb35d18>]
+  [469] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb35cc8>]
+  [470] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x000001925cb35b88>]
+  [471] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb35b38>]
+  [472] ◆ Text: \xn[Sukiro]Is everyone alright?!
+  [473] ◆ Set Move Route: [33, #<RPG::MoveRoute:0x000001925cb35980>]
+  [474] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb35930>]
+  [475] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb358e0>]
+  [476] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb35890>]
+  [477] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb35840>]
+  [478] ◆ Scroll Map: [8, 4, 4]
+  [479] ◆ Wait: 40 frame(s)
+  [480] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb35570>]
+  [481] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb35520>]
+  [482] ◆ Text: \xn[Shogun]Ah, Sukiro. No worries, your two pupils have fended off the attackers. You have raised them well.
+  [483] ◆ Text: \xn[Sukiro]I humbly accept your praise my lord!
+  [484] ◆ Text: \xn[Shogun]Unfortunately, there have been some damages as well… It seems the Akui Clan has been misusing Shadow Pokemon.
+  [485] ◆ Text: \xn[Shogun]However…
+  [486] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb35200>]
+  [487] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb351b0>]
+  [488] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb35160>]
+  [489] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb34fd0>]
+  [490] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb34f80>]
+  [491] ◆ Scroll Map: [6, 1, 4]
+  [492] ◆ Scroll Map: [8, 2, 4]
+  [493] ◆ Wait: 20 frame(s)
+  [494] ◆ Text: \xn[Shogun]\PN. It’s curious. Your father has been missing ever since I sent him to a mission on Yami Island, home to the Akui Clan.
+  [495] ◆ Text: \xn[Shogun]And now, here you show up with Ryo’s katana, followed by two Kenshi of the Akui Clan.
+  [496] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb34c38>]
+  [497] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb34be8>]
+  [498] ◆ Text: \xn[\v[26]]Didn’t you mention something about Celebi too?
+  [499] ◆ Set Move Route: [33, #<RPG::MoveRoute:0x000001925cb34a30>]
+  [500] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb349e0>]
+  [501] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb34990>]
+  [502] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x000001925cb347d8>]
+  [503] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb34788>]
+  [504] ◆ Text: \xn[Sukiro]Oh, I see! Celebi must have come from the island to give you the katana.
+  [505] ◆ Text: \xn[Shogun]Hmm, this means two things. First, Ryo is in danger. Second, Celebi has recognized you as the one to go save him.
+  [506] ◆ Set Move Route: [33, #<RPG::MoveRoute:0x000001925cb34558>]
+  [507] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb34508>]
+  [508] ◆ Text: \xn[Sukiro]But my lord…
+  [509] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb34350>]
+  [510] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb34300>]
+  [511] ◆ Text: \xn[Shogun]Yes, Sukiro. I am aware that your pupils have yet to be trained.
+  [512] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb34148>]
+  [513] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb340f8>]
+  [514] ◆ Text: \xn[Shogun]In that case, \PN, I ask that you travel the Aisho region.
+  [515] ◆ Text: \xn[Shogun]Due to your… unusual affinity, I cannot assign you to a clan at present.
+  [516] ◆ Text: \xn[Shogun]But, by travelling to the three major cities, you will be able to learn the way of the Katana of Light properly, and then you will be the one to 
+        bring an end to the Akui Clan’s misdoings.
+  [518] ◆ Label: Accept
+  [519] ◆ Text: \xn[Shogun]Do you accept?
+  [520] ◆ Show Choices: Yes / No
+  [521] ◆ When [Yes]
+    [522] ◆ Text: \xn[Shogun]Good. Very good.
+  [524] ◆ When [No]
+    [525] ◆ Text: \xn[Shogun]I will ask you again. Do not dishonour me this time.
+    [526] ◆ Jump to Label: Accept
+  [528] ◆ Choice End
+  [529] ◆ Text: \xn[Shogun]Your first destination will be Tsuchi Village, home to the Komorei Clan of Grass.
+  [530] ◆ Text: \xn[Shogun]Go south, through the forest, and speak to the Komorei Clan leader on my behalf.
+  [531] ◆ Text: \xn[Shogun]There is a special shrine there, and if you pray to it, you should awaken the Katana of Light further.
+  [532] ◆ Text: \xn[Shogun]You must understand that the Katana of Light is meant to be used properly.
+  [533] ◆ Text: \xn[Shogun]A katana is said to be the soul of a samurai. Do not tarnish your soul. Use your Katana for justice.
+  [534] ◆ Set Move Route: [33, #<RPG::MoveRoute:0x000001925cb8f6b0>]
+  [535] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb8f660>]
+  [536] ◆ Set Move Route: [20, #<RPG::MoveRoute:0x000001925cb8f520>]
+  [537] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001925cb8f4d0>]
+  [538] ◆ Text: \xn[Sukiro]Thank you, my lord. We shall make preparations immediately.
+  [539] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 20]
+  [540] ◆ Wait: 20 frame(s)
+  [541] ◆ Control Switches: 082 ShogunDone = ON
+  [542] ◆ Transfer Player: 085 Hagane City (19,25)
+  [543] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 20]
+  [544] ◆ Wait: 20 frame(s)
+  [545] ◆ Control Self Switch: A = OFF
+[547] ◆ Else
+  [548] ◆ Script: vSSF(24)
+  [549] ◆ Script: vSSF(25)
+  [550] ◆ Script: vSSF(26)
+  [551] ◆ Move Picture: [1, 10, 0, 0, 0, 32, 100, 100, 255, 0]
+  [552] ◆ Move Picture: [2, 10, 0, 0, 0, -32, 100, 100, 255, 0]
+  [553] ◆ Wait: 30 frame(s)
+  [554] ◆ Erase Picture: [1]
+  [555] ◆ Erase Picture: [2]
+  [556] ◆ Set Event Location: [20, 0, 13, 14, 2]
+  [557] ◆ Set Event Location: [20, 0, 13, 14, 2]
+[559] ◆ Branch End
+
+============================================================
+PAGE 3
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: 087 ShogunTowerReset
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+
+============================================================
+PAGE 4
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: 099 CHAPTER >= 6
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: true
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------

@@ -1,0 +1,146 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Yami Island
+Map ID: 100
+
+Event: EV009
+Event ID: 9
+Position: X=14, Y=35
+Pages: 2
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Autorun
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Text: \xn[Ryo]Finally... Yami Island…
+[002] ◆ Set Move Route: [7, #<RPG::MoveRoute:0x000001ad67b38e98>]
+[003] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001ad67b38e48>]
+[004] ◆ Text: \xn[Ryo]What a wretched place it has become.
+[005] ◆ Text: \xn[Ryo]I'll never understand... Why here?
+[006] ◆ Text: \xn[Ryo]...
+[007] ◆ Set Move Route: [7, #<RPG::MoveRoute:0x000001ad67b38ba0>]
+[008] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001ad67b38b50>]
+[009] ◆ Set Move Route: [8, #<RPG::MoveRoute:0x000001ad67b389c0>]
+[010] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001ad67b38970>]
+[011] ◆ Text: \xn[Ryo]Let’s do this, Celebi.
+[012] ◆ Script: vCry(251)
+[013] ◆ Wait: 14 frame(s)
+[014] ◆ Change Screen Color Tone: [(-102.000000, -255.000000, -51.000000, 255.000000), 40]
+[015] ◆ Script: vSS(10)
+[016] ◆ Play BGM: Conquest-EventTheme05 (Volume 100, Pitch 100)
+[017] ◆ Wait: 20 frame(s)
+[018] ◆ Erase Picture: [3]
+[019] ◆ Set Move Route: [10, #<RPG::MoveRoute:0x000001ad67b38470>]
+[020] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001ad67b38420>]
+[021] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001ad67b383d0>]
+[022] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001ad67b38380>]
+[023] ◆ Wait for Move Completion
+[024] ◆ Text: \xn[???]We meet again, Mr. Royal Samurai…
+[025] ◆ Set Move Route: [8, #<RPG::MoveRoute:0x000001ad67b380d8>]
+[026] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001ad67b38088>]
+[027] ◆ Set Move Route: [7, #<RPG::MoveRoute:0x000001ad62d6eb68>]
+[028] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001ad62d6ea00>]
+[029] ◆ Show Animation: [7, 8]
+[030] ◆ Wait: 24 frame(s)
+[031] ◆ Text: \xn[Ryo]No…
+[032] ◆ Text: \xn[Ryo]It can’t be...
+[033] ◆ Text: \xn[Ryo]After all this time... You're still alive?
+[034] ◆ Text: \xn[Ryo]You owe me some answers!
+[035] ◆ Wait: 20 frame(s)
+[036] ◆ Text: \xn[???]...
+[037] ◆ Text: \xn[???]You'll never understand... You never did.
+[038] ◆ Script: vSS(11)
+[039] ◆ Show Animation: [11, 93]
+[040] ◆ Wait: 10 frame(s)
+[041] ◆ Text: \xn[???]Zoroark, Dark Pulse.
+[042] ◆ Script: vCry(571)
+[043] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+[044] ◆ Wait: 20 frame(s)
+[045] ◆ Play SE: shadowkatana (Volume 100, Pitch 90)
+[046] ◆ Fade Out BGM: [3]
+[047] ◆ Wait: 40 frame(s)
+[048] ◆ Show Picture: [2, "white", 0, 0, 0, 0, 100, 100, 0, 0]
+[049] ◆ Move Picture: [2, 5, 0, 0, 0, 0, 100, 100, 255, 0]
+[050] ◆ Wait: 5 frame(s)
+[051] ◆ Change Screen Color Tone: [(255.000000, 255.000000, 255.000000, 0.000000), 5]
+[052] ◆ Wait: 15 frame(s)
+[053] ◆ Erase Picture: [2]
+[054] ◆ Erase Picture: [1]
+[055] ◆ Move Picture: [1, 20, 0, 0, 0, 0, 100, 100, 0, 0]
+[056] ◆ Wait: 40 frame(s)
+[057] ◆ Change Transparency: [1]
+[058] ◆ Control Switches: 076 YamiIslandFog = OFF
+[059] ◆ Control Switches: 075 FlashbackEnd = ON
+[060] ◆ Transfer Player: 084 Jikan Shrine (19,20)
+[061] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 20]
+[062] ◆ Wait: 20 frame(s)
+[063] ◆ Control Self Switch: A = ON
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------

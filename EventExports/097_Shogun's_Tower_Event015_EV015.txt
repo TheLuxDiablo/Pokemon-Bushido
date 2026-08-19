@@ -1,0 +1,143 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Shogun's Tower
+Map ID: 97
+
+Event: EV015
+Event ID: 15
+Position: X=37, Y=13
+Pages: 2
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Autorun
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Show Picture: [1, "vignette", 0, 0, 0, 0, 100, 100, 0, 0]
+[002] ◆ Move Picture: [1, 20, 0, 0, 0, 0, 100, 100, 255, 0]
+[003] ◆ Wait: 10 frame(s)
+[004] ◆ Text: \xn[Shogun]Ryo Masayoshi, the Royal Samurai.
+[005] ◆ Text: \xn[Shogun]I am prepared to entrust you with a mission of the utmost importance.
+[006] ◆ Text: \xn[Ryo]Anything, my lord. Your wish is my command.
+[007] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x00000243c87ed728>]
+[008] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ed6d8>]
+[009] ◆ Text: \xn[Shogun]Good. Very good.
+[010] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x00000243c87ed520>]
+[011] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ed4d0>]
+[012] ◆ Text: \xn[Shogun]Your task is to investigate Yami Island, the home of the \c[9]Akui Clan\c[0].
+[013] ◆ Text: \xn[Shogun]You already know that there have been rising suspicions regarding the activity of the \c[9]Akui Clan\c[0].
+[014] ◆ Text: \xn[Shogun]Recently I've even heard word of some very unsavory... experiments...
+[015] ◆ Show Animation: [14, 8]
+[016] ◆ Wait: 20 frame(s)
+[017] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x00000243c87ed098>]
+[018] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ed048>]
+[019] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ecff8>]
+[020] ◆ Wait for Move Completion
+[021] ◆ Text: \xn[Shogun]It is your duty as the Royal Samurai to investigate this matter.
+[022] ◆ Text: \xn[Shogun]And with everything that's happened... It's fitting that this task would fall to you.
+[023] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x00000243c87eccd8>]
+[024] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ecc88>]
+[025] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ecc38>]
+[026] ◆ Wait for Move Completion
+[027] ◆ Text: \xn[Shogun]I know issues pertaining to the \c[9]Akui Clan\c[0] are personal.
+[028] ◆ Text: \xn[Shogun]But we must uncover the plans of the \c[9]Akui Clan\c[0] before matters spiral out of control.
+[029] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x00000243c87ec940>]
+[030] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ec8f0>]
+[031] ◆ Text: \xn[Ryo]Of... course.
+[032] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x00000243c87ec710>]
+[033] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ec6c0>]
+[034] ◆ Text: \xn[Ryo]Understood. I shall depart to Yami Island immediately.
+[035] ◆ Text: \xn[Shogun]Good... Very good, Ryo.
+[036] ◆ Set Move Route: [13, #<RPG::MoveRoute:0x00000243c87ec490>]
+[037] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ec418>]
+[038] ◆ Text: \xn[Shogun]Safe travels.
+[039] ◆ Set Move Route: [14, #<RPG::MoveRoute:0x00000243c87ec260>]
+[040] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ec210>]
+[041] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ec1c0>]
+[042] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ec170>]
+[043] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ec120>]
+[044] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ec0a8>]
+[045] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ec058>]
+[046] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87ec008>]
+[047] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87e5848>]
+[048] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87e7fa8>]
+[049] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87e7f58>]
+[050] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87e7f08>]
+[051] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87e7eb8>]
+[052] ◆ Move Route Command: [#<RPG::MoveCommand:0x00000243c87e7e68>]
+[053] ◆ Fade Out BGM: [3]
+[054] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 30]
+[055] ◆ Wait: 44 frame(s)
+[056] ◆ Control Switches: 076 YamiIslandFog = ON
+[057] ◆ Transfer Player: 100 Yami Island (12,35)
+[058] ◆ Change Screen Color Tone: [(30.000000, -55.000000, -140.000000, 255.000000), 30]
+[059] ◆ Wait: 40 frame(s)
+[060] ◆ Control Self Switch: A = ON
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------

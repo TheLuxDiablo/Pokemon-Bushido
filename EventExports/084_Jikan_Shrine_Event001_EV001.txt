@@ -1,0 +1,48 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Jikan Shrine
+Map ID: 84
+
+Event: EV001
+Event ID: 1
+Position: X=13, Y=22
+Pages: 1
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Parallel Process
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Change Map Settings: [1, "Clouds3", 220, 150, 0, 100, 3, 0]

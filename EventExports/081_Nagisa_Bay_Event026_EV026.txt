@@ -1,0 +1,129 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Nagisa Bay
+Map ID: 81
+
+Event: EV026
+Event ID: 26
+Position: X=9, Y=23
+Pages: 2
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Player Touch
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Show Picture: [1, "bar1", 0, 0, 0, 32, 100, 100, 255, 0]
+[002] ◆ Show Picture: [2, "bar2", 0, 0, 0, -32, 100, 100, 255, 0]
+[003] ◆ Move Picture: [1, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[004] ◆ Move Picture: [2, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[005] ◆ Wait: 20 frame(s)
+[006] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x0000017f62580510>]
+[007] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f625804c0>]
+[008] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f62580470>]
+[009] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f62580420>]
+[010] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f625803d0>]
+[011] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f62580380>]
+[012] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f62580330>]
+[013] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f625802e0>]
+[014] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f62580290>]
+[015] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f62580240>]
+[016] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f625801f0>]
+[017] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f625801a0>]
+[018] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f62580150>]
+[019] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f62580100>]
+[020] ◆ Wait for Move Completion
+[021] ◆ Scroll Map: [8, 1, 2]
+[022] ◆ Text: \xn[Sukiro]\bThe time has come for you to receive a Pokemon, \PN.
+[023] ◆ Text: \xn[\v[26]]\pogThat’s right! You’re finally getting a Pokemon!
+[024] ◆ Text: \xn[\v[26]]\pogI don’t need to choose one of Sensei’s starters, I’ve got my trusty Darumaka!
+[025] ◆ Text: \xn[\v[26]]\pogI think my Darumaka is cooler than anything Sensei could offer!
+[026] ◆ Set Move Route: [28, #<RPG::MoveRoute:0x0000017f6257bb00>]
+[027] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f6257bab0>]
+[028] ◆ Show Animation: [29, 93]
+[029] ◆ Wait: 4 frame(s)
+[030] ◆ Script: pbSetSelfSwitch(29,"A",true)
+[031] ◆ Script: vCry(554)
+[032] ◆ Wait: 15 frame(s)
+[033] ◆ Set Move Route: [28, #<RPG::MoveRoute:0x0000017f6257b600>]
+[034] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017f6257b5b0>]
+[035] ◆ Wait for Move Completion
+[036] ◆ Text: \xn[Sukiro]\bYes, \v[26] already has a capable partner Pokemon by their side. As part of the Hashimoto family, Darumaka and Darmanitan are almost compulsory.
+[037] ◆ Show Animation: [28, 13]
+[038] ◆ Wait: 24 frame(s)
+[039] ◆ Text: \xn[\v[26]]\pogThe Hashimoto family of sculptors never lets you down! 
+[040] ◆ Text: \xn[Sukiro]\bRegardless, \PN, I have gathered three competent Pokemon to aid you as a Kenshi. Please make your choice wisely.
+[041] ◆ Script: result = BushidoStarterSelection.pbStart
+      pkmn = result[0]
+      pbAddPokemon(pkmn)
+      pbPokemonFollow(21)
+      pbSetSelfSwitch(31,"A",true)
+[046] ◆ Control Self Switch: A = ON
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------

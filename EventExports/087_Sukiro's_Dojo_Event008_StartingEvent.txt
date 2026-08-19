@@ -1,0 +1,261 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Sukiro's Dojo
+Map ID: 87
+
+Event: StartingEvent
+Event ID: 8
+Position: X=0, Y=24
+Pages: 2
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Autorun
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Wait: 26 frame(s)
+[002] ◆ Text: \xn[Sukiro]\bThis concludes our lesson for today.
+[003] ◆ Text: \xn[\v[26]]\pogDoes that mean-\wtnp[20]
+[004] ◆ Text: \xn[Sukiro]\bYes, \v[26], you will be graduating.
+[005] ◆ Show Animation: [1, 13]
+[006] ◆ Wait: 26 frame(s)
+[007] ◆ Set Move Route: [1, #<RPG::MoveRoute:0x0000017d75cb2138>]
+[008] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75cb20e8>]
+[009] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x0000017d75cb1fa8>]
+[010] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75cb1f58>]
+[011] ◆ Text: \xn[\v[26]]\pogAw, nice! We did it, \PN! Now we can finally become Kenshi! Isn't that cool?
+[012] ◆ Set Move Route: [1, #<RPG::MoveRoute:0x0000017d75cb1da0>]
+[013] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75cb1d50>]
+[014] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x0000017d75cb1c10>]
+[015] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75cb1bc0>]
+[016] ◆ Text: \xn[Sukiro]\bHave patience. Before your ceremony, we must conduct one final test to see if the two of you are truly prepared to graduate.
+[017] ◆ Text: \xn[\v[26]]\pogAww, really? Come on, we’re so close too!
+[018] ◆ Text: \xn[Sukiro]\bThis exam will test your preparation to the highest degree. Firstly, \v[26], list all of the Kenshi clans that exist in Aisho.
+[019] ◆ Show Animation: [1, 10]
+[020] ◆ Wait: 26 frame(s)
+[021] ◆ Text: \xn[\v[26]]\pogHmm… There’s \c[2]Nensho for Fire\pog, \c[1]Shimizu for Water\pog, and \c[3]Komorei for Grass\pog...Agh! I don’t know, I give up.
+[022] ◆ Text: \xn[Sukiro]\bVery well. You listed the three major clans, good work. There are also minor clans to remember as well, such as the Ice-type Yuki Clan and the Bug-
+      type Konchu Clan.
+[024] ◆ Show Animation: [1, 14]
+[025] ◆ Wait: 26 frame(s)
+[026] ◆ Text: \xn[\v[26]]\pogBlegh, bugs. I hate bugs.
+[027] ◆ Show Picture: [1, "bar1", 0, 0, 0, 32, 100, 100, 255, 0]
+[028] ◆ Show Picture: [2, "bar2", 0, 0, 0, -32, 100, 100, 255, 0]
+[029] ◆ Move Picture: [1, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[030] ◆ Move Picture: [2, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[031] ◆ Wait: 30 frame(s)
+[032] ◆ Text: \xn[Sukiro]\b\PN, answer this question. What are honorable Pokemon users called in the Aisho region?
+[033] ◆ Show Choices: Pokérai / Kenshi / Trainers
+[034] ◆ When [Pokérai]
+  [035] ◆ Play SE: buzzer (Volume 55, Pitch 100)
+  [036] ◆ Text: \xn[Sukiro]\bThat is incorrect. The answer is Kenshi. Pokemon Kenshi wander the region in search of strength and honor.
+[038] ◆ When [Kenshi]
+  [039] ◆ Play SE: SwShCorrect (Volume 80, Pitch 100)
+  [040] ◆ Text: \xn[Sukiro]\bGood job, \PN. That is correct. Pokemon Kenshi wander the region in search of strength and honor.
+[042] ◆ When [Trainers]
+  [043] ◆ Play SE: buzzer (Volume 55, Pitch 100)
+  [044] ◆ Text: \xn[Sukiro]\bThat is incorrect. The answer is Kenshi. Pokemon Kenshi wander the region in search of strength and honor.
+[046] ◆ Choice End
+[047] ◆ Text: \xn[Sukiro]\b\PN, try this question as well. Who are the Katanas of Bushido?
+[048] ◆ Show Choices: Regirock, Registeel, Regice / Entei, Raikou, Suicune / Cobalion, Virizion, Terrakion
+[049] ◆ When [Regirock, Registeel, Regice]
+  [050] ◆ Play SE: buzzer (Volume 55, Pitch 100)
+  [051] ◆ Text: \xn[Sukiro]\bThat is incorrect. The three Katanas of Bushido are Cobalion, Virizion, and Terrakion. The Swords of Justice are said to serve as inspiration for the 
+        Kenshi of the land. Only the Royal Samurai has been graced with their presence.
+[054] ◆ When [Entei, Raikou, Suicune]
+  [055] ◆ Play SE: buzzer (Volume 55, Pitch 100)
+  [056] ◆ Text: \xn[Sukiro]\bThat is incorrect. The three Katanas of Bushido are Cobalion, Virizion, and Terrakion. The Swords of Justice are said to serve as inspiration for the 
+        Kenshi of the land. Only the Royal Samurai has been graced with their presence.
+[059] ◆ When [Cobalion, Virizion, Terrakion]
+  [060] ◆ Play SE: SwShCorrect (Volume 80, Pitch 100)
+  [061] ◆ Text: \xn[Sukiro]\bVery good. The Katanas of Bushido are said to serve as inspiration for the Kenshi of the land.
+  [062] ◆ Text: \xn[Sukiro]\bOnly the Royal Samurai has been graced with their presence.
+[064] ◆ Choice End
+[065] ◆ Move Picture: [1, 10, 0, 0, 0, 32, 100, 100, 255, 0]
+[066] ◆ Move Picture: [2, 10, 0, 0, 0, -32, 100, 100, 255, 0]
+[067] ◆ Wait: 30 frame(s)
+[068] ◆ Erase Picture: [1]
+[069] ◆ Erase Picture: [2]
+[070] ◆ Text: \xn[Sukiro]\bNow. As a final rite of passage, I would like to challenge you to a battle, \PN.
+[071] ◆ Text: \xn[Sukiro]\bI will give you some temporary Pokemon to use for our trial battle.
+[072] ◆ Script: vGPS("Mienfoo",15)
+      vGPS("Goldeen",15)
+      vGPS("Taillow",15)
+[075] ◆ Set Move Route: [1, #<RPG::MoveRoute:0x0000017d75cb0108>]
+[076] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75cb00b8>]
+[077] ◆ Show Animation: [1, 12]
+[078] ◆ Wait: 30 frame(s)
+[079] ◆ Text: \xn[\v[26]]\pogThis is gonna be good!
+[080] ◆ Fade Out BGM: [2]
+[081] ◆ Show Picture: [1, "bar1", 0, 0, 0, 32, 100, 100, 255, 0]
+[082] ◆ Show Picture: [2, "bar2", 0, 0, 0, -32, 100, 100, 255, 0]
+[083] ◆ Move Picture: [1, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[084] ◆ Move Picture: [2, 10, 0, 0, 0, 0, 100, 100, 255, 0]
+[085] ◆ Set Move Route: [1, #<RPG::MoveRoute:0x0000017d75cabc48>]
+[086] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75cabbf8>]
+[087] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75cabba8>]
+[088] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75cabb58>]
+[089] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x0000017d75cab978>]
+[090] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75cab928>]
+[091] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75cab8d8>]
+[092] ◆ Wait: 20 frame(s)
+[093] ◆ Play SE: JapaneseDuelIntro (Volume 90, Pitch 100)
+[094] ◆ Wait: 90 frame(s)
+[095] ◆ Text: \xn[Sukiro]\bLet us begin!\wtnp[30]
+[096] ◆ Erase Picture: [1]
+[097] ◆ Erase Picture: [2]
+[098] ◆ Wait: 1 frame(s)
+[099] ◆ Script: BattleScripting.setInScript("turnStart0",:Sukiro1,true)
+[100] ◆ Script: BattleScripting.setInScript("turnStart2",:Sukiro2,true)
+[101] ◆ Script: BattleScripting.setInScript("turnStart4",:Sukiro3,true)
+[102] ◆ Script: BattleScripting.setInScript("turnStart6",:Sukiro4,true)
+[103] ◆ Script: pbDisableXPGain
+[104] ◆ Script: pbDisableMoneyGain
+[105] ◆ Conditional Branch: Script: pbTrainerBattle(:SENSEI,"Sukiro","You are quite the incredible student! You'll become a great Kenshi, just like your father!",false,0,true,40)
+  [106] ◆ Control Self Switch: A = ON
+[108] ◆ Else
+  [109] ◆ Control Self Switch: A = ON
+[111] ◆ Branch End
+[112] ◆ Play BGM: PLA 119 Palina_s Theme (Alternate Intro) (Volume 85, Pitch 100)
+[113] ◆ Script: pbEnableXPGain
+[114] ◆ Script: pbEnableMoneyGain
+[115] ◆ Conditional Branch: 040 ShinyChance == 2
+  [116] ◆ Text: \xn[Sukiro]\bGood job, \PN. Despite your loss, I can still see your potential as a Kenshi clear as day. Truly astounding.
+[118] ◆ Else
+  [119] ◆ Text: \xn[Sukiro]\bGood job, \PN.
+  [120] ◆ Text: \xn[Sukiro]\bEven with that team of training Pokémon, you managed to emerge victorious. Truly astounding.
+[122] ◆ Branch End
+[123] ◆ Script: $Trainer.party=[]
+      $Trainer.party.compact!
+[125] ◆ Script: $Trainer.clearPokedex
+[126] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x0000017d75caa938>]
+[127] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75caa8e8>]
+[128] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75caa898>]
+[129] ◆ Set Move Route: [1, #<RPG::MoveRoute:0x0000017d75caa708>]
+[130] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75caa6b8>]
+[131] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75caa668>]
+[132] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75caa618>]
+[133] ◆ Scroll Map: [6, 1, 4]
+[134] ◆ Scroll Map: [8, 1, 4]
+[135] ◆ Wait for Move Completion
+[136] ◆ Text: \xn[Sukiro]\bThat concludes our final exam. You have been great students thus far, and I am eternally grateful for your diligence these past few years.
+[137] ◆ Text: \xn[Sukiro]\b\v[26]. Your burning passion for Pokemon never ceases to amaze me. I can tell that you will blaze through any obstacle that may come through your 
+      path. May you prosper in your honorable journey as a Kenshi.
+[139] ◆ Show Animation: [1, 12]
+[140] ◆ Wait: 26 frame(s)
+[141] ◆ Text: \xn[\v[26]]\pogThank you, Sensei! I am in your debt.
+[142] ◆ Text: \xn[Sukiro]\b\PN. You may now be known as the child of the Royal Samurai, but in the future, you will make your own name for yourself.
+[143] ◆ Text: \xn[Sukiro]\bYour life is only just beginning. Take great strides, leaps, and bounds, and become a warrior to be remembered.
+[144] ◆ Show Animation: [5, 10]
+[145] ◆ Wait: 26 frame(s)
+[146] ◆ Text: \xn[Sukiro]\bWith that, it is time for your true graduation.
+[147] ◆ Text: \xn[Sukiro]\bThe official Kenshi Initiation Tournament will be happening in Hagane City, the capital of the Aisho Region.
+[148] ◆ Text: \xn[Sukiro]\bI will be meeting you both there. But first… \PN. It is time for you to make an important decision.
+[149] ◆ Text: \xn[Sukiro]\bBoth of you, meet me at Nagisa Bay.
+[150] ◆ Set Move Route: [1, #<RPG::MoveRoute:0x0000017d75ca9d58>]
+[151] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca9d08>]
+[152] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x0000017d75ca9bc8>]
+[153] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca9b78>]
+[154] ◆ Text: \xn[\v[26]]\pogYou know how to get to Nagisa Bay, right \PN? It's to the right of the dojo, down the stairs!
+[155] ◆ Set Move Route: [1, #<RPG::MoveRoute:0x0000017d75ca99c0>]
+[156] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca9970>]
+[157] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x0000017d75ca9830>]
+[158] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca97e0>]
+[159] ◆ Wait for Move Completion
+[160] ◆ Set Move Route: [1, #<RPG::MoveRoute:0x0000017d75ca9650>]
+[161] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca9600>]
+[162] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca95b0>]
+[163] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca9560>]
+[164] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca9510>]
+[165] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca94c0>]
+[166] ◆ Wait for Move Completion
+[167] ◆ Wait: 4 frame(s)
+[168] ◆ Play SE: Door exit (Volume 80, Pitch 100)
+[169] ◆ Script: vSST(1)
+[170] ◆ Wait: 4 frame(s)
+[171] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x0000017d75ca9038>]
+[172] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca8fe8>]
+[173] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca8f98>]
+[174] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca8f48>]
+[175] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca8ef8>]
+[176] ◆ Wait for Move Completion
+[177] ◆ Scroll Map: [2, 2, 3]
+[178] ◆ Set Move Route: [-1, #<RPG::MoveRoute:0x0000017d75ca8c28>]
+[179] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca8bd8>]
+[180] ◆ Set Move Route: [5, #<RPG::MoveRoute:0x0000017d75ca8a98>]
+[181] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca8a48>]
+[182] ◆ Move Route Command: [#<RPG::MoveCommand:0x0000017d75ca89f8>]
+[183] ◆ Wait for Move Completion
+[184] ◆ Wait: 4 frame(s)
+[185] ◆ Scroll Map: [4, 1, 3]
+[186] ◆ Play SE: Door exit (Volume 80, Pitch 100)
+[187] ◆ Script: vSST(5)
+[188] ◆ Wait: 8 frame(s)
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------

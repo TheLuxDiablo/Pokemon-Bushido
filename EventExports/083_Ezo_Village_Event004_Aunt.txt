@@ -1,0 +1,614 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Ezo Village
+Map ID: 83
+
+Event: Aunt
+Event ID: 4
+Position: X=32, Y=7
+Pages: 5
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: trcharzAunt
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Text: \xn[Aunt]\rHi honey! I hope you're doing well!
+[002] ◆ Text: \xn[Aunt]\rTell \v[26] and Sukiro that I said "Hello"!
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: 069 StartersChosen
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: trcharzAunt
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Recover All: [0]
+[002] ◆ Text: \xn[Aunt]\rHi honey! Congratulations on graduating from Sukiro's Dojo!
+[003] ◆ Text: \xn[Aunt]\rWow, Sukiro gave you a cute Pokemon! That's great!
+[004] ◆ Show Animation: [0, 13]
+[005] ◆ Wait: 26 frame(s)
+[006] ◆ Text: \xn[Aunt]\rThat means you'll be able to go to Hagane City and participate in the Kenshi tournament, right?
+[007] ◆ Text: \xn[Aunt]\rThat's so exciting! I'll definitely be rooting for you from the sidelines!
+[008] ◆ Text: \xn[Aunt]\rHere, take these with you!
+[009] ◆ Script: pbReceiveItem(:ORANBERRY,5)
+[010] ◆ Text: \xn[Aunt]\rYou should be able to use these in battle! Your father loved these.
+[011] ◆ Text: \xn[Aunt]\rTake this too. It's a journal where you can record information of all the Pokemon you meet!
+[012] ◆ Script: $Trainer.pokedex=true
+[013] ◆ Script: pbUnlockDex(2)
+[014] ◆ Script: pbLockDex(0)
+[015] ◆ Play ME: HGSSGetKeyItem (Volume 80, Pitch 100)
+[016] ◆ Script: pbGetKeyItem("itemJournalKey")
+[017] ◆ Text: You got the \c[2]Aisho Journal!\wtnp[40]
+[018] ◆ Text: \xn[Aunt]\rYou should also take this! It will help you on your travels through the region.
+[019] ◆ Script: Kernel.pbReceiveItem(:TOWNMAP,1)
+[020] ◆ Text: \xn[Aunt]\rYou probably already know, but Hagane City is to the west, through Sakura Pass.
+[021] ◆ Show Animation: [0, 8]
+[022] ◆ Wait: 26 frame(s)
+[023] ◆ Text: \xn[Aunt]\rOh! There's one more important item you need to take with you!
+[024] ◆ Conditional Branch: Character -1 facing Down
+  [025] ◆ Set Move Route: [0, #<RPG::MoveRoute:0x000001f56275bee0>]
+  [026] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275ba30>]
+  [027] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275b9e0>]
+  [028] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275b990>]
+  [029] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275b940>]
+  [030] ◆ Wait for Move Completion
+[032] ◆ Else
+  [033] ◆ Set Move Route: [0, #<RPG::MoveRoute:0x000001f56275b620>]
+  [034] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275b5d0>]
+  [035] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275b580>]
+  [036] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275b530>]
+  [037] ◆ Wait for Move Completion
+[039] ◆ Branch End
+[040] ◆ Wait: 12 frame(s)
+[041] ◆ Play SE: Battle ball shake (Volume 100, Pitch 100)
+[042] ◆ Wait: 8 frame(s)
+[043] ◆ Conditional Branch: Character -1 facing Down
+  [044] ◆ Set Move Route: [0, #<RPG::MoveRoute:0x000001f56275b0d0>]
+  [045] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275b080>]
+  [046] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275af18>]
+  [047] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275add8>]
+  [048] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275ad88>]
+  [049] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275ad38>]
+  [050] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275ace8>]
+  [051] ◆ Wait for Move Completion
+[053] ◆ Else
+  [054] ◆ Set Move Route: [0, #<RPG::MoveRoute:0x000001f56275a6d0>]
+  [055] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275a680>]
+  [056] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275a630>]
+  [057] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275a5e0>]
+  [058] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275a590>]
+  [059] ◆ Move Route Command: [#<RPG::MoveCommand:0x000001f56275a540>]
+  [060] ◆ Wait for Move Completion
+[062] ◆ Branch End
+[063] ◆ Text: \xn[Aunt]\rHere, this special charm belonged to your father, Ryo.
+[064] ◆ Script: pbGetKeyItem(PBItems::EXPALL,1)
+[065] ◆ Text: \xn[Aunt]\rIt granted him luck, and helped him raise his Pokémon to be strong!
+[066] ◆ Show Animation: [0, 11]
+[067] ◆ Wait: 26 frame(s)
+[068] ◆ Text: \xn[Aunt]\rTake care now, \PN!
+[069] ◆ Text: \xn[Aunt]\rI love you! I know you'll make Ezo Village proud!
+[070] ◆ Control Switches: 078 TalkedToMom = ON
+[071] ◆ Control Self Switch: A = ON
+
+============================================================
+PAGE 3
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: trcharzAunt
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Text: \xn[Aunt]\rHi honey! What's up?
+[002] ◆ Show Choices: Rest / Change Outfit / Leave
+[003] ◆ When [Rest]
+  [004] ◆ Text: \xn[Aunt]\rAlright! You can rest up to your heart's content!
+  [005] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [006] ◆ Wait: 10 frame(s)
+  [007] ◆ Recover All: [0]
+  [008] ◆ Play ME: Pkmn healing (Volume 100, Pitch 100)
+  [009] ◆ Wait: 40 frame(s)
+  [010] ◆ Script: $PokemonTemp.dependentEvents.come_back(false)
+  [011] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [012] ◆ Wait: 10 frame(s)
+  [013] ◆ Text: \xn[Aunt]\rTake care now!
+  [014] ◆ Show Animation: [0, 13]
+  [015] ◆ Wait: 26 frame(s)
+  [016] ◆ Control Variables: 050 HealCharges = 052 MaxHealCharges
+[018] ◆ When [Change Outfit]
+  [019] ◆ Conditional Branch: 098 OutfitsUnlocked == 0
+    [020] ◆ Text: \xn[Aunt]\rI don't have any other clothes for you right now...
+  [022] ◆ Branch End
+  [023] ◆ Conditional Branch: 098 OutfitsUnlocked == 1
+    [024] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?
+    [025] ◆ Show Choices: Masayoshi / Komorei
+    [026] ◆ When [Masayoshi]
+      [027] ◆ Jump to Label: o1
+    [029] ◆ When [Komorei]
+      [030] ◆ Jump to Label: o2
+    [032] ◆ Choice End
+  [034] ◆ Branch End
+  [035] ◆ Conditional Branch: 098 OutfitsUnlocked == 2
+    [036] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?
+    [037] ◆ Show Choices: Masayoshi / Komorei / Nensho
+    [038] ◆ When [Masayoshi]
+      [039] ◆ Jump to Label: o1
+    [041] ◆ When [Komorei]
+      [042] ◆ Jump to Label: o2
+    [044] ◆ When [Nensho]
+      [045] ◆ Jump to Label: o3
+    [047] ◆ Choice End
+  [049] ◆ Branch End
+  [050] ◆ Conditional Branch: 098 OutfitsUnlocked == 3
+    [051] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?
+    [052] ◆ Show Choices: Masayoshi / Komorei / Nensho / Shimizu
+    [053] ◆ When [Masayoshi]
+      [054] ◆ Jump to Label: o1
+    [056] ◆ When [Komorei]
+      [057] ◆ Jump to Label: o2
+    [059] ◆ When [Nensho]
+      [060] ◆ Jump to Label: o3
+    [062] ◆ When [Shimizu]
+      [063] ◆ Jump to Label: o4
+    [065] ◆ Choice End
+  [067] ◆ Branch End
+  [068] ◆ Conditional Branch: 098 OutfitsUnlocked >= 4
+    [069] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?\ch[1,-1,Masayoshi,Komorei,Nensho,Shimizu,Akui]
+    [070] ◆ Conditional Branch: 001 Temp Pokemon Choice == -1
+      [071] ◆ Exit Event Processing
+    [073] ◆ Branch End
+    [074] ◆ Conditional Branch: 001 Temp Pokemon Choice == 0
+      [075] ◆ Jump to Label: o1
+    [077] ◆ Branch End
+    [078] ◆ Conditional Branch: 001 Temp Pokemon Choice == 1
+      [079] ◆ Jump to Label: o2
+    [081] ◆ Branch End
+    [082] ◆ Conditional Branch: 001 Temp Pokemon Choice == 2
+      [083] ◆ Jump to Label: o3
+    [085] ◆ Branch End
+    [086] ◆ Conditional Branch: 001 Temp Pokemon Choice == 3
+      [087] ◆ Jump to Label: o4
+    [089] ◆ Branch End
+    [090] ◆ Conditional Branch: 001 Temp Pokemon Choice == 4
+      [091] ◆ Jump to Label: o5
+    [093] ◆ Branch End
+  [095] ◆ Branch End
+  [096] ◆ Exit Event Processing
+  [097] ◆ Label: o1
+  [098] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [099] ◆ Wait: 14 frame(s)
+  [100] ◆ Text: You changed into the Masayoshi Robes!
+  [101] ◆ Script: $Trainer.outfit=0
+  [102] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [103] ◆ Wait: 14 frame(s)
+  [104] ◆ Exit Event Processing
+  [105] ◆ Label: o2
+  [106] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [107] ◆ Wait: 14 frame(s)
+  [108] ◆ Text: You changed into the Komorei Robes!
+  [109] ◆ Script: $Trainer.outfit=1
+  [110] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [111] ◆ Wait: 14 frame(s)
+  [112] ◆ Exit Event Processing
+  [113] ◆ Label: o3
+  [114] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [115] ◆ Wait: 14 frame(s)
+  [116] ◆ Text: You changed into the Nensho Robes!
+  [117] ◆ Script: $Trainer.outfit=2
+  [118] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [119] ◆ Wait: 14 frame(s)
+  [120] ◆ Exit Event Processing
+  [121] ◆ Label: o4
+  [122] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [123] ◆ Wait: 14 frame(s)
+  [124] ◆ Text: You changed into the Shimizu Robes!
+  [125] ◆ Script: $Trainer.outfit=3
+  [126] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [127] ◆ Wait: 14 frame(s)
+  [128] ◆ Exit Event Processing
+  [129] ◆ Label: o5
+  [130] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [131] ◆ Wait: 14 frame(s)
+  [132] ◆ Text: You changed into the Akui Robes!
+  [133] ◆ Script: $Trainer.outfit=4
+  [134] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [135] ◆ Wait: 14 frame(s)
+[137] ◆ When [Leave]
+[139] ◆ Choice End
+
+============================================================
+PAGE 4
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: 099 CHAPTER >= 7
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: trcharzAunt
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Text: \xn[Aunt]\rHello again, honey! I heard about what happened!
+[002] ◆ Text: \xn[Aunt]\rI'm so glad you're safe, my Hero of Aisho!
+[003] ◆ Text: \xn[Aunt]\rIs there anything I can help you with?
+[004] ◆ Show Choices: Rest / Change Outfit / Leave
+[005] ◆ When [Rest]
+  [006] ◆ Text: \xn[Aunt]\rAlright! You can rest up to your heart's content!
+  [007] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [008] ◆ Wait: 10 frame(s)
+  [009] ◆ Recover All: [0]
+  [010] ◆ Play ME: Pkmn healing (Volume 100, Pitch 100)
+  [011] ◆ Wait: 40 frame(s)
+  [012] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [013] ◆ Wait: 10 frame(s)
+  [014] ◆ Script: $PokemonTemp.dependentEvents.come_back(false)
+  [015] ◆ Text: \xn[Aunt]\rTake care now!
+  [016] ◆ Show Animation: [0, 13]
+  [017] ◆ Wait: 26 frame(s)
+  [018] ◆ Control Variables: 050 HealCharges = 052 MaxHealCharges
+[020] ◆ When [Change Outfit]
+  [021] ◆ Conditional Branch: 098 OutfitsUnlocked == 0
+    [022] ◆ Text: \xn[Aunt]\rI don't have any other clothes for you right now...
+  [024] ◆ Branch End
+  [025] ◆ Conditional Branch: 098 OutfitsUnlocked == 1
+    [026] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?
+    [027] ◆ Show Choices: Masayoshi / Komorei
+    [028] ◆ When [Masayoshi]
+      [029] ◆ Jump to Label: o1
+    [031] ◆ When [Komorei]
+      [032] ◆ Jump to Label: o2
+    [034] ◆ Choice End
+  [036] ◆ Branch End
+  [037] ◆ Conditional Branch: 098 OutfitsUnlocked == 2
+    [038] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?
+    [039] ◆ Show Choices: Masayoshi / Komorei / Nensho
+    [040] ◆ When [Masayoshi]
+      [041] ◆ Jump to Label: o1
+    [043] ◆ When [Komorei]
+      [044] ◆ Jump to Label: o2
+    [046] ◆ When [Nensho]
+      [047] ◆ Jump to Label: o3
+    [049] ◆ Choice End
+  [051] ◆ Branch End
+  [052] ◆ Conditional Branch: 098 OutfitsUnlocked == 3
+    [053] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?
+    [054] ◆ Show Choices: Masayoshi / Komorei / Nensho / Shimizu
+    [055] ◆ When [Masayoshi]
+      [056] ◆ Jump to Label: o1
+    [058] ◆ When [Komorei]
+      [059] ◆ Jump to Label: o2
+    [061] ◆ When [Nensho]
+      [062] ◆ Jump to Label: o3
+    [064] ◆ When [Shimizu]
+      [065] ◆ Jump to Label: o4
+    [067] ◆ Choice End
+  [069] ◆ Branch End
+  [070] ◆ Conditional Branch: 098 OutfitsUnlocked >= 4
+    [071] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?\ch[1,-1,Masayoshi,Komorei,Nensho,Shimizu,Akui]
+    [072] ◆ Conditional Branch: 001 Temp Pokemon Choice == -1
+      [073] ◆ Exit Event Processing
+    [075] ◆ Branch End
+    [076] ◆ Conditional Branch: 001 Temp Pokemon Choice == 0
+      [077] ◆ Jump to Label: o1
+    [079] ◆ Branch End
+    [080] ◆ Conditional Branch: 001 Temp Pokemon Choice == 1
+      [081] ◆ Jump to Label: o2
+    [083] ◆ Branch End
+    [084] ◆ Conditional Branch: 001 Temp Pokemon Choice == 2
+      [085] ◆ Jump to Label: o3
+    [087] ◆ Branch End
+    [088] ◆ Conditional Branch: 001 Temp Pokemon Choice == 3
+      [089] ◆ Jump to Label: o4
+    [091] ◆ Branch End
+    [092] ◆ Conditional Branch: 001 Temp Pokemon Choice == 4
+      [093] ◆ Jump to Label: o5
+    [095] ◆ Branch End
+  [097] ◆ Branch End
+  [098] ◆ Exit Event Processing
+  [099] ◆ Label: o1
+  [100] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [101] ◆ Wait: 14 frame(s)
+  [102] ◆ Text: You changed into the Masayoshi Robes!
+  [103] ◆ Script: $Trainer.outfit=0
+  [104] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [105] ◆ Wait: 14 frame(s)
+  [106] ◆ Exit Event Processing
+  [107] ◆ Label: o2
+  [108] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [109] ◆ Wait: 14 frame(s)
+  [110] ◆ Text: You changed into the Komorei Robes!
+  [111] ◆ Script: $Trainer.outfit=1
+  [112] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [113] ◆ Wait: 14 frame(s)
+  [114] ◆ Exit Event Processing
+  [115] ◆ Label: o3
+  [116] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [117] ◆ Wait: 14 frame(s)
+  [118] ◆ Text: You changed into the Nensho Robes!
+  [119] ◆ Script: $Trainer.outfit=2
+  [120] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [121] ◆ Wait: 14 frame(s)
+  [122] ◆ Exit Event Processing
+  [123] ◆ Label: o4
+  [124] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [125] ◆ Wait: 14 frame(s)
+  [126] ◆ Text: You changed into the Shimizu Robes!
+  [127] ◆ Script: $Trainer.outfit=3
+  [128] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [129] ◆ Wait: 14 frame(s)
+  [130] ◆ Exit Event Processing
+  [131] ◆ Label: o5
+  [132] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [133] ◆ Wait: 14 frame(s)
+  [134] ◆ Text: You changed into the Akui Robes!
+  [135] ◆ Script: $Trainer.outfit=4
+  [136] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [137] ◆ Wait: 14 frame(s)
+[139] ◆ When [Leave]
+[141] ◆ Choice End
+
+============================================================
+PAGE 5
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: 154 PGRyoBeaten
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: trcharzAunt
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Text: \xn[Aunt]\rI'm so happy to have Ryo back with us!
+[002] ◆ Text: \xn[Aunt]\rHe just keeps on talking about how proud he is of you!
+[003] ◆ Show Animation: [0, 11]
+[004] ◆ Wait: 24 frame(s)
+[005] ◆ Text: \xn[Aunt]\rIs there anything I can help you with?
+[006] ◆ Show Choices: Rest / Change Outfit / Leave
+[007] ◆ When [Rest]
+  [008] ◆ Text: \xn[Aunt]\rAlright! You can rest up to your heart's content!
+  [009] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [010] ◆ Wait: 10 frame(s)
+  [011] ◆ Recover All: [0]
+  [012] ◆ Play ME: Pkmn healing (Volume 100, Pitch 100)
+  [013] ◆ Wait: 40 frame(s)
+  [014] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [015] ◆ Wait: 10 frame(s)
+  [016] ◆ Script: $PokemonTemp.dependentEvents.come_back(false)
+  [017] ◆ Text: \xn[Aunt]\rTake care now!
+  [018] ◆ Show Animation: [0, 13]
+  [019] ◆ Wait: 26 frame(s)
+  [020] ◆ Control Variables: 050 HealCharges = 052 MaxHealCharges
+[022] ◆ When [Change Outfit]
+  [023] ◆ Conditional Branch: 098 OutfitsUnlocked == 0
+    [024] ◆ Text: \xn[Aunt]\rI don't have any other clothes for you right now...
+  [026] ◆ Branch End
+  [027] ◆ Conditional Branch: 098 OutfitsUnlocked == 1
+    [028] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?
+    [029] ◆ Show Choices: Masayoshi / Komorei
+    [030] ◆ When [Masayoshi]
+      [031] ◆ Jump to Label: o1
+    [033] ◆ When [Komorei]
+      [034] ◆ Jump to Label: o2
+    [036] ◆ Choice End
+  [038] ◆ Branch End
+  [039] ◆ Conditional Branch: 098 OutfitsUnlocked == 2
+    [040] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?
+    [041] ◆ Show Choices: Masayoshi / Komorei / Nensho
+    [042] ◆ When [Masayoshi]
+      [043] ◆ Jump to Label: o1
+    [045] ◆ When [Komorei]
+      [046] ◆ Jump to Label: o2
+    [048] ◆ When [Nensho]
+      [049] ◆ Jump to Label: o3
+    [051] ◆ Choice End
+  [053] ◆ Branch End
+  [054] ◆ Conditional Branch: 098 OutfitsUnlocked == 3
+    [055] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?
+    [056] ◆ Show Choices: Masayoshi / Komorei / Nensho / Shimizu
+    [057] ◆ When [Masayoshi]
+      [058] ◆ Jump to Label: o1
+    [060] ◆ When [Komorei]
+      [061] ◆ Jump to Label: o2
+    [063] ◆ When [Nensho]
+      [064] ◆ Jump to Label: o3
+    [066] ◆ When [Shimizu]
+      [067] ◆ Jump to Label: o4
+    [069] ◆ Choice End
+  [071] ◆ Branch End
+  [072] ◆ Conditional Branch: 098 OutfitsUnlocked >= 4
+    [073] ◆ Text: \xn[Aunt]\rOk! What robes do you want to wear?\ch[1,-1,Masayoshi,Komorei,Nensho,Shimizu,Akui]
+    [074] ◆ Conditional Branch: 001 Temp Pokemon Choice == -1
+      [075] ◆ Exit Event Processing
+    [077] ◆ Branch End
+    [078] ◆ Conditional Branch: 001 Temp Pokemon Choice == 0
+      [079] ◆ Jump to Label: o1
+    [081] ◆ Branch End
+    [082] ◆ Conditional Branch: 001 Temp Pokemon Choice == 1
+      [083] ◆ Jump to Label: o2
+    [085] ◆ Branch End
+    [086] ◆ Conditional Branch: 001 Temp Pokemon Choice == 2
+      [087] ◆ Jump to Label: o3
+    [089] ◆ Branch End
+    [090] ◆ Conditional Branch: 001 Temp Pokemon Choice == 3
+      [091] ◆ Jump to Label: o4
+    [093] ◆ Branch End
+    [094] ◆ Conditional Branch: 001 Temp Pokemon Choice == 4
+      [095] ◆ Jump to Label: o5
+    [097] ◆ Branch End
+  [099] ◆ Branch End
+  [100] ◆ Exit Event Processing
+  [101] ◆ Label: o1
+  [102] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [103] ◆ Wait: 14 frame(s)
+  [104] ◆ Text: You changed into the Masayoshi Robes!
+  [105] ◆ Script: $Trainer.outfit=0
+  [106] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [107] ◆ Wait: 14 frame(s)
+  [108] ◆ Exit Event Processing
+  [109] ◆ Label: o2
+  [110] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [111] ◆ Wait: 14 frame(s)
+  [112] ◆ Text: You changed into the Komorei Robes!
+  [113] ◆ Script: $Trainer.outfit=1
+  [114] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [115] ◆ Wait: 14 frame(s)
+  [116] ◆ Exit Event Processing
+  [117] ◆ Label: o3
+  [118] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [119] ◆ Wait: 14 frame(s)
+  [120] ◆ Text: You changed into the Nensho Robes!
+  [121] ◆ Script: $Trainer.outfit=2
+  [122] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [123] ◆ Wait: 14 frame(s)
+  [124] ◆ Exit Event Processing
+  [125] ◆ Label: o4
+  [126] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [127] ◆ Wait: 14 frame(s)
+  [128] ◆ Text: You changed into the Shimizu Robes!
+  [129] ◆ Script: $Trainer.outfit=3
+  [130] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [131] ◆ Wait: 14 frame(s)
+  [132] ◆ Exit Event Processing
+  [133] ◆ Label: o5
+  [134] ◆ Change Screen Color Tone: [(-255.000000, -255.000000, -255.000000, 0.000000), 10]
+  [135] ◆ Wait: 14 frame(s)
+  [136] ◆ Text: You changed into the Akui Robes!
+  [137] ◆ Script: $Trainer.outfit=4
+  [138] ◆ Change Screen Color Tone: [(0.000000, 0.000000, 0.000000, 0.000000), 10]
+  [139] ◆ Wait: 14 frame(s)
+[141] ◆ When [Leave]
+[143] ◆ Choice End
