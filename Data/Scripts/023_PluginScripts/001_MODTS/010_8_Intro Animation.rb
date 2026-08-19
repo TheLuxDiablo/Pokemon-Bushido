@@ -886,3 +886,204 @@ class MTS_INTRO_ANIM7
   # end
 end
 #===============================================================================
+
+#-------------------------------------------------------------------------------
+# Bushido intro - Milestone 1
+# Starts on black, reveals the existing title background, then fades in the logo.
+class MTS_INTRO_ANIM8
+  attr_reader :currentFrame
+
+  def initialize(viewport, sprites)
+    @viewport = viewport
+    @scene = sprites
+    @sprites = {}
+    @burst = []
+    @skip = false
+    @currentFrame = 0
+
+    @viewport.color = Color.new(255, 255, 255, 0)
+
+    @scene["logo"].logo.opacity = 0
+    @scene["logo"].sublogo.opacity = 0
+
+    @sprites["black"] = Sprite.new(@viewport)
+    @sprites["black"].create_rect(@viewport.rect.width, @viewport.rect.height, Color.black)
+    @sprites["black"].z = 5000
+
+    @sprites["slash"] = Sprite.new(@viewport)
+    @sprites["slash"].bitmap = pbBitmap("Graphics/Titles/ModularTS/Particles/katana_slash")
+    @sprites["slash"].center!
+    @sprites["slash"].x = @viewport.rect.width / 2
+    @sprites["slash"].y = @viewport.rect.height / 2
+    @sprites["slash"].angle = -24
+    @sprites["slash"].z = 5200
+    @sprites["slash"].opacity = 0
+    @sprites["slash"].zoom_x = 0.05
+    @sprites["slash"].zoom_y = 0.55
+
+    self.play
+    self.finish
+    self.dispose
+  end
+
+  def play
+    return unless self.wait(12)
+
+    begin
+      pbSEPlay("Sword2", 100, 100)
+    rescue
+    end
+
+    # Fast three-frame cut.
+    @sprites["slash"].opacity = 90
+    @sprites["slash"].zoom_x = 0.18
+    @sprites["slash"].zoom_y = 0.48
+    return unless self.wait
+
+    @sprites["slash"].opacity = 255
+    @sprites["slash"].zoom_x = 1.15
+    @sprites["slash"].zoom_y = 0.76
+    return unless self.wait
+
+    @sprites["slash"].zoom_x = 1.85
+    @sprites["slash"].zoom_y = 0.92
+
+    # Hard impact frame and petal burst.
+    @viewport.color = Color.new(255,255,255,190)
+    self.create_burst
+    return unless self.wait
+
+    @viewport.color.alpha = 70
+    return unless self.wait
+    @viewport.color.alpha = 0
+
+    # Keep the slash visible briefly while the burst expands.
+    6.times do
+      self.update_burst
+      @sprites["slash"].opacity -= 18
+      @sprites["slash"].zoom_x += 0.025
+      return unless self.wait
+    end
+    @sprites["slash"].opacity = 0
+
+    # Hold on the petals over black before revealing the title.
+    42.times do
+      self.update_burst
+      return unless self.wait
+    end
+
+    # Fade the title background in only after the aftermath has had time to breathe.
+    38.times do
+      self.update_burst
+      @sprites["black"].opacity -= 7
+      @sprites["black"].opacity = 0 if @sprites["black"].opacity < 0
+      return unless self.wait
+    end
+    @sprites["black"].opacity = 0
+
+    return unless self.wait(8)
+
+    # Logo comes in last.
+    22.times do
+      @scene["logo"].logo.opacity += 12
+      @scene["logo"].sublogo.opacity += 12
+      @scene["logo"].logo.opacity = 255 if @scene["logo"].logo.opacity > 255
+      @scene["logo"].sublogo.opacity = 255 if @scene["logo"].sublogo.opacity > 255
+      self.update_burst
+      return unless self.wait
+    end
+  end
+
+  def create_burst
+    petal_bitmap = pbBitmap("Graphics/Titles/ModularTS/Particles/petal")
+    cx = @viewport.rect.width / 2
+    cy = @viewport.rect.height / 2
+
+    34.times do
+      sprite = Sprite.new(@viewport)
+      sprite.bitmap = petal_bitmap
+      sprite.center!
+      sprite.z = 5150
+      sprite.opacity = 220 + rand(36)
+      scale = 65 + rand(71)
+      sprite.zoom_x = scale / 100.0
+      sprite.zoom_y = scale / 100.0
+      sprite.angle = rand(360)
+
+      along = rand(301) - 150
+      sprite.x = cx + along
+      sprite.y = cy - (along * 0.45).to_i + rand(25) - 12
+
+      side = rand(2) == 0 ? -1 : 1
+      speed = 2.2 + rand * 3.8
+      vx = (rand * 2.4 - 1.2) + side * 0.5
+      vy = side * speed + (rand * 1.8 - 0.9)
+
+      @burst << {
+        :sprite => sprite,
+        :x => sprite.x.to_f,
+        :y => sprite.y.to_f,
+        :vx => vx,
+        :vy => vy,
+        :gravity => 0.035 + rand * 0.035,
+        :spin => (rand(2) == 0 ? -1 : 1) * (3 + rand(8))
+      }
+    end
+  end
+
+  def update_burst
+    @burst.each do |data|
+      sprite = data[:sprite]
+      next if sprite.disposed?
+
+      data[:x] += data[:vx]
+      data[:y] += data[:vy]
+      data[:vy] += data[:gravity]
+      data[:vx] *= 0.985
+
+      sprite.x = data[:x].to_i
+      sprite.y = data[:y].to_i
+      sprite.angle += data[:spin]
+      sprite.opacity -= 2 if sprite.opacity > 0
+    end
+  end
+
+  def finish
+    @viewport.color.alpha = 0
+    @sprites["black"].opacity = 0 if @sprites["black"]
+    @sprites["slash"].opacity = 0 if @sprites["slash"]
+    @scene["logo"].logo.opacity = 255
+    @scene["logo"].sublogo.opacity = 255
+  end
+
+  def updateScene
+    for key in @scene.keys
+      next if @scene[key].id?("logo")
+      @scene[key].update if @scene[key].respond_to?(:update)
+    end
+  end
+
+  def wait(frames = 1, advance = true)
+    return false if @skip
+    frames.times do
+      @currentFrame += 1 if advance
+      self.updateScene
+      Graphics.update
+      Input.update
+      if Input.trigger?(Input::C)
+        @skip = true
+        return false
+      end
+    end
+    return true
+  end
+
+  def dispose
+    @burst.each do |data|
+      sprite = data[:sprite]
+      sprite.dispose if sprite && !sprite.disposed?
+    end
+    @burst.clear
+    pbDisposeSpriteHash(@sprites)
+  end
+end
