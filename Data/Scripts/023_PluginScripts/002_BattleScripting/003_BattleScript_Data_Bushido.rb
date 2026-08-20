@@ -1266,11 +1266,12 @@ module DialogueModule
       user1 = battlers[1]
       user2 = battlers[3]
       target1 = battlers[0]
-      target3 = battlers[2]
+      target2 = battlers[2]
 
       scene.appearBar
       scene.pbShowOpponent(0)
       pbMessage(_INTL("\\bThrough our combined training, we've developed an unbreakable bond!"))
+      pbMessage(_INTL("\\bNone shall get in the way of our forbidden love!"))
       pbMessage(_INTL("\\bNensho Style! Blazing Sunlight!"))
       scene.disappearBar
       battle.pbStartWeatherEx(user1, :Sun)
@@ -1280,13 +1281,14 @@ module DialogueModule
       if user2
         scene.pbShowOpponent(1)
         scene.appearBar
+        pbMessage(_INTL("\\rTogether we'll overcome anything!"))
         pbMessage(_INTL("\\rKomorei Style! Lush Terrain!"))
         scene.disappearBar
         battle.pbStartTerrainEx(user2, :Grassy)
     
         user2.pbRaiseStatStageEx([:SPEED], 2, :AGILITY)
     
-        pbMessage(_INTL("\\rTogether, we'll overcome any challenge!"))
+        pbMessage(_INTL("\\rIt's time honey! Let's use our \"Eruption of Passion\" technique!"))
         scene.pbHideOpponent(2)
       end
     }
@@ -1325,11 +1327,11 @@ module DialogueModule
       user1 = battlers[1]
       user2 = battlers[3]
       target1 = battlers[0]
-      target3 = battlers[2]
+      target2 = battlers[2]
 
       scene.appearBar
       scene.pbShowOpponent(1)
-      pbMessage(_INTL("\\rWe've got team synergy as a couple!"))
+      pbMessage(_INTL("\\rTime to show off our team synergy as a couple!"))
       pbMessage("\\rKatana of Lightning, Raikami Style! Heaven's Domain!")
       scene.disappearBar
       battle.pbStartTerrainEx(user1, :Electric)
@@ -1344,18 +1346,51 @@ module DialogueModule
         scene.disappearBar
         battle.pbStartWeatherEx(user2, :Rain)
         user2.pbRaiseStatStageEx([:SPDEF], 1)
+        target1.pbTrapWithMove(:WHIRLPOOL, target1, true) if strong_katanas?
+        target2.pbTrapWithMove(:WHIRLPOOL, target2, true) if strong_katanas?
         scene.appearBar
-        pbMessage(_INTL("\\bLet's do this, honey!"))
+        pbMessage(_INTL("\\bLet's execute that plan we practiced honey!"))
         scene.disappearBar
         scene.pbHideOpponent(1)
       end
+    }
+
+    KenshiLovers_WaterElec_Solo_E = Proc.new { |battle, scene, battlers|
+      user1 = battlers[1]
+      target1 = battlers[0]
+
+      scene.appearBar
+      scene.pbShowOpponent(0)
+      pbMessage(_INTL("\\rI'm shocked you wanted to duel me one-on-one!"))
+      pbMessage("\\rKatana of Lightning, Raikami Style! Heaven's Domain!")
+      scene.disappearBar
+      battle.pbStartTerrainEx(user1, :Electric)
+      user1.pbRaiseStatStageEx(:SPATK, 2)
+      target1.pbInflictStatusEx(:PARALYSIS, 0, :THUNDERBOLT, user1, false, nil, nil, target1) if strong_katanas?
+      scene.pbHideOpponent
+    }
+
+    KenshiLovers_WaterElec_Solo_W = Proc.new { |battle, scene, battlers|
+      user1 = battlers[1]
+      target1 = battlers[0]
+
+      scene.appearBar
+      scene.pbShowOpponent(0)
+      pbMessage(_INTL("\\bI haven't been practicing solo duels..."))
+      pbMessage(_INTL("\\bI've got to focus and go with the flow!"))
+      pbMessage("\\bKatana of Water, Shimizu Style! Torrential Downpour!")
+      scene.disappearBar
+      battle.pbStartWeatherEx(user1, :Rain)
+      user1.pbRaiseStatStageEx([:SPDEF], 2)
+      target1.pbTrapWithMove(:WHIRLPOOL, target1, true) if strong_katanas?
+      scene.pbHideOpponent
     }
 
     KenshiLovers_Old_1 = Proc.new { |battle, scene, battlers|
         user1 = battlers[1]
         user2 = battlers[3]
         target1 = battlers[0]
-        target3 = battlers[2]
+        target2 = battlers[2]
 
         scene.appearBar
         scene.pbShowOpponent(1)
@@ -1363,22 +1398,30 @@ module DialogueModule
         scene.disappearBar
         user2.pbRaiseStatStageEx(:ATTACK, 1)
         user2.pbInflictStatusEx(:BURN, 0, :EMBER, user1, false, nil, nil, user2)
-        scene.appearBar
-        pbMessage(_INTL("\\rIt takes guts to challenge us!"))
-        scene.disappearBar
+        if strong_katanas?
+            scene.appearBar
+            pbMessage(_INTL("\\rIt takes guts to challenge us!"))
+            scene.disappearBar
+        end
         scene.pbHideOpponent(2)
 
         scene.pbShowOpponent(0)
         scene.appearBar
-        pbMessage(_INTL("\\bWatch as your speed and youth betrays you!"))
+        if strong_katanas?
+            pbMessage(_INTL("\\bWatch as your speed and youth betrays you!"))
+        else
+            pbMessage(_INTL("\\bWith wisdom comes strength! You would do well to remember that, young Kenshi!"))
+        end
         scene.disappearBar
         user1.pbRaiseStatStageEx(:ATTACK, 1)
-        battle.pbAnimation(:TRICKROOM, user1, target1)
-        battle.field.effects[PBEffects::TrickRoom] = 6
-        battle.pbDisplay(_INTL("The dimensions were twisted!"))
-        scene.appearBar
-        pbMessage(_INTL("\\bLet's see you get through this, young Kenshi!"))
-        scene.disappearBar
+        if strong_katanas?
+            battle.pbAnimation(:TRICKROOM, user1, target1)
+            battle.field.effects[PBEffects::TrickRoom] = 6
+            battle.pbDisplay(_INTL("The dimensions were twisted!"))
+            scene.appearBar
+            pbMessage(_INTL("\\bLet's see you handle our onslaught, young Kenshi!"))
+            scene.disappearBar
+        end
         scene.pbHideOpponent(1)
     }
 
@@ -1386,22 +1429,28 @@ module DialogueModule
         user1 = battlers[1]
         user2 = battlers[3]
         target1 = battlers[0]
-        target3 = battlers[2]
+        target2 = battlers[2]
 
         scene.pbShowOpponent(0)
         scene.appearBar
         pbMessage(_INTL("\\bWe've come back and won harder battles than this..."))
         pbMessage(_INTL("\\bThis duel isn't over yet!"))
         scene.disappearBar
-        user1.pbRaiseStatStageEx(:SPATK, 2)
-        battle.pbStartTerrainEx(user1, :Psychic)
+        #user1.pbRaiseStatStageEx(:SPATK, 2) if user1
         if(target1)
-            battle.pbAnimation(:TRICKROOM, user1, target1)
+            battle.pbStartTerrainEx(target1, :Psychic)
+            battle.pbAnimation(:TRICKROOM, target1, target1) if strong_katanas?
         else
-            battle.pbAnimation(:TRICKROOM, user1, target2)
+            battle.pbStartTerrainEx(target2, :Psychic)
+            battle.pbAnimation(:TRICKROOM, target2, target2) if strong_katanas?
         end
-        battle.field.effects[PBEffects::TrickRoom] = 6
-        battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        battle.field.effects[PBEffects::TrickRoom] = 6 if strong_katanas?
+        battle.pbDisplay(_INTL("The dimensions were twisted!")) if strong_katanas?
+
+        if(strong_katanas?)
+            target1.pbLowerStatStageEx(:SPDEF, 2) if target1
+            target2.pbLowerStatStageEx(:SPDEF, 2) if target2
+        end
         scene.pbHideOpponent(1)
     }
 
@@ -1413,9 +1462,11 @@ module DialogueModule
         scene.appearBar
         pbMessage(_INTL("\\bMy Pokémon may be slow, but with this technique that becomes an advantage!"))
         scene.disappearBar
-        battle.pbAnimation(:TRICKROOM, user1, target1)
-        battle.field.effects[PBEffects::TrickRoom] = 6
-        battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        if strong_katanas?
+            battle.pbAnimation(:TRICKROOM, user1, target1)
+            battle.field.effects[PBEffects::TrickRoom] = 6
+            battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        end
         user1.pbRaiseStatStageEx(:ATTACK, 2)
         scene.pbHideOpponent
     }
@@ -1429,9 +1480,11 @@ module DialogueModule
         pbMessage(_INTL("\\rI bet you've never done something crazy like this before!"))
         scene.disappearBar
         user1.pbInflictStatusEx(:BURN, 0, :EMBER, user1, false, nil, nil, user1)
-        battle.pbAnimation(:TRICKROOM, user1, target1)
-        battle.field.effects[PBEffects::TrickRoom] = 6
-        battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        if strong_katanas?
+            battle.pbAnimation(:TRICKROOM, user1, target1)
+            battle.field.effects[PBEffects::TrickRoom] = 6
+            battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        end
         user1.pbRaiseStatStageEx(:ATTACK, 1)
         scene.pbHideOpponent
     }
@@ -2639,12 +2692,14 @@ module DialogueModule
     pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Psychic Terrain!")
     scene.disappearBar
     battle.pbStartTerrainEx(user, :Psychic)
-    scene.appearBar
-    pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Trick Room!")
-    battle.pbAnimation(:TRICKROOM, user, user)
-    scene.disappearBar
-    battle.field.effects[PBEffects::TrickRoom] = 5
-    battle.pbDisplay(_INTL("The dimensions were twisted!"))
+    if strong_katanas?
+        scene.appearBar
+        pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Trick Room!")
+        battle.pbAnimation(:TRICKROOM, user, user)
+        scene.disappearBar
+        battle.field.effects[PBEffects::TrickRoom] = 5
+        battle.pbDisplay(_INTL("The dimensions were twisted!"))
+    end
     if strong_katanas?
       scene.appearBar
       pbMessage("\\xn[Hattori]\\rI cannot stand to look at you any longer...")

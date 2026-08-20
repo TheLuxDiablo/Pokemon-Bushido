@@ -30,8 +30,6 @@
 31,South,32,23,North,0
 # Route 3 (31) - Ingido Plateau (35)
 31,West,0,35,East,10
-# MAP032 (32) - CamTest2 (76)
-32,West,0,76,East,3
 # Ingido Plateau (35) - Route 4 (39)
 35,West,11,39,East,0
 # Route 5 (41) - Route 4 (40)
