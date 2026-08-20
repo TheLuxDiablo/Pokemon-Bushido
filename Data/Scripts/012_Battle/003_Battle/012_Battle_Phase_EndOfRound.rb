@@ -421,6 +421,7 @@ class PokeBattle_Battle
         if isConst?(trappingMove,PBMoves,:BIND);           pbCommonAnimation("Bind",b)
         elsif isConst?(trappingMove,PBMoves,:CLAMP);       pbCommonAnimation("Clamp",b)
         elsif isConst?(trappingMove,PBMoves,:FIRESPIN);    pbCommonAnimation("FireSpin",b)
+        elsif isConst?(trappingMove,PBMoves,:WHIRLPOOL);   pbCommonAnimation("Whirlpool",b)
         elsif isConst?(trappingMove,PBMoves,:MAGMASTORM);  pbCommonAnimation("MagmaStorm",b)
         elsif isConst?(trappingMove,PBMoves,:SANDTOMB);    pbCommonAnimation("SandTomb",b)
         elsif isConst?(trappingMove,PBMoves,:WRAP);        pbCommonAnimation("Wrap",b)

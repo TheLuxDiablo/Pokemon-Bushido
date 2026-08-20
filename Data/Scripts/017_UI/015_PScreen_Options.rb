@@ -538,11 +538,11 @@ class PokemonOption_Scene
     ]
     if $PokemonGlobal
       idx = @PokemonOptions.length - 1
-      @PokemonOptions.insert(idx, EnumOption.new(_INTL("Enemy Kat. Tech."),[_INTL("Strong"),_INTL("Weakened")],
+      @PokemonOptions.insert(idx, EnumOption.new(_INTL("Enemy Techniques"),[_INTL("Strong"),_INTL("Weak")],
         proc { $PokemonGlobal.enemyTechniques || 0 },
         proc { |value| $PokemonGlobal.enemyTechniques = value }
       ))
-      @Descriptions.insert(idx, _INTL("Change enemy Katana Technique strength. Weakened prevents most negative effects."))
+      @Descriptions.insert(idx, _INTL("Change enemy Katana Technique strength. Weak prevents most negative effects."))
     end
     @PokemonOptions = pbAddOnOptions(@PokemonOptions)
     @sprites["option"] = Window_PokemonOption.new(@PokemonOptions,0,

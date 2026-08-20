@@ -320,12 +320,16 @@ Pokemon = SNIVY,6
 LoseText = "Impressive! You're quite a strong Kenshi!"
 Pokemon = FARFETCHD,6
 Pokemon = PURRLOIN,7
+	Moves = SNARL,GROWL,QUICKATTACK,MIMIC
 #-------------------------------
 [KENSHI_F,Akeno]
 LoseText = "Whaaa! Now I'm seeing red!"
 Pokemon = FOMANTIS,9
+	Moves = LEECHSEED,LEAFAGE,GROWTH,FURYCUTTER
 Pokemon = BUNEARY,9
+	Moves = POUND,DEFENSECURL,BABYDOLLEYES
 Pokemon = PANCHAM,10
+	Moves = TACKLE,LEER,TAUNT,KARATECHOP
 #-------------------------------
 [AKUICLAN_M,Test]
 LoseText = "Hmph. You can't the stop the great Akui Clan!"
@@ -345,13 +349,13 @@ Pokemon = NICKIT,15
     Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Taki]
-LoseText = "Hmph. You can't the stop the great Akui Clan!"
+LoseText = "There's no way... You got lucky! I'll get you back for this!"
 Pokemon = SANDILE,7
 Pokemon = POOCHYENA,8
     Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Kumiko]
-LoseText = "Tch. The boss isn't gonna be pleased with this."
+LoseText = "Tch. The boss isn't gonna be pleased to hear about this..."
 Pokemon = TOXEL,7
 Pokemon = NICKIT,8
     Shadow = yes
@@ -1675,3 +1679,69 @@ Pokemon = ARCANINE,70
 	Nature = ADAMANT
 	Ability = 0
 	IV = 31
+#-------------------------------	
+[NENSHO_M,Kindan]
+LoseText = "My love, I've failed you..."
+Pokemon = SIMISEAR,51
+	Ability = 0
+	Moves = ERUPTION
+	Item = CHARCOAL
+Pokemon = CHARIZARD,52
+	Ability = 2
+	Moves = HEATWAVE,WEATHERBALL,SOLARBEAM,PROTECT
+	Item = CHARTIBERRY
+#-------------------------------	
+[KOMOREI_F,Suki]
+LoseText = "Wahhh! You're a big meanie!"
+Pokemon = SIMISAGE,51
+	Ability = 0
+	Moves = HELPINGHAND,SEEDBOMB
+	Item = SITRUSBERRY
+Pokemon = VENUSAUR,52
+	Ability = 2
+	Moves = SLUDGEBOMB,SLEEPPOWDER,EARTHPOWER,PROTECT
+	Item = WIDELENS
+#-------------------------------	
+[SHIMIZU_M,Suiro]
+LoseText = "What a drag! I thought my training was going well..."
+Pokemon = PLUSLE,50
+	Ability = 2
+	Moves = DISCHARGE
+	Item = SITRUSBERRY
+Pokemon = LANTURN,51
+	Ability = 0
+	Moves = DISCHARGE,THUNDER,SCALD
+#-------------------------------
+[RAIKAMI_F,Raiha]
+LoseText = "What a rush! We've got to duel again sometime!"
+Pokemon = MINUN,50
+	Ability = 2
+	Moves = DISCHARGE
+	Item = SITRUSBERRY
+Pokemon = JOLTEON,51
+	Ability = 0
+	Moves = DISCHARGE,THUNDER
+	Item = MAGNET
+#-------------------------------	
+[MEDIUM,Basan]
+LoseText = "What a battle! You have my respect, young Kenshi."
+Pokemon = CONKELDURR,52
+	Item = SITRUSBERRY
+	Moves = HAMMERARM
+	Nature = ADAMANT
+	Ability = 0
+Pokemon = GALLADE,53
+	Item = IRONBALL
+	Nature = ADAMANT
+	Moves = ZENHEADBUTT,CLOSECOMBAT,NIGHTSLASH,PROTECT
+#-------------------------------	
+[ELDER,Choro]
+LoseText = "You're quite skilled after all, for a Kenshi your age."
+Pokemon = MAGCARGO,52
+	Item = HARDSTONE
+	Moves = ROCKSLIDE
+	Nature = ADAMANT
+	Ability = 1
+Pokemon = GARDEVOIR,53
+	Item = TWISTEDSPOON
+	Moves = EXPANDINGFORCE,PROTECT

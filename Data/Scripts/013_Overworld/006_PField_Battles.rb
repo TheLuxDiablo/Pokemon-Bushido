@@ -149,10 +149,10 @@ def pbPrepareBattle(battle)
   # Choose a name for bases depending on environment
   if battleRules["base"].nil?
     case battle.environment
-    when PBEnvironment::Grass, PBEnvironment::TallGrass,
-         PBEnvironment::ForestGrass;                             base = "FRLGGrass"
+#    when PBEnvironment::Grass, PBEnvironment::TallGrass,
+#         PBEnvironment::ForestGrass;                             base = "FRLGGrass"
 #   when PBEnvironment::Rock;                                    base = "rock"
-    when PBEnvironment::Sand;                                    base = "FRLGSand"
+#   when PBEnvironment::Sand;                                    base = "FRLGSand"
     when PBEnvironment::MovingWater, PBEnvironment::StillWater;  base = "FRLGWater"
 #   when PBEnvironment::Puddle;                                  base = "puddle"
     when PBEnvironment::Ice;                                     base = "FRLGIceCave"
