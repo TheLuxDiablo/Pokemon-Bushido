@@ -179,8 +179,10 @@ class ModularTitleScreen
     for key in @sprites.keys
       @sprites[key].update if @sprites[key].respond_to?(:update)
     end
-    @sprites["start"].opacity -= @fade
-    @fade *= -1 if @sprites["start"].opacity <= 0 || @sprites["start"].opacity >= 255
+    if @sprites["start"].visible
+      @sprites["start"].opacity -= @fade
+      @fade *= -1 if @sprites["start"].opacity <= 0 || @sprites["start"].opacity >= 255
+    end
     self.updateConfirmEffect
   end
   # update for title screen functionality
@@ -191,7 +193,17 @@ class ModularTitleScreen
   # Smooth title-screen response when the player confirms.
   def confirmEffect
     @confirm_effect = 24
-    @sprites["start"].opacity = 0 if @sprites["start"]
+
+    # Hide the prompt completely the instant input is accepted.
+    if @sprites["start"]
+      @sprites["start"].visible = false
+      @sprites["start"].opacity = 0
+    end
+
+    # Kick any title-screen effect that supports a confirm gust.
+    for key in @sprites.keys
+      @sprites[key].gust! if @sprites[key].respond_to?(:gust!)
+    end
   end
 
   def updateConfirmEffect

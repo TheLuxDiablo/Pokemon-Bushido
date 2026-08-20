@@ -2,6 +2,15 @@ pbCompiler
 
 Input.text_input = false
 
+# Wild Pokemon with unique battle themes
+BUSHIDO_WILD_BATTLE_THEMES = {
+  "Battle! Swords of Justice" => [
+    :COBALION,
+    :VIRIZION,
+    :TERRAKION
+  ]
+}
+
 =begin
 map_data = Marshal.load(File.open('Data/Map172.rxdata'))
 map_data.width = 74

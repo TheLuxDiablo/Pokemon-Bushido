@@ -939,6 +939,7 @@ class MTS_Element_FX14
     @viewport = viewport
     @disposed = false
     @frame = 0
+    @gust_frames = 0
     @sprites = {}
     @data = {}
 
@@ -974,6 +975,11 @@ class MTS_Element_FX14
     }
   end
 
+  # Brief wind kick used when the player confirms the title screen.
+  def gust!
+    @gust_frames = 34
+  end
+
   def update
     return if self.disposed?
     @frame += 1
@@ -982,10 +988,13 @@ class MTS_Element_FX14
       sprite = @sprites["p#{i}"]
       data = @data[i]
 
-      sprite.y += data[:fall] / 10.0
-      sprite.x += data[:wind] / 10.0
+      gust = @gust_frames > 0 ? (@gust_frames / 34.0) : 0.0
+
+      # Normal drift, plus a short diagonal gust when Start is pressed.
+      sprite.y += data[:fall] / 10.0 + (gust * 1.4)
+      sprite.x += data[:wind] / 10.0 + (gust * 2.8)
       sprite.x += Math.sin((@frame + data[:phase]) / data[:wave].to_f) * data[:sway] / 20.0
-      sprite.angle += data[:spin]
+      sprite.angle += data[:spin] + (gust * 4.0)
 
       # Recycle only after a petal has fully cleared the visible area.
       # The generous side margin lets it keep its diagonal motion past the edge
@@ -996,6 +1005,8 @@ class MTS_Element_FX14
         reset_particle(i, false)
       end
     end
+
+    @gust_frames -= 1 if @gust_frames > 0
   end
 
   def visible=(val)

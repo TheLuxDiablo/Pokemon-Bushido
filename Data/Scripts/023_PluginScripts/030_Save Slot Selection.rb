@@ -66,12 +66,14 @@ class SaveSlot_Selection_Scene
     @viewport.z                = 99999
     @sprites                   = {}
     @sprites["bg"]             = Sprite.new(@viewport)
-    @sprites["bg"].bitmap      = pbBitmap("Graphics/Pictures/loadbg")
-    @sprites["slots"]          = Window_SaveSlots.new([], 408)
-    @sprites["slots"].viewport = @viewport
-    @sprites["slots"].x        = 52
-    @sprites["slots"].height   = Graphics.height - 42
+    @sprites["bg"].bitmap      = pbBitmap("Graphics/Pictures/LoadScreen/load_bg")
+
+    @sprites["slots"]          = BushidoSaveCarousel.new([], @viewport, @show_new_game)
+    @sprites["slots"].x        = 0
+    @sprites["slots"].y        = 0
+
     @sprites["load_panel"]     = PokemonSaveSlotPanel.new(@viewport)
+    @sprites["load_panel"].visible = false
     @sprites["load_panel"].x   = (Graphics.width - @sprites["load_panel"].bg_bmp.width) / 2
     @sprites["load_panel"].y   = ((Graphics.height - @sprites["load_panel"].bg_bmp.height) / 2) - 48
     space = "        "
@@ -85,7 +87,6 @@ class SaveSlot_Selection_Scene
     @sprites.each_value { |s| s.visible = false }
     pbDeactivateWindows(@sprites)
     refresh_save_slots($PokemonSystem.save_slot - 1)
-    @sprites["load_panel"].data  = @slots[0] if $Trainer && single_slot?
   end
 
   def refresh_save_slots(index = 0)
@@ -142,30 +143,16 @@ class SaveSlot_Selection_Scene
 
   def fade_sprites(reverse = false)
     return if @faded == reverse
+
     if reverse
-      @sprites.each_value { |s| s.visible = true }
-      if !single_slot?
-        @sprites["load_panel"].visible = false
-      else
-        @sprites["slots"].visible = false
-        @sprites["messagebox"].visible = false
-      end
+      @sprites["bg"].visible         = true
+      @sprites["slots"].visible      = true
+      @sprites["load_panel"].visible = false
+      @sprites["messagebox"].visible = false
+    else
+      @sprites.each_value { |s| s.visible = false }
     end
-    alpha = reverse ? 255 : 0
-    blk = Color.new(0, 0, 0, alpha)
-    @sprites.each_value { |s| s.color = blk }
-    dur = (Graphics.frame_rate / 10) * 4
-    dur.times do |i|
-      factor = (i + 1).to_f / dur
-      factor = (1 - factor) if reverse
-      Graphics.update if @fade_anim
-      pbUpdateSpriteHash(@sprites)
-      alpha = 255 * factor
-      blk = Color.new(0, 0, 0, alpha)
-      @sprites.each_value { |s| s.color = blk }
-    end
-    @sprites.each_value { |s| s.visible = false } if !reverse
-    @sprites.each_value { |s| s.color = Color.new(0, 0, 0, 0) }
+
     @faded = reverse
   end
 
@@ -174,13 +161,15 @@ class SaveSlot_Selection_Scene
   end
 
   def get_save_slot
+    @sprites["slots"].prepare_entry if @sprites["slots"].respond_to?(:prepare_entry)
     fade_sprites(true)
+    @sprites["slots"].play_entry if @sprites["slots"].visible && @sprites["slots"].respond_to?(:play_entry)
     index = $PokemonSystem.save_slot
     loop do
       index   = get_save_index(index)
       confirm = confirm_slot(index)
       pbUpdateSpriteHash(@sprites)
-      if (confirm == 1 && single_slot?) || index == 0
+      if index == 0
         index = 0
         break
       elsif confirm == 2
@@ -193,57 +182,74 @@ class SaveSlot_Selection_Scene
       end
       break if index > 0 && confirm == 0
     end
+    @sprites["slots"].play_exit if @sprites["slots"].visible && @sprites["slots"].respond_to?(:play_exit)
     fade_sprites
     return index
   end
 
   def get_save_index(index)
-    return 1 if single_slot?
     return choose_slot(index) + 1
   end
 
   def choose_slot(index)
-    pbActivateWindow(@sprites, "slots") {
-      loop do
-        Graphics.update
-        Input.update
-        idx = @sprites["slots"].index
-        update
-        if Input.trigger?(Input::C)
-          index = @sprites["slots"].index
-          break
-        elsif Input.trigger?(Input::B)
-          pbPlayDecisionSE
-          index = -1
-          break
-        elsif Input.trigger?(Input::A)
-          index = -2
-          break
+    @sprites["slots"].active = true
+
+    loop do
+      Graphics.update
+      Input.update
+      update
+
+      if Input.trigger?(Input::LEFT)
+        @sprites["slots"].move_left
+      elsif Input.trigger?(Input::RIGHT)
+        @sprites["slots"].move_right
+      elsif Input.trigger?(Input::C)
+        index = @sprites["slots"].index
+        @sprites["slots"].confirm!
+        6.times do
+          Graphics.update
+          Input.update
+          update
         end
+        break
+      elsif Input.trigger?(Input::B)
+        pbPlayDecisionSE
+        index = -1
+        break
+      elsif Input.trigger?(Input::A)
+        index = -2
+        break
       end
-    }
+    end
+
+    @sprites["slots"].active = false
     return index
   end
 
   def confirm_slot(index)
     return 2 if index < 0
     return 1 if index < 1
-    if (@slots[index - 1].empty? || @slots[index - 1].new_game?) && !$Trainer && !@show_new_game
+
+    slot = @slots[index - 1]
+
+    if (slot.empty? || slot.new_game?) && !$Trainer && !@show_new_game
       pbPlayBuzzerSE
       return 1
     end
+
     pbPlayDecisionSE
-    return 0 if (@slots[index - 1].empty? || @slots[index - 1].new_game?) && !$Trainer && @show_new_game
-    @sprites.each_value { |s| s.visible = false }
-    @sprites["load_panel"].data    = @slots[index - 1]
-    @sprites["load_panel"].visible = true
-    @sprites["bg"].visible         = true
+
+    # A brand-new empty slot can immediately continue into New Game.
+    return 0 if (slot.empty? || slot.new_game?) && !$Trainer && @show_new_game
+
     commands = [_INTL("Yes"), _INTL("No")]
-    commands.push(_INTL("Delete"))
+    commands.push(_INTL("Delete")) if slot.valid?
+
     message = _INTL("\\se[]Would you like to load this file?")
+
     if @show_new_game
       if $Trainer
-        if @slots[index - 1].empty? || @slots[index - 1].new_game?
+        if slot.empty? || slot.new_game?
           message = _INTL("\\se[]Would you like to save to this slot?")
         else
           message = _INTL("\\se[]Would you like to overwrite this slot?")
@@ -252,17 +258,17 @@ class SaveSlot_Selection_Scene
         message = _INTL("\\se[]Would you like to start a new game in this slot?")
       end
     end
+
+    # Keep the carousel, trainer sprite and party icons visible underneath.
     cmd = pbMessage(message, commands, 2) { update }
+
     if cmd == 0 && @show_new_game && $Trainer
-      slot = Save_Slot.new(nil, true)
-      slot.name = _INTL("Slot {1}", index)
-      @sprites["load_panel"].data = slot
-      pbMessage(_INTL("\\se[]{1} saved the game to Slot {2}.\\me[GUI save game]\\wtnp[30]", $Trainer.name, index)) { update }
+      new_slot = Save_Slot.new(nil, true)
+      new_slot.name = _INTL("Slot {1}", index)
+      pbMessage(_INTL("\\se[]{1} saved the game to Slot {2}.\\me[GUI save game]\\wtnp[30]",
+                      $Trainer.name, index)) { update }
     end
-    if !($Trainer && single_slot?)
-      @sprites.each_value { |s| s.visible = true }
-      @sprites["load_panel"].visible = false
-    end
+
     return cmd
   end
 
@@ -431,49 +437,403 @@ class PokemonSaveSlotPanel < Sprite
   end
 end
 
-class Window_SaveSlots < Window_CommandPokemonEx
-  def initialize(commands, width)
-    @stop_refresh = true
-    super(commands, width)
-    @selarrow = pbBitmap("Graphics/Pictures/loadPanel1")
-    self.windowskin = nil
-    self.rowHeight  = @selarrow.height / 2 + 4
-    self.startX     = 0
-    self.startY     = 8
-    @stop_refresh   = false
+#===============================================================================
+# Horizontal save carousel
+# Vertical cards, unlimited save count, left/right navigation.
+#===============================================================================
+class BushidoSaveCarousel < SpriteWrapper
+  attr_accessor :active
+  attr_reader :index
+
+  CARD_W       = 220
+  CARD_H       = 298
+  CARD_SPACING = 238
+  CENTER_X     = Graphics.width / 2
+  CARD_Y       = 48
+
+  INK        = Color.new(68, 48, 37)
+  SOFT       = Color.new(111, 84, 64)
+  RED        = Color.new(154, 48, 47)
+  RED_DARK   = Color.new(102, 33, 34)
+  PAPER      = Color.new(238, 219, 185)
+  PAPER_SEL  = Color.new(246, 228, 194)
+  BORDER     = Color.new(157, 127, 94)
+  SHADOW     = Color.new(225, 205, 176)
+  SHADOW_SEL = Color.new(218, 194, 163)
+  TEXT_SHADOW = Color.new(229, 204, 169)
+
+  def initialize(commands, viewport, new_game_mode = false)
+    super(viewport)
+    @commands      = commands || []
+    @new_game_mode = new_game_mode
+    @index         = 0
+    @active        = false
+    @anim_frame    = 0
+    @scroll_x      = 0.0
+    @target_scroll = 0.0
+    @entry_offset  = 0.0
+    @exit_offset   = 0.0
+    @confirm       = 0
+
+    self.bitmap = BitmapWrapper.new(Graphics.width, Graphics.height)
+    pbSetSystemFont(self.bitmap)
+
+    @card_normal   = pbBitmap("Graphics/Pictures/SaveSlots/save_card")
+    @card_selected = pbBitmap("Graphics/Pictures/SaveSlots/save_card_selected")
+
+    @card_sprites = {}
+    refresh
+    refresh_card_sprites
   end
 
-  def refresh
-    return if @stop_refresh
-    super
+  def commands
+    return @commands
   end
 
-  def drawItem(index, _count, rect)
-    pbSetSystemFont(self.contents)
-    rect   = drawCursor(index, rect)
-    slot   = @commands[index]
-    offset = 8
-    y_pos  = rect.y + (slot.empty? || slot.new_game? ? 28 : 16)
-    pbDrawShadowText(self.contents, rect.x + offset, y_pos,
-                     rect.width, rect.height, slot.name, self.baseColor, self.shadowColor)
-    if !slot.empty? && slot.valid?
-      pbSetSmallFont(self.contents)
-      tr_name = _INTL("Kenshi: {1}", slot.trainer.name)
-      pbDrawShadowText(self.contents, rect.x + offset, y_pos + 32,
-                       rect.width, rect.height, tr_name, self.baseColor, self.shadowColor)
-      map_name = pbGetMapNameFromId(slot.map_id)
-      pbDrawShadowText(self.contents, rect.x - offset - 16, y_pos,
-                       rect.width, rect.height, map_name, self.baseColor, self.shadowColor, 2)
-      save_time = slot.trainer.last_save_time
-      pbDrawShadowText(self.contents, rect.x - offset - 16, y_pos + 32,
-                       rect.width, rect.height, save_time, self.baseColor, self.shadowColor, 2)
+  def commands=(value)
+    @commands = value || []
+    @index = 0 if @index >= @commands.length
+    @target_scroll = @index * CARD_SPACING
+    @scroll_x = @target_scroll if @commands.length <= 1
+    refresh
+    refresh_card_sprites
+  end
+
+  def index=(value)
+    return if @commands.empty?
+    value = [[value || 0, 0].max, @commands.length - 1].min
+    @index = value
+    @target_scroll = @index * CARD_SPACING
+    refresh
+    refresh_card_sprites
+  end
+
+  def move_left
+    return if @index <= 0
+    @index -= 1
+    @target_scroll = @index * CARD_SPACING
+    pbPlayCursorSE rescue nil
+  end
+
+  def move_right
+    return if @index >= @commands.length - 1
+    @index += 1
+    @target_scroll = @index * CARD_SPACING
+    pbPlayCursorSE rescue nil
+  end
+
+  def confirm!
+    @confirm = 6
+  end
+
+  def prepare_entry
+    @entry_offset = 112.0
+    @exit_offset = 0.0
+    refresh
+    refresh_card_sprites
+  end
+
+  def play_entry
+    # Smooth horizontal ease into place.
+    # No vertical offsets or stagger, which were causing the visible jump.
+    16.times do
+      @entry_offset *= 0.74
+
+      Graphics.update
+      Input.update
+      refresh
+      refresh_card_sprites
+      update_card_sprites
+    end
+
+    @entry_offset = 0.0
+    refresh
+    refresh_card_sprites
+  end
+
+  def play_exit
+    @exit_offset = 0.0
+
+    10.times do |i|
+      t = (i + 1) / 10.0
+      @exit_offset = 116.0 * (t * t)
+
+      Graphics.update
+      Input.update
+      refresh
+      refresh_card_sprites
+      update_card_sprites
     end
   end
 
-  def drawCursor(index,rect)
-    offset = (self.index == index ? @selarrow.height / 2 : 0)
-    rc = Rect.new(0, offset, @selarrow.width, @selarrow.height / 2)
-    self.contents.blt((self.width / 2) - (@selarrow.width / 2) - 16, rect.y, @selarrow, rc, 255)
-    return Rect.new(rect.x + 16, rect.y, rect.width - 16, rect.height)
+  def update
+    @anim_frame += 1
+
+    delta = @target_scroll - @scroll_x
+    if delta.abs > 0.5
+      @scroll_x += delta * 0.22
+    else
+      @scroll_x = @target_scroll
+    end
+
+    @confirm -= 1 if @confirm > 0
+
+    refresh
+    refresh_card_sprites
+    update_card_sprites
+  end
+
+  def refresh
+    return if disposed?
+    self.bitmap.clear
+    pbSetSystemFont(self.bitmap)
+
+    draw_header
+
+    @commands.each_with_index do |slot, i|
+      draw_card(slot, i)
+    end
+
+    draw_edge_hints
+  end
+
+  def draw_header
+    title = @new_game_mode ? _INTL("Choose a Save Slot") : _INTL("Load Game")
+    pbDrawTextPositions(self.bitmap, [
+      [title, Graphics.width / 2, 12, 2, RED, TEXT_SHADOW]
+    ])
+  end
+
+  def card_position(i)
+    x = CENTER_X - (CARD_W / 2)
+    x += (i * CARD_SPACING) - @scroll_x
+    x += @entry_offset
+    x += @exit_offset
+
+    y = CARD_Y
+
+    if i == @index
+      y += (Math.sin(@anim_frame / 14.0) * 2).round
+      y += 2 if @confirm > 0
+    end
+
+    return x.round, y.round
+  end
+
+  def draw_card(slot, i)
+    x, y = card_position(i)
+    return if x < -CARD_W || x > Graphics.width
+
+    selected = (i == @index)
+
+    card = selected ? @card_selected : @card_normal
+    self.bitmap.blt(
+      x,
+      y,
+      card,
+      Rect.new(0, 0, card.width, card.height)
+    )
+
+    draw_card_text(slot, x, y, selected)
+  end
+
+  def wrap_lines(text, max_width, max_lines = 3)
+    words = text.to_s.split(/\s+/)
+    return [""] if words.empty?
+
+    lines = []
+    line = ""
+
+    words.each do |word|
+      test = line.empty? ? word : "#{line} #{word}"
+
+      if self.bitmap.text_size(test).width <= max_width
+        line = test
+      else
+        lines.push(line) if !line.empty?
+        line = word
+        break if lines.length >= max_lines - 1
+      end
+    end
+
+    lines.push(line) if !line.empty? && lines.length < max_lines
+    return lines
+  end
+
+  def draw_card_text(slot, x, y, selected)
+    center = x + CARD_W / 2
+    text_color = selected ? RED_DARK : INK
+
+    pbSetSystemFont(self.bitmap)
+
+    if slot.new_game?
+      pbDrawTextPositions(self.bitmap, [
+        [_INTL("New Game"), center, y + 124, 2, RED, TEXT_SHADOW]
+      ])
+      return
+    end
+
+    if slot.empty?
+      pbDrawTextPositions(self.bitmap, [
+        [slot.name, center, y + 18, 2, text_color, TEXT_SHADOW],
+        [_INTL("Empty"), center, y + 122, 2, SOFT, TEXT_SHADOW]
+      ])
+      return
+    end
+
+    return if !slot.valid?
+
+    trainer = slot.trainer
+    mapname = pbGetMapNameFromId(slot.map_id)
+    mapname = _INTL("Unknown") if !mapname || mapname.empty?
+    mapname.gsub!(/\\PN/, trainer.name) rescue nil
+
+    total = slot.frame_count / Graphics.frame_rate
+    hour  = total / 3600
+    min   = (total / 60) % 60
+    chapter = trainer.chapter rescue 0
+
+    # Player name first.
+    pbDrawTextPositions(self.bitmap, [
+      [trainer.name, center, y + 14, 2, text_color, TEXT_SHADOW]
+    ])
+
+    # Full location name. Wrap naturally instead of truncating.
+    pbSetSmallFont(self.bitmap)
+    lines = wrap_lines(mapname, CARD_W - 30, 3)
+    lines.each_with_index do |line, idx|
+      pbDrawTextPositions(self.bitmap, [
+        [line, center, y + 48 + (idx * 20), 2, SOFT, TEXT_SHADOW]
+      ])
+    end
+
+    meta_y = y + 142
+    pbDrawTextPositions(self.bitmap, [
+      [_INTL("Chapter: {1}", chapter), x + 18, meta_y, 0, RED_DARK, TEXT_SHADOW],
+      # Playtime deliberately has no label.
+      [_INTL("{1}:{2}", sprintf("%02d", hour), sprintf("%02d", min)),
+        x + CARD_W - 18, meta_y, 1, INK, TEXT_SHADOW]
+    ])
+  end
+
+  def refresh_card_sprites
+    wanted = {}
+
+    first = [@index - 1, 0].max
+    last  = [@index + 1, @commands.length - 1].min
+
+    (first..last).each do |slot_index|
+      slot = @commands[slot_index]
+      next if !slot || !slot.valid?
+
+      trainer = slot.trainer
+      next if !trainer
+
+      x, y = card_position(slot_index)
+
+      # Player running sprite.
+      player_key = "player_#{slot_index}"
+      wanted[player_key] = true
+
+      if !@card_sprites[player_key]
+        begin
+          meta = pbGetMetadata(0, MetadataPlayerA + trainer.metaID)
+          if meta
+            filename = pbGetPlayerCharset(meta, 1, trainer, true)
+            @card_sprites[player_key] = TrainerWalkingCharSprite.new(filename, self.viewport)
+            @card_sprites[player_key].z = self.z + 5
+          end
+        rescue
+        end
+      end
+
+      player = @card_sprites[player_key]
+      if player && player.bitmap
+        # Bushido player sheets are 4x4, with each frame treated as a 64x64
+        # square. Use the first row and cycle across its four frames.
+        frame_w = 64
+        frame_h = 64
+        frame = (@anim_frame / 14) % 4
+
+        player.src_rect = Rect.new(frame * frame_w, 0, frame_w, frame_h)
+
+        # Center the 64x64 frame horizontally in the card and place it
+        # directly beneath the wrapped location block.
+        player.x = x + ((CARD_W - frame_w) / 2)
+        player.y = y + 76
+
+        player.visible = self.visible && x > -CARD_W && x < Graphics.width
+      end
+
+      # Party: all six members, 3x2.
+      if trainer.party
+        trainer.party.each_with_index do |pkmn, party_index|
+          break if party_index >= 6
+
+          key = "party_#{slot_index}_#{party_index}"
+          wanted[key] = true
+
+          if !@card_sprites[key]
+            @card_sprites[key] = PokemonIconSprite.new(pkmn, self.viewport)
+            @card_sprites[key].setOffset(PictureOrigin::Center)
+            @card_sprites[key].z = self.z + 5
+          end
+
+          icon = @card_sprites[key]
+          col = party_index % 3
+          row = party_index / 3
+
+          icon.x = x + 52 + (col * 58)
+          icon.y = y + 202 + (row * 52)
+          icon.visible = self.visible && x > -CARD_W && x < Graphics.width
+        end
+      end
+    end
+
+    @card_sprites.keys.each do |key|
+      next if wanted[key]
+      sprite = @card_sprites[key]
+      sprite.dispose if sprite && !sprite.disposed?
+      @card_sprites.delete(key)
+    end
+  end
+
+  def update_card_sprites
+    @card_sprites.each do |key, sprite|
+      next if key.start_with?("player_")
+      sprite.update if sprite.respond_to?(:update)
+    end
+  end
+
+  def draw_edge_hints
+    if @index > 0
+      pbDrawTextPositions(self.bitmap, [
+        ["<", 16, Graphics.height / 2 - 8, 0, SOFT, TEXT_SHADOW]
+      ])
+    end
+
+    if @index < @commands.length - 1
+      pbDrawTextPositions(self.bitmap, [
+        [">", Graphics.width - 16, Graphics.height / 2 - 8, 1, SOFT, TEXT_SHADOW]
+      ])
+    end
+  end
+
+  def visible=(value)
+    super
+    @card_sprites.each_value do |sprite|
+      sprite.visible = value if sprite.respond_to?(:visible=)
+    end
+  end
+
+  def dispose
+    pbDisposeSpriteHash(@card_sprites)
+    @card_sprites = {}
+
+    @card_normal.dispose if @card_normal && !@card_normal.disposed?
+    @card_selected.dispose if @card_selected && !@card_selected.disposed?
+
+    super
   end
 end
+
