@@ -1,3 +1,9 @@
+#===============================================================================
+# Pokémon Bushido - Save Screen
+# Matches the Bushido load-screen presentation and removes the old fade between
+# the save command and SaveSlot_Selection_Scene.
+#===============================================================================
+
 def pbSave(safesave = false)
   $Trainer.metaID = $PokemonGlobal.playerID
   $Trainer.set_last_save_time
@@ -38,14 +44,15 @@ def pbSave(safesave = false)
   return true
 end
 
+
 def pbEmergencySave
-  oldscene=$scene
-  $scene=nil
+  oldscene = $scene
+  $scene = nil
   pbMessage(_INTL("The script is taking too long. The game will restart."))
   return if !$Trainer
   if safeExists?(RTP.getSaveFileName("Game_0.rxdata"))
-    File.open(RTP.getSaveFileName("Game_0.rxdata"),  'rb') { |r|
-      File.open(RTP.getSaveFileName("Game_0.rxdata.bak"), 'wb') { |w|
+    File.open(RTP.getSaveFileName("Game_0.rxdata"), "rb") { |r|
+      File.open(RTP.getSaveFileName("Game_0.rxdata.bak"), "wb") { |w|
         while s = r.read(4096)
           w.write s
         end
@@ -57,83 +64,195 @@ def pbEmergencySave
   else
     pbMessage(_INTL("\\se[]Save failed.\\wtnp[30]"))
   end
-  $scene=oldscene
+  $scene = oldscene
 end
 
+
+#===============================================================================
+# Lightweight backdrop shown underneath the save-slot selector.
+#
+# The save-slot selector remains responsible for the actual list of slots.
+# This scene just makes the transition out of the pause menu feel like part of
+# the same UI family as PScreen_Load instead of flashing/fading to black.
+#===============================================================================
+class BushidoSaveBackdrop < SpriteWrapper
+  RED      = Color.new(154, 48, 47)
+  RED_DARK = Color.new(102, 33, 34)
+  INK      = Color.new(68, 48, 37)
+  INK_SOFT = Color.new(111, 84, 64)
+
+  def initialize(viewport)
+    super(viewport)
+    self.bitmap = BitmapWrapper.new(Graphics.width, Graphics.height)
+    pbSetSystemFont(self.bitmap)
+    refresh
+  end
+
+  def refresh
+    self.bitmap.clear
+
+    # Same drop-in background used by PScreen_Load.
+    bg = pbBitmap("Graphics/Pictures/LoadScreen/load_bg")
+    self.bitmap.blt(0, 0, bg, Rect.new(0, 0, bg.width, bg.height))
+
+    # Reuse the approved right-side paper panel.
+    panel = pbBitmap("Graphics/Pictures/LoadScreen/load_right_panel")
+    self.bitmap.blt(220, 0, panel, Rect.new(0, 0, panel.width, panel.height))
+
+    draw_current_save_info
+  end
+
+  def draw_current_save_info
+    return if !$Trainer
+
+    totalsec = Graphics.frame_count / Graphics.frame_rate
+    hour = totalsec / 3600
+    min = (totalsec / 60) % 60
+
+    mapname = $game_map ? $game_map.name : _INTL("Unknown")
+    chapter = $game_variables[99] rescue 0
+    journal = $Trainer.pokedexOwned(2) rescue ($Trainer.pokedexOwned rescue 0)
+
+    shadow = Color.new(229, 204, 169)
+
+    pbDrawTextPositions(self.bitmap, [
+      [_INTL("Save Game"), 238, 18, 0, RED, shadow],
+      [$Trainer.name, 294, 62, 0, INK, shadow],
+      [mapname, 294, 91, 0, INK_SOFT, shadow],
+      [_INTL("Chapter: {1}", chapter), 238, 136, 0, RED_DARK, shadow],
+      [_INTL("Journal: {1}", journal), 366, 136, 0, INK, shadow],
+      [_INTL("Playtime: {1}:{2}", sprintf("%02d", hour), sprintf("%02d", min)),
+        238, 174, 0, INK, shadow]
+    ])
+  end
+end
 
 
 class PokemonSave_Scene
   def pbStartScreen
-    @viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
-    @viewport.z=99999
-    @sprites={}
-    totalsec = Graphics.frame_count / Graphics.frame_rate
-    hour = totalsec / 60 / 60
-    min = totalsec / 60 % 60
-    mapname=$game_map.name
-    textColor = ["0070F8,78B8E8","E82010,F8A8B8","0070F8,78B8E8"][$Trainer.gender]
-    locationColor = "209808,90F090"   # green
-    loctext = _INTL("<ac><c3={1}>{2}</c3></ac>",locationColor,mapname)
-    loctext+=_INTL("Player<r><c3={1}>{2}</c3><br>",textColor,$Trainer.name)
-    if hour>0
-      loctext+=_INTL("Time<r><c3={1}>{2}h {3}m</c3><br>",textColor,hour,min)
-    else
-      loctext+=_INTL("Time<r><c3={1}>{2}m</c3><br>",textColor,min)
+    @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
+    @viewport.z = 99998
+    @sprites = {}
+
+    @sprites["backdrop"] = BushidoSaveBackdrop.new(@viewport)
+
+    # Current player sprite, matching the load-screen placement.
+    begin
+      meta = pbGetMetadata(0, MetadataPlayerA + $Trainer.metaID)
+      if meta
+        filename = pbGetPlayerCharset(meta, 1, $Trainer, true)
+        @sprites["player"] = TrainerWalkingCharSprite.new(filename, @viewport)
+        sprite = @sprites["player"]
+        charwidth = sprite.bitmap.width
+        charheight = sprite.bitmap.height
+        sprite.src_rect = Rect.new(0, 0, charwidth / 4, charheight / 4)
+        sprite.x = 232
+        sprite.y = 56
+        sprite.z = @viewport.z + 10
+      end
+    rescue
     end
-    if $Trainer.pokedex
-      loctext+=_INTL("Journal<r><c3={1}>{2}/{3}</c3><br>",textColor,$Trainer.pokedexOwned,$Trainer.pokedexSeen)
+
+    # Party icons, same 2x3 layout as load.
+    begin
+      $Trainer.party.each_with_index do |pkmn, i|
+        break if i >= 6
+        key = "party#{i}"
+        @sprites[key] = PokemonIconSprite.new(pkmn, @viewport)
+        @sprites[key].setOffset(PictureOrigin::Center)
+
+        col = i % 3
+        row = i / 3
+
+        @sprites[key].x = 270 + (col * 78)
+        @sprites[key].y = 266 + (row * 46)
+        @sprites[key].z = @viewport.z + 10
+      end
+    rescue
     end
-    loctext+=_INTL("Chapter<r><c3={1}>{2}</c3><br>",textColor,$game_variables[99])
-    #if $game_variables[100]>0 && $game_variables[99]!="Hattori"
-      #loctext+=_INTL("Katana Level<r><c3={1}>{2}</c3>",textColor,$game_variables[100])
-    #end
-    if $game_variables[99]=="Hattori" && $game_variables[199]!=0
-      loctext+=_INTL("Corrupted<r><c3={1}>{2}</c3>",textColor,$game_variables[199])
+
+    # No fade-in. Draw it immediately.
+    Graphics.update
+  end
+
+  def pbUpdate
+    pbUpdateSpriteHash(@sprites)
+  end
+
+  # Tiny lateral handoff instead of a fade.
+  def pbSlideOut
+    return if !@viewport
+
+    8.times do |i|
+      @viewport.ox = ((i + 1) * 6)
+      pbUpdate
+      Graphics.update
     end
-    @sprites["locwindow"]=Window_AdvancedTextPokemon.new(loctext)
-    @sprites["locwindow"].viewport=@viewport
-    @sprites["locwindow"].x=0
-    @sprites["locwindow"].y=0
-    @sprites["locwindow"].width=228 if @sprites["locwindow"].width<228
-    @sprites["locwindow"].visible=true
+  end
+
+  def pbSlideBack
+    return if !@viewport
+
+    @viewport.ox = 48
+    8.times do |i|
+      @viewport.ox = 48 - ((i + 1) * 6)
+      pbUpdate
+      Graphics.update
+    end
+    @viewport.ox = 0
   end
 
   def pbEndScreen
     pbDisposeSpriteHash(@sprites)
-    @viewport&.dispose
+    @viewport.dispose if @viewport
+    @viewport = nil
   end
 end
-
 
 
 class PokemonSaveScreen
   def initialize(scene)
-    @scene=scene
+    @scene = scene
   end
 
   def pbSaveScreen
-    ret=false
-    # @scene.pbStartScreen
-    slot = $PokemonSystem.save_slot
-    pbFadeOutIn(99999) {
-      scene = SaveSlot_Selection_Scene.new(true, true)
-      slot  = scene.get_save_slot
-      next scene.dispose if slot <= 0
-      $PokemonSystem.save_slot = slot
-      pbSave
-      scene.dispose
+    ret = false
+
+    # Go straight into the shared save-slot carousel.
+    #
+    # We intentionally do NOT call PokemonSave_Scene#pbStartScreen here.
+    # That old intermediate backdrop was the right-side panel flashing briefly
+    # when backing out of Save.
+    slot_scene = SaveSlot_Selection_Scene.new(true, true)
+    slot = slot_scene.get_save_slot
+
+    # Cancel returns directly to gameplay. No backdrop, no slide-back frame.
+    if slot <= 0
+      slot_scene.dispose
+      Graphics.update
+      return false
+    end
+
+    $PokemonSystem.save_slot = slot
+    success = pbSave
+
+    slot_scene.dispose
+
+    if success
+      pbSEPlay("GUI save game") rescue nil
       ret = true
-    }
-    # @scene.pbEndScreen
+    else
+      pbPlayBuzzerSE rescue nil
+      ret = false
+    end
+
+    Graphics.update
     return ret
   end
 end
 
-
-
 def pbSaveScreen
   scene = PokemonSave_Scene.new
   screen = PokemonSaveScreen.new(scene)
-  ret = screen.pbSaveScreen
-  return ret
+  return screen.pbSaveScreen
 end

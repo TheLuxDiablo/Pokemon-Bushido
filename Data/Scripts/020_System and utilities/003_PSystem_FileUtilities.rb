@@ -524,21 +524,38 @@ end
 #===============================================================================
 # Load various wild battle music
 #===============================================================================
-def pbGetWildBattleBGM(_wildParty)   # wildParty is an array of Pokémon objects
+def pbGetWildBattleBGM(wildParty)   # wildParty is an array of Pokémon objects
   if $PokemonGlobal.nextBattleBGM
     return $PokemonGlobal.nextBattleBGM.clone
   end
+
+  # Check species-specific Bushido battle themes
+  BUSHIDO_WILD_BATTLE_THEMES.each do |music, speciesList|
+    wildParty.each do |pkmn|
+      next if !pkmn
+
+      speciesList.each do |species|
+        if pkmn.isSpecies?(species)
+          return pbStringToAudioFile(music)
+        end
+      end
+    end
+  end
+
   ret = nil
+
   if !ret
     # Check map-specific metadata
     music = pbGetMetadata($game_map.map_id,MetadataMapWildBattleBGM)
     ret = pbStringToAudioFile(music) if music && music!=""
   end
+
   if !ret
     # Check global metadata
     music = pbGetMetadata(0,MetadataWildBattleBGM)
     ret = pbStringToAudioFile(music) if music && music!=""
   end
+
   ret = pbStringToAudioFile("Battle wild") if !ret
   return ret
 end

@@ -2,6 +2,15 @@ pbCompiler
 
 Input.text_input = false
 
+# Wild Pokemon with unique battle themes
+BUSHIDO_WILD_BATTLE_THEMES = {
+  "Battle! Swords of Justice" => [
+    :COBALION,
+    :VIRIZION,
+    :TERRAKION
+  ]
+}
+
 =begin
 map_data = Marshal.load(File.open('Data/Map172.rxdata'))
 map_data.width = 74
@@ -31,7 +40,7 @@ def pbCallTitle
   # directory without a file extension, to show before the
   # actual title screen.  Second parameter is the actual
   # title screen filename, also in Titles with no extension.
-  return Scene_Intro.new(['intro1','intro2','intro3'], 'splash')
+  return Scene_Intro.new([], 'splash')
 end
 
 def mainFunction

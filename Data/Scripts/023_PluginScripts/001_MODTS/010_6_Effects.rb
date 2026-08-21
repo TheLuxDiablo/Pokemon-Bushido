@@ -925,3 +925,100 @@ class MTS_Element_FX13
   # end
 end
 #===============================================================================
+
+#-------------------------------------------------------------------------------
+# Sakura petals - Bushido title screen
+class MTS_Element_FX14
+  attr_accessor :x, :y
+  def id; return "effect.sakura"; end
+  def id?(val); return self.id == val; end
+
+  PETAL_COUNT = 60
+
+  def initialize(viewport,x=nil,y=nil,z=nil)
+    @viewport = viewport
+    @disposed = false
+    @frame = 0
+    @gust_frames = 0
+    @sprites = {}
+    @data = {}
+
+    for i in 0...PETAL_COUNT
+      sprite = Sprite.new(@viewport)
+      sprite.bitmap = pbBitmap("Graphics/Titles/ModularTS/Particles/petal")
+      sprite.center!
+      sprite.z = i < 29 ? 40 : 1000
+      @sprites["p#{i}"] = sprite
+      reset_particle(i, true)
+    end
+  end
+
+  def reset_particle(i, initial=false)
+    sprite = @sprites["p#{i}"]
+
+    sprite.x = rand(@viewport.rect.width + 320) - 160
+    sprite.y = initial ? rand(@viewport.rect.height + 32) - 16 : -16 - rand(40)
+
+    scale = 55 + rand(66)
+    sprite.zoom_x = scale / 100.0
+    sprite.zoom_y = scale / 100.0
+    sprite.opacity = 145 + rand(111)
+    sprite.angle = rand(360)
+
+    @data[i] = {
+      :fall  => 12 + rand(15),
+      :wind  => (rand(2) == 0 ? -1 : 1) * (5 + rand(10)),
+      :sway  => 2 + rand(5),
+      :wave  => 18 + rand(23),
+      :phase => rand(360),
+      :spin  => (rand(2) == 0 ? -1 : 1) * (1 + rand(3))
+    }
+  end
+
+  # Brief wind kick used when the player confirms the title screen.
+  def gust!
+    @gust_frames = 34
+  end
+
+  def update
+    return if self.disposed?
+    @frame += 1
+
+    for i in 0...PETAL_COUNT
+      sprite = @sprites["p#{i}"]
+      data = @data[i]
+
+      gust = @gust_frames > 0 ? (@gust_frames / 34.0) : 0.0
+
+      # Normal drift, plus a short diagonal gust when Start is pressed.
+      sprite.y += data[:fall] / 10.0 + (gust * 1.4)
+      sprite.x += data[:wind] / 10.0 + (gust * 2.8)
+      sprite.x += Math.sin((@frame + data[:phase]) / data[:wave].to_f) * data[:sway] / 20.0
+      sprite.angle += data[:spin] + (gust * 4.0)
+
+      # Recycle only after a petal has fully cleared the visible area.
+      # The generous side margin lets it keep its diagonal motion past the edge
+      # instead of wrapping or clamping against the screen.
+      if sprite.y > @viewport.rect.height + 32 ||
+         sprite.x < -48 ||
+         sprite.x > @viewport.rect.width + 48
+        reset_particle(i, false)
+      end
+    end
+
+    @gust_frames -= 1 if @gust_frames > 0
+  end
+
+  def visible=(val)
+    for key in @sprites.keys
+      @sprites[key].visible = val
+    end
+  end
+
+  def dispose
+    @disposed = true
+    pbDisposeSpriteHash(@sprites)
+  end
+
+  def disposed?; return @disposed; end
+end

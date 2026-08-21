@@ -30,8 +30,8 @@ class ModularTitleScreen
       # if no background modifier has been defined, defaults to stock Essentials
       if arg.include?("BACKGROUND:") # loads specific BG graphic
         next if bg_selected
-        cmd = arg.split("_").compact
-        backdrop = "\"" + cmd[0].gsub("BACKGROUND:","") + "\""
+        cmd = mod.to_s.split("_").compact
+        backdrop = "\"" + cmd[0].sub(/background:/i,"") + "\""
         bg_selected = true
       elsif arg.include?("BACKGROUND") # loads modifier as object
         next if bg_selected
@@ -53,8 +53,8 @@ class ModularTitleScreen
       # multiple overlays can be added
       # order in which they are defined matters for their Z index
       elsif arg.include?("OVERLAY:") # loads specific overlay graphic
-        cmd = arg.split("_").compact
-        file = cmd[0].gsub("OVERLAY:","")
+        cmd = mod.to_s.split("_").compact
+        file = cmd[0].sub(/overlay:/i,"")
         # applies positioning modifiers
         for j in 1...cmd.length
           next if cmd.length < 2
@@ -140,6 +140,15 @@ class ModularTitleScreen
     # setting up game logo
     @sprites["logo"] = MTS_Element_Logo.new(@viewport)
     @sprites["logo"].position
+
+    # Resting values used by the confirm animation.
+    @confirm_effect = 0
+    @logo_base_y = @sprites["logo"].logo.y
+    @logo_base_zoom_x = @sprites["logo"].logo.zoom_x
+    @logo_base_zoom_y = @sprites["logo"].logo.zoom_y
+    @sublogo_base_y = @sprites["logo"].sublogo.y
+    @sublogo_base_zoom_x = @sprites["logo"].sublogo.zoom_x
+    @sublogo_base_zoom_y = @sprites["logo"].sublogo.zoom_y
     #---------------------------------------------------------------------------
     # setting up gstart splash text
     @sprites["start"] = Sprite.new(@viewport)
@@ -161,6 +170,8 @@ class ModularTitleScreen
       intro = MTS_INTRO_ANIM.new(@viewport,@sprites)
     end
     @currentFrame = intro.currentFrame
+    # Hold the music until the visual intro has finished and the logo is in.
+    self.playBGM
     @sprites["start"].visible = true
   end
   # main update for all the visual elements
@@ -168,14 +179,65 @@ class ModularTitleScreen
     for key in @sprites.keys
       @sprites[key].update if @sprites[key].respond_to?(:update)
     end
-    @sprites["start"].opacity -= @fade
-    @fade *= -1 if @sprites["start"].opacity <= 0 || @sprites["start"].opacity >= 255
+    if @sprites["start"].visible
+      @sprites["start"].opacity -= @fade
+      @fade *= -1 if @sprites["start"].opacity <= 0 || @sprites["start"].opacity >= 255
+    end
+    self.updateConfirmEffect
   end
   # update for title screen functionality
   def update
     @currentFrame += 1
     self.updateElements
   end
+  # Smooth title-screen response when the player confirms.
+  def confirmEffect
+    @confirm_effect = 24
+
+    # Hide the prompt completely the instant input is accepted.
+    if @sprites["start"]
+      @sprites["start"].visible = false
+      @sprites["start"].opacity = 0
+    end
+
+    # Kick any title-screen effect that supports a confirm gust.
+    for key in @sprites.keys
+      @sprites[key].gust! if @sprites[key].respond_to?(:gust!)
+    end
+  end
+
+  def updateConfirmEffect
+    return if @confirm_effect.nil? || @confirm_effect <= 0
+
+    frame = 24 - @confirm_effect
+    progress = frame / 23.0
+
+    # A single smooth arc: the logo gently lifts, grows a touch, then settles.
+    # Sin keeps the movement continuous with no squash/stretch or sudden pulse.
+    arc = Math.sin(progress * Math::PI)
+    zoom = 1.0 + (0.035 * arc)
+    yoff = -(5.0 * arc)
+
+    @sprites["logo"].logo.zoom_x = @logo_base_zoom_x * zoom
+    @sprites["logo"].logo.zoom_y = @logo_base_zoom_y * zoom
+    @sprites["logo"].logo.y = @logo_base_y + yoff.to_i
+
+    @sprites["logo"].sublogo.zoom_x = @sublogo_base_zoom_x * zoom
+    @sprites["logo"].sublogo.zoom_y = @sublogo_base_zoom_y * zoom
+    @sprites["logo"].sublogo.y = @sublogo_base_y + yoff.to_i
+
+    @confirm_effect -= 1
+
+    if @confirm_effect <= 0
+      @sprites["logo"].logo.zoom_x = @logo_base_zoom_x
+      @sprites["logo"].logo.zoom_y = @logo_base_zoom_y
+      @sprites["logo"].logo.y = @logo_base_y
+      @sprites["logo"].sublogo.zoom_x = @sublogo_base_zoom_x
+      @sprites["logo"].sublogo.zoom_y = @sublogo_base_zoom_y
+      @sprites["logo"].sublogo.y = @sublogo_base_y
+    end
+  end
+
   # disposes of all visual elements
   def dispose
     for key in @sprites.keys
@@ -192,8 +254,8 @@ class ModularTitleScreen
     bgm = nil
     for mod in @mods
       arg = mod.to_s.upcase
-      if arg.include?("BGM:") # loads specific BG graphic
-        bgm = arg.gsub("BGM:","")
+      if arg.include?("BGM:") # loads specific BGM
+        bgm = mod.to_s.sub(/bgm:/i,"")
         break
       end
     end

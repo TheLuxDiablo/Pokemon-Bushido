@@ -297,21 +297,65 @@ end
 #===============================================================================
 # Main options list
 #===============================================================================
+module BushidoOptionsStyle
+  PARCHMENT       = Color.new(238,221,181)
+  PARCHMENT_LIGHT = Color.new(248,237,208)
+  PARCHMENT_DARK  = Color.new(211,188,142)
+  INK             = Color.new(66,46,34)
+  INK_SOFT        = Color.new(112,88,67)
+  RED             = Color.new(154,48,39)
+  RED_DARK        = Color.new(105,31,27)
+  RED_SOFT        = Color.new(193,102,85)
+  CREAM           = Color.new(255,246,220)
+
+  def self.draw_border(bitmap,x,y,w,h,color,thickness=2)
+    bitmap.fill_rect(x,y,w,thickness,color)
+    bitmap.fill_rect(x,y+h-thickness,w,thickness,color)
+    bitmap.fill_rect(x,y,thickness,h,color)
+    bitmap.fill_rect(x+w-thickness,y,thickness,h,color)
+  end
+end
+
+
+
+#===============================================================================
+# Main options list - Bushido parchment style
+#===============================================================================
 class Window_PokemonOption < Window_DrawableCommand
   attr_reader :mustUpdateOptions
 
   def initialize(options,x,y,width,height)
     @options = options
-    @nameBaseColor   = Color.new(24*8,15*8,0)
-    @nameShadowColor = Color.new(31*8,22*8,10*8)
-    @selBaseColor    = Color.new(31*8,6*8,3*8)
-    @selShadowColor  = Color.new(31*8,17*8,16*8)
     @optvalues = []
     @mustUpdateOptions = false
+    @hover_anim = 0
+    @switch_anim = 0
+    @switch_dir = 0
+    @last_index = 0
     for i in 0...@options.length
       @optvalues[i] = 0
     end
     super(x,y,width,height)
+    self.opacity = 0
+    self.back_opacity = 0
+    self.contents_opacity = 255
+    @last_index = self.index
+    hideScrollArrows
+  end
+
+  # The stock selectable window adds scroll arrows when the list is taller
+  # than its viewport. They sit on top of our custom rows, so this menu never
+  # draws them. The checks keep this compatible with the different Window
+  # implementations used by Essentials/mkxp.
+  def hideScrollArrows
+    self.arrows_visible = false if self.respond_to?(:arrows_visible=)
+    for ivar in [:@uparrow, :@downarrow, :@up_arrow, :@down_arrow,
+                 :@uparrowsprite, :@downarrowsprite,
+                 :@upArrow, :@downArrow]
+      next if !self.instance_variable_defined?(ivar)
+      sprite = self.instance_variable_get(ivar)
+      sprite.visible = false if sprite && sprite.respond_to?(:visible=)
+    end
   end
 
   def [](i)
@@ -332,61 +376,136 @@ class Window_PokemonOption < Window_DrawableCommand
   end
 
   def drawItem(index,_count,rect)
-    rect = drawCursor(index,rect)
-    optionname = (index==@options.length) ? _INTL("Cancel") : @options[index].name
-    optionwidth = rect.width*9/20
+    selected = (index == self.index)
+    row_x = rect.x + 8
+    row_y = rect.y + 3
+    row_w = rect.width - 16
+    row_h = rect.height - 6
+
+    # Keep every option row as a plain rectangle. No tabs, seals, or extra lines.
+    if selected
+      pulse = ((Math.sin(Graphics.frame_count / 7.0) + 1.0) * 10).to_i
+      self.contents.fill_rect(row_x,row_y,row_w,row_h,
+        Color.new(154,48,39,48 + pulse))
+      BushidoOptionsStyle.draw_border(self.contents,row_x,row_y,row_w,row_h,
+        Color.new(154,48,39,190),1)
+    else
+      self.contents.fill_rect(row_x,row_y,row_w,row_h,
+        Color.new(248,237,208,72))
+      BushidoOptionsStyle.draw_border(self.contents,row_x,row_y,row_w,row_h,
+        Color.new(211,188,142,70),1)
+    end
+
+    optionname = (index==@options.length) ? _INTL("Back") : @options[index].name
+    optionwidth = (rect.width*9/20).floor
+
+    # Essentials' baseline looked about two pixels high in this layout.
     text_y = rect.y + 6
-    pbDrawShadowText(self.contents,rect.x,text_y,optionwidth,rect.height,optionname,
-       @nameBaseColor,@nameShadowColor)
+    hover_offset = selected ? [@hover_anim,4].min : 0
+    name_x = rect.x + 18 + hover_offset
+
+    if selected
+      name_color  = BushidoOptionsStyle::RED_DARK
+      name_shadow = Color.new(248,237,208,190)
+    else
+      # Unfocused labels sit back into the parchment instead of competing
+      # with the row the player is currently editing.
+      name_color  = Color.new(66,46,34,175)
+      name_shadow = Color.new(248,237,208,105)
+    end
+
+    pbDrawShadowText(self.contents,name_x,text_y,optionwidth-10,rect.height,
+      optionname,name_color,name_shadow)
     return if index==@options.length
-    if @options[index].is_a?(EnumOption)
-      if @options[index].values.length>1
+
+    value_x = rect.x + optionwidth
+    value_w = rect.width - optionwidth - 18
+    option = @options[index]
+    switch_offset = 0
+    if selected && @switch_anim>0
+      switch_offset = @switch_dir * [(@switch_anim/3),2].min
+    end
+
+    # Configure Controls is an action, not a true two-value enum.
+    if option.name == _INTL("Configure Controls")
+      action_color = selected ? BushidoOptionsStyle::RED : Color.new(112,88,67,125)
+      pbDrawShadowText(self.contents,value_x+switch_offset,text_y,value_w,rect.height,
+        _INTL("Open"),action_color,Color.new(248,237,208,110),2)
+      return
+    end
+
+    if option.is_a?(EnumOption)
+      if option.values.length>1
+        widths = []
         totalwidth = 0
-        for value in @options[index].values
-          totalwidth += self.contents.text_size(value).width
+        for value in option.values
+          w = self.contents.text_size(value).width
+          widths.push(w)
+          totalwidth += w
         end
-        spacing = (optionwidth-totalwidth)/(@options[index].values.length-1)
-        spacing = 0 if spacing<0
-        xpos = optionwidth+rect.x
-        ivalue = 0
-        for value in @options[index].values
-          pbDrawShadowText(self.contents,xpos,text_y,optionwidth,rect.height,value,
-             (ivalue==self[index]) ? @selBaseColor : self.baseColor,
-             (ivalue==self[index]) ? @selShadowColor : self.shadowColor
-          )
-          xpos += self.contents.text_size(value).width
-          xpos += spacing
-          ivalue += 1
+        spacing = (value_w-totalwidth)/(option.values.length-1) rescue 0
+        spacing = 8 if spacing<8
+        xpos = value_x
+        for i in 0...option.values.length
+          value = option.values[i]
+          current_value = (i==self[index])
+          if current_value
+            color = selected ? BushidoOptionsStyle::RED : Color.new(154,48,39,155)
+            shadow = Color.new(248,237,208,150)
+            dx = switch_offset
+          else
+            # Non-active choices are intentionally dimmer so the current
+            # value reads immediately at a glance.
+            color = selected ? Color.new(112,88,67,125) : Color.new(112,88,67,88)
+            shadow = Color.new(248,237,208,80)
+            dx = 0
+          end
+          pbDrawShadowText(self.contents,xpos+dx,text_y,widths[i]+4,rect.height,
+            value,color,shadow)
+          xpos += widths[i] + spacing
         end
       else
-        pbDrawShadowText(self.contents,rect.x+optionwidth,text_y,optionwidth,rect.height,
-           optionname,self.baseColor,self.shadowColor)
+        color = selected ? BushidoOptionsStyle::RED : Color.new(154,48,39,145)
+        pbDrawShadowText(self.contents,value_x+switch_offset,text_y,value_w,rect.height,
+          option.values[0].to_s,color,Color.new(248,237,208,120),2)
       end
-    elsif @options[index].is_a?(NumberOption)
-      value = _INTL("Type {1}/{2}",@options[index].optstart+self[index],
-         @options[index].optend-@options[index].optstart+1)
-      xpos = optionwidth+rect.x
-      pbDrawShadowText(self.contents,xpos,text_y,optionwidth,rect.height,value,
-         @selBaseColor,@selShadowColor)
-    elsif @options[index].is_a?(SliderOption)
-      value = sprintf(" %d",@options[index].optend)
-      sliderlength = optionwidth-self.contents.text_size(value).width
-      xpos = optionwidth+rect.x
-      self.contents.fill_rect(xpos,text_y-2+rect.height/2,
-         optionwidth-self.contents.text_size(value).width,4,self.baseColor)
-      self.contents.fill_rect(
-         xpos+(sliderlength-8)*(@options[index].optstart+self[index])/@options[index].optend,
-         text_y-8+rect.height/2,
-         8,16,@selBaseColor)
-      value = sprintf("%d",@options[index].optstart+self[index])
-      xpos += optionwidth-self.contents.text_size(value).width
-      pbDrawShadowText(self.contents,xpos,text_y,optionwidth,rect.height,value,
-         @selBaseColor,@selShadowColor)
+    elsif option.is_a?(NumberOption)
+      value = _INTL("{1} / {2}",option.optstart+self[index],
+        option.optend-option.optstart+1)
+      color = selected ? BushidoOptionsStyle::RED : Color.new(154,48,39,145)
+      pbDrawShadowText(self.contents,value_x+switch_offset,text_y,value_w,rect.height,value,
+        color,Color.new(248,237,208,120),2)
+    elsif option.is_a?(SliderOption)
+      number = option.optstart+self[index]
+      value_text = sprintf("%d",number)
+      number_w = self.contents.text_size(value_text).width + 8
+      slider_x = value_x + 4
+      slider_w = value_w - number_w - 12
+      slider_y = rect.y + rect.height/2 + 1
+
+      track_color = selected ? Color.new(211,188,142,210) : Color.new(211,188,142,105)
+      fill_color  = selected ? BushidoOptionsStyle::RED : Color.new(154,48,39,135)
+      knob_color  = selected ? BushidoOptionsStyle::RED_DARK : Color.new(105,31,27,145)
+
+      self.contents.fill_rect(slider_x,slider_y-2,slider_w,4,track_color)
+      range = option.optend-option.optstart
+      ratio = (range<=0) ? 0.0 : (number-option.optstart).to_f/range.to_f
+      filled = (slider_w*ratio).floor
+      self.contents.fill_rect(slider_x,slider_y-2,filled,4,fill_color)
+      knob_x = slider_x + filled - 3
+      knob_x = slider_x if knob_x<slider_x
+      knob_x = slider_x+slider_w-6 if knob_x>slider_x+slider_w-6
+      knob_h = selected && @switch_anim>0 ? 16 : 14
+      self.contents.fill_rect(knob_x,slider_y-(knob_h/2),6,knob_h,knob_color)
+
+      number_color = selected ? BushidoOptionsStyle::RED : Color.new(154,48,39,145)
+      pbDrawShadowText(self.contents,value_x+value_w-number_w+switch_offset,text_y,
+        number_w,rect.height,value_text,number_color,Color.new(248,237,208,120),2)
     else
-      value = @options[index].values[self[index]]
-      xpos = optionwidth+rect.x
-      pbDrawShadowText(self.contents,xpos,text_y,optionwidth,rect.height,value,
-         @selBaseColor,@selShadowColor)
+      value = option.values[self[index]]
+      color = selected ? BushidoOptionsStyle::RED : Color.new(154,48,39,145)
+      pbDrawShadowText(self.contents,value_x+switch_offset,text_y,value_w,rect.height,value,
+        color,Color.new(248,237,208,120),2)
     end
   end
 
@@ -394,19 +513,54 @@ class Window_PokemonOption < Window_DrawableCommand
     oldindex = self.index
     @mustUpdateOptions = false
     super
-    dorefresh = (self.index!=oldindex)
+    hideScrollArrows
+    dorefresh = false
+
+    if self.index != oldindex
+      @hover_anim = 0
+      @last_index = self.index
+      dorefresh = true
+      @mustUpdateOptions = true
+    end
+
     if self.active && self.index<@options.length
       if Input.repeat?(Input::LEFT)
-        self[self.index] = @options[self.index].prev(self[self.index])
+        oldvalue = self[self.index]
+        self.setValueNoRefresh(self.index,@options[self.index].prev(oldvalue))
+        if self[self.index] != oldvalue
+          @switch_anim = 6
+          @switch_dir = -1
+          pbPlayCursorSE
+        end
         dorefresh = true
         @mustUpdateOptions = true
       elsif Input.repeat?(Input::RIGHT)
-        self[self.index] = @options[self.index].next(self[self.index])
+        oldvalue = self[self.index]
+        self.setValueNoRefresh(self.index,@options[self.index].next(oldvalue))
+        if self[self.index] != oldvalue
+          @switch_anim = 6
+          @switch_dir = 1
+          pbPlayCursorSE
+        end
         dorefresh = true
         @mustUpdateOptions = true
       end
     end
-    @mustUpdateOptions = true if self.index != oldindex
+
+    # A tiny 4px ease-in gives the highlighted label some life without
+    # making the list wobble while the player scrolls through it.
+    if self.active && @hover_anim < 4
+      @hover_anim += 1
+      dorefresh = true
+    end
+
+    if @switch_anim > 0
+      @switch_anim -= 1
+      dorefresh = true
+    end
+
+    # Refresh the active row periodically for the very soft hover pulse.
+    dorefresh = true if self.active && Graphics.frame_count % 3 == 0
     refresh if dorefresh
   end
 end
@@ -414,26 +568,70 @@ end
 
 
 #===============================================================================
-# Options main screen
+# Options main screen - Bushido parchment style
 #===============================================================================
 class PokemonOption_Scene
   def pbUpdate
     pbUpdateSpriteHash(@sprites)
   end
 
+  def pbDrawParchmentBackground(textbox_height)
+    bitmap = @sprites["background"].bitmap
+    w = Graphics.width
+    h = Graphics.height
+
+    bitmap.fill_rect(0,0,w,h,BushidoOptionsStyle::PARCHMENT)
+
+    # Simple paper edge. Keep the screen framed without turning the header
+    # into another giant box.
+    bitmap.fill_rect(0,0,w,3,BushidoOptionsStyle::RED_DARK)
+    bitmap.fill_rect(0,h-3,w,3,BushidoOptionsStyle::RED_DARK)
+
+    # Clean title: text, one underline, one small square accent.
+    pbSetSystemFont(bitmap)
+    pbDrawShadowText(bitmap,22,22,220,40,_INTL("OPTIONS"),
+      BushidoOptionsStyle::RED_DARK,BushidoOptionsStyle::PARCHMENT_LIGHT,0)
+    bitmap.fill_rect(22,63,w-44,2,BushidoOptionsStyle::RED)
+    bitmap.fill_rect(w-29,59,7,7,BushidoOptionsStyle::RED_DARK)
+
+    # The real message window is drawn on top of this area. Don't paint a
+    # fake parchment textbox here; the actual windowskin needs to stay visible
+    # so Speech Frame/Menu Frame can be previewed properly.
+    box_y = h-textbox_height
+    bitmap.fill_rect(18,box_y-3,w-36,1,Color.new(154,48,39,105))
+  end
+
   def pbStartScene(inloadscreen=false)
     @sprites = {}
     @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z = 99999
+
+    @sprites["background"] = Sprite.new(@viewport)
+    @sprites["background"].bitmap = Bitmap.new(Graphics.width,Graphics.height)
+    @sprites["background"].z = 0
+
+    # Invisible title window retained because the existing layout uses its height.
     @sprites["title"] = Window_UnformattedTextPokemon.newWithSize(
-       _INTL("Options"),0,0,Graphics.width,64,@viewport)
+      "",0,0,Graphics.width,64,@viewport)
+    @sprites["title"].opacity = 0
+    @sprites["title"].back_opacity = 0
+    @sprites["title"].z = 2
+
     @sprites["textbox"] = pbCreateMessageWindow
-    @sprites["textbox"].text           = _INTL("Change the volume of the ingame music.",1+$PokemonSystem.textskin)
+    # pbCreateMessageWindow does not inherit this scene's viewport. Because the
+    # parchment background lives on @viewport, leaving the textbox on the default
+    # viewport causes it to render behind the background and disappear.
+    @sprites["textbox"].viewport = @viewport
+    @sprites["textbox"].text = _INTL("Change the volume of the ingame music.")
     @sprites["textbox"].letterbyletter = false
+    @sprites["textbox"].opacity = 255
+    @sprites["textbox"].back_opacity = 255
+    @sprites["textbox"].z = 3
+    @sprites["textbox"].setSkin(MessageConfig.pbGetSpeechFrame())
     pbSetSystemFont(@sprites["textbox"].contents)
-    # These are the different options in the game. To add an option, define a
-    # setter and a getter for that option. To delete an option, comment it out
-    # or delete it. The game's options may be placed in any order.
+
+    pbDrawParchmentBackground(@sprites["textbox"].height)
+
     @PokemonOptions = [
        SliderOption.new(_INTL("Music Volume"),0,100,5,
          proc { $PokemonSystem.bgmvolume },
@@ -499,10 +697,6 @@ class PokemonOption_Scene
            MessageConfig.pbSetSystemFrame($TextFrames[value])
          }
        ),
-#       EnumOption.new(_INTL("Text Entry"),[_INTL("Cursor"),_INTL("Keyboard")],
-#         proc { $PokemonSystem.textinput },
-#         proc { |value| $PokemonSystem.textinput = value }
-#       ),
        EnumOption.new(_INTL("Screen Size"),[_INTL("S"),_INTL("M"),_INTL("L"),_INTL("XL"),_INTL("Full")],
         proc { [$PokemonSystem.screensize,4].min },
         proc { |value|
@@ -545,12 +739,13 @@ class PokemonOption_Scene
       @Descriptions.insert(idx, _INTL("Change enemy Katana Technique strength. Weak prevents most negative effects."))
     end
     @PokemonOptions = pbAddOnOptions(@PokemonOptions)
-    @sprites["option"] = Window_PokemonOption.new(@PokemonOptions,0,
-       @sprites["title"].height,Graphics.width,
+    @sprites["option"] = Window_PokemonOption.new(@PokemonOptions,8,
+       @sprites["title"].height,Graphics.width-16,
        Graphics.height-@sprites["title"].height-@sprites["textbox"].height)
     @sprites["option"].viewport = @viewport
     @sprites["option"].visible  = true
-    # Get the values of each option
+    @sprites["option"].z = 2
+
     for i in 0...@PokemonOptions.length
       @sprites["option"].setValueNoRefresh(i,(@PokemonOptions[i].get || 0))
     end
@@ -563,43 +758,51 @@ class PokemonOption_Scene
     return options
   end
 
+  # Refresh the actual message window used by the stock options screen.
+  # This is intentionally a real windowskin preview, not a parchment drawing.
+  def pbRefreshPreviewWindow(index)
+    return if !@sprites["textbox"]
+
+    option = (index < @PokemonOptions.length) ? @PokemonOptions[index] : nil
+    option_name = option ? option.name : _INTL("Back")
+
+    if option_name == _INTL("Menu Frame")
+      begin
+        skin = $TextFrames[$PokemonSystem.frame]
+        @sprites["textbox"].setSkin(skin) if skin
+      rescue
+        @sprites["textbox"].setSkin(MessageConfig.pbGetSpeechFrame())
+      end
+    else
+      @sprites["textbox"].setSkin(MessageConfig.pbGetSpeechFrame())
+    end
+
+    @sprites["textbox"].opacity = 255
+    @sprites["textbox"].back_opacity = 255
+    pbSetSystemFont(@sprites["textbox"].contents)
+    @sprites["textbox"].letterbyletter = (option_name == _INTL("Text Speed"))
+    @sprites["textbox"].text = @Descriptions[index] || _INTL("Close the Options Menu.")
+    @sprites["textbox"].textspeed = pbSettingToTextSpeed($PokemonSystem.textspeed)
+  end
+
   def pbOptions
-    oldSystemSkin = $PokemonSystem.frame      # Menu
-    oldTextSkin   = $PokemonSystem.textskin   # Speech
+    oldSystemSkin = $PokemonSystem.frame
+    oldTextSkin   = $PokemonSystem.textskin
     oldFont       = $PokemonSystem.font
+    pbRefreshPreviewWindow(@sprites["option"].index)
     pbActivateWindow(@sprites,"option") {
       loop do
         Graphics.update
         Input.update
         pbUpdate
         if @sprites["option"].mustUpdateOptions
-          # Set the values of each option
           for i in 0...@PokemonOptions.length
             @PokemonOptions[i].set(@sprites["option"][i])
           end
-          if $PokemonSystem.textskin!=oldTextSkin
-            @sprites["textbox"].setSkin(MessageConfig.pbGetSpeechFrame())
-            oldTextSkin = $PokemonSystem.textskin
-          end
-          if $PokemonSystem.frame!=oldSystemSkin
-            @sprites["title"].setSkin(MessageConfig.pbGetSystemFrame())
-            @sprites["option"].setSkin(MessageConfig.pbGetSystemFrame())
-            oldSystemSkin = $PokemonSystem.frame
-          end
-          if $PokemonSystem.font!=oldFont
-            pbSetSystemFont(@sprites["textbox"].contents)
-            @sprites["textbox"].text = _INTL("Speech frame {1}.",1+$PokemonSystem.textskin)
-            oldFont = $PokemonSystem.font
-          end
-          if @sprites["option"].index == 2
-            pbSetSystemFont(@sprites["textbox"].contents)
-            @sprites["textbox"].letterbyletter = true
-          else
-            pbSetSystemFont(@sprites["textbox"].contents)
-            @sprites["textbox"].letterbyletter = false
-          end
-          @sprites["textbox"].text = @Descriptions[@sprites["option"].index]
-          @sprites["textbox"].textspeed = pbSettingToTextSpeed($PokemonSystem.textspeed)
+          oldTextSkin   = $PokemonSystem.textskin if $PokemonSystem.textskin!=oldTextSkin
+          oldSystemSkin = $PokemonSystem.frame    if $PokemonSystem.frame!=oldSystemSkin
+          oldFont       = $PokemonSystem.font     if $PokemonSystem.font!=oldFont
+          pbRefreshPreviewWindow(@sprites["option"].index)
         end
         if Input.trigger?(Input::B)
           break
@@ -617,17 +820,18 @@ class PokemonOption_Scene
   def pbEndScene
     pbPlayCloseMenuSE
     pbFadeOutAndHide(@sprites) { pbUpdate }
-    # Set the values of each option
     for i in 0...@PokemonOptions.length
       @PokemonOptions[i].set(@sprites["option"][i])
     end
     pbDisposeMessageWindow(@sprites["textbox"])
+    if @sprites["background"] && @sprites["background"].bitmap && !@sprites["background"].bitmap.disposed?
+      @sprites["background"].bitmap.dispose
+    end
     pbDisposeSpriteHash(@sprites)
     pbRefreshSceneMap
     @viewport.dispose
   end
 end
-
 
 
 #===============================================================================

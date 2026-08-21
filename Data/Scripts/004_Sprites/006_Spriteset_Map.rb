@@ -1,151 +1,313 @@
+#===============================================================================
+# ** ClippableSprite
+#===============================================================================
 class ClippableSprite < Sprite_Character
-  def initialize(viewport,event,tilemap)
-    @tilemap = tilemap
-    @_src_rect = Rect.new(0,0,0,0)
-    super(viewport,event)
+  def initialize(viewport, event, tilemap)
+    @tilemap  = tilemap
+    @_src_rect = Rect.new(0, 0, 0, 0)
+    super(viewport, event)
   end
 
   def update
     super
+    return if !@tilemap || !@tilemap.map_data
+
     @_src_rect = self.src_rect
-    tmright = @tilemap.map_data.xsize*Game_Map::TILE_WIDTH-@tilemap.ox
-    echoln("x=#{self.x},ox=#{self.ox},tmright=#{tmright},tmox=#{@tilemap.ox}")
-    if @tilemap.ox-self.ox<-self.x
-      # clipped on left
-      diff = -self.x-@tilemap.ox+self.ox
-      self.src_rect = Rect.new(@_src_rect.x+diff,@_src_rect.y,
-                               @_src_rect.width-diff,@_src_rect.height)
-      echoln("clipped out left: #{diff} #{@tilemap.ox-self.ox} #{self.x}")
-    elsif tmright-self.ox<self.x
-      # clipped on right
-      diff = self.x-tmright+self.ox
-      self.src_rect = Rect.new(@_src_rect.x,@_src_rect.y,
-                               @_src_rect.width-diff,@_src_rect.height)
-      echoln("clipped out right: #{diff} #{tmright+self.ox} #{self.x}")
-    else
-      echoln("-not- clipped out left: #{diff} #{@tilemap.ox-self.ox} #{self.x}")
+
+    tmright = @tilemap.map_data.xsize * Game_Map::TILE_WIDTH - @tilemap.ox
+
+    if @tilemap.ox - self.ox < -self.x
+      # Clipped on left.
+      diff = -self.x - @tilemap.ox + self.ox
+
+      width = @_src_rect.width - diff
+      width = 0 if width < 0
+
+      self.src_rect = Rect.new(
+        @_src_rect.x + diff,
+        @_src_rect.y,
+        width,
+        @_src_rect.height
+      )
+    elsif tmright - self.ox < self.x
+      # Clipped on right.
+      diff = self.x - tmright + self.ox
+
+      width = @_src_rect.width - diff
+      width = 0 if width < 0
+
+      self.src_rect = Rect.new(
+        @_src_rect.x,
+        @_src_rect.y,
+        width,
+        @_src_rect.height
+      )
     end
   end
 end
 
 
-
+#===============================================================================
+# ** Spriteset_Map
+#===============================================================================
 class Spriteset_Map
-  attr_reader :map
+  attr_reader   :map
   attr_accessor :tilemap
-  @@viewport0 = Viewport.new(0,0,Graphics.width,Graphics.height) # Panorama
+
+  # These viewports are shared between every loaded map spriteset.
+  @@viewport0 = Viewport.new(0, 0, Graphics.width, Graphics.height)
   @@viewport0.z = -100
-  @@viewport1 = Viewport.new(0,0,Graphics.width,Graphics.height) # Map, events, player, fog
+
+  @@viewport1 = Viewport.new(0, 0, Graphics.width, Graphics.height)
   @@viewport1.z = 0
-  @@viewport3 = Viewport.new(0,0,Graphics.width,Graphics.height) # Flashing
+
+  @@viewport3 = Viewport.new(0, 0, Graphics.width, Graphics.height)
   @@viewport3.z = 500
 
-  def Spriteset_Map.viewport   # For access by Spriteset_Global
+
+  #-----------------------------------------------------------------------------
+  # Accessed by Spriteset_Global.
+  #-----------------------------------------------------------------------------
+  def self.viewport
     return @@viewport1
   end
 
-  def initialize(map=nil)
-    @map = (map) ? map : $game_map
+
+  #-----------------------------------------------------------------------------
+  # Reset shared viewport state.
+  #
+  # The viewport itself survives between maps, so none of the previous map's
+  # position/clipping state should be allowed to carry into the next one.
+  #-----------------------------------------------------------------------------
+  def self.resetViewports
+    @@viewport0.rect.set(0, 0, Graphics.width, Graphics.height)
+    @@viewport0.ox = 0
+    @@viewport0.oy = 0
+
+    @@viewport1.rect.set(0, 0, Graphics.width, Graphics.height)
+    @@viewport1.ox = 0
+    @@viewport1.oy = 0
+
+    @@viewport3.rect.set(0, 0, Graphics.width, Graphics.height)
+    @@viewport3.ox = 0
+    @@viewport3.oy = 0
+  end
+
+
+  #-----------------------------------------------------------------------------
+  # Initialize.
+  #-----------------------------------------------------------------------------
+  def initialize(map = nil)
+    @map = map ? map : $game_map
+
+    # Shared viewports may contain state from the previously loaded map.
+    Spriteset_Map.resetViewports
+
     @tilemap = TilemapLoader.new(@@viewport1)
     @tilemap.tileset = pbGetTileset(@map.tileset_name)
+
     for i in 0...7
       autotile_name = @map.autotile_names[i]
       @tilemap.autotiles[i] = pbGetAutotile(autotile_name)
     end
-    @tilemap.map_data = @map.data
-    @tilemap.priorities = @map.priorities
-    @tilemap.terrain_tags = @map.terrain_tags
+
+    @tilemap.map_data      = @map.data
+    @tilemap.priorities    = @map.priorities
+    @tilemap.terrain_tags  = @map.terrain_tags
+
     @panorama = AnimatedPlane.new(@@viewport0)
+
     @fog = AnimatedPlane.new(@@viewport1)
     @fog.z = 3000
+
     @character_sprites = []
+
     for i in @map.events.keys.sort
-      sprite = Sprite_Character.new(@@viewport1,@map.events[i])
+      sprite = Sprite_Character.new(@@viewport1, @map.events[i])
       @character_sprites.push(sprite)
     end
+
     @weather = RPG::Weather.new(@@viewport1)
-    pbOnSpritesetCreate(self,@@viewport1)
+
+    pbOnSpritesetCreate(self, @@viewport1)
+
     update
   end
 
+
+  #-----------------------------------------------------------------------------
+  # Dispose.
+  #-----------------------------------------------------------------------------
   def dispose
-    @tilemap.tileset.dispose
-    for i in 0...7
-      @tilemap.autotiles[i].dispose
+    # Characters first, since they reference the map viewport.
+    if @character_sprites
+      for sprite in @character_sprites
+        next if !sprite
+        sprite.dispose if !sprite.disposed?
+      end
+      @character_sprites.clear
     end
-    @tilemap.dispose if @tilemap
-    @panorama.dispose
-    @fog.dispose
-    for sprite in @character_sprites
-      sprite.dispose
+
+    if @weather
+      @weather.dispose
+      @weather = nil
     end
-    @weather.dispose
-    @tilemap = nil
-    @panorama = nil
-    @fog = nil
-    @character_sprites.clear
-    @weather = nil
+
+    if @panorama
+      @panorama.dispose
+      @panorama = nil
+    end
+
+    if @fog
+      @fog.dispose
+      @fog = nil
+    end
+
+    if @tilemap
+      # Keep the normal Essentials bitmap cleanup behavior.
+      if @tilemap.tileset
+        @tilemap.tileset.dispose if !@tilemap.tileset.disposed?
+      end
+
+      for i in 0...7
+        autotile = @tilemap.autotiles[i]
+        next if !autotile
+        autotile.dispose if !autotile.disposed?
+      end
+
+      @tilemap.dispose
+      @tilemap = nil
+    end
+
+    @character_sprites = []
+
+    # The viewport itself is shared and isn't disposed, but its old map state
+    # must not survive this spriteset.
+    Spriteset_Map.resetViewports
   end
 
+
+  #-----------------------------------------------------------------------------
+  # Animation handling.
+  #-----------------------------------------------------------------------------
   def getAnimations
     return @usersprites
   end
+
 
   def restoreAnimations(anims)
     @usersprites = anims
   end
 
+
+  #-----------------------------------------------------------------------------
+  # Update.
+  #-----------------------------------------------------------------------------
   def update
-    if @panorama_name!=@map.panorama_name || @panorama_hue!=@map.panorama_hue
+    return if !@map
+    return if !@tilemap
+
+    #-------------------------------------------------------------------------
+    # Panorama
+    #-------------------------------------------------------------------------
+    if @panorama_name != @map.panorama_name ||
+       @panorama_hue != @map.panorama_hue
+
       @panorama_name = @map.panorama_name
       @panorama_hue  = @map.panorama_hue
-      @panorama.setPanorama(nil) if @panorama.bitmap!=nil
-      @panorama.setPanorama(@panorama_name,@panorama_hue) if @panorama_name!=""
+
+      @panorama.setPanorama(nil) if @panorama.bitmap != nil
+
+      if @panorama_name != ""
+        @panorama.setPanorama(@panorama_name, @panorama_hue)
+      end
+
       Graphics.frame_reset
     end
-    if @fog_name!=@map.fog_name || @fog_hue!=@map.fog_hue
+
+    #-------------------------------------------------------------------------
+    # Fog
+    #-------------------------------------------------------------------------
+    if @fog_name != @map.fog_name ||
+       @fog_hue != @map.fog_hue
+
       @fog_name = @map.fog_name
-      @fog_hue = @map.fog_hue
-      @fog.setFog(nil) if @fog.bitmap!=nil
-      @fog.setFog(@fog_name,@fog_hue) if @fog_name!=""
+      @fog_hue  = @map.fog_hue
+
+      @fog.setFog(nil) if @fog.bitmap != nil
+
+      if @fog_name != ""
+        @fog.setFog(@fog_name, @fog_hue)
+      end
+
       Graphics.frame_reset
     end
-    tmox = (@map.display_x/Game_Map::X_SUBPIXELS).round
-    tmoy = (@map.display_y/Game_Map::Y_SUBPIXELS).round
+
+    #-------------------------------------------------------------------------
+    # Map position
+    #-------------------------------------------------------------------------
+    tmox = (@map.display_x / Game_Map::X_SUBPIXELS).round
+    tmoy = (@map.display_y / Game_Map::Y_SUBPIXELS).round
+
     @tilemap.ox = tmox
     @tilemap.oy = tmoy
-    if $PokemonSystem.tilemap==0   # Original Map View only, to prevent wrapping
-      @@viewport1.rect.x      = [-tmox,0].max
-      @@viewport1.rect.y      = [-tmoy,0].max
-      @@viewport1.rect.width  = [@tilemap.map_data.xsize*Game_Map::TILE_WIDTH-tmox,Graphics.width].min
-      @@viewport1.rect.height = [@tilemap.map_data.ysize*Game_Map::TILE_HEIGHT-tmoy,Graphics.height].min
-      @@viewport1.ox = [-tmox,0].max
-      @@viewport1.oy = [-tmoy,0].max
-    else
-      @@viewport1.rect.set(0,0,Graphics.width,Graphics.height)
-      @@viewport1.ox = 0
-      @@viewport1.oy = 0
-    end
-    @@viewport1.ox += $game_screen.shake
+
+    # IMPORTANT:
+    #
+    # MapFactory can keep several Spriteset_Map objects alive at once.
+    # They all use @@viewport1.
+    #
+    # Letting each individual map resize that shared viewport means the last
+    # map updated controls clipping for every other loaded map.
+    #
+    # Keep the shared viewport fullscreen instead.
+    @@viewport1.rect.set(
+      0,
+      0,
+      Graphics.width,
+      Graphics.height
+    )
+
+    @@viewport1.ox = $game_screen.shake
+    @@viewport1.oy = 0
+
     @tilemap.update
-    @panorama.ox = tmox/2
-    @panorama.oy = tmoy/2
-    @fog.ox         = tmox+@map.fog_ox
-    @fog.oy         = tmoy+@map.fog_oy
-    @fog.zoom_x     = @map.fog_zoom/100.0
-    @fog.zoom_y     = @map.fog_zoom/100.0
+
+    #-------------------------------------------------------------------------
+    # Panorama position
+    #-------------------------------------------------------------------------
+    @panorama.ox = tmox / 2
+    @panorama.oy = tmoy / 2
+
+    #-------------------------------------------------------------------------
+    # Fog position/settings
+    #-------------------------------------------------------------------------
+    @fog.ox         = tmox + @map.fog_ox
+    @fog.oy         = tmoy + @map.fog_oy
+    @fog.zoom_x     = @map.fog_zoom / 100.0
+    @fog.zoom_y     = @map.fog_zoom / 100.0
     @fog.opacity    = @map.fog_opacity
     @fog.blend_type = @map.fog_blend_type
     @fog.tone       = @map.fog_tone
+
     @panorama.update
     @fog.update
+
+    #-------------------------------------------------------------------------
+    # Characters
+    #-------------------------------------------------------------------------
     for sprite in @character_sprites
       sprite.update
     end
-    if self.map!=$game_map
-      if @weather.max>0
+
+    #-------------------------------------------------------------------------
+    # Weather
+    #-------------------------------------------------------------------------
+    if self.map != $game_map
+      if @weather.max > 0
         @weather.max -= 2
-        if @weather.max<=0
+
+        if @weather.max <= 0
           @weather.max  = 0
           @weather.type = 0
           @weather.ox   = 0
@@ -158,9 +320,15 @@ class Spriteset_Map
       @weather.ox   = tmox
       @weather.oy   = tmoy
     end
+
     @weather.update
-    @@viewport1.tone = $game_screen.tone
+
+    #-------------------------------------------------------------------------
+    # Screen effects
+    #-------------------------------------------------------------------------
+    @@viewport1.tone  = $game_screen.tone
     @@viewport3.color = $game_screen.flash_color
+
     @@viewport1.update
     @@viewport3.update
   end
