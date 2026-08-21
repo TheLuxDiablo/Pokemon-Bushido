@@ -175,6 +175,19 @@ MenuHandlers.addEntry(:POKEGEAR,_INTL("Pokégear"),"menuPokegear",proc{|menu|
 })
 
 #-------------------------------------------------------------------------------
+# Trainer Card
+#-------------------------------------------------------------------------------
+MenuHandlers.addEntry(:TRAINER,_INTL("\\pn"),"menuTrainer",proc{|menu|
+  scene = PokemonTrainerCard_Scene.new
+  screen = PokemonTrainerCardScreen.new(scene)
+  pbFadeOutIn(99999) {
+    screen.pbStartScreen
+  }
+},proc{
+  next true
+})
+
+#-------------------------------------------------------------------------------
 # Save
 #-------------------------------------------------------------------------------
 MenuHandlers.addEntry(:SAVE,_INTL("Save"),"menuSave",proc{|menu|
@@ -272,7 +285,6 @@ MenuHandlers.addEntry(:QUITGAME,_INTL("Quit"),"menuQuit",proc{|menu|
       $scene = nil
       pbBGMStop(0.0)
     else
-      # Player backed out of saving, so return to the pause menu.
       menu.pbStartScene
       menu.pbShowMenu
       menu.close = false
