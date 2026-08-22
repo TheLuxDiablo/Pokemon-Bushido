@@ -47,21 +47,21 @@ FemaleGraphic = trchar180
 MaleGraphic = trchar179
 
 [KENSHI_A]
-Name = Kenshi A
+Name = Diaburo
 Strength = 42
 Graphic = trchar193
 
 [KENSHI_B]
-Name = Kenshi B
+Name = Yowai
 Strength = 45
 Graphic = trchar194
 
 [KENSHI_C]
-Name = Kenshi C
+Name = Unchi
 Strength = 48
 Graphic = trchar193
 
 [KENSHI_D]
-Name = Kenshi D
+Name = Sandaga
 Strength = 40
 Graphic = trchar194

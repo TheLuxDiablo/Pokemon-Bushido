@@ -224,7 +224,7 @@ def pbGenerateEgg(pokemon,text="")
   pokemon.obtainText = text
   pokemon.calcStats
   # Add egg to party
-  pbMessage("\\Me[HGSSGetKeyItem]\\PN received a Pokémon Egg!\\wtnp[40]")
+  pbMessage("\\Me[PLA 036 Obtained a Key Item!]\\PN received a Pokémon Egg!\\wtnp[40]")
   pbStorePokemon(pokemon)
   return true
 end

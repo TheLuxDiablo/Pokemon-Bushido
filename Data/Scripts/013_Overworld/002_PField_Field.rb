@@ -350,6 +350,7 @@ Events.onStepTakenFieldMovement += proc { |_sender,e|
         pbBridgeOn
       elsif PBTerrain.isSlopeTile?(currentTag) && currentTag==PBTerrain::SlopeDownLeft
         setSlopeData(-slopeCurveX,slopeCurveY,slopeYPos,slopeYHeight,slopeOffset)
+        #pbMessage("Oy thats a slope down left tile")
       elsif PBTerrain.isSlopeTile?(currentTag) && currentTag==PBTerrain::SlopeDownRight
         setSlopeData(slopeCurveX,slopeCurveY,slopeYPos,slopeYHeight,slopeOffset)
       elsif PBTerrain.isSlopeTile?(currentTag) && currentTag==PBTerrain::SlopeUpLeft
