@@ -1157,8 +1157,10 @@ module DialogueModule
   TsukuIntro = Proc.new { |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
+    user = battlers[1]
     pbMessage("\\xn[Tsuku]\\rAlright! Time for you to learn how strong b-bug Pokémon can really be!")
     scene.disappearBar
+    user.pbRaiseStatStageEx([:DEFENSE, :SPDEF], 1)
     scene.pbHideOpponent
   }
 
@@ -1176,8 +1178,10 @@ module DialogueModule
   KayokoIntro = Proc.new { |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
-    pbMessage("\\xn[Kayoko]\\rPrepare yourself. I'll be trying my best.")
+    user = battlers[1]
+    pbMessage("\\xn[Kayoko]\\rPrepare yourself! I'll be trying my best.")
     scene.disappearBar
+    user.pbRaiseStatStageEx([:ATTACK, :DEFENSE], 1)
     scene.pbHideOpponent
   }
 
