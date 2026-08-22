@@ -73,36 +73,101 @@ class DependentEvents
     # Check event triggers
     if Input.trigger?(Input::C) && !($game_temp.in_menu ||
       $game_temp.in_battle || $game_player.move_route_forcing ||
-      $game_temp.message_window_showing || pbMapInterpreterRunning? ||
-      $game_player.moving?)
-      # Get position of tile facing the player
+      $game_temp.message_window_showing || pbMapInterpreterRunning?)
+
       facingTile = $MapFactory.getFacingTile
-      # Assumes player is 1x1 tile in size
+      followerTalked = false
+      normalEventFound = false
+
+      # First, preserve normal interaction with whatever the player is facing.
       self.eachEvent { |e, d|
-        next if (!d[9] && !e.is_a?(Game_FollowerEvent)) || e.jumping?
-        if e.x == $game_player.x && e.y == $game_player.y && !e.is_a?(Game_FollowerEvent)
-          # On same position
-          if (!e.respond_to?("over_trigger") || e.over_trigger?) && e.list.size > 1
-            # Start event
+        next if (!e || e.jumping?)
+        next if (!d[9] && !e.is_a?(Game_FollowerEvent))
+
+        # Events underneath the player
+        if e.x == $game_player.x && e.y == $game_player.y &&
+           !e.is_a?(Game_FollowerEvent)
+          if (!e.respond_to?("over_trigger") || e.over_trigger?) &&
+             e.list.size > 1
             $game_map.refresh if $game_map.need_refresh
             e.lock
-            pbMapInterpreter.setup(e.list,e.id,e.map.map_id)
+            pbMapInterpreter.setup(e.list, e.id, e.map.map_id)
+            normalEventFound = true
           end
-        elsif facingTile && e.map.map_id == facingTile[0] && e.x == facingTile[1] && e.y == facingTile[2]
-          # On facing tile
+
+        # Events directly in front of the player
+        elsif facingTile &&
+              e.map.map_id == facingTile[0] &&
+              e.x == facingTile[1] &&
+              e.y == facingTile[2]
+
           if e.is_a?(Game_FollowerEvent) && !d[9]
             $game_map.refresh if $game_map.need_refresh
             e.lock
             FollowingPkmn.talk
             e.unlock
-          elsif (!e.respond_to?("over_trigger") || !e.over_trigger?) && e.list.size > 1
-            # Start event
+            followerTalked = true
+
+          elsif (!e.respond_to?("over_trigger") || !e.over_trigger?) &&
+                e.list.size > 1
             $game_map.refresh if $game_map.need_refresh
             e.lock
-            pbMapInterpreter.setup(e.list,e.id,e.map.map_id)
+            pbMapInterpreter.setup(e.list, e.id, e.map.map_id)
+            normalEventFound = true
           end
         end
       }
+
+      # If nothing directly in front was interacted with, allow a nearby
+      # following Pokémon to be talked to without pixel-perfect facing.
+      if !followerTalked && !normalEventFound
+        nearbyFollower = nil
+        nearbyDirection = 0
+
+        self.eachEvent { |e, d|
+          next if !e
+          next if !e.is_a?(Game_FollowerEvent)
+          next if d[9]
+          next if e.jumping?
+          next if e.map.map_id != $game_map.map_id
+
+          dx = e.x - $game_player.x
+          dy = e.y - $game_player.y
+
+          # Only accept the four directly adjacent tiles.
+          if dx == 0 && dy == 1
+            nearbyFollower = e
+            nearbyDirection = 2
+            break
+          elsif dx == -1 && dy == 0
+            nearbyFollower = e
+            nearbyDirection = 4
+            break
+          elsif dx == 1 && dy == 0
+            nearbyFollower = e
+            nearbyDirection = 6
+            break
+          elsif dx == 0 && dy == -1
+            nearbyFollower = e
+            nearbyDirection = 8
+            break
+          end
+        }
+
+        if nearbyFollower
+          case nearbyDirection
+          when 2; $game_player.turn_down
+          when 4; $game_player.turn_left
+          when 6; $game_player.turn_right
+          when 8; $game_player.turn_up
+          end
+
+          $game_map.refresh if $game_map.need_refresh
+          nearbyFollower.lock
+          FollowingPkmn.talk
+          nearbyFollower.unlock
+        end
+      end
     end
   end
   #-----------------------------------------------------------------------------

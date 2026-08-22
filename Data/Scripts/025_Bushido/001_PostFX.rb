@@ -229,13 +229,19 @@ module BushidoPostFX
 
       data = {
         :sprite => sprite,
-        :x => 0.0,
-        :y => 0.0,
-        :vx => 0.0,
-        :vy => 0.0,
+        :tile_x => 0,
+        :tile_y => 0,
+        :local_x => 0.0,
+        :local_y => 0.0,
+        :offset_x => 0.0,
+        :offset_y => 0.0,
+        :drift_x => 0.0,
+        :drift_y => 0.0,
         :life => 0,
         :max_life => 1,
-        :opacity => 0
+        :opacity => 0,
+        :active => false,
+        :retry => 0
       }
 
       reset_nagisa_particle(data, true)
@@ -449,21 +455,81 @@ module BushidoPostFX
     @nagisa_shimmer_sprite.y = (Math.sin(@frame / 100.0) * 3).to_i
   end
 
+  def self.water_tile?(x, y)
+    return false if !$game_map
+    return false if x < 0 || y < 0
+    return false if x >= $game_map.width || y >= $game_map.height
+
+    tag = $game_map.terrain_tag(x, y)
+
+    if defined?(PBTerrain) && PBTerrain.respond_to?(:isWater?)
+      return PBTerrain.isWater?(tag)
+    end
+
+    return false
+  end
+
+  def self.find_visible_water_tile
+    return nil if !$game_map
+
+    tile_w = Game_Map::TILE_WIDTH
+    tile_h = Game_Map::TILE_HEIGHT
+
+    display_x = ($game_map.display_x / Game_Map::X_SUBPIXELS).round
+    display_y = ($game_map.display_y / Game_Map::Y_SUBPIXELS).round
+
+    left   = [display_x / tile_w - 1, 0].max
+    top    = [display_y / tile_h - 1, 0].max
+    right  = [((display_x + Graphics.width) / tile_w) + 1, $game_map.width - 1].min
+    bottom = [((display_y + Graphics.height) / tile_h) + 1, $game_map.height - 1].min
+
+    28.times do
+      tx = left + rand([right - left + 1, 1].max)
+      ty = top  + rand([bottom - top + 1, 1].max)
+      return [tx, ty] if water_tile?(tx, ty)
+    end
+
+    for ty in top..bottom
+      for tx in left..right
+        return [tx, ty] if water_tile?(tx, ty)
+      end
+    end
+
+    return nil
+  end
+
   def self.reset_nagisa_particle(data, initial = false)
     sprite = data[:sprite]
+    tile = find_visible_water_tile
 
-    data[:x] = rand(Graphics.width + 40) - 20
-    data[:y] = initial ? rand(Graphics.height + 20) : Graphics.height + rand(28)
+    if !tile
+      data[:active] = false
+      data[:life] = 0
+      data[:retry] = 20 + rand(30)
+      sprite.visible = false
+      return
+    end
 
-    data[:vx] = 0.25 + rand(30) / 100.0
-    data[:vy] = -(0.45 + rand(45) / 100.0)
+    tx, ty = tile
+    data[:tile_x] = tx
+    data[:tile_y] = ty
 
-    data[:max_life] = 80 + rand(100)
+    data[:local_x] = rand(Game_Map::TILE_WIDTH)
+    data[:local_y] = rand(Game_Map::TILE_HEIGHT)
+
+    data[:drift_x] = -0.15 + rand(31) / 100.0
+    data[:drift_y] = -(0.30 + rand(36) / 100.0)
+
+    data[:offset_x] = 0.0
+    data[:offset_y] = 0.0
+
+    data[:max_life] = 50 + rand(70)
     data[:life] = initial ? rand(data[:max_life]) : 0
-    data[:opacity] = 90 + rand(NAGISA_PARTICLE_OPACITY - 89)
+    data[:opacity] = 95 + rand(NAGISA_PARTICLE_OPACITY - 94)
 
-    sprite.x = data[:x].to_i
-    sprite.y = data[:y].to_i
+    data[:active] = true
+    data[:retry] = 0
+
     sprite.opacity = 0
     sprite.visible = false
   end
@@ -480,32 +546,70 @@ module BushidoPostFX
         next
       end
 
+      if !data[:active]
+        data[:retry] -= 1
+        reset_nagisa_particle(data) if data[:retry] <= 0
+        next
+      end
+
+      if !water_tile?(data[:tile_x], data[:tile_y])
+        reset_nagisa_particle(data)
+        next
+      end
+
       data[:life] += 1
 
       if data[:life] >= data[:max_life]
         reset_nagisa_particle(data)
+        next
       end
 
-      data[:x] += data[:vx]
-      data[:y] += data[:vy]
-      data[:x] += Math.sin((@frame + data[:life]) / 20.0) * 0.12
+      data[:offset_x] += data[:drift_x]
+      data[:offset_y] += data[:drift_y]
 
-      sprite.x = data[:x].to_i
-      sprite.y = data[:y].to_i
+      display_x = ($game_map.display_x / Game_Map::X_SUBPIXELS).round
+      display_y = ($game_map.display_y / Game_Map::Y_SUBPIXELS).round
+
+      world_x =
+        data[:tile_x] * Game_Map::TILE_WIDTH +
+        data[:local_x] +
+        data[:offset_x]
+
+      world_y =
+        data[:tile_y] * Game_Map::TILE_HEIGHT +
+        data[:local_y] +
+        data[:offset_y]
+
+      screen_x = world_x - display_x
+      screen_y = world_y - display_y
+
+      sprite.x = screen_x.to_i
+      sprite.y = screen_y.to_i
 
       progress = data[:life].to_f / data[:max_life]
 
       fade = 1.0
-      fade = progress / 0.15 if progress < 0.15
-      fade = (1.0 - progress) / 0.22 if progress > 0.78
+      fade = progress / 0.16 if progress < 0.16
+      fade = (1.0 - progress) / 0.28 if progress > 0.72
       fade = [[fade, 0.0].max, 1.0].min
 
+      flicker = 0.82 + Math.sin((@frame + data[:life] * 3) / 7.0) * 0.18
+
       sprite.opacity =
-        clamp_opacity(data[:opacity] * fade * strength)
+        clamp_opacity(data[:opacity] * fade * flicker * strength)
 
-      sprite.visible = sprite.opacity > 0
+      on_screen =
+        screen_x >= -8 &&
+        screen_y >= -8 &&
+        screen_x <= Graphics.width + 8 &&
+        screen_y <= Graphics.height + 8
 
-      if data[:y] < -12 || data[:x] > Graphics.width + 20
+      sprite.visible = sprite.opacity > 0 && on_screen
+
+      if screen_x < -48 ||
+         screen_y < -48 ||
+         screen_x > Graphics.width + 48 ||
+         screen_y > Graphics.height + 48
         reset_nagisa_particle(data)
       end
     end

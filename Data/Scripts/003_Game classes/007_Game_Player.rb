@@ -313,26 +313,33 @@ class Game_Player < Game_Character
 
   def update_command_new
     dir = Input.dir4
+
     unless pbMapInterpreterRunning? || $game_temp.message_window_showing ||
-           $PokemonTemp.miniupdate || $game_temp.in_menu
-      # Move player in the direction the directional button is being pressed
-      if @moved_last_frame ||
-         (dir > 0 && dir == @lastdir && Graphics.frame_count - @lastdirframe > Graphics.frame_rate / 20)
-        case dir
-        when 2; move_down
-        when 4; move_left
-        when 6; move_right
-        when 8; move_up
-        end
-      elsif dir != @lastdir
-        case dir
-        when 2; turn_down
-        when 4; turn_left
-        when 6; turn_right
-        when 8; turn_up
+          $PokemonTemp.miniupdate || $game_temp.in_menu
+
+      if dir > 0
+        # A newly pressed direction should always turn first.
+        # This makes facing NPCs/following Pokémon much more reliable.
+        if dir != @lastdir
+          case dir
+          when 2; turn_down
+          when 4; turn_left
+          when 6; turn_right
+          when 8; turn_up
+          end
+
+        # Keep holding the direction briefly to begin moving.
+        elsif Graphics.frame_count - @lastdirframe > Graphics.frame_rate / 20
+          case dir
+          when 2; move_down
+          when 4; move_left
+          when 6; move_right
+          when 8; move_up
+          end
         end
       end
     end
+
     # Record last direction input
     @lastdirframe = Graphics.frame_count if dir != @lastdir
     @lastdir      = dir
@@ -374,6 +381,12 @@ class Game_Player < Game_Character
       check_event_trigger_here([0])
       check_event_trigger_there([0,2])
     end
+  end
+
+  def screen_y
+    ret = super
+    return ret if !@slope || @slope == 0
+    return ret + @slope
   end
 end
 
