@@ -13,28 +13,28 @@ module BushidoKenshiRecord
   MARKS = [
     {
       :type     => :dojo,
-      :name     => "First Dojo",
-      :subtitle => "Kenshi Trial",
+      :name     => "Komorei Dojo",
+      :subtitle => "Shogun's Quest",
       :leader   => "Unknown",
-      :location => "Unknown",
+      :location => "Tsuchi Village",
       :mark     => "I",
       :color    => Color.new(174, 64, 55)
     },
     {
       :type     => :dojo,
-      :name     => "Second Dojo",
-      :subtitle => "Kenshi Trial",
+      :name     => "Nensho Dojo",
+      :subtitle => "Shogun's Quest",
       :leader   => "Unknown",
-      :location => "Unknown",
+      :location => "Hanatsu Village",
       :mark     => "II",
       :color    => Color.new(67, 98, 151)
     },
     {
       :type     => :dojo,
-      :name     => "Third Dojo",
-      :subtitle => "Kenshi Trial",
+      :name     => "Shimizu Dojo",
+      :subtitle => "Shogun's Quest",
       :leader   => "Unknown",
-      :location => "Unknown",
+      :location => "Chikyu Village",
       :mark     => "III",
       :color    => Color.new(130, 76, 145)
     },

@@ -16,6 +16,7 @@ module BushidoPostFX
 
   EZO_VILLAGE_MAP_ID = 79
   NAGISA_BAY_MAP_ID  = 81
+  SAKURA_PASS_MAP_ID = 82
 
   PROFILE_TRANSITION_FRAMES = 48
   TOGGLE_TRANSITION_FRAMES  = 24
@@ -24,36 +25,48 @@ module BushidoPostFX
   # Default Bushido look
   #-----------------------------------------------------------------------------
 
-  DEFAULT_TONE = Tone.new(-4, 0, 9, 0)
+  DEFAULT_TONE = Tone.new(7, 2, -3, 0)
 
   DEFAULT_VIGNETTE_OPACITY = 72
   DEFAULT_VIGNETTE_COLOR   = Color.new(0, 2, 10)
 
-  DEFAULT_CENTER_LIFT_OPACITY = 15
-  DEFAULT_DEPTH_OPACITY       = 28
+  DEFAULT_CENTER_LIFT_OPACITY = 18
+  DEFAULT_DEPTH_OPACITY       = 32
 
   #-----------------------------------------------------------------------------
   # Ezo Village
   #-----------------------------------------------------------------------------
 
   # Strong enough to visibly read during evaluation.
-  EZO_CLOUD_OPACITY    = 74
+  EZO_CLOUD_OPACITY    = 62
   EZO_HAZE_OPACITY     = 24
-  EZO_DAYLIGHT_OPACITY = 13
+  EZO_DAYLIGHT_OPACITY = 11
 
   #-----------------------------------------------------------------------------
   # Nagisa Bay
   #-----------------------------------------------------------------------------
 
   # Coastal clarity without turning the whole map blue.
-  NAGISA_TONE = Tone.new(-4, 1, 13, 0)
+  NAGISA_TONE = Tone.new(-2, 1, 7, 0)
 
   NAGISA_HAZE_OPACITY    = 22
   NAGISA_SHIMMER_OPACITY = 34
-  NAGISA_COOL_OPACITY    = 10
+  NAGISA_COOL_OPACITY    = 6
 
-  NAGISA_PARTICLE_COUNT   = 16
-  NAGISA_PARTICLE_OPACITY = 170
+  NAGISA_PARTICLE_COUNT   = 26
+  NAGISA_PARTICLE_OPACITY = 205
+
+  #-----------------------------------------------------------------------------
+  # Sakura Pass
+  #-----------------------------------------------------------------------------
+
+  SAKURA_PETAL_COUNT        = 112
+  SAKURA_SPAWN_INTERVAL_MIN = 1
+  SAKURA_SPAWN_INTERVAL_MAX = 1
+  SAKURA_PETAL_OPACITY      = 235
+  SAKURA_GUST_INTERVAL_MIN  = 150
+  SAKURA_GUST_INTERVAL_MAX  = 260
+  SAKURA_GUST_PETALS        = 12
 
   class << self
     attr_reader :enabled
@@ -81,6 +94,8 @@ module BushidoPostFX
   @nagisa_cool_sprite = nil
   @nagisa_particles = []
 
+  @sakura_particles = []
+
   #-----------------------------------------------------------------------------
   # Cached bitmaps
   #-----------------------------------------------------------------------------
@@ -97,6 +112,7 @@ module BushidoPostFX
   @nagisa_shimmer_bitmap = nil
   @nagisa_cool_bitmap = nil
   @nagisa_particle_bitmap = nil
+  @sakura_petal_bitmaps = []
 
   #-----------------------------------------------------------------------------
   # Global state
@@ -106,6 +122,10 @@ module BushidoPostFX
   @profile = :DEFAULT
   @last_map_id = nil
   @frame = 0
+
+  @sakura_spawning = false
+  @sakura_spawn_timer = 0
+  @sakura_gust_timer = 120
 
   # Master on/off blend
   @master_strength = 1.0
@@ -153,7 +173,7 @@ module BushidoPostFX
     detect_map(true)
     apply_all
 
-    echoln("[BushidoPostFX] Persistent renderer created")
+    echoln("[BushidoPostFX] Persistent renderer created | Global water bubbles enabled")
   end
 
   def self.create_viewports
@@ -195,6 +215,8 @@ module BushidoPostFX
     @ezo_cloud_sprite = Sprite.new(@viewport)
     @ezo_cloud_sprite.bitmap = @ezo_cloud_bitmap
     @ezo_cloud_sprite.z = 17
+    @ezo_cloud_sprite.zoom_x = 2.0
+    @ezo_cloud_sprite.zoom_y = 2.0
 
     @nagisa_haze_sprite = Sprite.new(@viewport)
     @nagisa_haze_sprite.bitmap = @nagisa_haze_bitmap
@@ -222,6 +244,11 @@ module BushidoPostFX
     end
     @nagisa_particles.clear
 
+    @sakura_particles.each do |data|
+      dispose_sprite(data[:sprite]) if data
+    end
+    @sakura_particles.clear
+
     NAGISA_PARTICLE_COUNT.times do
       sprite = Sprite.new(@particle_viewport)
       sprite.bitmap = @nagisa_particle_bitmap
@@ -229,6 +256,7 @@ module BushidoPostFX
 
       data = {
         :sprite => sprite,
+        :map_id => 0,
         :tile_x => 0,
         :tile_y => 0,
         :local_x => 0.0,
@@ -240,12 +268,318 @@ module BushidoPostFX
         :life => 0,
         :max_life => 1,
         :opacity => 0,
+        :scale => 1.0,
         :active => false,
         :retry => 0
       }
 
       reset_nagisa_particle(data, true)
       @nagisa_particles.push(data)
+    end
+
+
+    create_sakura_particles
+  end
+
+
+  #-----------------------------------------------------------------------------
+  # Sakura Pass petals
+  #-----------------------------------------------------------------------------
+
+  def self.create_sakura_particles
+    @sakura_particles.each do |data|
+      dispose_sprite(data[:sprite]) if data
+    end
+    @sakura_particles.clear
+
+    SAKURA_PETAL_COUNT.times do
+      sprite = Sprite.new(@particle_viewport)
+      sprite.visible = false
+
+      data = {
+        :sprite => sprite,
+        :active => false,
+        :map_id => SAKURA_PASS_MAP_ID,
+        :world_x => 0.0,
+        :world_y => 0.0,
+        :vx => 0.0,
+        :vy => 0.0,
+        :phase => 0.0,
+        :phase_speed => 0.0,
+        :life => 0,
+        :max_life => 1,
+        :opacity => SAKURA_PETAL_OPACITY,
+        :bitmap_index => 0,
+        :scale => 1.0,
+        :depth => 1
+      }
+
+      @sakura_particles.push(data)
+    end
+
+    @sakura_spawn_timer = 0
+  @sakura_gust_timer = 120
+  end
+
+  def self.reset_sakura_particle(data, from_top = true)
+    sprite = data[:sprite]
+    return if !$game_map
+
+    # Spawn in world/map coordinates, not screen coordinates.
+    #
+    # display_x/display_y are pixel-space camera offsets. The petal begins
+    # slightly above the current viewport, but once created it belongs to the
+    # world and will NOT follow the camera/player.
+    display_x = ($game_map.display_x / Game_Map::X_SUBPIXELS).round
+    display_y = ($game_map.display_y / Game_Map::Y_SUBPIXELS).round
+
+    data[:map_id] = $game_map.map_id
+
+    data[:world_x] =
+      display_x +
+      rand(Graphics.width + 120) -
+      60
+
+    if from_top
+      data[:world_y] =
+        display_y -
+        16 -
+        rand(52)
+    else
+      data[:world_y] =
+        display_y +
+        rand(Graphics.height)
+    end
+
+    # Consistent diagonal breeze down-right.
+    # Three subtle depth bands keep the field from feeling like one flat layer.
+    data[:depth] = rand(3)
+
+    case data[:depth]
+    when 0
+      # Far petals: smaller, slower, softer.
+      data[:vx] = 0.20 + rand(26) / 100.0
+      data[:vy] = 0.48 + rand(34) / 100.0
+      data[:scale] = 0.78 + rand(22) / 100.0
+      data[:opacity] = 125 + rand(55)
+    when 1
+      # Midground: the bulk of the field.
+      data[:vx] = 0.28 + rand(34) / 100.0
+      data[:vy] = 0.62 + rand(40) / 100.0
+      data[:scale] = 1.00 + rand(34) / 100.0
+      data[:opacity] = 165 + rand(55)
+    else
+      # Foreground petals: occasional larger, faster passes.
+      data[:vx] = 0.36 + rand(42) / 100.0
+      data[:vy] = 0.78 + rand(46) / 100.0
+      data[:scale] = 1.28 + rand(38) / 100.0
+      data[:opacity] = 195 + rand(SAKURA_PETAL_OPACITY - 194)
+    end
+
+    data[:phase] = rand(628) / 100.0
+    data[:phase_speed] = 0.030 + rand(50) / 1000.0
+
+    data[:max_life] = 270 + rand(150)
+    data[:life] = 0
+    data[:bitmap_index] = rand(@sakura_petal_bitmaps.length)
+
+    sprite.bitmap = @sakura_petal_bitmaps[data[:bitmap_index]]
+    sprite.zoom_x = data[:scale]
+    sprite.zoom_y = data[:scale]
+    sprite.opacity = 0
+    sprite.visible = true
+
+    data[:active] = true
+  end
+
+  def self.update_sakura_particles
+    on_sakura =
+      ($game_map && $game_map.map_id == SAKURA_PASS_MAP_ID)
+
+    @sakura_spawning =
+      on_sakura &&
+      @enabled
+
+    if @sakura_spawning
+      @sakura_spawn_timer -= 1
+      @sakura_gust_timer -= 1
+
+      if @sakura_spawn_timer <= 0
+        inactive =
+          @sakura_particles.find { |p| !p[:active] }
+
+        reset_sakura_particle(inactive, true) if inactive
+
+        range =
+          SAKURA_SPAWN_INTERVAL_MAX -
+          SAKURA_SPAWN_INTERVAL_MIN +
+          1
+
+        @sakura_spawn_timer =
+          SAKURA_SPAWN_INTERVAL_MIN +
+          rand([range, 1].max)
+      end
+
+      # Every few seconds, a small clustered gust passes through.
+      # This gives Sakura Pass occasional "wow" moments without making
+      # the entire field permanently max-density.
+      if @sakura_gust_timer <= 0
+        spawned = 0
+
+        @sakura_particles.each do |particle|
+          next if particle[:active]
+
+          reset_sakura_particle(particle, true)
+
+          # Stagger the gust vertically so it reads like a sweep, not a line.
+          particle[:world_y] -= rand(70)
+          particle[:vx] += 0.10 + rand(14) / 100.0
+
+          spawned += 1
+          break if spawned >= SAKURA_GUST_PETALS
+        end
+
+        gust_range =
+          SAKURA_GUST_INTERVAL_MAX -
+          SAKURA_GUST_INTERVAL_MIN +
+          1
+
+        @sakura_gust_timer =
+          SAKURA_GUST_INTERVAL_MIN +
+          rand([gust_range, 1].max)
+      end
+    end
+
+    @sakura_particles.each do |data|
+      next if !data[:active]
+
+      sprite = data[:sprite]
+      next if !sprite || sprite.disposed?
+
+      data[:life] += 1
+      data[:phase] += data[:phase_speed]
+
+      # World-space movement.
+      sway_strength =
+        (data[:depth] == 2) ? 0.62 :
+        (data[:depth] == 1) ? 0.48 :
+                              0.34
+
+      sway = Math.sin(data[:phase]) * sway_strength
+      flutter = Math.sin(data[:phase] * 2.7) * 0.16
+
+      data[:world_x] += data[:vx] + sway * 0.12
+      data[:world_y] += data[:vy] + flutter
+
+      # Convert the world position back to screen space every frame.
+      #
+      # Because the stored position itself never changes with the camera,
+      # moving the player/camera causes you to move past the petal naturally.
+      if $game_map && data[:map_id] == $game_map.map_id
+        display_x =
+          ($game_map.display_x / Game_Map::X_SUBPIXELS).round
+
+        display_y =
+          ($game_map.display_y / Game_Map::Y_SUBPIXELS).round
+
+        screen_x =
+          data[:world_x] -
+          display_x
+
+        screen_y =
+          data[:world_y] -
+          display_y
+      elsif $MapFactory
+        # If the player has crossed onto a connected map while petals are
+        # still falling, preserve their position relative to Sakura Pass.
+        pos = $MapFactory.getRelativePos(
+          $game_map.map_id,
+          0,
+          0,
+          data[:map_id],
+          0,
+          0
+        )
+
+        display_x =
+          ($game_map.display_x / Game_Map::X_SUBPIXELS).round
+
+        display_y =
+          ($game_map.display_y / Game_Map::Y_SUBPIXELS).round
+
+        screen_x =
+          (pos[0] * Game_Map::TILE_WIDTH) +
+          data[:world_x] -
+          display_x
+
+        screen_y =
+          (pos[1] * Game_Map::TILE_HEIGHT) +
+          data[:world_y] -
+          display_y
+      else
+        sprite.visible = false
+        next
+      end
+
+      sprite.x = screen_x.to_i
+      sprite.y = screen_y.to_i
+
+      # Fake tumbling without detailed/stemmy art.
+      flip = Math.sin(data[:phase] * 1.8)
+
+      sprite.zoom_x =
+        data[:scale] *
+        (0.68 + flip.abs * 0.32)
+
+      sprite.zoom_y =
+        data[:scale]
+
+      progress =
+        data[:life].to_f /
+        data[:max_life]
+
+      fade = 1.0
+
+      if progress < 0.10
+        fade = progress / 0.10
+      elsif progress > 0.82
+        fade =
+          (1.0 - progress) /
+          0.18
+      end
+
+      fade =
+        [[fade, 0.0].max, 1.0].min
+
+      sprite.opacity =
+        clamp_opacity(
+          data[:opacity] *
+          fade *
+          @master_strength
+        )
+
+      # Petals may move off-screen because the PLAYER moved away from them.
+      # Don't instantly destroy them at the edge; give them enough margin to
+      # naturally pass out of view.
+      on_screen =
+        screen_x >= -96 &&
+        screen_y >= -96 &&
+        screen_x <= Graphics.width + 96 &&
+        screen_y <= Graphics.height + 96
+
+      sprite.visible =
+        sprite.opacity > 0 &&
+        on_screen
+
+      # Existing petals keep living after leaving Sakura, but once they're
+      # well outside the visible connected world or their life ends, recycle.
+      if data[:life] >= data[:max_life] ||
+         screen_y > Graphics.height + 160 ||
+         screen_x > Graphics.width + 220 ||
+         screen_x < -220
+        data[:active] = false
+        sprite.visible = false
+      end
     end
   end
 
@@ -266,6 +600,8 @@ module BushidoPostFX
       @profile = :EZO_VILLAGE
     when NAGISA_BAY_MAP_ID
       @profile = :NAGISA_BAY
+    when SAKURA_PASS_MAP_ID
+      @profile = :SAKURA_PASS
     else
       @profile = :DEFAULT
     end
@@ -425,6 +761,7 @@ module BushidoPostFX
     update_ezo_motion
     update_nagisa_motion
     update_nagisa_particles
+    update_sakura_particles
 
     apply_all
 
@@ -440,8 +777,8 @@ module BushidoPostFX
     return if !@ezo_cloud_sprite || @ezo_cloud_sprite.disposed?
 
     # Faster than previous pass so movement is readable.
-    @ezo_cloud_sprite.x = -80 + ((@frame / 2) % 160)
-    @ezo_cloud_sprite.y = (Math.sin(@frame / 150.0) * 5).to_i
+    @ezo_cloud_sprite.x = -120 + ((@frame / 2) % 240)
+    @ezo_cloud_sprite.y = (Math.sin(@frame / 150.0) * 6).to_i
   end
 
   #-----------------------------------------------------------------------------
@@ -455,12 +792,24 @@ module BushidoPostFX
     @nagisa_shimmer_sprite.y = (Math.sin(@frame / 100.0) * 3).to_i
   end
 
-  def self.water_tile?(x, y)
-    return false if !$game_map
-    return false if x < 0 || y < 0
-    return false if x >= $game_map.width || y >= $game_map.height
+  def self.water_tile?(map_id, x, y)
+    return false if !$MapFactory
 
-    tag = $game_map.terrain_tag(x, y)
+    map = nil
+
+    for candidate in $MapFactory.maps
+      next if !candidate
+      if candidate.map_id == map_id
+        map = candidate
+        break
+      end
+    end
+
+    return false if !map
+    return false if x < 0 || y < 0
+    return false if x >= map.width || y >= map.height
+
+    tag = map.terrain_tag(x, y)
 
     if defined?(PBTerrain) && PBTerrain.respond_to?(:isWater?)
       return PBTerrain.isWater?(tag)
@@ -469,8 +818,61 @@ module BushidoPostFX
     return false
   end
 
+  # Returns this connected map's tile-space origin relative to $game_map.
+  #
+  # Example:
+  #   [0, 0] means same origin as current map.
+  #   [40, 0] means the connected map starts 40 tiles to the right.
+  def self.connected_map_offset(map)
+    return [0, 0] if !$game_map || !map
+    return [0, 0] if map.map_id == $game_map.map_id
+
+    return $MapFactory.getRelativePos(
+      $game_map.map_id,
+      0,
+      0,
+      map.map_id,
+      0,
+      0
+    )
+  end
+
+  def self.map_tile_screen_position(map_id, tile_x, tile_y, local_x = 0, local_y = 0)
+    return nil if !$game_map || !$MapFactory
+
+    map = nil
+
+    for candidate in $MapFactory.maps
+      next if !candidate
+      if candidate.map_id == map_id
+        map = candidate
+        break
+      end
+    end
+
+    return nil if !map
+
+    offset = connected_map_offset(map)
+
+    display_x = ($game_map.display_x / Game_Map::X_SUBPIXELS).round
+    display_y = ($game_map.display_y / Game_Map::Y_SUBPIXELS).round
+
+    world_x =
+      (offset[0] + tile_x) * Game_Map::TILE_WIDTH +
+      local_x
+
+    world_y =
+      (offset[1] + tile_y) * Game_Map::TILE_HEIGHT +
+      local_y
+
+    return [
+      world_x - display_x,
+      world_y - display_y
+    ]
+  end
+
   def self.find_visible_water_tile
-    return nil if !$game_map
+    return nil if !$game_map || !$MapFactory
 
     tile_w = Game_Map::TILE_WIDTH
     tile_h = Game_Map::TILE_HEIGHT
@@ -478,20 +880,51 @@ module BushidoPostFX
     display_x = ($game_map.display_x / Game_Map::X_SUBPIXELS).round
     display_y = ($game_map.display_y / Game_Map::Y_SUBPIXELS).round
 
-    left   = [display_x / tile_w - 1, 0].max
-    top    = [display_y / tile_h - 1, 0].max
-    right  = [((display_x + Graphics.width) / tile_w) + 1, $game_map.width - 1].min
-    bottom = [((display_y + Graphics.height) / tile_h) + 1, $game_map.height - 1].min
+    # Search every connected map MapFactory currently has active.
+    # This is the key difference from the old implementation.
+    maps = $MapFactory.maps.compact
+    return nil if maps.empty?
 
-    28.times do
-      tx = left + rand([right - left + 1, 1].max)
-      ty = top  + rand([bottom - top + 1, 1].max)
-      return [tx, ty] if water_tile?(tx, ty)
-    end
+    # Shuffle starting order so particles naturally distribute between
+    # multiple visible bodies of water instead of favoring the current map.
+    start_index = rand(maps.length)
 
-    for ty in top..bottom
-      for tx in left..right
-        return [tx, ty] if water_tile?(tx, ty)
+    maps.length.times do |map_index|
+      map = maps[(start_index + map_index) % maps.length]
+      next if !map
+
+      offset = connected_map_offset(map)
+
+      # Convert the current screen bounds into this connected map's tile space.
+      screen_left_tile   = (display_x / tile_w) - offset[0] - 1
+      screen_top_tile    = (display_y / tile_h) - offset[1] - 1
+      screen_right_tile  = ((display_x + Graphics.width) / tile_w) - offset[0] + 1
+      screen_bottom_tile = ((display_y + Graphics.height) / tile_h) - offset[1] + 1
+
+      left   = [[screen_left_tile, 0].max, map.width - 1].min
+      top    = [[screen_top_tile, 0].max, map.height - 1].min
+      right  = [[screen_right_tile, 0].max, map.width - 1].min
+      bottom = [[screen_bottom_tile, 0].max, map.height - 1].min
+
+      next if right < left || bottom < top
+
+      # Random probes first. Cheap and distributes bubbles naturally.
+      36.times do
+        tx = left + rand([right - left + 1, 1].max)
+        ty = top  + rand([bottom - top + 1, 1].max)
+
+        if water_tile?(map.map_id, tx, ty)
+          return [map.map_id, tx, ty]
+        end
+      end
+
+      # Deterministic fallback for narrow strips of shoreline.
+      for ty in top..bottom
+        for tx in left..right
+          if water_tile?(map.map_id, tx, ty)
+            return [map.map_id, tx, ty]
+          end
+        end
       end
     end
 
@@ -505,27 +938,33 @@ module BushidoPostFX
     if !tile
       data[:active] = false
       data[:life] = 0
-      data[:retry] = 20 + rand(30)
+      data[:retry] = 8 + rand(14)
       sprite.visible = false
       return
     end
 
-    tx, ty = tile
+    map_id, tx, ty = tile
+
+    data[:map_id] = map_id
     data[:tile_x] = tx
     data[:tile_y] = ty
 
     data[:local_x] = rand(Game_Map::TILE_WIDTH)
     data[:local_y] = rand(Game_Map::TILE_HEIGHT)
 
-    data[:drift_x] = -0.15 + rand(31) / 100.0
-    data[:drift_y] = -(0.30 + rand(36) / 100.0)
+    data[:drift_x] = -0.10 + rand(21) / 100.0
+    data[:drift_y] = -(0.22 + rand(26) / 100.0)
 
     data[:offset_x] = 0.0
     data[:offset_y] = 0.0
 
-    data[:max_life] = 50 + rand(70)
+    data[:max_life] = 68 + rand(58)
     data[:life] = initial ? rand(data[:max_life]) : 0
-    data[:opacity] = 95 + rand(NAGISA_PARTICLE_OPACITY - 94)
+    data[:opacity] = 135 + rand(NAGISA_PARTICLE_OPACITY - 134)
+
+    data[:scale] = 0.92 + rand(19) / 100.0
+    sprite.zoom_x = data[:scale]
+    sprite.zoom_y = data[:scale]
 
     data[:active] = true
     data[:retry] = 0
@@ -535,7 +974,9 @@ module BushidoPostFX
   end
 
   def self.update_nagisa_particles
-    strength = @nagisa_strength * @master_strength
+    # Water bubbles are a global world effect.
+    # Their existence depends on visible water, not the active map profile.
+    strength = @master_strength
 
     @nagisa_particles.each do |data|
       sprite = data[:sprite]
@@ -552,7 +993,9 @@ module BushidoPostFX
         next
       end
 
-      if !water_tile?(data[:tile_x], data[:tile_y])
+      # A connected map may eventually be unloaded by MapFactory.
+      # Recycle gracefully if that happens.
+      if !water_tile?(data[:map_id], data[:tile_x], data[:tile_y])
         reset_nagisa_particle(data)
         next
       end
@@ -567,21 +1010,21 @@ module BushidoPostFX
       data[:offset_x] += data[:drift_x]
       data[:offset_y] += data[:drift_y]
 
-      display_x = ($game_map.display_x / Game_Map::X_SUBPIXELS).round
-      display_y = ($game_map.display_y / Game_Map::Y_SUBPIXELS).round
+      position = map_tile_screen_position(
+        data[:map_id],
+        data[:tile_x],
+        data[:tile_y],
+        data[:local_x] + data[:offset_x],
+        data[:local_y] + data[:offset_y]
+      )
 
-      world_x =
-        data[:tile_x] * Game_Map::TILE_WIDTH +
-        data[:local_x] +
-        data[:offset_x]
+      if !position
+        reset_nagisa_particle(data)
+        next
+      end
 
-      world_y =
-        data[:tile_y] * Game_Map::TILE_HEIGHT +
-        data[:local_y] +
-        data[:offset_y]
-
-      screen_x = world_x - display_x
-      screen_y = world_y - display_y
+      screen_x = position[0]
+      screen_y = position[1]
 
       sprite.x = screen_x.to_i
       sprite.y = screen_y.to_i
@@ -593,23 +1036,34 @@ module BushidoPostFX
       fade = (1.0 - progress) / 0.28 if progress > 0.72
       fade = [[fade, 0.0].max, 1.0].min
 
-      flicker = 0.82 + Math.sin((@frame + data[:life] * 3) / 7.0) * 0.18
+      breathe =
+        0.92 +
+        Math.sin((@frame + data[:life] * 2) / 11.0) * 0.08
 
       sprite.opacity =
-        clamp_opacity(data[:opacity] * fade * flicker * strength)
+        clamp_opacity(
+          data[:opacity] *
+          fade *
+          breathe *
+          strength
+        )
 
       on_screen =
-        screen_x >= -8 &&
-        screen_y >= -8 &&
-        screen_x <= Graphics.width + 8 &&
-        screen_y <= Graphics.height + 8
+        screen_x >= -12 &&
+        screen_y >= -12 &&
+        screen_x <= Graphics.width + 12 &&
+        screen_y <= Graphics.height + 12
 
-      sprite.visible = sprite.opacity > 0 && on_screen
+      sprite.visible =
+        sprite.opacity > 0 &&
+        on_screen
 
-      if screen_x < -48 ||
-         screen_y < -48 ||
-         screen_x > Graphics.width + 48 ||
-         screen_y > Graphics.height + 48
+      # Don't instantly recycle just because the player crossed the map seam.
+      # The map-relative projection above keeps it attached to the same water.
+      if screen_x < -64 ||
+         screen_y < -64 ||
+         screen_x > Graphics.width + 64 ||
+         screen_y > Graphics.height + 64
         reset_nagisa_particle(data)
       end
     end
@@ -738,6 +1192,11 @@ module BushidoPostFX
       return false if !bitmap || bitmap.disposed?
     end
 
+    return false if !@sakura_petal_bitmaps || @sakura_petal_bitmaps.empty?
+    @sakura_petal_bitmaps.each do |bitmap|
+      return false if !bitmap || bitmap.disposed?
+    end
+
     return true
   end
 
@@ -748,6 +1207,7 @@ module BushidoPostFX
 
     build_ezo_cache
     build_nagisa_cache
+    build_sakura_cache
   end
 
   #-----------------------------------------------------------------------------
@@ -778,7 +1238,7 @@ module BushidoPostFX
 
         bitmap.set_pixel(
           x, y,
-          Color.new(255, 255, 255, alpha)
+          Color.new(255, 247, 236, alpha)
         )
       end
     end
@@ -864,39 +1324,65 @@ module BushidoPostFX
   #-----------------------------------------------------------------------------
 
   def self.build_ezo_cache
-    width = Graphics.width + 160
-    height = Graphics.height + 30
+    # Build the cloud shadow mask at half resolution and scale it 2x.
+    # This keeps generation cheap while giving us soft, organic cloud shapes
+    # instead of visible rectangles.
+    width = (Graphics.width + 180) / 2
+    height = (Graphics.height + 80) / 2
 
     @ezo_cloud_bitmap = Bitmap.new(width, height)
 
-    outer = Color.new(4, 9, 18, 30)
-    middle = Color.new(4, 9, 18, 48)
-    inner = Color.new(4, 9, 18, 68)
-
+    # Each entry is:
+    # [center_x, center_y, radius_x, radius_y, strength]
+    #
+    # Overlapping ellipses form broad irregular cloud masses.
     clouds = [
-      [-10, 30, 150, 52],
-      [104, 8, 190, 66],
-      [260, 42, 154, 48],
-      [380, 12, 194, 64],
-      [538, 36, 158, 52]
+      [30,  26, 42, 16, 0.72],
+      [62,  20, 34, 14, 0.58],
+      [92,  30, 48, 18, 0.66],
+
+      [150, 18, 52, 17, 0.68],
+      [190, 28, 42, 15, 0.54],
+      [222, 20, 50, 18, 0.64],
+
+      [282, 32, 48, 16, 0.62],
+      [324, 20, 56, 19, 0.70],
+      [366, 30, 44, 16, 0.56]
     ]
 
-    clouds.each do |c|
-      x, y, w, h = c
+    # Only this small half-resolution bitmap is processed pixel-by-pixel,
+    # and it's cached for the entire session.
+    for y in 0...height
+      for x in 0...width
+        strength = 0.0
 
-      @ezo_cloud_bitmap.fill_rect(
-        x, y + 10, w, h - 20, outer
-      )
+        clouds.each do |c|
+          cx, cy, rx, ry, power = c
 
-      @ezo_cloud_bitmap.fill_rect(
-        x + 14, y + 5, w - 28, h - 10, middle
-      )
+          dx = (x - cx).to_f / rx
+          dy = (y - cy).to_f / ry
+          d2 = dx * dx + dy * dy
 
-      @ezo_cloud_bitmap.fill_rect(
-        x + 30, y + 12, w - 60, h - 24, inner
-      )
+          next if d2 >= 1.0
+
+          # Smooth radial falloff. Using max rather than sum prevents
+          # overlapping blobs from creating ugly dark seams.
+          local = (1.0 - d2)
+          local = local * local * power
+          strength = local if local > strength
+        end
+
+        next if strength <= 0.0
+
+        alpha = (strength * 112).to_i
+        @ezo_cloud_bitmap.set_pixel(
+          x, y,
+          Color.new(7, 13, 22, alpha)
+        )
+      end
     end
 
+    # Distance haze stays cheap: one horizontal strip per row.
     @ezo_haze_bitmap =
       Bitmap.new(Graphics.width, Graphics.height)
 
@@ -904,7 +1390,7 @@ module BushidoPostFX
 
     for y in 0...half
       t = 1.0 - y.to_f / half
-      alpha = (t * t * 54).to_i
+      alpha = (t * t * 46).to_i
 
       @ezo_haze_bitmap.fill_rect(
         0, y,
@@ -913,6 +1399,8 @@ module BushidoPostFX
       )
     end
 
+    # Ezo gets neutral-cool daylight locally. The warmer global Bushido
+    # baseline still exists underneath it.
     @ezo_daylight_bitmap =
       Bitmap.new(Graphics.width, Graphics.height)
 
@@ -920,7 +1408,7 @@ module BushidoPostFX
       0, 0,
       Graphics.width,
       Graphics.height,
-      Color.new(232, 242, 255, 255)
+      Color.new(238, 246, 255, 255)
     )
   end
 
@@ -954,7 +1442,7 @@ module BushidoPostFX
     @nagisa_cool_bitmap.fill_rect(
       0, 0,
       width, height,
-      Color.new(200, 226, 255, 255)
+      Color.new(226, 238, 244, 255)
     )
 
     @nagisa_shimmer_bitmap =
@@ -994,72 +1482,115 @@ module BushidoPostFX
     end
 
     @nagisa_particle_bitmap =
-      Bitmap.new(5, 5)
+      Bitmap.new(9, 9)
 
-    @nagisa_particle_bitmap.set_pixel(
-      2, 0,
-      Color.new(225, 245, 255, 70)
-    )
+    # Luminous in-world bubble: transparent center with a soft circular rim.
+    # Additive blend makes the edge catch the water light without reading
+    # like a solid UI icon.
+    outer = Color.new(120, 205, 255, 70)
+    rim   = Color.new(185, 232, 255, 150)
+    hot   = Color.new(245, 252, 255, 225)
+    shine = Color.new(255, 255, 255, 255)
 
-    @nagisa_particle_bitmap.set_pixel(
-      1, 1,
-      Color.new(235, 250, 255, 105)
-    )
+    # Outer soft halo
+    @nagisa_particle_bitmap.set_pixel(3, 0, outer)
+    @nagisa_particle_bitmap.set_pixel(4, 0, outer)
+    @nagisa_particle_bitmap.set_pixel(5, 0, outer)
+    @nagisa_particle_bitmap.set_pixel(1, 2, outer)
+    @nagisa_particle_bitmap.set_pixel(7, 2, outer)
+    @nagisa_particle_bitmap.set_pixel(0, 3, outer)
+    @nagisa_particle_bitmap.set_pixel(8, 3, outer)
+    @nagisa_particle_bitmap.set_pixel(0, 4, outer)
+    @nagisa_particle_bitmap.set_pixel(8, 4, outer)
+    @nagisa_particle_bitmap.set_pixel(0, 5, outer)
+    @nagisa_particle_bitmap.set_pixel(8, 5, outer)
+    @nagisa_particle_bitmap.set_pixel(1, 6, outer)
+    @nagisa_particle_bitmap.set_pixel(7, 6, outer)
+    @nagisa_particle_bitmap.set_pixel(3, 8, outer)
+    @nagisa_particle_bitmap.set_pixel(4, 8, outer)
+    @nagisa_particle_bitmap.set_pixel(5, 8, outer)
 
-    @nagisa_particle_bitmap.set_pixel(
-      2, 1,
-      Color.new(255, 255, 255, 185)
-    )
+    # Main ring
+    @nagisa_particle_bitmap.set_pixel(2, 1, rim)
+    @nagisa_particle_bitmap.set_pixel(3, 1, hot)
+    @nagisa_particle_bitmap.set_pixel(4, 1, hot)
+    @nagisa_particle_bitmap.set_pixel(5, 1, rim)
+    @nagisa_particle_bitmap.set_pixel(6, 1, rim)
 
-    @nagisa_particle_bitmap.set_pixel(
-      3, 1,
-      Color.new(235, 250, 255, 105)
-    )
+    @nagisa_particle_bitmap.set_pixel(1, 2, hot)
+    @nagisa_particle_bitmap.set_pixel(7, 2, rim)
 
-    @nagisa_particle_bitmap.set_pixel(
-      0, 2,
-      Color.new(225, 245, 255, 60)
-    )
+    @nagisa_particle_bitmap.set_pixel(1, 3, hot)
+    @nagisa_particle_bitmap.set_pixel(7, 3, rim)
 
-    @nagisa_particle_bitmap.set_pixel(
-      1, 2,
-      Color.new(245, 252, 255, 150)
-    )
+    @nagisa_particle_bitmap.set_pixel(1, 4, rim)
+    @nagisa_particle_bitmap.set_pixel(7, 4, rim)
 
-    @nagisa_particle_bitmap.set_pixel(
-      2, 2,
-      Color.new(255, 255, 255, 255)
-    )
+    @nagisa_particle_bitmap.set_pixel(1, 5, rim)
+    @nagisa_particle_bitmap.set_pixel(7, 5, rim)
 
-    @nagisa_particle_bitmap.set_pixel(
-      3, 2,
-      Color.new(245, 252, 255, 150)
-    )
+    @nagisa_particle_bitmap.set_pixel(1, 6, rim)
+    @nagisa_particle_bitmap.set_pixel(7, 6, rim)
 
-    @nagisa_particle_bitmap.set_pixel(
-      4, 2,
-      Color.new(225, 245, 255, 60)
-    )
+    @nagisa_particle_bitmap.set_pixel(2, 7, rim)
+    @nagisa_particle_bitmap.set_pixel(3, 7, rim)
+    @nagisa_particle_bitmap.set_pixel(4, 7, rim)
+    @nagisa_particle_bitmap.set_pixel(5, 7, rim)
+    @nagisa_particle_bitmap.set_pixel(6, 7, rim)
 
-    @nagisa_particle_bitmap.set_pixel(
-      1, 3,
-      Color.new(235, 250, 255, 105)
-    )
+    # Bright specular highlight on the upper-left rim.
+    @nagisa_particle_bitmap.set_pixel(2, 2, shine)
+    @nagisa_particle_bitmap.set_pixel(3, 2, hot)
+  end
 
-    @nagisa_particle_bitmap.set_pixel(
-      2, 3,
-      Color.new(255, 255, 255, 185)
-    )
 
-    @nagisa_particle_bitmap.set_pixel(
-      3, 3,
-      Color.new(235, 250, 255, 105)
-    )
+  #-----------------------------------------------------------------------------
+  # Sakura petal graphics
+  #-----------------------------------------------------------------------------
 
-    @nagisa_particle_bitmap.set_pixel(
-      2, 4,
-      Color.new(225, 245, 255, 70)
-    )
+  def self.build_sakura_cache
+    @sakura_petal_bitmaps = []
+
+    palettes = [
+      [Color.new(255, 151, 198, 255), Color.new(255, 215, 231, 230)],
+      [Color.new(244, 127, 184, 255), Color.new(255, 201, 223, 230)],
+      [Color.new(255, 176, 210, 255), Color.new(255, 226, 238, 230)]
+    ]
+
+    3.times do |i|
+      bitmap = Bitmap.new(8, 8)
+
+      main  = palettes[i][0]
+      light = palettes[i][1]
+      soft  = Color.new(main.red, main.green, main.blue, 165)
+
+      case i
+      when 0
+        # Simple rounded petal
+        bitmap.set_pixel(3, 1, light)
+        bitmap.set_pixel(4, 1, light)
+        bitmap.fill_rect(2, 2, 4, 3, main)
+        bitmap.set_pixel(3, 5, main)
+        bitmap.set_pixel(4, 5, soft)
+
+      when 1
+        # Slightly angled petal
+        bitmap.set_pixel(2, 1, light)
+        bitmap.fill_rect(2, 2, 4, 2, main)
+        bitmap.fill_rect(3, 4, 3, 2, main)
+        bitmap.set_pixel(5, 6, soft)
+
+      when 2
+        # Wider soft petal
+        bitmap.set_pixel(3, 1, light)
+        bitmap.set_pixel(4, 1, light)
+        bitmap.fill_rect(1, 2, 6, 3, main)
+        bitmap.fill_rect(2, 5, 4, 1, main)
+        bitmap.set_pixel(3, 6, soft)
+      end
+
+      @sakura_petal_bitmaps.push(bitmap)
+    end
   end
 
   #-----------------------------------------------------------------------------

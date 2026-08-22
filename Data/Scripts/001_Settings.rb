@@ -38,7 +38,7 @@ POKERUS_CHANCE       = 3
 #===============================================================================
 # * Whether outdoor maps should be shaded according to the time of day.
 #===============================================================================
-TIME_SHADING = false
+TIME_SHADING = true
 
 #===============================================================================
 # * Whether poisoned Pokémon will lose HP while walking around in the field.
