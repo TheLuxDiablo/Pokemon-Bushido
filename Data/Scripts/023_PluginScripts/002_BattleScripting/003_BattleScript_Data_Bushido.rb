@@ -36,6 +36,21 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
+  KenshiF4 = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    target = battlers[0]
+    pbMessage("\\rYou'd better not rely on your Pokémon's abilities too much!")
+    scene.disappearBar
+    setNeutralizingGasKT(true)
+    battle.pbAnimation(:SMOKESCREEN, battler, battler)
+    battle.field.effects[PBEffects::NeutralizingGas] = true
+    battle.pbDisplay(_INTL("Abilities became nullified by the Neutralizing Gas!"))
+    battler.pbRaiseStatStageEx([:SPATK], 2)
+    scene.pbHideOpponent
+  }
+
   KenshiM1 = Proc.new{ |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
@@ -44,6 +59,60 @@ module DialogueModule
     scene.disappearBar
     if strong_katanas?
         battler.pbRaiseStatStageEx(:SPEED, 1)
+    end
+    scene.pbHideOpponent
+  }
+
+  KenshiM2 = Proc.new{ |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    pbMessage("\\bGet a load of this tricky technique! I'm going to work at it until I master this!")
+    scene.disappearBar
+    battle.pbAnimation(:TRICKROOM, battler, battler)
+    battle.field.effects[PBEffects::TrickRoom] = 6
+    battle.pbDisplay(_INTL("The dimensions were twisted!"))
+    battler.pbRaiseStatStageEx(:ATTACK, 2)
+    scene.pbHideOpponent
+  }
+
+  KenshiM3 = Proc.new{ |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    target = battlers[0]
+    pbMessage("\\bAt the Ronin Dojo I learned how to do things like this! Prepare to be blown away!")
+    scene.disappearBar
+    battle.pbAnimation(:TAILWIND, battler, target)
+    battler.pbOwnSide.effects[PBEffects::Tailwind] = 5
+    battle.pbDisplay(_INTL("The Tailwind blew from behind {1}!",battler.name))
+    battler.pbRaiseStatStageEx(:SPATK, 2)
+    if strong_katanas?
+        scene.appearBar
+        pbMessage("\\bAnd that's not all! I'm faster and sure to hit my attacks with this technique!")
+        scene.disappearBar
+        battle.pbAnimation(:GRAVITY, battler, battler)
+        battle.field.effects[PBEffects::Gravity] = 5
+        battle.pbDisplay(_INTL("Gravity intensified!"))
+    end
+    scene.pbHideOpponent
+  }
+
+  KenshiM3_2 = Proc.new{ |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    target = battlers[0]
+    pbMessage("\\bI won't accept defeat! I'm going to use the last of my energy to set up again!")
+    scene.disappearBar
+    battle.pbAnimation(:TAILWIND, battler, battler)
+    battler.pbOwnSide.effects[PBEffects::Tailwind] = 5
+    battle.pbDisplay(_INTL("The Tailwind blew from behind {1}!",battler.name))
+    if strong_katanas?
+        battler.pbRaiseStatStageEx(:ATTACK, 2)
+        battle.pbAnimation(:GRAVITY, battler, target)
+        battle.field.effects[PBEffects::Gravity] = 5
+        battle.pbDisplay(_INTL("Gravity intensified!"))
     end
     scene.pbHideOpponent
   }
@@ -180,6 +249,19 @@ module DialogueModule
     if strong_katanas?
         user.pbRaiseStatStageEx(:SPEED, 1)
     end
+    scene.pbHideOpponent
+  }
+
+  Komorei7 = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    user = battlers[1]
+    pbMessage("\\rCheck this out! Do you know what this crazy technique even does?")
+    scene.disappearBar
+    battle.pbAnimation(:WONDERROOM, user, user)
+    battle.field.effects[PBEffects::WonderRoom] = 6
+    battle.pbDisplay(_INTL("Wonder Room created a bizarre area... What does it do again?"))
+    battle.pbStartWeatherEx(user, :Sun)
     scene.pbHideOpponent
   }
 

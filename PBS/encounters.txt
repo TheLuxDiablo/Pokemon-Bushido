@@ -3,7 +3,7 @@
 032 # Kengo Hills
 14,8,8
 Land
-    SANDILE,19,24
+    SCRAGGY,18,22
     VULPIX,19,24
     TRUMBEAK,19,24
     FLOETTE,19,24

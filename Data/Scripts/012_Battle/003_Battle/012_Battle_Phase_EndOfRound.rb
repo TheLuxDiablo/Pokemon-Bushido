@@ -706,7 +706,7 @@ class PokeBattle_Battle
         hasabil=true; break
       end
     }
-    if !hasabil
+    if !hasabil && getNeutralizingGasKT()==false
       @field.effects[PBEffects::NeutralizingGas] = false
       pbPriority(true).each { |b|
 	    next if battler && b.index == battler.index
