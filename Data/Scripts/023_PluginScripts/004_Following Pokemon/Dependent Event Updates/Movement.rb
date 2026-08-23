@@ -7,48 +7,59 @@ class DependentEvents
     return false if !$game_temp.move_followers
     events = $PokemonGlobal.dependentEvents
     leader = $game_player
+
     for i in 0...events.length
       event = @realEvents[i]
       pbFollowEventAcrossMaps(leader, event, false, i == 0)
-      # Update X and Y for this event
+
       events[i][2] = event.map.map_id
       events[i][3] = event.x
       events[i][4] = event.y
       events[i][5] = event.direction
-      # Set leader to this event
+
       leader = event if !event.is_a?(Game_FollowerEvent) || FollowingPkmn.active?
     end
+
     $game_temp.move_followers = false
   end
+
   #-----------------------------------------------------------------------------
   # Updating the dependent event turning method to prevent follower from
-  # changing it's direction with the player
+  # changing its direction with the player
   #-----------------------------------------------------------------------------
   def pbTurnDependentEvents
     leader = $game_player
-    $PokemonGlobal.dependentEvents.each_with_index do |evArr,i|
+
+    $PokemonGlobal.dependentEvents.each_with_index do |evArr, i|
       event = @realEvents[i]
-      # Update direction for this event if it's not a Following Pokemon
+
       if !evArr[8][/FollowerPkmn/] || FollowingPkmn::ALWAYS_FACE_PLAYER
         pbTurnTowardEvent(event, leader)
-        evArr[5] = event.direction if !event.is_a?(Game_FollowerEvent) || FollowingPkmn.active?
+        if !event.is_a?(Game_FollowerEvent) || FollowingPkmn.active?
+          evArr[5] = event.direction
+        end
       end
-      # Set leader to this event
+
       leader = event
     end
   end
+
   #-----------------------------------------------------------------------------
   # Updating the dependent event update method to fix ice sliding and make
   # Following Pokemon independent of Common Events
   #-----------------------------------------------------------------------------
   def updateDependentEvents
     return false if $game_temp.disallow_follower_update
+
     events = $PokemonGlobal.dependentEvents
     return if events.length == 0
+
     for i in 0...events.length
       event = @realEvents[i]
-      next if !@realEvents[i]
+      next if !event
+
       event.transparent = $game_player.transparent
+
       if event.jumping? || event.moving? ||
          !($game_player.jumping? || $game_player.moving?)
         event.update
@@ -57,6 +68,7 @@ class DependentEvents
         event.update
         event.clear_starting
       end
+
       if !event.is_a?(Game_FollowerEvent)
         events[i][3] = event.x
         events[i][4] = event.y
@@ -68,108 +80,52 @@ class DependentEvents
           event.walk_anime = true
         end
       end
+
       events[i][5] = event.direction
     end
-    # Check event triggers
-    if Input.trigger?(Input::C) && !($game_temp.in_menu ||
-      $game_temp.in_battle || $game_player.move_route_forcing ||
-      $game_temp.message_window_showing || pbMapInterpreterRunning?)
+
+    #-------------------------------------------------------------------------
+    # Following Pokemon interaction
+    #
+    # Normal map events are handled by Game_Player.
+    # This section only handles the Following Pokemon itself.
+    #
+    # The follower must be standing on the exact tile the player is facing.
+    # Pressing C while facing empty space, an NPC, a sign, etc. will not
+    # trigger follower dialogue.
+    #-------------------------------------------------------------------------
+    if Input.trigger?(Input::C) &&
+       !$game_temp.in_menu &&
+       !$game_temp.in_battle &&
+       !$game_player.move_route_forcing &&
+       !$game_temp.message_window_showing &&
+       !pbMapInterpreterRunning?
 
       facingTile = $MapFactory.getFacingTile
-      followerTalked = false
-      normalEventFound = false
 
-      # First, preserve normal interaction with whatever the player is facing.
-      self.eachEvent { |e, d|
-        next if (!e || e.jumping?)
-        next if (!d[9] && !e.is_a?(Game_FollowerEvent))
+      if facingTile
+        self.eachEvent do |event, data|
+          next if !event
+          next if !event.is_a?(Game_FollowerEvent)
+          next if data[9]
+          next if event.jumping?
 
-        # Events underneath the player
-        if e.x == $game_player.x && e.y == $game_player.y &&
-           !e.is_a?(Game_FollowerEvent)
-          if (!e.respond_to?("over_trigger") || e.over_trigger?) &&
-             e.list.size > 1
-            $game_map.refresh if $game_map.need_refresh
-            e.lock
-            pbMapInterpreter.setup(e.list, e.id, e.map.map_id)
-            normalEventFound = true
-          end
-
-        # Events directly in front of the player
-        elsif facingTile &&
-              e.map.map_id == facingTile[0] &&
-              e.x == facingTile[1] &&
-              e.y == facingTile[2]
-
-          if e.is_a?(Game_FollowerEvent) && !d[9]
-            $game_map.refresh if $game_map.need_refresh
-            e.lock
-            FollowingPkmn.talk
-            e.unlock
-            followerTalked = true
-
-          elsif (!e.respond_to?("over_trigger") || !e.over_trigger?) &&
-                e.list.size > 1
-            $game_map.refresh if $game_map.need_refresh
-            e.lock
-            pbMapInterpreter.setup(e.list, e.id, e.map.map_id)
-            normalEventFound = true
-          end
-        end
-      }
-
-      # If nothing directly in front was interacted with, allow a nearby
-      # following Pokémon to be talked to without pixel-perfect facing.
-      if !followerTalked && !normalEventFound
-        nearbyFollower = nil
-        nearbyDirection = 0
-
-        self.eachEvent { |e, d|
-          next if !e
-          next if !e.is_a?(Game_FollowerEvent)
-          next if d[9]
-          next if e.jumping?
-          next if e.map.map_id != $game_map.map_id
-
-          dx = e.x - $game_player.x
-          dy = e.y - $game_player.y
-
-          # Only accept the four directly adjacent tiles.
-          if dx == 0 && dy == 1
-            nearbyFollower = e
-            nearbyDirection = 2
-            break
-          elsif dx == -1 && dy == 0
-            nearbyFollower = e
-            nearbyDirection = 4
-            break
-          elsif dx == 1 && dy == 0
-            nearbyFollower = e
-            nearbyDirection = 6
-            break
-          elsif dx == 0 && dy == -1
-            nearbyFollower = e
-            nearbyDirection = 8
-            break
-          end
-        }
-
-        if nearbyFollower
-          case nearbyDirection
-          when 2; $game_player.turn_down
-          when 4; $game_player.turn_left
-          when 6; $game_player.turn_right
-          when 8; $game_player.turn_up
-          end
+          next if event.map.map_id != facingTile[0]
+          next if event.x != facingTile[1]
+          next if event.y != facingTile[2]
 
           $game_map.refresh if $game_map.need_refresh
-          nearbyFollower.lock
+
+          event.lock
           FollowingPkmn.talk
-          nearbyFollower.unlock
+          event.unlock
+
+          break
         end
       end
     end
   end
+
   #-----------------------------------------------------------------------------
   # Updating the method which controls dependent event positions
   # Includes changes to work with Marin and Boonzeets side stairs and also
@@ -177,103 +133,189 @@ class DependentEvents
   #-----------------------------------------------------------------------------
   def pbFollowEventAcrossMaps(leader, follower, instant = false, leaderIsTrueLeader = true)
     d = leader.direction
-    areConnected = $MapFactory.areConnected?(leader.map.map_id, follower.map.map_id)
+    areConnected = $MapFactory.areConnected?(
+      leader.map.map_id,
+      follower.map.map_id
+    )
+
     # Get the rear facing tile of leader
     facingDirection = 10 - d
+
     if !leaderIsTrueLeader && areConnected
-      relativePos = $MapFactory.getThisAndOtherEventRelativePos(leader, follower)
+      relativePos = $MapFactory.getThisAndOtherEventRelativePos(
+        leader,
+        follower
+      )
+
       # Assumes leader and follower are both 1x1 tile in size
-      if (relativePos[1] == 0 && relativePos[0] == 2)   # 2 spaces to the right of leader
+      if relativePos[1] == 0 && relativePos[0] == 2
         facingDirection = 6
-      elsif (relativePos[1] == 0 && relativePos[0] == -2)   # 2 spaces to the left of leader
+      elsif relativePos[1] == 0 && relativePos[0] == -2
         facingDirection = 4
-      elsif relativePos[1] == -2 && relativePos[0] == 0   # 2 spaces above leader
+      elsif relativePos[1] == -2 && relativePos[0] == 0
         facingDirection = 8
-      elsif relativePos[1] == 2 && relativePos[0] == 0   # 2 spaces below leader
+      elsif relativePos[1] == 2 && relativePos[0] == 0
         facingDirection = 2
       end
     end
-    facings = [facingDirection] # Get facing from behind
-    facings.push([0, 0, 4, 0, 8, 0, 2, 0, 6][d])   # Get right facing
-    facings.push([0, 0, 6, 0, 2, 0, 8, 0, 4][d])   # Get left facing
-    facings.push(d) if !leaderIsTrueLeader # Get forward facing
+
+    facings = [facingDirection]
+    facings.push([0, 0, 4, 0, 8, 0, 2, 0, 6][d])
+    facings.push([0, 0, 6, 0, 2, 0, 8, 0, 4][d])
+    facings.push(d) if !leaderIsTrueLeader
+
     mapTile = nil
+
     if areConnected
       bestRelativePos = -1
       oldthrough = follower.through
       follower.through = false
+
       facings.each_with_index do |facing, i|
         facing = facings[i]
+
         tile = $MapFactory.getFacingTile(facing, leader)
-        # Assumes leader is 1x1 tile in size
-        passable = tile && $MapFactory.isPassableStrict?(tile[0], tile[1], tile[2], follower)
-        if i == 0 && !passable && tile &&
-           PBTerrain.isLedge?($MapFactory.getTerrainTag(tile[0], tile[1], tile[2]))
-          # If the tile isn't passable and the tile is a ledge,
-          # get tile from further behind
-          tile = $MapFactory.getFacingTileFromPos(tile[0], tile[1], tile[2], facing)
-          passable = tile && $MapFactory.isPassableStrict?(tile[0], tile[1], tile[2], follower)
+
+        passable = tile &&
+                   $MapFactory.isPassableStrict?(
+                     tile[0],
+                     tile[1],
+                     tile[2],
+                     follower
+                   )
+
+        if i == 0 &&
+           !passable &&
+           tile &&
+           PBTerrain.isLedge?(
+             $MapFactory.getTerrainTag(tile[0], tile[1], tile[2])
+           )
+
+          tile = $MapFactory.getFacingTileFromPos(
+            tile[0],
+            tile[1],
+            tile[2],
+            facing
+          )
+
+          passable = tile &&
+                     $MapFactory.isPassableStrict?(
+                       tile[0],
+                       tile[1],
+                       tile[2],
+                       follower
+                     )
         end
+
         if passable
           relativePos = $MapFactory.getThisAndOtherPosRelativePos(
-             follower,tile[0],tile[1],tile[2])
-          # Assumes follower is 1x1 tile in size
-          distance = Math.sqrt(relativePos[0] * relativePos[0] + relativePos[1] * relativePos[1])
+            follower,
+            tile[0],
+            tile[1],
+            tile[2]
+          )
+
+          distance = Math.sqrt(
+            relativePos[0] * relativePos[0] +
+            relativePos[1] * relativePos[1]
+          )
+
           if bestRelativePos == -1 || bestRelativePos > distance
             bestRelativePos = distance
             mapTile = tile
           end
-          break if i == 0 && distance <= 1 # Prefer behind if tile can move up to 1 space
+
+          break if i == 0 && distance <= 1
         end
       end
+
       follower.through = oldthrough
     else
       tile = $MapFactory.getFacingTile(facings[0], leader)
-      # Assumes leader is 1x1 tile in size
-      passable = tile && $MapFactory.isPassableStrict?(tile[0], tile[1], tile[2], follower)
+
+      passable = tile &&
+                 $MapFactory.isPassableStrict?(
+                   tile[0],
+                   tile[1],
+                   tile[2],
+                   follower
+                 )
+
       mapTile = passable ? mapTile : nil
     end
+
     # Make current position into leader's position
-    mapTile = [leader.map.map_id, leader.x, leader.y] if !mapTile
+    if !mapTile
+      mapTile = [
+        leader.map.map_id,
+        leader.x,
+        leader.y
+      ]
+    end
+
     if follower.map.map_id == mapTile[0]
       # Follower is on same map
       newX = mapTile[1]
       newY = mapTile[2]
+
       if defined?(leader.on_stair?) && leader.on_stair?
-        newX = leader.x + (leader.direction == 4 ? 1 : leader.direction == 6 ? -1 : 0)
+        newX = leader.x +
+               (leader.direction == 4 ? 1 :
+               leader.direction == 6 ? -1 : 0)
+
         if leader.on_middle_of_stair?
-          newY = leader.y + (leader.direction == 8 ? 1 : leader.direction == 2 ? -1 : 0)
+          newY = leader.y +
+                 (leader.direction == 8 ? 1 :
+                 leader.direction == 2 ? -1 : 0)
         else
           if follower.on_middle_of_stair?
-            newY = follower.stair_start_y - follower.stair_y_position
+            newY = follower.stair_start_y -
+                   follower.stair_y_position
           else
-            newY = leader.y + (leader.direction == 8 ? 1 : leader.direction == 2 ? -1 : 0)
+            newY = leader.y +
+                   (leader.direction == 8 ? 1 :
+                   leader.direction == 2 ? -1 : 0)
           end
         end
       end
-      deltaX = (d == 6 ? -1 : d == 4 ? 1 : 0)
-      deltaY = (d == 2 ? -1 : d == 8 ? 1 : 0)
+
+      deltaX = (
+        d == 6 ? -1 :
+        d == 4 ? 1 : 0
+      )
+
+      deltaY = (
+        d == 2 ? -1 :
+        d == 8 ? 1 : 0
+      )
+
       posX = newX + deltaX
       posY = newY + deltaY
-      follower.move_speed = leader.move_speed # sync movespeed
+
+      follower.move_speed = leader.move_speed
+
       if (follower.x - newX == -1 && follower.y == newY) ||
          (follower.x - newX == 1  && follower.y == newY) ||
          (follower.y - newY == -1 && follower.x == newX) ||
          (follower.y - newY == 1  && follower.x == newX)
+
         if instant
           follower.moveto(newX, newY)
         else
           pbFancyMoveTo(follower, newX, newY, leader)
         end
+
       elsif (follower.x - newX == -2 && follower.y == newY) ||
             (follower.x - newX == 2  && follower.y == newY) ||
             (follower.y - newY == -2 && follower.x == newX) ||
             (follower.y - newY == 2  && follower.x == newX)
+
         if instant
           follower.moveto(newX, newY)
         else
-          pbFancyMoveTo(follower,newX,newY,leader)
+          pbFancyMoveTo(follower, newX, newY, leader)
         end
+
       elsif follower.x != posX || follower.y != posY
         if instant
           follower.moveto(newX, newY)
@@ -285,22 +327,32 @@ class DependentEvents
     else
       if follower.is_a?(Game_FollowerEvent)
         follower.moveto_new_map(mapTile[0])
-        pbFancyMoveTo(follower, mapTile[1], mapTile[2], leader)
+        pbFancyMoveTo(
+          follower,
+          mapTile[1],
+          mapTile[2],
+          leader
+        )
       else
         # Follower will move to different map
         events = $PokemonGlobal.dependentEvents
         eventIndex = pbEnsureEvent(follower, mapTile[0])
+
         if eventIndex >= 0
           newFollower = @realEvents[eventIndex]
           newEventData = events[eventIndex]
-          newFollower.moveto(mapTile[1], mapTile[2])
+
+          newFollower.moveto(
+            mapTile[1],
+            mapTile[2]
+          )
+
           newEventData[3] = mapTile[1]
           newEventData[4] = mapTile[2]
         end
       end
     end
   end
-  #-----------------------------------------------------------------------------
 end
 
 
@@ -309,16 +361,23 @@ end
 #-------------------------------------------------------------------------------
 class Game_Player
   alias __followingpkmn__update update unless method_defined?(:__followingpkmn__update)
+
   def update(*args)
     $game_temp.disallow_follower_update = true
+
     __followingpkmn__update(*args)
+
     $game_temp.disallow_follower_update = false
-    # Update dependent events
-    if (!@moved_last_frame || @stopped_last_frame ||
-       (@stopped_this_frame && $PokemonGlobal.sliding)) && (moving? || jumping?)
+
+    if (!@moved_last_frame ||
+        @stopped_last_frame ||
+        (@stopped_this_frame && $PokemonGlobal.sliding)) &&
+       (moving? || jumping?)
+
       $game_temp.move_followers = true
       $PokemonTemp.dependentEvents.pbMoveDependentEvents
     end
+
     $PokemonTemp.dependentEvents.updateDependentEvents
   end
 end

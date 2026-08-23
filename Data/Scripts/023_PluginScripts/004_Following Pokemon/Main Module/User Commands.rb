@@ -58,21 +58,45 @@ module FollowingPkmn
   def self.talk
     return if !FollowingPkmn.can_check?
     return if !$game_temp || $game_temp.in_battle || $game_temp.in_menu
-    facing = pbFacingTile
-    if !FollowingPkmn.active? || !$game_map.passable?(facing[1], facing[2], $game_player.direction, $game_player)
+
+    # If there isn't an active follower, let the normal action system handle it.
+    if !FollowingPkmn.active?
       $game_player.straighten
       Events.onAction.trigger(nil)
       return false
     end
-    event = FollowingPkmn.get
+
+    event  = FollowingPkmn.get
+    facing = pbFacingTile
+
+    # Only talk to the follower if the follower is actually standing
+    # on the tile directly in front of the player.
+    follower_in_front = (
+      event &&
+      event.x == facing[1] &&
+      event.y == facing[2]
+    )
+
+    # We're interacting with something else. Pass the input back to
+    # the normal event interaction system.
+    if !follower_in_front
+      $game_player.straighten
+      Events.onAction.trigger(nil)
+      return false
+    end
+
     pbTurnTowardEvent(event, $game_player)
+
     first_pkmn = $Trainer.firstAblePokemon
     pbPlayCry(first_pkmn)
+
     random_val = rand(6)
     Events.OnTalkToFollower.trigger(first_pkmn, random_val)
+
     pbTurnTowardEvent(event, $game_player)
     return true
   end
+  
   #-----------------------------------------------------------------------------
   # Control the following Pokemon using move routes
   #-----------------------------------------------------------------------------

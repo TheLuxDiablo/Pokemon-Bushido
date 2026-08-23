@@ -58,11 +58,7 @@ class PokemonMapFactory
     raise "No maps in save file... (mapIndex=#{@mapIndex})" if @maps.length == 0
 
     for i in 0...@maps.length
-      if @maps[i]
-        echo("Using next map, may be incorrect (mapIndex=#{@mapIndex}, length=#{@maps.length})")
-        return @maps[i]
-      end
-
+      return @maps[i] if @maps[i]
       raise "No maps in save file... (all maps empty; mapIndex=#{@mapIndex})"
     end
   end
@@ -102,14 +98,6 @@ class PokemonMapFactory
 
     if add && !mapAddsLocked?
       @maps.push(map)
-
-      if $DEBUG
-        echoln("MAPFACTORY ADD: #{id}")
-      end
-    elsif add && mapAddsLocked?
-      if $DEBUG
-        echoln("MAPFACTORY BLOCKED ADD: #{id}")
-      end
     end
 
     return map
