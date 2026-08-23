@@ -60,13 +60,13 @@ module BushidoPostFX
   # Sakura Pass
   #-----------------------------------------------------------------------------
 
-  SAKURA_PETAL_COUNT        = 112
+  SAKURA_PETAL_COUNT        = 198
   SAKURA_SPAWN_INTERVAL_MIN = 1
   SAKURA_SPAWN_INTERVAL_MAX = 1
   SAKURA_PETAL_OPACITY      = 235
-  SAKURA_GUST_INTERVAL_MIN  = 150
-  SAKURA_GUST_INTERVAL_MAX  = 260
-  SAKURA_GUST_PETALS        = 12
+  SAKURA_GUST_INTERVAL_MIN  = 0
+  SAKURA_GUST_INTERVAL_MAX  = 120
+  SAKURA_GUST_PETALS        = 14
 
   class << self
     attr_reader :enabled
@@ -379,7 +379,7 @@ module BushidoPostFX
     data[:phase] = rand(628) / 100.0
     data[:phase_speed] = 0.030 + rand(50) / 1000.0
 
-    data[:max_life] = 270 + rand(150)
+    data[:max_life] = 520 + rand(220)
     data[:life] = 0
     data[:bitmap_index] = rand(@sakura_petal_bitmaps.length)
 
@@ -540,12 +540,8 @@ module BushidoPostFX
 
       fade = 1.0
 
-      if progress < 0.10
-        fade = progress / 0.10
-      elsif progress > 0.82
-        fade =
-          (1.0 - progress) /
-          0.18
+      if progress < 0.08
+        fade = progress / 0.08
       end
 
       fade =
@@ -574,9 +570,9 @@ module BushidoPostFX
       # Existing petals keep living after leaving Sakura, but once they're
       # well outside the visible connected world or their life ends, recycle.
       if data[:life] >= data[:max_life] ||
-         screen_y > Graphics.height + 160 ||
-         screen_x > Graphics.width + 220 ||
-         screen_x < -220
+         screen_y > Graphics.height + 260 ||
+         screen_x > Graphics.width + 300 ||
+         screen_x < -300
         data[:active] = false
         sprite.visible = false
       end
