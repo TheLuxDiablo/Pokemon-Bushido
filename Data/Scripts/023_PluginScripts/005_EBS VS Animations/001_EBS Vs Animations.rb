@@ -418,6 +418,7 @@ end
 #-------------------------------------------------------------------------------
 def vsSequenceSpecial(viewport,trainername,trainerid,tbargraphic,tgraphic)
   Graphics.frame_rate = 40
+
   ow = Sprite.new(viewport)
   ow.bitmap = Graphics.snap_to_bitmap
   ow.blur_sprite
@@ -430,42 +431,87 @@ def vsSequenceSpecial(viewport,trainername,trainerid,tbargraphic,tgraphic)
   light.bitmap = pbBitmap("Graphics/Transitions/vsSpecialLight")
   light.opacity = 0
 
+  #-----------------------------------------------------------------------------
+  # VS shadow
+  #-----------------------------------------------------------------------------
   vss = Sprite.new(viewport)
   vss.bitmap = pbBitmap("Graphics/Transitions/vs")
   vss.color = Color.new(0,0,0,255)
-  vss.ox = vss.bitmap.width/2
-  vss.oy = vss.bitmap.height/2
+  vss.ox = vss.bitmap.width / 2
+  vss.oy = vss.bitmap.height / 2
   vss.x = 110 + 16
   vss.y = 132 + 16
   vss.opacity = 128
   vss.visible = false
 
+  #-----------------------------------------------------------------------------
+  # VS graphic
+  #-----------------------------------------------------------------------------
   vs = Sprite.new(viewport)
   vs.bitmap = pbBitmap("Graphics/Transitions/vs")
-  vs.ox = vs.bitmap.width/2
-  vs.oy = vs.bitmap.height/2
+  vs.ox = vs.bitmap.width / 2
+  vs.oy = vs.bitmap.height / 2
   vs.x = 110
   vs.y = 132
   vs.visible = false
 
-  names = Sprite.new(viewport)
-  names.x = 6
-  names.y = 4
-  names.opacity = 128
-  names.color = Color.new(0,0,0,255)
-  names.visible = false
+  #-----------------------------------------------------------------------------
+  # Trainer name
+  #
+  # Draw at the normal system font size, then scale the finished bitmap exactly
+  # 2x so the font stays clean.
+  #
+  # The bitmap is deliberately tight around the text so its center is the
+  # center of the actual name, not the center of a large empty bitmap.
+  #-----------------------------------------------------------------------------
+  measure = Bitmap.new(1,1)
+  pbSetSystemFont(measure)
+
+  text_size = measure.text_size(trainername)
+
+  name_padding_x = 8
+  name_padding_y = 8
+
+  name_width  = text_size.width + (name_padding_x * 2)
+  name_height = text_size.height + (name_padding_y * 2)
+
+  measure.dispose
 
   name = Sprite.new(viewport)
-  name.bitmap = Bitmap.new(viewport.rect.width,viewport.rect.height)
-  name.bitmap.font.name = "Arial"
-  name.bitmap.font.size = 48
-  name.visible = false
-  pbSetSystemFont(name.bitmap)
-  name.bitmap.font.size = 69
-  name.z = 100
-  pbDrawOutlineText(name.bitmap,32,viewport.rect.height-160,-1,-1,"#{trainername}",Color.new(255,255,255),Color.new(0,0,0),2)
-  names.bitmap = name.bitmap.clone
+  name.bitmap = Bitmap.new(name_width,name_height)
 
+  pbSetSystemFont(name.bitmap)
+
+  pbDrawOutlineText(
+    name.bitmap,
+    name_padding_x,
+    name_padding_y,
+    text_size.width,
+    text_size.height,
+    trainername,
+    Color.new(255,255,255),
+    Color.new(0,0,0),
+    1
+  )
+
+  name.ox = name.bitmap.width / 2
+  name.oy = 0
+
+  name.zoom_x = 2.0
+  name.zoom_y = 2.0
+
+  # Center directly beneath the VS graphic.
+  name.x = vs.x
+
+  # Increase this number to move the name farther down.
+  name.y = vs.y + (vs.bitmap.height / 2) + 14
+
+  name.z = 100
+  name.visible = false
+
+  #-----------------------------------------------------------------------------
+  # Borders
+  #-----------------------------------------------------------------------------
   border1 = Sprite.new(viewport)
   border1.bitmap = pbBitmap("Graphics/Transitions/vsBorder")
   border1.zoom_x = 1.2
@@ -477,9 +523,12 @@ def vsSequenceSpecial(viewport,trainername,trainerid,tbargraphic,tgraphic)
   border2.zoom_x = 1.2
   border2.x = viewport.rect.width
   border2.angle = 180
-  border2.y = viewport.rect.height+border2.bitmap.height
+  border2.y = viewport.rect.height + border2.bitmap.height
   border2.z = 97
 
+  #-----------------------------------------------------------------------------
+  # Trainer
+  #-----------------------------------------------------------------------------
   trainer = Sprite.new(viewport)
   trainer.bitmap = pbBitmap(tgraphic)
   trainer.x = 0
@@ -496,101 +545,202 @@ def vsSequenceSpecial(viewport,trainername,trainerid,tbargraphic,tgraphic)
   shadow.opacity = 128
   shadow.visible = false
 
+  #-----------------------------------------------------------------------------
+  # Background
+  #-----------------------------------------------------------------------------
   if pbResolveBitmap(tbargraphic)
     bg.bitmap = pbBitmap(tbargraphic)
   else
     bg.bitmap = Bitmap.new(viewport.rect.width,viewport.rect.height)
+
     color = trainer.getAvgColor
-    avg = ((color.red+color.green+color.blue)/3)-120
-    color = Color.new(color.red-avg,color.green-avg,color.blue-avg)
-    bg.bitmap.fill_rect(0,0,viewport.rect.width,viewport.rect.height,color)
+    avg = ((color.red + color.green + color.blue) / 3) - 120
+
+    color = Color.new(
+      color.red - avg,
+      color.green - avg,
+      color.blue - avg
+    )
+
+    bg.bitmap.fill_rect(
+      0,
+      0,
+      viewport.rect.width,
+      viewport.rect.height,
+      color
+    )
   end
 
   bg.blur_sprite
+
+  #-----------------------------------------------------------------------------
+  # Intro
+  #-----------------------------------------------------------------------------
   y1 = border1.y.to_f
   y2 = border2.y.to_f
+
   30.times do
     ow.opacity += 12.8
-    y1 += ((70-border1.bitmap.height)-y1)*0.2
+
+    y1 += ((70 - border1.bitmap.height) - y1) * 0.2
     border1.y = y1
-    y2 -= (y2-(viewport.rect.height+border2.bitmap.height-70))*0.2
+
+    y2 -= (
+      y2 -
+      (viewport.rect.height + border2.bitmap.height - 70)
+    ) * 0.2
+
     border2.y = y2
-    light.opacity+=12.8
+
+    light.opacity += 12.8
     light.ox += 24
+
     pbWait(1)
   end
+
   40.times do
-    trainer.x += ((viewport.rect.width)-trainer.x)*0.2
+    trainer.x += ((viewport.rect.width) - trainer.x) * 0.2
     light.ox += 24
     pbWait(1)
   end
 
+  #-----------------------------------------------------------------------------
+  # Reveal
+  #-----------------------------------------------------------------------------
   viewport.tone = Tone.new(255,255,255)
+
   bg.visible = true
   shadow.visible = true
   vs.visible = true
   vss.visible = true
   name.visible = true
-  names.visible = true
+
   trainer.color = Color.new(0,0,0,0)
 
   p = 1
+
+  #-----------------------------------------------------------------------------
+  # Flash settles
+  #-----------------------------------------------------------------------------
   20.times do
-    viewport.tone.red -= 255/20.0
-    viewport.tone.green -= 255/20.0
-    viewport.tone.blue -= 255/20.0
+    viewport.tone.red   -= 255 / 20.0
+    viewport.tone.green -= 255 / 20.0
+    viewport.tone.blue  -= 255 / 20.0
+
     light.ox += 24
-    vs.x += p; vs.y -= p
+
+    vs.x += p
+    vs.y -= p
+
+    # Keep the name centered under the shaking VS.
+    name.x = vs.x
+    name.y = vs.y + (vs.bitmap.height / 2) + 14
+
     p = -1 if vs.x >= 112
     p = +1 if vs.x <= 108
-    vss.x = vs.x + 16; vss.y = vs.y + 16
+
+    vss.x = vs.x + 16
+    vss.y = vs.y + 16
+
     pbWait(1)
   end
+
+  #-----------------------------------------------------------------------------
+  # Hold
+  #-----------------------------------------------------------------------------
   120.times do
     light.ox += 24
-    vs.x += p; vs.y -= p
+
+    vs.x += p
+    vs.y -= p
+
+    # Keep the name centered under the shaking VS.
+    name.x = vs.x
+    name.y = vs.y + (vs.bitmap.height / 2) + 14
+
     p = -1 if vs.x >= 112
     p = +1 if vs.x <= 108
-    vss.x = vs.x + 16; vss.y = vs.y + 16
+
+    vss.x = vs.x + 16
+    vss.y = vs.y + 16
+
     pbWait(1)
   end
+
+  #-----------------------------------------------------------------------------
+  # Small anticipation
+  #-----------------------------------------------------------------------------
   y1 = border1.y.to_f
   y2 = border2.y.to_f
+
   6.times do
     trainer.x -= 1
     shadow.x = trainer.x + 22
+
     light.ox += 24
-    vs.x += p; vs.y -= p
+
+    vs.x += p
+    vs.y -= p
+
+    name.x = vs.x
+    name.y = vs.y + (vs.bitmap.height / 2) + 14
+
     p = -1 if vs.x >= 112
     p = +1 if vs.x <= 108
-    vss.x = vs.x + 16; vss.y = vs.y + 16
+
+    vss.x = vs.x + 16
+    vss.y = vs.y + 16
+
     pbWait(1)
   end
+
+  #-----------------------------------------------------------------------------
+  # Exit
+  #-----------------------------------------------------------------------------
   30.times do
-    trainer.x += ((viewport.rect.width*2)-trainer.x)*0.2
+    trainer.x += ((viewport.rect.width * 2) - trainer.x) * 0.2
+
     name.opacity -= 84
+
     shadow.x = trainer.x + 22
-    y1 += ((0)-y1)*0.2
+
+    y1 += (0 - y1) * 0.2
     border1.y = y1
-    y2 -= (y2-(viewport.rect.height))*0.2
+
+    y2 -= (y2 - viewport.rect.height) * 0.2
     border2.y = y2
+
     light.ox += 24
-    vs.x += p; vs.y -= p
+
+    vs.x += p
+    vs.y -= p
+
+    name.x = vs.x
+    name.y = vs.y + (vs.bitmap.height / 2) + 14
+
     p = -1 if vs.x >= 112
     p = +1 if vs.x <= 108
-    vss.x = vs.x + 16; vss.y = vs.y + 16
+
+    vss.x = vs.x + 16
+    vss.y = vs.y + 16
+
     pbWait(1)
   end
+
+  #-----------------------------------------------------------------------------
+  # Cleanup
+  #-----------------------------------------------------------------------------
   ow.dispose
   bg.dispose
   vs.dispose
   vss.dispose
   name.dispose
-  names.dispose
   trainer.dispose
   shadow.dispose
   light.dispose
-  viewport.color=Color.new(0,0,0,255)
+
+  viewport.color = Color.new(0,0,0,255)
+
   Graphics.frame_rate = 60
   return true
 end
