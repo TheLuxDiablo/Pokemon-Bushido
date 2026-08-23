@@ -153,12 +153,23 @@ MenuHandlers.addEntry(:BAG,_INTL("Bag"),"menuBag",proc{|menu|
 #-------------------------------------------------------------------------------
 # Habitat Scroll
 #-------------------------------------------------------------------------------
-MenuHandlers.addEntry(:HABITAT,_INTL("Habitat"),"menuBag",proc{|menu|
+MenuHandlers.addEntry(:HABITAT,_INTL("Habitats"),"menuHabitats",proc{|menu|
   pbFadeOutIn(99999) {
     pbEncounterListUI
   }
 },proc{
   next $PokemonBag.pbQuantity(:HABITATSCROLL) > 0
+})
+
+#-------------------------------------------------------------------------------
+# Town Map
+#-------------------------------------------------------------------------------
+MenuHandlers.addEntry(:MAP,_INTL("Map"),"menuMap",proc{|menu|
+  pbFadeOutIn(99999) {
+    pbShowMap(-1,false)
+  }
+},proc{
+  next $PokemonBag.pbQuantity(:TOWNMAP) > 0
 })
 
 #-------------------------------------------------------------------------------
@@ -246,6 +257,7 @@ MenuHandlers.addEntry(:OPTIONS,_INTL("Options"),"menuOptions",proc{|menu|
   next true
 })
 
+
 #-------------------------------------------------------------------------------
 # Debug
 #-------------------------------------------------------------------------------
@@ -257,6 +269,7 @@ MenuHandlers.addEntry(:DEBUG,_INTL("Debug"),"menuDebug",proc{|menu|
 },proc{
   next $DEBUG
 })
+
 
 #-------------------------------------------------------------------------------
 # Mystery Gift

@@ -480,7 +480,7 @@ Cave
     FLYGON,65,70
     GARCHOMP,65,70
 #-------------------------------
-155 # MAP155
+155
 16,8,8
 PhenomenonCave
     GLIGAR,27,30

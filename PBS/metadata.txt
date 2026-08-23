@@ -160,6 +160,19 @@ MapPosition = 0,14,6
 BattleBack = field
 MapSize = 2,1101
 #-------------------------------
+[032]
+# Kengo Hills
+Outdoor = true
+ShowArea = true
+MapPosition = 2,17,13
+#-------------------------------
+[033]
+# Ronin Dojo
+Outdoor = true
+ShowArea = true
+HealingSpot = 33,17,11
+MapPosition = 2,18,13
+#-------------------------------
 [034]
 # Ice Cave
 Bicycle = true
@@ -403,6 +416,12 @@ BattleBack = city
 # CamTest2
 Outdoor = true
 ShowArea = true
+#-------------------------------
+[077]
+# Ronin Dojo
+Outdoor = false
+ShowArea = false
+MapPosition = 2,18,13
 #-------------------------------
 [078]
 # CamTest3
@@ -825,8 +844,13 @@ Outdoor = false
 ShowArea = false
 MapPosition = 2,14,9
 #-------------------------------
+[154]
+# Ronin Springs
+Outdoor = false
+ShowArea = false
+MapPosition = 2,18,13
+#-------------------------------
 [155]
-# MAP155
 Outdoor = false
 Environment = Cave
 #-------------------------------
