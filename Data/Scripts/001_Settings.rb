@@ -371,3 +371,9 @@ INITIAL_ENERGY = 3
 
 SUKIRO_SPAR_QUIZ_QUESTIONS = 25
 SUKIRO_REMATCH_CHAPTERBASED = true
+
+#===============================================================================
+# Trainer Sensor
+#===============================================================================
+TRAINER_SENSOR_ENABLED = true
+TRAINER_SENSOR_BUSHIDO_STYLE = true
