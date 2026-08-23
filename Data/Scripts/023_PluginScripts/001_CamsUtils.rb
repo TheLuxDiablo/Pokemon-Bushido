@@ -546,7 +546,8 @@ end
 # DONE - Komorei: HealStatus, Half HP, and Setup Grassy Terrain. COST = 2
 # DONE - Nensho: Burn Enemy, Setup Sun, raise our ATK/SPATK one stage. COST = 3
 # DONE - Shimizu: Rain, Setup Aqua Ring on self, setup Misty Terrain. COST = 2
-# Tsume: Shadow Cleave all enemies, cut HP in half (never kill), then put to Sleep. COST = 4. WAY OP, POSTGAME
+# DONE - Tsume: Shadow Cleave all enemies, cut HP in half (never kill), then put to Sleep. COST = 4. WAY OP, POSTGAME
+# Tailwind
 # Masayoshi: Reflect + LightScreen, same as Ryo. Cost = 1
 # Akui: Shadow Clone for Evasion and Speed, Toxic Spikes. Cost = 3.
 # Raikami: paralyze, elec Terrain. Cost = 2.
@@ -555,6 +556,7 @@ end
 # Hattori: Wonder Room, 
 #      :Gravity         => "Gravity",
 #      :NeutralizingGas => "Neutralizing Gas"
+# Perish Song
 
 #How to set energy, perhaps based on chapter or badge for old save files we force set max EN
 

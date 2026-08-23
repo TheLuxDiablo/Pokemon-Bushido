@@ -422,6 +422,7 @@ ShowArea = true
 Outdoor = false
 ShowArea = false
 MapPosition = 2,18,13
+BattleBack = Dojo9
 #-------------------------------
 [078]
 # CamTest3
