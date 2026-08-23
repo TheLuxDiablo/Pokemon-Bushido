@@ -186,14 +186,11 @@ MenuHandlers.addEntry(:POKEGEAR,_INTL("Pokégear"),"menuPokegear",proc{|menu|
 })
 
 #-------------------------------------------------------------------------------
-# Trainer Card
+# Kenshi Record
 #-------------------------------------------------------------------------------
-MenuHandlers.addEntry(:TRAINER,_INTL("\\pn"),"menuTrainer",proc{|menu|
-  scene = PokemonTrainerCard_Scene.new
-  screen = PokemonTrainerCardScreen.new(scene)
-  pbFadeOutIn(99999) {
-    screen.pbStartScreen
-  }
+MenuHandlers.addEntry(:TRAINER,_INTL("Kenshi Record"),"menuTrainer",proc{|menu|
+  pbKenshiRecord
+  menu.refresh
 },proc{
   next true
 })
