@@ -719,3 +719,11 @@ def isItemAPKT(item)
   return item_display_name.include?("Technique") || item_display_name.include?("KT")
 end
 
+def getNeutralizingGasKT()
+    return $game_variables[225]
+end
+
+def setNeutralizingGasKT(bool)
+    $game_variables[225] = bool
+end
+

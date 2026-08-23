@@ -1746,3 +1746,37 @@ Pokemon = MAGCARGO,52
 Pokemon = GARDEVOIR,53
 	Item = TWISTEDSPOON
 	Moves = EXPANDINGFORCE,PROTECT
+#-------------------------------	
+[RONIN_M,Test Ronin M]
+LoseText = "Excellent Battle. Here, I shall teach you a new technique!"
+Pokemon = TIMBURR,10
+#-------------------------------	
+[KENSHI_M,Isamu]
+LoseText = "If you train your Katana Techniques at the Ronin Dojo, you'll become unstoppable!"
+Pokemon = GURDURR,28
+Pokemon = KROKOROK,29
+Pokemon = LIEPARD,29
+#-------------------------------	
+[KOMOREI_F,Senka]
+LoseText = "I have to train my weird techniques more at the Ronin Dojo..."
+Pokemon = VIVILLON,29
+Pokemon = BRELOOM,29
+#-------------------------------	
+[KENSHI_F,Onara]
+LoseText = "No way! You must have some natural abilities!"
+Pokemon = CHANSEY,29
+Pokemon = TOGETIC,29
+Pokemon = TOUCANNON,30
+#-------------------------------	
+[NENSHO_M,Deshi]
+LoseText = "You were able to overcome my new abilities? How is this possible?"
+Pokemon = FLAREON,30
+	Moves = FIREBLAST,WILLOWISP,PROTECT,BITE
+	Item = SITRUSBERRY
+Pokemon = LYCANROC,30
+	Moves = ACCELEROCK,PROTECT,SUCKERPUNCH,ROCKTOMB
+	Item = PASSHOBERRY
+	Form = 0
+Pokemon = SCRAGGY,31
+	Moves = HIGHJUMPKICK,SUCKERPUNCH,PROTECT,BRICKBREAK
+	Item = BLACKBELT

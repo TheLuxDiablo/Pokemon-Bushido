@@ -24,7 +24,7 @@
 21,East,0,23,West,1
 # Route 2 (21) - Route 7 (47)
 21,East,77,47,West,0
-# CamTest (48) - TEST (22)
+# CamTest (48) - Shadow Lugia Chase Test (22)
 48,West,0,22,East,1
 # Route 3 (31) - Lerucean Town (23)
 31,South,32,23,North,0
@@ -46,38 +46,44 @@
 124,West,0,127,East,19
 # Izumi Village (127) - Izumi Pass (132)
 127,West,14,132,East,0
-# Jonetsu Pass (102) - Hanatsu Village (172)
-102,North,0,172,South,6
-# Hanatsu Village (103) - Hanatsu Village (172)
-103,South,1,172,North,0
-# Hagane City (169) - Jonetsu Pass (102)
-169,North,0,102,South,40
-# Hagane City (85) - Hagane City (169)
-85,North,13,169,South,0
+# Shizen Trail (90) - Kengo Hills (32)
+90,East,12,32,West,0
+# Hagane City (85) - Kengo Hills (32)
+85,East,74,32,West,0
+# Ronin Dojo (33) - Kengo Hills (32)
+33,West,0,32,East,2
+# Hagane City (168) - Shizen Trail (90)
+168,South,0,90,North,24
+# Hagane City (171) - Shizen Trail (90)
+171,West,46,90,East,0
+# Yami Pass (98) - Shizen Trail (90)
+98,South,0,90,North,230
+# Hagane City (170) - Shizen Trail (90)
+170,East,35,90,West,0
 # Hagane City (168) - Hagane City (85)
 168,North,0,85,South,24
+# Hagane City (169) - Hagane City (85)
+169,South,0,85,North,13
 # Hagane City (171) - Hagane City (85)
 171,West,0,85,East,16
 # Hagane City (170) - Hagane City (85)
 170,East,0,85,West,27
-# Shizen Trail (90) - Hagane City (168)
-90,North,24,168,South,0
-# Yami Pass (98) - Shizen Trail (90)
-98,South,0,90,North,230
-# Hagane City (171) - Shizen Trail (90)
-171,West,46,90,East,0
-# Hagane City (170) - Shizen Trail (90)
-170,East,35,90,West,0
-# Nagisa Bay (81) - Yami Pass (98)
-81,East,0,98,West,35
+# Jonetsu Pass (102) - Hagane City (169)
+102,South,40,169,North,0
+# Hanatsu Village (172) - Jonetsu Pass (102)
+172,South,6,102,North,0
+# Hanatsu Village (103) - Hanatsu Village (172)
+103,South,1,172,North,0
+# Sakura Pass (82) - Hagane City (171)
+82,West,12,171,East,0
+# Ezo Village (79) - Sakura Pass (82)
+79,West,0,82,East,11
+# Nagisa Bay (81) - Ezo Village (79)
+81,West,0,79,East,6
+# Yami Pass (98) - Nagisa Bay (81)
+98,West,35,81,East,0
 # Yami Island (99) - Yami Pass (98)
 99,West,12,98,East,0
-# Ezo Village (79) - Nagisa Bay (81)
-79,East,6,81,West,0
-# Sakura Pass (82) - Ezo Village (79)
-82,East,11,79,West,0
-# Hagane City (171) - Sakura Pass (82)
-171,East,0,82,West,12
 # Kaiyo Sea (106) - Hagane City (170)
 106,East,12,170,West,0
 # Chikyu Village (107) - Kaiyo Sea (106)
@@ -88,3 +94,5 @@
 157,East,0,156,West,16
 # Jinsu Island (158) - Kowai Pass (157)
 158,East,16,157,West,0
+# Ronin Dojo (33) - Kowai Pass (157)
+33,North,0,157,South,404
