@@ -355,6 +355,10 @@ MultipleForms.copy(:SCATTERBUG,:SPEWPA,:VIVILLON)
 
 MultipleForms.register(:FLABEBE,{
   "getFormOnCreation" => proc { |pkmn|
+    maps = [82]   # Map IDs for Sakura Pass - Pink Form
+    if maps.include?($game_map.map_id)
+      next 5
+    end
     next rand(6)
   }
 })

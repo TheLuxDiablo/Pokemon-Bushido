@@ -1746,3 +1746,7 @@ Pokemon = MAGCARGO,52
 Pokemon = GARDEVOIR,53
 	Item = TWISTEDSPOON
 	Moves = EXPANDINGFORCE,PROTECT
+#-------------------------------	
+[RONIN_M,Test Ronin M]
+LoseText = "Excellent Battle. Here, I shall teach you a new technique"
+Pokemon = TIMBURR,10
