@@ -24,14 +24,19 @@ class BushidoLoadMenuSprite < SpriteWrapper
 
   def initialize(commands, preview, viewport)
     super(viewport)
+
+    $PokemonTemp = PokemonTemp.new if !$PokemonTemp
+    
     @commands = commands
     @preview = preview
     @index = 0
     @anim_frame = 0
     @confirm_anim = 0
     @transition_mode = false
+
     self.bitmap = BitmapWrapper.new(Graphics.width, Graphics.height)
     pbSetSystemFont(self.bitmap)
+    
     refresh
   end
 

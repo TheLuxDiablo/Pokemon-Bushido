@@ -3,10 +3,10 @@ class PokeBattle_Pokemon
   attr_accessor :forcedForm
 
   def form
-    return @forcedForm if @forcedForm!=nil
-    return (@form || 0) if $game_temp.in_battle
-    v = MultipleForms.call("getForm",self)
-    self.form = v if v!=nil && (!@form || v!=@form)
+    return @forcedForm if @forcedForm != nil
+    return (@form || 0) if $game_temp && $game_temp.in_battle
+    v = MultipleForms.call("getForm", self)
+    self.form = v if v != nil && (!@form || v != @form)
     return @form || 0
   end
 
