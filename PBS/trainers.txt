@@ -547,8 +547,7 @@ Items = JAM2
 LoseText = "I still have work to do before I can call myself a leader..."
 Pokemon = SERVINE,27
 	Moves = MEGADRAIN,WRAP,GROWTH,LEAFTORNADO
-Pokemon = LUDICOLO,27
-	Moves = WATERGUN,ZENHEADBUTT,GIGADRAIN,KNOCKOFF
+Pokemon = LEAFEON,27
 Pokemon = ROSERADE,28
 	Moves = AROMATHERAPY,SYNTHESIS,MAGICALLEAF,WORRYSEED
 Pokemon = BRELOOM,28
@@ -770,6 +769,7 @@ Pokemon = SAWK,37
 [AKUICLAN_F,Teruya]
 LoseText = "What?! There's no way!"
 Pokemon = SNEASEL,37
+	Form = 1
 Pokemon = SIMISEAR,38
 	Shadow = yes
 #-------------------------------
@@ -832,12 +832,11 @@ LoseText = "Nice!"
 Pokemon = CENTISKORCH,39
 	Moves = FIRELASH,LEECHLIFE,KNOCKOFF,POWERWHIP
 	Item = HEAVYDUTYBOOTS
+Pokemon = FLAREON,39
+	Item = SITRUSBERRY
 Pokemon = PUPITAR,39
 	Moves = ROCKSLIDE,CRUNCH,PURSUIT,EARTHQUAKE
 	Item = ASSAULTVEST
-Pokemon = BLISSEY,39
-	Moves = SEISMICTOSS,SOFTBOILED,THUNDERWAVE,TELEPORT
-	Item = HEAVYDUTYBOOTS
 Pokemon = SALAZZLE,40
 	Moves = NASTYPLOT,SLUDGEWAVE,FLAMETHROWER,TOXIC
 	Item = HEAVYDUTYBOOTS
@@ -861,12 +860,10 @@ Pokemon = TALONFLAME,41
 [NENSHO_BOSS,Nori,2]
 LoseText = "Now I understand. Your power is superb."
 Pokemon = CENTISKORCH,39
+Pokemon = FLAREON,40
 Pokemon = PUPITAR,40
 	Moves = ROCKSLIDE,CRUNCH,PURSUIT,EARTHQUAKE
 	Item = ASSAULTVEST
-Pokemon = BLISSEY,40
-	Moves = SEISMICTOSS,SOFTBOILED,THUNDERWAVE,TELEPORT
-	Item = HEAVYDUTYBOOTS
 Pokemon = SALAZZLE,41
 	Moves = NASTYPLOT,SLUDGEWAVE,FLAMETHROWER,TOXIC
 	Item = HEAVYDUTYBOOTS
@@ -1062,18 +1059,20 @@ Pokemon = BRELOOM,44
 #-------------------------------
 [SHIMIZU_F,Taketa]
 LoseText = "Losing in front of my hometown is not good..."
-Pokemon = KINGDRA,44
-Pokemon = VAPOREON,44
-Pokemon = WISHIWASHI,45
+Pokemon = KINGDRA,43
+Pokemon = VAPOREON,43
+Pokemon = WISHIWASHI,44
 #-------------------------------
 [IWA_M,Nakanishi]
-LoseText = "Losing in front of my hometown is not good."
-Pokemon = DUGTRIO,45
-Pokemon = SNORLAX,45
+LoseText = "You're something else!"
+Pokemon = DUGTRIO,43
+Pokemon = SNORLAX,44
 #-------------------------------
 [YUKI_M,Sugiyama]
 LoseText = "Just because we specialize in Ice-types doesn't mean we always win them."
-Pokemon = MAMOSWINE,45
+Pokemon = SNEASEL,43
+	Form = 0
+Pokemon = MAMOSWINE,44
 Pokemon = WEAVILE,46
 #-------------------------------
 [YUKI_F,Koizumi]
@@ -1261,30 +1260,32 @@ Pokemon = CELEBI,77
 #-------------------------------
 [SHIMIZU_BOSS,Mai]
 LoseText = "You fought well. I could not win, even with the power of the ocean."
-Pokemon = MILOTIC,55
+Pokemon = MILOTIC,54
 	Item = LEFTOVERS
 	Ability = 2
 	Moves = SCALD,ICEBEAM,HAZE,RECOVER
-Pokemon = VAPOREON,56
+Pokemon = VAPOREON,54
 	Item = LEFTOVERS
 	Ability = 0
 	Moves = HEALBELL,WISH,PROTECT,SCALD
-Pokemon = KINGDRA,56
+Pokemon = KINGDRA,55
 	Item = CHOICEBAND
 	Ability = 0
 	Moves = WATERFALL,OUTRAGE,FLAIL,IRONHEAD
-Pokemon = GYARADOS,56
+Pokemon = GYARADOS,55
 	Item = LEFTOVERS
 	Ability = 1
 	Moves = DRAGONDANCE,WATERFALL,EARTHQUAKE,ICEFANG
-Pokemon = CLOYSTER,56
-	Item = FOCUSSASH
-	Ability = 1
-	Moves = SHELLSMASH,ICICLESPEAR,SPIKES,EXPLOSION
-Pokemon = GRENINJA,57
+Pokemon = GRENINJA,55
 	Item = LIFEORB
 	Ability = 0
 	Moves = ICEBEAM,GUNKSHOT,HYDROPUMP,EXTRASENSORY
+Pokemon = BASCULEGION,56
+	Item = FOCUSSASH
+	Ability = 1
+	Form = 1
+	Gender = Female
+	Moves = LASTRESPECTS,WAVECRASH,AQUAJET,SHADOWBALL
 #-------------------------------	
 [KAYOKO,Kayoko,1]
 LoseText = "You truly are a special Kenshi."

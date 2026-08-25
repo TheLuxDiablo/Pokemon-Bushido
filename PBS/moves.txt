@@ -720,7 +720,7 @@
 702,BEHEMOTHBASH,Behemoth Bash,000,100,STEEL,Physical,100,5,0,NearOther,0,abef,"The user becomes a gigantic shield and slams into the target."
 703,BEHEMOTHBLADE,Behemoth Blade,000,100,STEEL,Physical,100,5,0,NearOther,0,abef,"The user becomes a gigantic sword and cuts the target."
 704,STEELROLLER,Steel Roller,195,130,STEEL,Physical,100,5,0,NearOther,0,abef,"Attacks while destroying the terrain. This move fails in the absence of a terrain."
-705,STEELBEAM,Steel Beam,0FC,140,STEEL,Special,95,5,100,NearOther,0,bef,"Fires a beam of steel that it collected from its entire body. This also damages the user."
+705,STEELBEAM,Steel Beam,501,140,STEEL,Special,95,5,100,NearOther,0,bef,"Fires a beam of steel that it collected from its entire body. This also damages the user."
 #-------------------------------
 706,HYDROCANNON,Hydro Cannon,0C2,150,WATER,Special,90,5,0,NearOther,0,bef,"The target is hit with a watery blast. The user must rest on the next turn, however."
 707,WATERSPOUT,Water Spout,08B,150,WATER,Special,100,5,0,AllNearFoes,0,bef,"The user spouts water to damage the foe. The lower the user's HP, the less powerful it becomes."
@@ -785,3 +785,12 @@
 #-----------------------------------------------------------
 765,KOWTOWCLEAVE,Kowtow Cleave,0A5,85,DARK,Physical,0,10,0,AllNearFoes,0,befj,"The user kowtows to make the target lower its guard, then slashes. This attack never misses."
 766,PSYSHIELDBASH,Psyshield Bash,01D,70,PSYCHIC,Physical,90,10,100,NearOther,0,abe,"Cloaking itself in psychic energy, the user slams into the target. This also boosts the user's Defense stat."
+767,DIRECLAW,Dire Claw,500,80,POISON,Physical,100,15,50,NearOther,0,abe,"The user lashes out at the target with ruinous claws. This may also leave the target poisoned, paralyzed, or asleep."
+768,CHLOROBLAST,Chloroblast,501,150,GRASS,Special,95,5,100,NearOther,0,bef,"The user launches its amassed chlorophyll to inflict damage on the target. This also damages the user."
+769,RAGINGFURY,Raging Fury,0D2,120,FIRE,Physical,100,10,0,RandomNearFoe,0,abef,"The user rampages around spewing flames for two to three turns. The user then becomes confused."
+770,HEADLONGRUSH,Headlong Rush,03C,120,GROUND,Physical,100,5,0,NearOther,0,abef,"The user smashes into the target in a full-body tackle. This also lowers the user's Defense and Sp. Def stats."
+771,BLOODMOON,Blood Moon,0C2,140,NORMAL,Special,100,5,0,NearOther,0,bef,"The user unleashes the full brunt of its spirit from a full moon that shines as red as blood. This move can't be used twice in a row."
+772,ESPERWING,Esper Wing,01F,80,PSYCHIC,Physical,100,10,100,NearOther,0,abefh,"The user slashes with aura-enriched wings. Also boosts the user's Speed stat. This has a heightened critical hit chance."
+773,WAVECRASH,Wave Crash,0FB,120,WATER,Physical,100,10,0,NearOther,0,abef,"The user shrouds itself in water and slams into the target with its whole body to inflict damage. This also damages the user quite a lot."
+774,LASTRESPECTS,Last Respects,503,50,GHOST,Physical,100,10,100,NearOther,0,abef,"The user attacks to avenge its allies. The more defeated allies there are in the user's party, the greater the move's power."
+775,BARBBARRAGE,Barb Barrage,504,60,POISON,Physical,100,10,50,NearOther,0,abef,"The user unleashes toxic barbs to attack. This may poison the target. This move's power is doubled if the target is already poisoned."

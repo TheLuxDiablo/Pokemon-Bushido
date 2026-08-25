@@ -455,29 +455,12 @@ class PokeBattle_Battle
     return nil
   end
 
-  def pbCheckOpposingAbility(abil,idxBattler=0,nearOnly=false)
-    eachOtherSideBattler(idxBattler) do |b|
-      next if nearOnly && !b.near?(idxBattler)
-      return b if b.hasActiveAbility?(abil)
-    end
-    return nil
-  end
 
-  def pbFaintedAllyCount(idxBattler)
-    # 1. Safely extract the index integer from the object if needed
-    idx = idxBattler.is_a?(PokeBattle_Battler) ? idxBattler.index : idxBattler
-
-    # 2. Get the corresponding party array safely using an integer
-    party = pbParty(idx)
+  def pbFaintedAllyCount(idxBattler=0)
+    party = pbParty(idxBattler)
     count = 0
-    
-    party.each_with_index do |pkmn, i|
-      next if !pkmn
-      if @battlers && @battlers[idx]
-        next if i == @battlers[idx].pokemonIndex
-      end
-      count += 1 if pkmn.fainted?
-    end
+    party.each { |pkmn| count += 1 if pkmn && pkmn.fainted? }
+    #pbDisplay(_INTL("Fainted ally count = {1}",count))
     return count
   end
 

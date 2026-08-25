@@ -504,7 +504,13 @@ class PokemonEvolutionScene
     rsprite1.y = (Graphics.height-64)/2
     rsprite2 = PokemonSprite.new(@viewport)
     rsprite2.setOffset(PictureOrigin::Center)
-    rsprite2.setPokemonBitmapSpecies(@pokemon,@newspecies,false)
+    if @pokemon.isFemale? && isConst?(@newspecies, PBSpecies, :BASCULEGION) # Basculegion workaround, wtf am i doing
+      @pokemon.form = 1
+      rsprite2.setPokemonBitmapSpecies(@pokemon,@newspecies,false)
+      @pokemon.form = 2
+    else
+      rsprite2.setPokemonBitmapSpecies(@pokemon,@newspecies,false)
+    end
     rsprite2.x       = rsprite1.x
     rsprite2.y       = rsprite1.y
     rsprite2.opacity = 0
@@ -565,41 +571,39 @@ class PokemonEvolutionScene
     end
   end
 
-  def pbEvolutionSuccess
-    # Play cry of evolved species
-    frames = pbCryFrameLength(@newspecies,@pokemon.form)
-    pbBGMStop
-    pbPlayCrySpecies(@newspecies,@pokemon.form)
-    frames.times do
-      Graphics.update
-      pbUpdate
-    end
-    # Success jingle/message
-    pbMEPlay("PLA 040 Congratulations, Your Pokemon Evolved!")
-    newspeciesname = PBSpecies.getName(@newspecies)
-    oldspeciesname = PBSpecies.getName(@pokemon.species)
-    pbMessageDisplay(@sprites["msgwindow"],
-       _INTL("\\se[]Congratulations! Your {1} evolved into {2}!\\wt[80]",
-       @pokemon.name,newspeciesname)) { pbUpdate }
-    @sprites["msgwindow"].text = ""
-    # Check for consumed item and check if Pokémon should be duplicated
-    pbEvolutionMethodAfterEvolution
-    # Modify Pokémon to make it evolved
-    @pokemon.species = @newspecies
-    @pokemon.name    = newspeciesname if @pokemon.name==oldspeciesname
-    @pokemon.form    = 0 if @pokemon.isSpecies?(:MOTHIM)
-    @pokemon.calcStats
-    # See and own evolved species
-    $Trainer.seen[@newspecies]  = true
-    $Trainer.owned[@newspecies] = true
-    pbSeenForm(@pokemon)
-    # Learn moves upon evolution for evolved species
-    movelist = @pokemon.getMoveList
-    for i in movelist
-      next if i[0]!=0 && i[0]!=@pokemon.level   # 0 is "learn upon evolution"
-      pbLearnMove(@pokemon,i[1],true) { pbUpdate }
-    end
+    def pbEvolutionSuccess
+  # Play cry of evolved species
+  frames = pbCryFrameLength(@newspecies,@pokemon.form)
+  pbBGMStop
+  pbPlayCrySpecies(@newspecies,@pokemon.form)
+  frames.times do
+    Graphics.update
+    pbUpdate
   end
+  # Success jingle/message
+  pbMEPlay("PLA 040 Congratulations, Your Pokemon Evolved!")
+  newspeciesname = PBSpecies.getName(@newspecies)
+  oldspeciesname = PBSpecies.getName(@pokemon.species)
+  pbMessageDisplay(@sprites["msgwindow"], _INTL("\\se[]Congratulations! Your {1} evolved into {2}!\\wt[80]", @pokemon.name,newspeciesname)) { pbUpdate }
+  @sprites["msgwindow"].text = ""
+  # Check for consumed item and check if Pokémon should be duplicated
+  pbEvolutionMethodAfterEvolution
+  # Modify Pokémon to make it evolved
+  @pokemon.species = @newspecies
+  @pokemon.name = newspeciesname if @pokemon.name==oldspeciesname
+  @pokemon.form = 0 if @pokemon.isSpecies?(:MOTHIM)
+  @pokemon.calcStats
+  # See and own evolved species
+  $Trainer.seen[@newspecies] = true
+  $Trainer.owned[@newspecies] = true
+  pbSeenForm(@pokemon)
+  # Learn moves upon evolution for evolved species
+  movelist = @pokemon.getMoveList
+  for i in movelist
+    next if i[0]!=0 && i[0]!=@pokemon.level # 0 is "learn upon evolution"
+    pbLearnMove(@pokemon,i[1],true) { pbUpdate }
+  end
+end
 
   def pbEvolutionMethodAfterEvolution
     pbCheckEvolutionEx(@pokemon) { |pkmn, method, parameter, new_species|

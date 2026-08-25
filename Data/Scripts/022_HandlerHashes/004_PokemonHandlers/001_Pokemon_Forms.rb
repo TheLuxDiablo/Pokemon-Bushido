@@ -655,6 +655,21 @@ MultipleForms.register(:KOFFING,{
 
 MultipleForms.copy(:KOFFING, :MIMEJR)
 
+MultipleForms.register(:SNEASEL,{
+"getFormOnCreation" => proc{|pokemon|
+   maps = [124] # Fubuki Bay is Ice Sneasel
+   next ($game_map && maps.include?($game_map.map_id) ? 0 : 1)
+}
+})
+
+MultipleForms.register(:ZORUA,{
+"getFormOnCreation" => proc{|pokemon|
+   maps = [98] # Yami Pass is Dark Zorua
+   next ($game_map && maps.include?($game_map.map_id) ? 0 : 1)
+}
+})
+MultipleForms.copy(:ZORUA, :ZOROARK)
+
 MultipleForms.register(:SLOWPOKE,{
 "getFormOnCreation" => proc{|pokemon|
    maps = [1]
@@ -668,7 +683,6 @@ MultipleForms.copy(:SLOWPOKE, :SLOWBRO, :SLOWKING,
                    :ZIGZAGOON, :LINOONE,
                    :MRMIME,
                    # Hisui Forms
-                   :SNEASEL,
                    :QWILFISH,
                    :CYNDAQUIL, :QUILAVA, :TYPHLOSION,
                    :OSHAWOTT, :DEWOTT, :SAMUROTT,
@@ -678,12 +692,16 @@ MultipleForms.copy(:SLOWPOKE, :SLOWBRO, :SLOWKING,
                    :GOOMY, :SLIGGOO, :GOODRA,
                    :RUFFLET, :BRAVIARY,
                    :PETILIL, :LILLIGANT,
-                   :ZORUA, :ZOROARK,
                    :VOLTORB, :ELECTRODE
                  )
 
-MultipleForms.register(:BASCULEGION, {
- "getForm" => proc { |pkmn| next pkmn.gender }
+MultipleForms.register(:BASCULEGION,{
+  "getForm" => proc { |pkmn|
+    next pkmn.isFemale? ? 1 : 0
+  },
+  "getFormOnCreation" => proc{|pkmn|
+    next pkmn.isFemale? ? 1 : 0
+  }
 })
 
  # These species are required to be in form 1 for breeding purposes.

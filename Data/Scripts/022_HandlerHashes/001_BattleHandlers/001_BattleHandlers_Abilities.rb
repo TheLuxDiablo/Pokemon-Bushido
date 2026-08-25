@@ -460,6 +460,23 @@ BattleHandlers::StatLossImmunityAbility.add(:KEENEYE,
   }
 )
 
+BattleHandlers::StatLossImmunityAbility.add(:MINDSEYE,
+  proc { |ability,battler,stat,battle,showMessages|
+    next false if stat!=PBStats::ACCURACY
+    if showMessages
+      battle.pbShowAbilitySplash(battler)
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s {2} cannot be lowered!",battler.pbThis,PBStats.getName(stat)))
+      else
+        battle.pbDisplay(_INTL("{1}'s {2} prevents {3} loss!",battler.pbThis,
+           battler.abilityName,PBStats.getName(stat)))
+      end
+      battle.pbHideAbilitySplash(battler)
+    end
+    next true
+  }
+)
+
 #===============================================================================
 # StatLossImmunityAbilityNonIgnorable handlers
 #===============================================================================
@@ -805,6 +822,12 @@ BattleHandlers::AccuracyCalcUserAbility.add(:KEENEYE,
   }
 )
 
+BattleHandlers::AccuracyCalcUserAbility.add(:MINDSEYE,
+  proc { |ability,mods,user,target,move,type|
+    mods[EVA_STAGE] = 0 if mods[EVA_STAGE]>0 && NEWEST_BATTLE_MECHANICS
+  }
+)
+
 BattleHandlers::AccuracyCalcUserAbility.add(:NOGUARD,
   proc { |ability,mods,user,target,move,type|
     mods[BASE_ACC] = 0
@@ -812,6 +835,12 @@ BattleHandlers::AccuracyCalcUserAbility.add(:NOGUARD,
 )
 
 BattleHandlers::AccuracyCalcUserAbility.add(:UNAWARE,
+  proc { |ability,mods,user,target,move,type|
+    mods[EVA_STAGE] = 0 if move.damagingMove?
+  }
+)
+
+BattleHandlers::AccuracyCalcUserAbility.add(:MINDSEYE,
   proc { |ability,mods,user,target,move,type|
     mods[EVA_STAGE] = 0 if move.damagingMove?
   }

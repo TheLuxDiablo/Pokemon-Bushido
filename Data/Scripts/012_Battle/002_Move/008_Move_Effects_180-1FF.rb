@@ -495,3 +495,67 @@ end
 #       Actually, you might as well use high numbers like 500+ (up to FFFF),
 #       just to make sure later additions to Essentials don't clash with your
 #       new effects.
+
+#===============================================================================
+# Target gets a random status: Poisoned, Burned, or put to Sleep.
+# (Dire Claw)
+#===============================================================================
+class PokeBattle_Move_500 < PokeBattle_Move
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    case @battle.pbRandom(3)
+    when 0 then target.pbSleep          if target.pbCanSleep?(user, false, self)
+    when 1 then target.pbPoison(user)   if target.pbCanPoison?(user, false, self)
+    when 2 then target.pbParalyze(user) if target.pbCanParalyze?(user, false, self)
+    end
+  end
+end
+
+#===============================================================================
+# User takes recoil damage equal to 1/2 of their maximum health.
+# (Steel Beam, Chloroblast)
+#===============================================================================
+class PokeBattle_Move_501 < PokeBattle_RecoilMove
+  def pbRecoilDamage(user,target)
+    return (user.totalhp/2.0).round
+  end
+end
+
+#===============================================================================
+# Gigaton Hammer, Blood Moon
+#===============================================================================
+# This move becomes unselectable if you try to use it on consecutive turns.
+#-------------------------------------------------------------------------------
+class PokeBattle_Move_502 < PokeBattle_Move
+  def pbEffectWhenDealingDamage(user, target)
+    user.effects[PBEffects::SuccessiveMove] = @id
+  end
+end
+
+#===============================================================================
+# Last Respects
+#===============================================================================
+# Power is increased by 50 for each time a teammate fainted this battle.
+#-------------------------------------------------------------------------------
+class PokeBattle_Move_503 < PokeBattle_Move
+  def pbBaseDamage(baseDmg, user, target)
+    numFainted = user.num_fainted_allies
+    
+    return baseDmg if numFainted <= 0
+    baseDmg += 50 * numFainted
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Power is doubled if the target is poisoned. Chance to poison. (Barb Barrage)
+#===============================================================================
+class PokeBattle_Move_504 < PokeBattle_PoisonMove
+  def pbBaseDamage(baseDmg,user,target)
+    if target.poisoned? &&
+       (target.effects[PBEffects::Substitute]==0 || ignoresSubstitute?(user))
+      baseDmg *= 2
+    end
+    return baseDmg
+  end
+end
