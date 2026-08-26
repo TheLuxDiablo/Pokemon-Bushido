@@ -1061,11 +1061,18 @@ class Game_Event
   end
 
 
+  def trainer_sensor_completed?
+    return false if !$game_self_switches
+    key = [$game_map.map_id, self.id, "A"]
+    return $game_self_switches[key] == true
+  end
+
   def is_trainer?
     if @trainer_sensor_enabled.nil?
       refresh_trainer_sensor
     end
 
+    return false if trainer_sensor_completed?
     return @trainer_sensor_enabled
   end
 
