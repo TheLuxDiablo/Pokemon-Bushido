@@ -2745,7 +2745,6 @@ BattlerShadowX = -1
 FormName = Hisuian
 Type1 = DARK
 Type2 = POISON
-WildItemUncommon = POISONBARB
 Moves = 1,POISONSTING,1,TACKLE,4,HARDEN,8,BITE,12,FELLSTINGER,16,MINIMIZE,20,SPIKES,24,BRINE,28,BARBBARRAGE,32,PINMISSILE,36,TOXICSPIKES,40,STOCKPILE,40,SPITUP,44,TOXIC,48,CRUNCH,52,ACUPRESSURE,56,DESTINYBOND
 EggMoves = ACIDSPRAY,ASTONISH,BRINE,BUBBLEBEAM,FLAIL,HAZE,SIGNALBEAM,SUPERSONIC,WATERPULSE
 Pokedex = Fishers detest this troublesome Pokémon because it sprays poison from its spines, getting it everywhere. A different form of Qwilfish lives in other regions.
@@ -2834,6 +2833,8 @@ BattlerShadowSize = 1
 FormName = White-Striped Form
 Abilities = RATTLED,ADAPTABILITY
 Pokedex = Though it differs from other Basculin in several respects, including demeanor—this one is gentle—people have categorized it as a regional form given the vast array of shared qualities.
+BattlerEnemyX = -1
+BattlerEnemyY = 28
 Evolutions = BASCULEGION,Level,32
 #-------------------------------
 [ZORUA,1]
@@ -2841,12 +2842,13 @@ FormName = Hisuian
 Type1 = NORMAL
 Type2 = GHOST
 BaseStats = 35,60,40,70,85,40
-Moves = 1,SCRATCH,1,LEER,4,TORMENT,8,HONECLAWS,12,FURYSWIPES,16,SCARYFACE,20,SWIFT,24,SHADOWSNEAK,28,FAKETEARS,32,AGILITY,36,IMPRISON,40,NIGHTDAZE,44,NASTYPLOT,48,FOULPLAY
+Moves = 1,SCRATCH,1,LEER,4,TORMENT,8,HONECLAWS,12,SHADOWSNEAK,16,CURSE,20,TAUNT,24,KNOCKOFF,32,AGILITY,36,SHADOWBALL,40,BITTERMALICE,44,NASTYPLOT,48,FOULPLAY
 EggMoves = CAPTIVATE,COPYCAT,COUNTER,DARKPULSE,DETECT,EXTRASENSORY,MEMENTO
 Color = White
 Kind = Spiteful Fox
 Pokedex = A once-departed soul, returned to life in Hisui. Derives power from resentment, which rises as energy atop its head and takes on the forms of foes. In this way, Zorua vents lingering malice.
-BattlerPlayerY = 50
+BattlerEnemyX = -1
+BattlerEnemyY = 27
 BattlerShadowX = -1
 #-------------------------------
 [ZOROARK,1]
@@ -2854,14 +2856,14 @@ FormName = Hisuian
 Type1 = NORMAL
 Type2 = GHOST
 BaseStats = 55,100,60,110,125,60
-Moves = 0,SHADOWCLAW,1,NIGHTSLASH,1,UTURN,1,SCRATCH,1,LEER,1,TORMENT,1,HONECLAWS,12,FURYSWIPES,16,SCARYFACE,20,SWIFT,24,SHADOWSNEAK,28,FAKETEARS,34,AGILITY,40,IMPRISON,46,SHADOWBALL,52,NASTYPLOT,58,EXTRASENSORY
+Moves = 0,SHADOWCLAW,1,EXTRASENSORY,1,COUNTER,1,DETECT,1,UTURN,1,SCRATCH,1,LEER,1,TORMENT,1,HONECLAWS,12,SHADOWSNEAK,16,CURSE,20,TAUNT,24,KNOCKOFF,28,SPITE,34,AGILITY,40,SHADOWBALL,46,BITTERMALICE,52,NASTYPLOT,58,FOULPLAY
 Weight = 73.0
 Color = White
 Kind = Baneful Fox
 Pokedex = With its disheveled white fur, it looks like an embodiment of death. Heedless of its own safety, Zoroark attacks its nemeses with a bitter energy so intense, it lacerates Zoroark's own body.
-BattlerPlayerY = 50
-BattlerEnemyX = -4
-BattlerEnemyY = 8
+BattlerPlayerX = -2
+BattlerEnemyX = -5
+BattlerEnemyY = 20
 BattlerShadowX = -1
 #-------------------------------
 [BRAVIARY,1]
@@ -2877,8 +2879,10 @@ Weight = 43.4
 Color = Gray
 Kind = Battle Cry
 Pokedex = Screaming a bloodcurdling battle cry, this huge and ferocious bird Pokémon goes out on the hunt. It blasts lakes with shock waves, then scoops up any prey that float to the water's surface.
-BattlerEnemyX = 5
-BattlerEnemyY = 7
+BattlerPlayerX = -7
+BattlerPlayerY = 34
+BattlerEnemyX = 4
+BattlerEnemyY = -2
 BattlerShadowX = -1
 #-------------------------------
 [SLIGGOO,1]
@@ -2892,8 +2896,9 @@ Height = 0.7
 Weight = 68.5
 Kind = Snail
 Pokedex = A creature given to melancholy. I suspect its metallic shell developed as a result of the mucus on its skin reacting with the iron in Hisui's water.
-BattlerPlayerY = 50
-BattlerEnemyX = -1
+BattlerPlayerY = 46
+BattlerEnemyX = -3
+BattlerEnemyY = 23
 BattlerShadowX = -1
 #-------------------------------
 [GOODRA,1]
@@ -2916,13 +2921,14 @@ Type1 = ICE
 Type2 = ROCK
 BaseStats = 95,127,184,38,34,36
 Abilities = STRONGJAW,ICEBODY
-Moves = 0,ROCKSLIDE,1,BODYSLAM,1,WIDEGUARD,1,RAPIDSPIN,1,HARDEN,1,TACKLE,1,POWDERSNOW,9,CURSE,12,ICYWIND,15,PROTECT,18,AVALANCHE,21,BITE,24,ICEFANG,27,IRONDEFENSE,30,RECOVER,33,CRUNCH,36,EARTHPOWER,41,BLIZZARD,46,DOUBLEEDGE,51,SKULLBASH
+Moves = 0,BODYSLAM,1,MIST,1,MIRRORCOAT,1,AURORAVEIL,1,WIDEGUARD,1,RAPIDSPIN,1,HARDEN,1,TACKLE,1,POWDERSNOW,9,CURSE,12,ICYWIND,15,PROTECT,18,AVALANCHE,21,BITE,24,ICEFANG,27,IRONDEFENSE,30,RECOVER,33,CRUNCH,36,TAKEDOWN,41,BLIZZARD,46,DOUBLEEDGE,51,ICICLECRASH
 Height = 1.4
 Weight = 262.4
 Pokedex = The armor of ice covering its lower jaw puts steel to shame and can shatter rocks with ease. This Pokémon barrels along steep mountain paths, cleaving through the deep snow.
-BattlerPlayerY = 50
-BattlerEnemyX = 0
-BattlerEnemyY = 32
+BattlerPlayerX = -3
+BattlerPlayerY = 70
+BattlerEnemyX = -10
+BattlerEnemyY = 34
 BattlerShadowX = -1
 #-------------------------------
 [DECIDUEYE,1]
@@ -2942,12 +2948,6 @@ BattlerShadowX = -1
 FormName = Female
 BaseStats = 120,92,65,78,100,75
 WildItemUncommon = DEEPSEASCALE
-BattlerPlayerX = -18
-BattlerPlayerY = 42
-BattlerEnemyX = 4
-BattlerEnemyY = 17
-BattlerShadowX = 0
-BattlerShadowSize = 2
 #-------------------------------
 [ENAMORUS,1]
 FormName = Therian Forme

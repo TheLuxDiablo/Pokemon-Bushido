@@ -852,8 +852,11 @@ ShowArea = false
 MapPosition = 2,18,13
 #-------------------------------
 [155]
-Outdoor = false
-Environment = Cave
+# Mushi Grove
+Outdoor = true
+ShowArea = true
+MapPosition = 2,15,16
+BattleBack = forest
 #-------------------------------
 [156]
 # Kowai Pass

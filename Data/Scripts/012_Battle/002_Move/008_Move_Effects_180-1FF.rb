@@ -559,3 +559,14 @@ class PokeBattle_Move_504 < PokeBattle_PoisonMove
     return baseDmg
   end
 end
+
+#===============================================================================
+# Leaves Stealth Rocks behind after the attack (Stone Axe)
+#===============================================================================
+class PokeBattle_Move_505 < PokeBattle_Move
+  def pbEffectGeneral(user)
+    user.pbOpposingSide.effects[PBEffects::StealthRock] = true
+    @battle.pbDisplay(_INTL("Pointed stones float in the air around {1}!",
+       user.pbOpposingTeam(true)))
+  end
+end

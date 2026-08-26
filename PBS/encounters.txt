@@ -11,14 +11,6 @@ Land
     GROWLITHE,19,24
     SWELLOW,22,25
     DUNSPARCE,19,24
-PhenomenonGrass
-    CHANSEY,20,25
-    DARUMAKA,20,25
-    DUNSPARCE,20,25
-    LARVITAR,20,25
-    LARVITAR,20,25
-    LARVITAR,20,25
-    LARVITAR,20,25
 Water
     MAGIKARP,19,24
     GOLDEEN,19,24
@@ -28,6 +20,14 @@ Water
     FEEBAS,19,24
     TYMPOLE,19,24
     CARVANHA,19,24
+PhenomenonGrass
+    CHANSEY,20,25
+    DARUMAKA,20,25
+    PAWNIARD,20,25
+    DUNSPARCE,20,25
+    LARVITAR,20,25
+    LARVITAR,20,25
+    LARVITAR,20,25
 #-------------------------------
 081 # Nagisa Bay
 16,8,8
@@ -365,8 +365,8 @@ PhenomenonGrass
     PILOSWINE,41,46
     CRYOGONAL,41,46
     FROSMOTH,41,46
-    WEAVILE,41,46
-    MAMOSWINE,43,46
+    AVALUGG,41,46
+    WEAVILE,43,46
 #-------------------------------
 126 # Hanatsu Mine
 16,6,6
@@ -509,14 +509,34 @@ Cave
     FLYGON,65,70
     GARCHOMP,65,70
 #-------------------------------
-155
+155 # Mushi Grove
 16,8,8
-PhenomenonCave
-    GLIGAR,27,30
-    MUNCHLAX,26,30
-    TRAPINCH,26,31
-    GABITE,27,31
-    LARVITAR,26,30
+Land
+    VIVILLON,12,14
+    PETILIL,10,14
+    VOLTORB,10,14
+    SCYTHER,12,14
+    PINSIR,10,14
+    HERACROSS,10,14
+    STANTLER,10,14
+    WIMPOD,10,14
+Water
+    LOTAD,19,24
+    BASCULIN,19,24
+    MAGIKARP,19,24
+    QWILFISH,19,24
+    CARVANHA,19,24
+    BASCULIN,19,24
+    GOOMY,19,24
+    GOOMY,19,24
+PhenomenonGrass
+    PETILIL,13,16
+    SCYTHER,13,16
+    STANTLER,13,16
+    PINSIR,13,16
+    HERACROSS,13,16
+    WIMPOD,13,16
+    SCYTHER,13,16
 #-------------------------------
 156 # Kowai Pass
 16,8,8
@@ -563,17 +583,17 @@ Water
 158 # Jinsu Island
 16,8,8
 Land
-    ZORUA,54,59
+    ZORUA,51,57
+    BISHARP,51,57
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
-    BULBASAUR,5
-    BULBASAUR,5
+    ZOROARK,53,59
 Water
-    BULBASAUR,5
-    BULBASAUR,5
+    OVERQWIL,51,57
+    BASCULEGION,52,58
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5

@@ -872,14 +872,19 @@
 #-------------------------------
 837,SHADEBALL,Shade Ball,Shade Balls,3,500,"A special Ball designed for capturing Shadow Pokemon and opening their hearts.",0,4,4,
 #-------------------------------
-838,BLACKAUGURITE,Black Augurite,Black Augurites,1,2100,"A glassy black stone that produces a sharp cutting edge when split. It's loved by a certain Pokémon.",1,0,7,
-839,PEATBLOCK,Peat Block,Peat Blocks,1,2100,"A block of muddy material that can be used as fuel for burning when it is dried. It's loved by a certain Pokémon.",1,0,7,
-840,LINKINGCORD,Linking Cord,Linking Cords,1,2100,"A string exuding a mysterious energy that makes you feel a strange sense of connection. It's loved by certain Pokémon.",1,0,7,
+838,BLACKAUGURITE,Black Augurite,Black Augurites,1,2100,"A glassy black stone that produces a sharp cutting edge when split. It's loved by a certain Pokemon.",1,0,7,
+839,PEATBLOCK,Peat Block,Peat Blocks,1,2100,"A block of muddy material that can be used as fuel for burning when it is dried. It's loved by a certain Pokemon.",1,0,7,
+840,LINKINGCORD,Linking Cord,Linking Cords,1,2100,"A string exuding a mysterious energy that makes you feel a strange sense of connection. It's loved by certain Pokemon.",1,0,7,
 #-------------------------------
 841,LUNARWING,Lunar Wing,Lunar Wings,8,0,"A feather that glows like the moon. It's said to possess the power to dispel nightmares.",0,0,6,
 842,GOLILETTER,Goli Certificate,Goli Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
 843,ENLSLETTER,ENLS Certificate,ENLS Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
 844,VOLTSLETTER,Voltseon Certificate,Voltseon Certificates,8,0,"A certificate proving that you have beaten one of the developers of Pokemon Bushido.",0,0,6,
+#-------------------------------
+856,LEADERSCREST,Leader's Crest,Leader's Crests,1,4000,"A shard of what appears to be an old blade of some sort. It is held only by a head of certain Pokemon group.",0,0,0,
+853,SP_RES_S,SP RES Small,SP RES Smalls,1,400,"Restores 3 SP. Cannot be used in battle.",2,0,0,
+854,SP_RES_M,SP RES Med,SP RES Meds,1,800,"Restores 6 SP. Cannot be used in battle.",2,0,0,
+855,SP_RES_L,SP RES Large,SP RES Larges,1,1200,"Restores 10 SP. Cannot be used in battle.",2,0,0,
 #-------------------------------
 # Player Katana Techniques
 #-------------------------------
@@ -891,7 +896,3 @@
 850,PKT_Nensho,KT - Nensho (3 SP),KT - Nensho (3 SP),8,3,"3 SP. Burns all opposing Pokémon, Sets up Sun, and Boosts Atk and SpAtk.",0,10,6
 851,PKT_Shimizu,KT - Shimizu (2 SP),KT - Shimizu (2 SP),8,2,"2 SP. Applies the Aqua Ring effect, Sets up Rain and Misty Terrain.",0,10,6
 852,PKT_Tsume,KT - Tsume (4 SP),KT - Tsume (4 SP),8,4,"4 SP. Cut all enemy HP in half, and then put them Sleep.",0,9,6
-853,SP_RES_S,SP RES Small,SP RES Smalls,1,400,"Restores 3 SP. Cannot be used in battle.",2,0,0,
-854,SP_RES_M,SP RES Med,SP RES Meds,1,800,"Restores 6 SP. Cannot be used in battle.",2,0,0,
-855,SP_RES_L,SP RES Large,SP RES Larges,1,1200,"Restores 10 SP. Cannot be used in battle.",2,0,0,
-856,LEADERSCREST,Leader's Crest,Leader's Crests,1,3000,"A shard of what appears to be an old blade of some sort. It is held only by a head of certain Pokémon group.",0,0,1,

@@ -794,3 +794,5 @@
 773,WAVECRASH,Wave Crash,0FB,120,WATER,Physical,100,10,0,NearOther,0,abef,"The user shrouds itself in water and slams into the target with its whole body to inflict damage. This also damages the user quite a lot."
 774,LASTRESPECTS,Last Respects,503,50,GHOST,Physical,100,10,100,NearOther,0,abef,"The user attacks to avenge its allies. The more defeated allies there are in the user's party, the greater the move's power."
 775,BARBBARRAGE,Barb Barrage,504,60,POISON,Physical,100,10,50,NearOther,0,abef,"The user unleashes toxic barbs to attack. This may poison the target. This move's power is doubled if the target is already poisoned."
+776,BITTERMALICE,Bitter Malice,042,75,GHOST,Special,100,10,100,NearOther,0,bef,"The user attacks the target with spine-chilling resentment. This also lowers the target's Attack stat."
+777,STONEAXE,Stone Axe,505,65,ROCK,Physical,90,15,100,NearOther,0,bef,"The user swings its stone axes at the target. Stone splinters left behind by this attack float around the target."
