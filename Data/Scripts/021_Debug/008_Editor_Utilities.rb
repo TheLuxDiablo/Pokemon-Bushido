@@ -278,7 +278,32 @@ def pbChooseSpeciesList(default=0)
     cname = getConstantName(PBSpecies,i) rescue nil
     commands.push([i,PBSpecies.getName(i)]) if cname
   end
-  return pbChooseList(commands,default,0,-1)
+  commands.sort! { |a,b| a[1].downcase <=> b[1].downcase }
+
+  # Type a species name instead of scrolling through the entire Pokédex.
+  # Leaving this blank opens the normal species list as a fallback.
+  query = pbEnterText(
+    _INTL("Search Pokémon (leave blank for full list)."),
+    0, 20, ""
+  )
+  return 0 if query.nil?
+
+  query = query.to_s.strip
+  return pbChooseList(commands,default,0,-1) if query.length == 0
+
+  needle = query.downcase
+  filtered = commands.select { |entry| entry[1].to_s.downcase.include?(needle) }
+
+  if filtered.length == 0
+    pbMessage(_INTL("No Pokémon matched \"{1}\".",query))
+    return pbChooseSpeciesList(default)
+  end
+
+  # If there's one exact name match, choose it immediately.
+  exact = filtered.find { |entry| entry[1].to_s.downcase == needle }
+  return exact[0] if exact
+
+  return pbChooseList(filtered,default,0,1)
 end
 
 # Displays an alphabetically sorted list of all moves, and returns the ID of the
