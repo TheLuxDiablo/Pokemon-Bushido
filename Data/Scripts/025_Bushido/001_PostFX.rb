@@ -173,7 +173,7 @@ module BushidoPostFX
     detect_map(true)
     apply_all
 
-    echoln("[BushidoPostFX] Persistent renderer created | Global water bubbles enabled")
+    echoln("[BushidoPostFX] Persistent renderer created | Ezo/Nagisa water bubbles enabled")
   end
 
   def self.create_viewports
@@ -889,6 +889,10 @@ module BushidoPostFX
       map = maps[(start_index + map_index) % maps.length]
       next if !map
 
+      # Bubbles only belong to Ezo Village and Nagisa Bay.
+      next if map.map_id != EZO_VILLAGE_MAP_ID &&
+              map.map_id != NAGISA_BAY_MAP_ID
+
       offset = connected_map_offset(map)
 
       # Convert the current screen bounds into this connected map's tile space.
@@ -970,9 +974,12 @@ module BushidoPostFX
   end
 
   def self.update_nagisa_particles
-    # Water bubbles are a global world effect.
-    # Their existence depends on visible water, not the active map profile.
-    strength = @master_strength
+    # Water bubbles are local atmosphere for Ezo Village and Nagisa Bay only.
+    bubble_map =
+      @profile == :EZO_VILLAGE ||
+      @profile == :NAGISA_BAY
+
+    strength = bubble_map ? @master_strength : 0.0
 
     @nagisa_particles.each do |data|
       sprite = data[:sprite]

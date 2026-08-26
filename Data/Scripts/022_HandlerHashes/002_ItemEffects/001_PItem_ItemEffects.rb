@@ -289,7 +289,7 @@ ItemHandlers::UseInField.add(:OLDROD,proc { |item|
   end
   encounter = $PokemonEncounters.hasEncounter?(EncounterTypes::OldRod)
   if pbFishing(encounter,1)
-    pbEncounter(EncounterTypes::OldRod)
+    pbFishingRevealEncounter(EncounterTypes::OldRod)
   end
   next 1
 })

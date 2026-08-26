@@ -896,6 +896,30 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   text=message.clone
   msgback=nil
   linecount=(Graphics.height>400) ? 3 : 2
+
+  # Bushido cinematic narration controls. These must be read before the normal
+  # message parser protects/rewrites backslashes.
+  cinematic=false
+  cinematic_fade_in=0
+  cinematic_fade_out=0
+  cinematic_font_size=nil
+  if text =~ /\\cin/i
+    cinematic=true
+    text.gsub!(/\\cin/i, "")
+  end
+  text.gsub!(/\\fi\[([0-9]+)\]/i) do
+    cinematic_fade_in=$1.to_i
+    ""
+  end
+  text.gsub!(/\\fo\[([0-9]+)\]/i) do
+    cinematic_fade_out=$1.to_i
+    ""
+  end
+  text.gsub!(/\\fs\[([0-9]+)\]/i) do
+    cinematic_font_size=$1.to_i
+    "<fs=#{$1}>"
+  end
+
   ### Text replacement
   text.gsub!(/\\sign\[([^\]]*)\]/i) {   # \sign[something] gets turned into
     next "\\op\\cl\\ts[]\\w["+$1+"]"    # \op\cl\ts[]\w[something]
@@ -963,6 +987,7 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
     colortag = getSkinColor(msgwindow.windowskin,0,isDarkSkin)
   end
   text = colortag+text
+  text = "<ac>"+text if cinematic
   ### Controls
   textchunks=[]
   controls=[]
@@ -1032,11 +1057,38 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   end
   if startSE!=nil
     pbSEPlay(pbStringToAudioFile(startSE))
-  elsif signWaitCount==0 && letterbyletter
+  elsif signWaitCount==0 && letterbyletter && !cinematic
     pbPlayDecisionSE()
   end
   ########## Position message window  ##############
-  pbRepositionMessageWindow(msgwindow,linecount)
+  if cinematic
+    # Work out a sensible centered window height. Explicit newlines count, and
+    # long lines are estimated against the available screen width.
+    plain_cinematic = toUnformattedText(text)
+    cinematic_lines = 0
+    old_font_size = nil
+    if msgwindow.contents && !msgwindow.contents.disposed?
+      old_font_size = msgwindow.contents.font.size
+      msgwindow.contents.font.size = cinematic_font_size if cinematic_font_size
+    end
+    plain_cinematic.split("\n",-1).each do |ln|
+      if msgwindow.contents && !msgwindow.contents.disposed?
+        width = msgwindow.contents.text_size(ln).width
+        avail = [Graphics.width-48,1].max
+        cinematic_lines += [[(width.to_f/avail).ceil,1].max,4].min
+      else
+        cinematic_lines += 1
+      end
+    end
+    msgwindow.contents.font.size = old_font_size if old_font_size
+    cinematic_lines = 1 if cinematic_lines < 1
+    pbRepositionMessageWindow(msgwindow,cinematic_lines)
+    msgwindow.y = (Graphics.height-msgwindow.height)/2
+    msgwindow.windowskin = nil
+    msgwindow.back_opacity = 0
+  else
+    pbRepositionMessageWindow(msgwindow,linecount)
+  end
   if $game_message && $game_message.background==1
     msgback = IconSprite.new(0,msgwindow.y,msgwindow.viewport)
     msgback.z = msgwindow.z-1
@@ -1050,6 +1102,23 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   atTop = (msgwindow.y==0)
   ########## Show text #############################
   msgwindow.text = text
+
+  if cinematic && cinematic_fade_in>0
+    max_opacity=255
+    msgwindow.opacity=0 if msgwindow.respond_to?(:opacity=)
+    msgwindow.contents_opacity=0 if msgwindow.respond_to?(:contents_opacity=)
+    cinematic_fade_in.times do |frame|
+      Graphics.update
+      Input.update
+      pbUpdateSceneMap
+      msgwindow.update
+      alpha=((frame+1)*max_opacity/cinematic_fade_in).to_i
+      msgwindow.opacity=alpha if msgwindow.respond_to?(:opacity=)
+      msgwindow.contents_opacity=alpha if msgwindow.respond_to?(:contents_opacity=)
+      yield if block_given?
+    end
+  end
+
   Graphics.frame_reset if Graphics.frame_rate>40
   loop do
     if shout != 0
@@ -1162,6 +1231,31 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
     yield if block_given?
     break if (!letterbyletter || commandProc || commands) && !msgwindow.busy?
   end
+  if cinematic && cinematic_fade_out>0
+    start_opacity=255
+    if msgwindow.respond_to?(:contents_opacity)
+      start_opacity=msgwindow.contents_opacity
+    elsif msgwindow.respond_to?(:opacity)
+      start_opacity=msgwindow.opacity
+    end
+    cinematic_fade_out.times do |frame|
+      Graphics.update
+      Input.update
+      pbUpdateSceneMap
+      msgwindow.update
+      alpha=(start_opacity*(cinematic_fade_out-frame-1)/cinematic_fade_out).to_i
+      msgwindow.opacity=alpha if msgwindow.respond_to?(:opacity=)
+      msgwindow.contents_opacity=alpha if msgwindow.respond_to?(:contents_opacity=)
+      yield if block_given?
+    end
+  end
+
+  # Restore opacity for the next normal message that reuses this window.
+  if cinematic
+    msgwindow.opacity=255 if msgwindow.respond_to?(:opacity=)
+    msgwindow.contents_opacity=255 if msgwindow.respond_to?(:contents_opacity=)
+  end
+
   Input.update   # Must call Input.update again to avoid extra triggers
   msgwindow.letterbyletter=oldletterbyletter
   if commands

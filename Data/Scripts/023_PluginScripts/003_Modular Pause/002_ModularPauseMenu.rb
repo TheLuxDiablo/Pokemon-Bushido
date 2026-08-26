@@ -250,11 +250,15 @@ class PokemonPauseMenu_Scene
     for i in 0...6
       key = "party#{i}"
       if $Trainer.party[i]
-        @sprites[key] = PokemonIconSprite.new($Trainer.party[i],@viewport)
+        pkmn = $Trainer.party[i]
+        @sprites[key] = PokemonIconSprite.new(pkmn,@viewport)
         @sprites[key].setOffset(PictureOrigin::Center)
         @sprites[key].z = 4
         @sprites[key].x = partyX(i)
         @sprites[key].y = @panelY + BushidoPause::PARTY_Y
+
+        # Fainted Pokémon stay visible, but are clearly dimmed.
+        @sprites[key].opacity = (pkmn.hp <= 0) ? 100 : 255
       end
     end
   end
@@ -388,7 +392,14 @@ class PokemonPauseMenu_Scene
 
     for i in 0...6
       spr = @sprites["party#{i}"]
-      spr.opacity = value if spr
+      next if !spr
+
+      pkmn = $Trainer.party[i]
+      base_opacity = (pkmn && pkmn.hp <= 0) ? 100 : 255
+
+      # Preserve the menu fade while keeping fainted Pokémon proportionally
+      # dimmer than healthy party members.
+      spr.opacity = (value * base_opacity / 255.0).to_i
     end
   end
 

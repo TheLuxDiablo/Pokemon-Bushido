@@ -24,14 +24,19 @@ class BushidoLoadMenuSprite < SpriteWrapper
 
   def initialize(commands, preview, viewport)
     super(viewport)
+
+    $PokemonTemp = PokemonTemp.new if !$PokemonTemp
+    
     @commands = commands
     @preview = preview
     @index = 0
     @anim_frame = 0
     @confirm_anim = 0
     @transition_mode = false
+
     self.bitmap = BitmapWrapper.new(Graphics.width, Graphics.height)
     pbSetSystemFont(self.bitmap)
+    
     refresh
   end
 
@@ -530,6 +535,13 @@ class PokemonLoad_Scene
         key = "preview_party#{i}"
         @sprites[key] = PokemonIconSprite.new(pkmn, @viewport)
         @sprites[key].setOffset(PictureOrigin::Center)
+
+        # Match the save/load carousel: fainted party members are dimmed.
+        begin
+          @sprites[key].opacity = (pkmn.hp <= 0) ? 100 : 255
+        rescue
+          @sprites[key].opacity = 255
+        end
 
         col = i % 3
         row = i / 3

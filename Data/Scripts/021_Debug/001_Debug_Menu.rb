@@ -492,19 +492,51 @@ def pbDebugMenuActions(cmd="",sprites=nil,viewport=nil)
   # Item options
   #=============================================================================
   when "additem"
-    pbListScreenBlock(_INTL("ADD ITEM"),ItemLister.new(0)) { |button,item|
-      if button==Input::C && item && item>0
-        params = ChooseNumberParams.new
-        params.setRange(1,BAG_MAX_PER_SLOT)
-        params.setInitialValue(1)
-        params.setCancelValue(0)
-        qty = pbMessageChooseNumber(_INTL("Choose the number of items."),params)
-        if qty>0
-          $PokemonBag.pbStoreItem(item,qty)
-          pbMessage(_INTL("Gave {1}x {2}.",qty,PBItems.getName(item)))
+    loop do
+      search = pbEnterText(_INTL("Search for an item."),0,24,"")
+      break if !search || search.length==0
+
+      query = search.downcase
+      matches = []
+      for itemconst in PBItems.constants
+        item = PBItems.const_get(itemconst)
+        next if !item || item<=0
+        name = PBItems.getName(item)
+        constname = itemconst.to_s
+        if name.downcase.include?(query) || constname.downcase.include?(query)
+          matches.push([name,item])
         end
       end
-    }
+      matches.sort! { |a,b| a[0].downcase <=> b[0].downcase }
+
+      if matches.length==0
+        pbMessage(_INTL("No items matched '{1}'.",search))
+        next
+      end
+
+      commands = []
+      for match in matches
+        commands.push(match[0])
+      end
+      commands.push(_INTL("Search Again"))
+      commands.push(_INTL("Cancel"))
+
+      choice = pbMessage(_INTL("Choose an item."),commands,-1)
+      break if choice<0 || choice==commands.length-1
+      next if choice==commands.length-2
+
+      item = matches[choice][1]
+      params = ChooseNumberParams.new
+      params.setRange(1,BAG_MAX_PER_SLOT)
+      params.setInitialValue(1)
+      params.setCancelValue(0)
+      qty = pbMessageChooseNumber(_INTL("Choose the number of items."),params)
+      if qty>0
+        $PokemonBag.pbStoreItem(item,qty)
+        pbMessage(_INTL("Gave {1}x {2}.",qty,PBItems.getName(item)))
+      end
+      break
+    end
   when "fillbag"
     params = ChooseNumberParams.new
     params.setRange(1,BAG_MAX_PER_SLOT)

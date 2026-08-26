@@ -209,7 +209,6 @@ class PokemonSave_Scene
   end
 end
 
-
 class PokemonSaveScreen
   def initialize(scene)
     @scene = scene
@@ -218,15 +217,11 @@ class PokemonSaveScreen
   def pbSaveScreen
     ret = false
 
-    # Go straight into the shared save-slot carousel.
-    #
-    # We intentionally do NOT call PokemonSave_Scene#pbStartScreen here.
-    # That old intermediate backdrop was the right-side panel flashing briefly
-    # when backing out of Save.
+    # Open the shared Bushido save-slot carousel.
     slot_scene = SaveSlot_Selection_Scene.new(true, true)
     slot = slot_scene.get_save_slot
 
-    # Cancel returns directly to gameplay. No backdrop, no slide-back frame.
+    # Back out without saving.
     if slot <= 0
       slot_scene.dispose
       Graphics.update
@@ -236,17 +231,38 @@ class PokemonSaveScreen
     $PokemonSystem.save_slot = slot
     success = pbSave
 
-    slot_scene.dispose
-
     if success
+      # pbSave has now written Game_X.rxdata to disk.
+      #
+      # Rebuild the carousel's Save_Slot objects from disk immediately so
+      # location, party, chapter, playtime, player sprite, etc. all represent
+      # the save that was just written.
+      #
+      # Carousel indexes are zero-based while save slots are one-based.
+      slot_scene.refresh_save_slots(slot - 1)
+
+      # Bring the refreshed carousel back onscreen. get_save_slot hides it
+      # when the selection flow ends.
+      slot_scene.fade_sprites(true)
+
+      # Give the carousel one frame to rebuild its card sprites.
+      slot_scene.update
+      Graphics.update
+
       pbSEPlay("GUI save game") rescue nil
+
+      # Keep the refreshed card visible while the confirmation is shown.
+      pbMessage(_INTL("{1} saved the game!", $Trainer.name))
+
       ret = true
     else
       pbPlayBuzzerSE rescue nil
       ret = false
     end
 
+    slot_scene.dispose
     Graphics.update
+
     return ret
   end
 end

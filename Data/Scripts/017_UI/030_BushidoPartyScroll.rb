@@ -445,6 +445,18 @@ class BushidoPartySlot < SpriteWrapper
     refresh
   end
 
+  def compatibility_annotation?
+    return @text == _INTL("ABLE") || @text == _INTL("NOT ABLE")
+  end
+
+  def item_target_compatible?
+    return @text == _INTL("ABLE")
+  end
+
+  def item_target_incompatible?
+    return @text == _INTL("NOT ABLE")
+  end
+
   def hp
     return @pokemon.hp
   end
@@ -460,6 +472,19 @@ class BushidoPartySlot < SpriteWrapper
 
     # Static HP/EXP tracks are authored in party_slot_base.png.
     BushidoPartyUI.blit_asset(b, "party_slot_base")
+
+    # Item-target compatibility. Keep the slot readable, but make invalid
+    # targets obvious at a glance.
+    if compatibility_annotation?
+      BushidoPartyUI.set_ui_font(b)
+      label = item_target_incompatible? ? _INTL("NO") : _INTL("OK")
+      base = item_target_incompatible? ? BushidoPartyUI::RED : BushidoPartyUI::GOLD
+      pbDrawShadowText(
+        b, 6, 2, BushidoPartyUI::SLOT_W-12, 20,
+        label,
+        base, BushidoPartyUI::SHADOW, 1
+      )
+    end
 
     # Small HP bar under each party icon.
     bw = 50
@@ -518,10 +543,12 @@ class BushidoPartySlot < SpriteWrapper
     lift = (2 * @hover_amount).round
     @icon.x = self.x + BushidoPartyUI::SLOT_W/2
     @icon.y = self.y + 40 - lift
+    @icon.opacity = item_target_incompatible? ? 96 : 255
 
     if @item
       @item.x = self.x + 60
       @item.y = self.y + 48 - lift
+      @item.opacity = item_target_incompatible? ? 96 : 255
     end
   end
 
@@ -1148,6 +1175,7 @@ class PokemonParty_Scene
     @party = party
     @multiselect = multiselect
     @helptext = starthelptext
+    @item_target_mode = (starthelptext == _INTL("Use on which Pokémon?") && annotations)
 
     @command_mode = false
     @command_commands = nil
@@ -1186,7 +1214,7 @@ class PokemonParty_Scene
     # Use the battle sprite for the focused Pokemon.
     @sprites["activePokemon"] = PokemonSprite.new(@viewport)
     @sprites["activePokemon"].z = 6
-    setActivePokemonBitmap(@party[0])
+    setActivePokemonBitmap(@party[@activecmd || 0])
 
     # Show the focused Pokemon's held item next to it.
     @sprites["focusItemBack"] = BitmapSprite.new(42, 42, @viewport)
@@ -1198,19 +1226,28 @@ class PokemonParty_Scene
     ib.clear
     BushidoPartyUI.blit_asset(ib, "focus_item_back")
 
-    @sprites["focusItem"] = ItemIconSprite.new(0, 0, @party[0].item, @viewport)
+    @sprites["focusItem"] = ItemIconSprite.new(0, 0, @party[@activecmd || 0].item, @viewport)
     @sprites["focusItem"].x = 225
     @sprites["focusItem"].y = 71
     @sprites["focusItem"].z = 7
     @sprites["focusItem"].zoom_x = 0.5
     @sprites["focusItem"].zoom_y = 0.5
 
-    refreshFocusItem(@party[0])
+    refreshFocusItem(@party[@activecmd || 0])
 
     @activecmd = 0
-    @last_activecmd = 0
+    if @item_target_mode
+      for i in 0...@party.length
+        sprite = @sprites["pokemon#{i}"]
+        if sprite && sprite.text == _INTL("ABLE")
+          @activecmd = i
+          break
+        end
+      end
+    end
+    @last_activecmd = @activecmd
     @focus_anim = 1.0
-    @sprites["pokemon0"].selected = true if @sprites["pokemon0"]
+    @sprites["pokemon#{@activecmd}"].selected = true if @sprites["pokemon#{@activecmd}"]
 
     refreshBushidoUI
 
@@ -1633,12 +1670,8 @@ class PokemonParty_Scene
 
     old_name = pkmn.name
 
-    # Essentials forks don't all expose the same name-length constant.
+    # Essentials v18.1 doesn't use the newer Pokemon class constant.
     max_length = 12
-    begin
-      max_length = Pokemon::MAX_NAME_SIZE
-    rescue
-    end
 
     new_name = pbEnterPokemonName(
       _INTL("Give {1} a new name.", old_name),
@@ -1860,6 +1893,14 @@ class PokemonParty_Scene
     @activecmd = item
   end
 
+  def pbInvalidItemTarget?(index)
+    return false if !@item_target_mode
+    return false if index < 0 || index >= @party.length
+    sprite = @sprites["pokemon#{index}"]
+    return false if !sprite
+    return sprite.text == _INTL("NOT ABLE")
+  end
+
   # Party-row navigation.
   def pbChoosePokemon(switching=false, initialsel=-1, canswitch=0)
     for i in 0...6
@@ -1910,6 +1951,14 @@ class PokemonParty_Scene
         pbPlayCloseMenuSE if !switching
         return -1
       elsif Input.trigger?(Input::C)
+        if pbInvalidItemTarget?(@activecmd)
+          if defined?(pbPlayBuzzerSE)
+            pbPlayBuzzerSE
+          else
+            pbPlayCancelSE
+          end
+          next
+        end
         pbPlayDecisionSE
         return @activecmd
       end

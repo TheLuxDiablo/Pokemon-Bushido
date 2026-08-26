@@ -136,6 +136,84 @@ class SaveSlot_Selection_Scene
     pbUpdateSpriteHash(@sprites)
   end
 
+  # Reloads the just-written slot from disk and redraws the same card in place.
+  # Save slots are 1-based; carousel indexes are 0-based.
+  def refresh_after_save(slot)
+    slot = slot.to_i
+    return if slot <= 0
+
+    carousel = @sprites["slots"]
+
+    if carousel
+      # Dispose all dynamically-created card sprites before rebuilding.
+      # These are created outside the main @sprites hash and otherwise linger
+      # visually after a save refresh.
+      begin
+        if carousel.instance_variable_defined?(:@party_sprites)
+          party_sprites = carousel.instance_variable_get(:@party_sprites)
+          if party_sprites
+            party_sprites.each_value do |sprite|
+              begin
+                sprite.dispose if sprite && !sprite.disposed?
+              rescue
+              end
+            end
+            party_sprites.clear
+          end
+        end
+
+        if carousel.instance_variable_defined?(:@player_sprites)
+          player_sprites = carousel.instance_variable_get(:@player_sprites)
+          if player_sprites
+            player_sprites.each_value do |sprite|
+              begin
+                sprite.dispose if sprite && !sprite.disposed?
+              rescue
+              end
+            end
+            player_sprites.clear
+          end
+        end
+
+        if carousel.instance_variable_defined?(:@card_sprites)
+          card_sprites = carousel.instance_variable_get(:@card_sprites)
+          if card_sprites
+            card_sprites.each_value do |sprite|
+              begin
+                sprite.dispose if sprite && !sprite.disposed?
+              rescue
+              end
+            end
+            card_sprites.clear
+          end
+        end
+      rescue
+      end
+    end
+
+    # Reload the selected slot from disk so every visible field comes from
+    # the newly-written save.
+    refresh_save_slots(slot - 1)
+
+    carousel = @sprites["slots"]
+    if carousel
+      carousel.index = slot - 1
+
+      centered_scroll = (slot - 1) * BushidoSaveCarousel::CARD_SPACING
+      carousel.instance_variable_set(:@scroll_x, centered_scroll.to_f)
+      carousel.instance_variable_set(:@target_scroll, centered_scroll.to_f)
+      carousel.instance_variable_set(:@entry_offset, 0.0)
+      carousel.instance_variable_set(:@exit_offset, 0.0)
+      carousel.instance_variable_set(:@confirm, 0)
+
+      carousel.refresh
+      carousel.send(:refresh_card_sprites)
+    end
+
+    update
+    Graphics.update
+  end
+
   def dispose
     pbDisposeSpriteHash(@sprites)
     @viewport.dispose
@@ -164,11 +242,15 @@ class SaveSlot_Selection_Scene
     @sprites["slots"].prepare_entry if @sprites["slots"].respond_to?(:prepare_entry)
     fade_sprites(true)
     @sprites["slots"].play_entry if @sprites["slots"].visible && @sprites["slots"].respond_to?(:play_entry)
+
     index = $PokemonSystem.save_slot
+    confirm = nil
+
     loop do
       index   = get_save_index(index)
       confirm = confirm_slot(index)
       pbUpdateSpriteHash(@sprites)
+
       if index == 0
         index = 0
         break
@@ -180,10 +262,20 @@ class SaveSlot_Selection_Scene
           break
         end
       end
+
       break if index > 0 && confirm == 0
     end
-    @sprites["slots"].play_exit if @sprites["slots"].visible && @sprites["slots"].respond_to?(:play_exit)
-    fade_sprites
+
+    # When the current player is saving, leave the selected card exactly where
+    # it is. PokemonSaveScreen will write the file and refresh this same card
+    # in place before showing the confirmation message.
+    hold_for_save = (@show_new_game && $Trainer && index > 0 && confirm == 0)
+
+    if !hold_for_save
+      @sprites["slots"].play_exit if @sprites["slots"].visible && @sprites["slots"].respond_to?(:play_exit)
+      fade_sprites
+    end
+
     return index
   end
 
@@ -261,13 +353,6 @@ class SaveSlot_Selection_Scene
 
     # Keep the carousel, trainer sprite and party icons visible underneath.
     cmd = pbMessage(message, commands, 2) { update }
-
-    if cmd == 0 && @show_new_game && $Trainer
-      new_slot = Save_Slot.new(nil, true)
-      new_slot.name = _INTL("Slot {1}", index)
-      pbMessage(_INTL("\\se[]{1} saved the game to Slot {2}.\\me[GUI save game]\\wtnp[30]",
-                      $Trainer.name, index)) { update }
-    end
 
     return cmd
   end
@@ -352,7 +437,15 @@ class PokemonSaveSlotPanel < Sprite
         @sprites["pokemon#{i}"].y       = self.y + 48 + (50 * (i / 2))
         @sprites["pokemon#{i}"].color   = self.color
         @sprites["pokemon#{i}"].tone    = self.tone
-        @sprites["pokemon#{i}"].opacity = self.opacity
+        
+        begin
+          fainted_opacity = (pkmn.hp <= 0) ? 100 : 255
+        rescue
+          fainted_opacity = 255
+        end
+
+        @sprites["pokemon#{i}"].opacity = (self.opacity * fainted_opacity / 255.0).to_i
+
         @sprites["pokemon#{i}"].visible = self.visible
       end
     end
@@ -366,26 +459,35 @@ class PokemonSaveSlotPanel < Sprite
     @sprites["player"].visible = self.visible
   end
 
-  def init_load_panel
-    pbDisposeSpriteHash(@sprites)
-    @sprites  = {}
-    if @trainer&.party
-      @trainer.party.each_with_index do |pkmn, i|
-        next if !pkmn
-        @sprites["pokemon#{i}"] = PokemonIconSprite.new(@trainer.party[i], viewport)
+    def init_load_panel
+      pbDisposeSpriteHash(@sprites)
+      @sprites = {}
+
+      if @trainer&.party
+        @trainer.party.each_with_index do |pkmn, i|
+          next if !pkmn
+
+          @sprites["pokemon#{i}"] = PokemonIconSprite.new(pkmn, viewport)
+
+          begin
+            @sprites["pokemon#{i}"].opacity = (pkmn.hp <= 0) ? 100 : 255
+          rescue
+            @sprites["pokemon#{i}"].opacity = 255
+          end
+        end
+      end
+
+      if @trainer
+        meta = pbGetMetadata(0, MetadataPlayerA + @trainer.metaID)
+        if meta
+          filename = pbGetPlayerCharset(meta, 1, @trainer, true)
+          @sprites["player"] = TrainerWalkingCharSprite.new(filename, viewport)
+          @sprites["player"].bitmap = Bitmap.new(8, 8) if !@sprites["player"].bitmap
+          charwidth  = @sprites["player"].bitmap.width
+          charheight = @sprites["player"].bitmap.height
+        end
       end
     end
-    if @trainer
-      meta = pbGetMetadata(0, MetadataPlayerA + @trainer.metaID)
-      if meta
-        filename = pbGetPlayerCharset(meta, 1, @trainer, true)
-        @sprites["player"] = TrainerWalkingCharSprite.new(filename, viewport)
-        @sprites["player"].bitmap = Bitmap.new(8, 8) if !@sprites["player"].bitmap
-        charwidth  = @sprites["player"].bitmap.width
-        charheight = @sprites["player"].bitmap.height
-      end
-    end
-  end
 
   def dispose
     @bg_bmp.dispose
@@ -785,6 +887,13 @@ class BushidoSaveCarousel < SpriteWrapper
 
           icon.x = x + 52 + (col * 58)
           icon.y = y + 202 + (row * 52)
+
+          begin
+            icon.opacity = (pkmn.hp <= 0) ? 100 : 255
+          rescue
+            icon.opacity = 255
+          end
+
           icon.visible = self.visible && x > -CARD_W && x < Graphics.width
         end
       end
@@ -836,4 +945,56 @@ class BushidoSaveCarousel < SpriteWrapper
     super
   end
 end
+#===============================================================================
+# Bushido save flow
+# Keeps the selected save card visible, reloads the newly written file from
+# disk immediately, then shows the save confirmation over the refreshed card.
+#===============================================================================
+class PokemonSaveScreen
+  def initialize(scene)
+    @scene = scene
+  end
 
+  def pbSaveScreen
+    ret = false
+
+    slot_scene = SaveSlot_Selection_Scene.new(true, true)
+    slot = slot_scene.get_save_slot
+
+    if slot <= 0
+      slot_scene.dispose
+      Graphics.update
+      return false
+    end
+
+    $PokemonSystem.save_slot = slot
+    success = pbSave
+
+    if success
+      # Reload the actual file that was just written so every piece of visible
+      # information comes from disk: party, location, chapter, playtime, etc.
+      slot_scene.refresh_after_save(slot)
+
+      # Force the refreshed party/location/card to hit the screen before
+      # opening the confirmation message.
+      2.times do
+        slot_scene.update
+        Graphics.update
+      end
+
+      pbMessage(_INTL("\\se[]{1} saved the game to Slot {2}.\\me[GUI save game]\\wtnp[30]",
+                      $Trainer.name, slot)) {
+        slot_scene.update
+      }
+
+      ret = true
+    else
+      pbPlayBuzzerSE rescue nil
+      ret = false
+    end
+
+    slot_scene.dispose
+    Graphics.update
+    return ret
+  end
+end

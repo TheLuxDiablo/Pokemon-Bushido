@@ -195,7 +195,8 @@ MultipleForms.register(:ROTOM,{
 MultipleForms.register(:GIRATINA,{
   "getForm" => proc { |pkmn|
     maps = [49,50,51,72,73]   # Map IDs for Origin Forme
-    if pkmn.hasItem?(:GRISEOUSORB) || maps.include?($game_map.map_id)
+    map_id = $game_map ? $game_map.map_id : 0
+    if pkmn.hasItem?(:GRISEOUSORB) || maps.include?(map_id)
       next 1
     end
     next 0
@@ -205,7 +206,8 @@ MultipleForms.register(:GIRATINA,{
 MultipleForms.register(:MAROWAK,{
   "getFormOnCreation" => proc { |pkmn|
     maps = [1]   # Map IDs for Normal Forme
-    if maps.include?($game_map.map_id)
+    map_id = $game_map ? $game_map.map_id : 0
+    if maps.include?(map_id)
       next 0
     end
     next 1
@@ -356,7 +358,8 @@ MultipleForms.copy(:SCATTERBUG,:SPEWPA,:VIVILLON)
 MultipleForms.register(:FLABEBE,{
   "getFormOnCreation" => proc { |pkmn|
     maps = [82]   # Map IDs for Sakura Pass - Pink Form
-    if maps.include?($game_map.map_id)
+    map_id = $game_map ? $game_map.map_id : 0
+    if maps.include?(map_id)
       next 5
     end
     next rand(6)
@@ -630,7 +633,10 @@ MultipleForms.register(:CALYREX,{
 MultipleForms.register(:EXEGGCUTE,{
   "getForm" => proc { |pkmn|
     next if pkmn.formSimple>=2
-    mapPos = pbGetMetadata($game_map.map_id,MetadataMapPosition)
+
+    map_id = $game_map ? $game_map.map_id : 0
+    mapPos = pbGetMetadata(map_id, MetadataMapPosition)
+
     next 1 if mapPos && mapPos[0]==1   # Tiall region
     next 0
   }
@@ -647,7 +653,10 @@ MultipleForms.copy(:EXEGGCUTE,:CUBONE)
 MultipleForms.register(:KOFFING,{
   "getForm" => proc { |pkmn|
     next if pkmn.formSimple>=2
-    mapPos = pbGetMetadata($game_map.map_id,MetadataMapPosition)
+
+    map_id = $game_map ? $game_map.map_id : 0
+    mapPos = pbGetMetadata(map_id, MetadataMapPosition)
+
     next 1 if mapPos && mapPos[0]==1   # Tiall region
     next 0
   }

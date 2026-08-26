@@ -579,6 +579,79 @@ class PokemonSummary_Scene
     )
   end
 
+  def abilityDescriptionNeedsSmallFont?(bitmap, text, width)
+    pbSetSystemFont(bitmap)
+
+    words = text.to_s.split(/\s+/)
+    lines = []
+    line = ""
+
+    words.each do |word|
+      test = line.length == 0 ? word : line + " " + word
+      if bitmap.text_size(test).width > width && line.length > 0
+        lines.push(line)
+        line = word
+      else
+        line = test
+      end
+    end
+    lines.push(line) if line.length > 0
+
+    return lines.length > 2
+  end
+
+  def drawAbilityDescription(bitmap, rect, text, base, shadow)
+    if abilityDescriptionNeedsSmallFont?(bitmap, text, rect.width)
+      pbSetSmallFont(bitmap)
+
+      words = text.to_s.split(/\s+/)
+      lines = []
+      line = ""
+
+      words.each do |word|
+        test = line.length == 0 ? word : line + " " + word
+
+        if bitmap.text_size(test).width > rect.width && line.length > 0
+          lines.push(line)
+          line = word
+        else
+          line = test
+        end
+      end
+
+      lines.push(line) if line.length > 0
+
+      line_spacing = 26
+
+      lines[0, 3].each_with_index do |ln, i|
+        pbDrawShadowText(
+          bitmap,
+          rect.x,
+          rect.y + (i * line_spacing),
+          rect.width,
+          22,
+          ln,
+          base,
+          shadow,
+          0
+        )
+      end
+    else
+      pbSetSystemFont(bitmap)
+
+      drawTextEx(
+        bitmap,
+        rect.x,
+        rect.y + 4,
+        rect.width,
+        2,
+        text,
+        base,
+        shadow
+      )
+    end
+  end
+
   def insetSummaryRect(rect, left, right)
     return Rect.new(
       rect.x + left,
@@ -857,7 +930,7 @@ class PokemonSummary_Scene
     end
     # Show shininess star
     if @pokemon.shiny?
-      imagepos.push([sprintf("Graphics/Pictures/shiny"),2,134])
+      imagepos.push([sprintf("Graphics/Pictures/shiny"),176,92])
     end
     # Draw all images
     pbDrawImagePositions(overlay,imagepos)
@@ -1277,12 +1350,9 @@ class PokemonSummary_Scene
     abilitydesc = pbGetMessage(MessageTypes::AbilityDescs, @pokemon.ability)
     desc = layout[:desc]
 
-    drawTextEx(
+    drawAbilityDescription(
       overlay,
-      desc.x,
-      desc.y + 4,
-      desc.width,
-      2,
+      desc,
       abilitydesc,
       base,
       shadow
@@ -1644,12 +1714,9 @@ class PokemonSummary_Scene
     abilitydesc = pbGetMessage(MessageTypes::AbilityDescs, @pokemon.ability)
     desc = layout[:desc]
 
-    drawTextEx(
+    drawAbilityDescription(
       overlay,
-      desc.x,
-      desc.y + 4,
-      desc.width,
-      2,
+      desc,
       abilitydesc,
       base,
       shadow

@@ -1085,41 +1085,9 @@ end
 #===============================================================================
 def pbFishingBegin
   $PokemonGlobal.fishing = true
-  if !pbCommonEvent(FISHING_BEGIN_COMMON_EVENT)
-    patternb = 2*$game_player.direction - 1
-    meta = pbGetMetadata(0,MetadataPlayerA+$PokemonGlobal.playerID)
-    num = ($PokemonGlobal.surfing) ? 7 : 6
-    if meta && meta[num] && meta[num]!=""
-      charset = pbGetPlayerCharset(meta,num)
-      4.times do |pattern|
-        $game_player.setDefaultCharName(charset,patternb-pattern,true)
-        (Graphics.frame_rate/20).times do
-          Graphics.update
-          Input.update
-          pbUpdateSceneMap
-        end
-      end
-    end
-  end
 end
 
 def pbFishingEnd
-  if !pbCommonEvent(FISHING_END_COMMON_EVENT)
-    patternb = 2*($game_player.direction - 2)
-    meta = pbGetMetadata(0,MetadataPlayerA+$PokemonGlobal.playerID)
-    num = ($PokemonGlobal.surfing) ? 7 : 6
-    if meta && meta[num] && meta[num]!=""
-      charset = pbGetPlayerCharset(meta,num)
-      4.times do |pattern|
-        $game_player.setDefaultCharName(charset,patternb+pattern,true)
-        (Graphics.frame_rate/20).times do
-          Graphics.update
-          Input.update
-          pbUpdateSceneMap
-        end
-      end
-    end
-  end
   $PokemonGlobal.fishing = false
 end
 

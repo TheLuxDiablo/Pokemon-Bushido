@@ -16,12 +16,11 @@
 #   TRAINER_SENSOR_ENABLED       = true
 #   TRAINER_SENSOR_BUSHIDO_STYLE = true
 #
-# Bushido style adds:
-#   - Deep red/black cinematic framing
-#   - Crimson inner-edge glow
-#   - Screen-edge danger vignette
-#   - Increasing red pulse near trainer FOV
-#   - Animated ink/katana slash when one tile from danger
+# Behavior:
+#   - Near trainer FOV: dark red/black warning frame
+#   - Closer to FOV: stronger red vignette + pulse
+#   - Enter actual FOV: full-screen slash flash
+#   - Normal trainer event then takes over
 #
 #===============================================================================
 
@@ -39,16 +38,12 @@ module TrainerSensor
   BUSHIDO_BAR_COLOR       = Color.new(16, 0, 0)
   BUSHIDO_BAR_INNER       = Color.new(40, 0, 0)
   BUSHIDO_CRIMSON         = Color.new(150, 12, 12)
-  BUSHIDO_CRIMSON_BRIGHT  = Color.new(220, 32, 25)
+  BUSHIDO_CRIMSON_BRIGHT  = Color.new(235, 35, 28)
   BUSHIDO_CRIMSON_DARK    = Color.new(75, 0, 0)
 
-  # Width of the framing.
   BAR_SIZE = 52
 
-  # Maximum opacity of the main cinematic bars.
-  MAX_BAR_OPACITY = 225
-
-  # Maximum strength of the red screen-edge warning.
+  MAX_BAR_OPACITY      = 225
   MAX_VIGNETTE_OPACITY = 135
 
   #=============================================================================
@@ -61,7 +56,7 @@ module TrainerSensor
   @right     = nil
 
   @vignette  = nil
-  @slash     = nil
+  @battle_slash = nil
 
   @triggered = false
   @created   = false
@@ -75,8 +70,9 @@ module TrainerSensor
   @target_opacity = 0
   @duration       = 0
 
-  @slash_timer    = 0
-  @slash_visible  = false
+  @battle_slash_timer   = 0
+  @battle_slash_playing = false
+  @last_seen_event      = nil
 
 
   #=============================================================================
@@ -120,7 +116,7 @@ module TrainerSensor
 
     if bushido_style?
       create_vignette
-      create_slash
+      create_battle_slash
     end
 
     @created = true
@@ -383,7 +379,6 @@ module TrainerSensor
 
       offset = i * size
 
-      # Top
       bitmap.fill_rect(
         0,
         offset,
@@ -392,7 +387,6 @@ module TrainerSensor
         color
       )
 
-      # Bottom
       bitmap.fill_rect(
         0,
         Graphics.height - offset - size,
@@ -401,7 +395,6 @@ module TrainerSensor
         color
       )
 
-      # Left
       bitmap.fill_rect(
         offset,
         0,
@@ -410,7 +403,6 @@ module TrainerSensor
         color
       )
 
-      # Right
       bitmap.fill_rect(
         Graphics.width - offset - size,
         0,
@@ -426,89 +418,107 @@ module TrainerSensor
 
 
   #=============================================================================
-  # Katana / Ink Slash
+  # Full-Screen Battle Slash
   #=============================================================================
 
-  def self.create_slash
-    @slash = Sprite.new
-    @slash.z = SENSOR_Z + 1
-
-    width  = 150
-    height = 50
+  def self.create_battle_slash
+    @battle_slash = Sprite.new
+    @battle_slash.z = SENSOR_Z + 10
 
     bitmap = Bitmap.new(
-      width,
-      height
+      Graphics.width,
+      Graphics.height
     )
 
     #---------------------------------------------------------------------------
-    # Main uneven brush stroke.
+    # Large diagonal white-red slash.
     #
-    # Drawing it manually gives it a rough ink/slash character rather than
-    # looking like a clean UI rectangle.
+    # Drawn as several staggered streaks to feel more like a katana impact than
+    # a clean UI line.
     #---------------------------------------------------------------------------
 
-    95.times do |i|
-      x = 20 + i
-      y = 36 - (i / 4)
+    width  = Graphics.width
+    height = Graphics.height
 
-      thickness = 2
+    0.upto(width - 1) do |x|
+      y = height - 70 - ((x * 0.55).to_i)
 
-      thickness = 4 if i > 18 && i < 70
-      thickness = 3 if i > 70 && i < 85
+      # Dark red outer trail
+      if y >= 0 && y < height
+        bitmap.fill_rect(
+          x,
+          y,
+          1,
+          12,
+          BUSHIDO_CRIMSON_DARK
+        )
+      end
+
+      # Bright crimson body
+      if y + 2 >= 0 && y + 2 < height
+        bitmap.fill_rect(
+          x,
+          y + 2,
+          1,
+          7,
+          BUSHIDO_CRIMSON_BRIGHT
+        )
+      end
+
+      # White-hot blade center
+      if y + 4 >= 0 && y + 4 < height
+        bitmap.fill_rect(
+          x,
+          y + 4,
+          1,
+          2,
+          Color.new(255, 235, 225)
+        )
+      end
+    end
+
+    # Secondary parallel slash
+    0.upto(width - 1) do |x|
+      y = height - 20 - ((x * 0.55).to_i)
+
+      next if y < 0 || y >= height
 
       bitmap.fill_rect(
         x,
         y,
         1,
-        thickness,
-        BUSHIDO_CRIMSON_BRIGHT
+        3,
+        BUSHIDO_CRIMSON
       )
     end
 
-    # Secondary dark brush trail
-    78.times do |i|
-      x = 28 + i
-      y = 42 - (i / 4)
+    @battle_slash.bitmap  = bitmap
+    @battle_slash.opacity = 0
+    @battle_slash.visible = false
+  end
 
-      bitmap.fill_rect(
-        x,
-        y,
-        1,
-        2,
-        BUSHIDO_CRIMSON_DARK
-      )
+
+  #=============================================================================
+  # Trigger Full-Screen Slash
+  #=============================================================================
+
+  def self.trigger_battle_slash(event)
+    return if !bushido_style?
+    return if !@battle_slash
+    return if @battle_slash_playing
+
+    # Don't retrigger every frame while the trainer still sees the player.
+    if @last_seen_event == event
+      return
     end
 
-    # Tiny broken ink pieces
-    bitmap.fill_rect(
-      13, 38,
-      7, 2,
-      BUSHIDO_CRIMSON
-    )
+    @last_seen_event = event
 
-    bitmap.fill_rect(
-      119, 9,
-      10, 2,
-      BUSHIDO_CRIMSON
-    )
+    @battle_slash_timer   = 0
+    @battle_slash_playing = true
 
-    bitmap.fill_rect(
-      132, 5,
-      5, 1,
-      BUSHIDO_CRIMSON_DARK
-    )
-
-    @slash.bitmap = bitmap
-
-    @slash.ox = width / 2
-    @slash.oy = height / 2
-
-    @slash.x = Graphics.width / 2
-    @slash.y = Graphics.height / 2
-
-    @slash.opacity = 0
-    @slash.visible = false
+    @battle_slash.visible = true
+    @battle_slash.opacity = 0
   end
 
 
@@ -530,13 +540,6 @@ module TrainerSensor
     @event     = event
     @direction = event.direction
     @distance  = [distance.to_i, 1].max
-
-    #---------------------------------------------------------------------------
-    # Distance to the trainer's actual FOV line.
-    #
-    # Trainer faces vertically -> horizontal distance matters.
-    # Trainer faces horizontally -> vertical distance matters.
-    #---------------------------------------------------------------------------
 
     case @direction
     when 2, 8
@@ -565,10 +568,6 @@ module TrainerSensor
     @target_opacity =
       (MAX_BAR_OPACITY * ratio).to_i
 
-    #---------------------------------------------------------------------------
-    # First appearance / different trainer / trainer turned.
-    #---------------------------------------------------------------------------
-
     if !was_triggered ||
        old_event != event ||
        old_direction != @direction
@@ -582,7 +581,7 @@ module TrainerSensor
 
 
   #=============================================================================
-  # Hide
+  # Hide Sensor
   #=============================================================================
 
   def self.hide
@@ -602,13 +601,15 @@ module TrainerSensor
     @distance       = 1
     @range          = 0
     @target_opacity = 0
+  end
 
-    @slash_visible = false
 
-    if @slash
-      @slash.visible = false
-      @slash.opacity = 0
-    end
+  #=============================================================================
+  # Reset Battle Detection Lock
+  #=============================================================================
+
+  def self.clear_seen_lock
+    @last_seen_event = nil
   end
 
 
@@ -624,8 +625,8 @@ module TrainerSensor
     @left.update
     @right.update
 
-    @vignette.update if @vignette
-    @slash.update    if @slash
+    @vignette.update    if @vignette
+    @battle_slash.update if @battle_slash
 
     if @duration > 0
       if @triggered
@@ -643,26 +644,22 @@ module TrainerSensor
 
       if bushido_style?
         update_vignette
-        update_slash
       end
     else
       update_hide_opacity
     end
+
+    update_battle_slash if @battle_slash_playing
   end
 
 
   #=============================================================================
-  # Position Cinematic Bars
+  # Position Bars
   #=============================================================================
 
   def self.update_bar_positions
     d = @duration
     return if d <= 0
-
-    #---------------------------------------------------------------------------
-    # Trainer faces LEFT/RIGHT.
-    # Top and bottom framing closes in.
-    #---------------------------------------------------------------------------
 
     if [4, 6].include?(@direction)
 
@@ -681,8 +678,7 @@ module TrainerSensor
 
       @left.x =
         (
-          @left.x * (d - 1) +
-          0
+          @left.x * (d - 1)
         ) / d
 
       @right.x =
@@ -690,11 +686,6 @@ module TrainerSensor
           @right.x * (d - 1) +
           Graphics.width
         ) / d
-
-    #---------------------------------------------------------------------------
-    # Trainer faces UP/DOWN.
-    # Left and right framing closes in.
-    #---------------------------------------------------------------------------
 
     elsif [2, 8].include?(@direction)
 
@@ -713,8 +704,7 @@ module TrainerSensor
 
       @top.y =
         (
-          @top.y * (d - 1) +
-          0
+          @top.y * (d - 1)
         ) / d
 
       @bottom.y =
@@ -727,7 +717,7 @@ module TrainerSensor
 
 
   #=============================================================================
-  # Move Bars Back Offscreen
+  # Hide Bars
   #=============================================================================
 
   def self.hide_bar_positions
@@ -736,8 +726,7 @@ module TrainerSensor
 
     @top.y =
       (
-        @top.y * (d - 1) +
-        0
+        @top.y * (d - 1)
       ) / d
 
     @bottom.y =
@@ -748,8 +737,7 @@ module TrainerSensor
 
     @left.x =
       (
-        @left.x * (d - 1) +
-        0
+        @left.x * (d - 1)
       ) / d
 
     @right.x =
@@ -761,25 +749,15 @@ module TrainerSensor
 
 
   #=============================================================================
-  # Main Opacity
+  # Live Opacity / Pulse
   #=============================================================================
 
   def self.update_live_opacity
     target = @target_opacity
 
-    #---------------------------------------------------------------------------
-    # Bushido "danger heartbeat".
-    #
-    # Only becomes noticeable when you're extremely close to stepping into FOV.
-    #---------------------------------------------------------------------------
-
     if bushido_style? && @range <= 2
-
-      speed =
-        @range <= 1 ? 4.0 : 7.0
-
-      amount =
-        @range <= 1 ? 28 : 12
+      speed  = @range <= 1 ? 4.0 : 7.0
+      amount = @range <= 1 ? 28 : 12
 
       pulse =
         (
@@ -795,7 +773,8 @@ module TrainerSensor
 
     target = 245 if target > 245
 
-    current = @top.opacity
+    current =
+      @top.opacity
 
     difference =
       target - current
@@ -827,7 +806,7 @@ module TrainerSensor
 
 
   #=============================================================================
-  # Red Vignette
+  # Vignette
   #=============================================================================
 
   def self.update_vignette
@@ -843,7 +822,6 @@ module TrainerSensor
     target =
       (MAX_VIGNETTE_OPACITY * ratio).to_i
 
-    # Stronger living pulse at the edge of FOV.
     if @range <= 1
       pulse =
         (
@@ -859,8 +837,11 @@ module TrainerSensor
 
     target = 190 if target > 190
 
-    current = @vignette.opacity
-    difference = target - current
+    current =
+      @vignette.opacity
+
+    difference =
+      target - current
 
     if difference.abs <= 2
       current = target
@@ -877,110 +858,87 @@ module TrainerSensor
 
 
   #=============================================================================
-  # Katana Slash Warning
+  # Full-Screen Battle Slash Animation
   #=============================================================================
 
-  def self.update_slash
-    return if !@slash
+  def self.update_battle_slash
+    return if !@battle_slash_playing
+    return if !@battle_slash
+
+    @battle_slash_timer += 1
+
+    frame = @battle_slash_timer
 
     #---------------------------------------------------------------------------
-    # Only appears when ONE tile away from entering the FOV.
+    # 0-3:
+    # extremely fast flash-in
     #---------------------------------------------------------------------------
 
-    if @range != 1
-      @slash.visible = false
-      @slash.opacity = 0
-      @slash_timer   = 0
-      return
-    end
+    if frame <= 3
+
+      @battle_slash.visible = true
+
+      @battle_slash.opacity =
+        frame * 85
 
     #---------------------------------------------------------------------------
-    # Spawn a quick repeating slash.
-    #
-    # It isn't permanently sitting on-screen. It flashes in like an instinctive
-    # danger cue, disappears, then can happen again after a short pause.
+    # 4-7:
+    # hold the slash at full strength very briefly
     #---------------------------------------------------------------------------
 
-    @slash_timer += 1
+    elsif frame <= 7
 
-    cycle = Graphics.frame_rate
+      @battle_slash.opacity = 255
 
-    frame =
-      @slash_timer % cycle
+    #---------------------------------------------------------------------------
+    # 8-16:
+    # rapidly disappear
+    #---------------------------------------------------------------------------
 
-    if frame < 12
+    elsif frame <= 16
 
-      @slash.visible = true
+      remaining =
+        16 - frame
 
-      # Fast flash in/out
-      if frame < 4
-        @slash.opacity =
-          frame * 60
-      else
-        @slash.opacity =
-          240 -
-          ((frame - 4) * 30)
-      end
+      @battle_slash.opacity =
+        (remaining * 28)
 
-      @slash.opacity = 0 if @slash.opacity < 0
-      @slash.opacity = 240 if @slash.opacity > 240
+      @battle_slash.opacity = 0 if @battle_slash.opacity < 0
 
-      # Slight movement gives it a cutting motion.
-      movement = frame * 2
-
-      #-----------------------------------------------------------------------
-      # Position the slash toward the side of the screen representing danger.
-      #-----------------------------------------------------------------------
-
-      case @direction
-
-      when 2, 8
-        if $game_player.x < @event.x
-          @slash.x =
-            Graphics.width - 76 + movement
-        else
-          @slash.x =
-            76 - movement
-        end
-
-        @slash.y =
-          Graphics.height / 2
-
-      when 4, 6
-        @slash.x =
-          Graphics.width / 2
-
-        if $game_player.y < @event.y
-          @slash.y =
-            Graphics.height - 58 + movement
-        else
-          @slash.y =
-            58 - movement
-        end
-      end
+    #---------------------------------------------------------------------------
+    # Finished
+    #---------------------------------------------------------------------------
 
     else
-      @slash.visible = false
-      @slash.opacity = 0
+
+      @battle_slash.visible = false
+      @battle_slash.opacity = 0
+
+      @battle_slash_timer   = 0
+      @battle_slash_playing = false
     end
   end
 
 
   #=============================================================================
-  # Fade Everything Out
+  # Fade Sensor Out
   #=============================================================================
 
   def self.update_hide_opacity
-    current = @top.opacity
+    current =
+      @top.opacity
 
     if current > 0
+
       current -= 22
       current = 0 if current < 0
 
       set_bar_opacity(current)
     end
 
-    if @vignette && @vignette.opacity > 0
+    if @vignette &&
+       @vignette.opacity > 0
+
       value =
         @vignette.opacity - 20
 
@@ -988,16 +946,11 @@ module TrainerSensor
 
       @vignette.opacity = value
     end
-
-    if @slash
-      @slash.opacity = 0
-      @slash.visible = false
-    end
   end
 
 
   #=============================================================================
-  # Warning Range
+  # Pre-FOV Warning Check
   #=============================================================================
 
   def self.inRange?(event, distance)
@@ -1006,10 +959,6 @@ module TrainerSensor
     return false if !$game_player
     return false if !distance
     return false if distance <= 0
-
-    #---------------------------------------------------------------------------
-    # Must be generally in front of the trainer.
-    #---------------------------------------------------------------------------
 
     case event.direction
 
@@ -1029,11 +978,7 @@ module TrainerSensor
       return false
     end
 
-    #---------------------------------------------------------------------------
-    # If the trainer can ALREADY see us, the warning is over.
-    # Essentials' normal trainer encounter takes over here.
-    #---------------------------------------------------------------------------
-
+    # If already seen, this is NOT warning range anymore.
     if pbEventCanReachPlayer?(
       event,
       $game_player,
@@ -1041,11 +986,6 @@ module TrainerSensor
     )
       return false
     end
-
-    #---------------------------------------------------------------------------
-    # Keep warning local to the trainer instead of extending infinitely alongside
-    # their sight line.
-    #---------------------------------------------------------------------------
 
     dx =
       event.x -
@@ -1121,11 +1061,20 @@ class Game_Event
   end
 
 
+  def trainer_sensor_completed?
+    return false if !$game_self_switches
+    key = [$game_map.map_id, self.id, "A"]
+    return $game_self_switches[key] == true
+  end
+
   def is_trainer?
     if @trainer_sensor_enabled.nil?
       refresh_trainer_sensor
     end
 
+    return false if !@page
+
+    return false if trainer_sensor_completed?
     return @trainer_sensor_enabled
   end
 
@@ -1133,16 +1082,12 @@ end
 
 
 #===============================================================================
-# Map Sensor Scanner
+# Map Scanner
 #===============================================================================
 
 Events.onMapUpdate += proc { |sender, e|
 
   begin
-
-    #---------------------------------------------------------------------------
-    # Master Settings switch
-    #---------------------------------------------------------------------------
 
     if !TrainerSensor.enabled?
       TrainerSensor.hide
@@ -1153,21 +1098,10 @@ Events.onMapUpdate += proc { |sender, e|
     next if !$game_player
 
     final_event = nil
+    seeing_event = nil
 
     #---------------------------------------------------------------------------
-    # Don't show warning while an event is running.
-    #---------------------------------------------------------------------------
-
-    if $game_system &&
-       $game_system.map_interpreter &&
-       $game_system.map_interpreter.running?
-
-      TrainerSensor.hide
-      next
-    end
-
-    #---------------------------------------------------------------------------
-    # Find all applicable trainers.
+    # Scan every Trainer(X)
     #---------------------------------------------------------------------------
 
     $game_map.events.each_value do |event|
@@ -1178,14 +1112,36 @@ Events.onMapUpdate += proc { |sender, e|
       distance =
         event.view_distance
 
+      #-------------------------------------------------------------------------
+      # FIRST:
+      # Is the player actually inside this trainer's FOV?
+      #
+      # If yes, trigger the battle slash.
+      #-------------------------------------------------------------------------
+
+      if pbEventCanReachPlayer?(
+        event,
+        $game_player,
+        distance
+      )
+
+        seeing_event = event
+        next
+      end
+
+      #-------------------------------------------------------------------------
+      # SECOND:
+      # Otherwise check whether we're in the pre-FOV warning zone.
+      #-------------------------------------------------------------------------
+
       next if !TrainerSensor.inRange?(
         event,
         distance
       )
 
       #-------------------------------------------------------------------------
-      # Multiple overlapping trainer warning zones:
-      # use the closest trainer.
+      # Multiple warning zones:
+      # choose closest.
       #-------------------------------------------------------------------------
 
       if final_event
@@ -1225,20 +1181,36 @@ Events.onMapUpdate += proc { |sender, e|
     end
 
     #---------------------------------------------------------------------------
-    # Display
+    # Actual trainer detection
     #---------------------------------------------------------------------------
 
-    if final_event
+    if seeing_event
 
-      TrainerSensor.show(
-        final_event,
-        final_event.view_distance
+      TrainerSensor.hide
+
+      TrainerSensor.create
+
+      TrainerSensor.trigger_battle_slash(
+        seeing_event
       )
 
     else
 
-      TrainerSensor.hide
+      # Reset so another future trainer can trigger its own slash.
+      TrainerSensor.clear_seen_lock
 
+      if final_event
+
+        TrainerSensor.show(
+          final_event,
+          final_event.view_distance
+        )
+
+      else
+
+        TrainerSensor.hide
+
+      end
     end
 
   rescue Exception => ex
