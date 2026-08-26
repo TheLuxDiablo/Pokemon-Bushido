@@ -1072,6 +1072,8 @@ class Game_Event
       refresh_trainer_sensor
     end
 
+    return false if !@page
+
     return false if trainer_sensor_completed?
     return @trainer_sensor_enabled
   end

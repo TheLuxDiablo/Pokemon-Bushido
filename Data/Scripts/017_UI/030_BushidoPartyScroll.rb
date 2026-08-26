@@ -1670,12 +1670,8 @@ class PokemonParty_Scene
 
     old_name = pkmn.name
 
-    # Essentials forks don't all expose the same name-length constant.
+    # Essentials v18.1 doesn't use the newer Pokemon class constant.
     max_length = 12
-    begin
-      max_length = Pokemon::MAX_NAME_SIZE
-    rescue
-    end
 
     new_name = pbEnterPokemonName(
       _INTL("Give {1} a new name.", old_name),

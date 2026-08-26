@@ -536,6 +536,13 @@ class PokemonLoad_Scene
         @sprites[key] = PokemonIconSprite.new(pkmn, @viewport)
         @sprites[key].setOffset(PictureOrigin::Center)
 
+        # Match the save/load carousel: fainted party members are dimmed.
+        begin
+          @sprites[key].opacity = (pkmn.hp <= 0) ? 100 : 255
+        rescue
+          @sprites[key].opacity = 255
+        end
+
         col = i % 3
         row = i / 3
 
