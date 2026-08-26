@@ -128,8 +128,11 @@ def pbPrepareBattle(battle)
     backdrop = battleRules["backdrop"]
   elsif $PokemonGlobal.nextBattleBack
     backdrop = $PokemonGlobal.nextBattleBack
-  elsif $PokemonGlobal.surfing
-    backdrop = "Surf"   # This applies wherever you are, including in caves
+  elsif $PokemonGlobal.surfing ||
+        $PokemonTemp.encounterType==EncounterTypes::OldRod ||
+        $PokemonTemp.encounterType==EncounterTypes::GoodRod ||
+        $PokemonTemp.encounterType==EncounterTypes::SuperRod
+    backdrop = "Surf"
   else
     back = pbGetMetadata($game_map.map_id,MetadataBattleBack)
     backdrop = back if back && back!=""

@@ -61,6 +61,9 @@ Water
     FEEBAS,2,6
     TYMPOLE,3,6
     CARVANHA,3,7
+OldRod
+    MAGIKARP,2,4
+    GOLDEEN,3,4
 PhenomenonGrass
     HAPPINY,7
     RIOLU,6
