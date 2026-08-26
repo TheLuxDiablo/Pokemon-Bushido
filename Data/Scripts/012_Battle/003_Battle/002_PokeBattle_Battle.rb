@@ -455,6 +455,15 @@ class PokeBattle_Battle
     return nil
   end
 
+  def pbCheckOpposingAbility(ability, battler)
+    idxBattler = battler.respond_to?(:index) ? battler.index : battler
+    for b in @battlers
+      next if !b || b.fainted?
+      next if (idxBattler % 2 == b.index % 2) # Skip allies/self
+      return true if b.hasActiveAbility?(ability)
+    end
+    return false
+  end
 
   def pbFaintedAllyCount(idxBattler=0)
     party = pbParty(idxBattler)

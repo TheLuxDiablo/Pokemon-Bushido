@@ -796,3 +796,7 @@
 775,BARBBARRAGE,Barb Barrage,504,60,POISON,Physical,100,10,50,NearOther,0,abef,"The user unleashes toxic barbs to attack. This may poison the target. This move's power is doubled if the target is already poisoned."
 776,BITTERMALICE,Bitter Malice,042,75,GHOST,Special,100,10,100,NearOther,0,bef,"The user attacks the target with spine-chilling resentment. This also lowers the target's Attack stat."
 777,STONEAXE,Stone Axe,505,65,ROCK,Physical,90,15,100,NearOther,0,bef,"The user swings its stone axes at the target. Stone splinters left behind by this attack float around the target."
+778,INFERNALPARADE,Infernal Parade,506,60,GHOST,Special,100,10,30,NearOther,0,bef,"The user attacks with myriad fireballs. This may also leave the target with a burn. This move's power is doubled if the target has a status condition."
+779,TRIPLEARROWS,Triple Arrows,507,90,FIGHTING,Physical,90,10,100,NearOther,0,abefh,"The user kicks, then fires three arrows. Increased critical hit chance and may also lower the target's Defense stat or make it flinch."
+780,VICTORYDANCE,Victory Dance,508,0,FIGHTING,Status,0,10,0,User,0,do,"The user performs an intense dance to usher in victory, boosting its Attack, Defense, and Speed stats."
+781,AXEKICK,Axe Kick,509,120,FIGHTING,Physical,90,10,30,NearOther,0,abefj,"The user attacks by kicking into the air and slamming its heel down on the target. This may confuse the target. On miss, the user takes damage instead."

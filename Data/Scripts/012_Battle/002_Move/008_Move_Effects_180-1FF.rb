@@ -570,3 +570,66 @@ class PokeBattle_Move_505 < PokeBattle_Move
        user.pbOpposingTeam(true)))
   end
 end
+
+#===============================================================================
+# Power is doubled if the target has a status problem. Chance to Burn. (Infernal Parade)
+#===============================================================================
+class PokeBattle_Move_506 < PokeBattle_BurnMove
+  def pbBaseDamage(baseDmg,user,target)
+    if target.pbHasAnyStatus? &&
+       (target.effects[PBEffects::Substitute]==0 || ignoresSubstitute?(user))
+      baseDmg *= 2
+    end
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Triple Arrows
+#===============================================================================
+# Lowers the target's Defense by 1 stage. May cause flinching.
+#-------------------------------------------------------------------------------
+class PokeBattle_Move_507 < PokeBattle_Move
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    chance = pbAdditionalEffectChance(user, target, 50)
+    if @battle.pbRandom(100) < chance
+      # CHANGED: :DEFENSE replaced with PBStats::DEFENSE
+      if target.pbCanLowerStatStage?(PBStats::DEFENSE, user, self) && 
+         target.pbLowerStatStage(PBStats::DEFENSE, 1, user)
+      end
+    end
+    chance = pbAdditionalEffectChance(user, target, 30)
+    return if chance == 0
+    target.pbFlinch(user) if @battle.pbRandom(100) < chance
+  end
+end
+
+#===============================================================================
+# Increases the user's Attack, Defense and Speed by 1 stage each.
+# (Victory Dance)
+#===============================================================================
+class PokeBattle_Move_508 < PokeBattle_MultiStatUpMove
+  def initialize(battle,move)
+    super
+    @statUp = [PBStats::ATTACK,1,PBStats::DEFENSE,1,PBStats::SPEED,1]
+  end
+end
+
+#===============================================================================
+# Axe Kick
+#===============================================================================
+# If attack misses, user takes crash damage of 1/2 of max HP. May cause confusion.
+#-------------------------------------------------------------------------------
+class PokeBattle_Move_509 < PokeBattle_ConfuseMove
+  def recoilMove?; return true; end
+  
+  def pbCrashDamage(user)
+    return if !user.takesIndirectDamage?
+    @battle.pbDisplay(_INTL("{1} kept going and crashed!", user.pbThis))
+    @battle.scene.pbDamageAnimation(user)
+    user.pbReduceHP((user.totalhp / 2), false)
+    user.pbItemHPHealCheck
+    user.pbFaint if user.fainted?
+  end
+end

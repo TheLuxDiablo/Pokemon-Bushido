@@ -548,25 +548,32 @@ Pokemon = ORANGURU,27
 [KOMOREI_F,Chikako]
 LoseText = "You may have beaten me, but can you beat Harumi?"
 Pokemon = WHIMSICOTT,27
-Pokemon = LILLIGANT,27
-Pokemon = PASSIMIAN,27
+Pokemon = KLEAVOR,27
+Pokemon = ELECTRODE,28
+	Form = 1
+	Moves = CHLOROBLAST,THUNDERBOLT,GIGADRAIN,THUNDERWAVE
 #-------------------------------
 [KOMOREI_BOSS,Harumi]
 Items = JAM2
-LoseText = "I still have work to do before I can call myself a leader..."
+LoseText = "Looks like I still have plenty of work to do before I can myself a proper leader..."
 Pokemon = SERVINE,27
-	Moves = MEGADRAIN,WRAP,GROWTH,LEAFTORNADO
+	Moves = KNOCKOFF,LEAFSTORM,SYNTHESIS,GLARE
+	Item = EVIOLITE
 Pokemon = LEAFEON,27
-Pokemon = ROSERADE,28
-	Moves = AROMATHERAPY,SYNTHESIS,MAGICALLEAF,WORRYSEED
-Pokemon = BRELOOM,28
-	Moves = MEGADRAIN,STUNSPORE,FORCEPALM,HEADBUTT
+	Moves = LEAFBLADE,SWORDSDANCE,PROTECT,XSCISSOR
+	Item = ROSEINCENSE
+Pokemon = ELECTRODE,28
+	Form = 1
+	Moves = CHLOROBLAST,ELECTROBALL,GIGADRAIN,SWIFT
+	Item = SITRUSBERRY
 Pokemon = VICTREEBEL,29
-	Moves = WRAP,LEECHLIFE,SUCKERPUNCH,RAZORLEAF
+	Moves = SLUDGEBOMB,SUCKERPUNCH,RAZORLEAF,GIGADRAIN
 	Item = SITRUSBERRY
-Pokemon = CHERRIM,29
-	Moves = MAGICALLEAF,MORNINGSUN,FLOWERSHIELD,GROWTH
-	Item = SITRUSBERRY
+Pokemon = LILLIGANT,30
+	Moves = VICTORYDANCE,AXEKICK,SOLARBLADE
+	Form = 1
+	Ability = 0
+	Item = ROSEINCENSE
 #-------------------------------
 [TSUKU,Tsuku,1]
 LoseText = "You're still as good as always..."
@@ -842,9 +849,6 @@ Pokemon = CENTISKORCH,39
 	Item = HEAVYDUTYBOOTS
 Pokemon = FLAREON,39
 	Item = SITRUSBERRY
-Pokemon = PUPITAR,39
-	Moves = ROCKSLIDE,CRUNCH,PURSUIT,EARTHQUAKE
-	Item = ASSAULTVEST
 Pokemon = SALAZZLE,40
 	Moves = NASTYPLOT,SLUDGEWAVE,FLAMETHROWER,TOXIC
 	Item = HEAVYDUTYBOOTS
@@ -869,9 +873,6 @@ Pokemon = TALONFLAME,41
 LoseText = "Now I understand. Your power is superb."
 Pokemon = CENTISKORCH,39
 Pokemon = FLAREON,40
-Pokemon = PUPITAR,40
-	Moves = ROCKSLIDE,CRUNCH,PURSUIT,EARTHQUAKE
-	Item = ASSAULTVEST
 Pokemon = SALAZZLE,41
 	Moves = NASTYPLOT,SLUDGEWAVE,FLAMETHROWER,TOXIC
 	Item = HEAVYDUTYBOOTS
@@ -1079,7 +1080,12 @@ Pokemon = WISHIWASHI,44
 [IWA_M,Nakanishi]
 LoseText = "You're something else!"
 Pokemon = DUGTRIO,43
-Pokemon = SNORLAX,44
+Pokemon = URSALUNA,44
+	Moves = HEADLONGRUSH,FACADE,PROTECT
+	Item = FLAMEORB
+	Ability = 0
+	Form = 0
+Pokemon = SNORLAX,45
 #-------------------------------
 [YUKI_M,Sugiyama]
 LoseText = "Just because we specialize in Ice-types doesn't mean we always win them."
@@ -1287,10 +1293,6 @@ Pokemon = KINGDRA,55
 	Item = CHOICEBAND
 	Ability = 0
 	Moves = WATERFALL,OUTRAGE,FLAIL,IRONHEAD
-Pokemon = GYARADOS,55
-	Item = LEFTOVERS
-	Ability = 1
-	Moves = DRAGONDANCE,WATERFALL,EARTHQUAKE,ICEFANG
 Pokemon = GRENINJA,55
 	Item = LIFEORB
 	Ability = 0
@@ -1486,7 +1488,12 @@ Pokemon = TURTONATOR,73
 [IWA_F,Eru]
 LoseText = "My rocky domain has crumbled!"
 Pokemon = GIGALITH,73
-Pokemon = STEELIX,74
+Pokemon = URSALUNA,74
+	Moves = HEADLONGRUSH,FACADE,PROTECT
+	Item = FLAMEORB
+	Ability = 0
+	Form = 0
+Pokemon = STEELIX,75
 #-------------------------------	
 [RAIKAMI_F,Shokku]
 LoseText = "I'm shocked you managed to defeat my team!"

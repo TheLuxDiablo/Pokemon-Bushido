@@ -20,6 +20,9 @@ Water
     FEEBAS,19,24
     TYMPOLE,19,24
     CARVANHA,19,24
+OldRod
+    MAGIKARP,12,14
+    BASCULIN,13,15
 PhenomenonGrass
     CHANSEY,20,25
     DARUMAKA,20,25
@@ -61,6 +64,9 @@ Water
     FEEBAS,2,6
     TYMPOLE,3,6
     CARVANHA,3,7
+OldRod
+    MAGIKARP,2,6
+    BASCULIN,3,6
 PhenomenonGrass
     HAPPINY,7
     RIOLU,6
@@ -90,6 +96,9 @@ Water
     FEEBAS,4,9
     TYMPOLE,4,6
     CARVANHA,5,8
+OldRod
+    MAGIKARP,5,8
+    BASCULIN,6,9
 #-------------------------------
 090 # Shizen Trail
 16,8,8
@@ -110,6 +119,9 @@ PhenomenonGrass
     BUNEARY,9,13
     RIOLU,9,13
     HONEDGE,9,13
+OldRod
+    MAGIKARP,8,12
+    BASCULIN,9,13
 #-------------------------------
 091 # Shizen Forest
 16,8,8
@@ -151,6 +163,9 @@ Water
     WIMPOD,20,24
     TYMPOLE,20,24
     PYUKUMUKU,20,24
+OldRod
+    MAGIKARP,15,20
+    BASCULIN,15,20
 PhenomenonGrass
     STUNKY,20
     PAWNIARD,21
@@ -180,6 +195,9 @@ Water
     HUNTAIL,46,52
     GOREBYSS,46,52
     EELEKTROSS,46,52
+OldRod
+    QWILFISH,15,20
+    BASCULIN,15,20
 PhenomenonGrass
     BLISSEY,47,51
     MIGHTYENA,47,52
@@ -202,12 +220,15 @@ Land
     DUNSPARCE,26,30
 PhenomenonGrass
     CHANSEY,29
-    DARUMAKA,29,30
-    DUNSPARCE,26,30
-    SANDILE,26,30
+    SAWK,29,30
     THROH,26,30
-    SAWK,26,30
+    SANDILE,26,30
+    CYNDAQUIL,15,20
+    CYNDAQUIL,15,20
     LARVITAR,26,32
+OldRod
+    MAGIKARP,15,20
+    BASCULIN,15,20
 #-------------------------------
 104 # Jonetsu Caverns
 16,8,8
@@ -226,6 +247,9 @@ PhenomenonCave
     GROWLITHE,26,31
     GABITE,27,31
     LARVITAR,26,30
+OldRod
+    MAGIKARP,15,20
+    BASCULIN,15,20
 #-------------------------------
 105 # Jonetsu Caverns
 16,8,8
@@ -238,6 +262,9 @@ Cave
     ONIX,27,31
     TRAPINCH,26,31
     GABITE,27,31
+OldRod
+    MAGIKARP,15,20
+    BASCULIN,15,20
 PhenomenonCave
     GLIGAR,27,30
     MUNCHLAX,26,30
@@ -256,6 +283,9 @@ Land
     PYUKUMUKU,38,42
     RAICHU,38,43
     SEISMITOAD,38,43
+OldRod
+    QWILFISH,15,20
+    BASCULIN,15,20
 Water
     BASCULIN,28,32
     QWILFISH,38,42
@@ -293,6 +323,9 @@ Cave
     ONIX,29,33
     TRAPINCH,28,33
     SALAZZLE,29,33
+OldRod
+    QWILFISH,15,20
+    BASCULIN,15,20
 PhenomenonCave
     GLIGAR,29,32
     MUNCHLAX,28,32
@@ -311,6 +344,9 @@ Land
     SIMISEAR,33,36
     DARUMAKA,30,33
     RAICHU,33,36
+OldRod
+    QWILFISH,15,20
+    BASCULIN,15,20
 Water
     BASCULIN,28,32
     GYARADOS,31,34
@@ -332,6 +368,9 @@ Cave
     GLIGAR,40,44
     STEELIX,40,45
     GOLURK,40,44
+OldRod
+    QWILFISH,15,20
+    BASCULIN,15,20
 PhenomenonCave
     CHANSEY,43
     SNORLAX,42
@@ -359,6 +398,9 @@ Water
     QWILFISH,41,46
     HUNTAIL,43,46
     GOREBYSS,43,46
+OldRod
+    SEEL,15,20
+    SHELLDER,15,20
 PhenomenonGrass
     SNOVER,41,45
     MRMIME,41,46
@@ -379,6 +421,9 @@ Cave
     ONIX,29,33
     TRAPINCH,28,33
     SALAZZLE,29,33
+OldRod
+    QWILFISH,15,20
+    BASCULIN,15,20
 PhenomenonCave
     GLIGAR,29,32
     MUNCHLAX,28,32
@@ -397,6 +442,9 @@ Water
     LAPRAS,45,48
     HUNTAIL,46,49
     GOREBYSS,46,49
+OldRod
+    SEEL,15,20
+    SHELLDER,15,20
 PhenomenonWater
     WISHIWASHI,47
     HUNTAIL,46
@@ -426,6 +474,9 @@ Water
     HUNTAIL,47,51
     GOREBYSS,47,52
     SLOWKING,47,52
+OldRod
+    SEEL,15,20
+    SHELLDER,15,20
 PhenomenonGrass
     BLISSEY,47,51
     MRRIME,47,52
@@ -454,6 +505,9 @@ Land
     LUCARIO,49,52
     MIENSHAO,49,52
     HARIYAMA,48,51
+OldRod
+    MAGIKARP,15,20
+    BASCULIN,15,20
 Water
     SEAKING,48,53
     LUDICOLO,48,52
@@ -475,6 +529,9 @@ Cave
     TYROGUE,7,12
     LITLEO,7,12
     RIOLU,8,13
+OldRod
+    MAGIKARP,7,13
+    BASCULIN,7,13
 #-------------------------------
 147 # Kaminari Pass
 16,8,8
@@ -496,6 +553,9 @@ Water
     GOLISOPOD,65,70
     MILOTIC,65,70
     PYUKUMUKU,65,70
+OldRod
+    FEEBAS,7,13
+    BASCULIN,7,13
 #-------------------------------
 148 # Kaminari Cave
 16,8,8
@@ -508,6 +568,9 @@ Cave
     STEELIX,65,70
     FLYGON,65,70
     GARCHOMP,65,70
+OldRod
+    FEEBAS,7,13
+    BASCULIN,7,13
 #-------------------------------
 155 # Mushi Grove
 16,8,8
@@ -529,14 +592,17 @@ Water
     BASCULIN,19,24
     GOOMY,19,24
     GOOMY,19,24
+OldRod
+    BASCULIN,12,14
+    FEEBAS,13,15
 PhenomenonGrass
     PETILIL,13,16
     SCYTHER,13,16
     STANTLER,13,16
     PINSIR,13,16
+    ROWLET,13,15
+    ROWLET,13,15
     HERACROSS,13,16
-    WIMPOD,13,16
-    SCYTHER,13,16
 #-------------------------------
 156 # Kowai Pass
 16,8,8
@@ -558,6 +624,9 @@ Water
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
+OldRod
+    QWILFISH,12,14
+    BASCULIN,13,15
 #-------------------------------
 157 # Kowai Pass
 16,8,8
@@ -579,6 +648,9 @@ Water
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
+OldRod
+    QWILFISH,12,14
+    BASCULIN,13,15
 #-------------------------------
 158 # Jinsu Island
 16,8,8
@@ -600,6 +672,9 @@ Water
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
+OldRod
+    QWILFISH,12,14
+    BASCULIN,13,15
 #-------------------------------
 162 # Jinsu Forest
 16,8,8
@@ -621,6 +696,9 @@ Water
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
+OldRod
+    QWILFISH,12,14
+    BASCULIN,13,15
 #-------------------------------
 163 # Jinsu Cave
 16,8,8
@@ -642,6 +720,9 @@ Water
     CARRACOSTA,56,62
     SEAKING,56,62
     PYUKUMUKU,56,62
+OldRod
+    FINNEON,12,14
+    BASCULIN,13,15
 PhenomenonCave
     GLIGAR,57,63
     MUNCHLAX,57,63
@@ -669,6 +750,9 @@ Water
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
+OldRod
+    FINNEON,12,14
+    BASCULIN,13,15
 #-------------------------------
 166 # Jinsu Forest
 18,8,8
@@ -690,3 +774,6 @@ Water
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
+OldRod
+    QWILFISH,12,14
+    BASCULIN,13,15

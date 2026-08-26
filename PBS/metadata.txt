@@ -629,7 +629,7 @@ ShowArea = false
 MapPosition = 2,12,5
 #-------------------------------
 [112]
-# Tsuchi Library
+# Tsuchi Village
 Outdoor = false
 ShowArea = false
 MapPosition = 2,14,15
