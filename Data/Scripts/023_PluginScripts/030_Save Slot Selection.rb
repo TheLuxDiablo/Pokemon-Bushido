@@ -1,3 +1,60 @@
+
+#===============================================================================
+# Save-screen Pokémon icon helper
+#
+# Save-slot previews must use the form value that was actually serialized with
+# the Pokémon. Calling the normal #form getter here can re-run MultipleForms
+# logic against the title/load-screen map context and incorrectly fall back to
+# form 0.
+#
+# We give PokemonIconSprite a harmless clone whose form getter is pinned to the
+# saved @form value. The real saved Pokémon object is never modified.
+#===============================================================================
+def pbBushidoSavedPokemonForIcon(pkmn)
+  return nil if !pkmn
+
+  saved_form = 0
+
+  begin
+    raw_form = pkmn.instance_variable_get(:@form)
+    saved_form = raw_form if !raw_form.nil?
+  rescue
+  end
+
+  begin
+    if saved_form.nil? && pkmn.respond_to?(:formSimple)
+      saved_form = pkmn.formSimple
+    end
+  rescue
+  end
+
+  saved_form = 0 if saved_form.nil?
+
+  begin
+    icon_pkmn = pkmn.clone
+  rescue
+    return pkmn
+  end
+
+  begin
+    icon_pkmn.instance_variable_set(:@form, saved_form)
+  rescue
+  end
+
+  # PokemonIconSprite/pbPokemonIconFile may call #form rather than reading
+  # @form directly. Pin that getter on the clone so no map-based form callback
+  # can alter the save-screen preview.
+  begin
+    form_value = saved_form
+    eigenclass = class << icon_pkmn; self; end
+    eigenclass.send(:define_method, :form) { form_value }
+    eigenclass.send(:define_method, :formSimple) { form_value }
+  rescue
+  end
+
+  return icon_pkmn
+end
+
 class SaveSlot_Selection_Scene
   class Save_Slot
 
@@ -467,7 +524,7 @@ class PokemonSaveSlotPanel < Sprite
         @trainer.party.each_with_index do |pkmn, i|
           next if !pkmn
 
-          @sprites["pokemon#{i}"] = PokemonIconSprite.new(pkmn, viewport)
+          @sprites["pokemon#{i}"] = PokemonIconSprite.new(pbBushidoSavedPokemonForIcon(pkmn), viewport)
 
           begin
             @sprites["pokemon#{i}"].opacity = (pkmn.hp <= 0) ? 100 : 255
@@ -876,7 +933,7 @@ class BushidoSaveCarousel < SpriteWrapper
           wanted[key] = true
 
           if !@card_sprites[key]
-            @card_sprites[key] = PokemonIconSprite.new(pkmn, self.viewport)
+            @card_sprites[key] = PokemonIconSprite.new(pbBushidoSavedPokemonForIcon(pkmn), self.viewport)
             @card_sprites[key].setOffset(PictureOrigin::Center)
             @card_sprites[key].z = self.z + 5
           end
