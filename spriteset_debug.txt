@@ -1,0 +1,304 @@
+
+=== BEGIN MAP 85 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=69
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 85 ===
+
+=== BEGIN MAP 169 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=2
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 169 ===
+
+=== BEGIN MAP 169 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=2
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 169 ===
+
+=== BEGIN MAP 102 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=45
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 102 ===
+
+=== BEGIN MAP 85 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=69
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 85 ===
+
+=== BEGIN MAP 169 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=2
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 169 ===
+
+=== BEGIN MAP 169 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=2
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 169 ===
+
+=== BEGIN MAP 102 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=45
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 102 ===
+
+=== BEGIN MAP 85 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=69
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 85 ===
+
+=== BEGIN MAP 169 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=2
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 169 ===
+
+=== BEGIN MAP 169 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=2
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 169 ===
+
+=== BEGIN MAP 102 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=45
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 102 ===
+
+=== BEGIN MAP 85 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=69
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 85 ===
+
+=== BEGIN MAP 169 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=2
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 169 ===
+
+=== BEGIN MAP 169 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=2
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 169 ===
+
+=== BEGIN MAP 102 ===
+1 resetViewports
+2 TilemapLoader.new
+3 tileset
+4 autotiles begin
+5 autotiles done
+6 map_data
+7 priorities
+8 terrain_tags
+9 panorama
+10 fog
+11 character sprites done; events=45
+12 weather
+13 BEFORE pbOnSpritesetCreate
+14 AFTER pbOnSpritesetCreate
+15 BEFORE update
+16 AFTER update
+=== END MAP 102 ===

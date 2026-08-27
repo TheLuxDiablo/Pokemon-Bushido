@@ -1,58 +1,43 @@
 #===============================================================================
 # Bushido Environmental Lights
-# Pokemon Essentials v18.1 / RGSS1
+# Pokemon Essentials v18.1 / RGSS
 #
-# 006_PointLights.rb
+# Event names:
 #
-# Event-name setup only. No event calls or Parallel Processes are required.
-#
-# Normal light:
 #   Light(0,0)
-#   Lantern Light(8,-16)
+#   Light(12,-8)
+#   Lantern Light(6,-20)
 #
-# Fire:
 #   Fire(0,0)
-#   Bonfire Fire(-4,-12)
+#   Fire(4,-12)
+#   Bonfire Fire(0,-8)
 #
-# Offsets are PIXELS:
+# Offsets are in PIXELS:
 #   X: negative = left, positive = right
 #   Y: negative = up,   positive = down
-#
-# Safety/scaling design:
-# - Spriteset_Map is never modified.
-# - No recursive methods exist in this script.
-# - Scene_Map container discovery is iterative and hard-bounded.
-# - Connected-map duplicates are deduplicated by logical event identity.
-# - Effects never write state into Game_Event or Game_Map.
-# - Generated glow/particle bitmaps are cached and shared by every effect.
-# - Off-screen effects keep no rendered sprites, allowing many tagged events.
 #===============================================================================
 
 module BushidoPointLights
-  #=============================================================================
-  # Shared
-  #=============================================================================
-
-  PIXEL_SIZE       = 2
-  BASE_Y_OFFSET    = -16
-  BLEND_TYPE       = 1
-  EFFECT_Z         = 99999
-  PARTICLE_Z       = 100000
-
-  SCAN_INTERVAL    = 10
-  INITIAL_DELAY    = 2
-
-  # No recursive traversal. The Scene_Map scan uses an iterative queue and
-  # never inspects deeper than this many Array/Hash layers.
-  SPRITESET_SCAN_DEPTH      = 4
-  SPRITESET_SCAN_NODE_LIMIT = 4096
-
-  # FX outside this margin are not rendered. The logical effect remains in the
-  # manager and wakes back up as soon as its source approaches the screen.
-  ACTIVE_MARGIN = 128
 
   #=============================================================================
-  # Point Light
+  # General
+  #=============================================================================
+
+  PIXEL_SIZE = 2
+  BASE_Y_OFFSET = -16
+
+  EFFECT_Z   = 99999
+  PARTICLE_Z = 100000
+
+  BLEND_TYPE = 1
+
+  SCAN_INTERVAL = 8
+  INITIAL_DELAY = 2
+
+  SCREEN_MARGIN = 96
+
+  #=============================================================================
+  # Normal Light
   #=============================================================================
 
   INNER_RADIUS = 24
@@ -61,19 +46,19 @@ module BushidoPointLights
   INNER_COLOR = Color.new(255, 225, 150)
   OUTER_COLOR = Color.new(255, 205, 110)
 
-  INNER_OPACITY = 140
-  OUTER_OPACITY = 80
+  INNER_OPACITY = 150
+  OUTER_OPACITY = 90
 
-  INNER_PULSE_SCALE = 0.045
-  OUTER_PULSE_SCALE = 0.075
+  INNER_PULSE_SCALE = 0.050
+  OUTER_PULSE_SCALE = 0.085
 
   INNER_PULSE_SPEED = 0.035
-  OUTER_PULSE_SPEED = 0.065
+  OUTER_PULSE_SPEED = 0.068
 
-  OUTER_PULSE_OFFSET = 1.7
+  OUTER_PULSE_OFFSET = 1.65
 
-  INNER_OPACITY_PULSE = 12
-  OUTER_OPACITY_PULSE = 16
+  INNER_OPACITY_PULSE = 14
+  OUTER_OPACITY_PULSE = 20
 
   #=============================================================================
   # Fire
@@ -85,41 +70,40 @@ module BushidoPointLights
   FIRE_INNER_COLOR = Color.new(255, 118, 45)
   FIRE_OUTER_COLOR = Color.new(235, 48, 30)
 
-  FIRE_INNER_OPACITY = 105
-  FIRE_OUTER_OPACITY = 55
+  FIRE_INNER_OPACITY = 150
+  FIRE_OUTER_OPACITY = 90
 
-  # Fire remains visible during daytime, but its cast light is softer.
-  FIRE_DAY_STRENGTH   = 0.68
-  FIRE_NIGHT_STRENGTH = 1.0
+  FIRE_DAY_STRENGTH = 1.00
+  FIRE_NIGHT_STRENGTH = 1.00
 
-  FIRE_INNER_SCALE_MIN = 0.96
-  FIRE_INNER_SCALE_MAX = 1.04
+  FIRE_INNER_SCALE_MIN = 0.95
+  FIRE_INNER_SCALE_MAX = 1.05
 
-  FIRE_OUTER_SCALE_MIN = 0.97
-  FIRE_OUTER_SCALE_MAX = 1.06
+  FIRE_OUTER_SCALE_MIN = 0.96
+  FIRE_OUTER_SCALE_MAX = 1.07
 
-  FIRE_INNER_FLICKER = 12
-  FIRE_OUTER_FLICKER = 8
+  FIRE_INNER_FLICKER = 14
+  FIRE_OUTER_FLICKER = 10
 
-  FIRE_PARTICLE_COUNT   = 5
-  FIRE_PARTICLE_OPACITY = 180
+  FIRE_PARTICLE_COUNT = 8
+  FIRE_PARTICLE_OPACITY = 220
 
   FIRE_PARTICLE_SPREAD_X = 10
-  FIRE_PARTICLE_SPREAD_Y = 4
+  FIRE_PARTICLE_SPREAD_Y = 5
 
-  FIRE_PARTICLE_RISE_MIN = 16
-  FIRE_PARTICLE_RISE_MAX = 28
+  FIRE_PARTICLE_RISE_MIN = 18
+  FIRE_PARTICLE_RISE_MAX = 30
 
-  FIRE_PARTICLE_SPEED_MIN = 0.30
-  FIRE_PARTICLE_SPEED_MAX = 0.60
+  FIRE_PARTICLE_SPEED_MIN = 0.34
+  FIRE_PARTICLE_SPEED_MAX = 0.65
 
-  FIRE_PARTICLE_DRIFT = 0.16
+  FIRE_PARTICLE_DRIFT = 0.18
 
   FIRE_PARTICLE_SIZE_SMALL = 2
   FIRE_PARTICLE_SIZE_LARGE = 4
 
   #=============================================================================
-  # Runtime Bitmap Cache
+  # Shared Bitmap Cache
   #=============================================================================
 
   @bitmap_cache = {}
@@ -165,16 +149,15 @@ module BushidoPointLights
     key = [:fire_particle, size, palette]
 
     return cached_bitmap(key) {
-      color = nil
-
-      case palette
-      when 0
-        color = Color.new(255, 205, 95, 255)
-      when 1
-        color = Color.new(255, 105, 40, 255)
-      else
-        color = Color.new(235, 48, 30, 255)
-      end
+      color =
+        case palette
+        when 0
+          Color.new(255, 215, 115, 255)
+        when 1
+          Color.new(255, 120, 45, 255)
+        else
+          Color.new(235, 48, 30, 255)
+        end
 
       bitmap = Bitmap.new(size, size)
       bitmap.fill_rect(0, 0, size, size, color)
@@ -203,14 +186,14 @@ module BushidoPointLights
       end
 
       hour = time.hour
-      return (hour >= 20 || hour < 6)
+      return hour >= 20 || hour < 6
     rescue
       return false
     end
   end
 
   #=============================================================================
-  # Sprite / Event Helpers
+  # Event Helpers
   #=============================================================================
 
   def self.character_from_sprite(sprite)
@@ -246,10 +229,6 @@ module BushidoPointLights
     return !!(name =~ /Fire\s*\(\s*-?\d+\s*,\s*-?\d+\s*\)/i)
   end
 
-  #=============================================================================
-  # Pixel Offsets
-  #=============================================================================
-
   def self.light_offset(sprite)
     return parse_offset(event_name_from_sprite(sprite), "Light")
   end
@@ -269,21 +248,21 @@ module BushidoPointLights
   end
 
   #=============================================================================
-  # Logical Event Identity
+  # Stable Event Identity
   #=============================================================================
 
   def self.event_id_from_character(character)
     return nil if !character
 
     begin
-      value = character.id
-      return value if !value.nil?
+      id = character.id
+      return id if !id.nil?
     rescue
     end
 
     begin
-      value = character.instance_variable_get(:@id)
-      return value if !value.nil?
+      id = character.instance_variable_get(:@id)
+      return id if !id.nil?
     rescue
     end
 
@@ -294,14 +273,14 @@ module BushidoPointLights
     return nil if !character
 
     begin
-      value = character.map_id
-      return value if !value.nil?
+      id = character.map_id
+      return id if !id.nil?
     rescue
     end
 
     begin
-      value = character.instance_variable_get(:@map_id)
-      return value if !value.nil?
+      id = character.instance_variable_get(:@map_id)
+      return id if !id.nil?
     rescue
     end
 
@@ -310,29 +289,17 @@ module BushidoPointLights
 
       if map
         begin
-          value = map.map_id
-          return value if !value.nil?
+          id = map.map_id
+          return id if !id.nil?
         rescue
         end
 
         begin
-          value = map.instance_variable_get(:@map_id)
-          return value if !value.nil?
+          id = map.instance_variable_get(:@map_id)
+          return id if !id.nil?
         rescue
         end
       end
-    rescue
-    end
-
-    return nil
-  end
-
-  def self.map_from_spriteset(spriteset)
-    return nil if !spriteset
-
-    begin
-      map = spriteset.instance_variable_get(:@map)
-      return map if map
     rescue
     end
 
@@ -340,210 +307,72 @@ module BushidoPointLights
   end
 
   def self.map_id_from_spriteset(spriteset)
-    map = map_from_spriteset(spriteset)
+    return nil if !spriteset
 
-    if map
-      begin
-        value = map.map_id
-        return value if !value.nil?
-      rescue
-      end
-
-      begin
-        value = map.instance_variable_get(:@map_id)
-        return value if !value.nil?
-      rescue
-      end
+    begin
+      map = spriteset.map
+      return map.map_id if map
+    rescue
     end
 
     begin
-      value = spriteset.instance_variable_get(:@map_id)
-      return value if !value.nil?
+      map = spriteset.instance_variable_get(:@map)
+      return map.map_id if map
     rescue
     end
 
     return nil
   end
 
-  def self.logical_event_key(sprite, spriteset)
+  def self.logical_event_key(sprite, spriteset_map_id = nil)
     character = character_from_sprite(sprite)
     return nil if !character
 
     event_id = event_id_from_character(character)
     map_id = map_id_from_character(character)
-    map_id = map_id_from_spriteset(spriteset) if map_id.nil?
+    map_id = spriteset_map_id if map_id.nil?
 
     if !map_id.nil? && !event_id.nil?
       return [map_id.to_i, event_id.to_i]
     end
 
-    # If map IDs aren't exposed, use the map object's runtime identity.
-    map = map_from_spriteset(spriteset)
-
-    if map && !event_id.nil?
-      return [:map_object, map.object_id, event_id.to_i]
-    end
-
-    # Final fallback. Separate Sprite_Characters that share the exact same
-    # Game_Event object still deduplicate here.
     return [:character, character.object_id]
   end
 
   #=============================================================================
-  # Duplicate Source Selection
-  #=============================================================================
-
-  def self.sprite_score(sprite)
-    return -100000 if !sprite
-
-    begin
-      return -100000 if sprite.disposed?
-    rescue
-      return -100000
-    end
-
-    score = 0
-
-    begin
-      score += 20 if sprite.visible
-    rescue
-    end
-
-    begin
-      viewport = sprite.viewport
-
-      if viewport
-        begin
-          score += 8 if viewport.visible
-        rescue
-          score += 2
-        end
-      end
-    rescue
-    end
-
-    begin
-      if source_near_screen?(sprite)
-        score += 40
-      end
-    rescue
-    end
-
-    return score
-  end
-
-  def self.source_near_screen?(sprite)
-    return false if !sprite
-
-    begin
-      x = sprite.x
-      y = sprite.y
-
-      return false if x < -ACTIVE_MARGIN
-      return false if y < -ACTIVE_MARGIN
-      return false if x > Graphics.width + ACTIVE_MARGIN
-      return false if y > Graphics.height + ACTIVE_MARGIN
-
-      return true
-    rescue
-      return false
-    end
-  end
-
-  #=============================================================================
-  # Pixelated Radial Glow
-  #=============================================================================
-
-  def self.make_glow(radius, color)
-    size = (radius * 2) + PIXEL_SIZE
-    bitmap = Bitmap.new(size, size)
-
-    center = size / 2.0
-    max_distance = radius.to_f
-
-    y = 0
-
-    while y < size
-      x = 0
-
-      while x < size
-        sample_x = x + (PIXEL_SIZE / 2.0)
-        sample_y = y + (PIXEL_SIZE / 2.0)
-
-        dx = sample_x - center
-        dy = sample_y - center
-
-        distance = Math.sqrt((dx * dx) + (dy * dy))
-
-        if distance <= max_distance
-          strength = 1.0 - (distance / max_distance)
-          strength = Math.sqrt(strength)
-          alpha = (255 * strength).to_i
-
-          bitmap.fill_rect(
-            x,
-            y,
-            PIXEL_SIZE,
-            PIXEL_SIZE,
-            Color.new(color.red, color.green, color.blue, alpha)
-          )
-        end
-
-        x += PIXEL_SIZE
-      end
-
-      y += PIXEL_SIZE
-    end
-
-    return bitmap
-  end
-
-  def self.random_float(minimum, maximum)
-    amount = rand(1000) / 1000.0
-    return minimum + (amount * (maximum - minimum))
-  end
-
-  #=============================================================================
-  # Scene_Map Spriteset Discovery
+  # Connected Spriteset Discovery
   #
-  # This is intentionally iterative. There are NO recursive calls here.
+  # Iterative only. No recursive object walking.
   #=============================================================================
 
   def self.scene_spritesets(scene)
     results = []
     seen = {}
-    queue = []
 
     return results if !scene
 
+    queue = []
+
     begin
-      scene.instance_variables.each do |variable|
-        value = scene.instance_variable_get(variable)
+      scene.instance_variables.each do |ivar|
+        value = scene.instance_variable_get(ivar)
         queue.push([value, 0]) if value
       end
     rescue
       return results
     end
 
-    index = 0
-    processed = 0
-
-    while index < queue.length
-      pair = queue[index]
-      index += 1
-
+    while queue.length > 0
+      pair = queue.shift
       value = pair[0]
       depth = pair[1]
 
       next if !value
-      next if depth > SPRITESET_SCAN_DEPTH
+      next if depth > 4
 
-      processed += 1
-      break if processed > SPRITESET_SCAN_NODE_LIMIT
-
-      object_key = value.object_id
-      next if seen[object_key]
-      seen[object_key] = true
+      key = value.object_id
+      next if seen[key]
+      seen[key] = true
 
       if defined?(Spriteset_Map) && value.is_a?(Spriteset_Map)
         results.push(value)
@@ -575,11 +404,183 @@ module BushidoPointLights
 
     return []
   end
+
+
+  #=============================================================================
+  # Screen Position / Visibility
+  #
+  # Connected-map event sprites can exist before they are actually visible.
+  # We never clamp effects into the screen. If a source is outside the screen,
+  # its effect is simply hidden until the source enters view.
+  #=============================================================================
+
+  def self.source_screen_position(sprite, offset_x, offset_y)
+    return nil if !sprite
+
+    character = character_from_sprite(sprite)
+    return nil if !character
+
+    # IMPORTANT:
+    # Do not trust Sprite_Character#x/#y for connected-map marker events.
+    # A connected spriteset can temporarily leave an event sprite at (0,0)
+    # before its map position has been resolved, which creates the stray glow
+    # in the top-left corner.
+    #
+    # ScreenPosHelper calculates the event's real screen position from the
+    # Game_Character and its owning map, which keeps connected-map events in
+    # their proper world position.
+    if defined?(ScreenPosHelper)
+      begin
+        x = ScreenPosHelper.pbScreenX(character) + offset_x
+        y = ScreenPosHelper.pbScreenY(character) + BASE_Y_OFFSET + offset_y
+        return [x, y]
+      rescue
+      end
+    end
+
+    # Fallback for projects where ScreenPosHelper isn't available.
+    begin
+      x = sprite.x + offset_x
+      y = sprite.y + BASE_Y_OFFSET + offset_y
+      return [x, y]
+    rescue
+      return nil
+    end
+  end
+
+  def self.source_position_ready?(sprite)
+    return false if !sprite
+
+    character = character_from_sprite(sprite)
+    return false if !character
+
+    begin
+      return false if sprite.disposed?
+    rescue
+      return false
+    end
+
+    # Game_Event markers must belong to a real loaded map before their FX can
+    # render. This prevents a just-created connected-map event from briefly
+    # appearing at screen origin while the map factory is still positioning it.
+    if character.is_a?(Game_Event)
+      begin
+        map = character.instance_variable_get(:@map)
+        return false if !map
+        return false if map.map_id.nil?
+      rescue
+        return false
+      end
+    end
+
+    return true
+  end
+
+  def self.on_screen_position?(x, y, margin = SCREEN_MARGIN)
+    return false if x.nil? || y.nil?
+
+    return false if x < -margin
+    return false if y < -margin
+    return false if x > Graphics.width + margin
+    return false if y > Graphics.height + margin
+
+    return true
+  end
+
+  def self.sprite_score(sprite)
+    return -100000 if !sprite
+
+    begin
+      return -100000 if sprite.disposed?
+    rescue
+      return -100000
+    end
+
+    score = 0
+
+    begin
+      score += 20 if sprite.visible
+    rescue
+    end
+
+    begin
+      if sprite.x >= -SCREEN_MARGIN &&
+         sprite.y >= -SCREEN_MARGIN &&
+         sprite.x <= Graphics.width + SCREEN_MARGIN &&
+         sprite.y <= Graphics.height + SCREEN_MARGIN
+        score += 40
+      end
+    rescue
+    end
+
+    return score
+  end
+
+  #=============================================================================
+  # Pixelated Glow
+  #=============================================================================
+
+  def self.make_glow(radius, color)
+    size = (radius * 2) + PIXEL_SIZE
+    bitmap = Bitmap.new(size, size)
+
+    center = size / 2.0
+    max_distance = radius.to_f
+
+    y = 0
+
+    while y < size
+      x = 0
+
+      while x < size
+        sx = x + (PIXEL_SIZE / 2.0)
+        sy = y + (PIXEL_SIZE / 2.0)
+
+        dx = sx - center
+        dy = sy - center
+
+        distance = Math.sqrt((dx * dx) + (dy * dy))
+
+        if distance <= max_distance
+          strength = 1.0 - (distance / max_distance)
+
+          # Keep the stepped 2px look visible instead of smoothing too much.
+          strength = Math.sqrt(strength)
+
+          alpha = (strength * 255).to_i
+
+          bitmap.fill_rect(
+            x,
+            y,
+            PIXEL_SIZE,
+            PIXEL_SIZE,
+            Color.new(
+              color.red,
+              color.green,
+              color.blue,
+              alpha
+            )
+          )
+        end
+
+        x += PIXEL_SIZE
+      end
+
+      y += PIXEL_SIZE
+    end
+
+    return bitmap
+  end
+
+  def self.random_float(minimum, maximum)
+    amount = rand(1000) / 1000.0
+    return minimum + amount * (maximum - minimum)
+  end
 end
 
 
 #===============================================================================
-# Point Light
+# Point Light Effect
 #===============================================================================
 
 class BushidoPointLight
@@ -587,10 +588,13 @@ class BushidoPointLight
 
   def initialize(character_sprite)
     @source_sprite = character_sprite
-    @viewport = nil
-    @outer = nil
     @inner = nil
+    @outer = nil
+    @screen_x = nil
+    @screen_y = nil
     @pulse_time = rand(1000)
+
+    create_sprites
   end
 
   def source_viewport
@@ -601,24 +605,11 @@ class BushidoPointLight
     end
   end
 
-  def rebind_source(character_sprite)
-    return if !character_sprite
-    return if @source_sprite.equal?(character_sprite)
+  def create_sprites
+    viewport = source_viewport
 
-    old_viewport = source_viewport
-    @source_sprite = character_sprite
-    new_viewport = source_viewport
-
-    dispose_graphics if !old_viewport.equal?(new_viewport)
-  end
-
-  def ensure_graphics
-    return if @inner && @outer
-
-    @viewport = source_viewport
-
-    @outer = Sprite.new(@viewport)
-    @inner = Sprite.new(@viewport)
+    @outer = Sprite.new(viewport)
+    @inner = Sprite.new(viewport)
 
     @outer.bitmap = BushidoPointLights.light_outer_bitmap
     @inner.bitmap = BushidoPointLights.light_inner_bitmap
@@ -626,8 +617,11 @@ class BushidoPointLight
     setup_sprite(@outer)
     setup_sprite(@inner)
 
-    @inner.opacity = BushidoPointLights::INNER_OPACITY
-    @outer.opacity = BushidoPointLights::OUTER_OPACITY
+    @outer.visible = false
+    @inner.visible = false
+
+    # Start at the correct pulse state immediately so there is no bright snap.
+    apply_pulse
   end
 
   def setup_sprite(sprite)
@@ -637,58 +631,64 @@ class BushidoPointLight
     sprite.z = BushidoPointLights::EFFECT_Z
   end
 
-  def update
-    return if source_disposed?
-
-    if !BushidoPointLights.source_near_screen?(@source_sprite)
-      hide_graphics
-      return
-    end
-
-    ensure_graphics
-    update_position
-    update_visibility
-    update_pulse
+  def rebind_source(character_sprite)
+    return if !character_sprite
+    @source_sprite = character_sprite
   end
 
-  def hide_graphics
-    begin
-      @inner.visible = false if @inner && !@inner.disposed?
-    rescue
-    end
+  def update
+    return if disposed?
+    return if source_disposed?
 
-    begin
-      @outer.visible = false if @outer && !@outer.disposed?
-    rescue
-    end
+    update_position
+    update_visibility
+
+    @pulse_time += 1.0
+    apply_pulse
   end
 
   def update_position
+    return if !BushidoPointLights.source_position_ready?(@source_sprite)
+
     offset = BushidoPointLights.light_offset(@source_sprite)
 
-    x = @source_sprite.x + offset[0]
-    y = @source_sprite.y + BushidoPointLights::BASE_Y_OFFSET + offset[1]
+    pos =
+      BushidoPointLights.source_screen_position(
+        @source_sprite,
+        offset[0],
+        offset[1]
+      )
 
-    @inner.x = x
-    @inner.y = y
-    @outer.x = x
-    @outer.y = y
+    if pos
+      @screen_x = pos[0]
+      @screen_y = pos[1]
+
+      @inner.x = @screen_x
+      @inner.y = @screen_y
+
+      @outer.x = @screen_x
+      @outer.y = @screen_y
+    end
   end
 
   def update_visibility
-    visible = BushidoPointLights.night?
+    visible =
+      BushidoPointLights.source_position_ready?(@source_sprite) &&
+      BushidoPointLights.night? &&
+      BushidoPointLights.on_screen_position?(
+        @screen_x,
+        @screen_y
+      )
+
     @inner.visible = visible
     @outer.visible = visible
   end
 
-  def update_pulse
-    return if !@inner.visible
-
-    @pulse_time += 1.0
-
+  def apply_pulse
     inner_wave =
       Math.sin(
-        @pulse_time * BushidoPointLights::INNER_PULSE_SPEED
+        @pulse_time *
+        BushidoPointLights::INNER_PULSE_SPEED
       )
 
     outer_wave =
@@ -698,23 +698,34 @@ class BushidoPointLight
       )
 
     inner_scale =
-      1.0 + (inner_wave * BushidoPointLights::INNER_PULSE_SCALE)
+      1.0 +
+      inner_wave *
+      BushidoPointLights::INNER_PULSE_SCALE
 
     outer_scale =
-      1.0 + (outer_wave * BushidoPointLights::OUTER_PULSE_SCALE)
+      1.0 +
+      outer_wave *
+      BushidoPointLights::OUTER_PULSE_SCALE
 
     @inner.zoom_x = inner_scale
     @inner.zoom_y = inner_scale
+
     @outer.zoom_x = outer_scale
     @outer.zoom_y = outer_scale
 
     inner_opacity =
       BushidoPointLights::INNER_OPACITY +
-      (inner_wave * BushidoPointLights::INNER_OPACITY_PULSE).to_i
+      (
+        inner_wave *
+        BushidoPointLights::INNER_OPACITY_PULSE
+      ).to_i
 
     outer_opacity =
       BushidoPointLights::OUTER_OPACITY +
-      (outer_wave * BushidoPointLights::OUTER_OPACITY_PULSE).to_i
+      (
+        outer_wave *
+        BushidoPointLights::OUTER_OPACITY_PULSE
+      ).to_i
 
     inner_opacity = 0 if inner_opacity < 0
     inner_opacity = 255 if inner_opacity > 255
@@ -736,27 +747,30 @@ class BushidoPointLight
     end
   end
 
-  def dispose_sprite(sprite)
-    return if !sprite
+  def disposed?
+    return true if !@inner
 
-    # The bitmap is shared by every effect and is owned by the module cache.
     begin
-      sprite.dispose if !sprite.disposed?
+      return @inner.disposed?
     rescue
+      return true
     end
   end
 
-  def dispose_graphics
-    dispose_sprite(@inner)
-    dispose_sprite(@outer)
+  def dispose
+    begin
+      @inner.dispose if @inner && !@inner.disposed?
+    rescue
+    end
+
+    begin
+      @outer.dispose if @outer && !@outer.disposed?
+    rescue
+    end
 
     @inner = nil
     @outer = nil
-    @viewport = nil
-  end
-
-  def dispose
-    dispose_graphics
+    @core = nil
     @source_sprite = nil
   end
 end
@@ -769,32 +783,45 @@ end
 class BushidoFireParticle
   def initialize(viewport)
     @sprite = Sprite.new(viewport)
+
     @sprite.z = BushidoPointLights::PARTICLE_Z
     @sprite.blend_type = BushidoPointLights::BLEND_TYPE
 
     @active = false
+
     @relative_x = 0.0
     @relative_y = 0.0
+
     @distance = 0.0
     @rise_distance = 1.0
+
     @speed = 0.0
     @drift = 0.0
   end
 
   def reset(center_x, center_y, initial = false)
-    if rand(100) < 75
+    if rand(100) < 78
       size = BushidoPointLights::FIRE_PARTICLE_SIZE_SMALL
     else
       size = BushidoPointLights::FIRE_PARTICLE_SIZE_LARGE
     end
 
     roll = rand(100)
-    palette = 2
-    palette = 0 if roll < 18
-    palette = 1 if roll >= 18 && roll < 65
+
+    palette =
+      if roll < 20
+        0
+      elsif roll < 68
+        1
+      else
+        2
+      end
 
     @sprite.bitmap =
-      BushidoPointLights.fire_particle_bitmap(size, palette)
+      BushidoPointLights.fire_particle_bitmap(
+        size,
+        palette
+      )
 
     @sprite.ox = @sprite.bitmap.width / 2
     @sprite.oy = @sprite.bitmap.height / 2
@@ -803,10 +830,16 @@ class BushidoFireParticle
     spread_y = BushidoPointLights::FIRE_PARTICLE_SPREAD_Y
 
     @relative_x =
-      (rand((spread_x * 2) + 1) - spread_x).to_f
+      (
+        rand((spread_x * 2) + 1) -
+        spread_x
+      ).to_f
 
     @relative_y =
-      (rand((spread_y * 2) + 1) - spread_y).to_f
+      (
+        rand((spread_y * 2) + 1) -
+        spread_y
+      ).to_f
 
     @rise_distance =
       (
@@ -834,6 +867,7 @@ class BushidoFireParticle
 
     if initial
       progress = rand(1000) / 1000.0
+
       @distance = @rise_distance * progress
       @relative_y -= @distance
 
@@ -844,10 +878,13 @@ class BushidoFireParticle
     end
 
     @active = true
+
     update_visuals(center_x, center_y)
   end
 
   def update(center_x, center_y)
+    return if center_x.nil? || center_y.nil?
+
     if !@active
       reset(center_x, center_y)
       return
@@ -867,19 +904,21 @@ class BushidoFireParticle
 
   def update_visuals(center_x, center_y)
     progress = @distance / @rise_distance
+
     progress = 0.0 if progress < 0.0
     progress = 1.0 if progress > 1.0
 
-    opacity = 0.0
-
     if progress < 0.18
       opacity =
-        (progress / 0.18) * BushidoPointLights::FIRE_PARTICLE_OPACITY
+        (progress / 0.18) *
+        BushidoPointLights::FIRE_PARTICLE_OPACITY
     else
       opacity =
         (
-          1.0 - ((progress - 0.18) / 0.82)
-        ) * BushidoPointLights::FIRE_PARTICLE_OPACITY
+          1.0 -
+          ((progress - 0.18) / 0.82)
+        ) *
+        BushidoPointLights::FIRE_PARTICLE_OPACITY
     end
 
     opacity = 0 if opacity < 0
@@ -889,6 +928,7 @@ class BushidoFireParticle
 
     @sprite.x = (center_x + @relative_x).to_i
     @sprite.y = (center_y + @relative_y).to_i
+
     @sprite.opacity = opacity.to_i
     @sprite.zoom_x = scale
     @sprite.zoom_y = scale
@@ -902,7 +942,6 @@ class BushidoFireParticle
   def dispose
     return if !@sprite
 
-    # Particle bitmaps are shared and are not disposed here.
     begin
       @sprite.dispose if !@sprite.disposed?
     rescue
@@ -922,13 +961,14 @@ class BushidoFireEffect
 
   def initialize(character_sprite)
     @source_sprite = character_sprite
-    @viewport = nil
+
     @inner = nil
     @outer = nil
+    @core = nil
     @particles = []
 
-    @center_x = 0
-    @center_y = 0
+    @center_x = nil
+    @center_y = nil
 
     @flicker_inner = rand(2001) / 1000.0 - 1.0
     @flicker_outer = rand(2001) / 1000.0 - 1.0
@@ -937,6 +977,8 @@ class BushidoFireEffect
     @target_outer = @flicker_outer
 
     @next_flicker = 2 + rand(5)
+
+    create_sprites
   end
 
   def source_viewport
@@ -947,24 +989,25 @@ class BushidoFireEffect
     end
   end
 
-  def rebind_source(character_sprite)
-    return if !character_sprite
-    return if @source_sprite.equal?(character_sprite)
+  def create_sprites
+    viewport = source_viewport
 
-    old_viewport = source_viewport
-    @source_sprite = character_sprite
-    new_viewport = source_viewport
+    @outer = Sprite.new(viewport)
+    @inner = Sprite.new(viewport)
+    @core = Sprite.new(viewport)
 
-    dispose_graphics if !old_viewport.equal?(new_viewport)
-  end
-
-  def ensure_graphics
-    return if @inner && @outer
-
-    @viewport = source_viewport
-
-    @outer = Sprite.new(@viewport)
-    @inner = Sprite.new(@viewport)
+    @core.bitmap = Bitmap.new(8, 8)
+    @core.bitmap.fill_rect(
+      0,
+      0,
+      8,
+      8,
+      Color.new(255, 135, 40, 235)
+    )
+    @core.ox = 4
+    @core.oy = 4
+    @core.blend_type = BushidoPointLights::BLEND_TYPE
+    @core.z = BushidoPointLights::PARTICLE_Z
 
     @outer.bitmap = BushidoPointLights.fire_outer_bitmap
     @inner.bitmap = BushidoPointLights.fire_inner_bitmap
@@ -972,15 +1015,24 @@ class BushidoFireEffect
     setup_sprite(@outer)
     setup_sprite(@inner)
 
+    @outer.visible = false
+    @inner.visible = false
+    @core.visible = false if @core
+
     update_position
 
-    @particles = []
-
     BushidoPointLights::FIRE_PARTICLE_COUNT.times do
-      particle = BushidoFireParticle.new(@viewport)
-      particle.reset(@center_x, @center_y, true)
+      particle = BushidoFireParticle.new(viewport)
+
+      if !@center_x.nil? && !@center_y.nil?
+        particle.reset(@center_x, @center_y, true)
+      end
+
+      particle.visible = false
       @particles.push(particle)
     end
+
+    apply_flicker
   end
 
   def setup_sprite(sprite)
@@ -990,58 +1042,46 @@ class BushidoFireEffect
     sprite.z = BushidoPointLights::EFFECT_Z
   end
 
+  def rebind_source(character_sprite)
+    return if !character_sprite
+    @source_sprite = character_sprite
+  end
+
   def update
+    return if disposed?
     return if source_disposed?
 
-    if !BushidoPointLights.source_near_screen?(@source_sprite)
-      hide_graphics
-      return
-    end
-
-    ensure_graphics
     update_position
     update_visibility
     update_flicker
     update_particles
   end
 
-  def hide_graphics
-    begin
-      @inner.visible = false if @inner && !@inner.disposed?
-    rescue
-    end
-
-    begin
-      @outer.visible = false if @outer && !@outer.disposed?
-    rescue
-    end
-
-    @particles.each do |particle|
-      begin
-        particle.visible = false
-      rescue
-      end
-    end
-  end
-
   def update_position
+    return if !BushidoPointLights.source_position_ready?(@source_sprite)
+
     offset = BushidoPointLights.fire_offset(@source_sprite)
 
-    @center_x = @source_sprite.x + offset[0]
-    @center_y =
-      @source_sprite.y +
-      BushidoPointLights::BASE_Y_OFFSET +
-      offset[1]
+    pos =
+      BushidoPointLights.source_screen_position(
+        @source_sprite,
+        offset[0],
+        offset[1]
+      )
 
-    if @inner
-      @inner.x = @center_x
-      @inner.y = @center_y
-    end
+    return if !pos
 
-    if @outer
-      @outer.x = @center_x
-      @outer.y = @center_y
-    end
+    @center_x = pos[0]
+    @center_y = pos[1]
+
+    @inner.x = @center_x
+    @inner.y = @center_y
+
+    @outer.x = @center_x
+    @outer.y = @center_y
+
+    @core.x = @center_x if @core
+    @core.y = @center_y if @core
   end
 
   def fire_strength
@@ -1053,9 +1093,20 @@ class BushidoFireEffect
   end
 
   def update_visibility
-    # Fire emits visible colored light during the day too.
-    @inner.visible = true
-    @outer.visible = true
+    visible =
+      BushidoPointLights.source_position_ready?(@source_sprite) &&
+      BushidoPointLights.on_screen_position?(
+        @center_x,
+        @center_y
+      )
+
+    @inner.visible = visible
+    @outer.visible = visible
+    @core.visible = visible if @core
+
+    @particles.each do |particle|
+      particle.visible = visible
+    end
   end
 
   def update_flicker
@@ -1064,15 +1115,22 @@ class BushidoFireEffect
     if @next_flicker <= 0
       @target_inner = rand(2001) / 1000.0 - 1.0
       @target_outer = rand(2001) / 1000.0 - 1.0
+
       @next_flicker = 2 + rand(5)
     end
 
     @flicker_inner +=
-      (@target_inner - @flicker_inner) * 0.28
+      (@target_inner - @flicker_inner) *
+      0.28
 
     @flicker_outer +=
-      (@target_outer - @flicker_outer) * 0.20
+      (@target_outer - @flicker_outer) *
+      0.20
 
+    apply_flicker
+  end
+
+  def apply_flicker
     inner_t = (@flicker_inner + 1.0) / 2.0
     outer_t = (@flicker_outer + 1.0) / 2.0
 
@@ -1081,17 +1139,20 @@ class BushidoFireEffect
       (
         BushidoPointLights::FIRE_INNER_SCALE_MAX -
         BushidoPointLights::FIRE_INNER_SCALE_MIN
-      ) * inner_t
+      ) *
+      inner_t
 
     outer_scale =
       BushidoPointLights::FIRE_OUTER_SCALE_MIN +
       (
         BushidoPointLights::FIRE_OUTER_SCALE_MAX -
         BushidoPointLights::FIRE_OUTER_SCALE_MIN
-      ) * outer_t
+      ) *
+      outer_t
 
     @inner.zoom_x = inner_scale
     @inner.zoom_y = inner_scale
+
     @outer.zoom_x = outer_scale
     @outer.zoom_y = outer_scale
 
@@ -1100,14 +1161,22 @@ class BushidoFireEffect
     inner_opacity =
       (
         BushidoPointLights::FIRE_INNER_OPACITY +
-        (@flicker_inner * BushidoPointLights::FIRE_INNER_FLICKER)
-      ) * strength
+        (
+          @flicker_inner *
+          BushidoPointLights::FIRE_INNER_FLICKER
+        )
+      ) *
+      strength
 
     outer_opacity =
       (
         BushidoPointLights::FIRE_OUTER_OPACITY +
-        (@flicker_outer * BushidoPointLights::FIRE_OUTER_FLICKER)
-      ) * strength
+        (
+          @flicker_outer *
+          BushidoPointLights::FIRE_OUTER_FLICKER
+        )
+      ) *
+      strength
 
     inner_opacity = 0 if inner_opacity < 0
     inner_opacity = 255 if inner_opacity > 255
@@ -1117,11 +1186,29 @@ class BushidoFireEffect
 
     @inner.opacity = inner_opacity.to_i
     @outer.opacity = outer_opacity.to_i
+
+    if @core
+      core_scale = 0.92 + ((@flicker_inner + 1.0) * 0.06)
+      @core.zoom_x = core_scale
+      @core.zoom_y = core_scale
+
+      core_opacity = 220 + (@flicker_inner * 20).to_i
+      core_opacity = 0 if core_opacity < 0
+      core_opacity = 255 if core_opacity > 255
+      @core.opacity = core_opacity
+    end
   end
 
   def update_particles
+    visible =
+      BushidoPointLights.on_screen_position?(
+        @center_x,
+        @center_y
+      )
+
+    return if !visible
+
     @particles.each do |particle|
-      particle.visible = true
       particle.update(@center_x, @center_y)
     end
   end
@@ -1136,19 +1223,36 @@ class BushidoFireEffect
     end
   end
 
-  def dispose_sprite(sprite)
-    return if !sprite
+  def disposed?
+    return true if !@inner
 
-    # Radial bitmaps are shared and remain in the module cache.
     begin
-      sprite.dispose if !sprite.disposed?
+      return @inner.disposed?
     rescue
+      return true
     end
   end
 
-  def dispose_graphics
-    dispose_sprite(@inner)
-    dispose_sprite(@outer)
+  def dispose
+    begin
+      @inner.dispose if @inner && !@inner.disposed?
+    rescue
+    end
+
+    begin
+      @outer.dispose if @outer && !@outer.disposed?
+    rescue
+    end
+
+    begin
+      if @core
+        if @core.bitmap && !@core.bitmap.disposed?
+          @core.bitmap.dispose
+        end
+        @core.dispose if !@core.disposed?
+      end
+    rescue
+    end
 
     @particles.each do |particle|
       begin
@@ -1158,23 +1262,16 @@ class BushidoFireEffect
     end
 
     @particles.clear
+
     @inner = nil
     @outer = nil
-    @viewport = nil
-  end
-
-  def dispose
-    dispose_graphics
     @source_sprite = nil
   end
 end
 
 
 #===============================================================================
-# Scene-Level Environmental FX Manager
-#
-# One manager exists per Scene_Map. It does NOT retain a back-reference to the
-# scene and never stores Game_Map/Game_Event objects directly.
+# Scene-Level FX Manager
 #===============================================================================
 
 class BushidoEnvironmentFXManager
@@ -1185,6 +1282,7 @@ class BushidoEnvironmentFXManager
     @scan_counter = 0
     @initial_delay = BushidoPointLights::INITIAL_DELAY
     @has_scanned = false
+
   end
 
   def update(scene)
@@ -1211,10 +1309,6 @@ class BushidoEnvironmentFXManager
     update_effects
   end
 
-  #=============================================================================
-  # Candidate Collection / Deduplication
-  #=============================================================================
-
   def collect_candidates(scene)
     light_candidates = {}
     fire_candidates = {}
@@ -1222,6 +1316,11 @@ class BushidoEnvironmentFXManager
     spritesets = BushidoPointLights.scene_spritesets(scene)
 
     spritesets.each do |spriteset|
+      map_id =
+        BushidoPointLights.map_id_from_spriteset(
+          spriteset
+        )
+
       sprites =
         BushidoPointLights.character_sprites_from_spriteset(
           spriteset
@@ -1236,15 +1335,22 @@ class BushidoEnvironmentFXManager
           next
         end
 
-        is_light = BushidoPointLights.light_sprite?(character_sprite)
-        is_fire = BushidoPointLights.fire_sprite?(character_sprite)
+        is_light =
+          BushidoPointLights.light_sprite?(
+            character_sprite
+          )
+
+        is_fire =
+          BushidoPointLights.fire_sprite?(
+            character_sprite
+          )
 
         next if !is_light && !is_fire
 
         key =
           BushidoPointLights.logical_event_key(
             character_sprite,
-            spriteset
+            map_id
           )
 
         next if !key
@@ -1273,98 +1379,85 @@ class BushidoEnvironmentFXManager
       end
     end
 
+
     return [light_candidates, fire_candidates]
   end
 
-  #=============================================================================
-  # Synchronization
-  #=============================================================================
-
   def sync_effects(scene)
     candidates = collect_candidates(scene)
-    sync_light_effects(candidates[0])
-    sync_fire_effects(candidates[1])
+
+    sync_lights(candidates[0])
+    sync_fires(candidates[1])
   end
 
-  def sync_light_effects(candidates)
-    candidates.each do |key, character_sprite|
+  def sync_lights(candidates)
+    candidates.each do |key, sprite|
       effect = @lights[key]
 
       if effect
-        effect.rebind_source(character_sprite)
+        effect.rebind_source(sprite)
       else
-        @lights[key] = BushidoPointLight.new(character_sprite)
+        @lights[key] = BushidoPointLight.new(sprite)
       end
     end
 
-    remove = []
+    stale = []
 
     @lights.each_key do |key|
-      remove.push(key) if !candidates.has_key?(key)
+      stale.push(key) if !candidates.has_key?(key)
     end
 
-    remove.each do |key|
+    stale.each do |key|
       begin
         @lights[key].dispose if @lights[key]
       rescue
       end
-
       @lights.delete(key)
     end
   end
 
-  def sync_fire_effects(candidates)
-    candidates.each do |key, character_sprite|
+  def sync_fires(candidates)
+    candidates.each do |key, sprite|
       effect = @fires[key]
 
       if effect
-        effect.rebind_source(character_sprite)
+        effect.rebind_source(sprite)
       else
-        @fires[key] = BushidoFireEffect.new(character_sprite)
+        @fires[key] = BushidoFireEffect.new(sprite)
       end
     end
 
-    remove = []
+    stale = []
 
     @fires.each_key do |key|
-      remove.push(key) if !candidates.has_key?(key)
+      stale.push(key) if !candidates.has_key?(key)
     end
 
-    remove.each do |key|
+    stale.each do |key|
       begin
         @fires[key].dispose if @fires[key]
       rescue
       end
-
       @fires.delete(key)
     end
   end
 
-  #=============================================================================
-  # Per-Frame Update
-  #=============================================================================
-
   def update_effects
-    update_light_effects
-    update_fire_effects
-  end
-
-  def update_light_effects
-    remove = []
+    stale = []
 
     @lights.each do |key, effect|
       begin
         if effect.source_disposed?
-          remove.push(key)
+          stale.push(key)
         else
           effect.update
         end
       rescue
-        remove.push(key)
+        stale.push(key)
       end
     end
 
-    remove.each do |key|
+    stale.each do |key|
       begin
         @lights[key].dispose if @lights[key]
       rescue
@@ -1372,24 +1465,22 @@ class BushidoEnvironmentFXManager
 
       @lights.delete(key)
     end
-  end
 
-  def update_fire_effects
-    remove = []
+    stale = []
 
     @fires.each do |key, effect|
       begin
         if effect.source_disposed?
-          remove.push(key)
+          stale.push(key)
         else
           effect.update
         end
       rescue
-        remove.push(key)
+        stale.push(key)
       end
     end
 
-    remove.each do |key|
+    stale.each do |key|
       begin
         @fires[key].dispose if @fires[key]
       rescue
@@ -1398,10 +1489,6 @@ class BushidoEnvironmentFXManager
       @fires.delete(key)
     end
   end
-
-  #=============================================================================
-  # Cleanup
-  #=============================================================================
 
   def dispose
     @lights.each_value do |effect|
@@ -1427,43 +1514,42 @@ end
 #===============================================================================
 # Scene_Map Integration
 #
-# Spriteset_Map is intentionally untouched. The guarded aliases are created
-# once, so this file cannot alias its own wrapper if evaluated a second time.
+# All Essentials/MapFactory work happens first. FX only run after the normal
+# Scene_Map frame has completed.
 #===============================================================================
 
 class Scene_Map
-  unless method_defined?(:bushido_envlights_original_update_v6)
-    alias bushido_envlights_original_update_v6 update
+  unless method_defined?(:bushido_pointlights_original_update_final)
+    alias bushido_pointlights_original_update_final update
   end
 
   def update(*args)
-    # Connected-map and normal Scene_Map behavior always completes first.
-    bushido_envlights_original_update_v6(*args)
+    bushido_pointlights_original_update_final(*args)
 
-    if !@bushido_environment_fx_manager_v6
-      @bushido_environment_fx_manager_v6 =
+    if !@bushido_environment_fx_manager
+      @bushido_environment_fx_manager =
         BushidoEnvironmentFXManager.new
     end
 
-    @bushido_environment_fx_manager_v6.update(self)
+    @bushido_environment_fx_manager.update(self)
   end
 
   if method_defined?(:disposeSpritesets)
-    unless method_defined?(:bushido_envlights_original_dispose_spritesets_v6)
-      alias bushido_envlights_original_dispose_spritesets_v6 disposeSpritesets
+    unless method_defined?(:bushido_pointlights_original_dispose_spritesets_final)
+      alias bushido_pointlights_original_dispose_spritesets_final disposeSpritesets
     end
 
     def disposeSpritesets(*args)
-      if @bushido_environment_fx_manager_v6
+      if @bushido_environment_fx_manager
         begin
-          @bushido_environment_fx_manager_v6.dispose
+          @bushido_environment_fx_manager.dispose
         rescue
         end
 
-        @bushido_environment_fx_manager_v6 = nil
+        @bushido_environment_fx_manager = nil
       end
 
-      bushido_envlights_original_dispose_spritesets_v6(*args)
+      bushido_pointlights_original_dispose_spritesets_final(*args)
     end
   end
 end

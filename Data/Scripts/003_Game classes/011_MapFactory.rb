@@ -41,7 +41,9 @@ class PokemonMapFactory
 
     oldID = ($game_map) ? $game_map.map_id : 0
 
-    setMapChanging(id, @maps[0]) if oldID != 0 && oldID != @maps[0].map_id
+    if oldID != 0 && oldID != @maps[0].map_id
+      setMapChanging(id, @maps[0])
+    end
 
     $game_map = @maps[0]
     @maps[0].setup(id)
@@ -88,16 +90,36 @@ class PokemonMapFactory
   # will not be permanently inserted into @maps.
   #-----------------------------------------------------------------------------
   def getMap(id, add = true)
+    # Already fully loaded.
     for map in @maps
       next if !map
       return map if map.map_id == id
     end
 
-    map = Game_Map.new
-    map.setup(id)
+    # Maps that are currently inside Game_Map#setup.
+    @maps_loading = {} if !@maps_loading
 
-    if add && !mapAddsLocked?
-      @maps.push(map)
+    # Game_Map#setup can indirectly ask MapFactory for the exact same map.
+    # Return the in-progress map instead of recursively constructing it again.
+    if @maps_loading[id]
+      return @maps_loading[id]
+    end
+
+    map = Game_Map.new
+
+    # Register BEFORE setup, because setup can re-enter getMap.
+    @maps_loading[id] = map
+
+    begin
+      map.setup(id)
+
+      # Preserve the original getMap/getMapNoAdd behavior.
+      @maps.push(map) if add
+    rescue
+      @maps.delete(map)
+      raise
+    ensure
+      @maps_loading.delete(id)
     end
 
     return map
@@ -192,7 +214,6 @@ class PokemonMapFactory
 
       if conns[id]
         for conn in conns[id]
-
           if conn[0] == id
             mapA = getMap(conn[0])
 
@@ -204,15 +225,19 @@ class PokemonMapFactory
               (conn[5] - conn[2]) * Game_Map::REAL_RES_Y +
               mapA.display_y
 
-            if hasMap?(conn[3]) ||
-               MapFactoryHelper.mapInRangeById?(
-                 conn[3],
-                 newdispx,
-                 newdispy
-               )
+            already_loaded = hasMap?(conn[3])
+            in_range = false
 
+            if !already_loaded
+              in_range = MapFactoryHelper.mapInRangeById?(
+                conn[3],
+                newdispx,
+                newdispy
+              )
+            end
+
+            if already_loaded || in_range
               mapB = getMap(conn[3])
-
               mapB.display_x = newdispx if mapB.display_x != newdispx
               mapB.display_y = newdispy if mapB.display_y != newdispy
             end
@@ -228,15 +253,19 @@ class PokemonMapFactory
               (conn[2] - conn[5]) * Game_Map::REAL_RES_Y +
               mapA.display_y
 
-            if hasMap?(conn[0]) ||
-               MapFactoryHelper.mapInRangeById?(
-                 conn[0],
-                 newdispx,
-                 newdispy
-               )
+            already_loaded = hasMap?(conn[0])
+            in_range = false
 
+            if !already_loaded
+              in_range = MapFactoryHelper.mapInRangeById?(
+                conn[0],
+                newdispx,
+                newdispy
+              )
+            end
+
+            if already_loaded || in_range
               mapB = getMap(conn[0])
-
               mapB.display_x = newdispx if mapB.display_x != newdispx
               mapB.display_y = newdispy if mapB.display_y != newdispy
             end

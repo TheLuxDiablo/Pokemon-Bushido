@@ -1,0 +1,35 @@
+=== BUSHIDO POINT LIGHTS DEBUG ===
+Manager created
+Detected lights=1 fires=0 night=false
+  Light key=[85, 7]
+Creating Light effect key=[85, 7]
+Detected lights=1 fires=2 night=false
+  Light key=[85, 7]
+  Fire key=[169, 1]
+  Fire key=[169, 2]
+Creating Fire effect key=[169, 1]
+Creating Fire effect key=[169, 2]
+Detected lights=1 fires=8 night=false
+  Light key=[85, 7]
+  Fire key=[169, 1]
+  Fire key=[169, 2]
+  Fire key=[102, 4]
+  Fire key=[102, 5]
+  Fire key=[102, 6]
+  Fire key=[102, 7]
+  Fire key=[102, 8]
+  Fire key=[102, 9]
+Creating Fire effect key=[102, 4]
+Creating Fire effect key=[102, 5]
+Creating Fire effect key=[102, 6]
+Creating Fire effect key=[102, 7]
+Creating Fire effect key=[102, 8]
+Creating Fire effect key=[102, 9]
+Detected lights=1 fires=6 night=false
+  Light key=[85, 7]
+  Fire key=[102, 4]
+  Fire key=[102, 5]
+  Fire key=[102, 6]
+  Fire key=[102, 7]
+  Fire key=[102, 8]
+  Fire key=[102, 9]
