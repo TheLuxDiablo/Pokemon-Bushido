@@ -38,7 +38,7 @@ class PokeBattle_Move
       ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if PBTypes.ineffective?(moveType,defType)
     end
     # Foresight
-    if user.hasActiveAbility?(:SCRAPPY) || target.effects[PBEffects::Foresight]
+    if user.hasActiveAbility?(:SCRAPPY) || user.hasActiveAbility?(:MINDSEYE) || target.effects[PBEffects::Foresight]
       ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:GHOST) &&
                                                          PBTypes.ineffective?(moveType,defType)
     end

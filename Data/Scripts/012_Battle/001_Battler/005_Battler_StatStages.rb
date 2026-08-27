@@ -307,7 +307,7 @@ class PokeBattle_Battler
       if abilityActive?
         if BattleHandlers.triggerStatLossImmunityAbility(@ability,self,PBStats::ATTACK,@battle,false) ||
            BattleHandlers.triggerStatLossImmunityAbilityNonIgnorable(@ability,self,PBStats::ATTACK,@battle,false) ||
-            hasActiveAbility?(:INNERFOCUS) || hasActiveAbility?(:OWNTEMPO) || hasActiveAbility?(:OBLIVIOUS) || hasActiveAbility?(:SCRAPPY)
+            hasActiveAbility?(:INNERFOCUS) || hasActiveAbility?(:OWNTEMPO) || hasActiveAbility?(:OBLIVIOUS) || hasActiveAbility?(:SCRAPPY) || hasActiveAbility?(:MINDSEYE)
           @battle.pbShowAbilitySplash(self) if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
           @battle.pbDisplay(_INTL("{1}'s {2} prevented {3}'s {4} from working!",
              pbThis,abilityName,user.pbThis(true),user.abilityName))

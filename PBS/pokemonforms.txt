@@ -483,7 +483,7 @@ Type1 = FIGHTING
 BaseStats = 52,95,55,55,58,62
 Abilities = STEADFAST
 HiddenAbility = SCRAPPY
-Moves = 1,PECK,1,SANDATTACK,5,LEER,10,FURYCUTTER,15,ROCKSMASH,20,BRUTALSWING,25,DETECT,30,KNOCKOFF,35,DEFOG,40,BRICKBREAK,45,SWORDSDANCE,50,SLAM,55,LEAFBLADE,60,FINALGAMBIT,65,BRAVEBIRD
+Moves = 1,PECK,1,SANDATTACK,1,TACKLE,3,LEER,10,FURYCUTTER,15,ROCKSMASH,20,BRUTALSWING,25,DETECT,30,KNOCKOFF,35,DEFOG,40,BRICKBREAK,45,SWORDSDANCE,50,SLAM,55,LEAFBLADE,60,FINALGAMBIT,65,BRAVEBIRD
 EggMoves = COUNTER,COVET,CURSE,DOUBLEEDGE,FEINT,FLAIL,NIGHTSLASH,QUICKATTACK,QUICKGUARD,SIMPLEBEAM,SKYATTACK
 Weight = 42.0
 Pokedex = The stalks of leeks are thicker and longer in the Galar region. Farfetch'd that adapted to these stalks took on a unique form.
@@ -2673,14 +2673,16 @@ FormName = Hisuian
 Type1 = FIRE
 Type2 = ROCK
 BaseStats = 60,75,45,55,65,50
-Moves = 1,EMBER,1,LEER,4,HOWL,8,ROCKTHROW,12,FLAMEWHEEL,16,HELPINGHAND,20,AGILITY,24,FIREFANG,28,RETALIATE,32,CRUNCH,36,TAKEDOWN,40,FLAMETHROWER,44,ROAR,48,PLAYROUGH,52,REVERSAL,56,FLAREBLITZ
+HiddenAbility = ROCKHEAD
+Moves = 1,EMBER,1,LEER,4,HOWL,8,BITE,12,FLAMEWHEEL,16,HELPINGHAND,24,FIREFANG,28,RETALIATE,32,CRUNCH,36,TAKEDOWN,40,FLAMETHROWER,44,ROAR,48,ROCKSLIDE,52,REVERSAL,56,FLAREBLITZ
 EggMoves = BODYSLAM,BURNUP,COVET,CRUNCH,DOUBLEEDGE,FIRESPIN,FLAREBLITZ,HEATWAVE,HOWL,IRONTAIL,MORNINGSUN,THRASH
 Height = 0.8
 Weight = 22.7
 Pokedex = They patrol their territory in pairs. I believe the igneous rock components in the fur of this species are the result of volcanic activity in its habitat.
-BattlerPlayerY = 50
-BattlerEnemyX = 2
-BattlerEnemyY = 31
+BattlerPlayerX = -2
+BattlerPlayerY = 54
+BattlerEnemyX = -1
+BattlerEnemyY = 33
 BattlerShadowX = -1
 #-------------------------------
 [ARCANINE,1]
@@ -2688,12 +2690,13 @@ FormName = Hisuian
 Type1 = FIRE
 Type2 = ROCK
 BaseStats = 95,115,80,90,95,80
-Moves = 0,EXTREMESPEED,1,EXTREMESPEED,1,BURNUP,1,FLAMEWHEEL,1,HELPINGHAND,1,AGILITY,1,FIREFANG,1,RETALIATE,1,CRUNCH,1,TAKEDOWN,1,FLAMETHROWER,1,ROAR,1,PLAYROUGH,1,REVERSAL,1,FLAREBLITZ,1,EMBER,1,LEER,1,HOWL,1,ROCKSLIDE,1,ROCKTHROW,1,BITE
+HiddenAbility = ROCKHEAD
+Moves = 0,EXTREMESPEED,1,EXTREMESPEED,1,FLAMEWHEEL,1,HELPINGHAND,1,AGILITY,1,FIREFANG,1,RETALIATE,1,CRUNCH,1,TAKEDOWN,1,FLAMETHROWER,1,ROAR,1,PLAYROUGH,1,REVERSAL,1,FLAREBLITZ,1,EMBER,1,LEER,1,HOWL,1,ROCKSLIDE,1,ROCKTHROW,1,BITE,1,HEADSMASH,64,RAGINGFURY
 Height = 2.0
 Weight = 168.0
 Pokedex = Snaps at its foes with fangs cloaked in blazing flame. Despite its bulk, it deftly feints every which way, leading opponents on a deceptively merry chase as it all but dances around them.
-BattlerPlayerY = 50
-BattlerEnemyX = 2
+BattlerPlayerX = -2
+BattlerPlayerY = 44
 BattlerEnemyY = 17
 BattlerShadowX = -1
 #-------------------------------
@@ -2701,12 +2704,12 @@ BattlerShadowX = -1
 FormName = Hisuian
 Type1 = ELECTRIC
 Type2 = GRASS
-Moves = 1,CHARGE,1,TACKLE,4,SONICBOOM,6,ABSORB,9,SPARK,11,ROLLOUT,13,SCREECH,16,CHARGEBEAM,20,GRASSKNOT,22,ELECTROBALL,26,SELFDESTRUCT,29,LIGHTSCREEN,34,GIGADRAIN,37,DISCHARGE,41,EXPLOSION,46,GYROBALL,48,THUNDERBOLT
+Moves = 1,CHARGE,1,TACKLE,4,THUNDERSHOCK,6,STUNSPORE,9,BULLETSEED,11,ROLLOUT,13,SCREECH,16,CHARGEBEAM,20,SWIFT,22,ELECTROBALL,26,SELFDESTRUCT,29,ENERGYBALL,34,SEEDBOMB,34,DISCHARGE,41,EXPLOSION,46,GYROBALL,50,GRASSYTERRAIN
 Weight = 13.0
 Pokedex = An enigmatic Pokémon that happens to bear a resemblance to a Poké Ball. When excited, it discharges the electric current it has stored in its belly, then lets out a great, uproarious laugh.
-BattlerPlayerY = 50
+BattlerPlayerX = -2
 BattlerEnemyX = -2
-BattlerEnemyY = 33
+BattlerEnemyY = 35
 BattlerShadowX = -1
 Evolutions = ELECTRODE,Item,LEAFSTONE
 #-------------------------------
@@ -2714,12 +2717,13 @@ Evolutions = ELECTRODE,Item,LEAFSTONE
 FormName = Hisuian
 Type1 = ELECTRIC
 Type2 = GRASS
-Moves = 1,ENERGYBALL,1,CHARGE,1,TACKLE,1,SONICBOOM,1,GIGADRAIN,4,SONICBOOM,6,ABSORB,9,SPARK,11,ROLLOUT,13,SCREECH,16,CHARGEBEAM,20,GRASSKNOT,22,ELECTROBALL,26,SELFDESTRUCT,29,LIGHTSCREEN,36,MAGNETRISE,41,DISCHARGE,47,EXPLOSION,54,GYROBALL,58,THUNDERBOLT
+Moves = 0,CHLOROBLAST,1,CHARGE,1,TACKLE,4,THUNDERSHOCK,6,STUNSPORE,9,BULLETSEED,11,ROLLOUT,13,SCREECH,16,CHARGEBEAM,20,SWIFT,22,ELECTROBALL,26,SELFDESTRUCT,29,ENERGYBALL,34,SEEDBOMB,34,DISCHARGE,41,EXPLOSION,46,GYROBALL,50,GRASSYTERRAIN
 Weight = 71.0
 Pokedex = The tissue on the surface of its body is curiously similar in composition to an Apricorn. When irritated, this Pokémon lets loose an electric current equal to 20 lightning bolts.
-BattlerPlayerY = 50
+BattlerPlayerX = -2
+BattlerPlayerY = 52
 BattlerEnemyX = -1
-BattlerEnemyY = 26
+BattlerEnemyY = 27
 BattlerShadowX = -1
 #-------------------------------
 [TYPHLOSION,1]
@@ -2727,24 +2731,28 @@ FormName = Hisuian
 Type1 = FIRE
 Type2 = GHOST
 BaseStats = 73,84,78,95,119,85
-Moves = 1,HEX,1,DOUBLEEDGE,1,GYROBALL,1,TACKLE,1,LEER,1,SMOKESCREEN,1,EMBER,6,SMOKESCREEN,10,EMBER,13,QUICKATTACK,20,FLAMEWHEEL,24,DEFENSECURL,31,SWIFT,35,FLAMECHARGE,43,LAVAPLUME,48,SHADOWBALL,56,FLAMETHROWER,61,INFERNO,69,DOUBLEEDGE,74,BURNUP,82,ERUPTION
+Moves = 0,INFERNALPARADE,1,EXTRASENSORY,1,COVET,1,CURSE,1,DOUBLEKICK,1,REVERSAL,1,DOUBLEEDGE,1,GYROBALL,1,TACKLE,1,LEER,1,SMOKESCREEN,1,EMBER,1,ERUPTION,6,SMOKESCREEN,10,EMBER,13,QUICKATTACK,20,FLAMEWHEEL,24,DEFENSECURL,31,SWIFT,35,FLAMECHARGE,43,LAVAPLUME,48,FLAMETHROWER,56,INFERNO,61,ROLLOUT,74,OVERHEAT
 Height = 1.6
 Weight = 69.7
 Kind = Ghost Flame
 Pokedex = Said to purify lost, forsaken souls with its flames and guide them to the afterlife. I believe its form has been influenced by the energy of the sacred mountain towering at Hisui's center.
+BattlerPlayerX = -4
 BattlerPlayerY = 50
-BattlerEnemyX = -2
-BattlerEnemyY = 11
+BattlerEnemyX = -3
+BattlerEnemyY = 17
 BattlerShadowX = -1
 #-------------------------------
 [QWILFISH,1]
 FormName = Hisuian
 Type1 = DARK
 Type2 = POISON
-Moves = 1,POISONSTING,1,TACKLE,4,HARDEN,8,WATERGUN,12,FELLSTINGER,16,MINIMIZE,20,SPIKES,24,BRINE,28,REVENGE,32,PINMISSILE,36,TOXICSPIKES,40,POISONJAB,44,STOCKPILE,44,SPITUP,48,DARKPULSE,52,TOXIC,56,AQUATAIL,60,ACUPRESSURE,66,DESTINYBOND
+Moves = 1,POISONSTING,1,TACKLE,4,HARDEN,8,BITE,12,FELLSTINGER,16,MINIMIZE,20,SPIKES,24,BRINE,28,BARBBARRAGE,32,PINMISSILE,36,TOXICSPIKES,40,STOCKPILE,40,SPITUP,44,TOXIC,48,CRUNCH,52,ACUPRESSURE,56,DESTINYBOND
 EggMoves = ACIDSPRAY,ASTONISH,BRINE,BUBBLEBEAM,FLAIL,HAZE,SIGNALBEAM,SUPERSONIC,WATERPULSE
 Pokedex = Fishers detest this troublesome Pokémon because it sprays poison from its spines, getting it everywhere. A different form of Qwilfish lives in other regions.
-BattlerEnemyY = 31
+BattlerPlayerX = -6
+BattlerPlayerY = 42
+BattlerEnemyX = 1
+BattlerEnemyY = 22
 BattlerShadowX = -1
 Evolutions = OVERQWIL,Level,40
 #-------------------------------
@@ -2752,16 +2760,28 @@ Evolutions = OVERQWIL,Level,40
 FormName = Hisuian
 Type1 = FIGHTING
 Type2 = POISON
-HiddenAbility = POISONTOUCH
-Moves = 1,SCRATCH,1,LEER,6,ROCKSMASH,12,QUICKATTACK,18,METALCLAW,24,POISONTAIL,30,FURYSWIPES,36,HONECLAWS,42,BEATUP,48,AGILITY,54,SCREECH,60,SLASH
+Moves = 1,SCRATCH,1,LEER,1,ROCKSMASH,6,TAUNT,12,QUICKATTACK,18,METALCLAW,24,POISONJAB,30,BRICKBREAK,36,HONECLAWS,42,SLASH,48,AGILITY,54,SCREECH,60,CLOSECOMBAT
 EggMoves = ASSIST,BITE,COUNTER,CRUSHCLAW,DOUBLEHIT,FAKEOUT,FEINT,FORESIGHT,PURSUIT,THROATCHOP
 Weight = 27.0
 Pokedex = Its sturdy, curved claws are ideal for traversing precipitous cliffs. From the tips of these claws drips a venom that infiltrates the nerves of any prey caught in Sneasel's grasp.
-BattlerPlayerY = 40
-BattlerEnemyX = 0
+BattlerPlayerX = -2
+BattlerEnemyX = 2
 BattlerEnemyY = 27
 BattlerShadowX = -1
-Evolutions = SNEASLER,Item,RAZORCLAW
+Evolutions = SNEASLER,HoldItem,RAZORCLAW
+#-------------------------------
+[URSALUNA,1]
+FormName = Blood Moon
+BaseStats = 113,70,120,52,135,65
+Abilities = MINDSEYE
+Moves = 1,SCRATCH,1,LEER,1,LICK,1,HEADLONGRUSH,8,FURYSWIPES,13,PAYBACK,17,HARDEN,22,SLASH,25,PLAYNICE,35,SCARYFACE,41,REST,41,SNORE,48,EARTHPOWER,56,MOONBLAST,64,HAMMERARM,70,BLOODMOON
+Height = 2.7
+Weight = 333.0
+Pokedex = It crossed the sea and drifted ashore in a new land. Surviving in this place led it to take on a unique appearance and gain special powers.
+BattlerPlayerX = -2
+BattlerEnemyX = 2
+BattlerEnemyY = 27
+BattlerShadowX = -1
 #-------------------------------
 [DIALGA,1]
 FormName = Origin Forme
@@ -2787,7 +2807,8 @@ Type1 = WATER
 Type2 = DARK
 BaseStats = 90,108,80,85,100,65
 EffortPoints = 0,3,0,0,0,0
-Moves = 0,NIGHTSLASH,1,SLASH,1,MEGAHORN,1,TACKLE,1,TAILWHIP,1,WATERGUN,1,WATERSPORT,5,TAILWHIP,7,WATERGUN,11,WATERSPORT,13,FOCUSENERGY,18,RAZORSHELL,21,FURYCUTTER,25,WATERPULSE,29,REVENGE,34,AQUAJET,39,ENCORE,46,DARKPULSE,51,AQUATAIL,58,RETALIATE,63,SWORDSDANCE,70,HYDROPUMP
+HiddenAbility = SHARPNESS
+Moves = 0,CEASELESSEDGE,1,NIGHTSLASH,1,SUCKERPUNCH,1,SLASH,1,MEGAHORN,1,TACKLE,1,TAILWHIP,1,WATERGUN,1,WATERSPORT,5,TAILWHIP,7,WATERGUN,11,WATERSPORT,13,FOCUSENERGY,18,RAZORSHELL,21,FURYCUTTER,25,WATERPULSE,29,REVENGE,34,AQUAJET,39,ENCORE,46,DARKPULSE,51,AQUATAIL,58,RETALIATE,63,SWORDSDANCE,70,HYDROPUMP
 Weight = 58.2
 Pokedex = Hard of heart and deft of blade, this rare form of Samurott is a product of the Pokémon's evolution in the region of Hisui. Its turbulent blows crash into foes like ceaseless pounding waves.
 BattlerPlayerY = 50
@@ -2801,11 +2822,11 @@ Type2 = FIGHTING
 BaseStats = 70,105,75,105,50,75
 EffortPoints = 0,2,0,0,0,0
 Abilities = CHLOROPHYLL,HUSTLE
-Moves = 0,MACHPUNCH,1,PETALDANCE,1,PETALBLIZZARD,1,QUIVERDANCE,1,TEETERDANCE,1,MEGADRAIN,1,AROMATHERAPY,1,MAGICALLEAF,1,SLEEPPOWDER,1,GIGADRAIN,1,LEECHSEED,1,AFTERYOU,1,ENERGYBALL,1,SYNTHESIS,1,SUNNYDAY,1,ENTRAINMENT,1,LEAFSTORM,1,ABSORB,1,GROWTH,1,HELPINGHAND,1,STUNSPORE,1,CLOSECOMBAT,1,DRAINPUNCH,1,LEAFBLADE
+Moves = 0,VICTORYDANCE,1,DEFOG,1,PETALBLIZZARD,1,SOLARBLADE,1,QUIVERDANCE,1,TEETERDANCE,1,MEGADRAIN,1,AROMATHERAPY,1,MAGICALLEAF,1,SLEEPPOWDER,1,GIGADRAIN,1,LEECHSEED,1,AFTERYOU,1,ENERGYBALL,1,LEAFBLADE,1,MEGAKICK,1,SYNTHESIS,1,SUNNYDAY,1,ENTRAINMENT,1,LEAFSTORM,1,ABSORB,1,GROWTH,1,HELPINGHAND,1,STUNSPORE,1,SLEEPPOWDER,5,AXEKICK
 Height = 1.3
 Pokedex = They suspect that its well-developed legs are the result of a life spent on mountains covered in deep snow. The scent it exudes from its flower crown heartens those in proximity.
-BattlerPlayerY = 50
-BattlerEnemyX = -1
+BattlerPlayerX = -4
+BattlerPlayerY = 46
 BattlerEnemyY = 16
 BattlerShadowX = -1
 BattlerShadowSize = 1
@@ -2814,6 +2835,8 @@ BattlerShadowSize = 1
 FormName = White-Striped Form
 Abilities = RATTLED,ADAPTABILITY
 Pokedex = Though it differs from other Basculin in several respects, including demeanor—this one is gentle—people have categorized it as a regional form given the vast array of shared qualities.
+BattlerEnemyX = -1
+BattlerEnemyY = 28
 Evolutions = BASCULEGION,Level,32
 #-------------------------------
 [ZORUA,1]
@@ -2821,12 +2844,14 @@ FormName = Hisuian
 Type1 = NORMAL
 Type2 = GHOST
 BaseStats = 35,60,40,70,85,40
-Moves = 1,SCRATCH,1,LEER,4,TORMENT,8,HONECLAWS,12,FURYSWIPES,16,SCARYFACE,20,SWIFT,24,SHADOWSNEAK,28,FAKETEARS,32,AGILITY,36,IMPRISON,40,NIGHTDAZE,44,NASTYPLOT,48,FOULPLAY
+Moves = 1,SCRATCH,1,LEER,4,TORMENT,8,HONECLAWS,12,SHADOWSNEAK,16,CURSE,20,TAUNT,24,KNOCKOFF,32,AGILITY,36,SHADOWBALL,40,BITTERMALICE,44,NASTYPLOT,48,FOULPLAY
 EggMoves = CAPTIVATE,COPYCAT,COUNTER,DARKPULSE,DETECT,EXTRASENSORY,MEMENTO
 Color = White
 Kind = Spiteful Fox
 Pokedex = A once-departed soul, returned to life in Hisui. Derives power from resentment, which rises as energy atop its head and takes on the forms of foes. In this way, Zorua vents lingering malice.
 BattlerPlayerY = 50
+BattlerEnemyX = -1
+BattlerEnemyY = 27
 BattlerShadowX = -1
 #-------------------------------
 [ZOROARK,1]
@@ -2834,14 +2859,14 @@ FormName = Hisuian
 Type1 = NORMAL
 Type2 = GHOST
 BaseStats = 55,100,60,110,125,60
-Moves = 0,SHADOWCLAW,1,NIGHTSLASH,1,UTURN,1,SCRATCH,1,LEER,1,TORMENT,1,HONECLAWS,12,FURYSWIPES,16,SCARYFACE,20,SWIFT,24,SHADOWSNEAK,28,FAKETEARS,34,AGILITY,40,IMPRISON,46,SHADOWBALL,52,NASTYPLOT,58,EXTRASENSORY
+Moves = 0,SHADOWCLAW,1,EXTRASENSORY,1,COUNTER,1,DETECT,1,UTURN,1,SCRATCH,1,LEER,1,TORMENT,1,HONECLAWS,12,SHADOWSNEAK,16,CURSE,20,TAUNT,24,KNOCKOFF,28,SPITE,34,AGILITY,40,SHADOWBALL,46,BITTERMALICE,52,NASTYPLOT,58,FOULPLAY
 Weight = 73.0
 Color = White
 Kind = Baneful Fox
 Pokedex = With its disheveled white fur, it looks like an embodiment of death. Heedless of its own safety, Zoroark attacks its nemeses with a bitter energy so intense, it lacerates Zoroark's own body.
-BattlerPlayerY = 50
-BattlerEnemyX = -4
-BattlerEnemyY = 8
+BattlerPlayerX = -2
+BattlerEnemyX = -5
+BattlerEnemyY = 20
 BattlerShadowX = -1
 #-------------------------------
 [BRAVIARY,1]
@@ -2850,14 +2875,17 @@ Type1 = PSYCHIC
 Type2 = FLYING
 BaseStats = 110,83,70,65,112,70
 EffortPoints = 0,0,0,0,2,0
-Moves = 0,PSYCHOCUT,1,SUPERPOWER,1,SKYATTACK,1,PECK,1,LEER,1,HONECLAWS,1,WINGATTACK,18,TAILWIND,24,SCARYFACE,30,AERIALACE,36,SLASH,42,WHIRLWIND,48,CRUSHCLAW,57,AIRSLASH,64,DEFOG,72,THRASH,80,BRAVEBIRD
+HiddenAbility = TINTEDLENS
+Moves = 0,ESPERWING,1,SUPERPOWER,1,SKYATTACK,1,PECK,1,LEER,1,HONECLAWS,1,WINGATTACK,18,TAILWIND,24,SCARYFACE,30,AERIALACE,36,SLASH,42,WHIRLWIND,48,CRUSHCLAW,57,AIRSLASH,64,DEFOG,72,THRASH,80,HURRICANE
 Height = 1.7
 Weight = 43.4
 Color = Gray
 Kind = Battle Cry
 Pokedex = Screaming a bloodcurdling battle cry, this huge and ferocious bird Pokémon goes out on the hunt. It blasts lakes with shock waves, then scoops up any prey that float to the water's surface.
-BattlerEnemyX = 5
-BattlerEnemyY = 7
+BattlerPlayerX = -7
+BattlerPlayerY = 34
+BattlerEnemyX = 4
+BattlerEnemyY = 0
 BattlerShadowX = -1
 #-------------------------------
 [SLIGGOO,1]
@@ -2865,14 +2893,15 @@ FormName = Hisuian
 Type1 = STEEL
 Type2 = DRAGON
 BaseStats = 58,75,83,40,83,113
-Abilities = SAPSIPPER,OVERCOAT
-Moves = 0,IRONDEFENSE,1,ACIDSPRAY,1,ABSORB,1,TACKLE,1,WATERGUN,1,DRAGONBREATH,15,PROTECT,20,FLAIL,25,WATERPULSE,30,RAINDANCE,35,DRAGONPULSE,43,CURSE,49,BODYSLAM,56,MUDDYWATER
+Abilities = SAPSIPPER,SHELLARMOR
+Moves = 0,SHELTER,1,ACIDARMOR,1,ABSORB,1,TACKLE,1,WATERGUN,1,DRAGONBREATH,15,PROTECT,20,FLAIL,25,WATERPULSE,30,RAINDANCE,35,DRAGONPULSE,43,CURSE,49,IRONHEAD,56,MUDDYWATER
 Height = 0.7
 Weight = 68.5
 Kind = Snail
 Pokedex = A creature given to melancholy. I suspect its metallic shell developed as a result of the mucus on its skin reacting with the iron in Hisui's water.
-BattlerPlayerY = 50
-BattlerEnemyX = -1
+BattlerPlayerX = -10
+BattlerPlayerY = 42
+BattlerEnemyX = -3
 BattlerShadowX = -1
 #-------------------------------
 [GOODRA,1]
@@ -2880,13 +2909,15 @@ FormName = Hisuian
 Type1 = STEEL
 Type2 = DRAGON
 BaseStats = 80,100,100,60,110,150
-Abilities = SAPSIPPER,OVERCOAT
-Moves = 0,IRONHEAD,1,AQUATAIL,1,ACIDSPRAY,1,POISONTAIL,1,TEARFULLOOK,1,FEINT,1,ABSORB,1,TACKLE,1,WATERGUN,1,DRAGONBREATH,15,PROTECT,20,FLAIL,25,WATERPULSE,30,RAINDANCE,35,DRAGONPULSE,43,CURSE,49,BODYSLAM,58,MUDDYWATER,67,POWERWHIP
+Abilities = SAPSIPPER,SHELLARMOR
+Moves = 0,IRONTAIL,1,SHELTER,1,ACIDSPRAY,1,POISONTAIL,1,TEARFULLOOK,1,FEINT,1,ABSORB,1,TACKLE,1,WATERGUN,1,DRAGONBREATH,15,PROTECT,20,FLAIL,25,WATERPULSE,30,RAINDANCE,35,DRAGONPULSE,43,CURSE,49,IRONHEAD,49,BODYSLAM,58,MUDDYWATER,67,HEAVYSLAM
 Height = 1.7
 Weight = 334.1
 Pokedex = Able to freely control the hardness of its metallic shell. It loathes solitude and is extremely clingy—it will fume and run riot if those dearest to it ever leave its side.
-BattlerPlayerY = 50
-BattlerEnemyX = 1
+BattlerPlayerX = -12
+BattlerPlayerY = 42
+BattlerEnemyX = -7
+BattlerEnemyY = 11
 BattlerShadowX = -1
 #-------------------------------
 [AVALUGG,1]
@@ -2895,13 +2926,14 @@ Type1 = ICE
 Type2 = ROCK
 BaseStats = 95,127,184,38,34,36
 Abilities = STRONGJAW,ICEBODY
-Moves = 0,ROCKSLIDE,1,BODYSLAM,1,WIDEGUARD,1,RAPIDSPIN,1,HARDEN,1,TACKLE,1,POWDERSNOW,9,CURSE,12,ICYWIND,15,PROTECT,18,AVALANCHE,21,BITE,24,ICEFANG,27,IRONDEFENSE,30,RECOVER,33,CRUNCH,36,EARTHPOWER,41,BLIZZARD,46,DOUBLEEDGE,51,SKULLBASH
+Moves = 0,BODYSLAM,1,MIST,1,MIRRORCOAT,1,AURORAVEIL,1,WIDEGUARD,1,RAPIDSPIN,1,HARDEN,1,TACKLE,1,POWDERSNOW,9,CURSE,12,ICYWIND,15,PROTECT,18,AVALANCHE,21,BITE,24,ICEFANG,27,IRONDEFENSE,30,RECOVER,33,CRUNCH,36,TAKEDOWN,41,BLIZZARD,46,DOUBLEEDGE,51,ICICLECRASH
 Height = 1.4
 Weight = 262.4
 Pokedex = The armor of ice covering its lower jaw puts steel to shame and can shatter rocks with ease. This Pokémon barrels along steep mountain paths, cleaving through the deep snow.
-BattlerPlayerY = 50
-BattlerEnemyX = 0
-BattlerEnemyY = 32
+BattlerPlayerX = -3
+BattlerPlayerY = 70
+BattlerEnemyX = -10
+BattlerEnemyY = 34
 BattlerShadowX = -1
 #-------------------------------
 [DECIDUEYE,1]
@@ -2909,10 +2941,10 @@ FormName = Hisuian
 Type1 = GRASS
 Type2 = FIGHTING
 BaseStats = 88,112,80,60,95,95
-Moves = 0,SKYUPPERCUT,1,SPIRITSHACKLE,1,PHANTOMFORCE,1,LEAFSTORM,1,UTURN,1,SPITE,1,TACKLE,1,GROWL,1,LEAFAGE,1,ASTONISH,9,PECK,12,SHADOWSNEAK,15,RAZORLEAF,20,SYNTHESIS,25,PLUCK,30,NASTYPLOT,37,SUCKERPUNCH,44,LEAFBLADE,51,FEATHERDANCE,58,BRAVEBIRD
+Moves = 0,TRIPLEARROWS,1,ROOST,1,ASTONISH,1,KNOCKOFF,1,NASTYPLOT,1,CONFUSERAY,1,DOUBLETEAM,1,DEFOG,1,LEAFSTORM,1,UTURN,1,TACKLE,1,GROWL,1,LEAFAGE,9,PECK,12,SHADOWSNEAK,15,RAZORLEAF,20,SYNTHESIS,25,PLUCK,30,BULKUP,37,SUCKERPUNCH,44,LEAFBLADE,51,FEATHERDANCE,58,BRAVEBIRD
 Weight = 37.0
 Pokedex = The air stored inside the rachises of Decidueye's feathers insulates the Pokémon against Hisui's extreme cold. This is firm proof that evolution can be influenced by environment.
-BattlerPlayerY = 59
+BattlerPlayerX = -6
 BattlerEnemyX = 2
 BattlerEnemyY = 14
 BattlerShadowX = -1
@@ -2920,8 +2952,7 @@ BattlerShadowX = -1
 [BASCULEGION,1]
 FormName = Female
 BaseStats = 120,92,65,78,100,75
-BattlerPlayerY = 54
-BattlerEnemyX = 0
+WildItemUncommon = DEEPSEASCALE
 #-------------------------------
 [ENAMORUS,1]
 FormName = Therian Forme
@@ -2934,3 +2965,12 @@ BattlerPlayerY = 48
 BattlerEnemyX = -3
 BattlerEnemyY = 17
 BattlerShadowSize = 3
+#-------------------------------
+[POLTCHAGEIST,1]
+FormName = Artisan Form
+Pokedex = It sprinkles some of its powdery body onto food and drains the life-force from those who so much as lick it.
+Evolutions = SINISTCHA,Item,MASTERPIECETEACUP
+#-------------------------------
+[SINISTCHA,1]
+FormName = Masterpiece Form
+Pokedex = It lives inside a superb teacup that was crafted by a potter of great renown. Collectors positively adore this Pokémon.

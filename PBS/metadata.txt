@@ -422,6 +422,7 @@ ShowArea = true
 Outdoor = false
 ShowArea = false
 MapPosition = 2,18,13
+BattleBack = Dojo9
 #-------------------------------
 [078]
 # CamTest3
@@ -628,7 +629,7 @@ ShowArea = false
 MapPosition = 2,12,5
 #-------------------------------
 [112]
-# Tsuchi Library
+# Tsuchi Village
 Outdoor = false
 ShowArea = false
 MapPosition = 2,14,15
@@ -851,8 +852,11 @@ ShowArea = false
 MapPosition = 2,18,13
 #-------------------------------
 [155]
-Outdoor = false
-Environment = Cave
+# Mushi Grove
+Outdoor = true
+ShowArea = true
+MapPosition = 2,15,16
+BattleBack = forest
 #-------------------------------
 [156]
 # Kowai Pass

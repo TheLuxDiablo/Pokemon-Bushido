@@ -460,6 +460,23 @@ BattleHandlers::StatLossImmunityAbility.add(:KEENEYE,
   }
 )
 
+BattleHandlers::StatLossImmunityAbility.add(:MINDSEYE,
+  proc { |ability,battler,stat,battle,showMessages|
+    next false if stat!=PBStats::ACCURACY
+    if showMessages
+      battle.pbShowAbilitySplash(battler)
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s {2} cannot be lowered!",battler.pbThis,PBStats.getName(stat)))
+      else
+        battle.pbDisplay(_INTL("{1}'s {2} prevents {3} loss!",battler.pbThis,
+           battler.abilityName,PBStats.getName(stat)))
+      end
+      battle.pbHideAbilitySplash(battler)
+    end
+    next true
+  }
+)
+
 #===============================================================================
 # StatLossImmunityAbilityNonIgnorable handlers
 #===============================================================================
@@ -805,6 +822,12 @@ BattleHandlers::AccuracyCalcUserAbility.add(:KEENEYE,
   }
 )
 
+BattleHandlers::AccuracyCalcUserAbility.add(:MINDSEYE,
+  proc { |ability,mods,user,target,move,type|
+    mods[EVA_STAGE] = 0 if mods[EVA_STAGE]>0 && NEWEST_BATTLE_MECHANICS
+  }
+)
+
 BattleHandlers::AccuracyCalcUserAbility.add(:NOGUARD,
   proc { |ability,mods,user,target,move,type|
     mods[BASE_ACC] = 0
@@ -812,6 +835,12 @@ BattleHandlers::AccuracyCalcUserAbility.add(:NOGUARD,
 )
 
 BattleHandlers::AccuracyCalcUserAbility.add(:UNAWARE,
+  proc { |ability,mods,user,target,move,type|
+    mods[EVA_STAGE] = 0 if move.damagingMove?
+  }
+)
+
+BattleHandlers::AccuracyCalcUserAbility.add(:MINDSEYE,
   proc { |ability,mods,user,target,move,type|
     mods[EVA_STAGE] = 0 if move.damagingMove?
   }
@@ -978,6 +1007,12 @@ BattleHandlers::DamageCalcUserAbility.add(:HUSTLE,
 BattleHandlers::DamageCalcUserAbility.add(:IRONFIST,
   proc { |ability,user,target,move,mults,baseDmg,type|
     mults[BASE_DMG_MULT] *= 1.2 if move.punchingMove?
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:SHARPNESS,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[BASE_DMG_MULT] *= 1.5 if move.slicingMove?
   }
 )
 
@@ -2377,6 +2412,24 @@ BattleHandlers::AbilityOnSwitchIn.add(:AIRLOCK,
 )
 
 BattleHandlers::AbilityOnSwitchIn.copy(:AIRLOCK,:CLOUDNINE)
+
+# Hospitality
+BattleHandlers::AbilityOnSwitchIn.add(:HOSPITALITY,
+  proc { |ability, battler, battle, switch_in|
+    has_injured_ally = false
+    battler.eachAlly { |b| has_injured_ally = true if b.hp < b.totalhp }
+    next if !has_injured_ally
+    
+    battle.pbShowAbilitySplash(battler)
+    battler.eachAlly do |b|
+      next if b.hp == b.totalhp
+      amt = (b.totalhp / 4).floor
+      b.pbRecoverHP(amt)
+      battle.pbDisplay(_INTL("{1} drank down all the matcha that {2} made!", b.pbThis, battler.pbThis(true)))
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
 
 BattleHandlers::AbilityOnSwitchIn.add(:ANTICIPATION,
   proc { |ability,battler,battle|

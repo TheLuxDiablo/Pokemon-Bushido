@@ -297,12 +297,28 @@ module DialogueModule
     scene.appearBar
     scene.pbShowOpponent(0)
     user = battlers[1]
-    pbMessage("After everything, I believe I owe you a proper duel.")
+    pbMessage("\\rAfter everything you've been through, I owe you a duel \\PN...")
+    pbMessage("\\rDon't think I'll hold back though!")
     scene.disappearBar
     battle.pbStartTerrainEx(user, :Grassy)
     if strong_katanas?
-        user.pbRaiseStatStageEx([:SPEED, :SPATK, :SPDEF], 1)
+        user.pbRaiseStatStageEx([:SPEED, :SPATK, :SPDEF], 2)
     end
+    pbMessage("\\rPrepare to face the full fury of nature!")
+    scene.pbHideOpponent
+  }
+
+  HarumiMidBattle = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    user = battlers[1]
+    target = battlers[0]
+    pbMessage("\\rThis should slow you down, \\PN! Take this!")
+    scene.disappearBar
+    if strong_katanas?
+        target.pbLowerStatStageEx([:SPEED, :ATTACK, :SPATK], 3)
+    end
+    battle.pbStartWeatherEx(user, :Sun)
     scene.pbHideOpponent
   }
 
@@ -310,13 +326,13 @@ module DialogueModule
     scene.appearBar
     scene.pbShowOpponent(0)
     user = battlers[1]
-    pbMessage("You truly are a talented Kenshi!")
-    pbMessage("Unforunately, you'll be going out in a blaze of glory!")
-    pbMessage("Katana of Nature, Komorei Style! Blazing Sunlight!")
+    pbMessage("\\rYou truly are a talented Kenshi, \\PN.")
+    pbMessage("\\rUnfortunately for you, this is the part where you go out in a blaze of glory!")
+    pbMessage("\\rKatana of Nature, Komorei Style! Blazing Sunlight!")
     scene.disappearBar
     battle.pbStartWeatherEx(user, :Sun)
     if strong_katanas?
-        user.pbRaiseStatStageEx(:SPATK, 1)
+        user.pbRaiseStatStageEx([:ATTACK,:SPEED,:SPDEF], 2)
     end
     scene.pbHideOpponent
   }
@@ -1090,7 +1106,7 @@ module DialogueModule
     scene.appearBar
     scene.pbShowOpponent(0)
     user = battlers[1]
-    pbMessage("\\xn[\\v[26]]\\pogPrepare to face the full force of my Pokémon!")
+    pbMessage("\\xn[\\v[26]]\\pogPrepare to face the full fury of my Darmanitan!")
     pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Signature Technique! Hashimoto Might!") if strong_katanas?
     scene.disappearBar
     user.pbRaiseStatStageEx(:ATTACK, 1, :SWORDSDANCE)
@@ -3501,11 +3517,12 @@ module DialogueModule
     enemy1 = battlers[1]
     currentTurn = battle.turnCount
     nextTurnNum = (battle.turnCount + 2)
-    pbMessage("\\bLet's begin training, \\PN.")
+    pbMessage("\\bLet us begin training, \\PN.")
     pbMessage("\\bI'll be quizzing you through this battle to also test your mind!")
     #pbMessage(_INTL("Current turn: {2}. Next quiz on {1}", nextTurnNum, currentTurn))
     battle.RandomSukiroQuiz(rand(SUKIRO_SPAR_QUIZ_QUESTIONS+1), battle, scene, ally1, enemy1)
     BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:SukiroTrainingRepeating)
+    BattleScripting.setTrainerAce(2)
   }
 
   SukiroTrainingRepeating = Proc.new { |battle, scene, battlers|

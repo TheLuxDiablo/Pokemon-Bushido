@@ -495,3 +495,171 @@ end
 #       Actually, you might as well use high numbers like 500+ (up to FFFF),
 #       just to make sure later additions to Essentials don't clash with your
 #       new effects.
+
+#===============================================================================
+# Target gets a random status: Poisoned, Burned, or put to Sleep.
+# (Dire Claw)
+#===============================================================================
+class PokeBattle_Move_500 < PokeBattle_Move
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    case @battle.pbRandom(3)
+    when 0 then target.pbSleep          if target.pbCanSleep?(user, false, self)
+    when 1 then target.pbPoison(user)   if target.pbCanPoison?(user, false, self)
+    when 2 then target.pbParalyze(user) if target.pbCanParalyze?(user, false, self)
+    end
+  end
+end
+
+#===============================================================================
+# User takes recoil damage equal to 1/2 of their maximum health.
+# (Steel Beam, Chloroblast)
+#===============================================================================
+class PokeBattle_Move_501 < PokeBattle_RecoilMove
+  def pbRecoilDamage(user,target)
+    return (user.totalhp/2.0).round
+  end
+end
+
+#===============================================================================
+# Gigaton Hammer, Blood Moon
+#===============================================================================
+# This move becomes unselectable if you try to use it on consecutive turns.
+#-------------------------------------------------------------------------------
+class PokeBattle_Move_502 < PokeBattle_Move
+  def pbEffectWhenDealingDamage(user, target)
+    user.effects[PBEffects::SuccessiveMove] = @id
+  end
+end
+
+#===============================================================================
+# Last Respects
+#===============================================================================
+# Power is increased by 50 for each time a teammate fainted this battle.
+#-------------------------------------------------------------------------------
+class PokeBattle_Move_503 < PokeBattle_Move
+  def pbBaseDamage(baseDmg, user, target)
+    numFainted = user.num_fainted_allies
+    
+    return baseDmg if numFainted <= 0
+    baseDmg += 50 * numFainted
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Power is doubled if the target is poisoned. Chance to poison. (Barb Barrage)
+#===============================================================================
+class PokeBattle_Move_504 < PokeBattle_PoisonMove
+  def pbBaseDamage(baseDmg,user,target)
+    if target.poisoned? &&
+       (target.effects[PBEffects::Substitute]==0 || ignoresSubstitute?(user))
+      baseDmg *= 2
+    end
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Leaves Stealth Rocks behind after the attack (Stone Axe)
+#===============================================================================
+class PokeBattle_Move_505 < PokeBattle_Move
+  def pbEffectGeneral(user)
+    user.pbOpposingSide.effects[PBEffects::StealthRock] = true
+    @battle.pbDisplay(_INTL("Pointed stones float in the air around {1}!",
+       user.pbOpposingTeam(true)))
+  end
+end
+
+#===============================================================================
+# Power is doubled if the target has a status problem. Chance to Burn. (Infernal Parade)
+#===============================================================================
+class PokeBattle_Move_506 < PokeBattle_BurnMove
+  def pbBaseDamage(baseDmg,user,target)
+    if target.pbHasAnyStatus? &&
+       (target.effects[PBEffects::Substitute]==0 || ignoresSubstitute?(user))
+      baseDmg *= 2
+    end
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Triple Arrows
+#===============================================================================
+# Lowers the target's Defense by 1 stage. May cause flinching.
+#-------------------------------------------------------------------------------
+class PokeBattle_Move_507 < PokeBattle_Move
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    chance = pbAdditionalEffectChance(user, target, 50)
+    if @battle.pbRandom(100) < chance
+      # CHANGED: :DEFENSE replaced with PBStats::DEFENSE
+      if target.pbCanLowerStatStage?(PBStats::DEFENSE, user, self) && 
+         target.pbLowerStatStage(PBStats::DEFENSE, 1, user)
+      end
+    end
+    chance = pbAdditionalEffectChance(user, target, 30)
+    return if chance == 0
+    target.pbFlinch(user) if @battle.pbRandom(100) < chance
+  end
+end
+
+#===============================================================================
+# Increases the user's Attack, Defense and Speed by 1 stage each.
+# (Victory Dance)
+#===============================================================================
+class PokeBattle_Move_508 < PokeBattle_MultiStatUpMove
+  def initialize(battle,move)
+    super
+    @statUp = [PBStats::ATTACK,1,PBStats::DEFENSE,1,PBStats::SPEED,1]
+  end
+end
+
+#===============================================================================
+# Axe Kick
+#===============================================================================
+# If attack misses, user takes crash damage of 1/2 of max HP. May cause confusion.
+#-------------------------------------------------------------------------------
+class PokeBattle_Move_509 < PokeBattle_ConfuseMove
+  def recoilMove?; return true; end
+  
+  def pbCrashDamage(user)
+    return if !user.takesIndirectDamage?
+    @battle.pbDisplay(_INTL("{1} kept going and crashed!", user.pbThis))
+    @battle.scene.pbDamageAnimation(user)
+    user.pbReduceHP((user.totalhp / 2), false)
+    user.pbItemHPHealCheck
+    user.pbFaint if user.fainted?
+  end
+end
+
+#===============================================================================
+# Leaves Spikes behind after the attack (Ceaseless Edge)
+#===============================================================================
+class PokeBattle_Move_510 < PokeBattle_Move
+  def pbEffectGeneral(user)
+    if user.pbOpposingSide.effects[PBEffects::Spikes]>=3
+      @battle.pbDisplay(_INTL("No more Spikes can be scattered!"))
+    else
+      user.pbOpposingSide.effects[PBEffects::Spikes] += 1
+      @battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",user.pbOpposingTeam(true)))
+    end
+  end
+end
+
+#===============================================================================
+# Matcha Gotcha
+#===============================================================================
+# User gains half the HP it inflicts as damage. It may also burn the target.
+#-------------------------------------------------------------------------------
+class PokeBattle_Move_511 < PokeBattle_BurnMove
+  def healingMove?; return Settings::MECHANICS_GENERATION >= 6; end
+
+  def pbEffectAgainstTarget(user, target)
+    return if target.damageState.hpLost <= 0
+    hpGain = (target.damageState.hpLost / 2.0).round
+    user.pbRecoverHPFromDrain(hpGain, target)
+    super
+  end
+end

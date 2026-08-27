@@ -499,15 +499,15 @@ end
         if(battleResult == 1)
             pbMessage(_INTL("\\xn[Sukiro]\\bWell fought, \\PN! You are becoming stronger with every battle."))
             incrementGameVariable(191,1)
-            pbMessage(_INTL("\\xn[Sukiro]\\bYour number of sparring wins is now {1}.", $game_variables[191]))
+            pbMessage(_INTL("\\xn[Sukiro]\\bYour number of sparring wins is now {1}!", $game_variables[191]))
         elsif(battleResult == 2)
-            pbMessage(_INTL("\\xn[Sukiro]\\bThat was a valiant effort, \\PN!"))
+            pbMessage(_INTL("\\xn[Sukiro]\\bThat was a valiant effort, \\PN."))
             incrementGameVariable(192,1)
             pbMessage(_INTL("\\xn[Sukiro]\\bMy number of sparring wins is now {1}.", $game_variables[192]))
         else
-            pbMessage(_INTL("\\xn[Sukiro]\\bWell played \\PN, that was quite a duel."))
+            pbMessage(_INTL("\\xn[Sukiro]\\bWell played \\PN, that was quite a duel!"))
         end
-        pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record now stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
+        pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record now stands at {1}-{2}!", $game_variables[191], $game_variables[192]))
         # Full heal at the end
         fullyHealPokemonParty()
     else
@@ -546,7 +546,8 @@ end
 # DONE - Komorei: HealStatus, Half HP, and Setup Grassy Terrain. COST = 2
 # DONE - Nensho: Burn Enemy, Setup Sun, raise our ATK/SPATK one stage. COST = 3
 # DONE - Shimizu: Rain, Setup Aqua Ring on self, setup Misty Terrain. COST = 2
-# Tsume: Shadow Cleave all enemies, cut HP in half (never kill), then put to Sleep. COST = 4. WAY OP, POSTGAME
+# DONE - Tsume: Shadow Cleave all enemies, cut HP in half (never kill), then put to Sleep. COST = 4. WAY OP, POSTGAME
+# Tailwind
 # Masayoshi: Reflect + LightScreen, same as Ryo. Cost = 1
 # Akui: Shadow Clone for Evasion and Speed, Toxic Spikes. Cost = 3.
 # Raikami: paralyze, elec Terrain. Cost = 2.
@@ -555,6 +556,7 @@ end
 # Hattori: Wonder Room, 
 #      :Gravity         => "Gravity",
 #      :NeutralizingGas => "Neutralizing Gas"
+# Perish Song
 
 #How to set energy, perhaps based on chapter or badge for old save files we force set max EN
 

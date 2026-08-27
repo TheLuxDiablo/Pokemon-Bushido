@@ -351,13 +351,17 @@ Pokemon = NICKIT,15
 #-------------------------------
 [AKUICLAN_M,Taki]
 LoseText = "There's no way... You got lucky! I'll get you back for this!"
-Pokemon = SANDILE,7
+Pokemon = SANDILE,6
+Pokemon = QWILFISH,7
+	Form = 1
 Pokemon = POOCHYENA,8
     Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Kumiko]
 LoseText = "Tch. The boss isn't gonna be pleased to hear about this..."
 Pokemon = TOXEL,7
+Pokemon = SNEASEL,7
+	Form = 1
 Pokemon = NICKIT,8
     Shadow = yes
 #-------------------------------
@@ -388,6 +392,8 @@ Pokemon = DARUMAKA,15
 [AKUICLAN_F,Kumiko,2]
 LoseText = "What! How did you do that?"
 Pokemon = TOXEL,14
+Pokemon = SNEASEL,14
+	Form = 1
 Pokemon = GIBLE,15
 Pokemon = NICKIT,15
     Shadow = yes
@@ -411,12 +417,14 @@ Pokemon = THROH,16
 #-------------------------------
 [KOMOREI_F,Aoyama]
 LoseText = "I guess I shouldn't be here either..."
-Pokemon = COTTONEE,18
+Pokemon = COTTONEE,16
+Pokemon = POLTCHAGEIST,17
 #-------------------------------
 [SHIMIZU_F,Tsukasa]
 LoseText = "The flow of water and the allure of the ocean can never be beat!"
-Pokemon = PANPOUR,17
-Pokemon = TYMPOLE,18
+Pokemon = PANPOUR,16
+Pokemon = BASCULIN,17
+	Form = 2
 #-------------------------------
 [KENSHI_F,Hiro]
 LoseText = "I would've let you through either way..."
@@ -434,7 +442,8 @@ Pokemon = TAILLOW,19
 #-------------------------------
 [KOMOREI_F,Shima]
 LoseText = "Defeat isn't nearly as beautiful..."
-Pokemon = PANSAGE,19
+Pokemon = PANSAGE,18
+Pokemon = POLTCHAGEIST,19
 Pokemon = VENIPEDE,20
 #-------------------------------
 [NENSHO_M,Matsuo]
@@ -500,6 +509,8 @@ Pokemon = WIMPOD,23
 [AKUICLAN_F,Sayuri]
 LoseText = "Agh, I can't ever win!"
 Pokemon = ARON,22
+Pokemon = QWILFISH,23
+	Form = 1
 Pokemon = TOGETIC,24
     Shadow = yes
 #-------------------------------
@@ -533,32 +544,38 @@ Pokemon = NINETALES,66
 [KOMOREI_M,Shinsato]
 LoseText = "Very well! You have proven yourself worthy."
 Pokemon = FOMANTIS,26
-Pokemon = WHIRLIPEDE,26
+Pokemon = SINISTCHA,27
 Pokemon = ORANGURU,27
 #-------------------------------
 [KOMOREI_F,Chikako]
 LoseText = "You may have beaten me, but can you beat Harumi?"
 Pokemon = WHIMSICOTT,27
-Pokemon = LILLIGANT,27
-Pokemon = PASSIMIAN,27
+Pokemon = KLEAVOR,27
+Pokemon = ELECTRODE,28
+	Form = 1
+	Moves = CHLOROBLAST,THUNDERBOLT,GIGADRAIN,THUNDERWAVE
 #-------------------------------
 [KOMOREI_BOSS,Harumi]
 Items = JAM2
-LoseText = "I still have work to do before I can call myself a leader..."
+LoseText = "Looks like I still have plenty of work to do before I can myself a proper leader..."
 Pokemon = SERVINE,27
-	Moves = MEGADRAIN,WRAP,GROWTH,LEAFTORNADO
-Pokemon = LUDICOLO,27
-	Moves = WATERGUN,ZENHEADBUTT,GIGADRAIN,KNOCKOFF
-Pokemon = ROSERADE,28
-	Moves = AROMATHERAPY,SYNTHESIS,MAGICALLEAF,WORRYSEED
-Pokemon = BRELOOM,28
-	Moves = MEGADRAIN,STUNSPORE,FORCEPALM,HEADBUTT
+	Moves = KNOCKOFF,LEAFSTORM,SYNTHESIS,GLARE
+	Item = EVIOLITE
+Pokemon = LEAFEON,27
+	Moves = LEAFBLADE,SWORDSDANCE,PROTECT,XSCISSOR
+	Item = ROSEINCENSE
+Pokemon = ELECTRODE,28
+	Form = 1
+	Moves = CHLOROBLAST,ELECTROBALL,GIGADRAIN,SWIFT
+	Item = SITRUSBERRY
 Pokemon = VICTREEBEL,29
-	Moves = WRAP,LEECHLIFE,SUCKERPUNCH,RAZORLEAF
+	Moves = SLUDGEBOMB,SUCKERPUNCH,RAZORLEAF,GIGADRAIN
 	Item = SITRUSBERRY
-Pokemon = CHERRIM,29
-	Moves = MAGICALLEAF,MORNINGSUN,FLOWERSHIELD,GROWTH
-	Item = SITRUSBERRY
+Pokemon = LILLIGANT,30
+	Moves = VICTORYDANCE,AXEKICK,SOLARBLADE
+	Form = 1
+	Ability = 0
+	Item = ROSEINCENSE
 #-------------------------------
 [TSUKU,Tsuku,1]
 LoseText = "You're still as good as always..."
@@ -769,7 +786,7 @@ Pokemon = SAWK,37
 #-------------------------------
 [AKUICLAN_F,Teruya]
 LoseText = "What?! There's no way!"
-Pokemon = SNEASEL,37
+Pokemon = SNEASLER,36
 Pokemon = SIMISEAR,38
 	Shadow = yes
 #-------------------------------
@@ -812,7 +829,7 @@ Pokemon = GOLISOPOD,41
 	Shadow = yes
 #-------------------------------
 [HOTOKE,Hotoke,1]
-LoseText = "No... Not again..."
+LoseText = "Not again..."
 Pokemon = CONKELDURR,63
 Pokemon = CRABOMINABLE,63
 Pokemon = CRUSTLE,64
@@ -832,12 +849,8 @@ LoseText = "Nice!"
 Pokemon = CENTISKORCH,39
 	Moves = FIRELASH,LEECHLIFE,KNOCKOFF,POWERWHIP
 	Item = HEAVYDUTYBOOTS
-Pokemon = PUPITAR,39
-	Moves = ROCKSLIDE,CRUNCH,PURSUIT,EARTHQUAKE
-	Item = ASSAULTVEST
-Pokemon = BLISSEY,39
-	Moves = SEISMICTOSS,SOFTBOILED,THUNDERWAVE,TELEPORT
-	Item = HEAVYDUTYBOOTS
+Pokemon = FLAREON,39
+	Item = SITRUSBERRY
 Pokemon = SALAZZLE,40
 	Moves = NASTYPLOT,SLUDGEWAVE,FLAMETHROWER,TOXIC
 	Item = HEAVYDUTYBOOTS
@@ -861,12 +874,7 @@ Pokemon = TALONFLAME,41
 [NENSHO_BOSS,Nori,2]
 LoseText = "Now I understand. Your power is superb."
 Pokemon = CENTISKORCH,39
-Pokemon = PUPITAR,40
-	Moves = ROCKSLIDE,CRUNCH,PURSUIT,EARTHQUAKE
-	Item = ASSAULTVEST
-Pokemon = BLISSEY,40
-	Moves = SEISMICTOSS,SOFTBOILED,THUNDERWAVE,TELEPORT
-	Item = HEAVYDUTYBOOTS
+Pokemon = FLAREON,40
 Pokemon = SALAZZLE,41
 	Moves = NASTYPLOT,SLUDGEWAVE,FLAMETHROWER,TOXIC
 	Item = HEAVYDUTYBOOTS
@@ -879,14 +887,15 @@ Pokemon = VOLCARONA,42
 #-------------------------------
 [AKUICLAN_F,Kiki]
 LoseText = "This isn't good! Yami Island is in danger!"
-Pokemon = MIGHTYENA,56
-Pokemon = KROOKODILE,57
+Pokemon = MIGHTYENA,55
+Pokemon = KROOKODILE,56
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Idate]
 LoseText = "Waah! I have to report this to our boss!"
-Pokemon = GARCHOMP,57
-Pokemon = ABSOL,58
+Pokemon = GARCHOMP,55
+Pokemon = OVERQWIL,26
+Pokemon = ABSOL,57
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Tomoe]
@@ -912,8 +921,9 @@ Pokemon = RAICHU,59
 #-------------------------------
 [AKUICLAN_F,Hana]
 LoseText = "You won't get away with this!"
-Pokemon = MIENSHAO,60
-Pokemon = EEVEE,61
+Pokemon = MIENSHAO,59
+Pokemon = SNEASLER,59
+Pokemon = EEVEE,60
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Haijo]
@@ -970,14 +980,14 @@ Pokemon = SIMISAGE,62
 #-------------------------------
 [AKUICLAN_F,Sutorei]
 LoseText = "I can't believe this!"
-Pokemon = DRAGONITE,62
-Pokemon = VOLCARONA,63
+Pokemon = SNEASLER,61
+Pokemon = VOLCARONA,62
 	Shadow = yes
 #-------------------------------
 [AKUICLAN_M,Pawa]
 LoseText = "You... You are one powerful Kenshi!"
-Pokemon = CONKELDURR,61
-Pokemon = HARIYAMA,62
+Pokemon = CONKELDURR,60
+Pokemon = HARIYAMA,61
 Pokemon = PASSIMIAN,62
 	Shadow = yes
 #-------------------------------
@@ -992,7 +1002,7 @@ Pokemon = TOGEKISS,67
 [AKUICLAN_F,Tenjo]
 LoseText = "My plan backfired!"
 Pokemon = PANGORO,61
-Pokemon = SIMISAGE,62
+Pokemon = OVERQWIL,62
 Pokemon = LIEPARD,63
 	Shadow = yes
 #-------------------------------
@@ -1022,6 +1032,7 @@ Pokemon = GARCHOMP,62
 Pokemon = MIGHTYENA,63
 Pokemon = BISHARP,64
 	Shadow = yes
+	Item = LEADERSCREST
 #-------------------------------
 [AKUICLAN_M,Jiko,1]
 LoseText = "Not again! The humiliation is unbearable!"
@@ -1032,7 +1043,9 @@ Pokemon = BISHARP,68
 [SHIMIZU_M,Isao]
 LoseText = "Ride the waves to victory, young Kenshi!"
 Pokemon = SEAKING,41
-Pokemon = DEWGONG,41
+Pokemon = BASCULEGION,41
+	Form = 0
+	Gender = Male
 #-------------------------------
 [SHIMIZU_F,Kotone]
 LoseText = "I will not be drowned in the sorrow of defeat!"
@@ -1062,25 +1075,33 @@ Pokemon = BRELOOM,44
 #-------------------------------
 [SHIMIZU_F,Taketa]
 LoseText = "Losing in front of my hometown is not good..."
-Pokemon = KINGDRA,44
-Pokemon = VAPOREON,44
-Pokemon = WISHIWASHI,45
+Pokemon = KINGDRA,43
+Pokemon = VAPOREON,43
+Pokemon = WISHIWASHI,44
 #-------------------------------
 [IWA_M,Nakanishi]
-LoseText = "Losing in front of my hometown is not good."
-Pokemon = DUGTRIO,45
+LoseText = "You're something else!"
+Pokemon = DUGTRIO,43
+Pokemon = URSALUNA,44
+	Moves = HEADLONGRUSH,FACADE,PROTECT
+	Item = FLAMEORB
+	Ability = 0
+	Form = 0
 Pokemon = SNORLAX,45
 #-------------------------------
 [YUKI_M,Sugiyama]
 LoseText = "Just because we specialize in Ice-types doesn't mean we always win them."
-Pokemon = MAMOSWINE,45
-Pokemon = WEAVILE,46
+Pokemon = SNEASEL,43
+	Form = 0
+Pokemon = MAMOSWINE,44
+Pokemon = WEAVILE,45
 #-------------------------------
 [YUKI_F,Koizumi]
 LoseText = "Brrr! It's so cold!"
-Pokemon = SANDSLASH,46
-Pokemon = EISCUE,46
-Pokemon = ABOMASNOW,46
+Pokemon = SANDSLASH,45
+Pokemon = EISCUE,45
+Pokemon = AVALUGG,46
+	Form = 1
 #-------------------------------
 [SHIMIZU_F,Morino]
 LoseText = "The ice-cold water isn't that bad..."
@@ -1107,6 +1128,7 @@ Pokemon = BLISSEY,47
 LoseText = "Y- you make me shiver..."
 Pokemon = CRYOGONAL,47
 Pokemon = AVALUGG,48
+	Form = 1
 Pokemon = KINGDRA,48
 #-------------------------------
 [YUKI_F,Hoshino]
@@ -1261,30 +1283,28 @@ Pokemon = CELEBI,77
 #-------------------------------
 [SHIMIZU_BOSS,Mai]
 LoseText = "You fought well. I could not win, even with the power of the ocean."
-Pokemon = MILOTIC,55
+Pokemon = MILOTIC,54
 	Item = LEFTOVERS
 	Ability = 2
 	Moves = SCALD,ICEBEAM,HAZE,RECOVER
-Pokemon = VAPOREON,56
+Pokemon = VAPOREON,54
 	Item = LEFTOVERS
 	Ability = 0
 	Moves = HEALBELL,WISH,PROTECT,SCALD
-Pokemon = KINGDRA,56
+Pokemon = KINGDRA,55
 	Item = CHOICEBAND
 	Ability = 0
 	Moves = WATERFALL,OUTRAGE,FLAIL,IRONHEAD
-Pokemon = GYARADOS,56
-	Item = LEFTOVERS
-	Ability = 1
-	Moves = DRAGONDANCE,WATERFALL,EARTHQUAKE,ICEFANG
-Pokemon = CLOYSTER,56
-	Item = FOCUSSASH
-	Ability = 1
-	Moves = SHELLSMASH,ICICLESPEAR,SPIKES,EXPLOSION
-Pokemon = GRENINJA,57
+Pokemon = GRENINJA,55
 	Item = LIFEORB
 	Ability = 0
 	Moves = ICEBEAM,GUNKSHOT,HYDROPUMP,EXTRASENSORY
+Pokemon = BASCULEGION,56
+	Item = FOCUSSASH
+	Ability = 1
+	Form = 1
+	Gender = Female
+	Moves = LASTRESPECTS,WAVECRASH,AQUAJET,SHADOWBALL
 #-------------------------------	
 [KAYOKO,Kayoko,1]
 LoseText = "You truly are a special Kenshi."
@@ -1470,7 +1490,12 @@ Pokemon = TURTONATOR,73
 [IWA_F,Eru]
 LoseText = "My rocky domain has crumbled!"
 Pokemon = GIGALITH,73
-Pokemon = STEELIX,74
+Pokemon = URSALUNA,74
+	Moves = HEADLONGRUSH,FACADE,PROTECT
+	Item = FLAMEORB
+	Ability = 0
+	Form = 0
+Pokemon = STEELIX,75
 #-------------------------------	
 [RAIKAMI_F,Shokku]
 LoseText = "I'm shocked you managed to defeat my team!"
@@ -1753,9 +1778,11 @@ Pokemon = TIMBURR,10
 #-------------------------------	
 [KENSHI_M,Isamu]
 LoseText = "If you train your Katana Techniques at the Ronin Dojo, you'll become unstoppable!"
-Pokemon = GURDURR,28
-Pokemon = KROKOROK,29
-Pokemon = LIEPARD,29
+Pokemon = ZORUA,28
+	Form = 1
+	Moves = SHADOWSNEAK,TAUNT,KNOCKOFF,HONECLAWS
+Pokemon = KROKOROK,28
+Pokemon = GURDURR,29
 #-------------------------------	
 [KOMOREI_F,Senka]
 LoseText = "I have to train my weird techniques more at the Ronin Dojo..."
