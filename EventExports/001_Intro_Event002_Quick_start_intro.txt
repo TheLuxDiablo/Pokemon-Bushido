@@ -1,0 +1,107 @@
+============================================================
+BUSHIDO EVENT EXPORT
+============================================================
+
+Map: Intro
+Map ID: 1
+
+Event: Quick start intro
+Event ID: 2
+Position: X=0, Y=14
+Pages: 2
+
+============================================================
+PAGE 1
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: None
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------
+[001] ◆ Comment: This is the Debug intro, used to quickly start a game. 
+      The player's name and trainer type are chosen 
+      automatically.
+[004] ◆ Text: Are you a boy or a girl?
+[005] ◆ Show Choices: Boy / Girl
+[006] ◆ When [Boy]
+  [007] ◆ Script: pbChangePlayer(0)
+  [008] ◆ Script: pbTrainerName("Lux")
+  [009] ◆ Script: $game_variables[26]="Akane"
+[011] ◆ When [Girl]
+  [012] ◆ Script: pbChangePlayer(1)
+  [013] ◆ Script: pbTrainerName("Luxie")
+  [014] ◆ Script: $game_variables[26]="Yato"
+[016] ◆ Choice End
+[017] ◆ Script: $PokemonGlobal.runningShoes=true
+[018] ◆ Control Self Switch: A = ON
+[019] ◆ Script: pbToneChangeAll(
+         Tone.new(-255,-255,-255,0),0)
+[021] ◆ Transfer Player: 083 Ezo Village (31,7)
+[022] ◆ Script: pbToneChangeAll(Tone.new(0,0,0,0),10)
+[023] ◆ Script: $game_variables[27]="Sukiro"
+[024] ◆ Script: $game_variables[28]=$Trainer.gender
+[025] ◆ Script: $PokemonGlobal.snagMachine=true
+[026] ◆ Wait: 10 frame(s)
+
+============================================================
+PAGE 2
+============================================================
+
+CONDITIONS
+------------------------------------------------------------
+Switch 1: None
+Switch 2: None
+Variable: None
+Self Switch: A
+
+GRAPHIC
+------------------------------------------------------------
+Tile ID: 0
+Character: 
+Hue: 0
+Direction: Down
+Pattern: 0
+Opacity: 255
+Blend Type: Normal
+
+SETTINGS
+------------------------------------------------------------
+Trigger: Action Button
+Move Type: Fixed
+Move Speed: 3
+Move Frequency: 3
+Walk Animation: true
+Step Animation: false
+Direction Fix: false
+Through: false
+Always On Top: false
+
+COMMANDS
+------------------------------------------------------------

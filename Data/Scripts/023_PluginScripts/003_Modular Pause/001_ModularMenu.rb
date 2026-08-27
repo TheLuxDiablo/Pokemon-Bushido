@@ -188,7 +188,7 @@ MenuHandlers.addEntry(:POKEGEAR,_INTL("Pokégear"),"menuPokegear",proc{|menu|
 #-------------------------------------------------------------------------------
 # Kenshi Record
 #-------------------------------------------------------------------------------
-MenuHandlers.addEntry(:TRAINER,_INTL("Kenshi Record"),"menuTrainer",proc{|menu|
+MenuHandlers.addEntry(:TRAINER,_INTL("\\pn"),"menuTrainer",proc{|menu|
   pbKenshiRecord
   menu.refresh
 },proc{

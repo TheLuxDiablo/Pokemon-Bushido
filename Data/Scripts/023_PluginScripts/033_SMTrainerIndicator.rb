@@ -425,76 +425,366 @@ module TrainerSensor
     @battle_slash = Sprite.new
     @battle_slash.z = SENSOR_Z + 10
 
-    bitmap = Bitmap.new(
+    @battle_slash.bitmap = Bitmap.new(
       Graphics.width,
       Graphics.height
     )
 
-    #---------------------------------------------------------------------------
-    # Large diagonal white-red slash.
-    #
-    # Drawn as several staggered streaks to feel more like a katana impact than
-    # a clean UI line.
-    #---------------------------------------------------------------------------
+    @battle_slash.opacity = 0
+    @battle_slash.visible = false
 
-    width  = Graphics.width
-    height = Graphics.height
+    redraw_battle_slash(0.0)
+  end
 
-    0.upto(width - 1) do |x|
-      y = height - 70 - ((x * 0.55).to_i)
 
-      # Dark red outer trail
-      if y >= 0 && y < height
-        bitmap.fill_rect(
-          x,
-          y,
-          1,
-          12,
-          BUSHIDO_CRIMSON_DARK
-        )
+  #=============================================================================
+  # Draw / Reveal Battle Slash
+  #=============================================================================
+
+  def self.redraw_battle_slash(progress)
+    return if !@battle_slash
+    return if !@battle_slash.bitmap
+
+    bitmap = @battle_slash.bitmap
+    bitmap.clear
+
+    progress = progress.to_f
+    progress = 0.0 if progress < 0.0
+    progress = 1.0 if progress > 1.0
+    return if progress <= 0.0
+
+    width  = Graphics.width.to_f
+    height = Graphics.height.to_f
+
+    # Full-screen katana arc. Start/end sit beyond the bitmap so the stroke
+    # enters from one corner and exits through the opposite edge.
+    p0 = [-width * 0.035, -height * 0.045]
+    p1 = [ width * 0.34,  height * 0.08]
+    p2 = [ width * 1.04,  height * 0.48]
+    p3 = [ width * 0.96,  height * 1.07]
+
+    samples = 42
+    visible_samples = [(samples * progress).ceil, 2].max
+
+    red_outer_left  = []
+    red_outer_right = []
+    red_inner_left  = []
+    red_inner_right = []
+    blade_left      = []
+    blade_right     = []
+
+    0.upto(visible_samples) do |i|
+      t = i.to_f / samples.to_f
+      t = progress if t > progress
+
+      point = cubic_bezier_point(
+        p0, p1, p2, p3, t
+      )
+
+      tangent = cubic_bezier_tangent(
+        p0, p1, p2, p3, t
+      )
+
+      length = Math.sqrt(
+        tangent[0] * tangent[0] +
+        tangent[1] * tangent[1]
+      )
+
+      length = 1.0 if length <= 0.0
+
+      nx = -tangent[1] / length
+      ny =  tangent[0] / length
+
+      # Much slimmer than the old version. It stays blade-like through the
+      # middle instead of ballooning into a huge white ribbon.
+      if t < 0.14
+        half_width = width * 0.0015 +
+          width * 0.0145 * (t / 0.14)
+      elsif t < 0.72
+        local = (t - 0.14) / 0.58
+        half_width = width * (0.016 + 0.018 * local)
+      else
+        local = (t - 0.72) / 0.28
+        half_width = width * (0.034 - 0.027 * local)
       end
 
-      # Bright crimson body
-      if y + 2 >= 0 && y + 2 < height
-        bitmap.fill_rect(
-          x,
-          y + 2,
-          1,
-          7,
-          BUSHIDO_CRIMSON_BRIGHT
-        )
+      # While the stroke is traveling, pinch the CURRENT leading edge down.
+      # This makes it look like the slash is being carved across the screen,
+      # instead of a finished graphic simply being unmasked.
+      if progress < 0.999
+        tip_distance = progress - t
+        tip_zone = 0.075
+
+        if tip_distance < tip_zone
+          tip_scale = tip_distance / tip_zone
+          tip_scale = 0.10 if tip_scale < 0.10
+          half_width *= tip_scale
+        end
       end
 
-      # White-hot blade center
-      if y + 4 >= 0 && y + 4 < height
-        bitmap.fill_rect(
-          x,
-          y + 4,
-          1,
-          2,
-          Color.new(255, 235, 225)
-        )
-      end
+      outer = half_width * 1.04
+      inner = half_width * 0.82
+
+      blade_left << [
+        point[0] + nx * outer,
+        point[1] + ny * outer
+      ]
+
+      blade_right << [
+        point[0] - nx * inner,
+        point[1] - ny * inner
+      ]
+
+      # Two red fringes: a broad dark crimson aura and a tighter bright edge.
+      red_outer_extra = 3.0
+      red_inner_extra = 1.0
+
+      red_outer_left << [
+        point[0] + nx * (outer + red_outer_extra),
+        point[1] + ny * (outer + red_outer_extra)
+      ]
+
+      red_outer_right << [
+        point[0] - nx * (inner + red_outer_extra),
+        point[1] - ny * (inner + red_outer_extra)
+      ]
+
+      red_inner_left << [
+        point[0] + nx * (outer + red_inner_extra),
+        point[1] + ny * (outer + red_inner_extra)
+      ]
+
+      red_inner_right << [
+        point[0] - nx * (inner + red_inner_extra),
+        point[1] - ny * (inner + red_inner_extra)
+      ]
+
+      break if t >= progress
     end
 
-    # Secondary parallel slash
-    0.upto(width - 1) do |x|
-      y = height - 20 - ((x * 0.55).to_i)
+    red_outer = red_outer_left + red_outer_right.reverse
+    red_inner = red_inner_left + red_inner_right.reverse
+    blade     = blade_left + blade_right.reverse
 
-      next if y < 0 || y >= height
+    draw_filled_polygon(
+      bitmap,
+      red_outer,
+      Color.new(75, 0, 0, 115)
+    )
 
-      bitmap.fill_rect(
-        x,
-        y,
-        1,
-        3,
-        BUSHIDO_CRIMSON
+    draw_filled_polygon(
+      bitmap,
+      red_inner,
+      Color.new(235, 35, 28, 175)
+    )
+
+    draw_filled_polygon(
+      bitmap,
+      blade,
+      Color.new(255, 255, 255, 255)
+    )
+
+    # The little torn blade fragments join the stroke as the travelling edge
+    # reaches them, rather than popping in before the slash gets there.
+    accent1 = [
+      [width * 0.525, height * 0.365],
+      [width * 0.590, height * 0.425],
+      [width * 0.545, height * 0.392]
+    ]
+
+    accent2 = [
+      [width * 0.585, height * 0.275],
+      [width * 0.675, height * 0.395],
+      [width * 0.615, height * 0.315]
+    ]
+
+    if progress >= 0.50
+      draw_polygon_outline(
+        bitmap,
+        accent1,
+        Color.new(235, 35, 28, 190)
+      )
+
+      draw_filled_polygon(
+        bitmap,
+        accent1,
+        Color.new(255, 255, 255, 255)
       )
     end
 
-    @battle_slash.bitmap  = bitmap
-    @battle_slash.opacity = 0
-    @battle_slash.visible = false
+    if progress >= 0.63
+      draw_polygon_outline(
+        bitmap,
+        accent2,
+        Color.new(235, 35, 28, 190)
+      )
+
+      draw_filled_polygon(
+        bitmap,
+        accent2,
+        Color.new(255, 255, 255, 255)
+      )
+    end
+  end
+
+
+  #=============================================================================
+  # Slash Geometry Helpers
+  #=============================================================================
+
+  def self.cubic_bezier_point(p0, p1, p2, p3, t)
+    u = 1.0 - t
+
+    x =
+      (u * u * u * p0[0]) +
+      (3.0 * u * u * t * p1[0]) +
+      (3.0 * u * t * t * p2[0]) +
+      (t * t * t * p3[0])
+
+    y =
+      (u * u * u * p0[1]) +
+      (3.0 * u * u * t * p1[1]) +
+      (3.0 * u * t * t * p2[1]) +
+      (t * t * t * p3[1])
+
+    return [x, y]
+  end
+
+
+  def self.cubic_bezier_tangent(p0, p1, p2, p3, t)
+    u = 1.0 - t
+
+    x =
+      (3.0 * u * u * (p1[0] - p0[0])) +
+      (6.0 * u * t * (p2[0] - p1[0])) +
+      (3.0 * t * t * (p3[0] - p2[0]))
+
+    y =
+      (3.0 * u * u * (p1[1] - p0[1])) +
+      (6.0 * u * t * (p2[1] - p1[1])) +
+      (3.0 * t * t * (p3[1] - p2[1]))
+
+    return [x, y]
+  end
+
+
+  def self.draw_filled_polygon(bitmap, points, color)
+    return if !points || points.length < 3
+
+    min_y = points[0][1].to_i
+    max_y = min_y
+
+    points.each do |point|
+      y = point[1].to_i
+      min_y = y if y < min_y
+      max_y = y if y > max_y
+    end
+
+    min_y = 0 if min_y < 0
+    max_y = bitmap.height - 1 if max_y >= bitmap.height
+
+    min_y.upto(max_y) do |y|
+      intersections = []
+
+      0.upto(points.length - 1) do |i|
+        a = points[i]
+        b = points[(i + 1) % points.length]
+
+        ay = a[1]
+        by = b[1]
+
+        next if ay == by
+
+        low_y  = ay < by ? ay : by
+        high_y = ay > by ? ay : by
+
+        next if y < low_y
+        next if y >= high_y
+
+        x =
+          a[0] +
+          (y - ay) *
+          (b[0] - a[0]) /
+          (by - ay).to_f
+
+        intersections << x
+      end
+
+      intersections.sort!
+
+      index = 0
+
+      while index + 1 < intersections.length
+        x1 = intersections[index].ceil
+        x2 = intersections[index + 1].floor
+
+        x1 = 0 if x1 < 0
+        x2 = bitmap.width - 1 if x2 >= bitmap.width
+
+        if x2 >= x1
+          bitmap.fill_rect(
+            x1,
+            y,
+            x2 - x1 + 1,
+            1,
+            color
+          )
+        end
+
+        index += 2
+      end
+    end
+  end
+
+
+  def self.draw_polygon_outline(bitmap, points, color)
+    return if !points || points.length < 2
+
+    0.upto(points.length - 1) do |i|
+      a = points[i]
+      b = points[(i + 1) % points.length]
+
+      draw_slash_line(
+        bitmap,
+        a[0].to_i,
+        a[1].to_i,
+        b[0].to_i,
+        b[1].to_i,
+        color
+      )
+    end
+  end
+
+
+  def self.draw_slash_line(bitmap, x1, y1, x2, y2, color)
+    dx = (x2 - x1).abs
+    dy = (y2 - y1).abs
+
+    sx = x1 < x2 ? 1 : -1
+    sy = y1 < y2 ? 1 : -1
+
+    err = dx - dy
+
+    loop do
+      if x1 >= 0 && x1 < bitmap.width &&
+         y1 >= 0 && y1 < bitmap.height
+        bitmap.set_pixel(x1, y1, color)
+      end
+
+      break if x1 == x2 && y1 == y2
+
+      e2 = err * 2
+
+      if e2 > -dy
+        err -= dy
+        x1 += sx
+      end
+
+      if e2 < dx
+        err += dx
+        y1 += sy
+      end
+    end
   end
 
 
@@ -519,6 +809,7 @@ module TrainerSensor
 
     @battle_slash.visible = true
     @battle_slash.opacity = 0
+    redraw_battle_slash(0.0)
   end
 
 
@@ -866,53 +1157,42 @@ module TrainerSensor
     return if !@battle_slash
 
     @battle_slash_timer += 1
-
     frame = @battle_slash_timer
 
-    #---------------------------------------------------------------------------
-    # 0-3:
-    # extremely fast flash-in
-    #---------------------------------------------------------------------------
-
-    if frame <= 3
-
+    # A sword cut should read as a sudden SHING, not a smooth UI wipe.
+    # These deliberately large jumps make the stroke snap across the screen.
+    if frame == 1
       @battle_slash.visible = true
+      @battle_slash.opacity = 255
+      redraw_battle_slash(0.08)
 
-      @battle_slash.opacity =
-        frame * 85
-
-    #---------------------------------------------------------------------------
-    # 4-7:
-    # hold the slash at full strength very briefly
-    #---------------------------------------------------------------------------
-
-    elsif frame <= 7
-
+    elsif frame == 2
+      redraw_battle_slash(0.34)
       @battle_slash.opacity = 255
 
-    #---------------------------------------------------------------------------
-    # 8-16:
-    # rapidly disappear
-    #---------------------------------------------------------------------------
+    elsif frame == 3
+      redraw_battle_slash(0.78)
+      @battle_slash.opacity = 255
 
-    elsif frame <= 16
+    elsif frame == 4
+      redraw_battle_slash(1.0)
+      @battle_slash.opacity = 255
 
-      remaining =
-        16 - frame
+    # Let the finished cut sit on the screen long enough to register.
+    elsif frame <= 14
+      @battle_slash.opacity = 255
 
-      @battle_slash.opacity =
-        (remaining * 28)
-
+    # Then fade the completed slash away without moving it anymore.
+    elsif frame <= 25
+      fade_frame = frame - 14
+      @battle_slash.opacity = 255 - ((255 * fade_frame) / 11)
       @battle_slash.opacity = 0 if @battle_slash.opacity < 0
 
-    #---------------------------------------------------------------------------
-    # Finished
-    #---------------------------------------------------------------------------
-
     else
-
       @battle_slash.visible = false
       @battle_slash.opacity = 0
+
+      redraw_battle_slash(0.0)
 
       @battle_slash_timer   = 0
       @battle_slash_playing = false
@@ -1219,4 +1499,4 @@ Events.onMapUpdate += proc { |sender, e|
 
   end
 
-}
+} 

@@ -17,6 +17,7 @@ module BushidoPostFX
   EZO_VILLAGE_MAP_ID = 79
   NAGISA_BAY_MAP_ID  = 81
   SAKURA_PASS_MAP_ID = 82
+  SHIZEN_TRAIL_MAP_ID = 90
 
   PROFILE_TRANSITION_FRAMES = 48
   TOGGLE_TRANSITION_FRAMES  = 24
@@ -25,13 +26,23 @@ module BushidoPostFX
   # Default Bushido look
   #-----------------------------------------------------------------------------
 
-  DEFAULT_TONE = Tone.new(7, 2, -3, 0)
+  DEFAULT_TONE = Tone.new(5, 1, -5, 4)
 
   DEFAULT_VIGNETTE_OPACITY = 72
   DEFAULT_VIGNETTE_COLOR   = Color.new(0, 2, 10)
 
   DEFAULT_CENTER_LIFT_OPACITY = 18
   DEFAULT_DEPTH_OPACITY       = 32
+
+  # Ink Bushido global treatment
+  INK_STYLE_ENABLED = true
+
+  DEFAULT_WARM_WASH_OPACITY  = 24
+  DEFAULT_COOL_WASH_OPACITY  = 18
+  DEFAULT_PRINT_GRAIN_OPACITY = 22
+
+  # Very slow screen-space drift. It should feel alive, not like scrolling fog.
+  WASH_DRIFT_SPEED = 0.0025
 
   #-----------------------------------------------------------------------------
   # Ezo Village
@@ -68,6 +79,23 @@ module BushidoPostFX
   SAKURA_GUST_INTERVAL_MAX  = 120
   SAKURA_GUST_PETALS        = 14
 
+  #-----------------------------------------------------------------------------
+  # Shizen Trail
+  #-----------------------------------------------------------------------------
+
+  # Sparse, solid leaves. They are screen-space atmosphere by design, so their
+  # travel speed never changes when the player walks with or against them.
+  SHIZEN_LEAF_COUNT          = 12
+  SHIZEN_LEAF_OPACITY        = 255
+  SHIZEN_LEAF_SPAWN_MIN      = 52
+  SHIZEN_LEAF_SPAWN_MAX      = 100
+  SHIZEN_GUST_INTERVAL_MIN   = 240
+  SHIZEN_GUST_INTERVAL_MAX   = 420
+  SHIZEN_GUST_LEAVES         = 3
+
+  # Leaves crossfade when entering/leaving Map 90 instead of snapping.
+  SHIZEN_TRANSITION_FRAMES   = 48
+
   class << self
     attr_reader :enabled
     attr_reader :profile
@@ -85,6 +113,10 @@ module BushidoPostFX
   @center_lift_sprite = nil
   @depth_sprite = nil
 
+  @warm_wash_sprite = nil
+  @cool_wash_sprite = nil
+  @print_grain_sprite = nil
+
   @ezo_cloud_sprite = nil
   @ezo_haze_sprite = nil
   @ezo_daylight_sprite = nil
@@ -95,6 +127,7 @@ module BushidoPostFX
   @nagisa_particles = []
 
   @sakura_particles = []
+  @shizen_leaves = []
 
   #-----------------------------------------------------------------------------
   # Cached bitmaps
@@ -103,6 +136,10 @@ module BushidoPostFX
   @vignette_bitmap = nil
   @center_lift_bitmap = nil
   @depth_bitmap = nil
+
+  @warm_wash_bitmap = nil
+  @cool_wash_bitmap = nil
+  @print_grain_bitmap = nil
 
   @ezo_cloud_bitmap = nil
   @ezo_haze_bitmap = nil
@@ -113,6 +150,7 @@ module BushidoPostFX
   @nagisa_cool_bitmap = nil
   @nagisa_particle_bitmap = nil
   @sakura_petal_bitmaps = []
+  @shizen_leaf_bitmaps = []
 
   #-----------------------------------------------------------------------------
   # Global state
@@ -126,6 +164,9 @@ module BushidoPostFX
   @sakura_spawning = false
   @sakura_spawn_timer = 0
   @sakura_gust_timer = 120
+
+  @shizen_leaf_spawn_timer = 0
+  @shizen_gust_timer = 210
 
   # Master on/off blend
   @master_strength = 1.0
@@ -147,6 +188,12 @@ module BushidoPostFX
   @nagisa_target = 0.0
   @nagisa_duration = 0
   @nagisa_elapsed = 0
+
+  @shizen_strength = 0.0
+  @shizen_start = 0.0
+  @shizen_target = 0.0
+  @shizen_duration = 0
+  @shizen_elapsed = 0
 
   # Grade transition
   @grade_tone = DEFAULT_TONE.clone
@@ -201,6 +248,22 @@ module BushidoPostFX
     @depth_sprite = Sprite.new(@viewport)
     @depth_sprite.bitmap = @depth_bitmap
     @depth_sprite.z = 10
+
+    # Global print/pigment treatment. These sit below map-native atmosphere.
+    @warm_wash_sprite = Sprite.new(@viewport)
+    @warm_wash_sprite.bitmap = @warm_wash_bitmap
+    @warm_wash_sprite.z = 11
+    @warm_wash_sprite.blend_type = 1
+
+    @cool_wash_sprite = Sprite.new(@viewport)
+    @cool_wash_sprite.bitmap = @cool_wash_bitmap
+    @cool_wash_sprite.z = 12
+    @cool_wash_sprite.blend_type = 0
+
+    @print_grain_sprite = Sprite.new(@viewport)
+    @print_grain_sprite.bitmap = @print_grain_bitmap
+    @print_grain_sprite.z = 13
+    @print_grain_sprite.blend_type = 0
 
     @ezo_haze_sprite = Sprite.new(@viewport)
     @ezo_haze_sprite.bitmap = @ezo_haze_bitmap
@@ -279,6 +342,7 @@ module BushidoPostFX
 
 
     create_sakura_particles
+    create_shizen_particles
   end
 
 
@@ -580,6 +644,175 @@ module BushidoPostFX
   end
 
   #-----------------------------------------------------------------------------
+  # Shizen Trail leaves
+  #-----------------------------------------------------------------------------
+
+  def self.create_shizen_particles
+    @shizen_leaves.each do |data|
+      dispose_sprite(data[:sprite]) if data
+    end
+    @shizen_leaves.clear
+
+    SHIZEN_LEAF_COUNT.times do
+      sprite = Sprite.new(@particle_viewport)
+      sprite.visible = false
+
+      @shizen_leaves.push({
+        :sprite => sprite,
+        :active => false,
+        :x => 0.0,
+        :y => 0.0,
+        :vx => 0.0,
+        :vy => 0.0,
+        :phase => 0.0,
+        :phase_speed => 0.0,
+        :spin => 0.0,
+        :spin_speed => 0.0,
+        :life => 0,
+        :max_life => 1,
+        :opacity => SHIZEN_LEAF_OPACITY,
+        :bitmap_index => 0,
+        :scale => 1.0
+      })
+    end
+
+    @shizen_leaf_spawn_timer = 18
+    @shizen_gust_timer = 210
+  end
+
+  def self.reset_shizen_leaf(data, gust = false)
+    return if !data
+
+    sprite = data[:sprite]
+    return if !sprite || sprite.disposed?
+
+    data[:bitmap_index] = rand(@shizen_leaf_bitmaps.length)
+    sprite.bitmap = @shizen_leaf_bitmaps[data[:bitmap_index]]
+
+    # Rotate around the center so each solid leaf visibly twirls.
+    sprite.ox = sprite.bitmap.width / 2
+    sprite.oy = sprite.bitmap.height / 2
+
+    # IMPORTANT: these are screen coordinates, not map/world coordinates.
+    # Camera/player movement never gets added to leaf velocity. That keeps the
+    # breeze visually constant even if the player walks against its direction.
+    data[:x] = -28 - rand(80)
+    data[:y] = 16 + rand([Graphics.height - 32, 1].max)
+
+    if gust
+      data[:vx] = 2.15 + rand(96) / 100.0
+      data[:vy] = -0.18 + rand(43) / 100.0
+    else
+      data[:vx] = 1.35 + rand(91) / 100.0
+      data[:vy] = -0.12 + rand(35) / 100.0
+    end
+
+    data[:phase] = rand(628) / 100.0
+    data[:phase_speed] = 0.045 + rand(36) / 1000.0
+
+    data[:spin] = rand(360).to_f
+    spin_dir = rand(2) == 0 ? -1.0 : 1.0
+    data[:spin_speed] = spin_dir * (1.25 + rand(176) / 100.0)
+
+    data[:max_life] = 250 + rand(130)
+    data[:life] = 0
+    data[:opacity] = 245 + rand(11)
+    data[:scale] = 1.35 + rand(51) / 100.0
+
+    sprite.zoom_x = data[:scale]
+    sprite.zoom_y = data[:scale]
+    sprite.angle = data[:spin]
+    sprite.opacity = 0
+    sprite.visible = true
+    data[:active] = true
+  end
+
+  def self.update_shizen_particles
+    on_shizen = ($game_map && $game_map.map_id == SHIZEN_TRAIL_MAP_ID)
+
+    # Spawn only while actually on Shizen Trail. Existing leaves keep updating
+    # after a transfer so the profile crossfade can fade them out naturally.
+    if on_shizen && @enabled
+      @shizen_leaf_spawn_timer -= 1
+      @shizen_gust_timer -= 1
+
+      if @shizen_leaf_spawn_timer <= 0
+        inactive = @shizen_leaves.find { |p| !p[:active] }
+        reset_shizen_leaf(inactive, false) if inactive
+
+        range = SHIZEN_LEAF_SPAWN_MAX - SHIZEN_LEAF_SPAWN_MIN + 1
+        @shizen_leaf_spawn_timer = SHIZEN_LEAF_SPAWN_MIN + rand([range, 1].max)
+      end
+
+      if @shizen_gust_timer <= 0
+        spawned = 0
+
+        @shizen_leaves.each do |leaf|
+          next if leaf[:active]
+          reset_shizen_leaf(leaf, true)
+          leaf[:x] -= rand(90)
+          leaf[:y] += rand(64) - 32
+          spawned += 1
+          break if spawned >= SHIZEN_GUST_LEAVES
+        end
+
+        range = SHIZEN_GUST_INTERVAL_MAX - SHIZEN_GUST_INTERVAL_MIN + 1
+        @shizen_gust_timer = SHIZEN_GUST_INTERVAL_MIN + rand([range, 1].max)
+      end
+    end
+
+    strength = @shizen_strength * @master_strength
+
+    @shizen_leaves.each do |data|
+      sprite = data[:sprite]
+      next if !sprite || sprite.disposed?
+
+      if !data[:active]
+        sprite.visible = false
+        next
+      end
+
+      data[:life] += 1
+      data[:phase] += data[:phase_speed]
+      data[:spin] += data[:spin_speed]
+
+      # Pure screen-space wind motion. No display_x/display_y, MapFactory, or
+      # player/camera compensation is used here.
+      sway = Math.sin(data[:phase]) * 0.42
+      flutter = Math.sin(data[:phase] * 2.4) * 0.16
+
+      data[:x] += data[:vx] + Math.cos(data[:phase] * 0.75) * 0.08
+      data[:y] += data[:vy] + sway + flutter
+
+      sprite.x = data[:x].to_i
+      sprite.y = data[:y].to_i
+      sprite.angle = data[:spin]
+
+      flip = Math.sin(data[:phase] * 2.0)
+      edge = flip.abs
+      sprite.zoom_x = data[:scale] * (0.34 + edge * 0.66)
+      sprite.zoom_y = data[:scale] * (0.94 + Math.cos(data[:phase]) * 0.06)
+
+      progress = data[:life].to_f / data[:max_life]
+      life_fade = 1.0
+      life_fade = progress / 0.08 if progress < 0.08
+      life_fade = (1.0 - progress) / 0.12 if progress > 0.88
+      life_fade = [[life_fade, 0.0].max, 1.0].min
+
+      sprite.opacity = clamp_opacity(data[:opacity] * life_fade * strength)
+      sprite.visible = sprite.opacity > 0
+
+      if data[:life] >= data[:max_life] ||
+         data[:x] > Graphics.width + 64 ||
+         data[:y] < -64 ||
+         data[:y] > Graphics.height + 64
+        data[:active] = false
+        sprite.visible = false
+      end
+    end
+  end
+
+  #-----------------------------------------------------------------------------
   # Map detection / transitions
   #-----------------------------------------------------------------------------
 
@@ -598,6 +831,8 @@ module BushidoPostFX
       @profile = :NAGISA_BAY
     when SAKURA_PASS_MAP_ID
       @profile = :SAKURA_PASS
+    when SHIZEN_TRAIL_MAP_ID
+      @profile = :SHIZEN_TRAIL
     else
       @profile = :DEFAULT
     end
@@ -607,6 +842,8 @@ module BushidoPostFX
     # Independent targets = true crossfade.
     transition_ezo(@profile == :EZO_VILLAGE ? 1.0 : 0.0, duration)
     transition_nagisa(@profile == :NAGISA_BAY ? 1.0 : 0.0, duration)
+    transition_shizen(@profile == :SHIZEN_TRAIL ? 1.0 : 0.0,
+                      force ? 0 : SHIZEN_TRANSITION_FRAMES)
 
     target_tone = DEFAULT_TONE.clone
 
@@ -615,7 +852,7 @@ module BushidoPostFX
         DEFAULT_TONE.red   + NAGISA_TONE.red,
         DEFAULT_TONE.green + NAGISA_TONE.green,
         DEFAULT_TONE.blue  + NAGISA_TONE.blue,
-        0
+        DEFAULT_TONE.gray + NAGISA_TONE.gray
       )
     end
 
@@ -638,6 +875,14 @@ module BushidoPostFX
     @nagisa_duration = [duration.to_i, 0].max
     @nagisa_elapsed = 0
     @nagisa_strength = @nagisa_target if @nagisa_duration == 0
+  end
+
+  def self.transition_shizen(target, duration)
+    @shizen_start = @shizen_strength
+    @shizen_target = target.to_f
+    @shizen_duration = [duration.to_i, 0].max
+    @shizen_elapsed = 0
+    @shizen_strength = @shizen_target if @shizen_duration == 0
   end
 
   def self.update_profile_transitions
@@ -663,6 +908,19 @@ module BushidoPostFX
         @nagisa_strength = @nagisa_target
         @nagisa_duration = 0
         @nagisa_elapsed = 0
+      end
+    end
+
+    if @shizen_duration > 0
+      @shizen_elapsed += 1
+      t = eased_progress(@shizen_elapsed, @shizen_duration)
+      @shizen_strength =
+        @shizen_start + (@shizen_target - @shizen_start) * t
+
+      if @shizen_elapsed >= @shizen_duration
+        @shizen_strength = @shizen_target
+        @shizen_duration = 0
+        @shizen_elapsed = 0
       end
     end
   end
@@ -729,7 +987,7 @@ module BushidoPostFX
       lerp(@grade_start_tone.red,   @grade_target_tone.red,   t),
       lerp(@grade_start_tone.green, @grade_target_tone.green, t),
       lerp(@grade_start_tone.blue,  @grade_target_tone.blue,  t),
-      0
+      lerp(@grade_start_tone.gray,  @grade_target_tone.gray,  t)
     )
 
     if @grade_elapsed >= @grade_duration
@@ -753,16 +1011,46 @@ module BushidoPostFX
     update_master
     update_profile_transitions
     update_grade
+    update_ink_style
 
     update_ezo_motion
     update_nagisa_motion
     update_nagisa_particles
     update_sakura_particles
+    update_shizen_particles
 
     apply_all
 
     @viewport.update if @viewport && !@viewport.disposed?
     @particle_viewport.update if @particle_viewport && !@particle_viewport.disposed?
+  end
+
+  #-----------------------------------------------------------------------------
+  # Ink Bushido
+  #-----------------------------------------------------------------------------
+
+  def self.update_ink_style
+    return if !INK_STYLE_ENABLED
+
+    if @warm_wash_sprite && !@warm_wash_sprite.disposed?
+      @warm_wash_sprite.x =
+        -80 + (Math.sin(@frame * WASH_DRIFT_SPEED) * 18).to_i
+      @warm_wash_sprite.y =
+        -60 + (Math.cos(@frame * WASH_DRIFT_SPEED * 0.73) * 10).to_i
+    end
+
+    if @cool_wash_sprite && !@cool_wash_sprite.disposed?
+      @cool_wash_sprite.x =
+        -90 + (Math.cos(@frame * WASH_DRIFT_SPEED * 0.61) * 15).to_i
+      @cool_wash_sprite.y =
+        -70 + (Math.sin(@frame * WASH_DRIFT_SPEED * 0.82) * 8).to_i
+    end
+
+    # Grain is fixed to the screen. Moving it reads as film noise.
+    if @print_grain_sprite && !@print_grain_sprite.disposed?
+      @print_grain_sprite.x = 0
+      @print_grain_sprite.y = 0
+    end
   end
 
   #-----------------------------------------------------------------------------
@@ -1091,6 +1379,24 @@ module BushidoPostFX
         clamp_opacity(DEFAULT_DEPTH_OPACITY * master)
     end
 
+    if @warm_wash_sprite && !@warm_wash_sprite.disposed?
+      opacity = INK_STYLE_ENABLED ? DEFAULT_WARM_WASH_OPACITY * master : 0
+      @warm_wash_sprite.opacity = clamp_opacity(opacity)
+      @warm_wash_sprite.visible = @warm_wash_sprite.opacity > 0
+    end
+
+    if @cool_wash_sprite && !@cool_wash_sprite.disposed?
+      opacity = INK_STYLE_ENABLED ? DEFAULT_COOL_WASH_OPACITY * master : 0
+      @cool_wash_sprite.opacity = clamp_opacity(opacity)
+      @cool_wash_sprite.visible = @cool_wash_sprite.opacity > 0
+    end
+
+    if @print_grain_sprite && !@print_grain_sprite.disposed?
+      opacity = INK_STYLE_ENABLED ? DEFAULT_PRINT_GRAIN_OPACITY * master : 0
+      @print_grain_sprite.opacity = clamp_opacity(opacity)
+      @print_grain_sprite.visible = @print_grain_sprite.opacity > 0
+    end
+
     if @vignette_sprite && !@vignette_sprite.disposed?
       @vignette_sprite.opacity =
         clamp_opacity(DEFAULT_VIGNETTE_OPACITY * master)
@@ -1113,7 +1419,7 @@ module BushidoPostFX
       clamp_tone(source.red   + @grade_tone.red   * master),
       clamp_tone(source.green + @grade_tone.green * master),
       clamp_tone(source.blue  + @grade_tone.blue  * master),
-      clamp_gray(source.gray)
+      clamp_gray(source.gray + @grade_tone.gray * master)
     )
   end
 
@@ -1182,6 +1488,9 @@ module BushidoPostFX
       @vignette_bitmap,
       @center_lift_bitmap,
       @depth_bitmap,
+      @warm_wash_bitmap,
+      @cool_wash_bitmap,
+      @print_grain_bitmap,
       @ezo_cloud_bitmap,
       @ezo_haze_bitmap,
       @ezo_daylight_bitmap,
@@ -1200,6 +1509,12 @@ module BushidoPostFX
       return false if !bitmap || bitmap.disposed?
     end
 
+
+    return false if !@shizen_leaf_bitmaps || @shizen_leaf_bitmaps.empty?
+    @shizen_leaf_bitmaps.each do |bitmap|
+      return false if !bitmap || bitmap.disposed?
+    end
+
     return true
   end
 
@@ -1208,9 +1523,14 @@ module BushidoPostFX
     @center_lift_bitmap = build_center_lift_bitmap
     @depth_bitmap = build_depth_bitmap
 
+    @warm_wash_bitmap = build_warm_wash_bitmap
+    @cool_wash_bitmap = build_cool_wash_bitmap
+    @print_grain_bitmap = build_print_grain_bitmap
+
     build_ezo_cache
     build_nagisa_cache
     build_sakura_cache
+    build_shizen_cache
   end
 
   #-----------------------------------------------------------------------------
@@ -1321,6 +1641,134 @@ module BushidoPostFX
 
     return bitmap
   end
+
+  #-----------------------------------------------------------------------------
+  # Ink Bushido graphics
+  #-----------------------------------------------------------------------------
+
+  def self.build_warm_wash_bitmap
+    width  = Graphics.width + 160
+    height = Graphics.height + 120
+    bitmap = Bitmap.new(width, height)
+
+    14.times do
+      draw_pigment_blob(
+        bitmap,
+        rand(width),
+        rand(height),
+        55 + rand(125),
+        30 + rand(85),
+        212, 154, 94,
+        18 + rand(25)
+      )
+    end
+
+    5.times do
+      draw_pigment_blob(
+        bitmap,
+        rand(width),
+        rand(height),
+        130 + rand(150),
+        70 + rand(110),
+        185, 128, 78,
+        14 + rand(10)
+      )
+    end
+
+    return bitmap
+  end
+
+  def self.build_cool_wash_bitmap
+    width  = Graphics.width + 180
+    height = Graphics.height + 140
+    bitmap = Bitmap.new(width, height)
+
+    16.times do
+      draw_pigment_blob(
+        bitmap,
+        rand(width),
+        rand(height),
+        45 + rand(110),
+        25 + rand(75),
+        20, 30, 42,
+        12 + rand(22)
+      )
+    end
+
+    return bitmap
+  end
+
+  def self.build_print_grain_bitmap
+    bitmap = Bitmap.new(Graphics.width, Graphics.height)
+    step = 2
+    y = 0
+
+    while y < bitmap.height
+      x = 0
+
+      while x < bitmap.width
+        if rand(100) < 7
+          color = if rand(2) == 0
+                    Color.new(218, 181, 133, 10 + rand(12))
+                  else
+                    Color.new(32, 42, 51, 8 + rand(10))
+                  end
+
+          bitmap.fill_rect(x, y, step, step, color)
+        end
+
+        x += step
+      end
+
+      y += step
+    end
+
+    return bitmap
+  end
+
+  # Draws a feathered, slightly irregular ellipse using horizontal runs.
+  # This is only used while building the cache, so there is no per-frame cost.
+  def self.draw_pigment_blob(bitmap, cx, cy, rx, ry, red, green, blue, alpha)
+    return if !bitmap || bitmap.disposed?
+    return if rx <= 0 || ry <= 0
+
+    layers = 7
+
+    for layer in 1..layers
+      scale = layer.to_f / layers
+      layer_rx = [1, (rx * scale).to_i].max
+      layer_ry = [1, (ry * scale).to_i].max
+
+      # Inner layers are denser, outer layers are faint.
+      layer_strength = 1.0 - (layer - 1).to_f / layers
+      layer_alpha = (alpha * layer_strength * 0.72).to_i
+      next if layer_alpha <= 0
+
+      color = Color.new(red, green, blue, layer_alpha)
+      top = [cy - layer_ry, 0].max
+      bottom = [cy + layer_ry, bitmap.height - 1].min
+
+      for y in top..bottom
+        ny = (y - cy).to_f / layer_ry
+        span_sq = 1.0 - ny * ny
+        next if span_sq <= 0.0
+
+        span = (Math.sqrt(span_sq) * layer_rx).to_i
+
+        # Small deterministic wobble keeps the wash from reading as circles.
+        wobble =
+          (Math.sin(y * 0.083 + cx * 0.017) * 5.0 +
+           Math.sin(y * 0.031 - cy * 0.013) * 3.0).to_i
+
+        left = [cx - span + wobble, 0].max
+        right = [cx + span + wobble, bitmap.width - 1].min
+        next if right < left
+
+        bitmap.fill_rect(left, y, right - left + 1, 1, color)
+      end
+    end
+  end
+
 
   #-----------------------------------------------------------------------------
   # Ezo graphics
@@ -1593,6 +2041,64 @@ module BushidoPostFX
       end
 
       @sakura_petal_bitmaps.push(bitmap)
+    end
+  end
+
+  #-----------------------------------------------------------------------------
+  # Shizen Trail graphics
+  #-----------------------------------------------------------------------------
+
+  def self.build_shizen_cache
+    @shizen_leaf_bitmaps = []
+
+    # Larger solid leaves. These are 13x11 rather than 9x7, so they read as
+    # individual objects even before runtime scaling/twirling is applied.
+    leaf_palettes = [
+      [Color.new(83, 132, 48, 255),  Color.new(145, 183, 79, 255), Color.new(47, 78, 35, 255)],
+      [Color.new(117, 147, 55, 255), Color.new(176, 192, 88, 255), Color.new(62, 88, 40, 255)],
+      [Color.new(151, 112, 43, 255), Color.new(205, 160, 70, 255), Color.new(91, 67, 31, 255)]
+    ]
+
+    3.times do |i|
+      bitmap = Bitmap.new(13, 11)
+      main = leaf_palettes[i][0]
+      light = leaf_palettes[i][1]
+      dark = leaf_palettes[i][2]
+
+      case i
+      when 0
+        bitmap.set_pixel(6, 0, light)
+        bitmap.fill_rect(4, 1, 5, 1, light)
+        bitmap.fill_rect(3, 2, 7, 2, light)
+        bitmap.fill_rect(2, 4, 9, 3, main)
+        bitmap.fill_rect(3, 7, 7, 1, main)
+        bitmap.fill_rect(4, 8, 5, 1, dark)
+        bitmap.set_pixel(6, 9, dark)
+        bitmap.set_pixel(7, 10, dark)
+      when 1
+        bitmap.set_pixel(3, 1, light)
+        bitmap.fill_rect(3, 2, 6, 2, light)
+        bitmap.fill_rect(2, 4, 9, 3, main)
+        bitmap.fill_rect(4, 7, 7, 2, main)
+        bitmap.fill_rect(6, 9, 4, 1, dark)
+        bitmap.set_pixel(9, 10, dark)
+      else
+        bitmap.set_pixel(8, 0, light)
+        bitmap.fill_rect(5, 1, 5, 1, light)
+        bitmap.fill_rect(4, 2, 7, 2, light)
+        bitmap.fill_rect(2, 4, 9, 3, main)
+        bitmap.fill_rect(1, 7, 8, 1, main)
+        bitmap.fill_rect(3, 8, 5, 1, dark)
+        bitmap.set_pixel(3, 9, dark)
+        bitmap.set_pixel(2, 10, dark)
+      end
+
+      # Simple central vein gives the larger silhouette a little structure.
+      4.upto(8) do |y|
+        bitmap.set_pixel(6, y, dark) if bitmap.get_pixel(6, y).alpha > 0
+      end
+
+      @shizen_leaf_bitmaps.push(bitmap)
     end
   end
 

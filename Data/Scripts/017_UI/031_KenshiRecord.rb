@@ -15,7 +15,7 @@ module BushidoKenshiRecord
       :type     => :dojo,
       :name     => "Komorei Dojo",
       :subtitle => "Shogun's Quest",
-      :leader   => "Unknown",
+      :leader   => "Harumi",
       :location => "Tsuchi Village",
       :mark     => "I",
       :color    => Color.new(174, 64, 55)
@@ -24,7 +24,7 @@ module BushidoKenshiRecord
       :type     => :dojo,
       :name     => "Nensho Dojo",
       :subtitle => "Shogun's Quest",
-      :leader   => "Unknown",
+      :leader   => "Nori",
       :location => "Hanatsu Village",
       :mark     => "II",
       :color    => Color.new(67, 98, 151)
@@ -33,8 +33,8 @@ module BushidoKenshiRecord
       :type     => :dojo,
       :name     => "Shimizu Dojo",
       :subtitle => "Shogun's Quest",
-      :leader   => "Unknown",
-      :location => "Chikyu Village",
+      :leader   => "Mai",
+      :location => "Izumi Village",
       :mark     => "III",
       :color    => Color.new(130, 76, 145)
     },
