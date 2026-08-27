@@ -86,24 +86,36 @@ module BushidoHabitat
   #--------------------------------------------------------------------------
   def self.primary_type(species, form=0)
     @type_cache ||= {}
+    form = 0 if form.nil?
     key = [species, form]
     return @type_cache[key] if @type_cache.has_key?(key)
 
     type = nil
 
+    # Prefer direct species/form data when this Essentials build provides it.
     begin
-      if defined?(PokeBattle_Pokemon)
-        pkmn = PokeBattle_Pokemon.new(species, 5, $Trainer)
-        pkmn.form = form if pkmn.respond_to?(:form=)
-        type = pkmn.type1 if pkmn.respond_to?(:type1)
+      if defined?(GameData::Species)
+        data = GameData::Species.get_species_form(species, form)
+        type = data.types[0]
       end
     rescue
     end
 
+    # Essentials v18 may need a temporary Pokémon to resolve form-specific
+    # typing. Keep that construction completely read-only to the Pokédex.
     begin
-      if type.nil? && defined?(GameData::Species)
-        data = GameData::Species.get_species_form(species, form)
-        type = data.types[0]
+      if type.nil? && defined?(PokeBattle_Pokemon)
+        with_pokedex_state_preserved(species) do
+          pkmn = PokeBattle_Pokemon.new(species, 5, $Trainer)
+          if form != 0
+            if pkmn.respond_to?(:formSimple=)
+              pkmn.formSimple = form
+            elsif pkmn.respond_to?(:form=)
+              pkmn.form = form
+            end
+          end
+          type = pkmn.type1 if pkmn.respond_to?(:type1)
+        end
       end
     rescue
     end
@@ -172,22 +184,234 @@ module BushidoHabitat
     end
   end
 
-  def self.seen?(species)
-    return false if !$Trainer
-    begin
-      return !!$Trainer.seen[species]
-    rescue
-      return false
+  #--------------------------------------------------------------------------
+  # Form-aware encounter helpers
+  #--------------------------------------------------------------------------
+  class HabitatMapProxy
+    def initialize(real_map, map_id)
+      @real_map = real_map
+      @map_id   = map_id
+    end
+
+    def map_id
+      return @map_id
+    end
+
+    def method_missing(method_name, *args, &block)
+      return @real_map.send(method_name, *args, &block) if @real_map
+      super
     end
   end
 
-  def self.owned?(species)
-    return false if !$Trainer
+  def self.with_map_context(map_id)
+    old_map = $game_map
     begin
-      return !!$Trainer.owned[species]
+      $game_map = HabitatMapProxy.new(old_map, map_id)
+      return yield
+    ensure
+      $game_map = old_map
+    end
+  end
+
+  def self.copy_habitat_value(value)
+    begin
+      return Marshal.load(Marshal.dump(value))
+    rescue
+      begin
+        return value.clone
+      rescue
+        return value
+      end
+    end
+  end
+
+  # Creating/changing a Pokémon's form in Essentials v18 can call pbSeenForm.
+  # Habitat previews must never modify the player's Pokédex, so preserve the
+  # exact Pokédex state for this species while resolving its wild map form.
+  def self.with_pokedex_state_preserved(species)
+    return yield if !$Trainer
+
+    seen_value = nil
+    owned_value = nil
+    formseen_value = nil
+    formlastseen_value = nil
+
+    has_seen = false
+    has_owned = false
+    has_formseen = false
+    has_formlastseen = false
+
+    begin
+      if $Trainer.respond_to?(:seen) && $Trainer.seen
+        has_seen = true
+        seen_value = copy_habitat_value($Trainer.seen[species])
+      end
+      if $Trainer.respond_to?(:owned) && $Trainer.owned
+        has_owned = true
+        owned_value = copy_habitat_value($Trainer.owned[species])
+      end
+      if $Trainer.respond_to?(:formseen) && $Trainer.formseen
+        has_formseen = true
+        formseen_value = copy_habitat_value($Trainer.formseen[species])
+      end
+      if $Trainer.respond_to?(:formlastseen) && $Trainer.formlastseen
+        has_formlastseen = true
+        formlastseen_value = copy_habitat_value($Trainer.formlastseen[species])
+      end
+    rescue
+    end
+
+    begin
+      return yield
+    ensure
+      begin
+        $Trainer.seen[species] = seen_value if has_seen
+        $Trainer.owned[species] = owned_value if has_owned
+        $Trainer.formseen[species] = formseen_value if has_formseen
+        $Trainer.formlastseen[species] = formlastseen_value if has_formlastseen
+      rescue
+      end
+    end
+  end
+
+  # Take a full snapshot of the Pokédex fields the Habitat Scroll must never
+  # modify. This is a second line of defense around the entire UI, in addition
+  # to the per-species guards used by temporary Pokémon previews.
+  def self.snapshot_pokedex_state
+    return nil if !$Trainer
+
+    state = {}
+    begin
+      state[:seen] = copy_habitat_value($Trainer.seen) if
+        $Trainer.respond_to?(:seen) && $Trainer.seen
+    rescue
+    end
+    begin
+      state[:owned] = copy_habitat_value($Trainer.owned) if
+        $Trainer.respond_to?(:owned) && $Trainer.owned
+    rescue
+    end
+    begin
+      state[:formseen] = copy_habitat_value($Trainer.formseen) if
+        $Trainer.respond_to?(:formseen) && $Trainer.formseen
+    rescue
+    end
+    begin
+      state[:formlastseen] = copy_habitat_value($Trainer.formlastseen) if
+        $Trainer.respond_to?(:formlastseen) && $Trainer.formlastseen
+    rescue
+    end
+    return state
+  end
+
+  def self.restore_pokedex_state(state)
+    return if !$Trainer || !state
+
+    begin
+      if state.has_key?(:seen) && $Trainer.respond_to?(:seen) && $Trainer.seen
+        if $Trainer.seen.respond_to?(:replace)
+          $Trainer.seen.replace(copy_habitat_value(state[:seen]))
+        end
+      end
+    rescue
+    end
+    begin
+      if state.has_key?(:owned) && $Trainer.respond_to?(:owned) && $Trainer.owned
+        if $Trainer.owned.respond_to?(:replace)
+          $Trainer.owned.replace(copy_habitat_value(state[:owned]))
+        end
+      end
+    rescue
+    end
+    begin
+      if state.has_key?(:formseen) && $Trainer.respond_to?(:formseen) && $Trainer.formseen
+        if $Trainer.formseen.respond_to?(:replace)
+          $Trainer.formseen.replace(copy_habitat_value(state[:formseen]))
+        end
+      end
+    rescue
+    end
+    begin
+      if state.has_key?(:formlastseen) && $Trainer.respond_to?(:formlastseen) && $Trainer.formlastseen
+        if $Trainer.formlastseen.respond_to?(:replace)
+          $Trainer.formlastseen.replace(copy_habitat_value(state[:formlastseen]))
+        end
+      end
+    rescue
+    end
+  end
+
+  def self.resolve_encounter_form(species, encounter_form, map_id)
+    encounter_form = 0 if encounter_form.nil?
+
+    # If the PBS encounter explicitly names a non-zero form, respect it.
+    return encounter_form if encounter_form > 0
+
+    @resolved_form_cache ||= {}
+    key = [map_id, species, encounter_form]
+    return @resolved_form_cache[key] if @resolved_form_cache.has_key?(key)
+
+    resolved = encounter_form
+
+    begin
+      with_pokedex_state_preserved(species) do
+        with_map_context(map_id) do
+          pkmn = PokeBattle_Pokemon.new(species, 5, $Trainer)
+          resolved = pkmn.form
+        end
+      end
+    rescue
+      resolved = encounter_form
+    end
+
+    resolved = 0 if resolved.nil?
+    @resolved_form_cache[key] = resolved
+    return resolved
+  end
+
+  def self.seen?(species, form=0)
+    return false if !$Trainer
+    form = 0 if form.nil?
+
+    begin
+      if $Trainer.respond_to?(:formseen) && $Trainer.formseen
+        forms = $Trainer.formseen[species]
+        if forms
+          # Essentials v18 stores formseen as [gender][form].
+          for gender in 0...forms.length
+            next if !forms[gender]
+            return true if forms[gender][form]
+          end
+          return false
+        end
+      end
+    rescue
+    end
+
+    # Form 0 can safely fall back to the normal species seen flag on older saves.
+    if form == 0
+      begin
+        return !!$Trainer.seen[species]
+      rescue
+      end
+    end
+
+    return false
+  end
+
+  def self.owned?(species, form=0)
+    return false if !$Trainer
+
+    begin
+      return false if !$Trainer.owned[species]
     rescue
       return false
     end
+
+    # Essentials v18 doesn't keep a separate historical owned-form table.
+    # Requiring the exact form to have been seen prevents one caught form from
+    # revealing every other form of the same species in the Habitat Scroll.
+    return self.seen?(species, form)
   end
 
   def self.species_name(species)
@@ -244,6 +468,11 @@ class EncounterListUI
     @page          = 0
     @map_states    = {}
     @type_cache    = {}
+
+    # Habitat is a read-only Pokédex viewer. Keep the exact Pokédex state from
+    # before the UI starts so any accidental Essentials side effect can be
+    # rolled back immediately.
+    @habitat_pokedex_snapshot = BushidoHabitat.snapshot_pokedex_state
 
     build_map_list
   end
@@ -337,15 +566,28 @@ class EncounterListUI
 
         sf = pbGetSpeciesFromFSpecies(f_species)
         species = sf[0]
-        form    = sf[1]
-        key     = "#{species}:#{form}"
+        encounter_form = sf[1] || 0
+
+        # The compiled encounter table isn't always the final form in Bushido.
+        # MultipleForms/getFormOnCreation can change it based on the map or
+        # other backend rules, so resolve the form as though this Pokémon were
+        # actually being created on the Habitat Scroll's map.
+        form = BushidoHabitat.resolve_encounter_form(
+          species,
+          encounter_form,
+          map_id
+        )
+
+        effective_fspecies = pbGetFSpeciesFromForm(species, form)
+        key = "#{species}:#{form}"
 
         if !lookup[key]
           lookup[key] = {
-            :fspecies => f_species,
-            :species  => species,
-            :form     => form,
-            :methods  => []
+            :fspecies       => effective_fspecies,
+            :species        => species,
+            :form           => form,
+            :encounter_form => encounter_form,
+            :methods        => []
           }
           results.push(lookup[key])
         end
@@ -416,23 +658,28 @@ class EncounterListUI
   # Drawing
   #-----------------------------------------------------------------------------
   def refresh
-    dispose_icons
-    bmp = @sprites["overlay"].bitmap
-    bmp.clear
-    pbSetSystemFont(bmp)
+    begin
+      dispose_icons
+      bmp = @sprites["overlay"].bitmap
+      bmp.clear
+      pbSetSystemFont(bmp)
 
-    draw_header(bmp)
+      draw_header(bmp)
 
-    if @entries.length == 0
-      draw_empty_state(bmp)
+      if @entries.length == 0
+        draw_empty_state(bmp)
+        draw_controls(bmp)
+        return
+      end
+
+      clamp_selection
+      draw_grid(bmp)
+      draw_detail_panel(bmp)
       draw_controls(bmp)
-      return
+    ensure
+      # Drawing this menu must never count as seeing or owning anything.
+      BushidoHabitat.restore_pokedex_state(@habitat_pokedex_snapshot)
     end
-
-    clamp_selection
-    draw_grid(bmp)
-    draw_detail_panel(bmp)
-    draw_controls(bmp)
   end
 
   def draw_header(bmp)
@@ -441,8 +688,8 @@ class EncounterListUI
     seen_count  = 0
     owned_count = 0
     @entries.each do |entry|
-      seen_count  += 1 if BushidoHabitat.seen?(entry[:species])
-      owned_count += 1 if BushidoHabitat.owned?(entry[:species])
+      seen_count  += 1 if BushidoHabitat.seen?(entry[:species], entry[:form])
+      owned_count += 1 if BushidoHabitat.owned?(entry[:species], entry[:form])
     end
 
     text = []
@@ -554,8 +801,8 @@ class EncounterListUI
         selected_rect = [x, y, cell_w, cell_h, col, row]
       end
 
-      seen  = BushidoHabitat.seen?(entry[:species])
-      owned = BushidoHabitat.owned?(entry[:species])
+      seen  = BushidoHabitat.seen?(entry[:species], entry[:form])
+      owned = BushidoHabitat.owned?(entry[:species], entry[:form])
 
       icon_lane_x = x + 10
       icon_lane_w = icon_segment_w - 14
@@ -710,7 +957,7 @@ class EncounterListUI
   def create_species_icon(entry, index, lane_x, lane_y, lane_w=68, lane_h=62)
     species = entry[:species]
     form    = entry[:form]
-    owned   = BushidoHabitat.owned?(species)
+    owned   = BushidoHabitat.owned?(species, form)
 
     sprite = PokemonSpeciesIconSprite.new(species, @viewport)
     sprite.pbSetParams(species, 0, form, false)
@@ -800,8 +1047,8 @@ class EncounterListUI
     entry = @entries[@selected]
     return if !entry
 
-    seen  = BushidoHabitat.seen?(entry[:species])
-    owned = BushidoHabitat.owned?(entry[:species])
+    seen  = BushidoHabitat.seen?(entry[:species], entry[:form])
+    owned = BushidoHabitat.owned?(entry[:species], entry[:form])
 
     if seen
       name = BushidoHabitat.species_name(entry[:species])
@@ -954,7 +1201,13 @@ class EncounterListUI
   end
 
   def pbUpdate
-    pbUpdateSpriteHash(@sprites)
+    begin
+      pbUpdateSpriteHash(@sprites)
+    ensure
+      # Some old Essentials sprite/form helpers can have hidden Pokédex side
+      # effects. Enforce Habitat's read-only contract every frame.
+      BushidoHabitat.restore_pokedex_state(@habitat_pokedex_snapshot)
+    end
   end
 
   #-----------------------------------------------------------------------------
@@ -972,9 +1225,13 @@ class EncounterListUI
   end
 
   def dispose
-    pbFadeOutAndHide(@sprites) { pbUpdate }
-    pbDisposeSpriteHash(@sprites)
-    @viewport.dispose
+    begin
+      pbFadeOutAndHide(@sprites) { pbUpdate }
+      pbDisposeSpriteHash(@sprites)
+      @viewport.dispose
+    ensure
+      BushidoHabitat.restore_pokedex_state(@habitat_pokedex_snapshot)
+    end
   end
 end
 
