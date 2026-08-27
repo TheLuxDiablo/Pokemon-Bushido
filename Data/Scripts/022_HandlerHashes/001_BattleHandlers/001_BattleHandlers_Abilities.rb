@@ -1010,6 +1010,12 @@ BattleHandlers::DamageCalcUserAbility.add(:IRONFIST,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:SHARPNESS,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[BASE_DMG_MULT] *= 1.5 if move.slicingMove?
+  }
+)
+
 BattleHandlers::DamageCalcUserAbility.add(:MEGALAUNCHER,
   proc { |ability,user,target,move,mults,baseDmg,type|
     mults[BASE_DMG_MULT] *= 1.5 if move.pulseMove?

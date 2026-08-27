@@ -633,3 +633,17 @@ class PokeBattle_Move_509 < PokeBattle_ConfuseMove
     user.pbFaint if user.fainted?
   end
 end
+
+#===============================================================================
+# Leaves Spikes behind after the attack (Ceaseless Edge)
+#===============================================================================
+class PokeBattle_Move_510 < PokeBattle_Move
+  def pbEffectGeneral(user)
+    if user.pbOpposingSide.effects[PBEffects::Spikes]>=3
+      @battle.pbDisplay(_INTL("No more Spikes can be scattered!"))
+    else
+      user.pbOpposingSide.effects[PBEffects::Spikes] += 1
+      @battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",user.pbOpposingTeam(true)))
+    end
+  end
+end
