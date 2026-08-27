@@ -499,15 +499,15 @@ end
         if(battleResult == 1)
             pbMessage(_INTL("\\xn[Sukiro]\\bWell fought, \\PN! You are becoming stronger with every battle."))
             incrementGameVariable(191,1)
-            pbMessage(_INTL("\\xn[Sukiro]\\bYour number of sparring wins is now {1}.", $game_variables[191]))
+            pbMessage(_INTL("\\xn[Sukiro]\\bYour number of sparring wins is now {1}!", $game_variables[191]))
         elsif(battleResult == 2)
-            pbMessage(_INTL("\\xn[Sukiro]\\bThat was a valiant effort, \\PN!"))
+            pbMessage(_INTL("\\xn[Sukiro]\\bThat was a valiant effort, \\PN."))
             incrementGameVariable(192,1)
             pbMessage(_INTL("\\xn[Sukiro]\\bMy number of sparring wins is now {1}.", $game_variables[192]))
         else
-            pbMessage(_INTL("\\xn[Sukiro]\\bWell played \\PN, that was quite a duel."))
+            pbMessage(_INTL("\\xn[Sukiro]\\bWell played \\PN, that was quite a duel!"))
         end
-        pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record now stands at {1}-{2}.", $game_variables[191], $game_variables[192]))
+        pbMessage(_INTL("\\xn[Sukiro]\\bOur sparring record now stands at {1}-{2}!", $game_variables[191], $game_variables[192]))
         # Full heal at the end
         fullyHealPokemonParty()
     else

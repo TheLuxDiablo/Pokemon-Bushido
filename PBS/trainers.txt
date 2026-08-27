@@ -417,7 +417,8 @@ Pokemon = THROH,16
 #-------------------------------
 [KOMOREI_F,Aoyama]
 LoseText = "I guess I shouldn't be here either..."
-Pokemon = COTTONEE,18
+Pokemon = COTTONEE,16
+Pokemon = POLTCHAGEIST,17
 #-------------------------------
 [SHIMIZU_F,Tsukasa]
 LoseText = "The flow of water and the allure of the ocean can never be beat!"
@@ -441,7 +442,8 @@ Pokemon = TAILLOW,19
 #-------------------------------
 [KOMOREI_F,Shima]
 LoseText = "Defeat isn't nearly as beautiful..."
-Pokemon = PANSAGE,19
+Pokemon = PANSAGE,18
+Pokemon = POLTCHAGEIST,19
 Pokemon = VENIPEDE,20
 #-------------------------------
 [NENSHO_M,Matsuo]
@@ -542,7 +544,7 @@ Pokemon = NINETALES,66
 [KOMOREI_M,Shinsato]
 LoseText = "Very well! You have proven yourself worthy."
 Pokemon = FOMANTIS,26
-Pokemon = WHIRLIPEDE,26
+Pokemon = SINISTCHA,27
 Pokemon = ORANGURU,27
 #-------------------------------
 [KOMOREI_F,Chikako]

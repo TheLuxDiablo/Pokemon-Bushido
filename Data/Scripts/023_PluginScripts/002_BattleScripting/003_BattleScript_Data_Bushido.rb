@@ -1106,7 +1106,7 @@ module DialogueModule
     scene.appearBar
     scene.pbShowOpponent(0)
     user = battlers[1]
-    pbMessage("\\xn[\\v[26]]\\pogPrepare to face the full force of my Pokémon!")
+    pbMessage("\\xn[\\v[26]]\\pogPrepare to face the full fury of my Darmanitan!")
     pbMessage("\\xn[\\v[26]]\\pogHiyaaah! Signature Technique! Hashimoto Might!") if strong_katanas?
     scene.disappearBar
     user.pbRaiseStatStageEx(:ATTACK, 1, :SWORDSDANCE)
@@ -3517,11 +3517,12 @@ module DialogueModule
     enemy1 = battlers[1]
     currentTurn = battle.turnCount
     nextTurnNum = (battle.turnCount + 2)
-    pbMessage("\\bLet's begin training, \\PN.")
+    pbMessage("\\bLet us begin training, \\PN.")
     pbMessage("\\bI'll be quizzing you through this battle to also test your mind!")
     #pbMessage(_INTL("Current turn: {2}. Next quiz on {1}", nextTurnNum, currentTurn))
     battle.RandomSukiroQuiz(rand(SUKIRO_SPAR_QUIZ_QUESTIONS+1), battle, scene, ally1, enemy1)
     BattleScripting.setInScript("turnStart" + nextTurnNum.to_s,:SukiroTrainingRepeating)
+    BattleScripting.setTrainerAce(2)
   }
 
   SukiroTrainingRepeating = Proc.new { |battle, scene, battlers|

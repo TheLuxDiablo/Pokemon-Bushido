@@ -729,3 +729,15 @@ MultipleForms.register(:BASCULEGION,{
  OVERRIDE_POKEMON_FORMS_IN_DEX = [
    :SIRFETCHD, :MRRIME, :CURSOLA, :OBSTAGOON, :RUNERIGUS, :OVERQWIL, :SNEASLER, :PERRSERKER
  ]
+
+ MultipleForms.register(:SINISTEA, {
+  "getFormOnCreation" => proc { |pkmn|
+    next 1 if rand(200) < 10   # Antique
+    next 0                     # Phony
+  }
+})
+
+#-------------------------------------------------------------------------------
+# Poltchageist/Sinistcha - Unremarkable/Masterpiece forms.
+#-------------------------------------------------------------------------------
+MultipleForms.copy(:SINISTEA, :POLTEAGEIST, :POLTCHAGEIST, :SINISTCHA)

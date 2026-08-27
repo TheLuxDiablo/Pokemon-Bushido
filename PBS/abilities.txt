@@ -270,3 +270,4 @@
 268,SUPREMEOVERLORD,Supreme Overlord,"Boosts power with every fainted ally."
 269,MINDSEYE,Mind's Eye,"Enables moves to hit Ghost-type Pokémon. Accuracy cannot be lowered. Ignores Evasion changes."
 270,SHARPNESS,Sharpness,"Powers up slicing moves."
+271,HOSPITALITY,Hospitality,"When entering battle this Pokémon showers its ally with hospitality, restoring a small amount of the ally's HP."

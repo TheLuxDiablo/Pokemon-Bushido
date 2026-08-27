@@ -2413,6 +2413,24 @@ BattleHandlers::AbilityOnSwitchIn.add(:AIRLOCK,
 
 BattleHandlers::AbilityOnSwitchIn.copy(:AIRLOCK,:CLOUDNINE)
 
+# Hospitality
+BattleHandlers::AbilityOnSwitchIn.add(:HOSPITALITY,
+  proc { |ability, battler, battle, switch_in|
+    has_injured_ally = false
+    battler.eachAlly { |b| has_injured_ally = true if b.hp < b.totalhp }
+    next if !has_injured_ally
+    
+    battle.pbShowAbilitySplash(battler)
+    battler.eachAlly do |b|
+      next if b.hp == b.totalhp
+      amt = (b.totalhp / 4).floor
+      b.pbRecoverHP(amt)
+      battle.pbDisplay(_INTL("{1} drank down all the matcha that {2} made!", b.pbThis, battler.pbThis(true)))
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 BattleHandlers::AbilityOnSwitchIn.add(:ANTICIPATION,
   proc { |ability,battler,battle|
     next if !battler.pbOwnedByPlayer?

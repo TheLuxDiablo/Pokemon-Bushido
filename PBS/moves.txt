@@ -802,3 +802,4 @@
 781,AXEKICK,Axe Kick,509,120,FIGHTING,Physical,90,10,30,NearOther,0,abefj,"The user attacks by kicking into the air and slamming its heel down on the target. This may confuse the target. On miss, the user takes damage instead."
 782,SHELTER,Shelter,02F,0,STEEL,Status,0,10,0,User,0,d,"The user makes its skin as hard as an iron shield, sharply boosting its Defense stat."
 783,CEASELESSEDGE,Ceaseless Edge,510,65,DARK,Physical,90,15,100,NearOther,0,befs,"The user slashes its shell blade at the target. Shell splinters left behind by this attack remain scattered under the target as spikes."
+784,MATCHAGOTCHA,Matcha Gotcha,511,80,GRASS,Special,90,15,20,AllNearFoes,0,befm,"The user fires a blast of tea. The user's HP is restored by up to half the damage taken by targets. This may leave the target with a burn."

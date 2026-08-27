@@ -647,3 +647,19 @@ class PokeBattle_Move_510 < PokeBattle_Move
     end
   end
 end
+
+#===============================================================================
+# Matcha Gotcha
+#===============================================================================
+# User gains half the HP it inflicts as damage. It may also burn the target.
+#-------------------------------------------------------------------------------
+class PokeBattle_Move_511 < PokeBattle_BurnMove
+  def healingMove?; return Settings::MECHANICS_GENERATION >= 6; end
+
+  def pbEffectAgainstTarget(user, target)
+    return if target.damageState.hpLost <= 0
+    hpGain = (target.damageState.hpLost / 2.0).round
+    user.pbRecoverHPFromDrain(hpGain, target)
+    super
+  end
+end
