@@ -1,39 +1,7 @@
 #===============================================================================
 # Pokémon Bushido - Bag UI
 # Pokémon Essentials v18.1
-#
-# Full replacement override for PokemonBag_Scene.
-#
-# Includes:
-# - 7x3 full-width item grid
-# - Native-size item icons
-# - PNG-backed rounded item cards + selection cursor
-# - Brown quantity normally, white when selected
-# - Quantity floats from bottom-right of card
-# - Pocket arrows always visible
-# - Up from first page/top row selects pocket header
-# - L/R on header switches pockets
-# - L/R on items wraps inside row
-# - Up/Down traverses pages
-# - PNG-backed left-side page rail
-# - Smooth cursor motion
-# - Tiny hover bump
-# - Confirmation shake
-# - Item-content pocket transitions, header remains fixed
-# - Native-size Scroll compatibility party icons (opacity states, no bars)
-# - Party icons centered on a single 2-frame sprite frame
-# - Scroll name = taught move name
-# - Scroll party compatibility
-# - Scroll one-line auto-scrolling description
-# - Normal item multi-line small-font description
-# - 21px description line spacing
-# - Manual A-button sorting
-# - Filtered Bag chooser support
-# - Registered Key Item corner indicator
-#
-# Katana/SP UI intentionally omitted.
 #===============================================================================
-
 
 module BushidoBagUI
 
@@ -176,7 +144,7 @@ module BushidoBagUI
   SCROLL_NAME_Y     = 254
 
   # PARTY_ICON_Y is the visual center of a single icon frame.
-  PARTY_ICON_Y      = 294
+  PARTY_ICON_Y      = 308
 
   PARTY_START_X     = 52
   PARTY_SPACING     = 82
@@ -1786,10 +1754,7 @@ class PokemonBag_Scene
 
     begin
       return :able if
-        pbSpeciesCompatible?(
-          pokemon.species,
-          move
-        )
+        pokemon.compatibleWithMove?(move)
     rescue
     end
 
