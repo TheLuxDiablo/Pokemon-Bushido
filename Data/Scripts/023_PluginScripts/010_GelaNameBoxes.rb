@@ -168,7 +168,24 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   cmdIfCancel=0
   msgwindow.waitcount=0
   autoresume=false
-  text=message.clone
+  # Work on a private copy. Essentials v18.1 can hand this method strings
+  # whose bytes are UTF-8 but whose encoding label is ASCII-8BIT. Normalize
+  # only this display copy so the original message/species data is untouched.
+  text = message.to_s.clone
+  if text.respond_to?(:force_encoding)
+    begin
+      if text.encoding.to_s == "ASCII-8BIT"
+        text.force_encoding("UTF-8")
+        if text.respond_to?(:valid_encoding?) && !text.valid_encoding?
+          text.force_encoding("Windows-1252")
+          text = text.encode("UTF-8")
+        end
+      end
+    rescue
+      # If encoding helpers behave differently under the runtime, leave the
+      # cloned text alone rather than modifying the original message.
+    end
+  end
   msgback=nil
   linecount=(Graphics.height>400) ? 3 : 2
   ### Text replacement

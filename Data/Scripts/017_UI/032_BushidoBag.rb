@@ -1,7 +1,40 @@
 #===============================================================================
 # Pokémon Bushido - Bag UI
 # Pokémon Essentials v18.1
+#
+# Full replacement override for PokemonBag_Scene.
+#
+# Includes:
+# - 7x3 full-width item grid
+# - Native-size item icons
+# - PNG-backed rounded item cards + selection cursor
+# - Brown quantity normally, white when selected
+# - Quantity floats from bottom-right of card
+# - Pocket arrows always visible
+# - Pocket position strip with active pocket illuminated
+# - Up from first page/top row selects pocket header
+# - L/R on header switches pockets
+# - L/R on items wraps inside row
+# - Up/Down traverses pages
+# - PNG-backed left-side page rail
+# - Smooth cursor motion
+# - Tiny hover bump
+# - Confirmation shake
+# - Item-content pocket transitions, header remains fixed
+# - Native-size Scroll compatibility party icons (opacity states, no bars)
+# - Party icons centered on a single 2-frame sprite frame
+# - Scroll name = taught move name
+# - Scroll party compatibility
+# - Scroll one-line auto-scrolling description
+# - Normal item multi-line small-font description
+# - 21px description line spacing
+# - Manual A-button sorting
+# - Filtered Bag chooser support
+# - Registered Key Item corner indicator
+#
+# Katana/SP UI intentionally omitted.
 #===============================================================================
+
 
 module BushidoBagUI
 
@@ -87,6 +120,15 @@ module BushidoBagUI
   HEADER_Y          = 8
 
   #=============================================================================
+  # Pocket position indicators
+  #=============================================================================
+
+  POCKET_DOT_Y       = 46
+  POCKET_DOT_W       = 10
+  POCKET_DOT_H       = 10
+  POCKET_DOT_GAP     = 8
+
+  #=============================================================================
   # Quantity
   #=============================================================================
 
@@ -144,7 +186,7 @@ module BushidoBagUI
   SCROLL_NAME_Y     = 254
 
   # PARTY_ICON_Y is the visual center of a single icon frame.
-  PARTY_ICON_Y      = 308
+  PARTY_ICON_Y      = 294
 
   PARTY_START_X     = 52
   PARTY_SPACING     = 82
@@ -1077,6 +1119,44 @@ class PokemonBag_Scene
         ]
       ]
     )
+
+    #-------------------------------------------------------------------------
+    # Pocket position strip.
+    #-------------------------------------------------------------------------
+    pockets =
+      PokemonBag.numPockets
+
+    dot_w =
+      BushidoBagUI::POCKET_DOT_W
+
+    gap =
+      BushidoBagUI::POCKET_DOT_GAP
+
+    total_w =
+      pockets * dot_w +
+      (pockets - 1) * gap
+
+    dot_x =
+      Graphics.width / 2 -
+      total_w / 2
+
+    for i in 1..pockets
+      asset =
+        i == @pocket ?
+        "pocket_on" :
+        "pocket_off"
+
+      bag_blt_asset(
+        bitmap,
+        dot_x,
+        BushidoBagUI::POCKET_DOT_Y,
+        asset
+      )
+
+      dot_x +=
+        dot_w +
+        gap
+    end
   end
 
   #=============================================================================
