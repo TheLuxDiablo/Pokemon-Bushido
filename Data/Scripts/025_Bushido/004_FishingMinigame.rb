@@ -191,7 +191,6 @@ class FishingMinigame
 
     @intro_amount = 1.0
 
-    # Small pause before the marker begins moving.
     5.times do
       Graphics.update
       Input.update
@@ -295,9 +294,6 @@ class FishingMinigame
 
   #-----------------------------------------------------------------------------
   # Timer
-  #
-  # The timer only drains while the player is actively playing.
-  # Hit/Perfect/Miss feedback doesn't consume time.
   #-----------------------------------------------------------------------------
   def update_timer
     @time_left -=
@@ -471,7 +467,6 @@ class FishingMinigame
 
     draw_dimming(bmp)
 
-    # Don't draw the panel until it starts entering the screen.
     if panel_y < @height
       draw_panel(bmp, panel_y)
       draw_instruction(bmp, panel_y)
@@ -763,7 +758,6 @@ class FishingMinigame
 
       radius = 6
 
-      # Newly filled pips pop very slightly.
       if @pip_pulse > 0 &&
          i >= @last_progress &&
          i < @progress
@@ -834,7 +828,6 @@ class FishingMinigame
         218
       )
 
-    # Start changing as time gets low.
     if ratio <= 0.30
       foreground =
         Color.new(
@@ -1205,7 +1198,6 @@ def pbWaitForInput(
     false
   )
 
-  # Let the bite message register before the minigame slides in.
   (Graphics.frame_rate / 5).times do
     Graphics.update
     Input.update

@@ -1,16 +1,5 @@
-#===============================================================================
-# Bushido PostFX
-# Persistent overworld post-processing + map-native atmosphere
-#
-# Essentials v18.1 / RGSS1
-#
-# Important:
-# - PostFX viewport persists across map transfers.
-# - Map profiles crossfade instead of snapping.
-# - Effects are cached and lightweight.
-# - F6 toggles all Bushido PostFX.
-#===============================================================================
 
+# BushidoPostFX.
 module BushidoPostFX
   TOGGLE_KEY = Input::F6
 
@@ -22,10 +11,6 @@ module BushidoPostFX
   PROFILE_TRANSITION_FRAMES = 48
   TOGGLE_TRANSITION_FRAMES  = 24
 
-  #-----------------------------------------------------------------------------
-  # Default Bushido look
-  #-----------------------------------------------------------------------------
-
   DEFAULT_TONE = Tone.new(5, 1, -5, 4)
 
   DEFAULT_VIGNETTE_OPACITY = 72
@@ -34,30 +19,18 @@ module BushidoPostFX
   DEFAULT_CENTER_LIFT_OPACITY = 18
   DEFAULT_DEPTH_OPACITY       = 32
 
-  # Ink Bushido global treatment
   INK_STYLE_ENABLED = true
 
   DEFAULT_WARM_WASH_OPACITY  = 24
   DEFAULT_COOL_WASH_OPACITY  = 18
   DEFAULT_PRINT_GRAIN_OPACITY = 22
 
-  # Very slow screen-space drift. It should feel alive, not like scrolling fog.
   WASH_DRIFT_SPEED = 0.0025
 
-  #-----------------------------------------------------------------------------
-  # Ezo Village
-  #-----------------------------------------------------------------------------
-
-  # Strong enough to visibly read during evaluation.
   EZO_CLOUD_OPACITY    = 62
   EZO_HAZE_OPACITY     = 24
   EZO_DAYLIGHT_OPACITY = 11
 
-  #-----------------------------------------------------------------------------
-  # Nagisa Bay
-  #-----------------------------------------------------------------------------
-
-  # Coastal clarity without turning the whole map blue.
   NAGISA_TONE = Tone.new(-2, 1, 7, 0)
 
   NAGISA_HAZE_OPACITY    = 22
@@ -67,10 +40,6 @@ module BushidoPostFX
   NAGISA_PARTICLE_COUNT   = 26
   NAGISA_PARTICLE_OPACITY = 205
 
-  #-----------------------------------------------------------------------------
-  # Sakura Pass
-  #-----------------------------------------------------------------------------
-
   SAKURA_PETAL_COUNT        = 198
   SAKURA_SPAWN_INTERVAL_MIN = 1
   SAKURA_SPAWN_INTERVAL_MAX = 1
@@ -79,12 +48,6 @@ module BushidoPostFX
   SAKURA_GUST_INTERVAL_MAX  = 120
   SAKURA_GUST_PETALS        = 14
 
-  #-----------------------------------------------------------------------------
-  # Shizen Trail
-  #-----------------------------------------------------------------------------
-
-  # Sparse, solid leaves. They are screen-space atmosphere by design, so their
-  # travel speed never changes when the player walks with or against them.
   SHIZEN_LEAF_COUNT          = 12
   SHIZEN_LEAF_OPACITY        = 255
   SHIZEN_LEAF_SPAWN_MIN      = 52
@@ -93,17 +56,12 @@ module BushidoPostFX
   SHIZEN_GUST_INTERVAL_MAX   = 420
   SHIZEN_GUST_LEAVES         = 3
 
-  # Leaves crossfade when entering/leaving Map 90 instead of snapping.
   SHIZEN_TRANSITION_FRAMES   = 48
 
   class << self
     attr_reader :enabled
     attr_reader :profile
   end
-
-  #-----------------------------------------------------------------------------
-  # Persistent render objects
-  #-----------------------------------------------------------------------------
 
   @viewport = nil
   @particle_viewport = nil
@@ -129,10 +87,6 @@ module BushidoPostFX
   @sakura_particles = []
   @shizen_leaves = []
 
-  #-----------------------------------------------------------------------------
-  # Cached bitmaps
-  #-----------------------------------------------------------------------------
-
   @vignette_bitmap = nil
   @center_lift_bitmap = nil
   @depth_bitmap = nil
@@ -152,10 +106,6 @@ module BushidoPostFX
   @sakura_petal_bitmaps = []
   @shizen_leaf_bitmaps = []
 
-  #-----------------------------------------------------------------------------
-  # Global state
-  #-----------------------------------------------------------------------------
-
   @enabled = true
   @profile = :DEFAULT
   @last_map_id = nil
@@ -168,15 +118,12 @@ module BushidoPostFX
   @shizen_leaf_spawn_timer = 0
   @shizen_gust_timer = 210
 
-  # Master on/off blend
   @master_strength = 1.0
   @master_start = 1.0
   @master_target = 1.0
   @master_duration = 0
   @master_elapsed = 0
 
-  # Independent map blends.
-  # These are what allow real crossfades.
   @ezo_strength = 0.0
   @ezo_start = 0.0
   @ezo_target = 0.0
@@ -195,16 +142,11 @@ module BushidoPostFX
   @shizen_duration = 0
   @shizen_elapsed = 0
 
-  # Grade transition
   @grade_tone = DEFAULT_TONE.clone
   @grade_start_tone = DEFAULT_TONE.clone
   @grade_target_tone = DEFAULT_TONE.clone
   @grade_duration = 0
   @grade_elapsed = 0
-
-  #-----------------------------------------------------------------------------
-  # Setup
-  #-----------------------------------------------------------------------------
 
   def self.ensure_created
     return if @created &&
@@ -249,7 +191,6 @@ module BushidoPostFX
     @depth_sprite.bitmap = @depth_bitmap
     @depth_sprite.z = 10
 
-    # Global print/pigment treatment. These sit below map-native atmosphere.
     @warm_wash_sprite = Sprite.new(@viewport)
     @warm_wash_sprite.bitmap = @warm_wash_bitmap
     @warm_wash_sprite.z = 11
@@ -340,15 +281,9 @@ module BushidoPostFX
       @nagisa_particles.push(data)
     end
 
-
     create_sakura_particles
     create_shizen_particles
   end
-
-
-  #-----------------------------------------------------------------------------
-  # Sakura Pass petals
-  #-----------------------------------------------------------------------------
 
   def self.create_sakura_particles
     @sakura_particles.each do |data|
@@ -389,11 +324,6 @@ module BushidoPostFX
     sprite = data[:sprite]
     return if !$game_map
 
-    # Spawn in world/map coordinates, not screen coordinates.
-    #
-    # display_x/display_y are pixel-space camera offsets. The petal begins
-    # slightly above the current viewport, but once created it belongs to the
-    # world and will NOT follow the camera/player.
     display_x = ($game_map.display_x / Game_Map::X_SUBPIXELS).round
     display_y = ($game_map.display_y / Game_Map::Y_SUBPIXELS).round
 
@@ -415,25 +345,20 @@ module BushidoPostFX
         rand(Graphics.height)
     end
 
-    # Consistent diagonal breeze down-right.
-    # Three subtle depth bands keep the field from feeling like one flat layer.
     data[:depth] = rand(3)
 
     case data[:depth]
     when 0
-      # Far petals: smaller, slower, softer.
       data[:vx] = 0.20 + rand(26) / 100.0
       data[:vy] = 0.48 + rand(34) / 100.0
       data[:scale] = 0.78 + rand(22) / 100.0
       data[:opacity] = 125 + rand(55)
     when 1
-      # Midground: the bulk of the field.
       data[:vx] = 0.28 + rand(34) / 100.0
       data[:vy] = 0.62 + rand(40) / 100.0
       data[:scale] = 1.00 + rand(34) / 100.0
       data[:opacity] = 165 + rand(55)
     else
-      # Foreground petals: occasional larger, faster passes.
       data[:vx] = 0.36 + rand(42) / 100.0
       data[:vy] = 0.78 + rand(46) / 100.0
       data[:scale] = 1.28 + rand(38) / 100.0
@@ -484,9 +409,6 @@ module BushidoPostFX
           rand([range, 1].max)
       end
 
-      # Every few seconds, a small clustered gust passes through.
-      # This gives Sakura Pass occasional "wow" moments without making
-      # the entire field permanently max-density.
       if @sakura_gust_timer <= 0
         spawned = 0
 
@@ -495,7 +417,6 @@ module BushidoPostFX
 
           reset_sakura_particle(particle, true)
 
-          # Stagger the gust vertically so it reads like a sweep, not a line.
           particle[:world_y] -= rand(70)
           particle[:vx] += 0.10 + rand(14) / 100.0
 
@@ -523,7 +444,6 @@ module BushidoPostFX
       data[:life] += 1
       data[:phase] += data[:phase_speed]
 
-      # World-space movement.
       sway_strength =
         (data[:depth] == 2) ? 0.62 :
         (data[:depth] == 1) ? 0.48 :
@@ -535,10 +455,6 @@ module BushidoPostFX
       data[:world_x] += data[:vx] + sway * 0.12
       data[:world_y] += data[:vy] + flutter
 
-      # Convert the world position back to screen space every frame.
-      #
-      # Because the stored position itself never changes with the camera,
-      # moving the player/camera causes you to move past the petal naturally.
       if $game_map && data[:map_id] == $game_map.map_id
         display_x =
           ($game_map.display_x / Game_Map::X_SUBPIXELS).round
@@ -554,8 +470,6 @@ module BushidoPostFX
           data[:world_y] -
           display_y
       elsif $MapFactory
-        # If the player has crossed onto a connected map while petals are
-        # still falling, preserve their position relative to Sakura Pass.
         pos = $MapFactory.getRelativePos(
           $game_map.map_id,
           0,
@@ -588,7 +502,6 @@ module BushidoPostFX
       sprite.x = screen_x.to_i
       sprite.y = screen_y.to_i
 
-      # Fake tumbling without detailed/stemmy art.
       flip = Math.sin(data[:phase] * 1.8)
 
       sprite.zoom_x =
@@ -618,9 +531,6 @@ module BushidoPostFX
           @master_strength
         )
 
-      # Petals may move off-screen because the PLAYER moved away from them.
-      # Don't instantly destroy them at the edge; give them enough margin to
-      # naturally pass out of view.
       on_screen =
         screen_x >= -96 &&
         screen_y >= -96 &&
@@ -631,8 +541,6 @@ module BushidoPostFX
         sprite.opacity > 0 &&
         on_screen
 
-      # Existing petals keep living after leaving Sakura, but once they're
-      # well outside the visible connected world or their life ends, recycle.
       if data[:life] >= data[:max_life] ||
          screen_y > Graphics.height + 260 ||
          screen_x > Graphics.width + 300 ||
@@ -642,10 +550,6 @@ module BushidoPostFX
       end
     end
   end
-
-  #-----------------------------------------------------------------------------
-  # Shizen Trail leaves
-  #-----------------------------------------------------------------------------
 
   def self.create_shizen_particles
     @shizen_leaves.each do |data|
@@ -689,13 +593,9 @@ module BushidoPostFX
     data[:bitmap_index] = rand(@shizen_leaf_bitmaps.length)
     sprite.bitmap = @shizen_leaf_bitmaps[data[:bitmap_index]]
 
-    # Rotate around the center so each solid leaf visibly twirls.
     sprite.ox = sprite.bitmap.width / 2
     sprite.oy = sprite.bitmap.height / 2
 
-    # IMPORTANT: these are screen coordinates, not map/world coordinates.
-    # Camera/player movement never gets added to leaf velocity. That keeps the
-    # breeze visually constant even if the player walks against its direction.
     data[:x] = -28 - rand(80)
     data[:y] = 16 + rand([Graphics.height - 32, 1].max)
 
@@ -730,8 +630,6 @@ module BushidoPostFX
   def self.update_shizen_particles
     on_shizen = ($game_map && $game_map.map_id == SHIZEN_TRAIL_MAP_ID)
 
-    # Spawn only while actually on Shizen Trail. Existing leaves keep updating
-    # after a transfer so the profile crossfade can fade them out naturally.
     if on_shizen && @enabled
       @shizen_leaf_spawn_timer -= 1
       @shizen_gust_timer -= 1
@@ -776,8 +674,6 @@ module BushidoPostFX
       data[:phase] += data[:phase_speed]
       data[:spin] += data[:spin_speed]
 
-      # Pure screen-space wind motion. No display_x/display_y, MapFactory, or
-      # player/camera compensation is used here.
       sway = Math.sin(data[:phase]) * 0.42
       flutter = Math.sin(data[:phase] * 2.4) * 0.16
 
@@ -812,10 +708,6 @@ module BushidoPostFX
     end
   end
 
-  #-----------------------------------------------------------------------------
-  # Map detection / transitions
-  #-----------------------------------------------------------------------------
-
   def self.detect_map(force = false)
     return if !$game_map
 
@@ -839,7 +731,6 @@ module BushidoPostFX
 
     duration = force ? 0 : PROFILE_TRANSITION_FRAMES
 
-    # Independent targets = true crossfade.
     transition_ezo(@profile == :EZO_VILLAGE ? 1.0 : 0.0, duration)
     transition_nagisa(@profile == :NAGISA_BAY ? 1.0 : 0.0, duration)
     transition_shizen(@profile == :SHIZEN_TRAIL ? 1.0 : 0.0,
@@ -925,10 +816,6 @@ module BushidoPostFX
     end
   end
 
-  #-----------------------------------------------------------------------------
-  # Toggle
-  #-----------------------------------------------------------------------------
-
   def self.update_toggle
     toggle if Input.trigger?(TOGGLE_KEY)
   end
@@ -965,10 +852,6 @@ module BushidoPostFX
     end
   end
 
-  #-----------------------------------------------------------------------------
-  # Grade
-  #-----------------------------------------------------------------------------
-
   def self.transition_grade(target, duration)
     @grade_start_tone = @grade_tone.clone
     @grade_target_tone = target.clone
@@ -997,10 +880,6 @@ module BushidoPostFX
     end
   end
 
-  #-----------------------------------------------------------------------------
-  # Main update
-  #-----------------------------------------------------------------------------
-
   def self.update
     ensure_created
 
@@ -1025,10 +904,6 @@ module BushidoPostFX
     @particle_viewport.update if @particle_viewport && !@particle_viewport.disposed?
   end
 
-  #-----------------------------------------------------------------------------
-  # Ink Bushido
-  #-----------------------------------------------------------------------------
-
   def self.update_ink_style
     return if !INK_STYLE_ENABLED
 
@@ -1046,28 +921,18 @@ module BushidoPostFX
         -70 + (Math.sin(@frame * WASH_DRIFT_SPEED * 0.82) * 8).to_i
     end
 
-    # Grain is fixed to the screen. Moving it reads as film noise.
     if @print_grain_sprite && !@print_grain_sprite.disposed?
       @print_grain_sprite.x = 0
       @print_grain_sprite.y = 0
     end
   end
 
-  #-----------------------------------------------------------------------------
-  # Ezo
-  #-----------------------------------------------------------------------------
-
   def self.update_ezo_motion
     return if !@ezo_cloud_sprite || @ezo_cloud_sprite.disposed?
 
-    # Faster than previous pass so movement is readable.
     @ezo_cloud_sprite.x = -120 + ((@frame / 2) % 240)
     @ezo_cloud_sprite.y = (Math.sin(@frame / 150.0) * 6).to_i
   end
-
-  #-----------------------------------------------------------------------------
-  # Nagisa
-  #-----------------------------------------------------------------------------
 
   def self.update_nagisa_motion
     return if !@nagisa_shimmer_sprite || @nagisa_shimmer_sprite.disposed?
@@ -1102,11 +967,6 @@ module BushidoPostFX
     return false
   end
 
-  # Returns this connected map's tile-space origin relative to $game_map.
-  #
-  # Example:
-  #   [0, 0] means same origin as current map.
-  #   [40, 0] means the connected map starts 40 tiles to the right.
   def self.connected_map_offset(map)
     return [0, 0] if !$game_map || !map
     return [0, 0] if map.map_id == $game_map.map_id
@@ -1164,26 +1024,20 @@ module BushidoPostFX
     display_x = ($game_map.display_x / Game_Map::X_SUBPIXELS).round
     display_y = ($game_map.display_y / Game_Map::Y_SUBPIXELS).round
 
-    # Search every connected map MapFactory currently has active.
-    # This is the key difference from the old implementation.
     maps = $MapFactory.maps.compact
     return nil if maps.empty?
 
-    # Shuffle starting order so particles naturally distribute between
-    # multiple visible bodies of water instead of favoring the current map.
     start_index = rand(maps.length)
 
     maps.length.times do |map_index|
       map = maps[(start_index + map_index) % maps.length]
       next if !map
 
-      # Bubbles only belong to Ezo Village and Nagisa Bay.
       next if map.map_id != EZO_VILLAGE_MAP_ID &&
               map.map_id != NAGISA_BAY_MAP_ID
 
       offset = connected_map_offset(map)
 
-      # Convert the current screen bounds into this connected map's tile space.
       screen_left_tile   = (display_x / tile_w) - offset[0] - 1
       screen_top_tile    = (display_y / tile_h) - offset[1] - 1
       screen_right_tile  = ((display_x + Graphics.width) / tile_w) - offset[0] + 1
@@ -1196,7 +1050,6 @@ module BushidoPostFX
 
       next if right < left || bottom < top
 
-      # Random probes first. Cheap and distributes bubbles naturally.
       36.times do
         tx = left + rand([right - left + 1, 1].max)
         ty = top  + rand([bottom - top + 1, 1].max)
@@ -1206,7 +1059,6 @@ module BushidoPostFX
         end
       end
 
-      # Deterministic fallback for narrow strips of shoreline.
       for ty in top..bottom
         for tx in left..right
           if water_tile?(map.map_id, tx, ty)
@@ -1262,7 +1114,6 @@ module BushidoPostFX
   end
 
   def self.update_nagisa_particles
-    # Water bubbles are local atmosphere for Ezo Village and Nagisa Bay only.
     bubble_map =
       @profile == :EZO_VILLAGE ||
       @profile == :NAGISA_BAY
@@ -1284,8 +1135,6 @@ module BushidoPostFX
         next
       end
 
-      # A connected map may eventually be unloaded by MapFactory.
-      # Recycle gracefully if that happens.
       if !water_tile?(data[:map_id], data[:tile_x], data[:tile_y])
         reset_nagisa_particle(data)
         next
@@ -1349,8 +1198,6 @@ module BushidoPostFX
         sprite.opacity > 0 &&
         on_screen
 
-      # Don't instantly recycle just because the player crossed the map seam.
-      # The map-relative projection above keeps it attached to the same water.
       if screen_x < -64 ||
          screen_y < -64 ||
          screen_x > Graphics.width + 64 ||
@@ -1359,10 +1206,6 @@ module BushidoPostFX
       end
     end
   end
-
-  #-----------------------------------------------------------------------------
-  # Apply
-  #-----------------------------------------------------------------------------
 
   def self.apply_all
     apply_world_grade
@@ -1479,10 +1322,6 @@ module BushidoPostFX
     end
   end
 
-  #-----------------------------------------------------------------------------
-  # Cache
-  #-----------------------------------------------------------------------------
-
   def self.cache_ready?
     bitmaps = [
       @vignette_bitmap,
@@ -1509,7 +1348,6 @@ module BushidoPostFX
       return false if !bitmap || bitmap.disposed?
     end
 
-
     return false if !@shizen_leaf_bitmaps || @shizen_leaf_bitmaps.empty?
     @shizen_leaf_bitmaps.each do |bitmap|
       return false if !bitmap || bitmap.disposed?
@@ -1532,10 +1370,6 @@ module BushidoPostFX
     build_sakura_cache
     build_shizen_cache
   end
-
-  #-----------------------------------------------------------------------------
-  # Default graphics
-  #-----------------------------------------------------------------------------
 
   def self.build_vignette_bitmap
     bitmap = Bitmap.new(Graphics.width, Graphics.height)
@@ -1642,10 +1476,6 @@ module BushidoPostFX
     return bitmap
   end
 
-  #-----------------------------------------------------------------------------
-  # Ink Bushido graphics
-  #-----------------------------------------------------------------------------
-
   def self.build_warm_wash_bitmap
     width  = Graphics.width + 160
     height = Graphics.height + 120
@@ -1726,8 +1556,6 @@ module BushidoPostFX
     return bitmap
   end
 
-  # Draws a feathered, slightly irregular ellipse using horizontal runs.
-  # This is only used while building the cache, so there is no per-frame cost.
   def self.draw_pigment_blob(bitmap, cx, cy, rx, ry, red, green, blue, alpha)
     return if !bitmap || bitmap.disposed?
     return if rx <= 0 || ry <= 0
@@ -1739,7 +1567,6 @@ module BushidoPostFX
       layer_rx = [1, (rx * scale).to_i].max
       layer_ry = [1, (ry * scale).to_i].max
 
-      # Inner layers are denser, outer layers are faint.
       layer_strength = 1.0 - (layer - 1).to_f / layers
       layer_alpha = (alpha * layer_strength * 0.72).to_i
       next if layer_alpha <= 0
@@ -1755,7 +1582,6 @@ module BushidoPostFX
 
         span = (Math.sqrt(span_sq) * layer_rx).to_i
 
-        # Small deterministic wobble keeps the wash from reading as circles.
         wobble =
           (Math.sin(y * 0.083 + cx * 0.017) * 5.0 +
            Math.sin(y * 0.031 - cy * 0.013) * 3.0).to_i
@@ -1769,24 +1595,12 @@ module BushidoPostFX
     end
   end
 
-
-  #-----------------------------------------------------------------------------
-  # Ezo graphics
-  #-----------------------------------------------------------------------------
-
   def self.build_ezo_cache
-    # Build the cloud shadow mask at half resolution and scale it 2x.
-    # This keeps generation cheap while giving us soft, organic cloud shapes
-    # instead of visible rectangles.
     width = (Graphics.width + 180) / 2
     height = (Graphics.height + 80) / 2
 
     @ezo_cloud_bitmap = Bitmap.new(width, height)
 
-    # Each entry is:
-    # [center_x, center_y, radius_x, radius_y, strength]
-    #
-    # Overlapping ellipses form broad irregular cloud masses.
     clouds = [
       [30,  26, 42, 16, 0.72],
       [62,  20, 34, 14, 0.58],
@@ -1801,8 +1615,6 @@ module BushidoPostFX
       [366, 30, 44, 16, 0.56]
     ]
 
-    # Only this small half-resolution bitmap is processed pixel-by-pixel,
-    # and it's cached for the entire session.
     for y in 0...height
       for x in 0...width
         strength = 0.0
@@ -1816,8 +1628,6 @@ module BushidoPostFX
 
           next if d2 >= 1.0
 
-          # Smooth radial falloff. Using max rather than sum prevents
-          # overlapping blobs from creating ugly dark seams.
           local = (1.0 - d2)
           local = local * local * power
           strength = local if local > strength
@@ -1833,7 +1643,6 @@ module BushidoPostFX
       end
     end
 
-    # Distance haze stays cheap: one horizontal strip per row.
     @ezo_haze_bitmap =
       Bitmap.new(Graphics.width, Graphics.height)
 
@@ -1850,8 +1659,6 @@ module BushidoPostFX
       )
     end
 
-    # Ezo gets neutral-cool daylight locally. The warmer global Bushido
-    # baseline still exists underneath it.
     @ezo_daylight_bitmap =
       Bitmap.new(Graphics.width, Graphics.height)
 
@@ -1862,10 +1669,6 @@ module BushidoPostFX
       Color.new(238, 246, 255, 255)
     )
   end
-
-  #-----------------------------------------------------------------------------
-  # Nagisa graphics
-  #-----------------------------------------------------------------------------
 
   def self.build_nagisa_cache
     width = Graphics.width
@@ -1935,15 +1738,11 @@ module BushidoPostFX
     @nagisa_particle_bitmap =
       Bitmap.new(9, 9)
 
-    # Luminous in-world bubble: transparent center with a soft circular rim.
-    # Additive blend makes the edge catch the water light without reading
-    # like a solid UI icon.
     outer = Color.new(120, 205, 255, 70)
     rim   = Color.new(185, 232, 255, 150)
     hot   = Color.new(245, 252, 255, 225)
     shine = Color.new(255, 255, 255, 255)
 
-    # Outer soft halo
     @nagisa_particle_bitmap.set_pixel(3, 0, outer)
     @nagisa_particle_bitmap.set_pixel(4, 0, outer)
     @nagisa_particle_bitmap.set_pixel(5, 0, outer)
@@ -1961,7 +1760,6 @@ module BushidoPostFX
     @nagisa_particle_bitmap.set_pixel(4, 8, outer)
     @nagisa_particle_bitmap.set_pixel(5, 8, outer)
 
-    # Main ring
     @nagisa_particle_bitmap.set_pixel(2, 1, rim)
     @nagisa_particle_bitmap.set_pixel(3, 1, hot)
     @nagisa_particle_bitmap.set_pixel(4, 1, hot)
@@ -1989,15 +1787,9 @@ module BushidoPostFX
     @nagisa_particle_bitmap.set_pixel(5, 7, rim)
     @nagisa_particle_bitmap.set_pixel(6, 7, rim)
 
-    # Bright specular highlight on the upper-left rim.
     @nagisa_particle_bitmap.set_pixel(2, 2, shine)
     @nagisa_particle_bitmap.set_pixel(3, 2, hot)
   end
-
-
-  #-----------------------------------------------------------------------------
-  # Sakura petal graphics
-  #-----------------------------------------------------------------------------
 
   def self.build_sakura_cache
     @sakura_petal_bitmaps = []
@@ -2017,7 +1809,6 @@ module BushidoPostFX
 
       case i
       when 0
-        # Simple rounded petal
         bitmap.set_pixel(3, 1, light)
         bitmap.set_pixel(4, 1, light)
         bitmap.fill_rect(2, 2, 4, 3, main)
@@ -2025,14 +1816,12 @@ module BushidoPostFX
         bitmap.set_pixel(4, 5, soft)
 
       when 1
-        # Slightly angled petal
         bitmap.set_pixel(2, 1, light)
         bitmap.fill_rect(2, 2, 4, 2, main)
         bitmap.fill_rect(3, 4, 3, 2, main)
         bitmap.set_pixel(5, 6, soft)
 
       when 2
-        # Wider soft petal
         bitmap.set_pixel(3, 1, light)
         bitmap.set_pixel(4, 1, light)
         bitmap.fill_rect(1, 2, 6, 3, main)
@@ -2044,15 +1833,9 @@ module BushidoPostFX
     end
   end
 
-  #-----------------------------------------------------------------------------
-  # Shizen Trail graphics
-  #-----------------------------------------------------------------------------
-
   def self.build_shizen_cache
     @shizen_leaf_bitmaps = []
 
-    # Larger solid leaves. These are 13x11 rather than 9x7, so they read as
-    # individual objects even before runtime scaling/twirling is applied.
     leaf_palettes = [
       [Color.new(83, 132, 48, 255),  Color.new(145, 183, 79, 255), Color.new(47, 78, 35, 255)],
       [Color.new(117, 147, 55, 255), Color.new(176, 192, 88, 255), Color.new(62, 88, 40, 255)],
@@ -2093,7 +1876,6 @@ module BushidoPostFX
         bitmap.set_pixel(2, 10, dark)
       end
 
-      # Simple central vein gives the larger silhouette a little structure.
       4.upto(8) do |y|
         bitmap.set_pixel(6, y, dark) if bitmap.get_pixel(6, y).alpha > 0
       end
@@ -2101,10 +1883,6 @@ module BushidoPostFX
       @shizen_leaf_bitmaps.push(bitmap)
     end
   end
-
-  #-----------------------------------------------------------------------------
-  # Helpers
-  #-----------------------------------------------------------------------------
 
   def self.dispose_sprite(sprite)
     return if !sprite
@@ -2137,7 +1915,6 @@ module BushidoPostFX
   end
 end
 
-# The renderer is persistent. Spriteset creation just ensures it exists.
 Events.onSpritesetCreate += proc { |_sender, _spriteset, _viewport|
   BushidoPostFX.ensure_created
 }

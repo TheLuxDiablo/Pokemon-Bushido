@@ -1,47 +1,11 @@
-#===============================================================================
-# Bushido Audio FX
-# 002_BushidoAudioFX.rb
-#-------------------------------------------------------------------------------
-# Handles:
-#   - Player footsteps synchronized to overworld animation
-#   - Footstep fallback sounds
-#   - Positional environmental sound sources
-#   - Map-wide environmental ambience
-#
-# Positional sound sources can be created with event comments:
-#
-#   <ambient: waves>
-#   <ambient: waterfall>
-#   <ambient: fire>
-#
-# Optional overrides:
-#
-#   <ambient: waves, radius=12, volume=85>
-#===============================================================================
 
+# BushidoAudioFX.
 module BushidoAudioFX
-
-  #=============================================================================
-  # General
-  #=============================================================================
 
   ENABLE_FOOTSTEPS = true
   ENABLE_AMBIENCE  = true
 
   MAX_POSITIONAL_VOLUME = 90
-
-  #=============================================================================
-  # Footsteps
-  #=============================================================================
-  #
-  # Files live in:
-  #
-  #   Audio/SE/Bushido/Footsteps/
-  #
-  # Don't include file extensions.
-  #
-  # The number on the left is the terrain tag.
-  #=============================================================================
 
   FOOTSTEP_FALLBACK = [
     "Bushido/Footsteps/ground_1",
@@ -116,13 +80,7 @@ module BushidoAudioFX
   FOOTSTEP_PITCH_VARIATION  = 5
   FOOTSTEP_VOLUME_VARIATION = 4
 
-  # A standard Bushido overworld row uses 4 frames.
-  # Frames 0 and 2 are treated as foot-contact frames.
   FOOTSTEP_PATTERNS = [0, 2]
-
-  #=============================================================================
-  # Ambient types
-  #=============================================================================
 
   AMBIENT_TYPES = {
 
@@ -203,43 +161,15 @@ module BushidoAudioFX
 
   }
 
-  #=============================================================================
-  # Global map ambience
-  #=============================================================================
-  #
-  # Example:
-  #
-  # 79 => [
-  #   {
-  #     :sounds => [
-  #       "Bushido/Ambience/wind_1",
-  #       "Bushido/Ambience/wind_2"
-  #     ],
-  #     :volume   => 30,
-  #     :pitch    => 100,
-  #     :interval => 240,
-  #     :variance => 100
-  #   }
-  # ]
-  #=============================================================================
-
   MAP_AMBIENCE = {
 
   }
-
-  #=============================================================================
-  # Runtime data
-  #=============================================================================
 
   @emitters        = []
   @global_ambience = []
   @current_map     = nil
 
   class << self
-
-    #===========================================================================
-    # Main update
-    #===========================================================================
 
     def update
       return if !ENABLE_AMBIENCE
@@ -254,10 +184,6 @@ module BushidoAudioFX
       update_global_ambience
     end
 
-    #===========================================================================
-    # Map setup
-    #===========================================================================
-
     def setup_map
       return if !$game_map
 
@@ -268,10 +194,6 @@ module BushidoAudioFX
       scan_map_events
       setup_global_ambience
     end
-
-    #===========================================================================
-    # Event scanning
-    #===========================================================================
 
     def scan_map_events
       return if !$game_map
@@ -322,10 +244,6 @@ module BushidoAudioFX
 
       return ret
     end
-
-    #===========================================================================
-    # Ambient parser
-    #===========================================================================
 
     def parse_ambient_comment(event, comment)
       return if !comment
@@ -386,10 +304,6 @@ module BushidoAudioFX
       @emitters.push(emitter)
     end
 
-    #===========================================================================
-    # Global ambience setup
-    #===========================================================================
-
     def setup_global_ambience
       return if !$game_map
 
@@ -412,10 +326,6 @@ module BushidoAudioFX
         @global_ambience.push(ambience)
       end
     end
-
-    #===========================================================================
-    # Positional ambience
-    #===========================================================================
 
     def update_emitters
       return if !@emitters
@@ -466,10 +376,6 @@ module BushidoAudioFX
       end
     end
 
-    #===========================================================================
-    # Global ambience update
-    #===========================================================================
-
     def update_global_ambience
       return if !@global_ambience
 
@@ -493,10 +399,6 @@ module BushidoAudioFX
       end
     end
 
-    #===========================================================================
-    # Distance
-    #===========================================================================
-
     def distance_between(x1, y1, x2, y2)
       dx = x2 - x1
       dy = y2 - y1
@@ -519,10 +421,6 @@ module BushidoAudioFX
       return volume
     end
 
-    #===========================================================================
-    # Ambient timing
-    #===========================================================================
-
     def next_interval(base, variance)
       base     = base.to_i
       variance = variance.to_i
@@ -541,10 +439,6 @@ module BushidoAudioFX
       return minimum + rand(maximum - minimum + 1)
     end
 
-    #===========================================================================
-    # General audio helper
-    #===========================================================================
-
     def play_random_sound(sounds, volume, pitch = 100)
       return if !sounds
       return if sounds.length == 0
@@ -558,10 +452,6 @@ module BushidoAudioFX
 
       pbSEPlay(sound, volume, pitch)
     end
-
-    #===========================================================================
-    # File existence
-    #===========================================================================
 
     def audio_file_exists?(sound)
       return false if !sound
@@ -584,10 +474,6 @@ module BushidoAudioFX
       return false
     end
 
-    #===========================================================================
-    # Footsteps
-    #===========================================================================
-
     def footstep
       return if !ENABLE_FOOTSTEPS
       return if !$game_player
@@ -598,7 +484,6 @@ module BushidoAudioFX
       terrain = current_terrain_tag
       data    = FOOTSTEP_TERRAINS[terrain]
 
-      # Unknown terrain automatically uses default ground settings.
       if !data
         data = {
           :sounds => FOOTSTEP_FALLBACK,
@@ -609,19 +494,16 @@ module BushidoAudioFX
 
       sounds = data[:sounds] || FOOTSTEP_FALLBACK
 
-      # Only keep terrain sounds that actually exist.
       valid_sounds = sounds.select do |sound|
         audio_file_exists?(sound)
       end
 
-      # If none of the terrain-specific sounds exist, use ground.
       if valid_sounds.empty?
         valid_sounds = FOOTSTEP_FALLBACK.select do |sound|
           audio_file_exists?(sound)
         end
       end
 
-      # If even the fallback sounds don't exist, simply stay silent.
       return if valid_sounds.empty?
 
       sound = valid_sounds[rand(valid_sounds.length)]
@@ -647,10 +529,6 @@ module BushidoAudioFX
       pbSEPlay(sound, volume, pitch)
     end
 
-    #===========================================================================
-    # Terrain
-    #===========================================================================
-
     def current_terrain_tag
       return 0 if !$game_map
       return 0 if !$game_player
@@ -664,10 +542,6 @@ module BushidoAudioFX
         return 0
       end
     end
-
-    #===========================================================================
-    # Footstep restrictions
-    #===========================================================================
 
     def player_should_be_silent?
       return true if !$game_player
@@ -689,10 +563,6 @@ module BushidoAudioFX
       return false
     end
 
-    #===========================================================================
-    # Reset
-    #===========================================================================
-
     def reset
       @current_map     = nil
       @emitters        = []
@@ -707,23 +577,7 @@ module BushidoAudioFX
   end
 end
 
-
-#===============================================================================
-# Player Footstep Animation Hook
-#===============================================================================
-#
-# Footsteps are synchronized with the player's animation itself.
-#
-# Standard row:
-#
-#   0   1   2   3
-#
-# Frames 0 and 2 are treated as the two foot-contact frames.
-#
-# Running naturally speeds the sounds up because Essentials speeds up the
-# player's animation.
-#===============================================================================
-
+# Game_Player.
 class Game_Player < Game_Character
 
   if method_defined?(:update_pattern) &&
@@ -736,10 +590,8 @@ class Game_Player < Game_Character
 
       bushido_audiofx_update_pattern
 
-      # Nothing changed visually.
       return if @pattern == old_pattern
 
-      # Only trigger footsteps while the player is actually moving.
       return if !moving?
 
       begin
@@ -756,11 +608,7 @@ class Game_Player < Game_Character
 
 end
 
-
-#===============================================================================
-# Scene Map Hook
-#===============================================================================
-
+# Scene_Map.
 class Scene_Map
 
   if method_defined?(:update) &&
