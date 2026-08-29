@@ -35,18 +35,20 @@ class PokemonMapFactory
   # Clears all maps and sets up the current map.
   #-----------------------------------------------------------------------------
   def setup(id)
+    oldID = ($game_map) ? $game_map.map_id : 0
+
     @maps.clear
+    @maps_loading = {}
     @maps[0] = Game_Map.new
     @mapIndex = 0
 
-    oldID = ($game_map) ? $game_map.map_id : 0
+    @maps[0].setup(id)
 
-    if oldID != 0 && oldID != @maps[0].map_id
+    if oldID != 0 && oldID != id
       setMapChanging(id, @maps[0])
     end
 
     $game_map = @maps[0]
-    @maps[0].setup(id)
 
     setMapsInRange
     setMapChanged(oldID)
@@ -90,31 +92,31 @@ class PokemonMapFactory
   # will not be permanently inserted into @maps.
   #-----------------------------------------------------------------------------
   def getMap(id, add = true)
-    # Already fully loaded.
+    # Return an already-loaded map first.
     for map in @maps
       next if !map
       return map if map.map_id == id
     end
 
-    # Maps that are currently inside Game_Map#setup.
     @maps_loading = {} if !@maps_loading
 
-    # Game_Map#setup can indirectly ask MapFactory for the exact same map.
-    # Return the in-progress map instead of recursively constructing it again.
+    # If this exact map is already being set up, return that instance.
     if @maps_loading[id]
       return @maps_loading[id]
     end
 
+    # While map additions are locked, callers may inspect another map,
+    # but that map must never become part of the active connected-map set.
+    actually_add = add && !mapAddsLocked?
+
     map = Game_Map.new
 
-    # Register BEFORE setup, because setup can re-enter getMap.
     @maps_loading[id] = map
 
     begin
       map.setup(id)
 
-      # Preserve the original getMap/getMapNoAdd behavior.
-      @maps.push(map) if add
+      @maps.push(map) if actually_add
     rescue
       @maps.delete(map)
       raise
@@ -702,6 +704,8 @@ class PokemonMapFactory
       @mapIndex = getMapIndex($game_map.map_id)
     end
   end
+
+
 end
 
 
@@ -881,3 +885,5 @@ def updateTilesets
     map.updateTileset if map
   end
 end
+
+

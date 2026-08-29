@@ -1,5 +1,3 @@
-
-# BushidoPostFX.
 module BushidoPostFX
   TOGGLE_KEY = Input::F6
 
@@ -162,7 +160,6 @@ module BushidoPostFX
     detect_map(true)
     apply_all
 
-    echoln("[BushidoPostFX] Persistent renderer created | Ezo/Nagisa water bubbles enabled")
   end
 
   def self.create_viewports
@@ -749,7 +746,6 @@ module BushidoPostFX
 
     transition_grade(target_tone, duration)
 
-    echoln("[BushidoPostFX] Map #{map_id} -> #{@profile}")
   end
 
   def self.transition_ezo(target, duration)
@@ -824,7 +820,6 @@ module BushidoPostFX
     @enabled = !@enabled
     transition_master(@enabled ? 1.0 : 0.0, TOGGLE_TRANSITION_FRAMES)
 
-    echoln("[BushidoPostFX] #{@enabled ? 'ENABLED' : 'DISABLED'}")
   end
 
   def self.transition_master(target, duration)

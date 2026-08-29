@@ -36,7 +36,6 @@ class Scene_Map
       for map in maps_to_create
         next if !map
 
-        echoln("CREATING INITIAL MAP SPRITESET: #{map.map_id}") if $DEBUG
 
         @spritesets[map.map_id] = Spriteset_Map.new(map)
       end
@@ -156,11 +155,6 @@ class Scene_Map
     pbBridgeOff
 
     if $DEBUG
-      echoln("============================================")
-      echoln("MAP TRANSFER START")
-      echoln("FROM MAP: #{$game_map.map_id}")
-      echoln("TO MAP:   #{$game_temp.player_new_map_id}")
-      echoln("============================================")
     end
 
     #-------------------------------------------------------------------------
@@ -177,9 +171,6 @@ class Scene_Map
         maps.push(map.map_id) if map
       end
 
-      echoln("AFTER MAPFACTORY SETUP:")
-      echoln("CURRENT MAP: #{$game_map.map_id}")
-      echoln("MAPFACTORY: #{maps.inspect}")
     end
 
     #-------------------------------------------------------------------------
@@ -227,15 +218,11 @@ class Scene_Map
           end
         end
 
-        echoln("BEFORE SPRITESET DISPOSAL:")
-        echoln("SPRITESETS: #{sprites.inspect}")
       end
 
       disposeSpritesets
 
       if $DEBUG
-        echoln("AFTER SPRITESET DISPOSAL:")
-        echoln("SPRITESETS: #{@spritesets.keys.inspect}")
       end
 
       GC.start
@@ -262,13 +249,6 @@ class Scene_Map
         sprites.push(id)
       end
 
-      echoln("AFTER SPRITESET CREATION:")
-      echoln("CURRENT MAP: #{$game_map.map_id}")
-      echoln("MAPFACTORY: #{maps.inspect}")
-      echoln("SPRITESETS: #{sprites.inspect}")
-      echoln("============================================")
-      echoln("MAP TRANSFER END")
-      echoln("============================================")
     end
 
     if $game_temp.transition_processing
@@ -357,7 +337,6 @@ class Scene_Map
     #-------------------------------------------------------------------------
     for i in keys
       if !$MapFactory.hasMap?(i)
-        echoln("DISPOSING REMOVED MAP SPRITESET: #{i}") if $DEBUG
 
         @spritesets[i].dispose if @spritesets[i]
         @spritesets[i] = nil
@@ -381,7 +360,6 @@ class Scene_Map
         next if !map
 
         if !@spritesets[map.map_id]
-          echoln("CREATING MAP SPRITESET: #{map.map_id}") if $DEBUG
 
           @spritesets[map.map_id] = Spriteset_Map.new(map)
         end
