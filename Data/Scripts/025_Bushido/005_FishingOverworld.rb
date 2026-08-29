@@ -1,22 +1,12 @@
 #===============================================================================
 # Fishing Overworld Reveal
 #===============================================================================
-# Shows the exact Pokemon rolled by the fishing encounter before battle.
-#
-# Pokemon overworld graphics are expected directly in:
-# Graphics/Characters/
-#
-# Pokemon Essentials v18.1
-#===============================================================================
 
 FISHING_SURFACE_FRAMES = 20
 FISHING_SURFACE_HOLD   = 30
 FISHING_SURFACE_RISE   = 14
 
-
-#===============================================================================
-# Roll encounter, reveal it, then battle that exact encounter.
-#===============================================================================
+# Rolls and reveals the fishing encounter.
 def pbFishingRevealEncounter(enctype)
   $PokemonTemp.encounterType = enctype
 
@@ -77,10 +67,7 @@ def pbFishingRevealEncounter(enctype)
   end
 end
 
-
-#===============================================================================
-# Resolve overworld charset
-#===============================================================================
+# Finds the Pokemon's overworld charset.
 def pbFishingPokemonCharset(species)
   species_id = nil
   species_name = nil
@@ -148,10 +135,7 @@ def pbFishingPokemonCharset(species)
   return nil
 end
 
-
-#===============================================================================
-# Position one tile in front of player
-#===============================================================================
+# Gets the reveal position in front of the player.
 def pbFishingPokemonPosition
   x =
     $game_player.screen_x
@@ -176,16 +160,7 @@ def pbFishingPokemonPosition
   return [x, y]
 end
 
-
-#===============================================================================
-# Face player
-#
-# Charset rows:
-# 0 = down
-# 1 = left
-# 2 = right
-# 3 = up
-#===============================================================================
+# Gets the charset row facing the player.
 def pbFishingPokemonDirectionRow(player_direction)
   case player_direction
   when 2
@@ -204,10 +179,7 @@ def pbFishingPokemonDirectionRow(player_direction)
   return 0
 end
 
-
-#===============================================================================
-# Surface Pokemon
-#===============================================================================
+# Shows the Pokemon surfacing before battle.
 def pbFishingShowPokemon(species)
   charset =
     pbFishingPokemonCharset(
@@ -246,9 +218,6 @@ def pbFishingShowPokemon(species)
   bitmap =
     pokemon.bitmap
 
-  #-----------------------------------------------------------------------------
-  # Charset frame
-  #-----------------------------------------------------------------------------
   if bitmap.width % 4 == 0 &&
      bitmap.height % 4 == 0
 
@@ -297,9 +266,6 @@ def pbFishingShowPokemon(species)
   pokemon.oy =
     frame_height
 
-  #-----------------------------------------------------------------------------
-  # Position
-  #-----------------------------------------------------------------------------
   position =
     pbFishingPokemonPosition
 
@@ -338,9 +304,6 @@ def pbFishingShowPokemon(species)
   rescue
   end
 
-  #-----------------------------------------------------------------------------
-  # Smooth upward surface
-  #-----------------------------------------------------------------------------
   FISHING_SURFACE_FRAMES.times do |i|
     Graphics.update
     Input.update
@@ -380,9 +343,6 @@ def pbFishingShowPokemon(species)
   pokemon.opacity =
     255
 
-  #-----------------------------------------------------------------------------
-  # Gentle 2px bob
-  #-----------------------------------------------------------------------------
   FISHING_SURFACE_HOLD.times do |i|
     Graphics.update
     Input.update
@@ -407,18 +367,12 @@ def pbFishingShowPokemon(species)
   pokemon.y =
     target_y
 
-  #-----------------------------------------------------------------------------
-  # Short hold before battle
-  #-----------------------------------------------------------------------------
   8.times do
     Graphics.update
     Input.update
     pbUpdateSceneMap
   end
 
-  #-----------------------------------------------------------------------------
-  # Cleanup
-  #-----------------------------------------------------------------------------
   if pokemon.bitmap &&
      !pokemon.bitmap.disposed?
     pokemon.bitmap.dispose

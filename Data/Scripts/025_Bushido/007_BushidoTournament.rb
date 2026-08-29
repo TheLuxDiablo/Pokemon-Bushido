@@ -1,63 +1,11 @@
-#===============================================================================
+
 # Pokémon Bushido - Tournament System
 # Essentials v18.1 / Bushido v2
-#===============================================================================
-# PBS files:
-#   PBS/tournamenttrainers.txt
-#   PBS/tournaments.txt
-#
-# Full automatic tournament:
-#   BushidoTournament.play(:KENSHI_STORY)
-#
-# Showcase presentation:
-#   BushidoTournament.show_opening_match       # opening + first matchup, seamless
-#   BushidoTournament.show_results(nil, true) # results + next matchup, auto-close
-#   BushidoTournament.show_results_and_finale # final result + champion, seamless
-#
-# Individual presentation calls remain available:
-#   BushidoTournament.show_opening
-#   BushidoTournament.show_current_match
-#   BushidoTournament.show_results
-#   BushidoTournament.show_finale
-#
-# Story pacing:
-#   BushidoTournament.phase
-#   BushidoTournament.advance
-#   BushidoTournament.player_won       # external/story battle won
-#   BushidoTournament.player_lost      # external/story battle lost
-#   BushidoTournament.show_results(nil, true) # reveal next matchup
-#
-# Dynamic rival helpers:
-#   BushidoTournament.rival_name
-#   BushidoTournament.rival_trainer_type
-#
-# Story-event / granular API:
-#   BushidoTournament.start(:KENSHI_STORY)
-#   BushidoTournament.show_bracket
-#   BushidoTournament.show_current_match
-#   BushidoTournament.battle
-#   BushidoTournament.resolve_round
-#   BushidoTournament.show_results
-#   BushidoTournament.current_opponent_id
-#   BushidoTournament.current_opponent_name
-#   BushidoTournament.round
-#   BushidoTournament.player_alive?
-#   BushidoTournament.finished?
-#   BushidoTournament.player_champion?
-#   BushidoTournament.finish
-#
-# Notes:
-# - RPG Maker events remain the "director" for story tournaments.
-# - This script owns bracket state, PBS data, battles, NPC simulation and PWT UI.
-#===============================================================================
-
 module BushidoTournament
   TRAINER_PBS    = "PBS/tournamenttrainers.txt"
   TOURNAMENT_PBS = "PBS/tournaments.txt"
   PORTRAIT_DIR   = "Graphics/Pictures/Tournament/Trainers/"
 
-  # Legacy constants retained for compatibility. The tournament UI no longer
-  # color-codes the left and right sides.
   LEFT_ACCENT  = Color.new(156, 136, 112)
   RIGHT_ACCENT = Color.new(156, 136, 112)
   PATH_WHITE   = Color.new(245, 245, 245)
@@ -65,10 +13,6 @@ module BushidoTournament
   PATH_RED     = Color.new(218, 76, 40)
   PATH_YELLOW  = Color.new(255, 185, 25)
 
-  #-------------------------------------------------------------------------
-  # Optional presentation SFX hooks
-  #-------------------------------------------------------------------------
-  # Assign filenames without extensions later. nil is intentionally silent.
   SE_OPEN           = nil
   SE_PORTRAIT_IN    = nil
   SE_NAMEPLATE_IN   = nil
@@ -85,13 +29,10 @@ module BushidoTournament
     begin
       pbSEPlay(name, volume, pitch)
     rescue
-      # Presentation SFX must never break tournament progression.
     end
   end
 
-  #=============================================================================
-  # PBS DATA
-  #=============================================================================
+  # PBS data
   class TrainerData
     attr_accessor :id
     attr_accessor :name
@@ -312,9 +253,7 @@ module BushidoTournament
     return @tournament_data.keys
   end
 
-  #=============================================================================
-  # RUNTIME ENTRANT / MATCH / TOURNAMENT
-  #=============================================================================
+  # Tournament state
   class Entrant
     attr_reader :id
     attr_reader :data
@@ -560,15 +499,8 @@ module BushidoTournament
 
   @active_tournament = nil
 
-  #=============================================================================
-  # PUBLIC STATE API
-  #=============================================================================
-
-
+  # Public tournament API
   def self.start(id)
-    # Tournament data is tiny, and reloading here prevents stale PBS data when
-    # iterating in development. It also guarantees dynamic rival graphics use
-    # the latest FemaleGraphic/MaleGraphic definitions.
     reload_data
 
     data = tournament_data(id)
@@ -599,8 +531,6 @@ module BushidoTournament
     return o ? o.id : nil
   end
 
-  # Record a result from a battle launched by the map event itself.
-  # This lets story tournaments keep their bespoke BattleScripting hooks.
   def self.player_won
     return false if !@active_tournament
     @active_tournament.player_won!
@@ -651,7 +581,6 @@ module BushidoTournament
     return @active_tournament.phase
   end
 
-  # Story events call this after their between-round map dialogue/cutscene.
   def self.advance
     return false if !@active_tournament
     return false if !@active_tournament.player_alive?
@@ -659,7 +588,6 @@ module BushidoTournament
     @active_tournament.set_phase(:AWAITING_MATCH)
     return true
   end
-
 
   def self.resolve_round
     return false if !@active_tournament
@@ -676,9 +604,7 @@ module BushidoTournament
     end
   end
 
-  #=============================================================================
-  # BATTLE
-  #=============================================================================
+  # Battle handling
   def self.prepare_battle_scripts(data)
     if data.intro_script
       BattleScripting.setInScript("turnStart0", data.intro_script)
@@ -692,12 +618,8 @@ module BushidoTournament
   end
 
   def self.default_battle_args(data)
-    # Arguments following LoseText in Essentials v18 pbTrainerBattle.
-    # Matches Kayoko/Tsuku's existing Bushido calls by default.
     return [false, data.party, false]
   end
-
-
 
   def self.battle
     return false if !@active_tournament
@@ -735,8 +657,6 @@ module BushidoTournament
     return won
   end
 
-
-
   def self.play(id = :KENSHI_STORY)
     start(id)
     show_opening_match
@@ -773,43 +693,20 @@ module BushidoTournament
     return play(id)
   end
 
-  #=============================================================================
-  # UI-ONLY TOURNAMENT TEST
-  #=============================================================================
-  #
-  # Runs the complete tournament presentation without launching real battles.
-  # Every player match is treated as a player victory. After each "battle",
-  # all results for that round are revealed one-by-one in bracket order.
-  #
-  # Usage from an event:
-  #
-  #   BushidoTournament.test_ui(:KENSHI_STORY)
-  #
-  #=============================================================================
+  # UI-only tournament test
   def self.test_ui(id = :KENSHI_STORY)
     start(id)
 
     show_bracket("The Kenshi Tournament begins!")
 
-    #-------------------------------------------------------------------------
-    # Quarterfinals
-    #-------------------------------------------------------------------------
-    # The actual battle-introduction nameplates are shown ONCE by the results/
-    # matchup choreography. Do not pre-show a second generic set of plates.
     @active_tournament.player_won!
     @active_tournament.resolve_current_round
     show_results(nil, true)
 
-    #-------------------------------------------------------------------------
-    # Semifinals
-    #-------------------------------------------------------------------------
     @active_tournament.player_won!
     @active_tournament.resolve_current_round
     show_results(nil, true)
 
-    #-------------------------------------------------------------------------
-    # Final
-    #-------------------------------------------------------------------------
     @active_tournament.player_won!
     show_results
 
@@ -818,15 +715,7 @@ module BushidoTournament
     return true
   end
 
-  #=============================================================================
-  # DYNAMIC TRAINER RESOLUTION
-  #=============================================================================
-  # Bushido's rival is the opposite-gender childhood friend:
-  #   player gender 0 -> Akane / RIVALBUSHIDO_F
-  #   player gender 1 -> Yakeru / RIVALBUSHIDO_M
-  #
-  # This mirrors the game's intro setup, which stores Akane/Yakeru in variable 26.
-
+  # Dynamic trainer handling
   def self.resolved_trainer_data(source)
     return source if !source
     return source if source.dynamic != :RIVAL
@@ -844,8 +733,6 @@ module BushidoTournament
       data.trainer_type = source.male_trainer_type || :RIVALBUSHIDO_M
     end
 
-    # Keep Graphic as the generic fallback. character_graphic_for resolves
-    # FemaleGraphic/MaleGraphic at render time.
     data.graphic = source.graphic
 
     if $game_variables && $game_variables[26] && !$game_variables[26].to_s.empty?
@@ -865,10 +752,7 @@ module BushidoTournament
     return ($Trainer && $Trainer.gender == 0) ? "Akane" : "Yakeru"
   end
 
-  #=============================================================================
-  # GRAPHIC HELPERS
-  #=============================================================================
-
+  # Graphic helpers
   def self.existing_bitmap_path(base)
     return nil if !base || base.to_s.empty?
 
@@ -883,7 +767,6 @@ module BushidoTournament
     return nil
   end
 
-
   def self.character_graphic_for(entrant)
     if entrant.player?
       if $game_player && $game_player.character_name && !$game_player.character_name.empty?
@@ -895,9 +778,6 @@ module BushidoTournament
     return nil if !entrant.data
     data = entrant.data
 
-    # Dynamic rival: prefer the gender-specific PBS graphic every time the
-    # portrait is requested. This makes the visual resolve independently from
-    # the trainer type/name resolution and is robust to data reloads.
     if data.dynamic == :RIVAL
       player_gender = ($Trainer && $Trainer.respond_to?(:gender)) ? $Trainer.gender : 0
       specific = (player_gender == 0) ? data.female_graphic : data.male_graphic
@@ -922,8 +802,6 @@ module BushidoTournament
     return true
   end
 
-  # Seamless championship ending:
-  # final result reveal -> champion finale -> one exit transition.
   def self.show_results_and_finale(message = nil)
     return false if !@active_tournament
 
@@ -968,7 +846,6 @@ module BushidoTournament
     return true
   end
 
-
   def self.show_results(message = nil, reveal_next = false)
     return false if !@active_tournament
 
@@ -1004,13 +881,7 @@ module BushidoTournament
 
 end
 
-#===============================================================================
-# Animated native-size tournament trainer sprite
-#===============================================================================
-# Tournament trainer graphics are standard 4x4 overworld character sheets.
-# The UI uses the entirety of row 1 (row index 0) and loops all four frames.
-# No scaling is applied.
-#===============================================================================
+# Animated tournament trainer sprite
 class TournamentTrainerSprite < Sprite
   FRAME_COUNT = 4
   ROW_INDEX   = 0
@@ -1031,7 +902,6 @@ class TournamentTrainerSprite < Sprite
     load_graphic
   end
 
-
   def load_graphic
     graphic = BushidoTournament.character_graphic_for(@entrant)
     return if !graphic || graphic.to_s.empty?
@@ -1039,15 +909,12 @@ class TournamentTrainerSprite < Sprite
     path = nil
     graphic = graphic.to_s
 
-    # Accept either a full project-relative path or a normal character filename.
     if graphic.index("Graphics/") == 0
       path = BushidoTournament.existing_bitmap_path(graphic)
     else
       path = BushidoTournament.existing_bitmap_path("Graphics/Characters/" + graphic)
     end
 
-    # If a dynamic gender-specific rival graphic was configured but mistyped or
-    # missing, gracefully fall back to Graphic= rather than rendering nothing.
     if !path && @entrant.data && @entrant.data.dynamic == :RIVAL
       fallback = @entrant.data.graphic
       if fallback && !fallback.to_s.empty? && fallback.to_s != graphic
@@ -1096,8 +963,6 @@ class TournamentTrainerSprite < Sprite
   end
 
   def dispose
-    # Sprite does not own a separately-created display bitmap; its bitmap is the
-    # source character sheet itself, so dispose it exactly once here.
     if @source_bitmap && !@source_bitmap.disposed?
       @source_bitmap.dispose
     end
@@ -1107,17 +972,10 @@ class TournamentTrainerSprite < Sprite
   end
 end
 
-#===============================================================================
-# PWT-STYLE TOURNAMENT SCENE
-#===============================================================================
+# Tournament bracket scene
 class PokemonTournament_Scene
   ASSET_DIR = "Graphics/Pictures/Tournament/"
 
-  #-------------------------------------------------------------------------
-  # Visual language
-  #-------------------------------------------------------------------------
-  # Keep all tournament geometry on a 2px grid. The layout stays PWT-inspired,
-  # while the surfaces lean into Bushido's ink/paper/vermillion presentation.
   GRID              = 2
   BORDER            = 2
   INNER_BORDER      = 4
@@ -1154,7 +1012,6 @@ class PokemonTournament_Scene
     @hidden_result_keys = {}
     @results.each { |m| @hidden_result_keys[m.key] = true }
 
-    # Result/nameplate focus and moving-square phase for completed orange routes.
     @focus_match = nil
     @nameplate_slide = 0.0
     @nameplate_left_slide  = 0.0
@@ -1163,15 +1020,10 @@ class PokemonTournament_Scene
     @impact_winner = nil
     @animating_result_match = nil
 
-    # Opening modes must start already stripped down underneath the black
-    # transition. Otherwise the fully-built bracket is visible for a frame,
-    # then disappears, then animates back in.
     opening_mode = (@mode == :OPENING || @mode == :OPENING_MATCH)
     @hide_paths = opening_mode
     @hide_crown = opening_mode
 
-    # Explicitly initialize input-indicator state. v5 created the sprite but
-    # missed these fields, which caused nil + 1 inside update_sprites.
     @continue_visible = false
     @continue_tick    = 0
 
@@ -1180,13 +1032,9 @@ class PokemonTournament_Scene
                              @mode == :FINALE || @mode == :OPENING_MATCH ||
                              @mode == :RESULTS_FINALE)
 
-    # Keep phase within one exact spacing period so the loop has no jump.
     @path_phase = 0
     @path_tick  = 0
   end
-
-
-
 
   def main
     start_scene
@@ -1198,7 +1046,6 @@ class PokemonTournament_Scene
       animate_opening
 
     elsif @mode == :OPENING_MATCH
-      # One continuous ceremony. No fade out/in between opening and matchup.
       animate_opening
       wait_frames(8)
       animate_current_match_reveal(true)
@@ -1239,6 +1086,7 @@ class PokemonTournament_Scene
     end_scene
   end
 
+  # UI assets
   def load_ui_assets
     @ui_assets = {}
     [
@@ -1275,8 +1123,6 @@ class PokemonTournament_Scene
     @ui_assets = nil
   end
 
-  # Tile a tiny PNG across an authored rectangle. This replaces all former
-  # fill_rect-based path/pulse/ceremony drawing while preserving exact pixels.
   def blit_tiled_rect(bitmap, x, y, w, h, asset_name)
     return if w <= 0 || h <= 0
     tile = ui_asset(asset_name)
@@ -1317,9 +1163,6 @@ class PokemonTournament_Scene
     @sprites["base"].bitmap = Bitmap.new(Graphics.width, Graphics.height)
     pbSetSystemFont(@sprites["base"].bitmap)
 
-    # Animated yellow "squares" that travel along permanent orange winner paths.
-    # Kept separate so the orange route can stay alive without redrawing the
-    # whole scene or disturbing matchup/result overlays.
     @sprites["pulse"] = Sprite.new(@viewport)
     @sprites["pulse"].bitmap = Bitmap.new(Graphics.width, Graphics.height)
     @sprites["pulse"].z = 8
@@ -1364,8 +1207,6 @@ class PokemonTournament_Scene
     trans = @sprites["transition"]
     return if !trans
 
-    # Black -> tournament screen. This prevents the PWT screen from simply
-    # popping over a fully-visible arena.
     10.times do |i|
       trans.opacity = 255 - (((i + 1) * 255) / 10)
       Graphics.update
@@ -1379,8 +1220,6 @@ class PokemonTournament_Scene
     trans = @sprites["transition"]
     return if !trans
 
-    # Tournament screen -> black. Story events should perform their arena
-    # repositioning immediately after this call, while the map is faded out.
     10.times do |i|
       trans.opacity = ((i + 1) * 255) / 10
       Graphics.update
@@ -1389,7 +1228,6 @@ class PokemonTournament_Scene
     end
     trans.opacity = 255
   end
-
 
   def end_scene
     pbDisposeSpriteHash(@sprites)
@@ -1417,7 +1255,6 @@ class PokemonTournament_Scene
       refresh_idle_path_animation
     end
 
-    # Animate Bushido's shared 2x2 Arrow.png exactly as a four-frame sheet.
     @continue_visible = false if @continue_visible.nil?
     @continue_tick = 0 if @continue_tick.nil?
 
@@ -1479,7 +1316,6 @@ class PokemonTournament_Scene
     return snap2(Graphics.width / 2)
   end
 
-  # Snap every authored UI coordinate to the 2px presentation grid.
   def snap2(value)
     return (value.to_i / GRID) * GRID
   end
@@ -1500,10 +1336,7 @@ class PokemonTournament_Scene
     return (round1_mid_y(0) + round1_mid_y(1)) / 2
   end
 
-  #-----------------------------------------------------------------------------
-  # Portrait sprites
-  #-----------------------------------------------------------------------------
-
+  # Portraits
   def build_portrait_sprites
     @portrait_home = {}
 
@@ -1545,9 +1378,6 @@ class PokemonTournament_Scene
       round.each do |match|
         next if !match.finished?
 
-        # A pending result is intentionally hidden until its individual reveal.
-        # This keeps the loser fully visible while the white route is still
-        # waiting for the orange winner route to draw over it.
         next if @hidden_result_keys[match.key]
 
         if match.entrant1 == entrant || match.entrant2 == entrant
@@ -1558,10 +1388,7 @@ class PokemonTournament_Scene
     return false
   end
 
-  #-----------------------------------------------------------------------------
-  # Refresh
-  #-----------------------------------------------------------------------------
-
+  # Drawing
   def refresh
     base  = @sprites["base"].bitmap
     pulse = @sprites["pulse"].bitmap
@@ -1586,11 +1413,9 @@ class PokemonTournament_Scene
     refresh_idle_path_animation if !@hide_paths
   end
 
-
   def draw_background(bitmap)
     bitmap.blt(0, 0, ui_asset("background"), Rect.new(0, 0, Graphics.width, field_bottom))
   end
-
 
   def draw_portrait_frames(bitmap)
     frame = ui_asset("portrait_frame")
@@ -1615,7 +1440,6 @@ class PokemonTournament_Scene
     draw_semifinal_side(bitmap, 1, false)
   end
 
-
   def draw_round1_pair(bitmap, match_index, slot_a, slot_b, left_side)
     match = @tournament.rounds[0][match_index]
     xa = left_side ? left_entry_x : right_entry_x
@@ -1630,9 +1454,6 @@ class PokemonTournament_Scene
     cout = BushidoTournament::PATH_WHITE
 
     if @animating_result_match == match && match.finished?
-      # Result has been announced but not committed yet:
-      # loser path greys immediately; winner path stays white while the orange
-      # route is drawn over it by the overlay animation.
       winner_slot = @tournament.slot_for(match.winner.id)
       if winner_slot == slot_a
         c2 = BushidoTournament::PATH_GREY
@@ -1655,7 +1476,6 @@ class PokemonTournament_Scene
     draw_route(bitmap, [[xa, y2, xm, y2], [xm, y2, xm, ym]], c2, c2 == BushidoTournament::PATH_RED)
     draw_route(bitmap, [[xm, ym, xo, ym]], cout, cout == BushidoTournament::PATH_RED)
   end
-
 
   def draw_semifinal_side(bitmap, semifinal_index, left_side)
     round = @tournament.rounds[1]
@@ -1689,7 +1509,6 @@ class PokemonTournament_Scene
       end
       c_out = BushidoTournament::PATH_RED
     elsif @tournament.rounds[2] && !@tournament.rounds[2].empty?
-      # Preserve the established semifinal contestants before their result.
       c_top = BushidoTournament::PATH_WHITE
       c_bot = BushidoTournament::PATH_WHITE
     end
@@ -1705,8 +1524,6 @@ class PokemonTournament_Scene
       draw_segment(bitmap, x1, y1, x2, y2, color, dotted)
     end
   end
-
-
 
   def draw_segment(bitmap, x1, y1, x2, y2, color, dotted = false)
     x1 = snap2(x1)
@@ -1754,7 +1571,6 @@ class PokemonTournament_Scene
     draw_match_nameplates(bitmap, match)
   end
 
-
   def draw_match_nameplates(bitmap, match)
     return if !match
 
@@ -1765,7 +1581,6 @@ class PokemonTournament_Scene
       draw_nameplate(bitmap, entrant, progress)
     end
   end
-
 
   def draw_nameplate(bitmap, entrant, progress = 1.0)
     slot = @tournament.entrants.index(entrant)
@@ -1835,12 +1650,7 @@ class PokemonTournament_Scene
     bitmap.draw_text(x, text_y, w, text_h, text.to_s, align)
   end
 
-  #-----------------------------------------------------------------------------
-  # Bottom message panel
-  #-----------------------------------------------------------------------------
-
-
-
+  # Message box
   def draw_message_box(bitmap)
     y = field_bottom
     panel = ui_asset("message_box")
@@ -1893,11 +1703,6 @@ class PokemonTournament_Scene
       end
     end
   end
-
-  # One repeating stream is measured across the ENTIRE polyline. The spacing
-  # therefore continues naturally around corners instead of restarting on each
-  # horizontal/vertical segment.
-
 
   def draw_moving_route_squares(bitmap, segments)
     spacing = PATH_PULSE_GAP
@@ -1957,6 +1762,7 @@ class PokemonTournament_Scene
     end
   end
 
+  # Result animations
   def animate_results
     @results.each_with_index do |match, i|
       winner = match.winner
@@ -1979,19 +1785,12 @@ class PokemonTournament_Scene
       animate_nameplates(false)
       @focus_match = nil
 
-      # Immediately grey the defeated route on the BASE bracket.
-      # The winning route remains white until the orange progression covers it.
       @animating_result_match = match
       refresh
       wait_frames(12)
 
-      # Draw the winning route. animate_match_result deliberately leaves its
-      # final overlay intact rather than clearing it.
       animate_match_result(match)
 
-      # Commit the real finished state underneath that identical final overlay.
-      # Since no Graphics.update occurs between commit and overlay clear, there
-      # is no white/grey/red flash or redraw visible to the player.
       @hidden_result_keys.delete(match.key)
       @animating_result_match = nil
       @impact_loser = nil
@@ -2059,7 +1858,6 @@ class PokemonTournament_Scene
     end
   end
 
-
   def wait_for_continue
     4.times do
       Graphics.update
@@ -2087,7 +1885,6 @@ class PokemonTournament_Scene
     end
   end
 
-
   def animate_current_match_reveal(require_input = true)
     match = @tournament.player_match
     return if !match
@@ -2097,8 +1894,6 @@ class PokemonTournament_Scene
     @nameplate_left_slide  = 0.0
     @nameplate_right_slide = 0.0
 
-    # MATCH mode normally renders from player_match directly; temporarily use
-    # RESULT-style focus drawing so this helper can also work in OPENING_MATCH.
     old_mode = @mode
     @mode = :RESULTS
     animate_nameplates(true)
@@ -2114,7 +1909,6 @@ class PokemonTournament_Scene
     @focus_match = nil
     refresh
   end
-
 
   def animate_next_match_reveal
     match = @tournament.player_match
@@ -2138,7 +1932,6 @@ class PokemonTournament_Scene
 
     animate_nameplates(true)
 
-    # Give the reveal time to land before prompting.
     wait_frames(24)
     wait_for_continue
 
@@ -2148,7 +1941,6 @@ class PokemonTournament_Scene
     refresh
     wait_frames(12)
   end
-
 
   def animate_result_impact(match)
     winner = match.winner
@@ -2165,10 +1957,8 @@ class PokemonTournament_Scene
 
     BushidoTournament.play_ui_se(BushidoTournament::SE_ELIMINATED, 75, 100)
 
-    # Let the winner announcement sit before the physical impact.
     wait_frames(10)
 
-    # Winner gets a longer, readable gold flash + 2px lift.
     if winner_spr
       home_x, home_y = @portrait_home[winner_slot]
 
@@ -2193,7 +1983,6 @@ class PokemonTournament_Scene
       winner_spr.tone = Tone.new(0, 0, 0, 0)
     end
 
-    # Loser gets a more obvious shake, then visibly settles into elimination.
     if loser_spr
       home_x, home_y = @portrait_home[loser_slot]
 
@@ -2209,17 +1998,14 @@ class PokemonTournament_Scene
       loser_spr.y = home_y
     end
 
-    # Pause on winner bright / loser darkened so the result actually registers.
     refresh
     wait_frames(24)
   end
 
-
+  # Opening animation
   def animate_opening
     BushidoTournament.play_ui_se(BushidoTournament::SE_OPEN, 85, 100)
 
-    # start_scene already prepared the portraits offscreen and hid the bracket
-    # BEFORE the entry fade. We can animate immediately without a visual reset.
     12.times do |frame|
       t = (frame + 1).to_f / 12
       eased = t * t * (3.0 - 2.0 * t)
@@ -2241,8 +2027,6 @@ class PokemonTournament_Scene
 
     BushidoTournament.play_ui_se(BushidoTournament::SE_PORTRAIT_IN, 70, 100)
 
-    # Draw the white bracket in from both sides while the base version remains
-    # hidden. No fully-built template is shown before this point.
     temp = Bitmap.new(Graphics.width, Graphics.height)
     old_hide_paths = @hide_paths
     @hide_paths = false
@@ -2272,15 +2056,12 @@ class PokemonTournament_Scene
     end
     temp.dispose
 
-    # Commit the bracket underneath the completed overlay, then clear the
-    # overlay without ever showing a blank frame.
     @hide_paths = false
     refresh
     Graphics.update
     Input.update
     update_sprites
 
-    # Crest stamp.
     @hide_crown = true
     refresh
     over = @sprites["overlay"].bitmap
@@ -2300,6 +2081,7 @@ class PokemonTournament_Scene
     refresh
   end
 
+  # Finale animation
   def animate_finale
     champion = @tournament.champion
     return if !champion
@@ -2308,10 +2090,8 @@ class PokemonTournament_Scene
 
     over = @sprites["overlay"].bitmap
 
-    # Let the completed bracket breathe before the celebration starts.
     wait_frames(24)
 
-    # Three slower crest pulses.
     3.times do
       8.times do |i|
         over.clear
@@ -2338,7 +2118,6 @@ class PokemonTournament_Scene
       wait_frames(6)
     end
 
-    # Champion sprite rises in more slowly.
     champ = TournamentTrainerSprite.new(@viewport, champion)
     if champ.graphic_loaded?
       champ.x = center_x - (champ.frame_width / 2)
@@ -2359,12 +2138,9 @@ class PokemonTournament_Scene
       end
     end
 
-    # Hold on the champion. The continue arrow makes it explicit that the
-    # player controls when the celebration is finished.
     wait_frames(30)
     wait_for_continue
   end
-
 
   def animate_match_result(match)
     segments = winner_segments(match)
@@ -2419,9 +2195,6 @@ class PokemonTournament_Scene
       update_sprites
     end
 
-    # IMPORTANT: leave the fully-drawn winner route on the overlay.
-    # animate_results commits the same route to the base immediately afterward,
-    # preventing the old "draw -> disappear -> redraw" flash.
   end
 
   def partial_segment(seg, distance)

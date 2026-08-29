@@ -1,11 +1,5 @@
-#===============================================================================
-# Pokémon Bushido - Custom Starter Selection
-#===============================================================================
-
 module BushidoStarterSelection
-  #=============================================================================
   # Starter setup
-  #=============================================================================
 
   DEFAULT_STARTERS = [
     :TREECKO,
@@ -18,30 +12,17 @@ module BushidoStarterSelection
   STARTER_VARIABLE_IDS       = [73, 74, 75]
   STARTER_CHOICE_VARIABLE_ID = 1031
 
-  # Matches the old starter event's 1-in-201 shiny roll.
   SHINY_ROLL_MAX    = 200
   SHINY_ROLL_RESULT = 1
 
-  # Set true only if the event calling this screen safely handles cancellation.
   ALLOW_CANCEL = false
 
-  #=============================================================================
   # Debug testing
-  #=============================================================================
-  # :OFF    - Normal behavior
-  # :SHINY  - Force all three starters shiny
-  # :RANDOM - Force three random species
-  # :BOTH   - Force random species and shininess
-  #
-  # Put this back to :OFF before release.
+  # :OFF, :SHINY, :RANDOM, or :BOTH. Keep this :OFF for release.
   DEBUG_MODE = :OFF
 
-  #=============================================================================
   # Regional forms
-  #=============================================================================
-  # Form numbers are project-specific. Only add forms that exist in Bushido.
-  #
-  # Example:
+  # Only add forms that exist in Bushido.
   # REGIONAL_FORMS = {
   #   :TYPHLOSION => [1],
   #   :SAMUROTT   => [1],
@@ -49,21 +30,16 @@ module BushidoStarterSelection
   # }
   REGIONAL_FORMS = {}
 
-  # Only applies to randomized species listed above.
   RANDOM_REGIONAL_FORM_CHANCE = 100
 
-  #=============================================================================
   # Optional audio
-  #=============================================================================
 
   MOVE_SE    = "GUI sel cursor"
   CONFIRM_SE = "GUI sel decision"
   CANCEL_SE  = "GUI sel cancel"
   SHINY_SE   = "Battle shiny"
 
-  #=============================================================================
   # Debug helpers
-  #=============================================================================
 
   def self.debugRandom?
     return DEBUG_MODE == :RANDOM || DEBUG_MODE == :BOTH
@@ -78,7 +54,6 @@ module BushidoStarterSelection
     begin
       pbSEPlay(name, volume, pitch)
     rescue
-      # Optional UI audio must never break starter selection.
     end
   end
 
@@ -105,9 +80,7 @@ module BushidoStarterSelection
     return allowed_species[rand(allowed_species.length)]
   end
 
-  #=============================================================================
   # Starter generation
-  #=============================================================================
 
   def self.generateStarters
     starters = []
@@ -216,14 +189,10 @@ module BushidoStarterSelection
     end
   end
 
-  #=============================================================================
   # Starter selection scene
-  #=============================================================================
 
   class Scene
-    #---------------------------------------------------------------------------
     # Layout
-    #---------------------------------------------------------------------------
 
     SCREEN_W = Graphics.width
     SCREEN_H = Graphics.height
@@ -236,10 +205,6 @@ module BushidoStarterSelection
     CARD_HEIGHT   = 220
     CARD_CENTER_Y = 166
 
-    # Exact visual thirds across a 512px screen:
-    # left  = 1/6 width  -> 85
-    # center= 1/2 width  -> 256
-    # right = 5/6 width  -> 427
     LEFT_CARD_X   = (SCREEN_W / 6.0).round
     CENTER_CARD_X = (SCREEN_W / 2.0).round
     RIGHT_CARD_X  = (SCREEN_W * 5.0 / 6.0).round
@@ -265,9 +230,7 @@ module BushidoStarterSelection
     INFO_TYPE_Y     = INFO_PANEL_Y + 46
     INFO_CATEGORY_Y = INFO_PANEL_Y + 78
 
-    #---------------------------------------------------------------------------
     # Scale and silhouettes
-    #---------------------------------------------------------------------------
 
     SELECTED_ZOOM = 1.20
     SIDE_ZOOM     = 0.78
@@ -275,15 +238,12 @@ module BushidoStarterSelection
     SELECTED_CARD_ZOOM = 1.00
     SIDE_CARD_ZOOM     = 0.92
 
-    # Navigation arrows are deliberately tiny enough to live in the actual
-    # 10px gap between the selected card and each side card.
+    # Keep arrows inside the gap between cards.
     ARROW_W       = 9
     ARROW_H       = 15
     ARROW_Y       = CARD_CENTER_Y - 3
     ARROW_BOB_MAX = 2
 
-    # Falling leaf field. The PNGs are reused as texture sprites rather than
-    # drawing leaves in code.
     LEAF_COUNT        = 22
     LEAF_MARGIN       = 18
     LEAF_MIN_SPEED_Y  = 0.45
@@ -295,9 +255,7 @@ module BushidoStarterSelection
     SELECTED_DIM_ALPHA = 0
     SIDE_DIM_ALPHA     = 170
 
-    #---------------------------------------------------------------------------
     # Carousel timing
-    #---------------------------------------------------------------------------
 
     POSITION_SPEED = 0.18
     ZOOM_SPEED     = 0.14
@@ -313,18 +271,14 @@ module BushidoStarterSelection
     INTRO_SETTLE_FRAMES = 30
     INTRO_START_OFFSET  = 26
 
-    #---------------------------------------------------------------------------
     # Input behavior
-    #---------------------------------------------------------------------------
 
     INPUT_INITIAL_DELAY = 14
     INPUT_REPEAT_DELAY  = 5
 
     REVEAL_FEEDBACK_DELAY = 7
 
-    #---------------------------------------------------------------------------
     # Bushido palette
-    #---------------------------------------------------------------------------
 
     INK            = Color.new(16, 14, 18)
     INK_SOFT       = Color.new(31, 27, 31)
@@ -345,9 +299,7 @@ module BushidoStarterSelection
     TEXT_BASE_COLOR   = Color.new(50, 42, 44)
     TEXT_SHADOW_COLOR = Color.new(218, 205, 184)
 
-    #---------------------------------------------------------------------------
     # Type badges
-    #---------------------------------------------------------------------------
 
     TYPE_BADGE_PATH   = "Graphics/Pictures/types"
 
@@ -357,9 +309,7 @@ module BushidoStarterSelection
     TYPE_BADGE_GAP    = 8
     TYPE_BADGE_Y      = INFO_TYPE_Y
 
-    #---------------------------------------------------------------------------
     # Ambient falling leaves
-    #---------------------------------------------------------------------------
 
     PETAL_COUNT = 45
 
@@ -374,16 +324,12 @@ module BushidoStarterSelection
     LEAF_MIN_OPACITY = 135
     LEAF_MAX_OPACITY = 210
 
-    #---------------------------------------------------------------------------
     # Shiny feedback
-    #---------------------------------------------------------------------------
 
     SHINY_FEEDBACK_FRAMES = 24
     SHINY_SPARKLE_COUNT   = 10
 
-    #---------------------------------------------------------------------------
     # Confirmation timing
-    #---------------------------------------------------------------------------
 
     CONFIRM_HOP_FRAMES  = 36
     CONFIRM_HOP_HEIGHT  = 20
@@ -393,9 +339,7 @@ module BushidoStarterSelection
     WHITE_OUT_FRAMES  = 28
     RETURN_FADE_FRAMES = 24
 
-    #---------------------------------------------------------------------------
     # Setup
-    #---------------------------------------------------------------------------
 
     def initialize(starters)
       @starter_pokemon = starters
@@ -458,9 +402,7 @@ module BushidoStarterSelection
       playRevealFeedback
     end
 
-    #---------------------------------------------------------------------------
     # Drawing helpers
-    #---------------------------------------------------------------------------
 
     def drawDiamond(bitmap, cx, cy, radius, color)
       radius = radius.to_i
@@ -518,9 +460,6 @@ module BushidoStarterSelection
       bitmap.fill_rect(x + width - 2, y + height - length, 2, length, color)
     end
 
-    # Use Essentials' native font presets rather than manually shrinking the
-    # system font. "Small" UI copy uses pbSetSmallFont; primary copy uses
-    # pbSetSystemFont.
     def setTextFont(bitmap, small = false, bold = false)
       if small
         pbSetSmallFont(bitmap)
@@ -602,9 +541,7 @@ module BushidoStarterSelection
       return Color.new(150, 34, 40, alpha)
     end
 
-    #---------------------------------------------------------------------------
     # Intro
-    #---------------------------------------------------------------------------
 
     def prepareIntroPositions
       @starter_pokemon.each_with_index do |_pokemon, index|
@@ -658,9 +595,7 @@ module BushidoStarterSelection
       refreshStarterTargets(true)
     end
 
-    #---------------------------------------------------------------------------
     # Scene graphics
-    #---------------------------------------------------------------------------
 
     def uiAsset(name)
       return "#{UI_ASSET_ROOT}/#{name}"
@@ -680,22 +615,7 @@ module BushidoStarterSelection
       @sprites["background"] = sprite
     end
 
-    #---------------------------------------------------------------------------
-    # Repeating leaf texture
-    #
-    # The previous version created many independent leaf sprites. That made the
-    # edges feel noisy and caused half-leaves to visibly drift in from outside
-    # the frame. This version builds one small tile from the existing leaf_1
-    # artwork and lets an RGSS Plane repeat it seamlessly across the screen.
-    #---------------------------------------------------------------------------
-
-    #---------------------------------------------------------------------------
-    # Falling leaf field
-    #
-    # Uses the existing leaf_1/leaf_2/leaf_3 PNGs as reusable sprite textures.
-    # Leaves always move downward, get a little randomized horizontal drift and
-    # sine-wave sway, and are fully recycled once they leave the screen.
-    #---------------------------------------------------------------------------
+    # Falling leaves
 
     def createAmbientPetals
       @petals = []
@@ -726,13 +646,10 @@ module BushidoStarterSelection
     def resetAmbientPetal(data, initial = false)
       sprite = data[:sprite]
 
-      # Spawn anywhere vertically on the first frame so the scene starts full.
-      # Recycled leaves always spawn safely above the top edge.
       data[:x] = rand(SCREEN_W + LEAF_MARGIN * 2) - LEAF_MARGIN
       data[:y] = initial ? rand(SCREEN_H + LEAF_MARGIN * 2) - LEAF_MARGIN :
                            -(LEAF_MARGIN + rand(36))
 
-      # Every leaf has its own fall speed and small prevailing drift.
       data[:vy] = LEAF_MIN_SPEED_Y +
                   rand(1000) / 1000.0 *
                   (LEAF_MAX_SPEED_Y - LEAF_MIN_SPEED_Y)
@@ -740,7 +657,6 @@ module BushidoStarterSelection
       data[:base_vx] =
         (rand(2001) / 1000.0 - 1.0) * LEAF_MAX_DRIFT_X
 
-      # Independent sine-wave flutter prevents identical diagonal movement.
       data[:phase] = rand(628) / 100.0
       data[:phase_step] = 0.025 + rand(45) / 1000.0
       data[:sway] = LEAF_SWAY_MIN +
@@ -761,8 +677,6 @@ module BushidoStarterSelection
 
         data[:phase] += data[:phase_step]
 
-        # Gravity direction is always positive Y. Horizontal movement gets
-        # randomized drift plus a gentle flutter.
         flutter_x = Math.sin(data[:phase]) * data[:sway]
         data[:x] += data[:base_vx] + flutter_x
         data[:y] += data[:vy]
@@ -770,8 +684,6 @@ module BushidoStarterSelection
         sprite.x = data[:x].round
         sprite.y = data[:y].round
 
-        # Never let a leaf linger against an edge. If it exits too far left or
-        # right, or falls fully below the screen, recycle it above the top.
         if data[:y] > SCREEN_H + LEAF_MARGIN ||
            data[:x] < -LEAF_MARGIN * 3 ||
            data[:x] > SCREEN_W + LEAF_MARGIN * 3
@@ -818,13 +730,7 @@ module BushidoStarterSelection
 
     end
 
-    #---------------------------------------------------------------------------
-    # Dynamic navigation arrows
-    #
-    # These are real sprites rather than text drawn into the chrome. They sit
-    # exactly inside the gap between the selected card and the side cards, so
-    # they never cover the card artwork.
-    #---------------------------------------------------------------------------
+    # Navigation arrows
 
     def createNavigationArrows
       @sprites["arrow_left"] = Sprite.new(@viewport)
@@ -855,8 +761,6 @@ module BushidoStarterSelection
     def drawPixelArrow(bitmap, direction, color)
       bitmap.clear
 
-      # 3px stair-step chevrons. The whole graphic is only 7px wide, which
-      # comfortably fits in the card gap without touching either card.
       if direction == :left
         bitmap.fill_rect(5, 2, 2, 3, color)
         bitmap.fill_rect(3, 4, 2, 3, color)
@@ -879,7 +783,6 @@ module BushidoStarterSelection
 
       @arrow_frame += 1 if !instant
 
-      # Calculate the *actual empty gaps* between card edges.
       selected_half = (CARD_WIDTH + 12) * SELECTED_CARD_ZOOM / 2.0
       side_half     = (CARD_WIDTH + 12) * SIDE_CARD_ZOOM / 2.0
 
@@ -894,8 +797,6 @@ module BushidoStarterSelection
       left_base_x  = ((left_gap_left + left_gap_right) / 2.0).round
       right_base_x = ((right_gap_left + right_gap_right) / 2.0).round
 
-      # A restrained 0..2px breathing motion. LEFT makes the left arrow press
-      # outward, RIGHT does the same on the right.
       pulse = ((Math.sin(@arrow_frame / 7.0) + 1.0) * 0.5 * ARROW_BOB_MAX).round
 
       left_press  = Input.press?(Input::LEFT)  ? 2 : 0
@@ -906,7 +807,6 @@ module BushidoStarterSelection
       left.y  = ARROW_Y
       right.y = ARROW_Y
 
-      # Gentle pulse keeps them alive without flashing.
       opacity = 190 + ((Math.sin(@arrow_frame / 10.0) + 1.0) * 24).round
       left.opacity  = opacity
       right.opacity = opacity
@@ -916,9 +816,7 @@ module BushidoStarterSelection
       right.visible = visible
     end
 
-    #---------------------------------------------------------------------------
     # Moving companion cards
-    #---------------------------------------------------------------------------
 
     def createStarterCards
       @starter_pokemon.each_with_index do |pokemon, index|
@@ -1020,9 +918,7 @@ module BushidoStarterSelection
       @sprites["transition"] = sprite
     end
 
-    #---------------------------------------------------------------------------
     # Selected Pokémon info
-    #---------------------------------------------------------------------------
 
     def refreshStarterInfo
       bitmap = @sprites["info"].bitmap
@@ -1131,9 +1027,7 @@ module BushidoStarterSelection
       )
     end
 
-    #---------------------------------------------------------------------------
     # Carousel targets
-    #---------------------------------------------------------------------------
 
     def refreshStarterTargets(instant = false)
       starter_count = @starter_pokemon.length
@@ -1145,7 +1039,6 @@ module BushidoStarterSelection
 
         relative_position = index - @selected_index
 
-        # Wrap around so the closest choices remain on either side.
         if relative_position > starter_count / 2
           relative_position -= starter_count
         elsif relative_position < -(starter_count / 2)
@@ -1211,9 +1104,7 @@ module BushidoStarterSelection
       refreshStarterCards
     end
 
-    #---------------------------------------------------------------------------
     # Carousel animation
-    #---------------------------------------------------------------------------
 
     def updateStarterAnimation
       @starter_pokemon.each_with_index do |_pokemon, index|
@@ -1296,9 +1187,7 @@ module BushidoStarterSelection
       sprite.color = Color.new(0, 0, 0, alpha)
     end
 
-    #---------------------------------------------------------------------------
     # Selection
-    #---------------------------------------------------------------------------
 
     def moveSelectionLeft
       return if @input_locked
@@ -1357,9 +1246,7 @@ module BushidoStarterSelection
       startShinyFeedback if pokemon.shiny?
     end
 
-    #---------------------------------------------------------------------------
     # Input repeat
-    #---------------------------------------------------------------------------
 
     def updateDirectionalInput
       if Input.press?(Input::LEFT)
@@ -1386,9 +1273,7 @@ module BushidoStarterSelection
       end
     end
 
-    #---------------------------------------------------------------------------
     # Shiny feedback
-    #---------------------------------------------------------------------------
 
     def startShinyFeedback
       pokemon = @starter_pokemon[@selected_index]
@@ -1465,9 +1350,7 @@ module BushidoStarterSelection
       bitmap.fill_rect(x - size, y, size * 2 + 1, 1, color)
     end
 
-    #---------------------------------------------------------------------------
     # Confirmation
-    #---------------------------------------------------------------------------
 
     def playConfirmationSequence
       @input_locked = true
@@ -1574,9 +1457,7 @@ module BushidoStarterSelection
       return nil
     end
 
-    #---------------------------------------------------------------------------
     # Scene loop
-    #---------------------------------------------------------------------------
 
     def updateSceneFrame(update_carousel = true)
       Graphics.update
@@ -1610,9 +1491,7 @@ module BushidoStarterSelection
       end
     end
 
-    #---------------------------------------------------------------------------
     # Cleanup
-    #---------------------------------------------------------------------------
 
     def pbEndScene
       @petals.each do |data|
@@ -1635,9 +1514,7 @@ module BushidoStarterSelection
     end
   end
 
-  #=============================================================================
   # Screen wrapper
-  #=============================================================================
 
   class Screen
     def initialize(scene)
@@ -1663,9 +1540,7 @@ module BushidoStarterSelection
     end
   end
 
-  #=============================================================================
   # Public entry point
-  #=============================================================================
 
   def self.pbStart
     starters = generateStarters
@@ -1679,10 +1554,8 @@ module BushidoStarterSelection
       chosen_pokemon = result[0]
       selected_index = result[1]
 
-      # Save which starter slot was chosen
       pbSet(STARTER_CHOICE_VARIABLE_ID, selected_index + 1)
 
-      # Save the starter's name into variable 90
       $game_variables[90] = PBSpecies.getName(chosen_pokemon.species)
     end
 

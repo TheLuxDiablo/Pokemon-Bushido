@@ -1,15 +1,4 @@
-#===============================================================================
-# Bushido Kenshi Record
-# Essentials v18.1
-#
-# Call:
-#   pbKenshiRecord
-#===============================================================================
-
 module BushidoKenshiRecord
-  #-----------------------------------------------------------------------------
-  # Journey mark configuration
-  #-----------------------------------------------------------------------------
   MARKS = [
     {
       :type     => :dojo,
@@ -49,9 +38,6 @@ module BushidoKenshiRecord
     }
   ]
 
-  #-----------------------------------------------------------------------------
-  # Progression variables
-  #-----------------------------------------------------------------------------
   POKEDEX_UNLOCK_VARIABLE    = 0
   TECHNIQUES_UNLOCK_VARIABLE = 0
   TECHNIQUES_COUNT_VARIABLE  = 0
@@ -59,9 +45,6 @@ module BushidoKenshiRecord
 
   DEFAULT_PROVINCE = "Ezo"
 
-  #-----------------------------------------------------------------------------
-  # Layout
-  #-----------------------------------------------------------------------------
   PAPER_X = 24
   PAPER_Y = 28
   PAPER_W = 464
@@ -74,9 +57,6 @@ module BushidoKenshiRecord
 
   STAMP_SIZE = 44
 
-  #-----------------------------------------------------------------------------
-  # Colors
-  #-----------------------------------------------------------------------------
   PAPER_EDGE  = Color.new(149, 119, 81)
   PAPER       = Color.new(232, 216, 179)
   PAPER_LIGHT = Color.new(243, 231, 199)
@@ -87,10 +67,6 @@ module BushidoKenshiRecord
 
   TEXT_SHADOW = Color.new(213, 193, 153)
   SELECT      = Color.new(201, 153, 68)
-
-  #=============================================================================
-  # Progression helpers
-  #=============================================================================
 
   def self.variable_enabled?(id)
     return false if id <= 0
@@ -134,10 +110,6 @@ module BushidoKenshiRecord
     return $PokemonSystem.game_modes_won[0] ? true : false
   end
 
-  #=============================================================================
-  # Marks
-  #=============================================================================
-
   def self.visible_marks
     marks = [
       MARKS[0],
@@ -168,10 +140,6 @@ module BushidoKenshiRecord
 
     return $Trainer.badges[index] ? true : false
   end
-
-  #=============================================================================
-  # Player data
-  #=============================================================================
 
   def self.player_name
     return "Kenshi" if !$Trainer
@@ -306,11 +274,7 @@ module BushidoKenshiRecord
   end
 end
 
-
-#===============================================================================
-# Scene
-#===============================================================================
-
+# BushidoKenshiRecord_Scene.
 class BushidoKenshiRecord_Scene
   include BushidoKenshiRecord
 
@@ -344,10 +308,6 @@ class BushidoKenshiRecord_Scene
     play_intro
   end
 
-  #=============================================================================
-  # Background
-  #=============================================================================
-
   def create_background
     sprite = Sprite.new(@viewport)
     sprite.bitmap = Bitmap.new(
@@ -367,10 +327,6 @@ class BushidoKenshiRecord_Scene
 
     @sprites["background"] = sprite
   end
-
-  #=============================================================================
-  # Shadow
-  #=============================================================================
 
   def create_shadow
     sprite = Sprite.new(@viewport)
@@ -401,10 +357,6 @@ class BushidoKenshiRecord_Scene
 
     @sprites["shadow"] = sprite
   end
-
-  #=============================================================================
-  # Paper
-  #=============================================================================
 
   def create_paper
     sprite = Sprite.new(@viewport)
@@ -457,10 +409,6 @@ class BushidoKenshiRecord_Scene
     @sprites["paper"] = sprite
   end
 
-  #=============================================================================
-  # Text
-  #=============================================================================
-
   def create_text_layer
     sprite = Sprite.new(@viewport)
     sprite.bitmap = Bitmap.new(PAPER_W, PAPER_H)
@@ -479,7 +427,6 @@ class BushidoKenshiRecord_Scene
     bmp = @sprites["text"].bitmap
     bmp.clear
 
-    # Header
     system_text(
       bmp,
       "KENSHI RECORD",
@@ -489,7 +436,6 @@ class BushidoKenshiRecord_Scene
       INK
     )
 
-    # Profile
     profile_text_x = PROFILE_BOX.x + 114
 
     small_text(
@@ -563,10 +509,6 @@ class BushidoKenshiRecord_Scene
     draw_visible_stats(bmp)
   end
 
-  #=============================================================================
-  # Stats
-  #=============================================================================
-
   def draw_visible_stats(bitmap)
     stats = BushidoKenshiRecord.visible_stats
 
@@ -609,10 +551,6 @@ class BushidoKenshiRecord_Scene
     end
   end
 
-  #=============================================================================
-  # Portrait
-  #=============================================================================
-
   def create_portrait
     sprite = IconSprite.new(
       PAPER_X + PROFILE_BOX.x + 53,
@@ -643,10 +581,6 @@ class BushidoKenshiRecord_Scene
 
     @sprites["portrait"] = sprite
   end
-
-  #=============================================================================
-  # Marks
-  #=============================================================================
 
   def create_stamps
     for i in 0...@visible_marks.length
@@ -684,10 +618,6 @@ class BushidoKenshiRecord_Scene
 
     count = @visible_marks.length
 
-    # 3 marks
-    #
-    #       1
-    #    2     3
     if count == 3
       case index
       when 0
@@ -699,10 +629,6 @@ class BushidoKenshiRecord_Scene
       end
     end
 
-    # 4 marks
-    #
-    #    1   2
-    #    3   4
     col = index % 2
 
     return center_x + (col == 0 ? -32 : 32)
@@ -842,10 +768,6 @@ class BushidoKenshiRecord_Scene
     end
   end
 
-  #=============================================================================
-  # Cursor
-  #=============================================================================
-
   def create_cursor
     sprite = Sprite.new(@viewport)
     sprite.bitmap = Bitmap.new(54, 54)
@@ -890,10 +812,6 @@ class BushidoKenshiRecord_Scene
     @sprites["cursor"].y =
       stamp_center_y(@selected)
   end
-
-  #=============================================================================
-  # Detail popup
-  #=============================================================================
 
   def create_detail_sprites
     dim = Sprite.new(@viewport)
@@ -1161,10 +1079,6 @@ class BushidoKenshiRecord_Scene
     end
   end
 
-  #=============================================================================
-  # Intro
-  #=============================================================================
-
   def prepare_intro
     @sprites["paper"].zoom_x  = 0.03
     @sprites["shadow"].zoom_x = 0.03
@@ -1283,10 +1197,6 @@ class BushidoKenshiRecord_Scene
     sprite.zoom_y  = 1.0
   end
 
-  #=============================================================================
-  # Main loop
-  #=============================================================================
-
   def pbScene
     loop do
       Graphics.update
@@ -1301,7 +1211,6 @@ class BushidoKenshiRecord_Scene
       end
     end
 
-    # Prevent the same X/B press from closing the parent pause menu.
     release_menu_input
   end
 
@@ -1372,10 +1281,6 @@ class BushidoKenshiRecord_Scene
       ) * 0.22
     end
   end
-
-  #=============================================================================
-  # Navigation
-  #=============================================================================
 
   def update_main_input
     old = @selected
@@ -1486,10 +1391,6 @@ class BushidoKenshiRecord_Scene
       Graphics.update
     end
   end
-
-  #=============================================================================
-  # Detail interaction
-  #=============================================================================
 
   def open_details
     @detailsOpen = true
@@ -1640,10 +1541,6 @@ class BushidoKenshiRecord_Scene
     @detailsOpen = false
   end
 
-  #=============================================================================
-  # Outro
-  #=============================================================================
-
   def play_outro
     pbSEPlay("GUI menu close") rescue nil
 
@@ -1688,10 +1585,6 @@ class BushidoKenshiRecord_Scene
     end
   end
 
-  #=============================================================================
-  # Layout helpers
-  #=============================================================================
-
   def draw_box(bitmap, rect, color)
     bitmap.fill_rect(
       rect.x,
@@ -1725,10 +1618,6 @@ class BushidoKenshiRecord_Scene
       color
     )
   end
-
-  #=============================================================================
-  # Font helpers
-  #=============================================================================
 
   def system_text(
     bitmap,
@@ -1880,10 +1769,6 @@ class BushidoKenshiRecord_Scene
     return lines
   end
 
-  #=============================================================================
-  # Circle helper
-  #=============================================================================
-
   def stamp_circle(
     bitmap,
     cx,
@@ -1962,10 +1847,6 @@ class BushidoKenshiRecord_Scene
     end
   end
 
-  #=============================================================================
-  # Easing
-  #=============================================================================
-
   def ease_out_cubic(t)
     value =
       t - 1.0
@@ -1998,10 +1879,6 @@ class BushidoKenshiRecord_Scene
     )
   end
 
-  #=============================================================================
-  # Cleanup
-  #=============================================================================
-
   def pbEndScene
     pbDisposeSpriteHash(@sprites)
 
@@ -2018,11 +1895,7 @@ class BushidoKenshiRecord_Scene
   end
 end
 
-
-#===============================================================================
-# Screen wrapper
-#===============================================================================
-
+# BushidoKenshiRecordScreen.
 class BushidoKenshiRecordScreen
   def initialize(scene)
     @scene = scene
@@ -2035,11 +1908,7 @@ class BushidoKenshiRecordScreen
   end
 end
 
-
-#===============================================================================
-# Public call
-#===============================================================================
-
+# pbKenshiRecord.
 def pbKenshiRecord
   scene =
     BushidoKenshiRecord_Scene.new

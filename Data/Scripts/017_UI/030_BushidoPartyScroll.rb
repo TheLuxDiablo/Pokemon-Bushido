@@ -1,15 +1,11 @@
-#===============================================================================
-# Bushido Party UI
-# Pokemon Bushido / Essentials v18.1
-#===========================================
 
-# Set this to false to use the original Essentials party screen.
+# Enables the Bushido party screen.
 BUSHIDO_PARTY_UI_ENABLED = true unless defined?(BUSHIDO_PARTY_UI_ENABLED)
 
 if BUSHIDO_PARTY_UI_ENABLED
 
+# Party UI helpers and styling
 module BushidoPartyUI
-  # Main Bushido palette.
   BG          = Color.new(48, 38, 35)
   BG_DARK     = Color.new(31, 25, 23)
   PANEL       = Color.new(112, 94, 82)
@@ -36,8 +32,6 @@ module BushidoPartyUI
   SLOT_GAP     = 6
   SLOT_START_X = 17
 
-  # Type color is only used for small accents so the whole screen doesn't
-  # turn into a different theme every time the selection changes.
   def self.type_color(type_id)
     name = ""
     begin
@@ -89,8 +83,6 @@ module BushidoPartyUI
     )
   end
 
-  # Any shape we draw ourselves should land on a 2px grid. Text and
-  # imported sprites are left alone.
   def self.floor2(value)
     (value.to_i / 2) * 2
   end
@@ -126,7 +118,6 @@ module BushidoPartyUI
     end
   end
 
-  # Draw a 50/50 type accent for dual types.
   def self.draw_type_bar(bitmap, x, y, w, h, pokemon)
     return if !pokemon
     c1 = type_color(pokemon.type1)
@@ -140,7 +131,6 @@ module BushidoPartyUI
     end
   end
 
-  # Essentials normally stores type badges in Graphics/Pictures/types.png.
   def self.draw_type_icon(bitmap, type_id, x, y)
     begin
       sheet = pbBitmap("Graphics/Pictures/types")
@@ -158,7 +148,6 @@ module BushidoPartyUI
     end
   end
 
-  # Keep Shadow compatibility checks in one place because forks name these differently.
   def self.shadow_pokemon?(pokemon)
     return false if !pokemon
     begin
@@ -246,7 +235,6 @@ module BushidoPartyUI
     end
   end
 
-  # Only the party-row icon gets this wash. The big battler stays untouched.
   def self.status_tint(pokemon)
     return Color.new(0,0,0,0) if !pokemon
     return Color.new(0,0,0,150) if pokemon.hp <= 0
@@ -282,7 +270,6 @@ module BushidoPartyUI
       BushidoFonts.apply(bitmap, :label)
     end
     
-  # A few older party methods still call these names.
   def self.set_font(bitmap, size=nil)
     if size
       set_ui_font(bitmap)
@@ -301,7 +288,6 @@ module BushidoPartyUI
 
   def self.draw_scaled_text(bitmap,text,x,y,w,h,scale=0.5,align=0,
                             base=WHITE,shadow=SHADOW)
-    # Old calls still hit this method, but we keep the font at a crisp preset.
     set_ui_font(bitmap)
     pbDrawShadowText(bitmap, x, y, w, h, text.to_s, base, shadow, align)
   end
@@ -334,9 +320,7 @@ module BushidoPartyUI
   end
 end
 
-#===============================================================================
-# Background
-#===============================================================================
+# Draws the party screen background.
 class BushidoPartyBackground < SpriteWrapper
   def initialize(viewport=nil)
     super(viewport)
@@ -349,10 +333,7 @@ class BushidoPartyBackground < SpriteWrapper
   end
 end
 
-
-#===============================================================================
-# Bottom party slot
-#===============================================================================
+# Draws and updates a Pokemon party slot.
 class BushidoPartySlot < SpriteWrapper
   attr_reader :pokemon
   attr_reader :selected
@@ -369,7 +350,6 @@ class BushidoPartySlot < SpriteWrapper
     @switching = false
     @text = nil
 
-    # Small bit of motion when the selection changes.
     @hover_amount = 0.0
     @hover_target = 0.0
     @base_y = BushidoPartyUI::DOCK_Y + 4
@@ -423,8 +403,6 @@ class BushidoPartySlot < SpriteWrapper
     @selected = value
     @hover_target = (@selected || @preselected) ? 1.0 : 0.0
 
-    # Selection box itself snaps immediately so two selected boxes are never
-    # visible at once. Motion is reserved for the icon response.
     refresh
   end
 
@@ -466,15 +444,11 @@ class BushidoPartySlot < SpriteWrapper
     b = self.bitmap
     b.clear
 
-    # Selection/switch-source art is authored as PNG overlays.
     BushidoPartyUI.blit_asset(b, "party_slot_selected") if @selected
     BushidoPartyUI.blit_asset(b, "party_slot_preselected") if @preselected
 
-    # Static HP/EXP tracks are authored in party_slot_base.png.
     BushidoPartyUI.blit_asset(b, "party_slot_base")
 
-    # Item-target compatibility. Keep the slot readable, but make invalid
-    # targets obvious at a glance.
     if compatibility_annotation?
       BushidoPartyUI.set_ui_font(b)
       label = item_target_incompatible? ? _INTL("NO") : _INTL("OK")
@@ -486,11 +460,9 @@ class BushidoPartySlot < SpriteWrapper
       )
     end
 
-    # Small HP bar under each party icon.
     bw = 50
     bx = 12
 
-    # HP
     hp_y = 62
     if @pokemon && @pokemon.totalhp>0 && @pokemon.hp>0
       fill=((bw-4)*@pokemon.hp.to_f/@pokemon.totalhp).round
@@ -502,7 +474,6 @@ class BushidoPartySlot < SpriteWrapper
       )
     end
 
-    # EXP / Shadow heart meter
     exp_y = 70
     if @pokemon && !@pokemon.egg?
       meter_fill = 0
@@ -539,7 +510,6 @@ class BushidoPartySlot < SpriteWrapper
   def update_icon_position
     return if !@icon || @icon.disposed?
 
-    # Tiny icon lift so moving through the row doesn't feel totally static.
     lift = (2 * @hover_amount).round
     @icon.x = self.x + BushidoPartyUI::SLOT_W/2
     @icon.y = self.y + 40 - lift
@@ -570,7 +540,6 @@ class BushidoPartySlot < SpriteWrapper
   def update
     super
 
-    # Smooth hover interpolation.
     speed = 0.22
     old = @hover_amount
     @hover_amount += (@hover_target - @hover_amount) * speed
@@ -589,6 +558,7 @@ class BushidoPartySlot < SpriteWrapper
   end
 end
 
+# Handles empty party slots.
 class BushidoPartyBlankSlot < SpriteWrapper
   attr_accessor :text
   attr_accessor :selected
@@ -613,6 +583,7 @@ class BushidoPartyBlankSlot < SpriteWrapper
   end
 end
 
+# Provides hidden targets used by the stock party logic.
 class BushidoPartyInvisibleAction < SpriteWrapper
   attr_accessor :text
   attr_accessor :selected
@@ -635,10 +606,7 @@ class BushidoPartyInvisibleAction < SpriteWrapper
   end
 end
 
-
-#===============================================================================
-# Bushido-style Info Panel Component
-#===============================================================================
+# Draws the selected Pokemon's HP and basic info.
 class BushidoPartyInfoPanel < SpriteWrapper
   PANEL_W = 216
   PANEL_H = 73
@@ -671,7 +639,6 @@ class BushidoPartyInfoPanel < SpriteWrapper
     accent = BushidoPartyUI.type_accent(pkmn)
     BushidoPartyUI.draw_type_bar(b, 8, 6, PANEL_W-16, 2, pkmn)
 
-    # Name, gender and level.
     BushidoPartyUI.set_primary_font(b)
     name_h = b.text_size(pkmn.name).height
     BushidoPartyUI.draw_text(
@@ -682,7 +649,6 @@ class BushidoPartyInfoPanel < SpriteWrapper
     )
 
     if !pkmn.egg?
-      # Gender and level use Essentials' own dedicated small Pokemon font.
       BushidoPartyUI.set_ui_font(b)
       meta_h = b.text_size("Ag").height
 
@@ -709,7 +675,6 @@ class BushidoPartyInfoPanel < SpriteWrapper
         BushidoPartyUI::WHITE, BushidoPartyUI::SHADOW
       )
 
-      # The strip, HP mark, casing and track are authored in info_panel.png.
       bx = 30
       by = 32
       bw = 178
@@ -774,10 +739,7 @@ class BushidoPartyInfoPanel < SpriteWrapper
   end
 end
 
-
-#===============================================================================
-# selected Pokemon details
-#===============================================================================
+# Draws the selected Pokemon's details.
 class BushidoPartyDetailPanel < SpriteWrapper
   PANEL_W = 194
   PANEL_H = 241
@@ -804,8 +766,6 @@ class BushidoPartyDetailPanel < SpriteWrapper
     end
   end
 
-  # All rows live in explicit rectangles. There are intentionally no visible
-  # divider lines here; spacing is doing the grouping instead.
   def layout
     return {
       :header     => Rect.new(8,   8, 178, 34),
@@ -939,8 +899,6 @@ class BushidoPartyDetailPanel < SpriteWrapper
     return 0
   end
 
-  # Five tiny 2px-grid hearts. This is intentionally qualitative rather than
-  # printing the raw happiness number, which keeps the party screen glanceable.
   def draw_friendship_hearts(b, x, y, pkmn)
     value = friendship_value(pkmn)
     filled = ((value * 5) / 255.0).round
@@ -1004,8 +962,6 @@ class BushidoPartyDetailPanel < SpriteWrapper
   end
 
   def draw_traits(b, rect, pkmn)
-    # No label here. The nature name itself is the useful information, and the
-    # hearts read as a separate compact friendship indicator.
     draw_box_text(
       b,
       Rect.new(rect.x, rect.y, 104, rect.height),
@@ -1030,7 +986,6 @@ class BushidoPartyDetailPanel < SpriteWrapper
     pkmn = @pokemon
     boxes = layout
 
-    # Static card shell/header are authored in detail_panel.png.
     BushidoPartyUI.blit_asset(b, "detail_panel")
 
     header = boxes[:header]
@@ -1064,9 +1019,7 @@ class BushidoPartyDetailPanel < SpriteWrapper
   end
 end
 
-#===============================================================================
-# Bushido-style Action Button Component
-#===============================================================================
+# Draws and animates party action buttons.
 class BushidoPartyActionButton < SpriteWrapper
   BUTTON_W = 194
   BUTTON_H = 34
@@ -1144,7 +1097,6 @@ class BushidoPartyActionButton < SpriteWrapper
     end
   end
 
-
   def update
     super
     old = @focus_amount
@@ -1154,7 +1106,6 @@ class BushidoPartyActionButton < SpriteWrapper
     end
 
     if (old - @focus_amount).abs > 0.001
-      # Selected buttons ease a few pixels left, like they're being pulled out.
       self.x = @base_x - (4 * @focus_amount).round
       refresh
     end
@@ -1166,9 +1117,7 @@ class BushidoPartyActionButton < SpriteWrapper
   end
 end
 
-#===============================================================================
-# Scene
-#===============================================================================
+# Runs the Bushido party screen.
 class PokemonParty_Scene
   def pbStartScene(party, starthelptext, annotations=nil, multiselect=false)
     @sprites = {}
@@ -1193,7 +1142,6 @@ class PokemonParty_Scene
     @sprites["overlay"].z = 8
     BushidoPartyUI.set_font(@sprites["overlay"].bitmap)
 
-    # Main UI pieces.
     @sprites["infoPanel"] = BushidoPartyInfoPanel.new(@viewport)
     @sprites["detailPanel"] = BushidoPartyDetailPanel.new(@viewport)
     @action_buttons = []
@@ -1207,16 +1155,13 @@ class PokemonParty_Scene
       @sprites["pokemon#{i}"].text = annotations[i] if annotations
     end
 
-    # Hidden compatibility targets for stock party logic.
     @sprites["pokemon6"] = BushidoPartyInvisibleAction.new(@viewport)
     @sprites["pokemon7"] = BushidoPartyInvisibleAction.new(@viewport) if @multiselect
 
-    # Use the battle sprite for the focused Pokemon.
     @sprites["activePokemon"] = PokemonSprite.new(@viewport)
     @sprites["activePokemon"].z = 6
     setActivePokemonBitmap(@party[@activecmd || 0])
 
-    # Show the focused Pokemon's held item next to it.
     @sprites["focusItemBack"] = BitmapSprite.new(42, 42, @viewport)
     @sprites["focusItemBack"].x = 204
     @sprites["focusItemBack"].y = 50
@@ -1251,7 +1196,6 @@ class PokemonParty_Scene
 
     refreshBushidoUI
 
-    # Normal menu fade-in.
     pbFadeInAndShow(@sprites) { update }
     playFocusedPokemonCry(selectedPokemon)
   end
@@ -1319,8 +1263,6 @@ class PokemonParty_Scene
       begin
         item.item = pkmn.item
       rescue
-        # ItemIconSprite in v18 also accepts the item in its constructor.
-        # Recreate it only if this particular fork doesn't expose item=.
         old_x = item.x
         old_y = item.y
         old_z = item.z
@@ -1366,12 +1308,9 @@ class PokemonParty_Scene
     refreshActivePokemon
     refreshFocusItem(selectedPokemon)
 
-    # Update the focused Pokemon's cards.
     @sprites["infoPanel"].pokemon = selectedPokemon if @sprites["infoPanel"]
     @sprites["detailPanel"].pokemon = selectedPokemon if @sprites["detailPanel"]
 
-    # Browsing shows useful info. Confirming a Pokemon temporarily replaces
-    # this card with the contextual action list.
     if @sprites["detailPanel"]
       @sprites["detailPanel"].visible = !@command_mode && !@message_text
     end
@@ -1398,15 +1337,10 @@ class PokemonParty_Scene
     w=216
     h=73
 
-    # White rounded-ish Bushido panel.
     b.fill_rect(x+4,y,w-8,h,BushidoPartyUI::WHITE)
     b.fill_rect(x,y+4,w,h-8,BushidoPartyUI::WHITE)
     b.fill_rect(x+3,y+3,w-6,h-6,BushidoPartyUI::PANEL)
 
-    # -----------------------------------------------------------------------
-    # TOP ROW
-    # Bigger name on left, gender + level grouped tightly on the right.
-    # -----------------------------------------------------------------------
     BushidoPartyUI.draw_scaled_text(
       b, pkmn.name,
       x+10, y+2, 116, 29,
@@ -1438,9 +1372,6 @@ class PokemonParty_Scene
         BushidoPartyUI::WHITE, BushidoPartyUI::SHADOW
       )
 
-      # ---------------------------------------------------------------------
-      # HP row sits lower and uses the full width well.
-      # ---------------------------------------------------------------------
       BushidoPartyUI.draw_scaled_text(
         b, _INTL("HP"),
         x+10, y+33, 26, 18,
@@ -1462,7 +1393,6 @@ class PokemonParty_Scene
         )
       end
 
-      # Center fraction exactly under the bar.
       BushidoPartyUI.draw_scaled_text(
         b, sprintf("%d/%d",pkmn.hp,pkmn.totalhp),
         bx, y+49, bw, 19,
@@ -1472,8 +1402,6 @@ class PokemonParty_Scene
     end
   end
 
-  # Build the same commands the normal party screen would offer, but show
-  # them as soon as the Pokemon is hovered.
   def previewCommands
     pkmn=selectedPokemon
     return [] if !pkmn
@@ -1482,7 +1410,6 @@ class PokemonParty_Scene
     commands.push(_INTL("Summary"))
     commands.push(_INTL("Debug")) if $DEBUG
 
-    # Field moves that can be used directly from the party screen.
     if !pkmn.egg?
       for i in 0...pkmn.moves.length
         move=pkmn.moves[i]
@@ -1502,8 +1429,6 @@ class PokemonParty_Scene
         commands.push(_INTL("Item"))
       end
 
-      # I keep Rename near Item because both are Pokemon-specific management
-      # actions, and putting it before Cancel keeps the menu order predictable.
       commands.push(_INTL("Rename"))
     end
 
@@ -1535,13 +1460,10 @@ class PokemonParty_Scene
     page_start = @command_page * page_size
     visible = commands[page_start, page_size] || []
 
-    # Reuse five button sprites instead of recreating them every refresh.
     for i in 0...5
       if !@action_buttons[i]
         @action_buttons[i] = BushidoPartyActionButton.new("", i, @viewport)
 
-        # Keep these in the main sprite hash so the stock scene fade handles
-        # them exactly like the background, info card and party icons.
         @sprites["actionButton#{i}"] = @action_buttons[i]
       end
 
@@ -1569,9 +1491,6 @@ class PokemonParty_Scene
     return if @command_mode
     return if !selectedPokemon
 
-    # Keep this completely above the detail card. The previous version was
-    # technically overlapping it, which is why the bottom edge could disappear
-    # depending on fade/order.
     box_x = 330
     box_y = 8
     box_w = 140
@@ -1581,9 +1500,6 @@ class PokemonParty_Scene
 
     BushidoPartyUI.set_ui_font(b)
 
-    # Draw this as one centered string so the font metrics can't make the two
-    # halves drift apart. It sits a little low on purpose; this font reads high
-    # when mathematically centered.
     pbDrawShadowText(
       b, box_x, box_y+8, box_w, 24,
       _INTL("ENTER: Actions"),
@@ -1625,16 +1541,13 @@ class PokemonParty_Scene
   end
 
   def drawActionArea(b)
-    # Buttons draw themselves.
     refreshActionButtons
   end
 
   def drawMessage(b, text)
-    # Temporary message in place of the action list.
     BushidoPartyUI.blit_asset(b, "message_panel", 320, 78)
     BushidoPartyUI.set_primary_font(b)
 
-    # Basic word wrap that works with this old Ruby version.
     words = text.to_s.split(/\s+/)
     lines = []
     line = ""
@@ -1670,7 +1583,6 @@ class PokemonParty_Scene
 
     old_name = pkmn.name
 
-    # Essentials v18.1 doesn't use the newer Pokemon class constant.
     max_length = 12
 
     new_name = pbEnterPokemonName(
@@ -1690,20 +1602,11 @@ class PokemonParty_Scene
   def pbShowCommands(helptext, commands, index=0)
     return -1 if !commands || commands.length == 0
 
-    # Stock PokemonPartyScreen builds its own command array. I add Rename here
-    # instead of replacing that whole method, which keeps this override much
-    # less fragile if the rest of the party logic changes later.
     shown_commands = commands.clone
     rename_index = -1
 
     pkmn = selectedPokemon
 
-    # Rename belongs only to the Pokemon's BASE action menu.
-    #
-    # pbShowCommands is also reused for nested menus such as Item, Mail,
-    # confirmations, etc. Adding Rename to every call made it leak into all of
-    # those submenus. "Summary" is part of the base Pokemon action list, so use
-    # that as the reliable marker that we're actually opening the root menu.
     base_action_menu = shown_commands.any? do |cmd|
       label = cmd.is_a?(Array) ? cmd[0] : cmd
       label.to_s == _INTL("Summary").to_s
@@ -1715,8 +1618,6 @@ class PokemonParty_Scene
       shown_commands.insert(rename_index, _INTL("Rename"))
     end
 
-    # If the stock menu wanted to re-open on a specific command, shift that
-    # index only when Rename was inserted before it.
     shown_index = index
     if rename_index >= 0 && shown_index >= rename_index
       shown_index += 1
@@ -1761,12 +1662,8 @@ class PokemonParty_Scene
         pbPlayDecisionSE
 
         if rename_index >= 0 && @command_index == rename_index
-          # The naming scroll is already a modal, so this drops straight into
-          # the same rename UI used everywhere else in Bushido.
           renameSelectedPokemon
 
-          # Coming back from text entry can change the name width, so redraw
-          # everything before returning to the command list.
           @command_commands = shown_commands
           refreshBushidoUI
           next
@@ -1774,8 +1671,6 @@ class PokemonParty_Scene
 
         ret = @command_index
 
-        # Remove the slot we inserted before handing the result back to the
-        # stock party screen. It should never know Rename existed.
         if rename_index >= 0 && ret > rename_index
           ret -= 1
         end
@@ -1794,7 +1689,6 @@ class PokemonParty_Scene
     @message_text = text
     refreshBushidoUI
 
-    # Party notifications disappear on their own, but C/B can dismiss early.
     frames = Graphics.frame_rate
     frames = 60 if !frames || frames <= 0
     frames.times do
@@ -1822,7 +1716,6 @@ class PokemonParty_Scene
 
     return if !spr
 
-    # Fade the old Pokemon out.
     4.times do |i|
       spr.opacity = 255 - ((i+1) * 48)
       spr.x = 145 - ((i+1) * 3)
@@ -1834,7 +1727,6 @@ class PokemonParty_Scene
       update
     end
 
-    # Swap to the new Pokemon while everything is mostly hidden.
     @activecmd = new_index
     refreshActivePokemon
     @sprites["infoPanel"].pokemon = selectedPokemon if @sprites["infoPanel"]
@@ -1849,7 +1741,6 @@ class PokemonParty_Scene
     item.opacity = 60 if item
     item_back.opacity = 60 if item_back
 
-    # Bring the new Pokemon back in.
     5.times do |i|
       t = (i+1) / 5.0
       spr.opacity = (60 + (195 * t)).round
@@ -1874,7 +1765,6 @@ class PokemonParty_Scene
     old = @activecmd
     @command_page = 0 if !@command_mode
 
-    # Update dock highlight immediately.
     for i in 0...6
       s = @sprites["pokemon#{i}"]
       s.selected = (i == item) if s
@@ -1901,7 +1791,6 @@ class PokemonParty_Scene
     return sprite.text == _INTL("NOT ABLE")
   end
 
-  # Party-row navigation.
   def pbChoosePokemon(switching=false, initialsel=-1, canswitch=0)
     for i in 0...6
       @sprites["pokemon#{i}"].preselected = (switching && i == @activecmd)
@@ -1929,7 +1818,6 @@ class PokemonParty_Scene
         newsel += 1
         newsel = 0 if newsel >= @party.length
       elsif Input.repeat?(Input::UP)
-        # Up/down mirror left/right for controller muscle memory.
         newsel -= 1
         newsel = @party.length - 1 if newsel < 0
       elsif Input.repeat?(Input::DOWN)
@@ -2071,9 +1959,7 @@ class PokemonParty_Scene
   end
 end
 
-#===============================================================================
-# Quick test
-#===============================================================================
+# Opens the party screen for testing.
 def pbBushidoPartyTest
   if !$Trainer || !$Trainer.party || $Trainer.party.length == 0
     pbMessage(_INTL("Put a Pokemon in your party first."))

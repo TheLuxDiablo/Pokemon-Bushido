@@ -1,8 +1,6 @@
-# Bushido naming scroll
-# replacement keyboard naming UI for Essentials v18.1
+# Bushido naming screen
 
 module BushidoNaming
-  # layout values are all in one place so I can tweak the screen without hunting through the drawing code
   PANEL_WIDTH        = 440
   PANEL_HEIGHT       = 224
   PANEL_Y_OFFSET     = -4
@@ -28,7 +26,6 @@ module BushidoNaming
   DIM_ALPHA          = 112
 
   UI_ASSET_ROOT       = "Graphics/Pictures/Naming"
-  # short enough to feel snappy, but still sells the scroll opening/closing
   OPEN_FRAMES        = 10
   CLOSE_FRAMES       = 8
 
@@ -62,7 +59,6 @@ module BushidoNaming
 end
 
 
-# using the stock keyboard entry for editing only; the visible text is drawn separately below
 class BushidoNameInput < Window_TextEntry_Keyboard
   def cursor_index
     begin
@@ -92,7 +88,6 @@ class PokemonEntryScene
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99999
 
-    # don't fade out the map here, this is meant to read as a modal
 
     @panelX = (Graphics.width - BushidoNaming::PANEL_WIDTH) / 2
     @panelY = (Graphics.height - BushidoNaming::PANEL_HEIGHT) / 2 +
@@ -135,7 +130,6 @@ class PokemonEntryScene
     @sprites["scroll"] = Sprite.new(@viewport)
     @sprites["scroll"].bitmap = Bitmap.new(namingAsset("scroll"))
 
-    # centered origin makes zoom_x look like the scroll is unfurling from the middle
     @sprites["scroll"].ox = BushidoNaming::PANEL_WIDTH / 2
     @sprites["scroll"].oy = BushidoNaming::PANEL_HEIGHT / 2
     @sprites["scroll"].x  = Graphics.width / 2
@@ -153,7 +147,6 @@ class PokemonEntryScene
   end
 
   def createInput(initialText)
-    # keep this offscreen/invisible; it only handles typing, backspace and cursor movement
     @sprites["entry"] = BushidoNameInput.new(
       initialText,
       -500,
@@ -202,7 +195,6 @@ class PokemonEntryScene
   end
 
   def createPokemonSubject(pokemon)
-    # the little backing card keeps the icon readable without bringing back the old textbox look
     return if !pokemon
 
     begin
@@ -243,7 +235,6 @@ class PokemonEntryScene
       @sprites["subject"].opacity     = 0
       @sprites["gender"].opacity      = 0
     rescue
-      # the naming screen should still work even if a decorative sprite fails to load
       @sprites.delete("subjectBack")
       @sprites.delete("subject")
       @sprites.delete("gender")
@@ -279,7 +270,7 @@ class PokemonEntryScene
     end
   end
 
-  # draw_text in our MKXP setup ignores the height we pass it, so positioning from the measured font height is way more reliable
+  # MKXP ignores the height passed to draw_text here.
   def drawExactText(bmp, text, x, y, width,
                     baseColor = BushidoNaming::INK,
                     shadowColor = BushidoNaming::SHADOW,
@@ -351,7 +342,6 @@ class PokemonEntryScene
     chars = text.scan(/./m)
     countText = _INTL("{1}/{2}", chars.length, @maxlength)
 
-    # reserve actual room for the count so a long nickname can't draw underneath it
     countW = bmp.text_size(countText).width
     countGap = 12
 
@@ -416,12 +406,11 @@ class PokemonEntryScene
   def drawKeycapBackground(bmp, x, y, width, height)
     source = Bitmap.new(namingAsset("keycap"))
 
-    # Preserve the authored corners while stretching only the center/edges.
+    # 9-slice the keycap.
     corner = 6
     srcW = source.width
     srcH = source.height
 
-    # corners
     bmp.blt(x, y, source, Rect.new(0, 0, corner, corner))
     bmp.blt(x + width - corner, y,
             source, Rect.new(srcW - corner, 0, corner, corner))
@@ -430,7 +419,6 @@ class PokemonEntryScene
     bmp.blt(x + width - corner, y + height - corner,
             source, Rect.new(srcW - corner, srcH - corner, corner, corner))
 
-    # edges + center
     bmp.stretch_blt(
       Rect.new(x + corner, y, width - corner * 2, corner),
       source,
@@ -467,7 +455,6 @@ class PokemonEntryScene
   end
 
   def drawKeyPair(bmp, x, y, keyText, actionText)
-    # size the keycap from the real text dimensions instead of eyeballing the box
     textH = measuredTextHeight(bmp)
 
     keyTextW = bmp.text_size(keyText).width
@@ -536,7 +523,6 @@ class PokemonEntryScene
       escActW = bmp.text_size(escAct).width
       escTotal = escKeyW + 7 + escActW
 
-      # only the two commands get a larger gap; the key and its action should stay visually paired
       pairGap = 24
       total = enterTotal + pairGap + escTotal
       startX = (Graphics.width - total) / 2
@@ -593,7 +579,6 @@ class PokemonEntryScene
         end
       end
 
-      # stock entry window handles typing/backspace/arrows, we just never render the window itself
       @sprites["entry"].update
 
       @sprites["subject"].update if @sprites["subject"]
@@ -677,13 +662,12 @@ class PokemonEntryScene
       @viewport.dispose
     end
 
-    # naming used to manage this in Bushido already, so make sure speed-up is restored on the way out
     pbAllowSpeedup()
   end
 end
 
 
-# stock v18 fades before opening this scene; skipping that fade is what lets the map stay visible underneath
+# Skip the stock fade so the map stays visible behind the naming screen.
 def pbEnterText(helptext, minlength, maxlength, initialText = "",
                 mode = 0, pokemon = nil, nofadeout = false)
   scene  = PokemonEntryScene.new
@@ -732,7 +716,7 @@ def pbEnterBoxName(helptext, minlength, maxlength,
 end
 
 
-# quick event test: pbBushidoNamingTest
+# Test calls
 def pbBushidoNamingTest
   if !$Trainer || !$Trainer.party || $Trainer.party.length == 0
     pbMessage(_INTL("Put a Pokémon in your party first."))

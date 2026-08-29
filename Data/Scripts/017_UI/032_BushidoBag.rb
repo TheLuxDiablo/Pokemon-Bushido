@@ -1,47 +1,7 @@
-#===============================================================================
-# Pokémon Bushido - Bag UI
-# Pokémon Essentials v18.1
-#
-# Full replacement override for PokemonBag_Scene.
-#
-# Includes:
-# - 7x3 full-width item grid
-# - Native-size item icons
-# - PNG-backed rounded item cards + selection cursor
-# - Brown quantity normally, white when selected
-# - Quantity floats from bottom-right of card
-# - Pocket arrows always visible
-# - Pocket position strip with active pocket illuminated
-# - Up from first page/top row selects pocket header
-# - L/R on header switches pockets
-# - L/R on items wraps inside row
-# - Up/Down traverses pages
-# - PNG-backed left-side page rail
-# - Smooth cursor motion
-# - Tiny hover bump
-# - Confirmation shake
-# - Item-content pocket transitions, header remains fixed
-# - Native-size Scroll compatibility party icons (opacity states, no bars)
-# - Party icons centered on a single 2-frame sprite frame
-# - Scroll name = taught move name
-# - Scroll party compatibility
-# - Scroll one-line auto-scrolling description
-# - Normal item multi-line small-font description
-# - 21px description line spacing
-# - Manual A-button sorting
-# - Filtered Bag chooser support
-# - Registered Key Item corner indicator
-#
-# Katana/SP UI intentionally omitted.
-#===============================================================================
-
-
+# Bag UI settings.
 module BushidoBagUI
 
   ASSET_PATH        = "Graphics/Pictures/Bag/"
-  #=============================================================================
-  # Palette
-  #=============================================================================
 
   BACKGROUND        = Color.new(247, 242, 225)
 
@@ -76,10 +36,6 @@ module BushidoBagUI
   REGISTERED_FILL   = Color.new(132, 35, 31)
   REGISTERED_TEXT   = Color.new(255, 255, 255)
 
-  #=============================================================================
-  # Grid
-  #=============================================================================
-
   COLS              = 7
   ROWS              = 3
   PAGE_SIZE         = COLS * ROWS
@@ -104,10 +60,6 @@ module BushidoBagUI
   BORDER_SIZE       = 2
   CARD_RADIUS       = 8
 
-  #=============================================================================
-  # Header
-  #=============================================================================
-
   TITLE_Y           = 12
 
   HEADER_W          = 220
@@ -119,34 +71,18 @@ module BushidoBagUI
 
   HEADER_Y          = 8
 
-  #=============================================================================
-  # Pocket position indicators
-  #=============================================================================
-
   POCKET_DOT_Y       = 46
   POCKET_DOT_W       = 10
   POCKET_DOT_H       = 10
   POCKET_DOT_GAP     = 8
 
-  #=============================================================================
-  # Quantity
-  #=============================================================================
-
   QUANTITY_X_OFFSET = 4
   QUANTITY_Y_OFFSET = -16
-
-  #=============================================================================
-  # Registered marker
-  #=============================================================================
 
   REGISTER_W        = 16
   REGISTER_H        = 18
   REGISTER_OFFSET_X = 4
   REGISTER_OFFSET_Y = 4
-
-  #=============================================================================
-  # Page rail
-  #=============================================================================
 
   SCROLLBAR_X       = 8
   SCROLLBAR_Y       = GRID_Y + 4
@@ -157,13 +93,7 @@ module BushidoBagUI
     ((ROWS - 1) * GAP_Y) -
     6
 
-  # All custom-drawn UI geometry is kept on a 2px grid.
-
   SCROLL_THUMB_MIN_H = 18
-
-  #=============================================================================
-  # Normal item information
-  #=============================================================================
 
   INFO_X            = 22
   INFO_W            = 468
@@ -179,13 +109,8 @@ module BushidoBagUI
   DESCRIPTION_LINE_HEIGHT = 21
   DESCRIPTION_MAX_LINES   = 4
 
-  #=============================================================================
-  # Scroll/TM information
-  #=============================================================================
-
   SCROLL_NAME_Y     = 254
 
-  # PARTY_ICON_Y is the visual center of a single icon frame.
   PARTY_ICON_Y      = 294
 
   PARTY_START_X     = 52
@@ -208,10 +133,6 @@ module BushidoBagUI
   MARQUEE_INTERVAL    = 2
   MARQUEE_PADDING     = 8
 
-  #=============================================================================
-  # Motion
-  #=============================================================================
-
   CURSOR_MOVE_FRAMES = 4
   CURSOR_BORDER_SIZE = 4
 
@@ -227,22 +148,13 @@ module BushidoBagUI
     [-3, 3, -2, 2, -1, 1, 0]
 end
 
-
-#===============================================================================
-# Bag scene
-#===============================================================================
-
+# Bushido bag scene.
 class PokemonBag_Scene
-  #=============================================================================
-  # Update
-  #=============================================================================
 
+  # Updates the bag scene.
   def pbUpdate
     pbUpdateSpriteHash(@sprites) if @sprites
 
-    # PokemonIconSprite handles its own frame animation in update. Reassert the
-    # correct one-frame origin after that update so the 2-frame sheet stays
-    # centered instead of being treated as a single wide image.
     if @sprites
       for i in 0...6
         sprite = @sprites["partyicon#{i}"]
@@ -257,10 +169,7 @@ class PokemonBag_Scene
     update_scroll_marquee
   end
 
-  #=============================================================================
-  # Filters
-  #=============================================================================
-
+  # Builds filtered item lists.
   def pbRefreshFilter
     @filterlist = nil
 
@@ -288,10 +197,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Start scene
-  #=============================================================================
-
+  # Sets up the bag scene.
   def pbStartScene(
     bag,
     choosing = false,
@@ -315,10 +221,6 @@ class PokemonBag_Scene
 
     @sprites = {}
 
-    #-------------------------------------------------------------------------
-    # Background
-    #-------------------------------------------------------------------------
-
     @sprites["background"] =
       BitmapSprite.new(
         Graphics.width,
@@ -333,10 +235,6 @@ class PokemonBag_Scene
       "background"
     )
 
-    #-------------------------------------------------------------------------
-    # Header
-    #-------------------------------------------------------------------------
-
     @sprites["header"] =
       BitmapSprite.new(
         Graphics.width,
@@ -349,10 +247,6 @@ class PokemonBag_Scene
     pbSetSystemFont(
       @sprites["header"].bitmap
     )
-
-    #-------------------------------------------------------------------------
-    # Item/content layer
-    #-------------------------------------------------------------------------
 
     @sprites["content"] =
       BitmapSprite.new(
@@ -367,10 +261,6 @@ class PokemonBag_Scene
       @sprites["content"].bitmap
     )
 
-    #-------------------------------------------------------------------------
-    # Page rail
-    #-------------------------------------------------------------------------
-
     @sprites["scrollbar"] =
       BitmapSprite.new(
         Graphics.width,
@@ -379,10 +269,6 @@ class PokemonBag_Scene
       )
 
     @sprites["scrollbar"].z = 6
-
-    #-------------------------------------------------------------------------
-    # Animated cursor
-    #-------------------------------------------------------------------------
 
     @sprites["cursor"] =
       BitmapSprite.new(
@@ -394,10 +280,6 @@ class PokemonBag_Scene
     @sprites["cursor"].z = 8
 
     @cursor_rect = nil
-
-    #-------------------------------------------------------------------------
-    # Item icons
-    #-------------------------------------------------------------------------
 
     @item_icon_base_x = []
     @item_icon_base_y = []
@@ -419,10 +301,6 @@ class PokemonBag_Scene
       @sprites["itemicon#{i}"] = sprite
     end
 
-    #-------------------------------------------------------------------------
-    # Quantity / register marker layer
-    #-------------------------------------------------------------------------
-
     @sprites["itemoverlay"] =
       BitmapSprite.new(
         Graphics.width,
@@ -432,10 +310,6 @@ class PokemonBag_Scene
 
     @sprites["itemoverlay"].z = 20
 
-    #-------------------------------------------------------------------------
-    # Party compatibility underline layer
-    #-------------------------------------------------------------------------
-
     @sprites["party_marks"] =
       BitmapSprite.new(
         Graphics.width,
@@ -444,10 +318,6 @@ class PokemonBag_Scene
       )
 
     @sprites["party_marks"].z = 22
-
-    #-------------------------------------------------------------------------
-    # Party icons
-    #-------------------------------------------------------------------------
 
     for i in 0...6
       pokemon = nil
@@ -476,10 +346,6 @@ class PokemonBag_Scene
         sprite
     end
 
-    #-------------------------------------------------------------------------
-    # One-line Scroll description
-    #-------------------------------------------------------------------------
-
     @sprites["marquee"] =
       Sprite.new(
         @viewport
@@ -495,10 +361,6 @@ class PokemonBag_Scene
     @sprites["marquee"].visible = false
 
     reset_marquee
-
-    #-------------------------------------------------------------------------
-    # Stock compatibility windows
-    #-------------------------------------------------------------------------
 
     @sprites["helpwindow"] =
       Window_UnformattedTextPokemon.new("")
@@ -527,10 +389,6 @@ class PokemonBag_Scene
       @sprites
     )
 
-    #-------------------------------------------------------------------------
-    # Initial pocket
-    #-------------------------------------------------------------------------
-
     @pocket =
       resolve_start_pocket(
         resetpocket
@@ -538,10 +396,6 @@ class PokemonBag_Scene
 
     @bag.lastpocket =
       @pocket
-
-    #-------------------------------------------------------------------------
-    # Initial selection
-    #-------------------------------------------------------------------------
 
     @index =
       @bag.getChoice(
@@ -555,10 +409,6 @@ class PokemonBag_Scene
     @header_selected = false
     @header_col      = 0
 
-    #-------------------------------------------------------------------------
-    # Sorting
-    #-------------------------------------------------------------------------
-
     @sorting          = false
     @sort_backup      = nil
     @sort_start_index = -1
@@ -570,10 +420,7 @@ class PokemonBag_Scene
     )
   end
 
-  #=============================================================================
-  # Pocket setup
-  #=============================================================================
-
+  # Handles pocket selection.
   def resolve_start_pocket(resetpocket)
     pocket =
       @bag.lastpocket
@@ -649,10 +496,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Items
-  #=============================================================================
-
+  # Item helpers.
   def valid_item_id?(item)
     return false if !item
     return false if !item.is_a?(Numeric)
@@ -717,10 +561,6 @@ class PokemonBag_Scene
     )
   end
 
-  #=============================================================================
-  # Registered items
-  #=============================================================================
-
   def registered_item?(item)
     return false if
       !valid_item_id?(item)
@@ -732,10 +572,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Display indices
-  #=============================================================================
-
+  # Handles displayed item indices.
   def display_indices(pocket = @pocket)
     if @filterlist
       return @filterlist[pocket] || []
@@ -816,10 +653,7 @@ class PokemonBag_Scene
     return item_at(@index)
   end
 
-  #=============================================================================
-  # Pages
-  #=============================================================================
-
+  # Handles pages and selection.
   def clamp_index
     count =
       item_count
@@ -873,10 +707,7 @@ class PokemonBag_Scene
            BushidoBagUI::COLS
   end
 
-  #=============================================================================
-  # Geometry
-  #=============================================================================
-
+  # Returns UI bounds.
   def grid_rect(slot)
     col =
       slot %
@@ -929,10 +760,7 @@ class PokemonBag_Scene
     )
   end
 
-  #=============================================================================
-  # PNG assets
-  #=============================================================================
-
+  # Loads Bag UI assets.
   def bag_asset(name)
     return Bitmap.new(
       BushidoBagUI::ASSET_PATH + name
@@ -945,10 +773,7 @@ class PokemonBag_Scene
     asset.dispose
   end
 
-  #=============================================================================
-  # Party icon frame setup
-  #=============================================================================
-
+  # Sets up party icon frames.
   def bushido_setup_party_icon_frame(sprite)
     return if !sprite
     return if sprite.disposed?
@@ -965,7 +790,6 @@ class PokemonBag_Scene
       sheet_w <= 0 ||
       sheet_h <= 0
 
-    # Bushido's party icon graphic contains 2 horizontal animation frames.
     frame_w =
       sheet_w / 2
 
@@ -975,8 +799,6 @@ class PokemonBag_Scene
     frame_h =
       sheet_h
 
-    # PokemonIconSprite updates src_rect.x to animate. Preserve whichever frame
-    # it is currently on, but force the src_rect to a SINGLE frame.
     frame_x =
       sprite.src_rect.x
 
@@ -996,7 +818,6 @@ class PokemonBag_Scene
       frame_h
     )
 
-    # x/y now represent the visual center of a single animation frame.
     sprite.ox =
       frame_w / 2
 
@@ -1010,10 +831,7 @@ class PokemonBag_Scene
       1.0
   end
 
-  #=============================================================================
-  # Refresh
-  #=============================================================================
-
+  # Refreshes the bag display.
   def pbRefresh
     clamp_index
 
@@ -1061,10 +879,7 @@ class PokemonBag_Scene
     )
   end
 
-  #=============================================================================
-  # Header
-  #=============================================================================
-
+  # Draws the pocket header.
   def draw_header
     bitmap =
       @sprites["header"].bitmap
@@ -1120,9 +935,6 @@ class PokemonBag_Scene
       ]
     )
 
-    #-------------------------------------------------------------------------
-    # Pocket position strip.
-    #-------------------------------------------------------------------------
     pockets =
       PokemonBag.numPockets
 
@@ -1159,10 +971,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Page scrollbar
-  #=============================================================================
-
+  # Draws the page scrollbar.
   def draw_scrollbar
     bitmap =
       @sprites["scrollbar"].bitmap
@@ -1235,10 +1044,7 @@ class PokemonBag_Scene
     tile.dispose
   end
 
-  #=============================================================================
-  # Content
-  #=============================================================================
-
+  # Draws pocket contents.
   def draw_content
     bitmap =
       @sprites["content"].bitmap
@@ -1251,10 +1057,7 @@ class PokemonBag_Scene
     draw_item_info(bitmap)
   end
 
-  #=============================================================================
-  # Grid
-  #=============================================================================
-
+  # Draws the item grid.
   def draw_item_grid(bitmap)
     count =
       item_count
@@ -1324,10 +1127,7 @@ class PokemonBag_Scene
     )
   end
 
-  #=============================================================================
-  # Item icons
-  #=============================================================================
-
+  # Updates item icons.
   def refresh_item_icons
     first =
       page_start
@@ -1400,10 +1200,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Quantity + registered marker
-  #=============================================================================
-
+  # Draws item quantities and markers.
   def refresh_item_overlay
     bitmap =
       @sprites["itemoverlay"].bitmap
@@ -1450,10 +1247,6 @@ class PokemonBag_Scene
         BushidoBagUI::QUANTITY_SELECTED :
         BushidoBagUI::QUANTITY_NORMAL
 
-      #-----------------------------------------------------------------------
-      # Floating quantity
-      #-----------------------------------------------------------------------
-
       text_x =
         rect.x +
         rect.width +
@@ -1477,10 +1270,6 @@ class PokemonBag_Scene
           ]
         ]
       )
-
-      #-----------------------------------------------------------------------
-      # Registered Key Item marker
-      #-----------------------------------------------------------------------
 
       if registered_item?(item)
         draw_registered_marker(
@@ -1526,10 +1315,7 @@ class PokemonBag_Scene
     )
   end
 
-  #=============================================================================
-  # Item information
-  #=============================================================================
-
+  # Draws item information.
   def draw_item_info(bitmap)
     return if
       @header_selected
@@ -1552,10 +1338,6 @@ class PokemonBag_Scene
       )
     end
   end
-
-  #-----------------------------------------------------------------------------
-  # Normal item
-  #-----------------------------------------------------------------------------
 
   def draw_normal_item_info(bitmap, item)
     pbSetSystemFont(bitmap)
@@ -1594,10 +1376,6 @@ class PokemonBag_Scene
     pbSetSystemFont(bitmap)
   end
 
-  #-----------------------------------------------------------------------------
-  # Scroll
-  #-----------------------------------------------------------------------------
-
   def draw_scroll_info(bitmap, item)
     move =
       machine_move(item)
@@ -1629,10 +1407,7 @@ class PokemonBag_Scene
     )
   end
 
-  #=============================================================================
-  # Description wrapping
-  #=============================================================================
-
+  # Draws item descriptions.
   def draw_tight_description(
     bitmap,
     x,
@@ -1690,10 +1465,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Scroll party preview
-  #=============================================================================
-
+  # Updates Scroll party compatibility.
   def hide_party_icons
     for i in 0...6
       sprite =
@@ -1757,7 +1529,6 @@ class PokemonBag_Scene
       rescue
       end
 
-      # pokemon= may replace the bitmap, so frame/origin setup comes after.
       bushido_setup_party_icon_frame(
         sprite
       )
@@ -1767,7 +1538,6 @@ class PokemonBag_Scene
         i *
         BushidoBagUI::PARTY_SPACING
 
-      # x/y are the CENTER of one animation frame.
       sprite.x =
         x
 
@@ -1785,19 +1555,14 @@ class PokemonBag_Scene
         sprite.opacity =
           255
 
-        # Already knows the move: full opacity.
-
       when :able
         sprite.opacity =
           255
-
-        # Can learn the move: full opacity.
 
       else
         sprite.opacity =
           85
 
-        # Can't learn the move: dimmed.
       end
 
       sprite.visible =
@@ -1809,10 +1574,7 @@ class PokemonBag_Scene
     )
   end
 
-  #=============================================================================
-  # Essentials v18 move compatibility
-  #=============================================================================
-
+  # Checks Scroll compatibility.
   def pokemon_move_state(pokemon, move)
     return :unable if
       !pokemon
@@ -1864,10 +1626,7 @@ class PokemonBag_Scene
     return false
   end
 
-  #=============================================================================
-  # Marquee
-  #=============================================================================
-
+  # Handles the Scroll description marquee.
   def reset_marquee
     @marquee_offset =
       0
@@ -2083,10 +1842,7 @@ class PokemonBag_Scene
       @marquee_offset
   end
 
-  #=============================================================================
-  # Rounded cursor
-  #=============================================================================
-
+  # Handles cursor animation.
   def ease_position(t)
     return t *
            t *
@@ -2240,10 +1996,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Hover juice
-  #=============================================================================
-
+  # Handles item hover feedback.
   def selected_visible_slot
     return nil if
       @header_selected
@@ -2292,10 +2045,7 @@ class PokemonBag_Scene
       base_y
   end
 
-  #=============================================================================
-  # Confirm juice
-  #=============================================================================
-
+  # Handles item confirmation feedback.
   def play_confirm_juice
     slot =
       selected_visible_slot
@@ -2335,10 +2085,7 @@ class PokemonBag_Scene
       0
   end
 
-  #=============================================================================
-  # Content transition positioning
-  #=============================================================================
-
+  # Positions transitioning content.
   def set_content_offset(
     x,
     y,
@@ -2427,10 +2174,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Pocket transitions
-  #=============================================================================
-
+  # Handles pocket transitions.
   def animate_pocket_out(direction)
     frames =
       BushidoBagUI::POCKET_TRANSITION_FRAMES
@@ -2498,10 +2242,7 @@ class PokemonBag_Scene
     )
   end
 
-  #=============================================================================
-  # Page transitions
-  #=============================================================================
-
+  # Handles page transitions.
   def animate_page_out(direction)
     frames =
       BushidoBagUI::PAGE_TRANSITION_FRAMES
@@ -2569,10 +2310,7 @@ class PokemonBag_Scene
     )
   end
 
-  #=============================================================================
-  # Set index
-  #=============================================================================
-
+  # Changes the selected item.
   def set_index(new_index)
     return if
       item_count <= 0
@@ -2645,10 +2383,7 @@ class PokemonBag_Scene
     pbRefreshIndexChanged
   end
 
-  #=============================================================================
-  # Navigation
-  #=============================================================================
-
+  # Handles grid navigation.
   def move_left
     if @header_selected
       change_pocket(-1)
@@ -2796,8 +2531,6 @@ class PokemonBag_Scene
 
   def move_down
     if @header_selected
-      # Empty pockets have nowhere to move. Stay on the header so the player
-      # can still switch pockets or back out instead of entering a dead state.
       return if item_count <= 0
 
       @header_selected =
@@ -2858,10 +2591,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Pocket switching
-  #=============================================================================
-
+  # Switches pockets.
   def change_pocket(direction)
     new_pocket =
       next_valid_pocket(
@@ -2930,10 +2660,7 @@ class PokemonBag_Scene
     pbPlayCursorSE
   end
 
-  #=============================================================================
-  # Sorting
-  #=============================================================================
-
+  # Handles manual sorting.
   def can_sort_current_pocket?
     return false if
       @choosing
@@ -3151,10 +2878,7 @@ class PokemonBag_Scene
     pbRefresh
   end
 
-  #=============================================================================
-  # Main chooser
-  #=============================================================================
-
+  # Handles bag input.
   def pbChooseItem
     @sprites["helpwindow"].visible =
       false
@@ -3233,10 +2957,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Stock PokemonBagScreen support
-  #=============================================================================
-
+  # Stock PokemonBagScreen support.
   def pbDisplay(
     msg,
     brief = false
@@ -3281,10 +3002,7 @@ class PokemonBag_Scene
     }
   end
 
-  #=============================================================================
-  # Command popup
-  #=============================================================================
-
+  # Shows command popups.
   def pbShowCommands(
     helptext,
     commands,
@@ -3490,10 +3208,7 @@ class PokemonBag_Scene
     end
   end
 
-  #=============================================================================
-  # Fade
-  #=============================================================================
-
+  # Handles scene fades.
   def pbFadeOutScene
     @oldsprites =
       pbFadeOutAndHide(
@@ -3522,10 +3237,7 @@ class PokemonBag_Scene
     dispose
   end
 
-  #=============================================================================
-  # Cleanup
-  #=============================================================================
-
+  # Cleans up the bag scene.
   def dispose
     if @sprites &&
        @sprites["marquee"] &&

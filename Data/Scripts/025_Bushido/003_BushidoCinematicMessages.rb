@@ -1,19 +1,5 @@
 #===============================================================================
 # Bushido Cinematic Messages
-# Essentials v18.1 / RGSS1
-#
-# Put this script BELOW 011_Messages and below any plugin that redefines
-# pbMessageDisplay.
-#
-# Usage in a normal Show Text command:
-#   \cin\fi[20]Long ago, before the age of Pokémon Trainers...\wtnp[55]\fo[20]
-#
-# Notes:
-# - Cinematic text uses Bushido's normal system font at its normal size.
-# - The cinematic renderer does NOT draw or force a background. Whatever is
-#   already on screen stays visible underneath the text.
-# - All cinematic timing is multiplied by CINEMATIC_TIME_SCALE.
-# - Normal dialogue is untouched.
 #===============================================================================
 
 module BushidoCinematicMessages
@@ -21,24 +7,20 @@ module BushidoCinematicMessages
   DEFAULT_FADE_OUT = 15
   DEFAULT_HOLD     = 40
 
-  # Global pacing multiplier for every cinematic message.
-  # Essentials v18 normally runs at 40 FPS, so 2.00 makes the authored frame
-  # counts feel substantially more deliberate without rewriting every event.
   CINEMATIC_TIME_SCALE = 2.00
   CINEMATIC_EXTRA_HOLD = 30
-
-  # Prevent the same confirm press that advanced the previous event/message
-  # from instantly skipping the opening of a cinematic card.
-  INPUT_GRACE_FRAMES = 10
+  INPUT_GRACE_FRAMES   = 10
 
   MARGIN = 48
 
   def self.extract_number!(text, tag, default)
     value = default
+
     if text =~ /\\#{tag}\[([0-9]+)\]/i
       value = $1.to_i
       text.gsub!(/\\#{tag}\[[0-9]+\]/i, "")
     end
+
     return value
   end
 
@@ -49,17 +31,14 @@ module BushidoCinematicMessages
 
   def self.prepare_text(message)
     text = message.clone
+
     text.gsub!(/\\cin/i, "")
 
     fade_in  = scaled_frames(extract_number!(text, "fi",   DEFAULT_FADE_IN))
     fade_out = scaled_frames(extract_number!(text, "fo",   DEFAULT_FADE_OUT))
     hold     = scaled_frames(extract_number!(text, "wtnp", DEFAULT_HOLD)) + CINEMATIC_EXTRA_HOLD
 
-    # Old cinematic font-size tags are intentionally ignored. Cinematic text
-    # uses exactly the same font setup as ordinary Bushido text.
     text.gsub!(/\\fs\[[0-9]+\]/i, "")
-
-    # Compatibility with older prologue formatting/control codes.
     text.gsub!(/<\/?ac>/i, "")
     text.gsub!(/\\c\[[0-9]+\]/i, "")
     text.gsub!(/\\wt\[[0-9]+\]/i, "")
@@ -80,6 +59,7 @@ module BushidoCinematicMessages
 
   def self.fade(sprite, from, to, frames, grace_frames = 0)
     frames = frames.to_i
+
     if frames <= 0
       sprite.opacity = to
       return
@@ -87,13 +67,16 @@ module BushidoCinematicMessages
 
     for i in 0...frames
       update_frame
+
       if i >= grace_frames && confirm?
         sprite.opacity = to
         return
       end
+
       t = (i + 1).to_f / frames.to_f
       sprite.opacity = (from + ((to - from) * t)).to_i
     end
+
     sprite.opacity = to
   end
 
@@ -107,32 +90,45 @@ module BushidoCinematicMessages
     end
   end
 
+  # Draws the cinematic text.
   def self.draw_centered(bitmap, text)
     bitmap.clear
-
-    # Same font setup as normal Essentials/Bushido text. No bitmap scaling,
-    # zooming or custom font-size changes.
     pbSetSystemFont(bitmap) if defined?(pbSetSystemFont)
 
     width = Graphics.width - (MARGIN * 2)
+
     formatted = "<ac><c3=FFFFFF,707070>#{text}</c3></ac>"
 
     lineheight = 32
-    chars = getFormattedText(bitmap, MARGIN, 0, width, -1, formatted, lineheight)
+
+    chars = getFormattedText(
+      bitmap,
+      MARGIN,
+      0,
+      width,
+      -1,
+      formatted,
+      lineheight
+    )
+
     return if !chars || chars.length == 0
 
     min_y = nil
     max_y = nil
+
     chars.each do |ch|
       next if !ch || ch.length < 5
+
       y = ch[2]
       h = ch[4]
+
       min_y = y if min_y.nil? || y < min_y
       max_y = y + h if max_y.nil? || y + h > max_y
     end
 
     min_y ||= 0
     max_y ||= lineheight
+
     block_height = max_y - min_y
     target_top = ((Graphics.height - block_height) / 2.0).round
     offset_y = target_top - min_y
@@ -145,47 +141,96 @@ module BushidoCinematicMessages
     drawFormattedChars(bitmap, chars)
   end
 
+  # Shows a cinematic message.
   def self.show(msgwindow, message)
     text, fade_in, fade_out, hold_frames = prepare_text(message)
 
     old_visible = nil
+
     if msgwindow && msgwindow.respond_to?(:visible)
       old_visible = msgwindow.visible
       msgwindow.visible = false
     end
 
-    # Transparent overlay only. There is deliberately NO background sprite here,
-    # so event fades, pictures, map imagery and any non-true-black backing remain
-    # exactly as they were before the cinematic text appeared.
-    viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
+    viewport = Viewport.new(
+      0,
+      0,
+      Graphics.width,
+      Graphics.height
+    )
+
     viewport.z = 99999
 
     text_sprite = Sprite.new(viewport)
-    text_sprite.bitmap = Bitmap.new(Graphics.width, Graphics.height)
-    draw_centered(text_sprite.bitmap, text)
+    text_sprite.bitmap = Bitmap.new(
+      Graphics.width,
+      Graphics.height
+    )
+
+    draw_centered(
+      text_sprite.bitmap,
+      text
+    )
+
     text_sprite.opacity = 0
 
-    fade(text_sprite, 0, 255, fade_in, INPUT_GRACE_FRAMES)
-    hold(hold_frames, INPUT_GRACE_FRAMES)
-    fade(text_sprite, 255, 0, fade_out, 0)
+    fade(
+      text_sprite,
+      0,
+      255,
+      fade_in,
+      INPUT_GRACE_FRAMES
+    )
 
-    text_sprite.bitmap.dispose if text_sprite.bitmap && !text_sprite.bitmap.disposed?
-    text_sprite.dispose unless text_sprite.disposed?
-    viewport.dispose unless viewport.disposed?
+    hold(
+      hold_frames,
+      INPUT_GRACE_FRAMES
+    )
 
-    msgwindow.visible = old_visible if msgwindow && !old_visible.nil?
+    fade(
+      text_sprite,
+      255,
+      0,
+      fade_out,
+      0
+    )
+
+    text_sprite.bitmap.dispose if
+      text_sprite.bitmap &&
+      !text_sprite.bitmap.disposed?
+
+    text_sprite.dispose unless
+      text_sprite.disposed?
+
+    viewport.dispose unless
+      viewport.disposed?
+
+    msgwindow.visible = old_visible if
+      msgwindow &&
+      !old_visible.nil?
+
     return nil
   end
 end
 
-# Intercept only \cin messages. Everything else uses the normal message system.
+#===============================================================================
+# Message Hook
+#===============================================================================
+
 alias bushido_cinematic_original_pbMessageDisplay pbMessageDisplay
 
 def pbMessageDisplay(msgwindow, message, letterbyletter=true, commandProc=nil)
   if message && message =~ /\\cin/i
-    return BushidoCinematicMessages.show(msgwindow, message)
+    return BushidoCinematicMessages.show(
+      msgwindow,
+      message
+    )
   end
+
   return bushido_cinematic_original_pbMessageDisplay(
-    msgwindow, message, letterbyletter, commandProc
+    msgwindow,
+    message,
+    letterbyletter,
+    commandProc
   )
 end

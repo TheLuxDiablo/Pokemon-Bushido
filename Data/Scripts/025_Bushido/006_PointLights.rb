@@ -1,27 +1,6 @@
-#===============================================================================
-# Bushido Environmental Lights
-# Pokemon Essentials v18.1 / RGSS
-#
-# Event names:
-#
-#   Light(0,0)
-#   Light(12,-8)
-#   Lantern Light(6,-20)
-#
-#   Fire(0,0)
-#   Fire(4,-12)
-#   Bonfire Fire(0,-8)
-#
-# Offsets are in PIXELS:
-#   X: negative = left, positive = right
-#   Y: negative = up,   positive = down
-#===============================================================================
 
+# BushidoPointLights.
 module BushidoPointLights
-
-  #=============================================================================
-  # General
-  #=============================================================================
 
   PIXEL_SIZE = 2
   BASE_Y_OFFSET = -16
@@ -35,10 +14,6 @@ module BushidoPointLights
   INITIAL_DELAY = 2
 
   SCREEN_MARGIN = 96
-
-  #=============================================================================
-  # Normal Light
-  #=============================================================================
 
   INNER_RADIUS = 24
   OUTER_RADIUS = 48
@@ -59,10 +34,6 @@ module BushidoPointLights
 
   INNER_OPACITY_PULSE = 14
   OUTER_OPACITY_PULSE = 20
-
-  #=============================================================================
-  # Fire
-  #=============================================================================
 
   FIRE_INNER_RADIUS = 24
   FIRE_OUTER_RADIUS = 46
@@ -101,10 +72,6 @@ module BushidoPointLights
 
   FIRE_PARTICLE_SIZE_SMALL = 2
   FIRE_PARTICLE_SIZE_LARGE = 4
-
-  #=============================================================================
-  # Shared Bitmap Cache
-  #=============================================================================
 
   @bitmap_cache = {}
 
@@ -165,10 +132,6 @@ module BushidoPointLights
     }
   end
 
-  #=============================================================================
-  # Time
-  #=============================================================================
-
   def self.night?
     begin
       time = pbGetTimeNow
@@ -191,10 +154,6 @@ module BushidoPointLights
       return false
     end
   end
-
-  #=============================================================================
-  # Event Helpers
-  #=============================================================================
 
   def self.character_from_sprite(sprite)
     return nil if !sprite
@@ -246,10 +205,6 @@ module BushidoPointLights
 
     return [0, 0]
   end
-
-  #=============================================================================
-  # Stable Event Identity
-  #=============================================================================
 
   def self.event_id_from_character(character)
     return nil if !character
@@ -339,12 +294,6 @@ module BushidoPointLights
     return [:character, character.object_id]
   end
 
-  #=============================================================================
-  # Connected Spriteset Discovery
-  #
-  # Iterative only. No recursive object walking.
-  #=============================================================================
-
   def self.scene_spritesets(scene)
     results = []
     seen = {}
@@ -405,30 +354,12 @@ module BushidoPointLights
     return []
   end
 
-
-  #=============================================================================
-  # Screen Position / Visibility
-  #
-  # Connected-map event sprites can exist before they are actually visible.
-  # We never clamp effects into the screen. If a source is outside the screen,
-  # its effect is simply hidden until the source enters view.
-  #=============================================================================
-
   def self.source_screen_position(sprite, offset_x, offset_y)
     return nil if !sprite
 
     character = character_from_sprite(sprite)
     return nil if !character
 
-    # IMPORTANT:
-    # Do not trust Sprite_Character#x/#y for connected-map marker events.
-    # A connected spriteset can temporarily leave an event sprite at (0,0)
-    # before its map position has been resolved, which creates the stray glow
-    # in the top-left corner.
-    #
-    # ScreenPosHelper calculates the event's real screen position from the
-    # Game_Character and its owning map, which keeps connected-map events in
-    # their proper world position.
     if defined?(ScreenPosHelper)
       begin
         x = ScreenPosHelper.pbScreenX(character) + offset_x
@@ -438,7 +369,6 @@ module BushidoPointLights
       end
     end
 
-    # Fallback for projects where ScreenPosHelper isn't available.
     begin
       x = sprite.x + offset_x
       y = sprite.y + BASE_Y_OFFSET + offset_y
@@ -460,9 +390,6 @@ module BushidoPointLights
       return false
     end
 
-    # Game_Event markers must belong to a real loaded map before their FX can
-    # render. This prevents a just-created connected-map event from briefly
-    # appearing at screen origin while the map factory is still positioning it.
     if character.is_a?(Game_Event)
       begin
         map = character.instance_variable_get(:@map)
@@ -516,10 +443,6 @@ module BushidoPointLights
     return score
   end
 
-  #=============================================================================
-  # Pixelated Glow
-  #=============================================================================
-
   def self.make_glow(radius, color)
     size = (radius * 2) + PIXEL_SIZE
     bitmap = Bitmap.new(size, size)
@@ -544,7 +467,6 @@ module BushidoPointLights
         if distance <= max_distance
           strength = 1.0 - (distance / max_distance)
 
-          # Keep the stepped 2px look visible instead of smoothing too much.
           strength = Math.sqrt(strength)
 
           alpha = (strength * 255).to_i
@@ -578,11 +500,7 @@ module BushidoPointLights
   end
 end
 
-
-#===============================================================================
-# Point Light Effect
-#===============================================================================
-
+# BushidoPointLight.
 class BushidoPointLight
   attr_reader :source_sprite
 
@@ -620,7 +538,6 @@ class BushidoPointLight
     @outer.visible = false
     @inner.visible = false
 
-    # Start at the correct pulse state immediately so there is no bright snap.
     apply_pulse
   end
 
@@ -775,11 +692,7 @@ class BushidoPointLight
   end
 end
 
-
-#===============================================================================
-# Fire Particle
-#===============================================================================
-
+# BushidoFireParticle.
 class BushidoFireParticle
   def initialize(viewport)
     @sprite = Sprite.new(viewport)
@@ -951,11 +864,7 @@ class BushidoFireParticle
   end
 end
 
-
-#===============================================================================
-# Fire Effect
-#===============================================================================
-
+# BushidoFireEffect.
 class BushidoFireEffect
   attr_reader :source_sprite
 
@@ -1269,11 +1178,7 @@ class BushidoFireEffect
   end
 end
 
-
-#===============================================================================
-# Scene-Level FX Manager
-#===============================================================================
-
+# BushidoEnvironmentFXManager.
 class BushidoEnvironmentFXManager
   def initialize
     @lights = {}
@@ -1378,7 +1283,6 @@ class BushidoEnvironmentFXManager
         end
       end
     end
-
 
     return [light_candidates, fire_candidates]
   end
@@ -1510,14 +1414,7 @@ class BushidoEnvironmentFXManager
   end
 end
 
-
-#===============================================================================
-# Scene_Map Integration
-#
-# All Essentials/MapFactory work happens first. FX only run after the normal
-# Scene_Map frame has completed.
-#===============================================================================
-
+# Scene_Map.
 class Scene_Map
   unless method_defined?(:bushido_pointlights_original_update_final)
     alias bushido_pointlights_original_update_final update

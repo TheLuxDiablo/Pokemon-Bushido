@@ -1,35 +1,5 @@
-#===============================================================================
-# Trainer Sensor
-# Pokémon Bushido / Pokémon Essentials v18.1
-#===============================================================================
-#
-# Event naming:
-#
-#   Trainer(5)
-#
-# Add "no_s" to disable the warning for an individual trainer:
-#
-#   Trainer(5) no_s
-#
-# Settings:
-#
-#   TRAINER_SENSOR_ENABLED       = true
-#   TRAINER_SENSOR_BUSHIDO_STYLE = true
-#
-# Behavior:
-#   - Near trainer FOV: dark red/black warning frame
-#   - Closer to FOV: stronger red vignette + pulse
-#   - Enter actual FOV: full-screen slash flash
-#   - Normal trainer event then takes over
-#
-#===============================================================================
-
-
+# Trainer sensor visuals and detection.
 module TrainerSensor
-
-  #=============================================================================
-  # Visual Settings
-  #=============================================================================
 
   SENSOR_Z = 99998
 
@@ -45,10 +15,6 @@ module TrainerSensor
 
   MAX_BAR_OPACITY      = 225
   MAX_VIGNETTE_OPACITY = 135
-
-  #=============================================================================
-  # Runtime Data
-  #=============================================================================
 
   @top       = nil
   @bottom    = nil
@@ -74,40 +40,23 @@ module TrainerSensor
   @battle_slash_playing = false
   @last_seen_event      = nil
 
-
-  #=============================================================================
-  # Settings
-  #=============================================================================
-
   def self.enabled?
     return true if !defined?(TRAINER_SENSOR_ENABLED)
     return TRAINER_SENSOR_ENABLED
   end
-
 
   def self.bushido_style?
     return false if !defined?(TRAINER_SENSOR_BUSHIDO_STYLE)
     return TRAINER_SENSOR_BUSHIDO_STYLE
   end
 
-
-  #=============================================================================
-  # Public Access
-  #=============================================================================
-
   def self.triggered?
     return @triggered
   end
 
-
   def self.event
     return @event
   end
-
-
-  #=============================================================================
-  # Create Graphics
-  #=============================================================================
 
   def self.create
     return if @created
@@ -122,17 +71,8 @@ module TrainerSensor
     @created = true
   end
 
-
-  #=============================================================================
-  # Main Cinematic Bars
-  #=============================================================================
-
   def self.create_bars
     color = bushido_style? ? BUSHIDO_BAR_COLOR : NORMAL_BAR_COLOR
-
-    #---------------------------------------------------------------------------
-    # Top
-    #---------------------------------------------------------------------------
 
     @top = Sprite.new
     @top.z = SENSOR_Z
@@ -161,10 +101,6 @@ module TrainerSensor
     @top.y  = 0
     @top.oy = BAR_SIZE
 
-    #---------------------------------------------------------------------------
-    # Bottom
-    #---------------------------------------------------------------------------
-
     @bottom = Sprite.new
     @bottom.z = SENSOR_Z
 
@@ -190,10 +126,6 @@ module TrainerSensor
 
     @bottom.x = 0
     @bottom.y = Graphics.height
-
-    #---------------------------------------------------------------------------
-    # Left
-    #---------------------------------------------------------------------------
 
     @left = Sprite.new
     @left.z = SENSOR_Z
@@ -221,10 +153,6 @@ module TrainerSensor
     @left.x  = 0
     @left.y  = 0
     @left.ox = BAR_SIZE
-
-    #---------------------------------------------------------------------------
-    # Right
-    #---------------------------------------------------------------------------
 
     @right = Sprite.new
     @right.z = SENSOR_Z
@@ -257,11 +185,6 @@ module TrainerSensor
     @left.opacity   = 0
     @right.opacity  = 0
   end
-
-
-  #=============================================================================
-  # Bushido Bar Detail
-  #=============================================================================
 
   def self.draw_horizontal_bar_detail(bitmap, top_edge)
     h = bitmap.height
@@ -305,7 +228,6 @@ module TrainerSensor
     end
   end
 
-
   def self.draw_vertical_bar_detail(bitmap, left_edge)
     w = bitmap.width
 
@@ -347,11 +269,6 @@ module TrainerSensor
       )
     end
   end
-
-
-  #=============================================================================
-  # Red Edge Vignette
-  #=============================================================================
 
   def self.create_vignette
     @vignette = Sprite.new
@@ -416,11 +333,6 @@ module TrainerSensor
     @vignette.opacity = 0
   end
 
-
-  #=============================================================================
-  # Full-Screen Battle Slash
-  #=============================================================================
-
   def self.create_battle_slash
     @battle_slash = Sprite.new
     @battle_slash.z = SENSOR_Z + 10
@@ -435,11 +347,6 @@ module TrainerSensor
 
     redraw_battle_slash(0.0)
   end
-
-
-  #=============================================================================
-  # Draw / Reveal Battle Slash
-  #=============================================================================
 
   def self.redraw_battle_slash(progress)
     return if !@battle_slash
@@ -456,8 +363,6 @@ module TrainerSensor
     width  = Graphics.width.to_f
     height = Graphics.height.to_f
 
-    # Full-screen katana arc. Start/end sit beyond the bitmap so the stroke
-    # enters from one corner and exits through the opposite edge.
     p0 = [-width * 0.035, -height * 0.045]
     p1 = [ width * 0.34,  height * 0.08]
     p2 = [ width * 1.04,  height * 0.48]
@@ -495,8 +400,6 @@ module TrainerSensor
       nx = -tangent[1] / length
       ny =  tangent[0] / length
 
-      # Much slimmer than the old version. It stays blade-like through the
-      # middle instead of ballooning into a huge white ribbon.
       if t < 0.14
         half_width = width * 0.0015 +
           width * 0.0145 * (t / 0.14)
@@ -508,9 +411,6 @@ module TrainerSensor
         half_width = width * (0.034 - 0.027 * local)
       end
 
-      # While the stroke is traveling, pinch the CURRENT leading edge down.
-      # This makes it look like the slash is being carved across the screen,
-      # instead of a finished graphic simply being unmasked.
       if progress < 0.999
         tip_distance = progress - t
         tip_zone = 0.075
@@ -535,7 +435,6 @@ module TrainerSensor
         point[1] - ny * inner
       ]
 
-      # Two red fringes: a broad dark crimson aura and a tighter bright edge.
       red_outer_extra = 3.0
       red_inner_extra = 1.0
 
@@ -584,8 +483,6 @@ module TrainerSensor
       Color.new(255, 255, 255, 255)
     )
 
-    # The little torn blade fragments join the stroke as the travelling edge
-    # reaches them, rather than popping in before the slash gets there.
     accent1 = [
       [width * 0.525, height * 0.365],
       [width * 0.590, height * 0.425],
@@ -627,11 +524,6 @@ module TrainerSensor
     end
   end
 
-
-  #=============================================================================
-  # Slash Geometry Helpers
-  #=============================================================================
-
   def self.cubic_bezier_point(p0, p1, p2, p3, t)
     u = 1.0 - t
 
@@ -650,7 +542,6 @@ module TrainerSensor
     return [x, y]
   end
 
-
   def self.cubic_bezier_tangent(p0, p1, p2, p3, t)
     u = 1.0 - t
 
@@ -666,7 +557,6 @@ module TrainerSensor
 
     return [x, y]
   end
-
 
   def self.draw_filled_polygon(bitmap, points, color)
     return if !points || points.length < 3
@@ -736,7 +626,6 @@ module TrainerSensor
     end
   end
 
-
   def self.draw_polygon_outline(bitmap, points, color)
     return if !points || points.length < 2
 
@@ -754,7 +643,6 @@ module TrainerSensor
       )
     end
   end
-
 
   def self.draw_slash_line(bitmap, x1, y1, x2, y2, color)
     dx = (x2 - x1).abs
@@ -787,17 +675,11 @@ module TrainerSensor
     end
   end
 
-
-  #=============================================================================
-  # Trigger Full-Screen Slash
-  #=============================================================================
-
   def self.trigger_battle_slash(event)
     return if !bushido_style?
     return if !@battle_slash
     return if @battle_slash_playing
 
-    # Don't retrigger every frame while the trainer still sees the player.
     if @last_seen_event == event
       return
     end
@@ -811,11 +693,6 @@ module TrainerSensor
     @battle_slash.opacity = 0
     redraw_battle_slash(0.0)
   end
-
-
-  #=============================================================================
-  # Show Sensor
-  #=============================================================================
 
   def self.show(event, distance)
     return if !enabled?
@@ -870,11 +747,6 @@ module TrainerSensor
     end
   end
 
-
-  #=============================================================================
-  # Hide Sensor
-  #=============================================================================
-
   def self.hide
     return if !@created
 
@@ -894,19 +766,9 @@ module TrainerSensor
     @target_opacity = 0
   end
 
-
-  #=============================================================================
-  # Reset Battle Detection Lock
-  #=============================================================================
-
   def self.clear_seen_lock
     @last_seen_event = nil
   end
-
-
-  #=============================================================================
-  # Frame Update
-  #=============================================================================
 
   def self.update
     return if !@created
@@ -942,11 +804,6 @@ module TrainerSensor
 
     update_battle_slash if @battle_slash_playing
   end
-
-
-  #=============================================================================
-  # Position Bars
-  #=============================================================================
 
   def self.update_bar_positions
     d = @duration
@@ -1006,11 +863,6 @@ module TrainerSensor
     end
   end
 
-
-  #=============================================================================
-  # Hide Bars
-  #=============================================================================
-
   def self.hide_bar_positions
     d = @duration
     return if d <= 0
@@ -1037,11 +889,6 @@ module TrainerSensor
         Graphics.width
       ) / d
   end
-
-
-  #=============================================================================
-  # Live Opacity / Pulse
-  #=============================================================================
 
   def self.update_live_opacity
     target = @target_opacity
@@ -1083,7 +930,6 @@ module TrainerSensor
     set_bar_opacity(current)
   end
 
-
   def self.set_bar_opacity(value)
     value = value.to_i
     value = 0   if value < 0
@@ -1094,11 +940,6 @@ module TrainerSensor
     @left.opacity   = value
     @right.opacity  = value
   end
-
-
-  #=============================================================================
-  # Vignette
-  #=============================================================================
 
   def self.update_vignette
     return if !@vignette
@@ -1147,11 +988,6 @@ module TrainerSensor
     @vignette.opacity = current
   end
 
-
-  #=============================================================================
-  # Full-Screen Battle Slash Animation
-  #=============================================================================
-
   def self.update_battle_slash
     return if !@battle_slash_playing
     return if !@battle_slash
@@ -1159,8 +995,6 @@ module TrainerSensor
     @battle_slash_timer += 1
     frame = @battle_slash_timer
 
-    # A sword cut should read as a sudden SHING, not a smooth UI wipe.
-    # These deliberately large jumps make the stroke snap across the screen.
     if frame == 1
       @battle_slash.visible = true
       @battle_slash.opacity = 255
@@ -1178,11 +1012,9 @@ module TrainerSensor
       redraw_battle_slash(1.0)
       @battle_slash.opacity = 255
 
-    # Let the finished cut sit on the screen long enough to register.
     elsif frame <= 14
       @battle_slash.opacity = 255
 
-    # Then fade the completed slash away without moving it anymore.
     elsif frame <= 25
       fade_frame = frame - 14
       @battle_slash.opacity = 255 - ((255 * fade_frame) / 11)
@@ -1198,11 +1030,6 @@ module TrainerSensor
       @battle_slash_playing = false
     end
   end
-
-
-  #=============================================================================
-  # Fade Sensor Out
-  #=============================================================================
 
   def self.update_hide_opacity
     current =
@@ -1227,11 +1054,6 @@ module TrainerSensor
       @vignette.opacity = value
     end
   end
-
-
-  #=============================================================================
-  # Pre-FOV Warning Check
-  #=============================================================================
 
   def self.inRange?(event, distance)
     return false if !enabled?
@@ -1258,7 +1080,6 @@ module TrainerSensor
       return false
     end
 
-    # If already seen, this is NOT warning range anymore.
     if pbEventCanReachPlayer?(
       event,
       $game_player,
@@ -1286,11 +1107,7 @@ module TrainerSensor
 
 end
 
-
-#===============================================================================
-# Update Sensor With Player
-#===============================================================================
-
+# Updates the trainer sensor with the player.
 class Game_Player
 
   unless method_defined?(:trainer_sensor_original_update)
@@ -1304,11 +1121,7 @@ class Game_Player
 
 end
 
-
-#===============================================================================
-# Trainer Event Data
-#===============================================================================
-
+# Reads trainer sensor data from map events.
 class Game_Event
 
   attr_reader :view_distance
@@ -1321,7 +1134,6 @@ class Game_Event
     trainer_sensor_original_refresh(*args)
     refresh_trainer_sensor
   end
-
 
   def refresh_trainer_sensor
     @trainer_sensor_enabled = false
@@ -1339,7 +1151,6 @@ class Game_Event
       @trainer_sensor_enabled = false
     end
   end
-
 
   def trainer_sensor_completed?
     return false if !$game_self_switches
@@ -1360,11 +1171,7 @@ class Game_Event
 
 end
 
-
-#===============================================================================
-# Map Scanner
-#===============================================================================
-
+# Scans trainer sight and warning ranges.
 Events.onMapUpdate += proc { |sender, e|
 
   begin
@@ -1380,10 +1187,6 @@ Events.onMapUpdate += proc { |sender, e|
     final_event = nil
     seeing_event = nil
 
-    #---------------------------------------------------------------------------
-    # Scan every Trainer(X)
-    #---------------------------------------------------------------------------
-
     $game_map.events.each_value do |event|
 
       next if !event
@@ -1391,13 +1194,6 @@ Events.onMapUpdate += proc { |sender, e|
 
       distance =
         event.view_distance
-
-      #-------------------------------------------------------------------------
-      # FIRST:
-      # Is the player actually inside this trainer's FOV?
-      #
-      # If yes, trigger the battle slash.
-      #-------------------------------------------------------------------------
 
       if pbEventCanReachPlayer?(
         event,
@@ -1409,20 +1205,10 @@ Events.onMapUpdate += proc { |sender, e|
         next
       end
 
-      #-------------------------------------------------------------------------
-      # SECOND:
-      # Otherwise check whether we're in the pre-FOV warning zone.
-      #-------------------------------------------------------------------------
-
       next if !TrainerSensor.inRange?(
         event,
         distance
       )
-
-      #-------------------------------------------------------------------------
-      # Multiple warning zones:
-      # choose closest.
-      #-------------------------------------------------------------------------
 
       if final_event
 
@@ -1460,10 +1246,6 @@ Events.onMapUpdate += proc { |sender, e|
       final_event = event
     end
 
-    #---------------------------------------------------------------------------
-    # Actual trainer detection
-    #---------------------------------------------------------------------------
-
     if seeing_event
 
       TrainerSensor.hide
@@ -1476,7 +1258,6 @@ Events.onMapUpdate += proc { |sender, e|
 
     else
 
-      # Reset so another future trainer can trigger its own slash.
       TrainerSensor.clear_seen_lock
 
       if final_event
