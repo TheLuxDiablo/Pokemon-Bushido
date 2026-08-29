@@ -460,10 +460,20 @@ Pokemon = IVYSAUR,18
 #-------------------------------
 [NENSHO_M,Maguma]
 LoseText = "To defeat me in my own place of training... How shameful!"
-Pokemon = GROWLITHE,26
+Pokemon = TORKOAL,30
+	Moves = ERUPTION
+Pokemon = GROWLITHE,31
 	Form = 1
-Pokemon = CHARMELEON,27
+Pokemon = CHARMELEON,32
 	Item = SITRUSBERRY
+#-------------------------------	
+[NENSHO_F,Atsui]
+LoseText = "I've let Nori down! Our training regimen..."
+Pokemon = EXCADRILL,31
+	Moves = STOMPINGTANTRUM,ROCKSLIDE,IRONHEAD
+Pokemon = WYRDEER,32
+	Moves = PSYSHIELDBASH,STOMP,TAKEDOWN
+Pokemon = ARCANINE,33
 #-------------------------------
 [SHIMIZU_M,Shohei]
 LoseText = "I never thought I'd see the day... A big wave is coming my way..."

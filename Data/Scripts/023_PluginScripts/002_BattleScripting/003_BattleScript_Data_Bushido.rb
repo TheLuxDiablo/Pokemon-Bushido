@@ -818,15 +818,34 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("\\rI've been working on my techniques here! Check out what I've been able to master!")
+    pbMessage("\\bI've been working on my techniques here! Check out what I've been able to master!")
     scene.disappearBar
     if strong_katanas?
         battle.pbAnimation(:TRICKROOM, user, target)
         battle.field.effects[PBEffects::TrickRoom] = 6
         battle.pbDisplay(_INTL("The dimensions were twisted!"))
-        pbMessage("\\rKatana of Fire, Nensho Style! Fire Vortex!")
+        pbMessage("\\bKatana of Fire, Nensho Style! Fire Vortex!")
         target.pbTrapWithMove(:FIRESPIN, user)
         user.pbRaiseStatStageEx(:SPATK, 2)
+    end
+    scene.disappearBar
+    scene.pbHideOpponent
+  }
+
+  Nensho10 = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    user   = battlers[1]
+    target = battlers[0]
+    if strong_katanas?
+      pbMessage("\\rNori taught me how to breathe fire here! Feel the heat!")
+      pbMessage("\\rKatana of Fire, Nensho Style! Breath of Flames!")
+      scene.disappearBar
+      target.pbInflictStatusEx(:BURN, 0, :FLAMETHROWER, user)
+      user.pbRaiseStatStageEx([:ATTACK, :SPEED], 1)
+    else
+        pbMessage("\\rNori helped me refine my battle skills here! Feel the heat!")
+        scene.disappearBar
     end
     scene.disappearBar
     scene.pbHideOpponent
