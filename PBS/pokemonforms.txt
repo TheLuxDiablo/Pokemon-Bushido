@@ -2834,7 +2834,7 @@ BattlerShadowSize = 1
 [BASCULIN,2]
 FormName = White-Striped Form
 Abilities = RATTLED,ADAPTABILITY
-Pokedex = Though it differs from other Basculin in several respects, including demeanor—this one is gentle—people have categorized it as a regional form given the vast array of shared qualities.
+Pokedex = Though it differs from other Basculin, including demeanor—this one is gentle—people have categorized it as a regional form given the vast array of shared qualities.
 BattlerEnemyX = -1
 BattlerEnemyY = 28
 Evolutions = BASCULEGION,Level,32

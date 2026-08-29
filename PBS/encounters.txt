@@ -47,34 +47,34 @@ Water
 082 # Sakura Pass
 16,8,8
 Land
-    CHERUBI,2,6
-    PANCHAM,3,7
-    PIKIPEK,3,7
-    PURRLOIN,3,6
-    FLABEBE,3,7
-    RALTS,3,6
-    CUTIEFLY,3,6
-    PICHU,3,7
+    CHERUBI,2,5
+    PANCHAM,2,5
+    PIKIPEK,2,5
+    PURRLOIN,2,5
+    FLABEBE,2,5
+    RALTS,2,5
+    CUTIEFLY,2,5
+    PICHU,2,5
 Water
     MAGIKARP,2,6
-    BASCULIN,3,7
-    GOLDEEN,3,7
+    BASCULIN,3,6
+    GOLDEEN,3,6
     LOTAD,2,6
-    KRABBY,3,7
+    KRABBY,3,6
     FEEBAS,2,6
     TYMPOLE,3,6
-    CARVANHA,3,7
+    CARVANHA,3,6
 OldRod
     MAGIKARP,2,6
-    BASCULIN,3,6
+    BASCULIN,2,6
 PhenomenonGrass
-    HAPPINY,7
-    RIOLU,6
-    FARFETCHD,6
-    EEVEE,6
-    EEVEE,6
-    FROAKIE,6
-    FROAKIE,7
+    HAPPINY,4,7
+    RIOLU,4,7
+    FARFETCHD,4,7
+    EEVEE,4,7
+    EEVEE,4,7
+    FROAKIE,4,7
+    FROAKIE,4,7
 #-------------------------------
 084 # Jikan Shrine
 16,8,8
@@ -99,6 +99,21 @@ Water
 OldRod
     MAGIKARP,5,8
     BASCULIN,6,9
+#-------------------------------
+085 # Hagane City
+15,8,8
+Water
+    BASCULIN,15,25
+    QWILFISH,15,25
+    CARVANHA,15,25
+    MAGIKARP,15,25
+    SLOWPOKE,15,25
+    BASCULIN,15,25
+    BASCULIN,15,25
+    SQUIRTLE,15,25
+OldRod
+    BASCULIN,8,12
+    SLOWPOKE,8,12
 #-------------------------------
 090 # Shizen Trail
 16,8,8
