@@ -265,6 +265,20 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
+  Komorei8 = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    user = battlers[1]
+    pbMessage("\\rIf you can beat me in a duel, we can share this training spot!")
+    pbMessage("\\rKatana of Nature, Komorei Style! Blazing Sunlight!")
+    scene.disappearBar
+    battle.pbStartWeatherEx(user, :Sun)
+    if strong_katanas?
+        user.pbRaiseStatStageEx(:SPEED, 2)
+    end
+    scene.pbHideOpponent
+  }
+
   KomoreiDojo1 = Proc.new { |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
@@ -799,6 +813,25 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
+  Nensho9 = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    user   = battlers[1]
+    target = battlers[0]
+    pbMessage("\\rI've been working on my techniques here! Check out what I've been able to master!")
+    scene.disappearBar
+    if strong_katanas?
+        battle.pbAnimation(:TRICKROOM, user, target)
+        battle.field.effects[PBEffects::TrickRoom] = 6
+        battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        pbMessage("\\rKatana of Fire, Nensho Style! Fire Vortex!")
+        target.pbTrapWithMove(:FIRESPIN, user)
+        user.pbRaiseStatStageEx(:SPATK, 2)
+    end
+    scene.disappearBar
+    scene.pbHideOpponent
+  }
+
   Nori1 = Proc.new { |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
@@ -1035,6 +1068,22 @@ module DialogueModule
       battle.pbAnimation(:AQUARING, user, user)
       user.effects[PBEffects::AquaRing] = true
       battle.pbDisplay(_INTL("{1} was surrounded with a veil of water!", user.pbThis))
+    end
+    scene.pbHideOpponent
+  }
+
+  Shimizu14 = Proc.new { |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    user = battlers[1]
+    pbMessage("\\bThis is my optimal domian! I cannot lose!")
+    if strong_katanas?
+        pbMessage("\\bKatana of Water, Shimizu Style! Torrential Downpour!")
+        scene.disappearBar
+        battle.pbStartWeatherEx(user, :Rain)
+        user.pbRaiseStatStageEx(:SPATK, 2)
+    else
+        scene.disappearBar
     end
     scene.pbHideOpponent
   }

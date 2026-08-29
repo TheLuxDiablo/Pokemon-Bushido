@@ -629,7 +629,7 @@ ShowArea = false
 MapPosition = 2,12,5
 #-------------------------------
 [112]
-# Tsuchi Village
+# Tsuchi Library
 Outdoor = false
 ShowArea = false
 MapPosition = 2,14,15
@@ -958,3 +958,10 @@ MapPosition = 2,15,10
 Outdoor = true
 ShowArea = true
 MapPosition = 2,14,5
+#-------------------------------
+[173]
+# Yogan Cavern
+Outdoor = false
+ShowArea = true
+MapPosition = 2,14,3
+BattleBack = CaveBushido4

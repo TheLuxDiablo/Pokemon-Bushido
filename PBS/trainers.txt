@@ -452,6 +452,28 @@ LoseText = "This is probably my first loss in this forest."
 Pokemon = LITLEO,20
 Pokemon = HOUNDOUR,20
 #-------------------------------
+[KOMOREI_F,Mori]
+LoseText = "Fine... We can both train here, I guess."
+Pokemon = POLTCHAGEIST,17
+Pokemon = IVYSAUR,18
+	Item = SITRUSBERRY
+#-------------------------------
+[NENSHO_M,Maguma]
+LoseText = "To defeat me in my own place of training... How shameful!"
+Pokemon = GROWLITHE,26
+	Form = 1
+Pokemon = CHARMELEON,27
+	Item = SITRUSBERRY
+#-------------------------------
+[SHIMIZU_M,Shohei]
+LoseText = "I never thought I'd see the day... A big wave is coming my way..."
+Pokemon = BASCULIN,27
+	Form = 2
+Pokemon = QWILFISH,27
+	Form = 1
+Pokemon = WARTORTLE,28
+	Item = SITRUSBERRY
+#-------------------------------
 [KENSHI_M,Kita]
 LoseText = "Berries are amazing! Definitely worth a try."
 Pokemon = CHERUBI,21

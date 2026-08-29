@@ -31,8 +31,8 @@ class Game_Temp
     if !@ff_sprite
       @ff_sprite = Sprite.new(self.ff_vp)
       @ff_sprite.bitmap = RPG::Cache.load_bitmap("Graphics/Pictures/ff_icon") rescue Bitmap.new(32, 32)
-      @ff_sprite.x = 2
-      @ff_sprite.y = 2
+      @ff_sprite.x = 0
+      @ff_sprite.y = 0
       @ff_sprite.opacity = 0
       @ff_sprite.src_rect.width = @ff_sprite.src_rect.height
     end

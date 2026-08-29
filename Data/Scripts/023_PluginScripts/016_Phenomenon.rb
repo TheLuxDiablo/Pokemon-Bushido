@@ -70,7 +70,7 @@ module PhenomenonConfig
     :commonCave => [:FIREGEM, :WATERGEM, :ICEGEM, :ELECTRICGEM, :GRASSGEM, :FIGHTINGGEM,
                     :POISONGEM, :GROUNDGEM, :FLYINGGEM, :PSYCHICGEM, :BUGGEM, :ROCKGEM,
                     :GHOSTGEM, :DRAGONGEM, :DARKGEM, :STEELGEM, :NORMALGEM, :REDSHARD,
-                    :BLUESHARD, :YELLOWSHARD, :GREENSHARD],
+                    :BLUESHARD, :YELLOWSHARD, :GREENSHARD,:FIRESTONE,:WATERSTONE,:LEAFSTONE,:THUNDERSTONE,:PEATBLOCK],
     # 10% chance
     :rareCave => [:THUNDERSTONE, :WATERSTONE, :LEAFSTONE, :MOONSTONE, :FIRESTONE,
                   :SUNSTONE, :SHINYSTONE, :DUSKSTONE, :DAWNSTONE, :EVERSTONE, :OVALSTONE],
@@ -168,7 +168,7 @@ class Phenomenon
     when :water
       encounter = $PokemonEncounters.pbEncounteredPokemon(PhenomenonConfig::Types[:water][3])
     when :cave
-      if chance >= 5
+      if chance >= 3
         encounter = $PokemonEncounters.pbEncounteredPokemon(PhenomenonConfig::Types[:cave][3])
       else
         item = chance > 0 ? PhenomenonConfig::Items[:commonCave].random : PhenomenonConfig::Items[:rareCave].random

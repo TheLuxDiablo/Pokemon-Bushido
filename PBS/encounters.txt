@@ -366,7 +366,7 @@ Cave
     HARIYAMA,41,45
     SNORLAX,40,45
     GLIGAR,40,44
-    STEELIX,40,45
+    EXCADRILL,40,45
     GOLURK,40,44
 OldRod
     QWILFISH,15,20
@@ -575,7 +575,6 @@ OldRod
 155 # Mushi Grove
 16,8,8
 Land
-    VIVILLON,12,14
     PETILIL,10,14
     VOLTORB,10,14
     SCYTHER,12,14
@@ -583,6 +582,7 @@ Land
     HERACROSS,10,14
     STANTLER,10,14
     POLTCHAGEIST,9,13
+    BULBASAUR,12,14
 Water
     LOTAD,19,24
     BASCULIN,19,24
@@ -596,13 +596,13 @@ OldRod
     BASCULIN,12,14
     GOOMY,10,14
 PhenomenonGrass
-    PETILIL,13,16
     SCYTHER,13,16
     STANTLER,13,16
     PINSIR,13,16
     ROWLET,13,15
     ROWLET,13,15
-    HERACROSS,13,16
+    BULBASAUR,13,16
+    BULBASAUR,13,16
 #-------------------------------
 156 # Kowai Pass
 16,8,8
@@ -777,3 +777,21 @@ Water
 OldRod
     QWILFISH,12,14
     BASCULIN,13,15
+#-------------------------------
+173 # Yogan Caverns
+15,7,7
+Cave
+    SLUGMA,24,29
+    GROWLITHE,24,29
+    LARVITAR,24,29
+    DARUMAKA,24,29
+    SCRAGGY,24,29
+    ROCKRUFF,24,29
+    DRILBUR,24,29
+    CHARMANDER,24,29
+PhenomenonCave
+    MUNCHLAX,25,30
+    GROWLITHE,25,30
+    CLEFAIRY,25,30
+    LARVITAR,25,30
+    CHARMANDER,25,30
