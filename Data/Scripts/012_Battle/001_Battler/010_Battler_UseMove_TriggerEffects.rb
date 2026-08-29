@@ -107,9 +107,10 @@ class PokeBattle_Battler
         targets.each { |b| numFainted += 1 if b.damageState.fainted }
         if numFainted>0 && user.form==1
           @battle.battleBond[user.index&1][user.pokemonIndex] = true
-          @battle.pbDisplay(_INTL("{1} became fully charged due to its bond with its Trainer!",user.pbThis))
+          @battle.pbDisplay(_INTL("{1} became charged due to the bond with its Kenshi!",user.pbThis))
           @battle.pbShowAbilitySplash(user,true)
           @battle.pbHideAbilitySplash(user)
+          @battle.pbAnimation(:NOBLEROAR, user, user)
           user.pbChangeForm(2,_INTL("{1} became Ash-Greninja!",user.pbThis))
         end
       end
