@@ -21,7 +21,6 @@ Pokemon = ONIX,14
     Ability = 0
     Item = SITRUSBERRY
     IV = 20
-    Ball = 19
 #-------------------------------
 [TEAMROCKET_M,Grunt,1]
 LoseText = "You're too good for me!"
@@ -354,12 +353,12 @@ LoseText = "There's no way... You got lucky! I'll get you back for this!"
 Pokemon = SANDILE,6
 Pokemon = QWILFISH,7
 	Form = 1
-Pokemon = POOCHYENA,8
+Pokemon = POOCHYENA,7
     Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Kumiko]
 LoseText = "Tch. The boss isn't gonna be pleased to hear about this..."
-Pokemon = TOXEL,7
+Pokemon = TOXEL,6
 Pokemon = SNEASEL,7
 	Form = 1
 Pokemon = NICKIT,8
@@ -401,12 +400,14 @@ Pokemon = NICKIT,15
 [KENSHI_M,Shota]
 LoseText = "Even though I challenged you, I still lost..."
 Pokemon = FLABEBE,15
+	Form = 5
 Pokemon = TAILLOW,15
 Pokemon = LUXIO,16
 #-------------------------------
 [KENSHI_M,Shota,1]
 LoseText = "Even though I challenged you, I still lost..."
 Pokemon = FLABEBE,12
+	Form = 5
 Pokemon = TAILLOW,12
 Pokemon = SHINX,13
 #-------------------------------
@@ -545,6 +546,8 @@ Pokemon = NINETALES,66
 LoseText = "Very well! You have proven yourself worthy."
 Pokemon = FOMANTIS,26
 Pokemon = SINISTCHA,27
+	Moves = MATCHAGOTCHA,FOULPLAY,MEGADRAIN,HEX
+	Item = ROSEINCENSE
 Pokemon = ORANGURU,27
 #-------------------------------
 [KOMOREI_F,Chikako]
@@ -1071,6 +1074,8 @@ Pokemon = OBSTAGOON,43
 [KOMOREI_M,Shuichi]
 LoseText = "Part of appreciating battles comes from defeat."
 Pokemon = VIVILLON,43
+Pokemon = SINISTCHA,44
+	Moves = MATCHAGOTCHA,FOULPLAY,SHADOWBALL
 Pokemon = BRELOOM,44
 #-------------------------------
 [SHIMIZU_F,Taketa]
