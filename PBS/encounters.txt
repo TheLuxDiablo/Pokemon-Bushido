@@ -58,6 +58,9 @@ Water
     GYARADOS,33,37
     GRENINJA,33,37
     EELEKTROSS,33,37
+OldRod
+    BASCULIN,4,8
+    KRABBY,4,8
 #-------------------------------
 082 # Sakura Pass
 16,8,8
@@ -314,8 +317,8 @@ Land
     RAICHU,38,43
     SEISMITOAD,38,43
 OldRod
-    QWILFISH,15,20
-    BASCULIN,15,20
+    QWILFISH,10,15
+    BASCULIN,10,15
 Water
     BASCULIN,28,32
     QWILFISH,38,42

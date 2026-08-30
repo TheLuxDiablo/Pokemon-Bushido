@@ -365,7 +365,7 @@ Pokemon = NICKIT,8
     Shadow = yes
 #-------------------------------
 [KAYOKO,Kayoko]
-LoseText = "Thank you for this fight. I will try continue to grow as a Kenshi."
+LoseText = "Thank you for this duel. I will continue to grow under my future clan..."
 Pokemon = CARVANHA,11
 Pokemon = TIMBURR,12
 Pokemon = TYNAMO,13
@@ -373,8 +373,11 @@ Pokemon = TYNAMO,13
 [TSUKU,Tsuku]
 LoseText = "W- wow! You're pretty g- good..."
 Pokemon = SPEWPA,13
+	Moves = TACKLE,BUGBITE,STUNSPORE
 Pokemon = SEWADDLE,13
+	Moves = RAZORLEAF,TACKLE,BUGBITE
 Pokemon = NINCADA,14
+	Moves = MUDSLAP,ABSORB,SANDATTACK,SCRATCH
 #-------------------------------
 [RIVALBUSHIDO_M,Yakeru,2]
 LoseText = "Wow, you really are strong! I'm glad to have a rival like you to test my strength!"

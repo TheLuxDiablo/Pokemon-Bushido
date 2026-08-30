@@ -2954,8 +2954,8 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Kenshi scum like you are worth NOTHING. I'll take you out here and now.")
-    pbMessage("It's time to unleash my full power.")
+    pbMessage("Kenshi scum like you are worth nothing! I'll take you out here and now!")
+    pbMessage("It's time to unleash my full power!")
     if strong_katanas?
       scene.disappearBar
       target.pbSetHazards(:SPIKES, user)
@@ -2970,54 +2970,32 @@ module DialogueModule
   KatanaAwakens = Proc.new { |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
-    pbMessage("Give it up! It's impossible to beat our vicious Shadow Pokemon.")
-    pbMessage("Wait, what's that ligh-\\wtnp[20]")
+    user   = battlers[1]
+    target = battlers[0]
+    pbMessage("Give it up! It's impossible to beat our vicious Shadow Pokemon!")
+    battle.pbAnimation(:LIFEDEW, target, user)
+    pbMessage("Wait, what's with that light?")
     scene.disappearBar
-    viewport   = Viewport.new(0, 0, Graphics.width, Graphics.height)
-    viewport.z = 999999
-    viewport.color = Color.new(243, 243, 99, 0)
-    pbSEPlay("shadowkatana")
-    dur = (Graphics.frame_rate / 2)
-    dur.times do |i|
-      Graphics.update
-      factor = ((i + 1).to_f / dur)
-      viewport.color.alpha = 255 * factor
-    end
-    pbWait(Graphics.frame_rate / 4 * 3)
+    #pbFlash(243,243,99,0.20)
+    battle.pbCommonAnimation("UltraBurst",target,user)
+    #pbSEPlay("shadowkatana")
+    #battle.pbCommonAnimation("UltraBurst2",target)
     pbMessage("You feel your father's energy flowing through the Ancient Katana and into your body...")
-    pbMessage(".\\wtnp[18].\\wtnp[18].\\wtnp[18]")
+    #pbMessage(".\\wtnp[18].\\wtnp[18].\\wtnp[18]")
+    battle.pbCommonAnimation("UltraBurst2",target,user)
     pbMessage("\\me[Conquest-LevelUpWarlord]The Ancient Katana transformed into the Katana of Light!")
     vRI("KATANALIGHT", 1)
     vDI("KATANABASIC") if vHI("KATANABASIC")
-    pbMessage("You may now steal Shadow Pokémon from the Akui Clan!")
-    pbWait(Graphics.frame_rate / 4 * 3)
-    dur.times do |i|
-      Graphics.update
-      factor = ((i + 1).to_f / dur)
-      viewport.color.alpha = 255 * (1 - factor)
-    end
+    pbMessage("You may now steal Shadow Pokémon from the \\c[9]Akui Clan\\c[0]!")
     scene.appearBar
     pbMessage("\\xn[Shogun]\\PN! You must use the power of light to counter these Shadow Pokemon! Capture their Pokemon and purify them for good!")
-    scene.disappearBar
+    #scene.disappearBar
     $game_switches[67] = true
     $game_switches[62] = true
     $PokemonGlobal.snagMachine = true
-    pbSEPlay("shadowkatana")
-    dur = (Graphics.frame_rate / 4)
-    dur.times do |i|
-      Graphics.update
-      factor = ((i + 1).to_f / dur)
-      viewport.color.alpha = 255 * factor
-    end
-    pbWait(Graphics.frame_rate / 3)
-    dur.times do |i|
-      Graphics.update
-      factor = ((i + 1).to_f / dur)
-      viewport.color.alpha = 255 * (1 - factor)
-    end
-    viewport.dispose
-    scene.appearBar
-    pbMessage("Hngh- That light... what was it!?")
+    #pbSEPlay("shadowkatana")
+    #scene.appearBar
+    pbMessage("Hngh- That light... what's going on?")
     scene.disappearBar
     scene.pbHideOpponent
   }

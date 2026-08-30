@@ -1093,6 +1093,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:SUPREMEOVERLORD,
     numFainted = [5, battler.num_fainted_allies].min
     next if numFainted <= 0
     battle.pbShowAbilitySplash(battler)
+    battle.pbCommonAnimation("SupremeOverlord",battler)
     battle.pbDisplay(_INTL("{1} gained strength from the fallen!", battler.pbThis))
     battler.effects[PBEffects::SupremeOverlord] = numFainted
     battle.pbHideAbilitySplash(battler)
