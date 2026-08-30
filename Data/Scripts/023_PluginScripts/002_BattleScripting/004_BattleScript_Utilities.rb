@@ -297,7 +297,7 @@ class PokeBattle_Battle
     pbMessage("\\bNow, \\PN... Tell me...")
     case effectNum
     when 0
-        cmd= pbMessage("\\bWhat is a Kenshi's source of power?", ["Spear", "Pokémon", "Katana"])
+        cmd= pbMessage("\\bWhat is a Kenshi's source of power?", ["Spear", "Pokémon", "Katana", "Odachi"])
         if cmd == 1
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
@@ -380,7 +380,7 @@ class PokeBattle_Battle
           incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
     when 10
-        cmd= pbMessage("\\bWhich type is most effective against the Chikyu Clan?", ["Poison", "Steel", "Water", "Flying"])
+        cmd= pbMessage("\\bWhich type is most effective against the Iwa Clan?", ["Poison", "Steel", "Water", "Flying"])
         if cmd == 2
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
@@ -487,6 +487,13 @@ class PokeBattle_Battle
     when 25
         cmd= pbMessage("\\bWhat type of trees grow on the route to the west of Ezo Village?", ["Cypress", "Bonsai", "Sakura", "Gingko"])
         if cmd == 2
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 26
+        cmd= pbMessage("\\bWhat is the best place to catch Bug-Type Pokémon?", ["Yogan Cavern","Mushi Grove", "Shizen Trail", "Fubuki Bay"])
+        if cmd == 1
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
           incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)

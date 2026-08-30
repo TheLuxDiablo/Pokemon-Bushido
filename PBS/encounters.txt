@@ -32,6 +32,21 @@ PhenomenonGrass
     LARVITAR,20,25
     LARVITAR,20,25
 #-------------------------------
+079 # Ezo Village
+14,7,7
+Water
+    BASCULIN,15,25
+    QWILFISH,15,25
+    CARVANHA,15,25
+    MAGIKARP,15,25
+    SLOWPOKE,15,25
+    BASCULIN,15,25
+    BASCULIN,15,25
+    CARVANHA,15,25
+OldRod
+    BASCULIN,3,7
+    KRABBY,3,7
+#-------------------------------
 081 # Nagisa Bay
 16,8,8
 Water

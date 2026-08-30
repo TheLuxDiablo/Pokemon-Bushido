@@ -499,10 +499,28 @@ end
         if(battleResult == 1)
             pbMessage(_INTL("\\xn[Sukiro]\\bWell fought, \\PN! You are becoming stronger with every battle."))
             incrementGameVariable(191,1)
+            if($game_variables[191]==5)
+                pbMessage(_INTL("\\xn[Sukiro]\\bI'm impressed by your tenacity, \\PN."))
+                pbMessage(_INTL("\\xn[Sukiro]\\bHere, because you've bested me in so many duels, I'd like you to have this."))
+                vRI("EXPERTBELT", 1)
+                pbMessage(_INTL("\\xn[Sukiro]\\bIf you ever wish to continue sparring to get stronger, I'll be here!"))
+            end
+            if($game_variables[191]==10)
+                pbMessage(_INTL("\\xn[Sukiro]\\bYou continue to impress me, \\PN!"))
+                pbMessage(_INTL("\\xn[Sukiro]\\bHere, I'd like you to have this. As a reward for your continued commitment to sparring."))
+                vRI("ASSAULTVEST", 1)
+                pbMessage(_INTL("\\xn[Sukiro]\\bIf you ever wish to continue sparring to get stronger, I'll be here!"))
+            end
             pbMessage(_INTL("\\xn[Sukiro]\\bYour number of sparring wins is now {1}!", $game_variables[191]))
         elsif(battleResult == 2)
             pbMessage(_INTL("\\xn[Sukiro]\\bThat was a valiant effort, \\PN."))
             incrementGameVariable(192,1)
+            if($game_variables[192]==5)
+                pbMessage(_INTL("\\xn[Sukiro]\\bHmm, you seem to require some additional assistance with your training, \\PN..."))
+                pbMessage(_INTL("\\xn[Sukiro]\\bHere, if you take and use this item, I'm sure you'll be able to get much stronger."))
+                vRI("LUCKYEGG", 1)
+                pbMessage(_INTL("\\xn[Sukiro]\\bIf you wish to continue sparring to get stronger, do not hold back!"))
+            end
             pbMessage(_INTL("\\xn[Sukiro]\\bMy number of sparring wins is now {1}.", $game_variables[192]))
         else
             pbMessage(_INTL("\\xn[Sukiro]\\bWell played \\PN, that was quite a duel!"))
