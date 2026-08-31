@@ -3218,3 +3218,4 @@ class PokemonBag_Scene
     end
   end
 end
+ 

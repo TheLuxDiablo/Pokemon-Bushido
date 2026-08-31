@@ -6,7 +6,6 @@ FISHING_SURFACE_FRAMES = 20
 FISHING_SURFACE_HOLD   = 30
 FISHING_SURFACE_RISE   = 14
 
-# Rolls and reveals the fishing encounter.
 def pbFishingRevealEncounter(enctype)
   $PokemonTemp.encounterType = enctype
 
@@ -29,8 +28,14 @@ def pbFishingRevealEncounter(enctype)
     level =
       encounter1[1]
 
+    fishing_pokemon =
+      pbFishingGeneratePokemon(
+        species,
+        level
+      )
+
     pbFishingShowPokemon(
-      species
+      fishing_pokemon
     )
 
     if $PokemonGlobal.partner
@@ -67,8 +72,46 @@ def pbFishingRevealEncounter(enctype)
   end
 end
 
-# Finds the Pokemon's overworld charset.
-def pbFishingPokemonCharset(species)
+def pbFishingGeneratePokemon(species, level)
+  pokemon = nil
+
+  begin
+    pokemon =
+      PokeBattle_Pokemon.new(
+        species,
+        level,
+        $Trainer
+      )
+  rescue
+    begin
+      pokemon =
+        PokeBattle_Pokemon.new(
+          species,
+          level
+        )
+    rescue
+      pokemon = nil
+    end
+  end
+
+  return pokemon
+end
+
+def pbFishingPokemonCharset(pokemon)
+  return nil if !pokemon
+
+  species =
+    pokemon.species
+
+  form = 0
+
+  begin
+    form =
+      pokemon.form
+  rescue
+    form = 0
+  end
+
   species_id = nil
   species_name = nil
 
@@ -95,6 +138,44 @@ def pbFishingPokemonCharset(species)
   end
 
   candidates = []
+
+  if form && form > 0
+    if species_id
+      candidates.push(
+        sprintf(
+          "%03d_%d",
+          species_id,
+          form
+        )
+      )
+
+      candidates.push(
+        sprintf(
+          "%d_%d",
+          species_id,
+          form
+        )
+      )
+    end
+
+    if species_name
+      candidates.push(
+        sprintf(
+          "%s_%d",
+          species_name.to_s,
+          form
+        )
+      )
+
+      candidates.push(
+        sprintf(
+          "%s_%d",
+          species_name.to_s.downcase,
+          form
+        )
+      )
+    end
+  end
 
   if species_id
     candidates.push(
@@ -135,7 +216,6 @@ def pbFishingPokemonCharset(species)
   return nil
 end
 
-# Gets the reveal position in front of the player.
 def pbFishingPokemonPosition
   x =
     $game_player.screen_x
@@ -160,7 +240,6 @@ def pbFishingPokemonPosition
   return [x, y]
 end
 
-# Gets the charset row facing the player.
 def pbFishingPokemonDirectionRow(player_direction)
   case player_direction
   when 2
@@ -179,11 +258,12 @@ def pbFishingPokemonDirectionRow(player_direction)
   return 0
 end
 
-# Shows the Pokemon surfacing before battle.
-def pbFishingShowPokemon(species)
+def pbFishingShowPokemon(pokemon_data)
+  return if !pokemon_data
+
   charset =
     pbFishingPokemonCharset(
-      species
+      pokemon_data
     )
 
   return if !charset

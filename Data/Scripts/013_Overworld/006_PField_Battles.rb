@@ -128,10 +128,7 @@ def pbPrepareBattle(battle)
     backdrop = battleRules["backdrop"]
   elsif $PokemonGlobal.nextBattleBack
     backdrop = $PokemonGlobal.nextBattleBack
-  elsif $PokemonGlobal.surfing ||
-        $PokemonTemp.encounterType==EncounterTypes::OldRod ||
-        $PokemonTemp.encounterType==EncounterTypes::GoodRod ||
-        $PokemonTemp.encounterType==EncounterTypes::SuperRod
+  elsif $PokemonGlobal.surfing
     backdrop = "Surf"
   else
     back = pbGetMetadata($game_map.map_id,MetadataBattleBack)
@@ -149,8 +146,15 @@ def pbPrepareBattle(battle)
   backdrop = "FRLGGrass" if !backdrop
   battle.backdrop = backdrop
 
+  fishingBattle =
+    $PokemonTemp.encounterType==EncounterTypes::OldRod ||
+    $PokemonTemp.encounterType==EncounterTypes::GoodRod ||
+    $PokemonTemp.encounterType==EncounterTypes::SuperRod
+
   # Choose a name for bases depending on environment
-  if battleRules["base"].nil?
+  if fishingBattle
+    base = nil
+  elsif battleRules["base"].nil?
     case battle.environment
 #    when PBEnvironment::Grass, PBEnvironment::TallGrass,
 #         PBEnvironment::ForestGrass;                             base = "FRLGGrass"
