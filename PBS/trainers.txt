@@ -367,8 +367,11 @@ Pokemon = NICKIT,8
 [KAYOKO,Kayoko]
 LoseText = "Thank you for this duel. I will continue to grow under my future clan..."
 Pokemon = CARVANHA,11
+	Moves = AQUAJET,POISONFANG,LEER
 Pokemon = TIMBURR,12
+	Item = ORANBERRY
 Pokemon = TYNAMO,13
+	Item = SITRUSBERRY
 #-------------------------------
 [TSUKU,Tsuku]
 LoseText = "W- wow! You're pretty g- good..."
@@ -378,18 +381,27 @@ Pokemon = SEWADDLE,13
 	Moves = RAZORLEAF,TACKLE,BUGBITE
 Pokemon = NINCADA,14
 	Moves = MUDSLAP,ABSORB,SANDATTACK,SCRATCH
+	Item = SITRUSBERRY
 #-------------------------------
 [RIVALBUSHIDO_M,Yakeru,2]
-LoseText = "Wow, you really are strong! I'm glad to have a rival like you to test my strength!"
+LoseText = "Wow, you've gotten strong! I'm glad I have a rival like you to test my strength!"
 Pokemon = FLETCHLING,14
 Pokemon = TOGEPI,14
-Pokemon = DARUMAKA,15
+	Moves = POUND,CHARM,LIFEDEW,DRAININGKISS
+	Item = ORANBERRY
+Pokemon = DARUMAKA,16
+	Moves = FLAMECHARGE,WORKUP,BITE
+	Item = SITRUSBERRY
 #-------------------------------
 [RIVALBUSHIDO_F,Akane,2]
-LoseText = "Wow, you really are strong! I'm glad to have a rival like you to test my strength!"
+LoseText = "Wow, you've gotten strong! I'm glad I have a rival like you to test my strength!"
 Pokemon = FLETCHLING,14
 Pokemon = TOGEPI,14
-Pokemon = DARUMAKA,15
+	Moves = POUND,CHARM,LIFEDEW,DRAININGKISS
+	Item = ORANBERRY
+Pokemon = DARUMAKA,16
+	Moves = FLAMECHARGE,WORKUP,BITE
+	Item = SITRUSBERRY
 #-------------------------------
 [AKUICLAN_F,Kumiko,2]
 LoseText = "What! How did you do that?"

@@ -454,6 +454,26 @@ end
   def pbGetFirstDigitOfHighestLevel(party)
       return pbGetHighestLevelInParty(party).to_s[0].to_i
   end
+
+  def shadowFire()
+    pbMessage(_INTL("It's a dark, shadowy fire."))
+    if($game_switches[133] == true) #Shadow Clear Unlocked
+        if (pbMessage(_INTL("Use the Shadow Purge technique?"), [_INTL("Yes"), _INTL("No")]) == 0)
+            pbKatanaMoveAnimation(5)
+            $game_variables[61] = ($game_variables[61] + 1)
+            $game_screen.start_flash(Color.new(255,255,119,255), 20 * Graphics.frame_rate / 20)
+            vSS(@event_id)
+            pbSEPlay("katanashine")
+            pbWait(4)
+            pbSEPlay("Cut")
+            pbWait(24)
+        else
+            return
+        end
+    else
+        pbMessage(_INTL("You don't know any Katana Techniques that can cleanse this flame."))
+    end
+  end
   
   def rematchSukiro()
     if (pbMessage(_INTL("\\xn[Sukiro]\\b\\PN, would you like to train with a sparring session?"), [_INTL("Yes"), _INTL("No")]) == 0)

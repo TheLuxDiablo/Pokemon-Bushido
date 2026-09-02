@@ -2973,16 +2973,16 @@ module DialogueModule
     user   = battlers[1]
     target = battlers[0]
     pbMessage("Give it up! It's impossible to beat our vicious Shadow Pokemon!")
-    battle.pbAnimation(:LIFEDEW, target, user)
+    battle.pbAnimation(:LIFEDEW, target)
     pbMessage("Wait, what's with that light?")
     scene.disappearBar
     #pbFlash(243,243,99,0.20)
-    battle.pbCommonAnimation("UltraBurst",target,user)
+    battle.pbCommonAnimation("UltraBurst",target)
     #pbSEPlay("shadowkatana")
     #battle.pbCommonAnimation("UltraBurst2",target)
     pbMessage("You feel your father's energy flowing through the Ancient Katana and into your body...")
     #pbMessage(".\\wtnp[18].\\wtnp[18].\\wtnp[18]")
-    battle.pbCommonAnimation("UltraBurst2",target,user)
+    battle.pbCommonAnimation("UltraBurst2",target)
     pbMessage("\\me[Conquest-LevelUpWarlord]The Ancient Katana transformed into the Katana of Light!")
     vRI("KATANALIGHT", 1)
     vDI("KATANABASIC") if vHI("KATANABASIC")
