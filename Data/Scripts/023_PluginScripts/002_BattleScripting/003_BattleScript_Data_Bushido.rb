@@ -2973,16 +2973,20 @@ module DialogueModule
     user   = battlers[1]
     target = battlers[0]
     pbMessage("Give it up! It's impossible to beat our vicious Shadow Pokemon!")
-    battle.pbAnimation(:LIFEDEW, target)
+    battle.pbAnimation(:LIFEDEW, target, target)
     pbMessage("Wait, what's with that light?")
-    scene.disappearBar
+    scene.pbHideOpponent
+    #scene.disappearBar
     #pbFlash(243,243,99,0.20)
-    battle.pbCommonAnimation("UltraBurst",target)
+    #battle.pbCommonAnimation("UltraBurst",target, user)
+    battle.pbAnimation(:MULTRABURST, target, user)
     #pbSEPlay("shadowkatana")
     #battle.pbCommonAnimation("UltraBurst2",target)
     pbMessage("You feel your father's energy flowing through the Ancient Katana and into your body...")
     #pbMessage(".\\wtnp[18].\\wtnp[18].\\wtnp[18]")
-    battle.pbCommonAnimation("UltraBurst2",target)
+    #battle.pbCommonAnimation("UltraBurst2",target, user)
+    battle.pbAnimation(:MULTRABURST2, target, user)
+    scene.disappearBar
     pbMessage("\\me[Conquest-LevelUpWarlord]The Ancient Katana transformed into the Katana of Light!")
     vRI("KATANALIGHT", 1)
     vDI("KATANABASIC") if vHI("KATANABASIC")
@@ -2990,12 +2994,11 @@ module DialogueModule
     scene.appearBar
     pbMessage("\\xn[Shogun]\\PN! You must use the power of light to counter these Shadow Pokemon! Capture their Pokemon and purify them for good!")
     #scene.disappearBar
-    $game_switches[67] = true
-    $game_switches[62] = true
-    $PokemonGlobal.snagMachine = true
-    #pbSEPlay("shadowkatana")
+    unlockKatanaOfLight()
     #scene.appearBar
+    scene.pbShowOpponent(0)
     pbMessage("Hngh- That light... what's going on?")
+    pbMessage("The Katana of Light has awoken again... You'll never snag my Shadow Pokémon!")
     scene.disappearBar
     scene.pbHideOpponent
   }

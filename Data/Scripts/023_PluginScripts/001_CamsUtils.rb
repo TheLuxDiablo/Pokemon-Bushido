@@ -455,6 +455,12 @@ end
       return pbGetHighestLevelInParty(party).to_s[0].to_i
   end
 
+  def unlockKatanaOfLight()
+    $game_switches[67] = true
+    $game_switches[62] = true
+    $PokemonGlobal.snagMachine = true
+  end
+
   def shadowFire()
     pbMessage(_INTL("It's a dark, shadowy fire."))
     if($game_switches[133] == true) #Shadow Clear Unlocked
