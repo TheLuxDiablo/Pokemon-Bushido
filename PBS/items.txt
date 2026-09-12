@@ -675,11 +675,11 @@
 659,ROOMSERVICE,Room Service,Room Services,1,4000,"An item to be held by a Pokemon. Lowers Speed when Trick Room takes effect.",0,0,0,
 660,THROATSPRAY,Throat Spray,Throat Sprays,1,4000,"Raises Sp. Atk when the Pokemon uses a sound-based move.",0,0,0,
 661,UTILITYUMBRELLA,Utility Umbrella,Utility Umbrellas,1,4000,"An item to be held by a Pokemon. It protects the holder from the effects of weather.",0,0,0,
-662,EXPCANDYXS,Exp. Candy XS,Exp. Candies XS,1,20,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a very small amount of Exp. Points.",1,0,0,
-663,EXPCANDYS,Exp. Candy S,Exp. Candies S,1,240,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a small amount of Exp. Points.",1,0,0,
-664,EXPCANDYM,Exp. Candy M,Exp. Candies M,1,1000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a moderate amount of Exp. Points.",1,0,0,
-665,EXPCANDYL,Exp. Candy L,Exp. Candies L,1,3000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a large amount of Exp. Points.",1,0,0,
-666,EXPCANDYXL,Exp. Candy XL,Exp. Candies XL,1,10000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a very large amount of Exp. Points.",1,0,0,
+662,EXPCANDYXS,Exp. Candy XS,Exp. Candies XS,2,500,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a very small amount of Exp. Points.",1,0,0,
+663,EXPCANDYS,Exp. Candy S,Exp. Candies S,2,1000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a small amount of Exp. Points.",1,0,0,
+664,EXPCANDYM,Exp. Candy M,Exp. Candies M,2,2000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a moderate amount of Exp. Points.",1,0,0,
+665,EXPCANDYL,Exp. Candy L,Exp. Candies L,2,4000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a large amount of Exp. Points.",1,0,0,
+666,EXPCANDYXL,Exp. Candy XL,Exp. Candies XL,2,10000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a very large amount of Exp. Points.",1,0,0,
 #-------------------------------
 667,ABILITYPATCH,Ability Patch,Ability Patches,2,20000,"A patch that allows a Pokemon with a regular Ability to have a hidden Ability.",1,0,0,
 #-------------------------------

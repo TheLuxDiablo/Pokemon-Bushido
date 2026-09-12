@@ -2974,3 +2974,10 @@ Evolutions = SINISTCHA,Item,MASTERPIECETEACUP
 [SINISTCHA,1]
 FormName = Masterpiece Form
 Pokedex = It lives inside a superb teacup that was crafted by a potter of great renown. Collectors positively adore this Pokémon.
+#-------------------------------
+[DUDUNSPARCE,1]
+FormName = Three-Segment Form
+Pokedex = A recent study uncovered that the number of segments a Dudunsparce's body has is determined by the Pokémon's genes.
+BattlerPlayerX = -4
+BattlerPlayerY = 60
+BattlerEnemyY = 31

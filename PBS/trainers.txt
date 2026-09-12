@@ -678,7 +678,8 @@ Pokemon = ARON,29
 #-------------------------------
 [NENSHO_M,Hirose]
 LoseText = "I couldn't even beat you with my rare Pokemon..."
-Pokemon = SIMISEAR,31
+Pokemon = SIMISEAR,32
+Pokemon = DUDUNSPARCE,33
 #-------------------------------
 [KENSHI_M,Shishido]
 LoseText = "Light or dark, I still lose..."
@@ -1173,8 +1174,14 @@ Pokemon = SEISMITOAD,56
 #-------------------------------
 [KENSHI_M,Ando]
 LoseText = "I need some variety in my team, don't I?"
-Pokemon = LOPUNNY,47
-Pokemon = BLISSEY,47
+Pokemon = LOPUNNY,45
+Pokemon = BLISSEY,46
+#-------------------------------
+[KENSHI_F,Samui]
+LoseText = "Looks like I need to get out and challenge more Kenshi..."
+Pokemon = DUDUNSPARCE,46
+	Form = 1
+Pokemon = BLASTOISE,47
 #-------------------------------
 [YUKI_M,Uchida]
 LoseText = "Y- you make me shiver..."
@@ -1706,7 +1713,7 @@ Pokemon = GOLISOPOD,70
 #-------------------------------	
 [VOLTSEON,Voltseon]
 LoseText = "Well that  was something, I wish I had never challenged you! That is my Last Wish!"
-Pokemon = DUNSPARCE,70
+Pokemon = DUDUNSPARCE,70
 	Item = LUMBERRY
 	Nature = ADAMANT
 	Ability = 0

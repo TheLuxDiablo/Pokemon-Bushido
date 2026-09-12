@@ -90,7 +90,7 @@ PhenomenonGrass
     RIOLU,4,7
     FARFETCHD,4,7
     EEVEE,4,7
-    EEVEE,4,7
+    MIMEJR,4,6
     FROAKIE,4,7
     FROAKIE,4,7
 #-------------------------------
@@ -148,7 +148,7 @@ PhenomenonGrass
     SNEASEL,9,13
     HELIOPTILE,9,13
     ZORUA,9,13
-    SNEASEL,9,13
+    MIMEJR,8,11
     BUNEARY,9,13
     RIOLU,9,13
     HONEDGE,9,13

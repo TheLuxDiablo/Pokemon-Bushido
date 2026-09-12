@@ -36,7 +36,7 @@ MultipleForms.register(:PIKACHU,{
         if newMove && newMove>0
           newMoveName = PBMoves.getName(newMove)
           pkmn.moves[idxMoveToReplace].id = newMove
-          pbMessage(_INTL("1,\\wt[16] 2, and\\wt[16]...\\wt[16] ...\\wt[16] ... Ta-da!\\se[Battle ball drop]\1"))
+          #pbMessage(_INTL("1,\\wt[16] 2, and\\wt[16]...\\wt[16] ...\\wt[16] ... Ta-da!\\se[Battle ball drop]\1"))
           pbMessage(_INTL("{1} forgot how to use {2}.\\nAnd...\1",pkmn.name,oldMoveName))
           pbMessage(_INTL("\\se[]{1} learned {2}!\\se[Pkmn move learnt]",pkmn.name,newMoveName))
         else
@@ -71,6 +71,17 @@ MultipleForms.register(:SLOWBRO,{
 MultipleForms.register(:UNOWN,{
   "getFormOnCreation" => proc { |pkmn|
     next rand(28)
+  }
+})
+
+MultipleForms.register(:DUNSPARCE,{
+  "getFormOnCreation" => proc { |pkmn|
+    # Dunsparce has a 1 in 100 chance to become 3-part Dudunsparce, Form 1
+    if(rand(101)==0)
+        next 1
+    else
+        next 0
+    end
   }
 })
 
@@ -177,7 +188,7 @@ MultipleForms.register(:ROTOM,{
         if newMove && newMove>0
           newMoveName = PBMoves.getName(newMove)
           pkmn.moves[idxMoveToReplace].id = newMove
-          pbMessage(_INTL("1,\\wt[16] 2, and\\wt[16]...\\wt[16] ...\\wt[16] ... Ta-da!\\se[Battle ball drop]\1"))
+          #pbMessage(_INTL("1,\\wt[16] 2, and\\wt[16]...\\wt[16] ...\\wt[16] ... Ta-da!\\se[Battle ball drop]\1"))
           pbMessage(_INTL("{1} forgot how to use {2}.\\nAnd...\1",pkmn.name,oldMoveName))
           pbMessage(_INTL("\\se[]{1} learned {2}!\\se[Pkmn move learnt]",pkmn.name,newMoveName))
         else

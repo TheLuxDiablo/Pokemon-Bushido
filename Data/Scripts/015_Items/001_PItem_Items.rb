@@ -465,6 +465,93 @@ def pbTopRightWindow(text, scene = nil)
   window.dispose
 end
 
+def pbGainExpFromExpCandy(pkmn, base_amt, qty, scene)
+  # Correct shifted arguments from the Bag screen
+  if pkmn.is_a?(PokemonPartyScreen)
+    real_pkmn = scene.party[scene.index] 
+    real_scene = pkmn
+  else
+    real_pkmn = pkmn
+    real_scene = scene
+  end
+
+  # Check if already max level
+  if real_pkmn.level >= 100
+    real_scene.pbDisplay(_INTL("It won't have any effect."))
+    return false
+  end
+
+  # Capture the current level BEFORE we give any experience
+  old_level = real_pkmn.level
+  pre_evo_moves_checked = []
+
+  # Add the experience points and update stats safely
+  real_pkmn.exp += (base_amt * qty)
+  real_pkmn.calcStats
+  real_scene.pbHardRefresh if real_scene.respond_to?(:pbHardRefresh)
+
+  # Check if a level up occurred using our clean local variable
+  if real_pkmn.level > old_level
+    pbSEPlay("Pkmn level up")
+    real_scene.pbDisplay(_INTL("{1} grew to Level {2}!", real_pkmn.name, real_pkmn.level))
+    
+    # STEP 1: Pre-Evo Move-Learning Loop
+    for lvl in (old_level + 1)..real_pkmn.level
+      movelist = real_pkmn.getMoveList
+      for i in movelist
+        if i[0] == lvl # i[0] is the level the move is learned at
+          move_id = i[1] # i[1] is the internal move ID
+          # ONLY prompt if the Pokemon doesn't currently know it
+          if !real_pkmn.hasMove?(move_id)
+            pbLearnMove(real_pkmn, move_id)
+          end
+          pre_evo_moves_checked.push(move_id)
+        end
+      end
+    end
+
+    # STEP 2: Evolution Check
+    newspecies = pbCheckEvolution(real_pkmn)
+    if newspecies > 0
+      # Save the current map background music before it gets muted
+      current_bgm = $game_system.getPlayingBGM if defined?($game_system) && $game_system.respond_to?(:getPlayingBGM)
+      
+      # Trigger the native evolution screen sequence
+      evo = PokemonEvolutionScene.new
+      evo.pbStartScreen(real_pkmn, newspecies)
+      evo.pbEvolution
+      evo.pbEndScreen
+      real_scene.pbHardRefresh if real_scene.respond_to?(:pbHardRefresh)
+      
+      # Force the saved overworld map music to resume playing immediately
+      if current_bgm
+        pbBGMPlay(current_bgm) rescue $game_system.bgm_play(current_bgm) rescue nil
+      elsif defined?($game_map) && $game_map.respond_to?(:autoplay)
+        $game_map.autoplay
+      end
+      
+      # STEP 3: Post-Evo Move-Learning Loop
+      for lvl in (old_level + 1)..real_pkmn.level
+        movelist = real_pkmn.getMoveList
+        for i in movelist
+          if i[0] == lvl # Check the newly evolved form's move level requirements
+            move_id = i[1]
+            # ONLY attempt to learn if it's a completely fresh move from evolving
+            if !pre_evo_moves_checked.include?(move_id) && !real_pkmn.hasMove?(move_id)
+              pbLearnMove(real_pkmn, move_id)
+            end
+          end
+        end
+      end
+    end
+  else
+    real_scene.pbDisplay(_INTL("{1} gained EXP!", real_pkmn.name))
+  end
+
+  real_scene.pbHardRefresh if real_scene.respond_to?(:pbHardRefresh)
+  return true
+end
+
 #===============================================================================
 # Restore HP
 #===============================================================================
@@ -710,7 +797,7 @@ def pbLearnMove(pkmn,move,ignoreifknown=false,bymachine=false,&block)
       if bymachine && (pkmn.isSpecies?(:ARENAY) || pkmn.isSpecies?(:DRAGAIA) || pkmn.isSpecies?(:PRISMATRIX))
         pkmn.tmMoves.push(move)
       end
-      pbMessage(_INTL("1,\\wt[16] 2, and\\wt[16]...\\wt[16] ...\\wt[16] ... Ta-da!\\se[Battle ball drop]\1"),&block)
+      #pbMessage(_INTL("1,\\wt[16] 2, and\\wt[16]...\\wt[16] ...\\wt[16] ... Ta-da!\\se[Battle ball drop]\1"),&block)
       pbMessage(_INTL("{1} forgot how to use {2}.\\nAnd...\1",pkmnname,oldmovename),&block)
       pbMessage(_INTL("\\se[]{1} learned {2}!\\se[Pkmn move learnt]",pkmnname,movename),&block)
       pkmn.changeHappiness("machine") if bymachine

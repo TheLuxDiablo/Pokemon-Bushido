@@ -51,6 +51,21 @@ module DialogueModule
     scene.pbHideOpponent
   }
 
+  KenshiF5 = Proc.new{ |battle, scene, battlers|
+    scene.appearBar
+    scene.pbShowOpponent(0)
+    battler = battlers[1]
+    pbMessage("\\rI've been training my techniques in isolation here! Check out what I've learned!")
+    scene.disappearBar
+    if strong_katanas?
+        battle.pbAnimation(:TRICKROOM, battler, battler)
+        battle.field.effects[PBEffects::TrickRoom] = 6
+        battle.pbDisplay(_INTL("The dimensions were twisted!"))
+        battler.pbRaiseStatStageEx(:ATTACK, 2)
+    end
+    scene.pbHideOpponent
+  }
+
   KenshiM1 = Proc.new{ |battle, scene, battlers|
     scene.appearBar
     scene.pbShowOpponent(0)
