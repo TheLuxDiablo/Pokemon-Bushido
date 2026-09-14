@@ -898,3 +898,8 @@
 850,PKT_Nensho,KT - Nensho (3 SP),KT - Nensho (3 SP),8,3,"3 SP. Burns all opposing Pokémon, Sets up Sun, and Boosts Atk and SpAtk.",0,10,6
 851,PKT_Shimizu,KT - Shimizu (2 SP),KT - Shimizu (2 SP),8,2,"2 SP. Applies the Aqua Ring effect, Sets up Rain and Misty Terrain.",0,10,6
 852,PKT_Tsume,KT - Tsume (4 SP),KT - Tsume (4 SP),8,4,"4 SP. Cut all enemy HP in half, and then put them Sleep.",0,9,6
+#-------------------------------
+# New Key Items
+#-------------------------------
+860,ROBECASE,Robe Case,Robe Case,8,0,"A briefcase containing robes you can change into.",2,0,6,
+861,ONIKEY,Oni Key,Oni Keys,8,0,"A key with a demonic aura. You shudder at what this may unlock.",0,0,6,

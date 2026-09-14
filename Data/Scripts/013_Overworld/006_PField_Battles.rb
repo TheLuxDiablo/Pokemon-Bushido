@@ -128,11 +128,12 @@ def pbPrepareBattle(battle)
     backdrop = battleRules["backdrop"]
   elsif $PokemonGlobal.nextBattleBack
     backdrop = $PokemonGlobal.nextBattleBack
-  elsif $PokemonGlobal.surfing ||
-        $PokemonTemp.encounterType==EncounterTypes::OldRod ||
+  elsif $PokemonGlobal.surfing
+    backdrop = "Surf"
+  elsif $PokemonTemp.encounterType==EncounterTypes::OldRod ||
         $PokemonTemp.encounterType==EncounterTypes::GoodRod ||
         $PokemonTemp.encounterType==EncounterTypes::SuperRod
-    backdrop = "Surf"
+    backdrop = pbGetMetadata($game_map.map_id,MetadataBattleBack) #"Surf"
   else
     back = pbGetMetadata($game_map.map_id,MetadataBattleBack)
     backdrop = back if back && back!=""
@@ -189,7 +190,7 @@ def pbGetEnvironment
   if $PokemonTemp.encounterType==EncounterTypes::OldRod ||
      $PokemonTemp.encounterType==EncounterTypes::GoodRod ||
      $PokemonTemp.encounterType==EncounterTypes::SuperRod
-    terrainTag = pbFacingTerrainTag
+    terrainTag = $game_player.terrain_tag #pbFacingTerrainTag, changing this so fishing has us fight on land
   else
     terrainTag = $game_player.terrain_tag
   end

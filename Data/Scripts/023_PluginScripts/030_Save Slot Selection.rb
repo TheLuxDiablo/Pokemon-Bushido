@@ -568,7 +568,7 @@ class PokemonSaveSlotPanel < Sprite
   def refresh_load
     textpos = []
     textpos.push([@title, 32, 8, 0, @base_color, @shadow_color])
-    textpos.push([_INTL("Chapter:"), 32, 110, 0, @base_color, @shadow_color])
+    textpos.push([_INTL("Chapter"), 32, 110, 0, @base_color, @shadow_color])
     textpos.push([@trainer.chapter.to_s, 226, 110, 1, @base_color, @shadow_color])
     textpos.push([_INTL("Journal:"), 32, 142, 0, @base_color, @shadow_color])
     dex_num = @trainer.nat_dex_show ? -1 : 2
@@ -868,7 +868,7 @@ class BushidoSaveCarousel < SpriteWrapper
 
     meta_y = y + 142
     pbDrawTextPositions(self.bitmap, [
-      [_INTL("Chapter: {1}", chapter), x + 18, meta_y, 0, RED_DARK, TEXT_SHADOW],
+      [_INTL("Chapter {1}", chapter), x + 18, meta_y, 0, RED_DARK, TEXT_SHADOW],
       # Playtime deliberately has no label.
       [_INTL("{1}:{2}", sprintf("%02d", hour), sprintf("%02d", min)),
         x + CARD_W - 18, meta_y, 1, INK, TEXT_SHADOW]

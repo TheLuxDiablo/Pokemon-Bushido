@@ -575,7 +575,53 @@ end
         fullyRecoverEnergy()
         pbMessage(_INTL("Your Spirit Energy was refilled from praying to the Shrine!"))
     end
-end
+  end
+
+  def pbRobeCase()
+    outfits = ["Masayoshi", "Kenshi"]
+    if($Trainer.badges[0] == true || $game_switches[190] == true) # Komorei After First Gym
+        outfits << "Komorei"
+    end
+    if($Trainer.badges[1] == true || $game_switches[191] == true) # Nensho After Second Gym
+        outfits << "Nensho"
+    end
+    if($Trainer.badges[2] == true || $game_switches[192] == true) # Shimizu After Third Gym
+        outfits << "Shimizu"
+    end
+    if($game_switches[193] == true || $game_switches[151] == true) # When do we get Akui Robes? Using Switch 151, GameBeaten for now
+        outfits << "Akui"
+    end
+    # Add more robes here we can find
+
+    pbMessage(_INTL("You opened the Robe Case."))
+    cmd=pbMessage("Which Robes would you like to change into?", outfits)
+        if $Trainer.outfit == cmd
+            pbMessage(_INTL("You are already wearing the {1}.", returnRobeNameAndColor(cmd)))
+        else
+            $Trainer.outfit=cmd
+            pbMessage(_INTL("You changed into the {1}.", returnRobeNameAndColor(cmd)))
+        end
+  end
+
+  def returnRobeNameAndColor(int)
+    case int
+        when 0 # Masayoshi - Yellow
+            #return ("\\c[6]Masayoshi Robes\\c[0]")
+            return ("<c3=c3bd72,989138>Masayoshi Robes\\c[0]") 
+        when 1 # Kenshi - White
+            return ("\\c[7]Kenshi Robes\\c[0]")
+        when 2 # Komorei - Green
+            return ("\\c[3]Komorei Robes\\c[0]")
+        when 3 # Nensho - Red
+            return ("\\c[2]Nensho Robes\\c[0]")
+        when 4 # Shimizu - Blue
+            return ("\\c[1]Shimizu Robes\\c[0]")
+        when 5 # Akui - Purple
+            return ("\\c[9]Shimizu Robes\\c[0]")
+        else # Default Choice
+            return ("NOT SET UP")
+        end
+  end
 
 # ===================================================================
 # Player Katana Techniques

@@ -369,6 +369,12 @@ ItemHandlers::UseInField.add(:COINCASE,proc { |item|
   next 1
 })
 
+
+ItemHandlers::UseInField.add(:ROBECASE,proc { |item|
+  pbRobeCase()
+  next 1
+})
+
 ItemHandlers::UseInField.add(:EXPALL,proc { |item|
   $PokemonBag.pbChangeItem(:EXPALL,:EXPALLOFF)
   pbMessage(_INTL("Ryo's Charm was disabled."))
