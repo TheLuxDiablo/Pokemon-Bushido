@@ -35,6 +35,15 @@ module BushidoKenshiRecord
       :location => nil,
       :mark     => "mark_complete",
       :color    => Color.new(156, 142, 63)
+    },
+    {
+      :type     => :oni,
+      :name     => "Hidden Boss",
+      :subtitle => "Final Record",
+      :leader   => nil,
+      :location => nil,
+      :mark     => "mark_oni",
+      :color    => Color.new(54, 33, 67)
     }
   ]
 

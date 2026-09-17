@@ -399,13 +399,13 @@ module DialogueModule
     if strong_katanas?
       pbMessage("I remember you having a shadow clone weakness!")
       pbMessage("Here, a reminder of the time we stole your katana!")
-      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Clones of Darkness!")
       scene.disappearBar
       ret = user.pbRaiseStatStageEx(:EVASION, 1, :DOUBLETEAM)
       battlers[3].pbRaiseStatStageEx(:EVASION, 1, ret || :DOUBLETEAM, user)
       scene.appearBar
       pbMessage("And here, have some of these to add insult to injury!")
-      pbMessage("Akui Clan Technique, Venom Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Venom Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:POISON, 1, :POISONKUNAI, target, false, nil, nil, user)
       target2.pbInflictStatusEx(:POISON, 1, :POISONKUNAI, target2, false, nil, nil, user)
@@ -432,12 +432,12 @@ module DialogueModule
     target2 = battlers[2]
     pbMessage("You pesky insects! It's time we crushed you!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Fire Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Fire Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:BURN, 0, :BURNKUNAI, target, false, nil, nil, user)
       target2.pbInflictStatusEx(:BURN, 0, :BURNKUNAI, target2, false, nil, nil, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Muscle Control!")
       scene.disappearBar
       ret = user.pbRaiseStatStageEx([:ATTACK, :DEFENSE], 3, :DRAGONDANCE)
       battlers[3].pbRaiseStatStageEx([:ATTACK, :DEFENSE], 3, ret || :DRAGONDANCE, user)
@@ -1156,7 +1156,7 @@ module DialogueModule
     scene.appearBar
     scene.pbShowOpponent(0)
     user = battlers[1]
-    pbMessage("\\xn[Mai]\\rHmm... No wonder you were able to handle the Akui Clan!")
+    pbMessage("\\xn[Mai]\\rHmm... No wonder you were able to handle the \\c[9]Akui Clan\\r!")
     pbMessage("\\xn[Mai]\\rYou bring great honor to the Masayoshi name.")
     pbMessage("\\xn[Mai]\\rNow, it looks like I need to get serious, before you sweep me away!")
     pbMessage("\\xn[Mai]\\rKatana of Water, Shimizu Style! Torrential Downpour!")
@@ -1418,7 +1418,7 @@ module DialogueModule
     scene.appearBar
     scene.pbShowOpponent(0)
     user = battlers[1]
-    pbMessage("\\xn[Kayoko]\\rEven if you've managed to defeat the Akui Clan, I still won't go easy!")
+    pbMessage("\\xn[Kayoko]\\rEven if you've managed to defeat the \\c[9]Akui Clan\\r, I still won't go easy!")
     pbMessage("\\xn[Kayoko]\\rSignature Technique! Vapor Terrain!")
     scene.disappearBar
     battle.pbAnimation(:MISTYTERRAIN, user, user)
@@ -1681,8 +1681,8 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Just give up now! You can't stop us from snagging that Celebi!")
-    pbMessage("Akui Clan Technique, Venom Kunai!") if strong_katanas?
+    pbMessage("Just give up now! You can't stop our goals of making a \\c[9]Shadow Celebi\\c[0]!")
+    pbMessage("\\c[9]Akui Clan Technique, Venom Kunai!") if strong_katanas?
     scene.disappearBar
     target.pbInflictStatusEx(:POISON, 0, :POISONKUNAI, target, false, nil, nil, user)
     target.pbSetHazards(:TOXICSPIKES, user) if strong_katanas?
@@ -1694,13 +1694,13 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Stay out of our Akui Library!")
+    pbMessage("Stay out of our \\c[9]Akui Clan\\c[0] Library!")
     pbMessage("The secrets of our clan are not meant for outsiders!")
     if strong_katanas?
       scene.disappearBar
       target.pbSetHazards(:TOXICSPIKES, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Clones of Darkness!")
     end
     scene.disappearBar
     user.pbRaiseStatStageEx(:EVASION, 1, :DOUBLETEAM)
@@ -1712,13 +1712,13 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("The Katana of Light belongs to the Akui Clan now!")
+    pbMessage("The Katana of Light belongs to the \\c[9]Akui Clan\\c[0] now!")
     pbMessage("Get lost, and never come back, you foolish Kenshi!")
     if strong_katanas?
       scene.disappearBar
       target.pbSetHazards(:TOXICSPIKES, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness! Ultimate Evasion!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Clones of Darkness! Ultimate Evasion!")
     end
     scene.disappearBar
     user.pbRaiseStatStageEx(:EVASION, 2, :DOUBLETEAM)
@@ -1735,7 +1735,7 @@ module DialogueModule
       scene.disappearBar
       target.pbSetHazards(:TOXICSPIKES, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Agility!")
     end
     scene.disappearBar
     user.pbRaiseStatStageEx(:SPEED, 2, :AGILITY)
@@ -1748,13 +1748,13 @@ module DialogueModule
     user   = battlers[1]
     target = battlers[0]
     if strong_katanas?
-      pbMessage("You don't stand a chance against the Akui Clan's special Pokémon!")
+      pbMessage("You don't stand a chance against the \\c[9]Akui Clan's\\c[0] special Pokémon!")
       pbMessage("Now hand over your Pokémon you little brat!")
       scene.disappearBar
       target.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, :SCREECH, user)
       target.pbSetHazards(:SPIKES, user)
     else
-      pbMessage("You don't stand a chance against the Akui Clan's special Pokémon!")
+      pbMessage("You don't stand a chance against the \\c[9]Akui Clan's\\c[0] special Pokémon!")
       pbMessage("Now hand over your Pokémon you little brat!")
       battle.scene.disappearBar
     end
@@ -1768,7 +1768,7 @@ module DialogueModule
     target = battlers[0]
     if strong_katanas?
       pbMessage("You're just a little brat!")
-      pbMessage(_INTL("You and that pathetic {1} are no match for the Akui Clan!", target.name))
+      pbMessage(_INTL("You and that pathetic {1} are no match for the \\c[9]Akui Clan\\c[0]!", target.name))
       pbMessage("Let me show you why! Playing fair is for losers!")
       scene.disappearBar
       target.pbLowerStatStageEx([:ACCURACY], 1, :SANDATTACK, user)
@@ -1778,7 +1778,7 @@ module DialogueModule
       battle.scene.disappearBar
     else
       pbMessage("You're just a little brat!")
-      pbMessage(_INTL("You and that pathetic {1} are no match for the Akui Clan!", target.name))
+      pbMessage(_INTL("You and that pathetic {1} are no match for the \\c[9]Akui Clan\\c[0]!", target.name))
       battle.scene.disappearBar
     end
     scene.pbHideOpponent
@@ -1794,7 +1794,7 @@ module DialogueModule
       scene.disappearBar
       target.pbSetHazards(:SPIKES, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Icicle Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Icicle Kunai!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:FROZEN, 0, :ICICLESPEAR, target, false, nil, nil, user)
@@ -1811,7 +1811,7 @@ module DialogueModule
       scene.disappearBar
       target.pbSetHazards(:SPIKES, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Shock Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Shock Kunai!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target, false, nil, nil, user)
@@ -1828,7 +1828,7 @@ module DialogueModule
       scene.disappearBar
       target.pbSetHazards(:SPIKES, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Flame Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Flame Kunai!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:BURN, 0, :BURNKUNAI, target, false, nil, nil, user)
@@ -1841,7 +1841,7 @@ module DialogueModule
     user = battlers[1]
     target = battlers[0]
     pbMessage("You're pretty good kid! It's starting to piss me off!")
-    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!") if strong_katanas?
+    pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Clones of Darkness!") if strong_katanas?
     scene.disappearBar
     user.pbRaiseStatStageEx(:EVASION, 1, :DOUBLETEAM)
     target.pbInflictStatusEx(:POISON, 1, :POISONKUNAI, target, false, nil, nil, user)
@@ -1853,7 +1853,7 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user = battlers[1]
     pbMessage("Invaders must be punished!")
-    pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!") if strong_katanas?
+    pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Clones of Darkness!") if strong_katanas?
     scene.disappearBar
     user.pbRaiseStatStageEx(:EVASION, 1, :DOUBLETEAM)
     scene.pbHideOpponent
@@ -1866,11 +1866,11 @@ module DialogueModule
     target = battlers[0]
     pbMessage("You need to be eliminated!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Clones of Darkness!")
       scene.disappearBar
       user.pbRaiseStatStageEx(:EVASION, 1, :DOUBLETEAM)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Shock Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Shock Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target, false, nil, nil, user)
     end
@@ -1885,11 +1885,11 @@ module DialogueModule
     target = battlers[0]
     pbMessage("Hagane City is ours! Give up now!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Shadow Style! Clones of Darkness!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Clones of Darkness!")
       scene.disappearBar
       user.pbRaiseStatStageEx(:EVASION, 1, :DOUBLETEAM)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Flame Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Flame Kunai!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:BURN, 0, :BURNKUNAI, target, false, nil, nil, user)
@@ -1901,7 +1901,7 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user = battlers[1]
     pbMessage("You'll never be able to catch up to us!")
-    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!") if strong_katanas?
+    pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Agility!") if strong_katanas?
     scene.disappearBar
     user.pbRaiseStatStageEx(:SPEED, 1, :AGILITY)
     scene.pbHideOpponent
@@ -1914,11 +1914,11 @@ module DialogueModule
     target = battlers[0]
     pbMessage("Nobody sneaks up behind me and lives to the tell the tale!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Agility!")
       scene.disappearBar
       user.pbRaiseStatStageEx(:SPEED, 2, :AGILITY)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Shock Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Shock Kunai!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target, false, nil, nil, user)
@@ -1932,11 +1932,11 @@ module DialogueModule
     target = battlers[0]
     pbMessage("Outsiders must be eliminated! This is the way of the Akui Clan!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Agility!")
       scene.disappearBar
       user.pbRaiseStatStageEx(:SPEED, 2, :AGILITY)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Icicle Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Icicle Kunai!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:FROZEN, 0, :ICICLESPEAR, user)
@@ -1948,8 +1948,8 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("You will never defeat the Akui Clan!")
-    pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!") if strong_katanas?
+    pbMessage("You will never defeat the \\c[9]Akui Clan\\c[0]!")
+    pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Agility!") if strong_katanas?
     scene.disappearBar
     user.pbRaiseStatStageEx(:SPEED, 2, :AGILITY)
     target.pbSetHazards(:SPIKES, user)
@@ -1962,7 +1962,7 @@ module DialogueModule
     user   = battlers[1]
     target = battlers[0]
     pbMessage("My strength is unmatched!")
-    pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!") if strong_katanas?
+    pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Muscle Control!") if strong_katanas?
     scene.disappearBar
     user.pbRaiseStatStageEx([:ATTACK, :DEFENSE], 2, :DRAGONDANCE)
     target.pbSetHazards(:SPIKES, user)
@@ -1975,7 +1975,7 @@ module DialogueModule
     user   = battlers[1]
     target = battlers[0]
     pbMessage("It's time for our rematch! I've been working on my strength!")
-    pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!") if strong_katanas?
+    pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Muscle Control!") if strong_katanas?
     scene.disappearBar
     user.pbRaiseStatStageEx([:ATTACK, :DEFENSE, :SPDEF], 3, :DRAGONDANCE)
     target.pbSetHazards(:TOXICSPIKES, user)
@@ -1989,7 +1989,7 @@ module DialogueModule
     target = battlers[0]
     if strong_katanas?
       pbMessage("Prepare to be frozen, foolish Kenshi!")
-      pbMessage("Akui Clan Technique, Icicle Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Icicle Kunai!")
     else
       pbMessage("Prepare to be destroyed, foolish Kenshi!")
     end
@@ -2003,10 +2003,10 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("To be in the Akui Clan, you must have a heart as cold as ice!")
+    pbMessage("To be in the \\c[9]Akui Clan\\c[0], you must have a heart as cold as ice!")
     if strong_katanas?
       pbMessage("Luckily for me, I also happen to have kunai that are as cold as ice!")
-      pbMessage("Akui Clan Technique, Icicle Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Icicle Kunai!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:FROZEN, 0, :ICICLESPEAR, user)
@@ -2024,7 +2024,7 @@ module DialogueModule
     else
       pbMessage("You don't stand a chance, foolish Kenshi!")
     end
-    pbMessage("Akui Clan Technique, Shock Kunai!")
+    pbMessage("\\c[9]Akui Clan Technique, Shock Kunai!")
     scene.disappearBar
     target.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target, false, nil, nil, user)
     scene.pbHideOpponent
@@ -2036,10 +2036,10 @@ module DialogueModule
     user   = battlers[1]
     target = battlers[0]
     if strong_katanas?
-      pbMessage("If you try to mess with the Akui Clan, you're bound to get burned!")
-      pbMessage("Akui Clan Technique, Flame Kunai!")
+      pbMessage("If you try to mess with the \\c[9]Akui Clan\\c[0], you're bound to get burned!")
+      pbMessage("\\c[9]Akui Clan Technique, Flame Kunai!")
     else
-      pbMessage("Nobody messes with the Akui Clan!")
+      pbMessage("Nobody messes with the \\c[9]Akui Clan\\c[0]!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:BURN, 0, :BURNKUNAI, target, false, nil, nil, user)
@@ -2052,11 +2052,11 @@ module DialogueModule
     user   = battlers[1]
     target = battlers[0]
     if strong_katanas?
-      pbMessage("We Akui Clan coat all our kunai with a deadly poison.")
+      pbMessage("We in the \\c[9]Akui Clan\\c[0] tend to coat our kunai with a deadly poison.")
       pbMessage("Here, I'll give your Pokémon a taste!")
-      pbMessage("Akui Clan Technique, Venom Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Venom Kunai!")
     else
-      pbMessage("The Akui Clan is unstoppable!")
+      pbMessage("The \\c[9]Akui Clan\\c[0] is unstoppable!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:POISON, 1, :POISONKUNAI, target, false, nil, nil, user)
@@ -2071,9 +2071,9 @@ module DialogueModule
     if strong_katanas?
       pbMessage("You're looking a little tired.")
       pbMessage("How about your Pokémon get some rest!")
-      pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Tranquilizer Kunai!")
     else
-      pbMessage("The Akui Clan won't rest until our enemies are destroyed!")
+      pbMessage("The \\c[9]Akui Clan\\c[0] won't rest until our enemies are destroyed!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:SLEEP, target.pbSleepDuration, :SLEEPKUNAI, target, false, nil, nil, user)
@@ -2086,13 +2086,13 @@ module DialogueModule
     user   = battlers[1]
     target = battlers[0]
     pbMessage("I'll be the one to put a stop to your reign of terror!")
-    pbMessage("The Akui Clan is counting on me to succeed! I can do this!")
+    pbMessage("The \\c[9]Akui Clan\\c[0] is counting on me to succeed! I can do this!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Tranquilizer Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Tranquilizer Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:SLEEP, target.pbSleepDuration, :SLEEPKUNAI, target, false, nil, nil, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility! Ultimate Speed!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Agility! Ultimate Speed!")
     end
     scene.disappearBar
     user.pbRaiseStatStageEx(:SPEED, 2, :AGILITY)
@@ -2105,17 +2105,17 @@ module DialogueModule
     user    = battlers[1]
     target  = battlers[0]
     target2 = battlers[2]
-    pbMessage("The Akui Clan will be taking all the Hanatsium in this mine!")
+    pbMessage("The \\c[9]Akui Clan\\c[0] will be taking all the Hanatsium in this mine!")
     pbMessage("Don't even bother trying to stop us, you little brats!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Shadow Style! Multi-Clones of Darkness!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Multi-Clones of Darkness!")
       scene.disappearBar
       ret = user.pbRaiseStatStageEx(:EVASION, 1, :DOUBLETEAM)
       battlers[3].pbRaiseStatStageEx(:EVASION, 1, ret || :DOUBLETEAM, user)
       target.pbSetHazards(:TOXICSPIKES, user)
       scene.pbHideOpponent
       scene.appearBar
-      pbMessage("\\xn[\\v[26]]\\pogThose Akui guys aren't the only people who can use techniques to gain the edge in battle!")
+      pbMessage("\\xn[\\v[26]]\\pogThose Akui goons aren't the only people who can use techniques to gain the edge in battle!")
       pbMessage("\\xn[\\v[26]]\\pogKatana of Fire, Nensho Style! Fire Vortex!")
       scene.disappearBar
       user.pbTrapWithMove(:FIRESPIN, target2)
@@ -2137,9 +2137,9 @@ module DialogueModule
     target  = battlers[0]
     target2 = battlers[2]
     pbMessage("Grr... You brats are actually pretty strong...")
-    pbMessage("You'll pay for crossing the Akui Clan!")
+    pbMessage("You'll pay for crossing the \\c[9]Akui Clan\\c[0]!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Dance!")
       scene.disappearBar
       ret = user.pbRaiseStatStageEx([:ATTACK, :SPEED], 1, :DRAGONDANCE)
       battlers[3].pbRaiseStatStageEx([:ATTACK, :SPEED], 1, (ret || :DRAGONDANCE), user)
@@ -2169,16 +2169,16 @@ module DialogueModule
     user    = battlers[1]
     target  = battlers[0]
     target2 = battlers[2]
-    pbMessage("You'll never be able to stop the plans of the Akui Clan!")
+    pbMessage("You'll never be able to stop the plans of the \\c[9]Akui Clan\\c[0]!")
     pbMessage("You're nothing but pesky thorns in our sides!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Agility!")
       scene.disappearBar
       ret = user.pbRaiseStatStageEx(:SPEED, 2, (user.hp>0 || :AGILITY))
       battlers[3].pbRaiseStatStageEx(:SPEED, 2, (ret || :AGILITY), user)
       scene.appearBar
       pbMessage("And that's not all! Get a load of this, you worthless children!")
-      pbMessage("Akui Clan Technique, Shock Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Shock Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target, false, nil, nil, user)
       target2.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target2, false, nil, nil, user)
@@ -2211,11 +2211,11 @@ module DialogueModule
     pbMessage("We've been given orders to stop you from going any further!")
     pbMessage("We will not fail! We cannot fail!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Shadow Style! Ninja Dance!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Dance!")
       scene.disappearBar
       ret = user.pbRaiseStatStageEx([:ATTACK, :SPEED], 1, :DRAGONDANCE)
       user2.pbRaiseStatStageEx([:ATTACK, :SPEED], 1, (ret || :DRAGONDANCE), user)
-      pbMessage("Akui Clan Technique, Shock Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Shock Kunai!")
       scene.disappearBar
       move_user = (user&.fainted? ? battlers[3] : user)
       target.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target, false, nil, nil, move_user)
@@ -2243,7 +2243,7 @@ module DialogueModule
     pbMessage("You two brats must be skilled to have made it this far into the mine...")
     pbMessage("Too bad for you, this is the end of your journey!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Agility!")
       scene.disappearBar
       ret = user.pbRaiseStatStageEx(:SPEED, 2, :AGILITY)
       battlers[3].pbRaiseStatStageEx(:SPEED, 2, (ret || :AGILITY), user)
@@ -2251,8 +2251,8 @@ module DialogueModule
       scene.pbHideOpponent
       scene.appearBar
       pbMessage("\\xn[\\v[26]]\\pogHey \\PN, I managed to pick up a few shock kunai off the ground after our last battle!")
-      pbMessage("\\xn[\\v[26]]\\pogLet's see how the Akui Clan likes the taste of their own medicine!")
-      pbMessage("\\xn[\\v[26]]\\pogAkui Clan Technique!\\wtnp[16] .\\wtnp[16].\\wtnp[16].\\wtnp[16]Shock Kunai?\\wtnp[30]")
+      pbMessage("\\xn[\\v[26]]\\pogLet's see how the \\c[9]Akui Clan\\pog likes the taste of their own medicine!")
+      pbMessage("\\xn[\\v[26]]\\pog\\c[9]Akui Clan Technique!\\pog\\wtnp[16] .\\wtnp[16].\\wtnp[16].\\wtnp[16]Shock Kunai?\\wtnp[30]")
       pbMessage("\\xn[\\v[26]]\\pogForget it... I'm just going to throw these kunai as hard I can!")
       user.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, user, false, nil, nil, target2)
       battlers[3].pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, battlers[3], false, nil, nil, target2)
@@ -2280,10 +2280,10 @@ module DialogueModule
     target  = battlers[0]
     target2 = battlers[2]
     pbMessage("Hahaha... You kids fight dirty!")
-    pbMessage("Maybe you should join the Akui Clan after all!")
+    pbMessage("Maybe you should join the \\c[9]Akui Clan\\c[0] after all!")
     pbMessage("Come by Yami Island sometime... after we finish pulverizing you!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Shadow Style! Multi-Clones of Darkness!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Multi-Clones of Darkness!")
       scene.disappearBar
       ret = user.pbRaiseStatStageEx(:EVASION, 1, :DOUBLETEAM)
       battlers[3].pbRaiseStatStageEx(:EVASION, 1, (ret || :DOUBLETEAM), user)
@@ -2321,7 +2321,7 @@ module DialogueModule
     pbMessage("After we smash you two intruders, we'll steal even more!")
     if strong_katanas?
       pbMessage("Here, have a sneak peek at just how strong the Hanatsium Crystal is!")
-      pbMessage("Akui Clan Technique, Shadow Style! Hanatsium Crystal Exposure!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Hanatsium Crystal Exposure!")
       scene.disappearBar
       user.pbRaiseStatStageEx(:ATTACK, 5, :WORKUP)
       battlers[3].pbRaiseStatStageEx(:ATTACK, 5, :WORKUP)
@@ -2357,7 +2357,7 @@ module DialogueModule
       scene.disappearBar
       target.pbSetHazards(:TOXICSPIKES, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Toxic Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Toxic Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:POISON, 1, :POISONKUNAI, target, false, nil, nil, user)
       scene.appearBar
@@ -2386,7 +2386,7 @@ module DialogueModule
     if strong_katanas?
       pbMessage("Did you actually believe that I ran out of Kunai?")
       pbMessage("You're even more foolish than you look!")
-      pbMessage("Akui Clan Technique, Shock Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Shock Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target, false, nil, nil, user)
       scene.appearBar
@@ -2412,7 +2412,7 @@ module DialogueModule
       pbMessage("Now, you're lucky that I'm actually out of Kunai...")
       pbMessage("...")
       pbMessage("Just kidding, of course I have more Kunai!")
-      pbMessage("Akui Clan Technique, Icicle Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Icicle Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:FROZEN, 0, :ICICLESPEAR, user)
       scene.appearBar
@@ -2438,7 +2438,7 @@ module DialogueModule
     end
     pbMessage("When we were in Tsuchi Village, I studied the katana techniques of the Komorei Clan.")
     pbMessage("And now I've been able to perfect them as my own!")
-    pbMessage("Akui Admin Technique, Komorei Style! Lush Terrain!")
+    pbMessage("\\c[9]Akui Admin Technique, Komorei Style! Lush Terrain!")
     scene.disappearBar
     battle.pbStartTerrainEx(user, :Grassy)
     user.pbRaiseStatStageEx([:SPEED, :SPATK, :SPDEF], 2)
@@ -2453,12 +2453,12 @@ module DialogueModule
     pbMessage("Grr... You've got some nerve.")
     pbMessage("I won't allow you to annoy me any more!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Icicle Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Icicle Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:FROZEN, 0, :ICICLESPEAR, user)
       scene.appearBar
     end
-    pbMessage("Akui Admin Technique, Komorei Style! Blazing Sunlight!")
+    pbMessage("\\c[9]Akui Admin Technique, Komorei Style! Blazing Sunlight!")
     scene.disappearBar
     battle.pbStartWeatherEx(user, :Sun)
     user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 2)
@@ -2472,11 +2472,11 @@ module DialogueModule
     target = battlers[0]
     pbMessage("You'll never defeat me! I won't allow it!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique, Venom Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Venom Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:POISON, 1, :POISONKUNAI, target, false, nil, nil, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Shadow Style! Muscle Control!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Muscle Control!")
     end
     scene.disappearBar
     user.pbRaiseStatStageEx([:SPATK, :DEFENSE, :SPDEF], 2, :DRAGONDANCE)
@@ -2529,7 +2529,7 @@ module DialogueModule
       user.pbRaiseStatStageEx([:DEFENSE, :SPDEF], 3)
       battlers[3]&.pbRaiseStatStageEx([:DEFENSE, :SPDEF], 3, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique... Toxic Spikes...")
+      pbMessage("\\c[9]Akui Clan Technique... Toxic Spikes...")
       scene.disappearBar
       move_target.pbSetHazards(:TOXICSPIKES, move_user)
       scene.appearBar
@@ -2560,7 +2560,7 @@ module DialogueModule
       user.pbRaiseStatStageEx([:DEFENSE, :SPDEF], 3)
       battlers[3]&.pbRaiseStatStageEx([:DEFENSE, :SPDEF], 3, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique... Shock Kunai...")
+      pbMessage("\\c[9]Akui Clan Technique... Shock Kunai...")
       scene.disappearBar
       target.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target, false, nil, nil, user)
       target2.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target2, false, nil, nil, user)
@@ -2586,7 +2586,7 @@ module DialogueModule
       scene.appearBar
       pbMessage("...")
       pbMessage("Now, for a new technique...")
-      pbMessage("Akui Admin Technique... Nensho Style... Flame Breath...")
+      pbMessage("\\c[9]Akui Admin Technique... Nensho Style... Flame Breath.")
       scene.disappearBar
       target.pbInflictStatusEx(:BURN, 0, :FLAMETHROWER, user)
     end
@@ -2632,7 +2632,7 @@ module DialogueModule
       scene.appearBar
       pbMessage("You can't win...")
       pbMessage("You can never win!")
-      pbMessage("Akui Clan Technique... Shock Kunai...")
+      pbMessage("\\c[9]Akui Clan Technique... Shock Kunai...")
       scene.disappearBar
       target.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target, false, nil, nil, user)
     end
@@ -2651,7 +2651,7 @@ module DialogueModule
     pbMessage("Your obsession with honor and dignity will be your downfall!")
     if strong_katanas?
       pbMessage("Here, let me show you the benefits ignoring the Bushido code!")
-      pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique! Tranquilizer Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:SLEEP, target.pbSleepDuration, :SLEEPKUNAI, target, false, nil, nil, user)
       scene.appearBar
@@ -2671,7 +2671,7 @@ module DialogueModule
     pbMessage("I'm growing tired of playing with you, Kenshi.")
     pbMessage("I think it's about time I started taking this battle seriously!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique! Berserker Dance!")
+      pbMessage("\\c[9]Akui Clan Technique! Berserker Dance!")
       scene.disappearBar
       battle.pbAnimation(:GEOMANCY, user, target)
       ret = user.pbRaiseStatStageEx([:ATTACK, :SPEED], 2, :GEOMANCY)
@@ -2680,7 +2680,7 @@ module DialogueModule
     end
     pbMessage("You can't possibly hope to defeat me!")
     pbMessage("I am the Hound of Cruelty, the strongest of the Akui Admins!")
-    pbMessage("Akui Clan Technique, Flame Kunai!") if strong_katanas?
+    pbMessage("\\c[9]Akui Clan Technique, Flame Kunai!") if strong_katanas?
     scene.disappearBar
     target.pbInflictStatusEx(:BURN, 0, :BURNKUNAI, target, false, nil, nil, user)
     scene.pbHideOpponent
@@ -2695,13 +2695,13 @@ module DialogueModule
     pbMessage("Pawns of the Shogun need to be taught their place!")
     pbMessage("And that place... is six feet underground!")
     if strong_katanas?
-      pbMessage("Akui Clan Technique! Berserker Dance!")
+      pbMessage("\\c[9]Akui Clan Technique! Berserker Dance!")
       scene.disappearBar
       battle.pbAnimation(:GEOMANCY, user, target)
       ret = user.pbRaiseStatStageEx([:ATTACK, :SPEED], 2, :GEOMANCY)
       user.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, ret || :GEOMANCY)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Venom Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Venom Kunai!")
     end
     scene.disappearBar
     target.pbInflictStatusEx(:POISON, 2, :POISONKUNAI, target, false, nil, nil, user)
@@ -2723,7 +2723,7 @@ module DialogueModule
     scene.appearBar
     if strong_katanas?
       pbMessage("And don't you dare forget about my signature move!")
-      pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique! Tranquilizer Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:SLEEP, target.pbSleepDuration, :SLEEPKUNAI, target, false, nil, nil, user)
       scene.appearBar
@@ -2753,14 +2753,14 @@ module DialogueModule
       scene.appearBar
       pbMessage("Now, how should I torture you next?")
       pbMessage("Oh! I know! How about some more kunai?")
-      pbMessage("Akui Clan Technique, Shock Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Shock Kunai!")
       scene.disappearBar
       battle.pbAnimation(:SHOCKKUNAI, target, user)
       target.pbInflictStatusEx(:PARALYSIS)
       scene.appearBar
       pbMessage("Actually... No, I don't think that's good enough!")
       pbMessage("How about I burn your Pokémon instead?")
-      pbMessage("Akui Clan Technique, Flame Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique, Flame Kunai!")
       scene.disappearBar
       battle.pbAnimation(:BURNKUNAI, target, user)
       target.pbInflictStatusEx(:BURN)
@@ -2768,13 +2768,13 @@ module DialogueModule
       pbMessage("You know, I still don't think this is good enough...")
       pbMessage("Hmm...")
       pbMessage("How about I just go back to using my favorite kunai?")
-      pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique! Tranquilizer Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:SLEEP, target.pbSleepDuration, :SLEEPKUNAI, target, false, nil, nil, user)
       scene.appearBar
       pbMessage("Hahahahaha! Thank you for being such an obedient little puppet!")
       pbMessage("You really are my favorite plaything!")
-      pbMessage("Akui Clan Technique! Berserker Dance!")
+      pbMessage("\\c[9]Akui Clan Technique! Berserker Dance!")
       scene.disappearBar
       #battle.pbAnimation(:GEOMANCY, user, target)
       user.pbRaiseStatStageEx([:ATTACK, :SPEED], 3, :GEOMANCY)
@@ -2804,7 +2804,7 @@ module DialogueModule
       target.pbTrapWithMove(:WHIRLPOOL, user, true)
       scene.appearBar
       pbMessage("It's time for you to go to sleep forever!")
-      pbMessage("Akui Clan Technique! Tranquilizer Kunai!")
+      pbMessage("\\c[9]Akui Clan Technique! Tranquilizer Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:SLEEP, target.pbSleepDuration(rand(4, 5)), :SLEEPKUNAI, target, false, nil, nil, user)
       scene.appearBar
@@ -2857,7 +2857,7 @@ module DialogueModule
       scene.appearBar
       pbMessage("\\xn[Hattori]\\rWeaklings like you and Ryo...")
       pbMessage("\\xn[Hattori]\\rYou have no place in my new world!")
-      pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Venom Kunai!")
+      pbMessage("\\xn[Hattori]\\c[9]Akui Clan Technique, Venom Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:POISON, 1, :POISONKUNAI, target, false, nil, nil, user)
       user.pbRaiseStatStageEx([:ATTACK, :SPATK], 1)
@@ -2873,7 +2873,7 @@ module DialogueModule
     pbMessage("\\xn[Hattori]\\r\\PN, you're doing a decent job of keeping up.")
     pbMessage("\\xn[Hattori]\\rThat must be my strong blood flowing through you.")
     pbMessage("\\xn[Hattori]\\rYou owe all of your success to me! Your father is just a weakling!")
-    pbMessage("\\xn[Hattori]\\rYou should have joined me in the Akui Clan, traitorous child!")
+    pbMessage("\\xn[Hattori]\\rYou should have joined me in the \\c[9]Akui Clan\\r, traitorous child!")
     pbMessage("\\xn[Hattori]\\rKatana of Shadows, Akui Secret Technique! Psychic Terrain!")
     scene.disappearBar
     battle.pbStartTerrainEx(user, :Psychic)
@@ -2889,7 +2889,7 @@ module DialogueModule
       scene.appearBar
       pbMessage("\\xn[Hattori]\\rI cannot stand to look at you any longer...")
       pbMessage("\\xn[Hattori]\\rBegone, \\PN!")
-      pbMessage("\\xn[Hattori]\\rAkui Clan Technique, Flame Kunai!")
+      pbMessage("\\xn[Hattori]\\c[9]Akui Clan Technique, Flame Kunai!")
       scene.disappearBar
       target.pbInflictStatusEx(:BURN, 0, :BURNKUNAI, target, false, nil, nil, user)
       user.pbRaiseStatStageEx([:ATTACK, :SPATK], 1)
@@ -2975,7 +2975,7 @@ module DialogueModule
       scene.disappearBar
       target.pbSetHazards(:SPIKES, user)
       scene.appearBar
-      pbMessage("Akui Clan Technique, Shadow Style! Ninja Agility!")
+      pbMessage("\\c[9]Akui Clan Technique, Shadow Style! Ninja Agility!")
     end
     scene.disappearBar
     user.pbRaiseStatStageEx(:SPEED, 1, :AGILITY)
@@ -3130,7 +3130,7 @@ module DialogueModule
       pbMessage("\\se[SwShIncorrect]\\bHmm... that is incorrect.")
     end
     pbMessage("\\b\\PN, you must never forget that the codes of honor and Bushido are what guide us.")
-    pbMessage("\\bThose in the Akui Clan have forgetten this message, and have lost their way.")
+    pbMessage("\\bThose in the \\c[9]Akui Clan\\b have forgetten this message, and have lost their way.")
     pbMessage("\\bIt is our purpose as righteous Kenshi to bring them to justice!")
     scene.pbHideOpponent
     scene.disappearBar

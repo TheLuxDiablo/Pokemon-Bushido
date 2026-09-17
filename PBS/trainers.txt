@@ -357,7 +357,7 @@ Pokemon = POOCHYENA,7
     Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Kumiko]
-LoseText = "Tch. The boss isn't gonna be pleased to hear about this..."
+LoseText = "Ugh... The boss isn't gonna be pleased to hear about this..."
 Pokemon = TOXEL,6
 Pokemon = SNEASEL,7
 	Form = 1
@@ -1213,7 +1213,7 @@ Pokemon = LAPRAS,51
 Pokemon = MAMOSWINE,51
 #-------------------------------
 [KURO,Kuro]
-LoseText = "Tch. What a bother, to be defeated by someone like you..."
+LoseText = "What a bother, to be defeated by someone as lowly as you..."
 Pokemon = PANGORO,52
 	Item = CHOPLEBERRY
 	Ability = 0

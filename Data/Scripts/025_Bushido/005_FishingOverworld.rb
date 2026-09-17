@@ -67,66 +67,47 @@ def pbFishingRevealEncounter(enctype)
   end
 end
 
-# Finds the Pokemon's overworld charset.
-def pbFishingPokemonCharset(species)
+# Finds the Pokemon's overworld charset including forms.
+def pbFishingPokemonCharset(species, form = 0)
   species_id = nil
   species_name = nil
 
   begin
-    species_id =
-      getID(
-        PBSpecies,
-        species
-      )
+    species_id = getID(PBSpecies, species)
   rescue
-    species_id =
-      species if species.is_a?(Numeric)
+    species_id = species if species.is_a?(Numeric)
   end
 
   begin
-    species_name =
-      getConstantName(
-        PBSpecies,
-        species_id
-      )
+    species_name = getConstantName(PBSpecies, species_id)
   rescue
-    species_name =
-      species.to_s
+    species_name = species.to_s
   end
 
   candidates = []
 
+  # Formulate candidates checking the form variant first
   if species_id
-    candidates.push(
-      sprintf(
-        "%03d",
-        species_id
-      )
-    )
-
-    candidates.push(
-      species_id.to_s
-    )
+    if form > 0
+      candidates.push(sprintf("%03d_%d", species_id, form))
+      candidates.push("#{species_id}_#{form}")
+    end
+    candidates.push(sprintf("%03d", species_id))
+    candidates.push(species_id.to_s)
   end
 
   if species_name
-    candidates.push(
-      species_name.to_s
-    )
-
-    candidates.push(
-      species_name.to_s.downcase
-    )
+    if form > 0
+      candidates.push("#{species_name}_#{form}")
+      candidates.push("#{species_name.downcase}_#{form}")
+    end
+    candidates.push(species_name.to_s)
+    candidates.push(species_name.to_s.downcase)
   end
 
   candidates.each do |name|
     begin
-      resolved =
-        pbResolveBitmap(
-          "Graphics/Characters/" +
-          name
-        )
-
+      resolved = pbResolveBitmap("Graphics/Characters/" + name)
       return resolved if resolved
     rescue
     end
@@ -179,12 +160,32 @@ def pbFishingPokemonDirectionRow(player_direction)
   return 0
 end
 
-# Shows the Pokemon surfacing before battle.
 def pbFishingShowPokemon(species)
-  charset =
-    pbFishingPokemonCharset(
-      species
-    )
+  species_id = nil
+  form_id = 0
+  
+  if species.is_a?(Numeric)
+    species_id = species
+    
+    begin
+      if defined?(PokeBattle_Pokemon)
+        temp_pkmn = PokeBattle_Pokemon.new(species_id, 1)
+        form_id = temp_pkmn.form if temp_pkmn
+      end
+    rescue
+      form_id = 0
+    end
+    
+    form_id = 0 if form_id.nil?
+    
+  elsif species.respond_to?(:species)
+    species_id = species.species
+    form_id = species.form rescue 0
+  else
+    species_id = getID(PBSpecies, species) rescue species
+  end
+
+  charset = pbFishingPokemonCharset(species_id, form_id)
 
   return if !charset
 

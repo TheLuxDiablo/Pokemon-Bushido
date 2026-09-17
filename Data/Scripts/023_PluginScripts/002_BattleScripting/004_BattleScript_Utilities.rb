@@ -498,6 +498,13 @@ class PokeBattle_Battle
         else
           incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
         end
+    when 27
+        cmd= pbMessage("\\bWho are the Kenshi that roam and practice their unique Katana Techniques?", ["Kensei","Samurai", "Ronin", "Meijin"])
+        if cmd == 2
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
     else # Default Question
         cmd= pbMessage("\\bWhat is a Kenshi's source of power?", ["Spear", "Pokémon", "Katana"])
         if cmd == 1

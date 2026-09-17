@@ -595,11 +595,12 @@ end
 
     pbMessage(_INTL("You opened the Robe Case."))
     cmd=pbMessage("Which Robes would you like to change into?", outfits)
-        if $Trainer.outfit == cmd
-            pbMessage(_INTL("You are already wearing the {1}.", returnRobeNameAndColor(cmd)))
+    outfitInt = getOutfitIntBasedOnCMD(cmd)
+        if $Trainer.outfit == outfitInt
+            pbMessage(_INTL("You are already wearing the {1}.", returnRobeNameAndColor(outfitInt)))
         else
-            $Trainer.outfit=cmd
-            pbMessage(_INTL("You changed into the {1}.", returnRobeNameAndColor(cmd)))
+            $Trainer.outfit=outfitInt
+            pbMessage(_INTL("You changed into the {1}.", returnRobeNameAndColor(outfitInt)))
         end
   end
 
@@ -620,7 +621,27 @@ end
             return ("\\c[9]Shimizu Robes\\c[0]")
         else # Default Choice
             return ("NOT SET UP")
-        end
+    end
+  end
+
+  def getOutfitIntBasedOnCMD(int)
+    # Making this method in case we ever want to add more outfits we can unlock out of order, instead of assuming cmd = outfit
+    case int
+        when 0 # Masayoshi - Yellow
+            return 0 
+        when 1 # Kenshi - White
+            return 1
+        when 2 # Komorei - Green
+            return 2
+        when 3 # Nensho - Red
+            return 3
+        when 4 # Shimizu - Blue
+            return 4
+        when 5 # Akui - Purple
+            return 5
+        else # Default Choice
+            return ("NOT SET UP")
+    end
   end
 
 # ===================================================================
