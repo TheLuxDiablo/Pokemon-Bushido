@@ -150,7 +150,11 @@ module PokeBattle_BattleCommon
       BallHandlers.onFailCatch(ball,self,battler)
     when 4
       pbMEPlay("PLA 008 Obtained a Pokemon!")
-      pbDisplayBrief(_INTL("Gotcha! {1} was caught!",pkmn.name))
+      if(pkmn.shadowPokemon?)
+        pbDisplayBrief(_INTL("Gotcha! {1} was caught!",pkmn.name))
+      else
+        pbDisplayBrief(_INTL("Gotcha! \\c[9]Shadow {1}\\c[0] was recovered from the \\c[9]Akui Clan\\c[0]!",pkmn.name))
+      end
       #@scene.pbThrowSuccess   # Play capture success jingle
       pbRemoveFromParty(battler.index,battler.pokemonIndex)
       # Gain Exp

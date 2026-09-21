@@ -404,7 +404,7 @@ Pokemon = DARUMAKA,16
 	Item = SITRUSBERRY
 #-------------------------------
 [AKUICLAN_F,Kumiko,2]
-LoseText = "What! How did you do that?"
+LoseText = "Impossible! The Katana of Light has a new master after all..."
 Pokemon = TOXEL,14
 Pokemon = SNEASEL,14
 	Form = 1

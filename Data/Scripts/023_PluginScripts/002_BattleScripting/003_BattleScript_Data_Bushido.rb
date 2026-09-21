@@ -2969,7 +2969,7 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Kenshi scum like you are worth nothing! I'll take you out here and now!")
+    pbMessage("Masayoshi scum like you are worth nothing! Your legacy will end here and now!")
     pbMessage("It's time to unleash my full power!")
     if strong_katanas?
       scene.disappearBar
@@ -2987,17 +2987,18 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("Give it up! It's impossible to beat our vicious Shadow Pokemon!")
+    pbMessage("Give it up! It's impossible to beat our vicious \\c[9]Shadow Pokemon\\c[0]!")
     battle.pbAnimation(:LIFEDEW, target, target)
     pbMessage("Wait, what's with that light?")
     scene.pbHideOpponent
+    pbMessage("You feel your father's energy flowing through the Ancient Katana and into your body...")
     #scene.disappearBar
     #pbFlash(243,243,99,0.20)
     #battle.pbCommonAnimation("UltraBurst",target, user)
     battle.pbAnimation(:MULTRABURST, target, user)
     #pbSEPlay("shadowkatana")
     #battle.pbCommonAnimation("UltraBurst2",target)
-    pbMessage("You feel your father's energy flowing through the Ancient Katana and into your body...")
+    #pbMessage("You feel your father's energy flowing through the Ancient Katana and into your body...")
     #pbMessage(".\\wtnp[18].\\wtnp[18].\\wtnp[18]")
     #battle.pbCommonAnimation("UltraBurst2",target, user)
     battle.pbAnimation(:MULTRABURST2, target, user)
@@ -3005,15 +3006,15 @@ module DialogueModule
     pbMessage("\\me[Conquest-LevelUpWarlord]The Ancient Katana transformed into the Katana of Light!")
     vRI("KATANALIGHT", 1)
     vDI("KATANABASIC") if vHI("KATANABASIC")
-    pbMessage("You may now steal Shadow Pokémon from the \\c[9]Akui Clan\\c[0]!")
+    pbMessage("You may now snag \\c[9]AShadow Pokémon\c[0] from the \\c[9]Akui Clan\\c[0]!")
     scene.appearBar
-    pbMessage("\\xn[Shogun]\\PN! You must use the power of light to counter these Shadow Pokemon! Capture their Pokemon and purify them for good!")
+    pbMessage("\\xn[Shogun]\\b\\PN! You must use the power of light to counter these \\c[9]Shadow Pokemon\\b! Capture them and purify their souls!")
     #scene.disappearBar
     unlockKatanaOfLight()
     #scene.appearBar
     scene.pbShowOpponent(0)
     pbMessage("Hngh- That light... what's going on?")
-    pbMessage("The Katana of Light has awoken again... You'll never snag my Shadow Pokémon!")
+    pbMessage("The Katana of Light has awoken again... You'll never snag my \\c[9]Shadow Pokémon\\c[0]!")
     scene.disappearBar
     scene.pbHideOpponent
   }
