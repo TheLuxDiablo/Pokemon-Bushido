@@ -378,8 +378,12 @@ end
     $game_variables[varID] = getNameOfPokemonFromID(BushidoStarterSelection::DEFAULT_STARTERS[starterID])
   end
 
+  def HokoraEnergyUnlocked?
+    return (KatanaOfLightAwakened?() == true && PLAYERKATANATECHNIQUES == true)
+  end
+
   def prayAtHokora()
-    if(KatanaOfLightAwakened?() == false || PLAYERKATANATECHNIQUES == false)
+    if(HokoraEnergyUnlocked? == false)
         pbMessage("It's a Hokora, a small shrine dedicated to the gods.")
     elsif($game_self_switches[[@map_id, @event_id, "A"]])
         pbMessage("It's a Hokora, a small shrine dedicated to the gods.")

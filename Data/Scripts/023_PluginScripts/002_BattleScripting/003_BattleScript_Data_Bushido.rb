@@ -231,7 +231,7 @@ module DialogueModule
     scene.pbShowOpponent(0)
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("You cannot hide from my love!")
+    pbMessage("My heart is bursting with power! Hyaah!")
     scene.disappearBar
     if strong_katanas?
         target.pbLowerStatStageEx(:ATTACK, 2, :CHARM, user)
@@ -2021,10 +2021,10 @@ module DialogueModule
     target = battlers[0]
     if strong_katanas?
       pbMessage("Prepare to be shocked, foolish Kenshi!")
+      pbMessage("\\c[9]Akui Clan Technique, Shock Kunai!")
     else
       pbMessage("You don't stand a chance, foolish Kenshi!")
     end
-    pbMessage("\\c[9]Akui Clan Technique, Shock Kunai!")
     scene.disappearBar
     target.pbInflictStatusEx(:PARALYSIS, 0, :SHOCKKUNAI, target, false, nil, nil, user)
     scene.pbHideOpponent

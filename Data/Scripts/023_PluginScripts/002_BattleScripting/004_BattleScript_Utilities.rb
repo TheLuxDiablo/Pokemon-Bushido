@@ -264,7 +264,7 @@ class PokeBattle_Battle
     battle_obj = @battle || (user.respond_to?(:battle) ? user.battle : nil)
   
     if anim && anim_id && battle_obj
-        battle_obj.pbAnimation(anim_id, user, nil)
+        #battle_obj.pbAnimation(anim_id, user, nil)
     end
 
     pbStartTerrain(user, getID(PBBattleTerrains, terrain), true)

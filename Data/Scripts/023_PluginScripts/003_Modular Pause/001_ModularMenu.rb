@@ -186,16 +186,6 @@ MenuHandlers.addEntry(:POKEGEAR,_INTL("Pokégear"),"menuPokegear",proc{|menu|
 })
 
 #-------------------------------------------------------------------------------
-# Kenshi Record
-#-------------------------------------------------------------------------------
-MenuHandlers.addEntry(:TRAINER,_INTL("\\pn"),"menuTrainer",proc{|menu|
-  pbKenshiRecord
-  menu.refresh
-},proc{
-  next true
-})
-
-#-------------------------------------------------------------------------------
 # Save
 #-------------------------------------------------------------------------------
 MenuHandlers.addEntry(:SAVE,_INTL("Save"),"menuSave",proc{|menu|
@@ -214,6 +204,17 @@ MenuHandlers.addEntry(:SAVE,_INTL("Save"),"menuSave",proc{|menu|
   next !$game_system ||
        (!$game_system.save_disabled && !(pbInSafari? || pbInBugContest?))
 })
+
+#-------------------------------------------------------------------------------
+# Kenshi Record
+#-------------------------------------------------------------------------------
+MenuHandlers.addEntry(:TRAINER,_INTL("\\pn"),"menuTrainer",proc{|menu|
+  pbKenshiRecord
+  menu.refresh
+},proc{
+  next true
+})
+
 
 #-------------------------------------------------------------------------------
 # Safari / Contest quit
