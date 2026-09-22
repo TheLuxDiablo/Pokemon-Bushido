@@ -271,3 +271,5 @@
 269,MINDSEYE,Mind's Eye,"Enables moves to hit Ghost-type Pokémon. Accuracy cannot be lowered. Ignores Evasion changes."
 270,SHARPNESS,Sharpness,"Powers up slicing moves."
 271,HOSPITALITY,Hospitality,"When entering battle this Pokémon showers its ally with hospitality, restoring a small amount of the ally's HP."
+272,ARMORTAIL,Armor Tail,"Prevents foes from using priority attacks."
+273,CUDCHEW,Cud Chew,"When the Pokémon eats a Berry, it will regurgitate that Berry at the end of the next turn and eat it one more time."

@@ -634,13 +634,13 @@ PhenomenonGrass
     PINSIR,13,16
     ROWLET,13,15
     ROWLET,13,15
-    BULBASAUR,13,16
+    GIRAFARIG,13,16
     BULBASAUR,13,16
 #-------------------------------
 156 # Kowai Pass
 16,8,8
 Land
-    BULBASAUR,5
+    GIRAFARIG,5
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5
@@ -688,9 +688,9 @@ OldRod
 158 # Jinsu Island
 16,8,8
 Land
-    ZORUA,51,57
-    BISHARP,51,57
-    BULBASAUR,5
+    ZORUA,51,56
+    BISHARP,51,56
+    FARIGARAF,51,56
     BULBASAUR,5
     BULBASAUR,5
     BULBASAUR,5

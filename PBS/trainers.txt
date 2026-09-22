@@ -307,6 +307,7 @@ Pokemon = COTTONEE,5
 [SHIMIZU_M,TestShi]
 LoseText = "Well played!"
 Pokemon = TURTWIG,10
+	Moves = QUICKATTACK
 Pokemon = FENNEKIN,10
 Pokemon = KINGAMBIT,1
 	Ability = 1

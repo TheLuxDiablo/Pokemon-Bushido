@@ -620,6 +620,7 @@ BattleHandlers::MoveBlockingAbility.add(:DAZZLING,
 )
 
 BattleHandlers::MoveBlockingAbility.copy(:DAZZLING,:QUEENLYMAJESTY)
+BattleHandlers::MoveBlockingAbility.copy(:DAZZLING,:ARMORTAIL)
 
 #===============================================================================
 # MoveImmunityTargetAbility handlers
@@ -2366,6 +2367,26 @@ BattleHandlers::EORGainItemAbility.add(:PICKUP,
     battle.pbDisplay(_INTL("{1} found one {2}!",battler.pbThis,battler.itemName))
     battle.pbHideAbilitySplash(battler)
     battler.pbHeldItemTriggerCheck
+  }
+)
+
+#===============================================================================
+# Cud Chew
+#===============================================================================
+BattleHandlers::EOREffectAbility.add(:CUDCHEW,
+  proc { |ability, battler, battle|
+    next if battler.item>0
+    next if battler.recycleItem<=0 || !pbIsBerry?(battler.recycleItem) 
+    case battler.effects[PBEffects::CudChew]
+    when 0 # End round after eat berry
+      battler.effects[PBEffects::CudChew] += 1
+    else # next turn after eat berry
+      battler.effects[PBEffects::CudChew] = 0
+      battle.pbShowAbilitySplash(battler, true)
+      battle.pbHideAbilitySplash(battler)
+      battler.pbHeldItemTriggerCheck(battler.recycleItem, true)
+      battler.setRecycleItem(0)
+    end
   }
 )
 

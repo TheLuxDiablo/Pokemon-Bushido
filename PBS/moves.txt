@@ -807,3 +807,4 @@
 786,MULTRABURST,M Ultra Burst 1,00F,5,NORMAL,Special,100,5,60,NearOther,0,abe,"A debug move for the Katana of Light awakening. No Pokemon should learn this."
 787,MULTRABURST2,M Ultra Burst 2,00F,5,NORMAL,Special,100,5,60,NearOther,0,abe,"A debug move for the Katana of Light awakening. No Pokemon should learn this."
 788,HYPERDRILL,Hyper Drill,000,100,NORMAL,Physical,100,5,0,NearOther,0,ef,"The user spins the pointed part of its body at high speed to pierce the target. This attack can hit a target using a move such as Protect or Detect."
+789,TWINBEAM,Twin Beam,0BD,40,PSYCHIC,Special,100,10,0,NearOther,0,bef,"The user shoots mystical beams from its eyes to inflict damage. The target is hit twice in a row."

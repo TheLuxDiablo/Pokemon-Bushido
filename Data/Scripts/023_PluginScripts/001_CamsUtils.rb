@@ -378,6 +378,18 @@ end
     $game_variables[varID] = getNameOfPokemonFromID(BushidoStarterSelection::DEFAULT_STARTERS[starterID])
   end
 
+  def tsuchiLeafPickup()
+    pbGetKeyItem(PBItems::KOMOREILEAF,1)
+    $game_variables[32] = ($game_variables[32] + 1)
+    leavesOwned = $game_variables[32]
+    if(leavesOwned > 1)
+        pbMessage(_INTL("You now have {1} Tsuchi Leaves.", leavesOwned))
+    end
+    if(leavesOwned >= 5)
+        pbMessage(_INTL("\\me[PLA 031 Request Fulfilled!]You may now access the \\c[3]Komorei Clan\\c[0] Dojo!"))
+    end
+  end
+
   def HokoraEnergyUnlocked?
     return (KatanaOfLightAwakened?() == true && PLAYERKATANATECHNIQUES == true)
   end
