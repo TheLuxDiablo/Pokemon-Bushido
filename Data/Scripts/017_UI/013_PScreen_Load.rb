@@ -1,9 +1,5 @@
 #===============================================================================
-# Pokémon Bushido - Load Screen (PNG asset pass)
-# Main menu visual pass based on the new Bushido wireframe.
-#
-# This pass only replaces the MAIN load menu presentation.
-# SaveSlot_Selection_Scene is intentionally untouched for now.
+# Pokémon Bushido - Load Screen
 #===============================================================================
 
 class BushidoLoadMenuSprite < SpriteWrapper
