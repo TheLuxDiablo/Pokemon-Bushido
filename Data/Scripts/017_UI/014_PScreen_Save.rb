@@ -119,7 +119,7 @@ class BushidoSaveBackdrop < SpriteWrapper
       [_INTL("Save Game"), 238, 18, 0, RED, shadow],
       [$Trainer.name, 294, 62, 0, INK, shadow],
       [mapname, 294, 91, 0, INK_SOFT, shadow],
-      [_INTL("Chapter: {1}", chapter), 238, 136, 0, RED_DARK, shadow],
+      [_INTL("Chapter {1}", chapter), 238, 136, 0, RED_DARK, shadow],
       [_INTL("Journal: {1}", journal), 366, 136, 0, INK, shadow],
       [_INTL("Playtime: {1}:{2}", sprintf("%02d", hour), sprintf("%02d", min)),
         238, 174, 0, INK, shadow]

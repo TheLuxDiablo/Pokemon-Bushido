@@ -279,13 +279,13 @@ class PokeBattle_Battler
         end
       end
     end
-    # Dazzling/Queenly Majesty make the move fail here
+    # Dazzling/Queenly Majesty/Armor Tail make the move fail here
     @battle.pbPriority(true).each do |b|
       next if !b || !b.abilityActive?
       if BattleHandlers.triggerMoveBlockingAbility(b.ability,b,user,targets,move,@battle)
         @battle.pbDisplayBrief(_INTL("{1} used {2}!",user.pbThis,move.name))
         @battle.pbShowAbilitySplash(b)
-        @battle.pbDisplay(_INTL("{1} cannot use {2}!",user.pbThis,move.name))
+        @battle.pbDisplay(_INTL("{1}'s priority attacks are blocked by {2}!",user.pbThis,b.abilityName))
         @battle.pbHideAbilitySplash(b)
         user.lastMoveFailed = true
         pbCancelMoves

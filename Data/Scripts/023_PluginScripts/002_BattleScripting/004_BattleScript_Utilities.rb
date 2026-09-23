@@ -264,7 +264,7 @@ class PokeBattle_Battle
     battle_obj = @battle || (user.respond_to?(:battle) ? user.battle : nil)
   
     if anim && anim_id && battle_obj
-        battle_obj.pbAnimation(anim_id, user, nil)
+        #battle_obj.pbAnimation(anim_id, user, nil)
     end
 
     pbStartTerrain(user, getID(PBBattleTerrains, terrain), true)
@@ -494,6 +494,13 @@ class PokeBattle_Battle
     when 26
         cmd= pbMessage("\\bWhat is the best place to catch Bug-Type Pokémon?", ["Yogan Cavern","Mushi Grove", "Shizen Trail", "Fubuki Bay"])
         if cmd == 1
+          correctAnswerGenericResponse(scene, ally, statToBuff)
+        else
+          incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)
+        end
+    when 27
+        cmd= pbMessage("\\bWho are the Kenshi that roam and practice their unique Katana Techniques?", ["Kensei","Samurai", "Ronin", "Meijin"])
+        if cmd == 2
           correctAnswerGenericResponse(scene, ally, statToBuff)
         else
           incorrectAnswerGenericResponse(scene, ally, statToBuff, enemy)

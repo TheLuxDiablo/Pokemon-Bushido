@@ -130,6 +130,10 @@ def pbPrepareBattle(battle)
     backdrop = $PokemonGlobal.nextBattleBack
   elsif $PokemonGlobal.surfing
     backdrop = "Surf"
+  elsif $PokemonTemp.encounterType==EncounterTypes::OldRod ||
+        $PokemonTemp.encounterType==EncounterTypes::GoodRod ||
+        $PokemonTemp.encounterType==EncounterTypes::SuperRod
+    backdrop = pbGetMetadata($game_map.map_id,MetadataBattleBack) #"Surf"
   else
     back = pbGetMetadata($game_map.map_id,MetadataBattleBack)
     backdrop = back if back && back!=""
@@ -146,15 +150,8 @@ def pbPrepareBattle(battle)
   backdrop = "FRLGGrass" if !backdrop
   battle.backdrop = backdrop
 
-  fishingBattle =
-    $PokemonTemp.encounterType==EncounterTypes::OldRod ||
-    $PokemonTemp.encounterType==EncounterTypes::GoodRod ||
-    $PokemonTemp.encounterType==EncounterTypes::SuperRod
-
   # Choose a name for bases depending on environment
-  if fishingBattle
-    base = nil
-  elsif battleRules["base"].nil?
+  if battleRules["base"].nil?
     case battle.environment
 #    when PBEnvironment::Grass, PBEnvironment::TallGrass,
 #         PBEnvironment::ForestGrass;                             base = "FRLGGrass"
@@ -193,7 +190,7 @@ def pbGetEnvironment
   if $PokemonTemp.encounterType==EncounterTypes::OldRod ||
      $PokemonTemp.encounterType==EncounterTypes::GoodRod ||
      $PokemonTemp.encounterType==EncounterTypes::SuperRod
-    terrainTag = pbFacingTerrainTag
+    terrainTag = $game_player.terrain_tag #pbFacingTerrainTag, changing this so fishing has us fight on land
   else
     terrainTag = $game_player.terrain_tag
   end

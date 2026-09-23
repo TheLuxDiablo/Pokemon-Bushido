@@ -210,7 +210,7 @@ class BushidoLoadMenuSprite < SpriteWrapper
       [trainer.name, x + 74, y + 62, 0, INK, shadow],
       [mapname,      x + 74, y + 91, 0, INK_SOFT, shadow],
 
-      [_INTL("Chapter: {1}", chapter), x + 18, y + 136, 0, RED_DARK, shadow],
+      [_INTL("Chapter {1}", chapter), x + 18, y + 136, 0, RED_DARK, shadow],
       [_INTL("Journal: {1}", journal), x + 146, y + 136, 0, INK, shadow],
 
       [_INTL("Playtime: {1}:{2}", sprintf("%02d", hour), sprintf("%02d", min)),

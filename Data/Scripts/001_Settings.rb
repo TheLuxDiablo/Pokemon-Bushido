@@ -368,7 +368,7 @@ SOFTRESETFIX = true
 PLAYERKATANATECHNIQUES = true
 INITIAL_ENERGY = 3
 
-SUKIRO_SPAR_QUIZ_QUESTIONS = 26
+SUKIRO_SPAR_QUIZ_QUESTIONS = 27
 SUKIRO_REMATCH_CHAPTERBASED = true
 
 #===============================================================================

@@ -132,6 +132,7 @@ begin
     SwitchedAlly        = 128
     SupremeOverlord     = 129
     SuccessiveMove      = 130
+    CudChew             = 131
 
     #===========================================================================
     # These effects apply to a battler position

@@ -49,7 +49,7 @@
 47,NUGGET,Nugget,Nuggets,1,10000,"A nugget of pure gold that gives off a lustrous gleam. It can be sold at a high price to shops.",0,0,0,
 48,BIGNUGGET,Big Nugget,Big Nuggets,1,40000,"A big nugget of pure gold that gives off a lustrous gleam. A maniac will buy it for a high price.",0,0,0,
 49,HEARTSCALE,Heart Scale,Heart Scales,1,100,"A pretty, heart-shaped scale that is extremely rare. It glows faintly in the colors of the rainbow.",0,0,0,
-50,SLOWPOKETAIL,Slowpoke Tail,Slowpoke Tails,1,10000,"A very tasty tail of something. It can be sold at a high price to shops.",0,0,0,
+50,SLOWPOKETAIL,Slowpoke Tail,Slowpoke Tails,1,4000,"A very tasty tail of something. It can be sold at a high price to shops.",0,0,0,
 51,RAREBONE,Rare Bone,Rare Bones,1,5000,"A bone that is extremely valuable for Pokemon archaeology. It can be sold for a high price to shops.",0,0,0,
 52,RELICCOPPER,Relic Copper,Relic Coppers,1,2000,"A copper coin used in a civilization about 3,000 years ago. A maniac will buy it for a high price.",0,0,0,
 53,RELICSILVER,Relic Silver,Relic Silvers,1,10000,"A silver coin used in a civilization about 3,000 years ago. A maniac will buy it for a high price.",0,0,0,
@@ -675,11 +675,11 @@
 659,ROOMSERVICE,Room Service,Room Services,1,4000,"An item to be held by a Pokemon. Lowers Speed when Trick Room takes effect.",0,0,0,
 660,THROATSPRAY,Throat Spray,Throat Sprays,1,4000,"Raises Sp. Atk when the Pokemon uses a sound-based move.",0,0,0,
 661,UTILITYUMBRELLA,Utility Umbrella,Utility Umbrellas,1,4000,"An item to be held by a Pokemon. It protects the holder from the effects of weather.",0,0,0,
-662,EXPCANDYXS,Exp. Candy XS,Exp. Candies XS,1,20,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a very small amount of Exp. Points.",1,0,0,
-663,EXPCANDYS,Exp. Candy S,Exp. Candies S,1,240,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a small amount of Exp. Points.",1,0,0,
-664,EXPCANDYM,Exp. Candy M,Exp. Candies M,1,1000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a moderate amount of Exp. Points.",1,0,0,
-665,EXPCANDYL,Exp. Candy L,Exp. Candies L,1,3000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a large amount of Exp. Points.",1,0,0,
-666,EXPCANDYXL,Exp. Candy XL,Exp. Candies XL,1,10000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a very large amount of Exp. Points.",1,0,0,
+662,EXPCANDYXS,Exp. Candy XS,Exp. Candies XS,2,500,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a very small amount of Exp. Points.",1,0,0,
+663,EXPCANDYS,Exp. Candy S,Exp. Candies S,2,1000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a small amount of Exp. Points.",1,0,0,
+664,EXPCANDYM,Exp. Candy M,Exp. Candies M,2,2000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a moderate amount of Exp. Points.",1,0,0,
+665,EXPCANDYL,Exp. Candy L,Exp. Candies L,2,4000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a large amount of Exp. Points.",1,0,0,
+666,EXPCANDYXL,Exp. Candy XL,Exp. Candies XL,2,10000,"A candy that is packed with energy. When consumed, it will grant a single Pokemon a very large amount of Exp. Points.",1,0,0,
 #-------------------------------
 667,ABILITYPATCH,Ability Patch,Ability Patches,2,20000,"A patch that allows a Pokemon with a regular Ability to have a hidden Ability.",1,0,0,
 #-------------------------------
@@ -898,3 +898,8 @@
 850,PKT_Nensho,KT - Nensho (3 SP),KT - Nensho (3 SP),8,3,"3 SP. Burns all opposing Pokémon, Sets up Sun, and Boosts Atk and SpAtk.",0,10,6
 851,PKT_Shimizu,KT - Shimizu (2 SP),KT - Shimizu (2 SP),8,2,"2 SP. Applies the Aqua Ring effect, Sets up Rain and Misty Terrain.",0,10,6
 852,PKT_Tsume,KT - Tsume (4 SP),KT - Tsume (4 SP),8,4,"4 SP. Cut all enemy HP in half, and then put them Sleep.",0,9,6
+#-------------------------------
+# New Key Items
+#-------------------------------
+860,ROBECASE,Robe Case,Robe Case,8,0,"A briefcase containing robes you can change into.",2,0,6,
+861,ONIKEY,Oni Key,Oni Keys,8,0,"A key with a demonic aura. You shudder at what this may unlock.",0,0,6,

@@ -2926,7 +2926,7 @@ Type1 = ICE
 Type2 = ROCK
 BaseStats = 95,127,184,38,34,36
 Abilities = STRONGJAW,ICEBODY
-Moves = 0,BODYSLAM,1,MIST,1,MIRRORCOAT,1,AURORAVEIL,1,WIDEGUARD,1,RAPIDSPIN,1,HARDEN,1,TACKLE,1,POWDERSNOW,9,CURSE,12,ICYWIND,15,PROTECT,18,AVALANCHE,21,BITE,24,ICEFANG,27,IRONDEFENSE,30,RECOVER,33,CRUNCH,36,TAKEDOWN,41,BLIZZARD,46,DOUBLEEDGE,51,ICICLECRASH
+Moves = 0,BODYSLAM,1,MIST,1,MIRRORCOAT,1,AURORAVEIL,1,WIDEGUARD,1,RAPIDSPIN,1,HARDEN,1,TACKLE,1,POWDERSNOW,9,CURSE,12,ICYWIND,15,PROTECT,18,AVALANCHE,21,BITE,24,ICEFANG,27,IRONDEFENSE,30,RECOVER,33,CRUNCH,36,TAKEDOWN,41,BLIZZARD,46,DOUBLEEDGE,51,STONEEDGE,61,MOUNTAINGALE
 Height = 1.4
 Weight = 262.4
 Pokedex = The armor of ice covering its lower jaw puts steel to shame and can shatter rocks with ease. This Pokémon barrels along steep mountain paths, cleaving through the deep snow.
@@ -2974,3 +2974,10 @@ Evolutions = SINISTCHA,Item,MASTERPIECETEACUP
 [SINISTCHA,1]
 FormName = Masterpiece Form
 Pokedex = It lives inside a superb teacup that was crafted by a potter of great renown. Collectors positively adore this Pokémon.
+#-------------------------------
+[DUDUNSPARCE,1]
+FormName = Three-Segment Form
+Pokedex = A recent study uncovered that the number of segments a Dudunsparce's body has is determined by the Pokémon's genes.
+BattlerPlayerX = -4
+BattlerPlayerY = 60
+BattlerEnemyY = 31

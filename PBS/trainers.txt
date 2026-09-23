@@ -307,6 +307,7 @@ Pokemon = COTTONEE,5
 [SHIMIZU_M,TestShi]
 LoseText = "Well played!"
 Pokemon = TURTWIG,10
+	Moves = QUICKATTACK
 Pokemon = FENNEKIN,10
 Pokemon = KINGAMBIT,1
 	Ability = 1
@@ -357,7 +358,7 @@ Pokemon = POOCHYENA,7
     Shadow = yes
 #-------------------------------
 [AKUICLAN_F,Kumiko]
-LoseText = "Tch. The boss isn't gonna be pleased to hear about this..."
+LoseText = "Ugh... The boss isn't gonna be pleased to hear about this..."
 Pokemon = TOXEL,6
 Pokemon = SNEASEL,7
 	Form = 1
@@ -365,34 +366,46 @@ Pokemon = NICKIT,8
     Shadow = yes
 #-------------------------------
 [KAYOKO,Kayoko]
-LoseText = "Thank you for this duel. I will continue to grow under my future clan..."
-Pokemon = CARVANHA,11
-Pokemon = TIMBURR,12
-Pokemon = TYNAMO,13
+LoseText = "Thank you for this duel. I must continue to train after this tournament..."
+Pokemon = CARVANHA,13
+	Moves = AQUAJET,POISONFANG,LEER
+Pokemon = TIMBURR,13
+	Item = ORANBERRY
+Pokemon = TYNAMO,14
+	Item = SITRUSBERRY
 #-------------------------------
 [TSUKU,Tsuku]
-LoseText = "W- wow! You're pretty g- good..."
+LoseText = "W- wow! You're pretty g- good... Masayoshi..."
 Pokemon = SPEWPA,13
 	Moves = TACKLE,BUGBITE,STUNSPORE
-Pokemon = SEWADDLE,13
+Pokemon = SEWADDLE,14
 	Moves = RAZORLEAF,TACKLE,BUGBITE
 Pokemon = NINCADA,14
 	Moves = MUDSLAP,ABSORB,SANDATTACK,SCRATCH
+	Item = SITRUSBERRY
 #-------------------------------
 [RIVALBUSHIDO_M,Yakeru,2]
-LoseText = "Wow, you really are strong! I'm glad to have a rival like you to test my strength!"
+LoseText = "Wow, you've gotten so strong! I'm glad to have faced you in the finals!"
 Pokemon = FLETCHLING,14
 Pokemon = TOGEPI,14
+	Moves = POUND,CHARM,LIFEDEW,DRAININGKISS
+	Item = ORANBERRY
 Pokemon = DARUMAKA,15
+	Moves = FLAMECHARGE,WORKUP,BITE
+	Item = SITRUSBERRY
 #-------------------------------
 [RIVALBUSHIDO_F,Akane,2]
-LoseText = "Wow, you really are strong! I'm glad to have a rival like you to test my strength!"
+LoseText = "Wow, you've gotten so strong! I'm glad to have faced you in the finals!"
 Pokemon = FLETCHLING,14
 Pokemon = TOGEPI,14
-Pokemon = DARUMAKA,15
+	Moves = POUND,CHARM,LIFEDEW,DRAININGKISS
+	Item = ORANBERRY
+Pokemon = DARUMAKA,16
+	Moves = FLAMECHARGE,WORKUP,BITE
+	Item = SITRUSBERRY
 #-------------------------------
 [AKUICLAN_F,Kumiko,2]
-LoseText = "What! How did you do that?"
+LoseText = "Impossible! The Katana of Light has a new master after all..."
 Pokemon = TOXEL,14
 Pokemon = SNEASEL,14
 	Form = 1
@@ -666,7 +679,8 @@ Pokemon = ARON,29
 #-------------------------------
 [NENSHO_M,Hirose]
 LoseText = "I couldn't even beat you with my rare Pokemon..."
-Pokemon = SIMISEAR,31
+Pokemon = SIMISEAR,32
+Pokemon = DUDUNSPARCE,33
 #-------------------------------
 [KENSHI_M,Shishido]
 LoseText = "Light or dark, I still lose..."
@@ -1161,8 +1175,14 @@ Pokemon = SEISMITOAD,56
 #-------------------------------
 [KENSHI_M,Ando]
 LoseText = "I need some variety in my team, don't I?"
-Pokemon = LOPUNNY,47
-Pokemon = BLISSEY,47
+Pokemon = LOPUNNY,45
+Pokemon = BLISSEY,46
+#-------------------------------
+[KENSHI_F,Samui]
+LoseText = "Looks like I need to get out and challenge more Kenshi..."
+Pokemon = DUDUNSPARCE,46
+	Form = 1
+Pokemon = BLASTOISE,47
 #-------------------------------
 [YUKI_M,Uchida]
 LoseText = "Y- you make me shiver..."
@@ -1194,7 +1214,7 @@ Pokemon = LAPRAS,51
 Pokemon = MAMOSWINE,51
 #-------------------------------
 [KURO,Kuro]
-LoseText = "Tch. What a bother, to be defeated by someone like you..."
+LoseText = "What a bother, to be defeated by someone as lowly as you..."
 Pokemon = PANGORO,52
 	Item = CHOPLEBERRY
 	Ability = 0
@@ -1694,7 +1714,7 @@ Pokemon = GOLISOPOD,70
 #-------------------------------	
 [VOLTSEON,Voltseon]
 LoseText = "Well that  was something, I wish I had never challenged you! That is my Last Wish!"
-Pokemon = DUNSPARCE,70
+Pokemon = DUDUNSPARCE,70
 	Item = LUMBERRY
 	Nature = ADAMANT
 	Ability = 0

@@ -71,42 +71,6 @@ module MenuHandlers
 end
 
 #-------------------------------------------------------------------------------
-# Journal / Pokedex
-#-------------------------------------------------------------------------------
-MenuHandlers.addEntry(:POKEDEX,_INTL("Journal"),"menuPokedex",proc{|menu|
-  if USE_CURRENT_REGION_DEX
-    pbFadeOutIn(99999) {
-      scene = PokemonPokedex_Scene.new
-      screen = PokemonPokedexScreen.new(scene)
-      screen.pbStartScreen
-      menu.refresh
-    }
-  else
-    if $PokemonGlobal.pokedexViable.length == 1
-      $PokemonGlobal.pokedexDex = $PokemonGlobal.pokedexViable[0]
-      if $PokemonGlobal.pokedexDex == $PokemonGlobal.pokedexUnlocked.length - 1
-        $PokemonGlobal.pokedexDex = -1
-      end
-      pbFadeOutIn(99999) {
-        scene = PokemonPokedex_Scene.new
-        screen = PokemonPokedexScreen.new(scene)
-        screen.pbStartScreen
-        menu.refresh
-      }
-    else
-      pbFadeOutIn(99999) {
-        scene = PokemonPokedexMenu_Scene.new
-        screen = PokemonPokedexMenuScreen.new(scene)
-        screen.pbStartScreen
-        menu.refresh
-      }
-    end
-  end
-},proc{
-  next $Trainer.pokedex && $PokemonGlobal.pokedexViable.length > 0
-})
-
-#-------------------------------------------------------------------------------
 # Party
 #-------------------------------------------------------------------------------
 MenuHandlers.addEntry(:POKEMON,_INTL("Pokémon"),"menuPokemon",proc{|menu|
@@ -151,6 +115,42 @@ MenuHandlers.addEntry(:BAG,_INTL("Bag"),"menuBag",proc{|menu|
 })
 
 #-------------------------------------------------------------------------------
+# Journal / Pokedex
+#-------------------------------------------------------------------------------
+MenuHandlers.addEntry(:POKEDEX,_INTL("Journal"),"menuPokedex",proc{|menu|
+  if USE_CURRENT_REGION_DEX
+    pbFadeOutIn(99999) {
+      scene = PokemonPokedex_Scene.new
+      screen = PokemonPokedexScreen.new(scene)
+      screen.pbStartScreen
+      menu.refresh
+    }
+  else
+    if $PokemonGlobal.pokedexViable.length == 1
+      $PokemonGlobal.pokedexDex = $PokemonGlobal.pokedexViable[0]
+      if $PokemonGlobal.pokedexDex == $PokemonGlobal.pokedexUnlocked.length - 1
+        $PokemonGlobal.pokedexDex = -1
+      end
+      pbFadeOutIn(99999) {
+        scene = PokemonPokedex_Scene.new
+        screen = PokemonPokedexScreen.new(scene)
+        screen.pbStartScreen
+        menu.refresh
+      }
+    else
+      pbFadeOutIn(99999) {
+        scene = PokemonPokedexMenu_Scene.new
+        screen = PokemonPokedexMenuScreen.new(scene)
+        screen.pbStartScreen
+        menu.refresh
+      }
+    end
+  end
+},proc{
+  next $Trainer.pokedex && $PokemonGlobal.pokedexViable.length > 0
+})
+
+#-------------------------------------------------------------------------------
 # Habitat Scroll
 #-------------------------------------------------------------------------------
 MenuHandlers.addEntry(:HABITAT,_INTL("Habitats"),"menuHabitats",proc{|menu|
@@ -186,16 +186,6 @@ MenuHandlers.addEntry(:POKEGEAR,_INTL("Pokégear"),"menuPokegear",proc{|menu|
 })
 
 #-------------------------------------------------------------------------------
-# Kenshi Record
-#-------------------------------------------------------------------------------
-MenuHandlers.addEntry(:TRAINER,_INTL("\\pn"),"menuTrainer",proc{|menu|
-  pbKenshiRecord
-  menu.refresh
-},proc{
-  next true
-})
-
-#-------------------------------------------------------------------------------
 # Save
 #-------------------------------------------------------------------------------
 MenuHandlers.addEntry(:SAVE,_INTL("Save"),"menuSave",proc{|menu|
@@ -214,6 +204,17 @@ MenuHandlers.addEntry(:SAVE,_INTL("Save"),"menuSave",proc{|menu|
   next !$game_system ||
        (!$game_system.save_disabled && !(pbInSafari? || pbInBugContest?))
 })
+
+#-------------------------------------------------------------------------------
+# Kenshi Record
+#-------------------------------------------------------------------------------
+MenuHandlers.addEntry(:TRAINER,_INTL("\\pn"),"menuTrainer",proc{|menu|
+  pbKenshiRecord
+  menu.refresh
+},proc{
+  next true
+})
+
 
 #-------------------------------------------------------------------------------
 # Safari / Contest quit
@@ -271,6 +272,7 @@ MenuHandlers.addEntry(:DEBUG,_INTL("Debug"),"menuDebug",proc{|menu|
 #-------------------------------------------------------------------------------
 # Mystery Gift
 #-------------------------------------------------------------------------------
+=begin
 MenuHandlers.addEntry(:MGIFT,_INTL("Mystery Gift"),"menuMysteryGift",proc{|menu|
   pbFadeOutIn(99999) {
     pbDownloadMysteryGift($Trainer)
@@ -278,6 +280,7 @@ MenuHandlers.addEntry(:MGIFT,_INTL("Mystery Gift"),"menuMysteryGift",proc{|menu|
 },proc{
   next $game_switches[69]
 })
+=end
 
 #-------------------------------------------------------------------------------
 # Quit Game

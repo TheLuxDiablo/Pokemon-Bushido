@@ -6,6 +6,7 @@ FISHING_SURFACE_FRAMES = 20
 FISHING_SURFACE_HOLD   = 30
 FISHING_SURFACE_RISE   = 14
 
+# Rolls and reveals the fishing encounter.
 def pbFishingRevealEncounter(enctype)
   $PokemonTemp.encounterType = enctype
 
@@ -28,14 +29,8 @@ def pbFishingRevealEncounter(enctype)
     level =
       encounter1[1]
 
-    fishing_pokemon =
-      pbFishingGeneratePokemon(
-        species,
-        level
-      )
-
     pbFishingShowPokemon(
-      fishing_pokemon
+      species
     )
 
     if $PokemonGlobal.partner
@@ -72,142 +67,47 @@ def pbFishingRevealEncounter(enctype)
   end
 end
 
-def pbFishingGeneratePokemon(species, level)
-  pokemon = nil
-
-  begin
-    pokemon =
-      PokeBattle_Pokemon.new(
-        species,
-        level,
-        $Trainer
-      )
-  rescue
-    begin
-      pokemon =
-        PokeBattle_Pokemon.new(
-          species,
-          level
-        )
-    rescue
-      pokemon = nil
-    end
-  end
-
-  return pokemon
-end
-
-def pbFishingPokemonCharset(pokemon)
-  return nil if !pokemon
-
-  species =
-    pokemon.species
-
-  form = 0
-
-  begin
-    form =
-      pokemon.form
-  rescue
-    form = 0
-  end
-
+# Finds the Pokemon's overworld charset including forms.
+def pbFishingPokemonCharset(species, form = 0)
   species_id = nil
   species_name = nil
 
   begin
-    species_id =
-      getID(
-        PBSpecies,
-        species
-      )
+    species_id = getID(PBSpecies, species)
   rescue
-    species_id =
-      species if species.is_a?(Numeric)
+    species_id = species if species.is_a?(Numeric)
   end
 
   begin
-    species_name =
-      getConstantName(
-        PBSpecies,
-        species_id
-      )
+    species_name = getConstantName(PBSpecies, species_id)
   rescue
-    species_name =
-      species.to_s
+    species_name = species.to_s
   end
 
   candidates = []
 
-  if form && form > 0
-    if species_id
-      candidates.push(
-        sprintf(
-          "%03d_%d",
-          species_id,
-          form
-        )
-      )
-
-      candidates.push(
-        sprintf(
-          "%d_%d",
-          species_id,
-          form
-        )
-      )
-    end
-
-    if species_name
-      candidates.push(
-        sprintf(
-          "%s_%d",
-          species_name.to_s,
-          form
-        )
-      )
-
-      candidates.push(
-        sprintf(
-          "%s_%d",
-          species_name.to_s.downcase,
-          form
-        )
-      )
-    end
-  end
-
+  # Formulate candidates checking the form variant first
   if species_id
-    candidates.push(
-      sprintf(
-        "%03d",
-        species_id
-      )
-    )
-
-    candidates.push(
-      species_id.to_s
-    )
+    if form > 0
+      candidates.push(sprintf("%03d_%d", species_id, form))
+      candidates.push("#{species_id}_#{form}")
+    end
+    candidates.push(sprintf("%03d", species_id))
+    candidates.push(species_id.to_s)
   end
 
   if species_name
-    candidates.push(
-      species_name.to_s
-    )
-
-    candidates.push(
-      species_name.to_s.downcase
-    )
+    if form > 0
+      candidates.push("#{species_name}_#{form}")
+      candidates.push("#{species_name.downcase}_#{form}")
+    end
+    candidates.push(species_name.to_s)
+    candidates.push(species_name.to_s.downcase)
   end
 
   candidates.each do |name|
     begin
-      resolved =
-        pbResolveBitmap(
-          "Graphics/Characters/" +
-          name
-        )
-
+      resolved = pbResolveBitmap("Graphics/Characters/" + name)
       return resolved if resolved
     rescue
     end
@@ -216,6 +116,7 @@ def pbFishingPokemonCharset(pokemon)
   return nil
 end
 
+# Gets the reveal position in front of the player.
 def pbFishingPokemonPosition
   x =
     $game_player.screen_x
@@ -240,6 +141,7 @@ def pbFishingPokemonPosition
   return [x, y]
 end
 
+# Gets the charset row facing the player.
 def pbFishingPokemonDirectionRow(player_direction)
   case player_direction
   when 2
@@ -258,13 +160,32 @@ def pbFishingPokemonDirectionRow(player_direction)
   return 0
 end
 
-def pbFishingShowPokemon(pokemon_data)
-  return if !pokemon_data
+def pbFishingShowPokemon(species)
+  species_id = nil
+  form_id = 0
+  
+  if species.is_a?(Numeric)
+    species_id = species
+    
+    begin
+      if defined?(PokeBattle_Pokemon)
+        temp_pkmn = PokeBattle_Pokemon.new(species_id, 1)
+        form_id = temp_pkmn.form if temp_pkmn
+      end
+    rescue
+      form_id = 0
+    end
+    
+    form_id = 0 if form_id.nil?
+    
+  elsif species.respond_to?(:species)
+    species_id = species.species
+    form_id = species.form rescue 0
+  else
+    species_id = getID(PBSpecies, species) rescue species
+  end
 
-  charset =
-    pbFishingPokemonCharset(
-      pokemon_data
-    )
+  charset = pbFishingPokemonCharset(species_id, form_id)
 
   return if !charset
 

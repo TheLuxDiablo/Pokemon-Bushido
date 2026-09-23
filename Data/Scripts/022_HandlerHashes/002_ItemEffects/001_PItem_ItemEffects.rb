@@ -369,6 +369,12 @@ ItemHandlers::UseInField.add(:COINCASE,proc { |item|
   next 1
 })
 
+
+ItemHandlers::UseInField.add(:ROBECASE,proc { |item|
+  pbRobeCase()
+  next 1
+})
+
 ItemHandlers::UseInField.add(:EXPALL,proc { |item|
   $PokemonBag.pbChangeItem(:EXPALL,:EXPALLOFF)
   pbMessage(_INTL("Ryo's Charm was disabled."))
@@ -898,6 +904,51 @@ ItemHandlers::UseOnPokemon.add(:RARECANDY,proc { |item,pkmn,scene|
   pbChangeLevel(pkmn,pkmn.level+1,scene)
   scene.pbHardRefresh
   next true
+})
+
+#ItemHandlers::UseOnPokemonMaximum.add(:EXPCANDYXS, proc { |item, pkmn|
+#  gain_amount = 100
+#  next ((pkmn.growth_rate.maximum_exp - pkmn.exp) / gain_amount.to_f).ceil
+#})
+
+ItemHandlers::UseOnPokemon.add(:EXPCANDYXS, proc { |item,pkmn,scene|
+  next pbGainExpFromExpCandy(pkmn, 100, 1, scene)
+})
+
+#ItemHandlers::UseOnPokemonMaximum.add(:EXPCANDYS, proc { |item, pkmn|
+#  gain_amount = 800
+#  next ((pkmn.growth_rate.maximum_exp - pkmn.exp) / gain_amount.to_f).ceil
+#})
+
+ItemHandlers::UseOnPokemon.add(:EXPCANDYS, proc { |item,pkmn,scene|
+  next pbGainExpFromExpCandy(pkmn, 800, 1, scene)
+})
+
+#ItemHandlers::UseOnPokemonMaximum.add(:EXPCANDYM, proc { |item, pkmn|
+#  gain_amount = 3_000
+#  next ((pkmn.growth_rate.maximum_exp - pkmn.exp) / gain_amount.to_f).ceil
+#})
+
+ItemHandlers::UseOnPokemon.add(:EXPCANDYM, proc { |item,pkmn,scene|
+  next pbGainExpFromExpCandy(pkmn, 3_000, 1, scene)
+})
+
+#ItemHandlers::UseOnPokemonMaximum.add(:EXPCANDYL, proc { |item, pkmn|
+#  gain_amount = 10_000
+#  next ((pkmn.growth_rate.maximum_exp - pkmn.exp) / gain_amount.to_f).ceil
+#})
+
+ItemHandlers::UseOnPokemon.add(:EXPCANDYL, proc { |item,pkmn,scene|
+  next pbGainExpFromExpCandy(pkmn, 10_000, 1, scene)
+})
+
+#ItemHandlers::UseOnPokemonMaximum.add(:EXPCANDYXL, proc { |item, pkmn|
+#  gain_amount = 30_000
+#  next ((pkmn.growth_rate.maximum_exp - pkmn.exp) / gain_amount.to_f).ceil
+#})
+
+ItemHandlers::UseOnPokemon.add(:EXPCANDYXL, proc { |item,pkmn,scene|
+  next pbGainExpFromExpCandy(pkmn, 30_000, 1, scene)
 })
 
 ItemHandlers::UseOnPokemon.add(:POMEGBERRY,proc { |item,pkmn,scene|

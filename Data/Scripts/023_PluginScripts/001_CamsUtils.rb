@@ -378,8 +378,24 @@ end
     $game_variables[varID] = getNameOfPokemonFromID(BushidoStarterSelection::DEFAULT_STARTERS[starterID])
   end
 
+  def tsuchiLeafPickup()
+    pbGetKeyItem(PBItems::KOMOREILEAF,1)
+    $game_variables[32] = ($game_variables[32] + 1)
+    leavesOwned = $game_variables[32]
+    if(leavesOwned > 1)
+        pbMessage(_INTL("You now have {1} Tsuchi Leaves.", leavesOwned))
+    end
+    if(leavesOwned >= 5)
+        pbMessage(_INTL("\\me[PLA 031 Request Fulfilled!]You may now access the \\c[3]Komorei Clan\\c[0] Dojo!"))
+    end
+  end
+
+  def HokoraEnergyUnlocked?
+    return (KatanaOfLightAwakened?() == true && PLAYERKATANATECHNIQUES == true)
+  end
+
   def prayAtHokora()
-    if(KatanaOfLightAwakened?() == false || PLAYERKATANATECHNIQUES == false)
+    if(HokoraEnergyUnlocked? == false)
         pbMessage("It's a Hokora, a small shrine dedicated to the gods.")
     elsif($game_self_switches[[@map_id, @event_id, "A"]])
         pbMessage("It's a Hokora, a small shrine dedicated to the gods.")
@@ -453,6 +469,32 @@ end
 
   def pbGetFirstDigitOfHighestLevel(party)
       return pbGetHighestLevelInParty(party).to_s[0].to_i
+  end
+
+  def unlockKatanaOfLight()
+    $game_switches[67] = true
+    $game_switches[62] = true
+    $PokemonGlobal.snagMachine = true
+  end
+
+  def shadowFire()
+    pbMessage(_INTL("It's a dark, shadowy fire."))
+    if($game_switches[133] == true) #Shadow Clear Unlocked
+        if (pbMessage(_INTL("Use the Shadow Purge technique?"), [_INTL("Yes"), _INTL("No")]) == 0)
+            pbKatanaMoveAnimation(5)
+            $game_variables[61] = ($game_variables[61] + 1)
+            $game_screen.start_flash(Color.new(255,255,119,255), 20 * Graphics.frame_rate / 20)
+            vSS(@event_id)
+            pbSEPlay("katanashine")
+            pbWait(4)
+            pbSEPlay("Cut")
+            pbWait(24)
+        else
+            return
+        end
+    else
+        pbMessage(_INTL("You don't know any Katana Techniques that can cleanse this flame."))
+    end
   end
   
   def rematchSukiro()
@@ -549,7 +591,74 @@ end
         fullyRecoverEnergy()
         pbMessage(_INTL("Your Spirit Energy was refilled from praying to the Shrine!"))
     end
-end
+  end
+
+  def pbRobeCase()
+    outfits = ["Masayoshi", "Kenshi"]
+    if($Trainer.badges[0] == true || $game_switches[190] == true) # Komorei After First Gym
+        outfits << "Komorei"
+    end
+    if($Trainer.badges[1] == true || $game_switches[191] == true) # Nensho After Second Gym
+        outfits << "Nensho"
+    end
+    if($Trainer.badges[2] == true || $game_switches[192] == true) # Shimizu After Third Gym
+        outfits << "Shimizu"
+    end
+    if($game_switches[193] == true || $game_switches[151] == true) # When do we get Akui Robes? Using Switch 151, GameBeaten for now
+        outfits << "Akui"
+    end
+    # Add more robes here we can find
+
+    pbMessage(_INTL("You opened the Robe Case."))
+    cmd=pbMessage("Which Robes would you like to change into?", outfits)
+    outfitInt = getOutfitIntBasedOnCMD(cmd)
+        if $Trainer.outfit == outfitInt
+            pbMessage(_INTL("You are already wearing the {1}.", returnRobeNameAndColor(outfitInt)))
+        else
+            $Trainer.outfit=outfitInt
+            pbMessage(_INTL("You changed into the {1}.", returnRobeNameAndColor(outfitInt)))
+        end
+  end
+
+  def returnRobeNameAndColor(int)
+    case int
+        when 0 # Masayoshi - Yellow
+            #return ("\\c[6]Masayoshi Robes\\c[0]")
+            return ("<c3=c3bd72,989138>Masayoshi Robes\\c[0]") 
+        when 1 # Kenshi - White
+            return ("\\c[7]Kenshi Robes\\c[0]")
+        when 2 # Komorei - Green
+            return ("\\c[3]Komorei Robes\\c[0]")
+        when 3 # Nensho - Red
+            return ("\\c[2]Nensho Robes\\c[0]")
+        when 4 # Shimizu - Blue
+            return ("\\c[1]Shimizu Robes\\c[0]")
+        when 5 # Akui - Purple
+            return ("\\c[9]Shimizu Robes\\c[0]")
+        else # Default Choice
+            return ("NOT SET UP")
+    end
+  end
+
+  def getOutfitIntBasedOnCMD(int)
+    # Making this method in case we ever want to add more outfits we can unlock out of order, instead of assuming cmd = outfit
+    case int
+        when 0 # Masayoshi - Yellow
+            return 0 
+        when 1 # Kenshi - White
+            return 1
+        when 2 # Komorei - Green
+            return 2
+        when 3 # Nensho - Red
+            return 3
+        when 4 # Shimizu - Blue
+            return 4
+        when 5 # Akui - Purple
+            return 5
+        else # Default Choice
+            return ("NOT SET UP")
+    end
+  end
 
 # ===================================================================
 # Player Katana Techniques

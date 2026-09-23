@@ -3,29 +3,29 @@ module BushidoKenshiRecord
     {
       :type     => :dojo,
       :name     => "Komorei Dojo",
-      :subtitle => "Shogun's Quest",
+      :subtitle => "Travel Aisho",
       :leader   => "Harumi",
       :location => "Tsuchi Village",
-      :mark     => "I",
-      :color    => Color.new(174, 64, 55)
+      :mark     => "mark_grass",
+      :color    => Color.new(55, 180, 55)
     },
     {
       :type     => :dojo,
       :name     => "Nensho Dojo",
-      :subtitle => "Shogun's Quest",
+      :subtitle => "Travel Aisho",
       :leader   => "Nori",
       :location => "Hanatsu Village",
-      :mark     => "II",
-      :color    => Color.new(67, 98, 151)
+      :mark     => "mark_fire",
+      :color    => Color.new(180, 55, 55)
     },
     {
       :type     => :dojo,
       :name     => "Shimizu Dojo",
-      :subtitle => "Shogun's Quest",
+      :subtitle => "Travel Aisho",
       :leader   => "Mai",
       :location => "Izumi Village",
-      :mark     => "III",
-      :color    => Color.new(130, 76, 145)
+      :mark     => "mark_water",
+      :color    => Color.new(55, 55, 180)
     },
     {
       :type     => :completion,
@@ -33,8 +33,17 @@ module BushidoKenshiRecord
       :subtitle => "Final Record",
       :leader   => nil,
       :location => nil,
-      :mark     => "完",
-      :color    => Color.new(176, 52, 42)
+      :mark     => "mark_complete",
+      :color    => Color.new(156, 142, 63)
+    },
+    {
+      :type     => :oni,
+      :name     => "Hidden Boss",
+      :subtitle => "Final Record",
+      :leader   => nil,
+      :location => nil,
+      :mark     => "mark_oni",
+      :color    => Color.new(54, 33, 67)
     }
   ]
 
@@ -150,7 +159,8 @@ module BushidoKenshiRecord
     return "-----" if !$Trainer
 
     begin
-      return sprintf("%05d", $Trainer.public_ID)
+      return sprintf("%05d", ($Trainer ? ($Trainer.id & 0xFFFF) : 0))
+      #return sprintf("%05d", $Trainer.public_ID)
     rescue
     end
 
@@ -552,33 +562,44 @@ class BushidoKenshiRecord_Scene
   end
 
   def create_portrait
-    sprite = IconSprite.new(
-      PAPER_X + PROFILE_BOX.x + 53,
-      PAPER_Y + PROFILE_BOX.y + 84,
-      @viewport
-    )
-
+    sprite = IconSprite.new( PAPER_X + PROFILE_BOX.x + 53, PAPER_Y + PROFILE_BOX.y + 84, @viewport )
     begin
-      path = pbTrainerSpriteFile(
-        $Trainer.trainertype
-      )
+      if $Trainer
+        outfit = 0
+        if $Trainer.respond_to?(:outfit)
+          outfit = $Trainer.outfit
+        elsif $game_variables
+          outfit = $game_variables rescue 0
+        end
 
-      if path
-        sprite.setBitmap(path)
-
-        if sprite.bitmap
-          sprite.ox =
-            sprite.bitmap.width / 2
-
-          sprite.oy =
-            sprite.bitmap.height / 2
+        tr_type = $Trainer.trainertype
+        
+        padded_type = sprintf("%03d", tr_type) rescue tr_type.to_s
+        base_name = "Graphics/Characters/trfront_#{padded_type}"
+        base_name = "Graphics/Characters/trfront#{padded_type}" if !pbResolveBitmap(base_name)
+        
+        path = pbResolveBitmap(base_name) ? base_name : pbTrainerSpriteFile(tr_type)
+        
+        if path
+          if outfit > 0
+            outfit_path = path.sub(/\.png$/i, "") + "_#{outfit}.png"
+            outfit_path_no_ext = path.sub(/\.png$/i, "") + "_#{outfit}"
+            
+            if pbResolveBitmap(outfit_path) || pbResolveBitmap(outfit_path_no_ext)
+              path = outfit_path
+            end
+          end
+          
+          sprite.setBitmap(path)
+          if sprite.bitmap
+            sprite.ox = sprite.bitmap.width / 2
+            sprite.oy = sprite.bitmap.height / 2
+          end
         end
       end
     rescue
     end
-
     sprite.opacity = 0
-
     @sprites["portrait"] = sprite
   end
 
@@ -668,103 +689,26 @@ class BushidoKenshiRecord_Scene
 
     if owned
       color = mark[:color]
-
-      stamp_circle(
-        bitmap,
-        center,
-        center,
-        18,
-        Color.new(
-          color.red,
-          color.green,
-          color.blue,
-          220
-        ),
-        2
-      )
-
-      stamp_circle(
-        bitmap,
-        center,
-        center,
-        14,
-        Color.new(
-          color.red,
-          color.green,
-          color.blue,
-          125
-        ),
-        1
-      )
-
+      stamp_circle( bitmap, center, center, 18, Color.new( color.red, color.green, color.blue, 220 ), 2 )
+      stamp_circle( bitmap, center, center, 14, Color.new( color.red, color.green, color.blue, 125 ), 1 )
       if mark[:type] == :completion
-        stamp_circle(
-          bitmap,
-          center,
-          center,
-          10,
-          Color.new(
-            color.red,
-            color.green,
-            color.blue,
-            90
-          ),
-          1
-        )
+        stamp_circle( bitmap, center, center, 10, Color.new( color.red, color.green, color.blue, 90 ), 1 )
       end
-
+      
       pbSetSystemFont(bitmap)
-
-      pbDrawTextPositions(
-        bitmap,
-        [
-          [
-            mark[:mark],
-            center,
-            center - 12,
-            1,
-            color,
-            Color.new(
-              color.red,
-              color.green,
-              color.blue,
-              45
-            )
-          ]
-        ]
-      )
-    else
-      ghost = Color.new(
-        INK_FAINT.red,
-        INK_FAINT.green,
-        INK_FAINT.blue,
-        60
-      )
-
-      stamp_circle(
-        bitmap,
-        center,
-        center,
-        18,
-        ghost,
-        1
-      )
-
+      icon = pbBitmap("Graphics/Pictures/#{mark[:mark]}") rescue nil
+      if icon
+        bitmap.blt(center - icon.width / 2, center - icon.height / 2, icon, Rect.new(0, 0, icon.width, icon.height))
+      end
+    else # <- ADDED THIS SPLIT POINT TO CORRECT THE CODE LOGIC
+      ghost = Color.new(INK_FAINT.red, INK_FAINT.green, INK_FAINT.blue, 60)
+      
+      # Draws a double circle fallback frame for unowned badges
+      stamp_circle( bitmap, center, center, 18, ghost, 2 )
+      stamp_circle( bitmap, center, center, 14, ghost, 1 )
+      
       pbSetSystemFont(bitmap)
-
-      pbDrawTextPositions(
-        bitmap,
-        [
-          [
-            "?",
-            center,
-            center - 12,
-            1,
-            ghost,
-            Color.new(0, 0, 0, 0)
-          ]
-        ]
-      )
+      pbDrawTextPositions( bitmap, [ [ "?", center + 7, center - 13, 1, ghost, Color.new(0, 0, 0, 0) ] ] )
     end
   end
 
@@ -926,31 +870,20 @@ class BushidoKenshiRecord_Scene
 
       pbSetSystemFont(seal)
 
-      pbDrawTextPositions(
-        seal,
-        [
-          [
-            mark[:mark],
-            32,
-            19,
-            1,
-            color,
-            Color.new(
-              color.red,
-              color.green,
-              color.blue,
-              45
-            )
-          ]
-        ]
-      )
-    else
-      ghost = Color.new(
-        INK_FAINT.red,
-        INK_FAINT.green,
-        INK_FAINT.blue,
-        60
-      )
+      icon = pbBitmap("Graphics/Pictures/#{mark[:mark]}") rescue nil
+      if icon
+        target_w = 48
+        target_h = 48
+        
+        target_x = 32 - (target_w / 2)
+        target_y = 32 - (target_h / 2)
+        
+        dest_rect = Rect.new(target_x, target_y, target_w, target_h)
+        src_rect  = Rect.new(0, 0, icon.width, icon.height)
+        seal.stretch_blt(dest_rect, icon, src_rect)
+      else
+        ghost = Color.new(INK_FAINT.red, INK_FAINT.green, INK_FAINT.blue, 60)
+      end
 
       stamp_circle(
         seal,
@@ -1830,6 +1763,9 @@ class BushidoKenshiRecord_Scene
       [cx + x, cy - y]
     ]
 
+    # FALLBACK: If color is completely missing for any reason,
+    safe_color = color ? color : Color.new(145, 120, 87, 60)
+
     for point in points
       px = point[0]
       py = point[1]
@@ -1842,7 +1778,7 @@ class BushidoKenshiRecord_Scene
       bitmap.set_pixel(
         px,
         py,
-        color
+        safe_color
       )
     end
   end
