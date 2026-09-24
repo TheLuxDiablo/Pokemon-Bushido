@@ -46,7 +46,7 @@ module PhenomenonConfig
 
   Pokemon = {
     :shiny => true, # 4x chance of shininess
-    :expBoost => true, # 1.3x Exp Boost
+    :expBoost => false, # 1.3x Exp Boost
     # Below are 1/n chance of Pokémon being generated with these settings
     # Set to -1 to disable
     :ivs => 10, # 2 perfect IVs

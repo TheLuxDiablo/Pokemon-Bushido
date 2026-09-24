@@ -258,7 +258,7 @@ end
 # vol = Volume, pch = Pitch
 def vCry(i,vol=80,pch=100)
 cry=pbCryFile(i)
-pbSEPlay(cry,80,100)
+pbSEPlay(cry,vol,pch)
 #Example: vCry(25,120,50) - Plays Pikachu's Cry at 120% volume and 50% pitch.
 #Alternatives: vPlayCry(), vPC()
 end

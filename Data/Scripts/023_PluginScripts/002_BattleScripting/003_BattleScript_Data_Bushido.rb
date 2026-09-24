@@ -3149,8 +3149,10 @@ module DialogueModule
     scene.disappearBar
     pbPlayCry(user.pokemon)
     pbWait(Graphics.frame_rate / 5)
-    ret = user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 1, :DRAGONDANCE)
-    user.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, ret || :DRAGONDANCE)
+    if strong_katanas?
+        ret = user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 1, :DRAGONDANCE)
+        user.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, ret || :DRAGONDANCE)
+    end
   }
 
   Hooh = Proc.new { |battle, scene, battlers|
@@ -3160,7 +3162,9 @@ module DialogueModule
     scene.disappearBar
     pbPlayCry(user.pokemon)
     pbWait(Graphics.frame_rate / 5)
-    user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 1, "Solar Beam charging")
+    if strong_katanas?
+        user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 1, "Solar Beam charging")
+    end
   }
 
   Celebi = Proc.new { |battle, scene, battlers|
@@ -3185,8 +3189,10 @@ module DialogueModule
     scene.disappearBar
     pbPlayCry(user.pokemon)
     pbWait(Graphics.frame_rate / 5)
-    ret = user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 1, "CurseNoGhost", forced: true)
-    user.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, ret || "CurseNoGhost", forced: true)
+    if strong_katanas?
+        ret = user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 1, "CurseNoGhost", forced: true)
+        user.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, ret || "CurseNoGhost", forced: true)
+    end
   }
 
   Terrakion = Proc.new { |battle, scene, battlers|
@@ -3197,8 +3203,10 @@ module DialogueModule
     scene.disappearBar
     pbPlayCry(user.pokemon)
     pbWait(Graphics.frame_rate / 5)
-    ret = user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 1, "CurseNoGhost", forced: true)
-    user.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, ret || "CurseNoGhost", forced: true)
+    if strong_katanas?
+        ret = user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 1, "CurseNoGhost", forced: true)
+        user.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, ret || "CurseNoGhost", forced: true)
+    end
   }
 
   Cobalion = Proc.new { |battle, scene, battlers|
@@ -3209,8 +3217,10 @@ module DialogueModule
     scene.disappearBar
     pbPlayCry(user.pokemon)
     pbWait(Graphics.frame_rate / 5)
-    ret = user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 1, "CurseNoGhost", forced: true)
-    user.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, ret || "CurseNoGhost", forced: true)
+    if strong_katanas?
+        ret = user.pbRaiseStatStageEx([:ATTACK, :SPATK, :SPEED], 1, "CurseNoGhost", forced: true)
+        user.pbLowerStatStageEx([:DEFENSE, :SPDEF], 1, ret || "CurseNoGhost", forced: true)
+    end
   }
 
   Dragonite = Proc.new { |battle, scene, battlers|
@@ -3231,12 +3241,18 @@ module DialogueModule
     scene.appearBar
     user   = battlers[1]
     target = battlers[0]
-    pbMessage("#{user.pbThis}'s nightmare aura engulfs the battlefield!")
+    if strong_katanas?
+        pbMessage("#{user.pbThis}'s nightmare aura engulfs the battlefield!")
+    else
+        pbMessage("#{user.pbThis}'s dark aura engulfs the battlefield!")
+    end
     scene.disappearBar
-    ret = target.pbInflictStatusEx(:SLEEP, target.pbSleepDuration(rand(5, 6)), :DARKVOID, user, forced: true)
-    if ret
-      target.effects[PBEffects::Nightmare] = true
-      battle.pbDisplay(_INTL("{1} began having a nightmare!", target.pbThis))
+    if strong_katanas?
+        ret = target.pbInflictStatusEx(:SLEEP, target.pbSleepDuration(rand(5, 6)), :DARKVOID, user, forced: true)
+        if ret
+          target.effects[PBEffects::Nightmare] = true
+          battle.pbDisplay(_INTL("{1} began having a nightmare!", target.pbThis))
+        end
     end
   }
 

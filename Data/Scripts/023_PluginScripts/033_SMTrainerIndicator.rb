@@ -1155,7 +1155,8 @@ class Game_Event
   def trainer_sensor_completed?
     return false if !$game_self_switches
     key = [$game_map.map_id, self.id, "A"]
-    return $game_self_switches[key] == true
+    key2 = [$game_map.map_id, self.id, "B"]
+    return ($game_self_switches[key] == true || $game_self_switches[key2] == true)
   end
 
   def is_trainer?
